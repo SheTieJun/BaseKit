@@ -9,7 +9,7 @@ package me.shetj.base.base;
  * <b>@describe</b><br>
  */
 
-public interface BaseCommonCallback<T> {
+public interface BaseCallback<T> {
 	/**
 	 * 成功
 	 */

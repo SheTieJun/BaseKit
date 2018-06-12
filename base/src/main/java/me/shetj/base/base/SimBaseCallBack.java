@@ -9,7 +9,7 @@ package me.shetj.base.base;
  * <b>@describe</b><br>
  */
 
-public class SimBaseCallBack<T> implements BaseCommonCallback<T>  {
+public class SimBaseCallBack<T> implements BaseCallback<T> {
 	@Override
 	public void onSuccess() {
 
