@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/clickStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+    <ImageView
+        android:id="@+id/tab_item_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/tab_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tab_item_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2px"
+        android:singleLine="true"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/tab_item_num"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/tab_item_icon"
+        android:layout_marginRight="-10dp"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:gravity="center"
+        android:background="@drawable/tab_num_view"
+        android:textSize="10sp"
+        android:textColor="@android:color/white"
+        android:text=""/>
+</RelativeLayout>

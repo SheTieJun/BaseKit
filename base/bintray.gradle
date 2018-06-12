@@ -1,0 +1,104 @@
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+// load from root project's 'local.properties'
+Properties properties = new Properties()
+boolean isHasFile = false
+if (project.rootProject.findProject('local.properties') != null){
+    isHasFile = true
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+}
+def siteUrl = ' '      // 项目的主页   这个是说明，可随便填
+def gitUrl = ' '      // Git仓库的url  这个是说明，可随便填
+
+version = "0.0.1"
+group = "me.shetj"
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name 'base'     //项目描述
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'shetiejun'        //填写开发者的一些基本信息
+                        name 'shetj'    //填写开发者的一些基本信息
+                        email 'tiejunshet@gmail.com'   //填写开发者的一些基本信息
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+
+
+bintray {
+    user = isHasFile ? properties.getProperty("bintray.user") : System.getenv("bintray_user")
+    key = isHasFile ? properties.getProperty("bintray.apikey") : System.getenv("bintray_apikey")
+    pkg {
+        repo = 'shetj'//自己创建的仓库名字
+        name = 'base'//上传到JCenter的名字,最终引用的名字
+        licenses = ["Apache-2.0"]
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        publish = true // 是否是公开项目。
+        version {
+            name = '0.0.6'
+            desc = 'a base lib for me develper'//描述，自己定义
+            released  = new Date()
+            released = new Date()
+            vcsTag = 'v' + name
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+        }
+
+
+    }
+    configurations = ['archives']
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    //如果你的项目里面有中文注释的话，必须将格式设置为UTF-8，不然会出现乱码
+    options{
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}

@@ -1,0 +1,98 @@
+<resources>
+    <dimen name="text_ppt_biggest_size">120sp</dimen>
+    <dimen name="text_biggest_size">24sp</dimen>
+    <dimen name="text_big_size">22sp</dimen>
+    <dimen name="text_title_size">20sp</dimen>
+    <dimen name="text_medium_size">18sp</dimen>
+    <dimen name="text_mid_size">16sp</dimen>
+    <dimen name="text_small_size">14sp</dimen>
+    <dimen name="text_mirco_size">12sp</dimen>
+
+    <dimen name="dp_4">4dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="dp_14">14dp</dimen>
+    <dimen name="dp_22">22dp</dimen>
+    <dimen name="dp_60">60dp</dimen>
+
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--不透明度	16进制值-->
+    <!--100%	FF-->
+    <!--95%	F2-->
+    <!--90%	E6-->
+    <!--85%	D9-->
+    <!--80%	CC-->
+    <!--75%	BF-->
+    <!--70%	B3-->
+    <!--65%	A6-->
+    <!--60%	99-->
+    <!--55%	8C-->
+    <!--50%	80-->
+    <!--45%	73-->
+    <!--40%	66-->
+    <!--35%	59-->
+    <!--30%	4D-->
+    <!--25%	40-->
+    <!--20%	33-->
+    <!--15%	26-->
+    <!--10%	1A-->
+    <!--5%	0D-->
+    <!--0%	00-->
+
+    <!--12sp 小字提示-->
+
+
+    <dimen name="smallTipText">12sp</dimen>
+
+    <!--14sp（桌面端13sp） 正文/按钮文字-->
+    <dimen name="mainBodyText">14sp</dimen>
+
+    <!--16sp（桌面端15sp） 小标题-->
+    <dimen name="subtitleText">16sp</dimen>
+
+    <!--20sp Appbar文字-->
+    <dimen name="AppbarText">18sp</dimen>
+
+    <!--24sp 大标题-->
+    <dimen name="headlineText">24sp</dimen>
+    <!--34sp/45sp/56sp/112sp 超大号文字-->
+    <!--所有可操作元素最小点击区域尺寸：48dp X 48dp。-->
+    <dimen name="minimumClickSize">48dp</dimen>
+    <!--顶部状态栏高度：24dp-->
+    <dimen name="statusBarHeightSize">20dp</dimen>
+    <!--Appbar最小高度：56dp-->
+    <dimen name="AppbarHeightSize">56dp</dimen>
+    <!--底部导航栏高度：48dp-->
+    <dimen name="navigationBarSize">48dp</dimen>
+    <!--悬浮按钮尺寸：56x56dp/40x40dp-->
+    <dimen name="HoverButtonSize">56dp</dimen>
+    <dimen name="smallHoverButtonSize">40dp</dimen>
+    <!--用户头像尺寸：64x64dp/40x40dp-->
+    <dimen name="userAvatarSize">64dp</dimen>
+    <dimen name="smallUserAvatarSize">40dp</dimen>
+    <!--小图标点击区域：48x48dp-->
+    <dimen name="iconClickSize">48dp</dimen>
+    <!--侧边抽屉到屏幕右边的距离：56dp-->
+    <dimen name="rightSideOfDrawerSize">56dp</dimen>
+    <!--卡片间距：8dp-->
+    <dimen name="cardMarginSize">8dp</dimen>
+    <!--分隔线上下留白：8dp-->
+    <dimen name="dividingLineMarginSize">8dp</dimen>
+    <!--大多元素的留白距离：16dp-->
+    <dimen name="elementMarginSize">16dp</dimen>
+    <!--屏幕左右对齐基线：16dp-->
+    <dimen name="aroundMarginSize">16dp</dimen>
+    <!--文字左侧对齐基线：72dp-->
+    <dimen name="textLeftMarginSize">72dp</dimen>
+    <!--卡片统一带有2dp的圆角-->
+    <dimen name="cardRoundedCornersSize">2dp</dimen>
+    <!--菜单到上下留出8dp距离-->
+    <dimen name="menuMarginSize">8dp</dimen>
+    <!--tab选中项的下划线高度是2dp-->
+    <dimen name="tapHeightSize">2dp</dimen>
+
+</resources>

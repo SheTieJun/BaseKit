@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="@color/toolbar_color"
+    android:elevation="1px"
+    app:contentInsetStart="0dp"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <RelativeLayout
+            android:id="@+id/toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:gravity="left"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            >
+
+            <ImageView
+                android:id="@+id/iv_left"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:padding="10dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_all_return1"/>
+
+            <TextView
+                android:id="@+id/tv_left"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_toRightOf="@id/iv_left"
+                android:gravity="center"
+                android:textSize="@dimen/sp_14"
+                android:textColor="@color/titleColor"
+                android:text="返回"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:textSize="@dimen/AppbarText"
+            android:textColor="@color/toolbar_title_color"
+            tools:text="title"/>
+        <TextView
+            android:id="@+id/tv_right"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_gravity="right|center_vertical"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textSize="@dimen/sp_14"
+            android:textColor="@color/titleColor"
+            android:text=""/>
+    </FrameLayout>
+
+
+</android.support.v7.widget.Toolbar>
