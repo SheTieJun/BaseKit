@@ -27,7 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import me.shetj.base.base.CommonCaseCallBack;
+import me.shetj.base.base.CommonCallBack;
 import me.shetj.base.tools.app.AppUtils;
 import me.shetj.base.tools.file.SDCardUtils;
 
@@ -162,7 +162,7 @@ public class ImageUtils {
 	}
 
 
-	public void onActivityResult(Activity context, int requestCode, Intent data, CommonCaseCallBack callBack) {
+	public void onActivityResult(Activity context, int requestCode, Intent data, CommonCallBack callBack) {
 		switch (requestCode) {
 			default:
 				if (null != callBack){

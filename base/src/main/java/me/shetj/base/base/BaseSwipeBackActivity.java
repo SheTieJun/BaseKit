@@ -5,7 +5,6 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Keep;
 import android.view.View;
 
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
