@@ -34,13 +34,13 @@ public class TokenLoader {
         HashMap<String,String> map=new HashMap<>();
         mTokenObservable = EasyHttp.post(API.QINIU_GET_TOKEN)
                 .upJson(GsonKit.objectToJson(map))
-//                .syncRequest(true)//设置同步请求
                 .execute(String.class)
                 .doOnNext(token -> {
                     LogUtil.i( "存储Token=" + token);
                     TokenManager.getInstance().setToken(token);
                     mRefreshing.set(false);
-                }).doOnError(throwable -> mRefreshing.set(false)).subscribeOn(Schedulers.io());
+                }).doOnError(throwable -> mRefreshing.set(false))
+                .subscribeOn(Schedulers.io());
     }
 
     public static TokenLoader getInstance() {
