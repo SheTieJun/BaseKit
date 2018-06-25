@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
  * <br>  .footerCount(1)// 设尾的数量
  * <br>  .build());
  * <br>   如果以上属性发生变化，则调用下面对应方法修改
- *<br>   divider.setLineColor(Color.RED);
+ * <br>   divider.setLineColor(Color.RED);
  * <br>  divider.setLineWidth(30);
  * <br>  divider.setLineHeight(30);
  * <br>  divider.setHeaderCount(2);
