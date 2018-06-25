@@ -1,6 +1,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
-          xmlns:tools="http://schemas.android.com/tools"
           package="me.shetj.base"
 >
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -15,13 +13,6 @@
                  android:label="@string/app_name"
                  android:supportsRtl="true"
     >
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="584027af99f0c77125001745"/>
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="def"/>
-
         <meta-data
             android:name="design_width"
             android:value="1080"/>
