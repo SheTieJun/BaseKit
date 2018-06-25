@@ -10,7 +10,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
-import me.shetj.base.http.rxEasyHttp.EasyHttpUtils;
+import me.shetj.base.http.easyhttp.EasyHttpUtils;
 
 /**
  * <b>@packageName：</b> me.shetj.base.base<br>

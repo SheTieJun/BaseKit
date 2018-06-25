@@ -1,4 +1,4 @@
-package me.shetj.base.http.rxEasyHttp;
+package me.shetj.base.http.easyhttp;
 
 import android.support.annotation.Keep;
 

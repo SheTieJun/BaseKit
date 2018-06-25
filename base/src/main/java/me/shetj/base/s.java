@@ -5,7 +5,7 @@ import android.support.annotation.Keep;
 
 import com.bumptech.glide.request.target.ViewTarget;
 
-import me.shetj.base.http.rxEasyHttp.EasyHttpUtils;
+import me.shetj.base.http.easyhttp.EasyHttpUtils;
 import me.shetj.base.http.xutils.XUtil;
 import me.shetj.base.tools.app.Utils;
 
