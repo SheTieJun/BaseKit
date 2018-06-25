@@ -17,6 +17,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import me.shetj.base.tools.app.ArmsUtils;
+import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.tools.json.GsonKit;
 import me.shetj.base.view.LoadingDialog;
 
@@ -163,7 +164,9 @@ public class EasyHttpUtils {
 	public static HttpParams getParamsFromMap(@NonNull Map<String,String > map ){
 		HttpParams httpParams = new HttpParams();
 		for (String key : map.keySet()) {
-			httpParams.put(key,map.get(key));
+			if (EmptyUtils.isNotEmpty(key)&&EmptyUtils.isNotEmpty(map.get(key))) {
+				httpParams.put(key, map.get(key));
+			}
 		}
 		return httpParams;
 	}

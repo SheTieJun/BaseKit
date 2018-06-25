@@ -23,7 +23,9 @@ import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
 
-@SuppressWarnings("unchecked")
+/**
+ * @author shetj
+ */
 @Keep
 public class GsonKit {
     private static Gson gson = null;
@@ -138,12 +140,32 @@ public class GsonKit {
      * @param gsonString
      * @return
      */
-    public static <T> Map<String, T> jsonToMap(@NonNull String gsonString) {
+    public static   Map<String, Object> jsonToMap(@NonNull String gsonString) {
 
         try {
-            Map<String, T> map = null;
+            Map<String, Object> map = null;
             if (gson != null) {
-                map = gson.fromJson(gsonString, new TypeToken<Map<String, T>>() {
+                map = gson.fromJson(gsonString, new TypeToken<Map<String, Object>>() {
+                }.getType());
+            }
+            return map;
+        }catch (Exception e){
+            LogUtil.e(e.getMessage());
+            return null;
+        }
+    }
+    /**
+     * 转成map的
+     *
+     * @param gsonString
+     * @return
+     */
+    public static   Map<String, String> jsonToStringMap(@NonNull String gsonString) {
+
+        try {
+            Map<String, String> map = null;
+            if (gson != null) {
+                map = gson.fromJson(gsonString, new TypeToken<Map<String, String>>() {
                 }.getType());
             }
             return map;
@@ -175,12 +197,12 @@ public class GsonKit {
      * @param key
      * @return
      */
-    public static String getJsonValue(@NonNull String jsonStr, String key) {
+    public static Object getJsonValue(@NonNull String jsonStr, String key) {
         try {
-            String rusObj = null;
-            Map<String, String> rusMap = null;
+            Object rusObj = null;
+            Map<String, Object> rusMap = null;
             if (gson != null) {
-                rusMap = gson.fromJson(jsonStr, new TypeToken<Map<String, String>>() {
+                rusMap = gson.fromJson(jsonStr, new TypeToken<Map<String, Object>>() {
                 }.getType());
             }
             if (rusMap != null && rusMap.size() > 0) {

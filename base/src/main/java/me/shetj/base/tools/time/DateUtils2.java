@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 @Keep
-public class DateUtils {
+public class DateUtils2 {
 
     private static String mYear; // 当前年  
     private static String mMonth; // 月  
