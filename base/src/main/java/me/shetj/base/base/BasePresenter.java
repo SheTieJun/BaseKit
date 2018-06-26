@@ -28,10 +28,6 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
         this.view = view;
     }
 
-    public boolean checkMessage(Object o){
-        return true;
-    }
-
     @Override
     public void onStart() {
         if (useEventBus())
@@ -105,7 +101,5 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
         message.type = code;
         return message;
     }
-
-
 
 }

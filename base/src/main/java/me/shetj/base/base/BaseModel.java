@@ -38,25 +38,13 @@ public abstract class BaseModel implements IModel {
 		return EasyHttpUtils.getParamsFromMap(map);
 	}
 
-
-	public Observable<String> doPost(String url, Map<String, String> map){
-
-		return	EasyHttp.post(url)
-						.params(getParamsFromMap(map))
-						.execute(String.class);
-	}
-
-
-
-	public Observable<String> doGet(String url, Map<String, String> map){
-
-		return	EasyHttp.get(url)
-						.params(getParamsFromMap(map))
-						.execute(String.class);
-	}
-
 	public void doPost(String url, Map<String, String> map, SimpleCallBack callBack){
 		EasyHttp.post(url)
+						.params(getParamsFromMap(map))
+						.execute(callBack);
+	}
+	public void doGet(String url, Map<String, String> map, SimpleCallBack callBack){
+		EasyHttp.get(url)
 						.params(getParamsFromMap(map))
 						.execute(callBack);
 	}

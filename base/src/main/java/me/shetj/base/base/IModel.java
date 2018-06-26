@@ -7,12 +7,6 @@ import android.support.annotation.Keep;
  */
 @Keep
 public interface IModel {
-    /**
-     * 转成message
-     * @param obj
-     * @return BaseMessage
-     */
-    BaseMessage getMessage(Object obj);
 
     /**
      * 转化成message
