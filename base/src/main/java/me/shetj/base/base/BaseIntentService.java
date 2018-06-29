@@ -13,7 +13,7 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * ================================================
- * 基类 {@link Service}
+ * 基类 {@link IntentService}
  * @author shetj
  */
 @Keep
