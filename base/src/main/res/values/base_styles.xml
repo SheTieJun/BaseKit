@@ -60,7 +60,11 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
-
+    <style name="SwipeTheme" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
     <!--自适应-->
     <style name="adaImage">
         <item name="android:adjustViewBounds">true</item>

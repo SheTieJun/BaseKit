@@ -57,7 +57,6 @@ public class EasyHttpUtils {
 						.setReadTimeOut(20 * 1000)
 						.setWriteTimeOut(10 * 1000)
 						.setConnectTimeout(10 * 1000)
-
 						//可以全局统一设置超时重连次数,默认为3次,那么最差的情况会请求4次(一次原始请求,三次重连请求),
 						//不需要可以设置为0
 						.setRetryCount(2)

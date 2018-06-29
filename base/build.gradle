@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
-        versionName "0.0.1"
+        versionCode 3
+        versionName "0.0.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -91,10 +91,11 @@ dependencies {
     api 'com.zhy:autolayout:1.4.5'
 //    api 'com.just.agentweb:agentweb:2.0.1'
 //    api 'com.wx.goodview:goodview:1.0.0'
-    api 'me.imid.swipebacklayout.lib:library:1.1.0'
+//    api 'me.imid.swipebacklayout.lib:library:1.1.0'
     api 'com.github.Bakumon:StatusLayoutManager:1.0.1'
     api 'com.github.razerdp:BasePopup:1.9.3'
     api 'com.afollestad.material-dialogs:core:0.9.1.0'
+    api 'com.aitangba:swipeback:1.0.1'
 //    api 'com.ycjiang:imgepreviewlibrary:1.1.2'
 //    api 'com.airbnb.android:lottie:2.5.0-beta1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
