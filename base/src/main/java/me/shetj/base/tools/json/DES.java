@@ -1,5 +1,6 @@
 package me.shetj.base.tools.json;
 
+import android.support.annotation.Keep;
 import android.util.Base64;
 
 import javax.crypto.Cipher;
@@ -14,6 +15,7 @@ import static android.util.Base64.NO_WRAP;
  * 将字符串进行DES加密解密
  * @author shetj
  */
+@Keep
 public class DES {
 
 	/** 加密KEY */
@@ -43,6 +45,7 @@ public class DES {
 	 * @param source 未加密源字符串
 	 * @return 加密后字符串
 	 */
+	@Keep
 	public String encrypt(String source)  {
 		byte[] retByte = null;
 
@@ -86,6 +89,7 @@ public class DES {
 	 * @param encrypted 加密过的字符串
 	 * @return 未加密源字符串
 	 */
+	@Keep
 	public String decrypt(String encrypted) {
 		byte[] retByte = null;
 

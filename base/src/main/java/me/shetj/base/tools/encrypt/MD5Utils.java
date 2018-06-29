@@ -1,5 +1,6 @@
 package me.shetj.base.tools.encrypt;
 
+import android.support.annotation.Keep;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
  * MD5加密工具类，不可逆
  * Created by Song on 2017/2/22.
  */
-
+@Keep
 public class MD5Utils {
 
     private MD5Utils() {

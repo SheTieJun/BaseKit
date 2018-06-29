@@ -1,11 +1,14 @@
 package me.shetj.base.tools.json;
 
+import android.support.annotation.Keep;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 /**
  * 流转换成字符串
  */
+@Keep
 public class StreamUtils {
 
     /**

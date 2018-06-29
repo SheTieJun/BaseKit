@@ -1,5 +1,7 @@
 package me.shetj.base.tools.encrypt;
 
+import android.support.annotation.Keep;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -14,7 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
 * Created by Song on 2017/2/22.
 */
-
+@Keep
 public class AESUtils {
 
     private AESUtils() {

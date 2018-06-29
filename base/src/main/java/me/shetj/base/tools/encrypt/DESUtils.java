@@ -1,5 +1,7 @@
 package me.shetj.base.tools.encrypt;
 
+import android.support.annotation.Keep;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -17,7 +19,7 @@ import javax.crypto.spec.SecretKeySpec;
  * AES对DES提高了安全性，有限选择AES加密方式
  * Created by Song on 2017/2/21.
  */
-
+@Keep
 public class DESUtils {
 
     private DESUtils() {

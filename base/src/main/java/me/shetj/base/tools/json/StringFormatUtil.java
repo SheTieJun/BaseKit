@@ -1,12 +1,13 @@
 package me.shetj.base.tools.json;
 
 import android.content.Context;
+import android.support.annotation.Keep;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
-
+@Keep
 public class StringFormatUtil {
     private SpannableStringBuilder spBuilder;
     private String wholeStr, highlightStr;  

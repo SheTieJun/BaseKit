@@ -1,5 +1,7 @@
 package me.shetj.base.tools.encrypt;
 
+import android.support.annotation.Keep;
+
 /**
  * 异或加密：
  *   某个字符或者数值 x 与一个数值 m 进行异或运算得到 y ,
@@ -9,6 +11,7 @@ package me.shetj.base.tools.encrypt;
  *   2. 数据的简单加密解密
  * Created by Song on 2017/2/22.
  */
+@Keep
 public class XORUtils {
 
     /**

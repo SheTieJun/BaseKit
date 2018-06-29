@@ -1,5 +1,6 @@
 package me.shetj.base.tools.encrypt;
 
+import android.support.annotation.Keep;
 import android.util.Base64;
 
 import java.io.File;
@@ -13,7 +14,7 @@ import java.io.IOException;
  * Base64.DEFAULT: 使用默认方式加密
  * Created by Song on 2017/2/22.
  */
-
+@Keep
 public class Base64Utils {
 
     private Base64Utils() {

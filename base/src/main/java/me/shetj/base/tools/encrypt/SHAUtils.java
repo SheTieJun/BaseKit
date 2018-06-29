@@ -1,5 +1,7 @@
 package me.shetj.base.tools.encrypt;
 
+import android.support.annotation.Keep;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -7,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
  * SHA-512加密，不可逆
  * Created by Song on 2017/2/22.
  */
-
+@Keep
 public class SHAUtils {
 
     private SHAUtils() {

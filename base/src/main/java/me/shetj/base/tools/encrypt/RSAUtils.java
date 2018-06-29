@@ -1,5 +1,7 @@
 package me.shetj.base.tools.encrypt;
 
+import android.support.annotation.Keep;
+
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -27,7 +29,7 @@ import javax.crypto.Cipher;
     私钥加解密都很耗时，服务器要求解密效率高，客户端私钥加密，服务器公钥解密比较好一点
  * Created by Song on 2017/2/22.
  */
-
+@Keep
 public class RSAUtils {
 
     public static final String RSA = "RSA"; // 非对称加密密钥算法
