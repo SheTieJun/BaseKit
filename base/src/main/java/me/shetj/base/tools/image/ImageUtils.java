@@ -17,6 +17,7 @@ import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.Keep;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 
@@ -30,7 +31,7 @@ import java.util.Locale;
 import me.shetj.base.base.CommonCallBack;
 import me.shetj.base.tools.app.AppUtils;
 import me.shetj.base.tools.file.SDCardUtils;
-
+@Keep
 public class ImageUtils {
 
 	public static final int GET_IMAGE_BY_CAMERA = 5001;

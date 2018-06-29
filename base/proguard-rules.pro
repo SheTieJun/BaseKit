@@ -307,4 +307,4 @@
 -keep class com.zhouyou.http.cache.model.** {*;}
 -keep class com.zhouyou.http.cache.stategy.**
 
--keep class com.shetj.**{}
+-keep class me.shetj.base.tools**{}

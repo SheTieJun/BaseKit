@@ -1,8 +1,10 @@
 package me.shetj.base.tools.image;
 
+import android.support.annotation.Keep;
+
 import java.util.HashMap;
 import java.util.Map;
-
+@Keep
 public class SingletonManager{
     private static Map<String,Object> objMap = new HashMap<>();
     

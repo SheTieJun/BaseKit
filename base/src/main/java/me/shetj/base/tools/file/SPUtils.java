@@ -2,11 +2,12 @@ package me.shetj.base.tools.file;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Keep;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
-
+@Keep
 public class SPUtils
 {
 	public SPUtils()

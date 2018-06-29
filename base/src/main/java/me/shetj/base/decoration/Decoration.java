@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Keep;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ import android.widget.LinearLayout;
  * 2018/4/18 16:08
  */
 @SuppressWarnings("unused")
+@Keep
 public class Decoration extends RecyclerView.ItemDecoration {
 
     private Drawable dividerDrawable;

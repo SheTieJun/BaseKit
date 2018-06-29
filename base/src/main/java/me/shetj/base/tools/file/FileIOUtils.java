@@ -1,5 +1,7 @@
 package me.shetj.base.tools.file;
 
+import android.support.annotation.Keep;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,6 +20,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+@Keep
 public final class FileIOUtils {
 
     private FileIOUtils() {

@@ -1,6 +1,7 @@
 package me.shetj.base.tools.image;
 
 import android.content.Context;
+import android.support.annotation.Keep;
 
 import com.bumptech.glide.Glide;
 
@@ -12,6 +13,7 @@ import org.xutils.x;
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b> glide <br>
  */
+@Keep
 public class GlideImageLoader {
 
 	public static void pauseRequests(Context context){

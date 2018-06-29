@@ -1,5 +1,6 @@
 package me.shetj.base.tools.file;
 
+import android.support.annotation.Keep;
 import android.text.InputFilter;
 import android.text.Spanned;
 
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 
 /**
  */
+@Keep
 public class CharactorHandler {
     public static final InputFilter emojiFilter = new InputFilter() {//emoji过滤器
 

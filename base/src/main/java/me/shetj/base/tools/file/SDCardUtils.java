@@ -1,10 +1,12 @@
 package me.shetj.base.tools.file;
 
 import android.os.Environment;
+import android.support.annotation.Keep;
 
 import java.io.File;
 
 //SD卡相关的辅助类
+@Keep
 public class SDCardUtils
 {
 	private SDCardUtils()
