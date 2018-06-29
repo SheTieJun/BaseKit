@@ -43,6 +43,7 @@ public class JPay {
         void onPayCancel();
     }
 
+    @Keep
     public enum PayMode {
         WXPAY, ALIPAY,
     }

@@ -1,5 +1,7 @@
 package me.shetj.base.base;
 
+import android.support.annotation.Keep;
+
 /**
  * <b>@packageName：</b> me.shetj.base.base<br>
  * <b>@author：</b> shetj<br>
@@ -8,7 +10,7 @@ package me.shetj.base.base;
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b><br>
  */
-
+@Keep
 public class BaseMessage <T>{
 	public int type;
 	public int position;

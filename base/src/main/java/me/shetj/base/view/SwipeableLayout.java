@@ -8,6 +8,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -17,14 +18,17 @@ import android.widget.FrameLayout;
  * Created by stj on 17/04/15.
  */
 @SuppressWarnings("DefaultFileTemplate")
+@Keep
 public class SwipeableLayout extends FrameLayout {
 
     private int diffY;
 
+    @Keep
     public interface OnLayoutCloseListener {
         void OnLayoutClosed();
     }
 
+    @Keep
     public interface OnLayoutChangeListener {
         void OnLayoutChange(float size);
     }

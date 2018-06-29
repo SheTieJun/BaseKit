@@ -1,9 +1,12 @@
 package me.shetj.base.view.buttomtablayout;
 
+import android.support.annotation.Keep;
+
 /**
  * 底部tab对象
  */
 
+@Keep
 public class BottomTab {
 
     //tab名字

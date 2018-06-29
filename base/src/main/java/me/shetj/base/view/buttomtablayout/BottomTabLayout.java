@@ -1,6 +1,7 @@
 package me.shetj.base.view.buttomtablayout;
 
 import android.content.Context;
+import android.support.annotation.Keep;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import me.shetj.base.R;
  * 底部tab切换布局
  */
 
+@Keep
 public class BottomTabLayout extends LinearLayout {
     //上下文
     private  Context mContext;
@@ -208,6 +210,7 @@ public class BottomTabLayout extends LinearLayout {
     /**
      * tab切换回调接口
      */
+    @Keep
     public interface OnTabChangeListener {
         //tab选择回调
         void onTabSelect(int position);
