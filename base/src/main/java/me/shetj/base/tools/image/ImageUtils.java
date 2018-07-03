@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -19,6 +20,9 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.Keep;
 import android.support.v4.content.FileProvider;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.view.View;
 
 import java.io.ByteArrayInputStream;
@@ -39,7 +43,7 @@ public class ImageUtils {
 	public static final int CROP_IMAGE = 5003;
 	public static Uri imageUriFromCamera;
 	public static Uri cropImageUri;
-	private static String imagePath = "pipiti/image";
+	private static String imagePath = "shetj_base/image";
 
 	/**
 	 * 把View对象转换成bitmap
@@ -57,6 +61,46 @@ public class ImageUtils {
 	}
 
 
+	/**
+	 * get图片添加文字
+	 * @param imageBitmap 图片
+	 * @param des 文字
+	 * @param textSize  文字大小
+	 * @return
+	 */
+	private Bitmap getShareingBitmap(Bitmap imageBitmap,String des ,int textSize) {
+		Bitmap.Config config = imageBitmap.getConfig();
+		int sourceBitmapHeight = imageBitmap.getHeight();
+		int sourceBitmapWidth = imageBitmap.getWidth();
+		Paint paint = new Paint();
+		// 画笔颜色
+		paint.setColor(Color.BLACK);
+
+		TextPaint textpaint = new TextPaint(paint);
+		// 文字大小
+		textpaint.setTextSize(textSize);
+		// 抗锯齿
+		textpaint.setAntiAlias(true);
+
+		StaticLayout title_layout = new StaticLayout(des, textpaint,
+						sourceBitmapWidth, Layout.Alignment.ALIGN_CENTER, 1f, 1f, true);
+
+		Bitmap share_bitmap = Bitmap.createBitmap(sourceBitmapWidth, sourceBitmapHeight +
+										title_layout.getHeight(), config);
+
+		Canvas canvas = new Canvas(share_bitmap);
+
+		canvas.drawColor(Color.WHITE);
+
+		// 绘制图片
+		canvas.drawBitmap(imageBitmap, 0, 0, paint);
+		canvas.translate(0, sourceBitmapHeight);
+
+		title_layout.draw(canvas);
+
+		canvas.translate(0, title_layout.getHeight());
+		return share_bitmap;
+	}
 	/** 图片压缩方法一
 	 *
 	 * 计算 bitmap大小，如果超过100kb，则进行压缩
