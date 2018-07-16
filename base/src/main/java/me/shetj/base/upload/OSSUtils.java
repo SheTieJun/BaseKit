@@ -235,6 +235,7 @@ public class OSSUtils {
         for (String url : uploadTask.keySet()) {
             OSSAsyncTask ossAsyncTask = uploadTask.get(url);
             if ( !ossAsyncTask.isCanceled()){
+
                 ossAsyncTask.cancel();
             }
         }
@@ -277,7 +278,11 @@ public class OSSUtils {
         }
         return mOss.asyncPutObject(put, completedCallback);
     }
-    //private
+
+    /**
+     * 得到所有的上传任务
+     * @return
+     */
     private Map<String, OSSAsyncTask> getUploadTask() {
         if (uploadTask == null){
             uploadTask = new HashMap<>();

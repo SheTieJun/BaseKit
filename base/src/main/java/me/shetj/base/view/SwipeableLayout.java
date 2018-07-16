@@ -89,9 +89,7 @@ public class SwipeableLayout extends FrameLayout {
                 int diffY = y - previousFingerPositionY;
                 int diffX = x - previousFingerPositionX;
 
-                if (Math.abs(diffX) + 50 < Math.abs(diffY)) {
-                    return true;
-                }
+	            return Math.abs(diffX) + 50 < Math.abs(diffY);
             }
 
             return false;

@@ -87,7 +87,6 @@ public class ImageUtils {
 
 		Bitmap share_bitmap = Bitmap.createBitmap(sourceBitmapWidth, sourceBitmapHeight +
 										title_layout.getHeight(), config);
-
 		Canvas canvas = new Canvas(share_bitmap);
 
 		canvas.drawColor(Color.WHITE);
@@ -95,9 +94,7 @@ public class ImageUtils {
 		// 绘制图片
 		canvas.drawBitmap(imageBitmap, 0, 0, paint);
 		canvas.translate(0, sourceBitmapHeight);
-
 		title_layout.draw(canvas);
-
 		canvas.translate(0, title_layout.getHeight());
 		return share_bitmap;
 	}

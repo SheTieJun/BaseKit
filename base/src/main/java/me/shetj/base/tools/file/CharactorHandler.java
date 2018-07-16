@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
  */
 @Keep
 public class CharactorHandler {
-    public static final InputFilter emojiFilter = new InputFilter() {//emoji过滤器
-
+    public static final InputFilter emojiFilter = new InputFilter() {
+        //emoji过滤器
         Pattern emoji = Pattern.compile(
                 "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
                 Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
@@ -29,7 +29,6 @@ public class CharactorHandler {
             if (emojiMatcher.find()) {
                 return "";
             }
-
             return null;
         }
     };

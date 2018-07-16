@@ -342,7 +342,7 @@ public class DeviceUtils {
     public static boolean isZhCN(Context context) {
         String lang = context.getResources()
                 .getConfiguration().locale.getCountry();
-	    return lang.equalsIgnoreCase("CN");
+	    return "CN".equalsIgnoreCase(lang);
     }
 
     public static String percent(double p1, double p2) {
@@ -670,7 +670,7 @@ public class DeviceUtils {
         if (nType == ConnectivityManager.TYPE_MOBILE) {
             String extraInfo = networkInfo.getExtraInfo();
             if (extraInfo != null && !extraInfo.isEmpty()) {
-                if (extraInfo.equalsIgnoreCase("cmnet")) {
+                if ("cmnet".equalsIgnoreCase(extraInfo)) {
                     netType = NETTYPE_CMNET;
                 } else {
                     netType = NETTYPE_CMWAP;

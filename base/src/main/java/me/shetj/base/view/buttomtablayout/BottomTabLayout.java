@@ -2,6 +2,7 @@ package me.shetj.base.view.buttomtablayout;
 
 import android.content.Context;
 import android.support.annotation.Keep;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -184,8 +185,8 @@ public class BottomTabLayout extends LinearLayout {
             ImageView mTabIcon = tabView.findViewById(R.id.tab_item_icon);
 
             //根据判别是否是选择的哪一个来设置对应的颜色值
-            mTabName.setTextColor(isSelect ? getResources().getColor(mBottomTab.getTabNameSelectColor())
-                    : getResources().getColor(mBottomTab.getTabNameUnSelectColor()));
+            mTabName.setTextColor(isSelect ? ContextCompat.getColor(getContext(),mBottomTab.getTabNameSelectColor())
+                    : ContextCompat.getColor(getContext(),mBottomTab.getTabNameUnSelectColor()));
 
             //判别网络图片url是不是为空要是为空的话就是使用本地的图片如果不为空就用网络图片  默认加载的图片为对应的本地图片 避免加载空白问题
             if(TextUtils.isEmpty(mBottomTab.getTabSelectUrl())||

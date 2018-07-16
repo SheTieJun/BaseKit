@@ -18,7 +18,6 @@ import shetj.me.base.R;
 import shetj.me.base.configs.tag.SPKey;
 
 /**
- * <b>@packageName：</b> com.aycm.dsy.common<br>
  * <b>@author：</b> shetj<br>
  * <b>@createTime：</b> 2018/3/2<br>
  * <b>@company：</b><br>
