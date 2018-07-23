@@ -35,3 +35,4 @@ gen/
 # Intellij
 # Keystore files
 #*.jks
+base/lint.xml

@@ -3,6 +3,7 @@ package me.shetj.base.base;
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
+import android.os.IBinder;
 import android.support.annotation.Keep;
 import android.support.annotation.Nullable;
 
@@ -25,6 +26,11 @@ public abstract class BaseIntentService extends IntentService {
         super(name);
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return super.onBind(intent);
+    }
 
     @Override
     public void onCreate() {
