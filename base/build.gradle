@@ -91,11 +91,11 @@ dependencies {
     api 'com.zhy:autolayout:1.4.5'
 //    api 'com.just.agentweb:agentweb:2.0.1'
 //    api 'com.wx.goodview:goodview:1.0.0'
-//    api 'me.imid.swipebacklayout.lib:library:1.1.0'
+    api 'me.imid.swipebacklayout.lib:library:1.1.0'
     api 'com.github.Bakumon:StatusLayoutManager:1.0.1'
     api 'com.github.razerdp:BasePopup:1.9.3'
     api 'com.afollestad.material-dialogs:core:0.9.1.0'
-    api 'com.aitangba:swipeback:1.0.1'
+//    api 'com.aitangba:swipeback:1.0.1'
 //    api 'com.ycjiang:imgepreviewlibrary:1.1.2'
 //    api 'com.airbnb.android:lottie:2.5.0-beta1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
@@ -112,9 +112,12 @@ dependencies {
     api 'io.reactivex.rxjava2:rxjava:2.1.8'
     api 'io.reactivex.rxjava2:rxandroid:2.0.1'
     api 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+    api 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     //框架
     api 'com.zhouyou:rxeasyhttp:2.0.5'
     api 'org.xutils:xutils:3.5.0'
+    api 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+    api 'com.github.ybq:Android-SpinKit:1.1.0'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
 }
 

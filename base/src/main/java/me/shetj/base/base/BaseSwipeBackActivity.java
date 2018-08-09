@@ -1,49 +1,56 @@
 package me.shetj.base.base;
 
-import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.Keep;
-import android.view.MotionEvent;
+import android.view.View;
 
-import com.aitangba.swipeback.SwipeBackHelper;
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.Utils;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 
 /**
  * @author shetj
  */
 @Keep
-public abstract class BaseSwipeBackActivity<T extends BasePresenter> extends BaseActivity<T> implements SwipeBackHelper.SlideBackManager {
-
-
-    private SwipeBackHelper mSwipeBackHelper;
+public abstract class BaseSwipeBackActivity<T extends BasePresenter> extends BaseActivity<T> implements SwipeBackActivityBase {
+    private SwipeBackActivityHelper mHelper;
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(mSwipeBackHelper == null) {
-            mSwipeBackHelper = new SwipeBackHelper(this);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mHelper = new SwipeBackActivityHelper(this);
+        mHelper.onActivityCreate();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mHelper.onPostCreate();
+    }
+
+    @Override
+    public <V extends View> V findViewById(int id) {
+        V v = super.findViewById(id);
+        if (v == null && mHelper != null) {
+            return (V) mHelper.findViewById(id);
         }
-        return mSwipeBackHelper.processTouchEvent(ev) || super.dispatchTouchEvent(ev);
+        return v;
     }
 
     @Override
-    public Activity getSlideActivity() {
-        return this;
+    public SwipeBackLayout getSwipeBackLayout() {
+        return mHelper.getSwipeBackLayout();
     }
 
     @Override
-    public boolean supportSlideBack() {
-        return true;
+    public void setSwipeBackEnable(boolean enable) {
+        getSwipeBackLayout().setEnableGesture(enable);
     }
 
     @Override
-    public boolean canBeSlideBack() {
-        return true;
-    }
-
-    @Override
-    public void finish() {
-        if(mSwipeBackHelper != null) {
-            mSwipeBackHelper.finishSwipeImmediately();
-            mSwipeBackHelper = null;
-        }
-        super.finish();
+    public void scrollToFinishActivity() {
+        Utils.convertActivityToTranslucent(this);
+        getSwipeBackLayout().scrollToFinishActivity();
     }
 }
