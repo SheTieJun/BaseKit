@@ -32,4 +32,8 @@ public final class s {
 		ViewTarget.setTagId(R.id.glide_tag);
 		TimberUtil.setLogAuto(isDebug);
 	}
+
+	public static Application getApp(){
+		return Utils.getApp();
+	}
 }
