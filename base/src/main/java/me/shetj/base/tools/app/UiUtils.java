@@ -2,18 +2,28 @@ package me.shetj.base.tools.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.Keep;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.view.Gravity;
 import android.view.View;
+
+import java.util.Objects;
 
 @Keep
 public class UiUtils {
 
     /**
-    * 当你需要当前界面中的某个元素和新界面中的元素有关时，你可以使用这个动画。效果很赞~！
-    */
+     * 当你需要当前界面中的某个元素和新界面中的元素有关时，你可以使用这个动画。效果很赞~！
+     */
     public static ActivityOptionsCompat getActivityOptions(Activity activity, View sharedCardView, String  TRANSITION_NAME_CARD) {
         return ActivityOptionsCompat
                 .makeSceneTransitionAnimation(activity, sharedCardView, TRANSITION_NAME_CARD);
@@ -43,6 +53,45 @@ public class UiUtils {
         intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         ActivityCompat.startActivity(activity, intent, options.toBundle());
     }
+
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setEnterTransition(Activity activity ,  String type){
+        switch (type) {
+            case  "explode" :
+                Explode explode = new Explode();
+                explode.setDuration(500L);
+                activity.getWindow().setEnterTransition(explode);
+                break;
+            case "slide" :
+                Slide slide =new Slide(Gravity.BOTTOM);
+                slide.setDuration(500L);
+                activity.getWindow().setEnterTransition( slide);
+                break;
+            case "fade" :
+                Fade fade = new Fade();
+                fade.setDuration(500L);
+                activity.getWindow().setEnterTransition( fade);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * @param slideTransition  = explode(),slide()(),fade
+     * @param transition  share view 的transition  一般为changeBound
+     */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setEnterTransition(Fragment fragment, Objects slideTransition, Transition transition){
+        fragment.setEnterTransition( slideTransition);
+        fragment.setAllowEnterTransitionOverlap(true);
+        fragment.setAllowReturnTransitionOverlap(true);
+        fragment.setSharedElementEnterTransition(transition);
+
+    }
+
 
 
 }

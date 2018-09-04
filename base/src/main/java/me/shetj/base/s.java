@@ -6,7 +6,7 @@ import android.support.annotation.Keep;
 import com.bumptech.glide.request.target.ViewTarget;
 
 import me.shetj.base.http.easyhttp.EasyHttpUtils;
-import me.shetj.base.http.xutils.XUtil;
+import me.shetj.base.tools.app.TimberUtil;
 import me.shetj.base.tools.app.Utils;
 
 /**
@@ -27,9 +27,9 @@ public final class s {
 	 * @param baseUrl
 	 */
 	public static void init(Application application, boolean isDebug,String baseUrl){
-		XUtil.init(application,isDebug);
 		EasyHttpUtils.init(application,isDebug,baseUrl);
 		Utils.init(application);
 		ViewTarget.setTagId(R.id.glide_tag);
+		TimberUtil.setLogAuto(isDebug);
 	}
 }

@@ -19,8 +19,8 @@ import io.reactivex.disposables.Disposable;
 public  class BasePresenter< T extends BaseModel> implements IPresenter {
 
     private CompositeDisposable mCompositeDisposable;
-    protected IView view;
-    protected T model;
+    private IView view;
+    private T model;
 
     public BasePresenter(IView view) {
         LogUtil.i("onStart");

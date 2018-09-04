@@ -11,7 +11,7 @@ import android.support.annotation.Keep;
  * <b>@describe</b><br>
  */
 @Keep
-public class BaseMessage <T>{
+public class BaseMessage <T> {
 	public int type;
 	public int position;
 	public T obj;
