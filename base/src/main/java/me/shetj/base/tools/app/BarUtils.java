@@ -13,11 +13,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import org.xutils.common.util.LogUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
+
+import timber.log.Timber;
 
 /**
  * <pre>
@@ -160,7 +161,7 @@ public final class BarUtils {
                 window.setAttributes(e);
                 result = true;
             } catch (Exception var8) {
-                LogUtil.e("StatusBar: darkIcon: failed");
+                Timber.e("StatusBar: darkIcon: failed");
             }
         }
 

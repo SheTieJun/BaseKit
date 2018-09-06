@@ -11,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.xutils.common.util.DensityUtil;
 
 import java.lang.reflect.Field;
 
 import me.shetj.base.R;
+import me.shetj.base.tools.app.ArmsUtils;
 
 
 /** 
@@ -52,7 +52,7 @@ public class CirclePageIndicator extends LinearLayout implements ViewPager.OnPag
     private int mActivePosition = 0;
     private int mIndicatorSpacing;  
     private boolean mIndicatorTypeChanged = false;
-    private int size = DensityUtil.dip2px(5);
+    private int size = ArmsUtils.dip2px(5);
   
     private IndicatorType mIndicatorType = IndicatorType.of(INDICATOR_TYPE_CIRCLE);  
     private ViewPager mViewPager;

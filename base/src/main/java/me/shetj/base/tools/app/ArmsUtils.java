@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 
+import me.shetj.base.s;
 import retrofit2.HttpException;
 
 
@@ -481,4 +482,28 @@ public class  ArmsUtils {
 	public static InputStream getAssetsFile(String fileName) throws IOException {
 		return  Utils.getApp().getApplicationContext().getAssets().open(fileName);
 	}
+
+    public static int dip2px(int i) {
+        return 0;
+    }
+
+    private static float density = -1F;
+
+    public static float getDensity() {
+        if (density <= 0F) {
+            density = s.getApp().getResources().getDisplayMetrics().density;
+        }
+        return density;
+    }
+
+    public static int dip2px(float dpValue) {
+        return (int) (dpValue * getDensity() + 0.5F);
+    }
+
+    public static int px2dip(float pxValue) {
+        return (int) (pxValue / getDensity() + 0.5F);
+    }
+
+
+
 }

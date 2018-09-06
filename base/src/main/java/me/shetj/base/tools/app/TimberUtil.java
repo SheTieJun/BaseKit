@@ -31,8 +31,8 @@ public class TimberUtil {
      * 测试时让测试人员在磁盘目录下建立这么个文件。
      * 注意，如果读取存储需要权限申请的话，需要先获得权限，才能调用
      */
-    public static void setLogAutoEx(){
-        if (BuildConfig.DEBUG) {//debug版本
+    public static void setLogAutoEx(boolean isDebug){
+        if (isDebug) {//debug版本
             Timber.plant(new Timber.DebugTree());
         } else {//release版本
             File logFile = new File(LOG_FILE_PATH);

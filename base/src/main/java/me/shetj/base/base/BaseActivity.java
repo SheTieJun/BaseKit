@@ -14,13 +14,13 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.simple.eventbus.EventBus;
-import org.xutils.common.util.LogUtil;
 
 import me.shetj.base.R;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.tools.app.HideUtil;
 import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.view.LoadingDialog;
+import timber.log.Timber;
 
 import static me.shetj.base.tools.app.ThirdViewUtil.convertAutoView;
 
@@ -180,7 +180,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
     @Override
     public void updateView(BaseMessage message){
         if (EmptyUtils.isNotEmpty(message)) {
-            LogUtil.i(message.obj.toString());
+            Timber.i(message.obj.toString());
         }
     }
 }

@@ -18,8 +18,6 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 
-import org.xutils.common.util.LogUtil;
-import org.xutils.x;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.shetj.base.s;
 import me.shetj.base.tools.json.EmptyUtils;
+import timber.log.Timber;
 
 /**
  * <b>@packageName：</b> com.aycm.dsy.utils<br>
@@ -253,7 +253,7 @@ public class OSSUtils {
         conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
         conf.setMaxConcurrentRequest(9); // 最大并发请求书，默认5个
         conf.setMaxErrorRetry(3); // 失败后最大重试次数，默认2次
-        return  new OSSClient(x.app().getApplicationContext(), endpoint, credentialProvider, conf);
+        return  new OSSClient(s.getApp().getApplicationContext(), endpoint, credentialProvider, conf);
     }
 
     //private
@@ -264,7 +264,7 @@ public class OSSUtils {
         conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
         conf.setMaxConcurrentRequest(9); // 最大并发请求书，默认5个
         conf.setMaxErrorRetry(3); // 失败后最大重试次数，默认2次
-        return  new OSSClient(x.app().getApplicationContext(), endpoint, credentialProvider, conf);
+        return  new OSSClient(s.getApp().getApplicationContext(), endpoint, credentialProvider, conf);
     }
 
     //private
@@ -301,9 +301,9 @@ public class OSSUtils {
         return new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                LogUtil.i("PutObject ：UploadSuccess");
-                LogUtil.i("ETag = " + result.getETag());
-                LogUtil.i("RequestId = " +result.getRequestId());
+                Timber.i("PutObject ：UploadSuccess");
+                Timber.i("ETag = %s", result.getETag());
+                Timber.i("RequestId = %s", result.getRequestId());
                 callBack.succeed(URLHead + uploadFilePath);
                 callBack.progress(1,1);
                 getUploadTask().remove(uploadFilePath);
@@ -318,10 +318,10 @@ public class OSSUtils {
                 }
                 if (serviceException != null) {
                     // 服务异常
-                    LogUtil.e("ErrorCode = "+ serviceException.getErrorCode());
-                    LogUtil.e("RequestId = "+ serviceException.getRequestId());
-                    LogUtil.e("HostId = "+ serviceException.getHostId());
-                    LogUtil.e("RawMessage = "+ serviceException.getRawMessage());
+                    Timber.e("ErrorCode = %s", serviceException.getErrorCode());
+                    Timber.e("RequestId = %s", serviceException.getRequestId());
+                    Timber.e("HostId = %s", serviceException.getHostId());
+                    Timber.e("RawMessage = %s", serviceException.getRawMessage());
                 }
                 clearAllTask();
                 callBack.onFail();

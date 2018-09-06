@@ -12,8 +12,6 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-import org.xutils.common.util.LogUtil;
-
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
+import timber.log.Timber;
 
 /**
  * @author shetj
@@ -47,7 +46,7 @@ public class GsonKit {
             }
             return jsonStr;
         }catch (Exception e){
-            LogUtil.e(e.getMessage());
+            Timber.e(e);
             return null;
         }
 
@@ -69,7 +68,7 @@ public class GsonKit {
             }).setDateFormat(dateformat).create();
             return gson.toJson(ts);
         }catch (Exception e){
-            LogUtil.e(e.getMessage());
+            Timber.e(e);
             return null;
         }
     }
@@ -87,7 +86,7 @@ public class GsonKit {
            }
            return objList;
        }catch (Exception e){
-           LogUtil.e(e.getMessage());
+           Timber.e(e);
            return null;
        }
     }
@@ -108,7 +107,7 @@ public class GsonKit {
             }
             return list;
         }catch (Exception e){
-            LogUtil.e(e.getMessage());
+            Timber.e(e);
             return null;
         }
     }
@@ -130,7 +129,7 @@ public class GsonKit {
             }
             return list;
         }catch (Exception e){
-            LogUtil.e(e.getMessage());
+            Timber.e(e);
             return null;
         }
     }
@@ -150,7 +149,7 @@ public class GsonKit {
             }
             return map;
         }catch (Exception e){
-            LogUtil.e(e.getMessage());
+            Timber.e(e);
             return null;
         }
     }
@@ -170,7 +169,7 @@ public class GsonKit {
             }
             return map;
         }catch (Exception e){
-            LogUtil.e(e.getMessage());
+            Timber.e(e);
             return null;
         }
     }
@@ -187,7 +186,7 @@ public class GsonKit {
             }
             return obj;
         }catch (Exception e){
-            LogUtil.e(e.getMessage());
+            Timber.e(e);
             return null;
         }
     }
@@ -210,7 +209,7 @@ public class GsonKit {
             }
             return rusObj;
         }catch (Exception e){
-            LogUtil.e(e.getMessage());
+            Timber.e(e);
             return null;
         }
     }

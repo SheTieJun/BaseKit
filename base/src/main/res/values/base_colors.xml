@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#037BFF</color>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
+    <color name="colorPrimary" >#037BFF</color>
     <color name="colorPrimaryDark">#037BFF</color>
     <color name="colorAccent">#037BFF</color>
 
@@ -10,7 +10,7 @@
 
     <color name="toolbar_color">#ffffff</color>
     <color name="toolbar_title_color">#DD000000</color>
-
+    <color name="background_tab_pressed">#6633B5E5</color>
     <color name="halfTransparent">#66000000</color>
     <color name="transparent">#00000000</color>
     <color name="Transparent2a">#2a000000</color>

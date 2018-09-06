@@ -1,11 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
     <!--AutoLinkStyleTextView-->
-    <declare-styleable name="AutoLinkStyleTextView">
+    <declare-styleable name="AutoLinkStyleTextView" tools:ignore="ResourceName">
         <attr name="AutoLinkStyleTextView_text_value" format="string|reference"/>
         <attr name="AutoLinkStyleTextView_default_color" format="color|reference"/>
         <attr name="AutoLinkStyleTextView_has_under_line" format="boolean"/>
     </declare-styleable>
-    <declare-styleable name="ButtonBarContainerTheme">
+    <declare-styleable name="ButtonBarContainerTheme" tools:ignore="ResourceName">
         <attr name="metaButtonBarStyle" format="reference"/>
         <attr name="metaButtonBarButtonStyle" format="reference"/>
     </declare-styleable>
@@ -26,5 +26,20 @@
             <enum name="circle" value="0"/>
             <enum name="fraction" value="1"/>
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+        <attr name="pstsIndicatorWidth" format="dimension" />
     </declare-styleable>
 </resources>

@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.support.annotation.Keep;
 
 import org.simple.eventbus.EventBus;
-import org.xutils.common.util.LogUtil;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 /**
  *
@@ -23,7 +23,7 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
     private T model;
 
     public BasePresenter(IView view) {
-        LogUtil.i("onStart");
+        Timber.i("onStart");
         onStart();
         this.view = view;
     }
@@ -44,7 +44,7 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
      */
     @Override
     public void onDestroy() {
-        LogUtil.i("onDestroy");
+        Timber.i("onDestroy");
         if (useEventBus())
         {
 	        EventBus.getDefault().unregister(this);
