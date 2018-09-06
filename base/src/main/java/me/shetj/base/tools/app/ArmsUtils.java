@@ -1,6 +1,5 @@
 package me.shetj.base.tools.app;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -27,9 +26,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-import org.xutils.x;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -193,7 +189,7 @@ public class  ArmsUtils {
      */
     public static void makeText(String string) {
         if (mToast == null) {
-            mToast = Toast.makeText(x.app().getApplicationContext(), string, Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(Utils.getApp().getApplicationContext(), string, Toast.LENGTH_SHORT);
         }
         mToast.setText(string);
         mToast.show();
@@ -483,6 +479,6 @@ public class  ArmsUtils {
     }
 
 	public static InputStream getAssetsFile(String fileName) throws IOException {
-		return  x.app().getApplicationContext().getAssets().open(fileName);
+		return  Utils.getApp().getApplicationContext().getAssets().open(fileName);
 	}
 }
