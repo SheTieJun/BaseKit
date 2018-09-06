@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 4
-        versionName "0.0.4"
+        versionCode 5
+        versionName "0.0.5"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -102,7 +102,7 @@ dependencies {
     api 'com.zhy:autolayout:1.4.5'
 //    api 'com.just.agentweb:agentweb:2.0.1'
 //    api 'com.wx.goodview:goodview:1.0.0'
-    api 'me.imid.swipebacklayout.lib:library:1.1.0'
+//    api 'me.imid.swipebacklayout.lib:library:1.1.0' 用qmuiteam替代了
     api 'com.github.razerdp:BasePopup:1.9.3'
     api 'com.afollestad.material-dialogs:core:0.9.1.0'
 //    api 'com.ycjiang:imgepreviewlibrary:1.1.2'
@@ -129,7 +129,9 @@ dependencies {
     api 'com.github.ybq:Android-SpinKit:1.1.0'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
     api 'me.jessyan:autosize:0.9.1'
+    //腾讯Android开发框架
     api 'com.qmuiteam:qmui:1.1.7'
+
 }
 
 apply from: 'bintray.gradle'

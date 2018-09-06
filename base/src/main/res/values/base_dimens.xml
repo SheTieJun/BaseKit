@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
     <dimen name="text_ppt_biggest_size">120sp</dimen>
     <dimen name="text_biggest_size">24sp</dimen>
     <dimen name="text_big_size">22sp</dimen>
@@ -19,7 +19,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
+    <integer name="qmui_anim_duration">300</integer>
     <!--不透明度	16进制值-->
     <!--100%	FF-->
     <!--95%	F2-->
@@ -46,7 +46,7 @@
     <!--12sp 小字提示-->
 
 
-    <dimen name="smallTipText">12sp</dimen>
+    <dimen name="smallTipText" >12sp</dimen>
 
     <!--14sp（桌面端13sp） 正文/按钮文字-->
     <dimen name="mainBodyText">14sp</dimen>
