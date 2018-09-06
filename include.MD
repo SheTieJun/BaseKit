@@ -105,8 +105,23 @@ RxView.clicks(findViewById(R.id.enableCamera))
     api 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     api 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 ```
+26. 日志
+```
+    api 'com.jakewharton.timber:timber:4.7.1'
 
-
+       /**
+         * 设置log自动在debug打开，在release关闭，可以在Application的onCreate中设置
+         * @param isDebug
+         */
+        public static void setLogAuto(boolean isDebug){
+            //打印关，同时gradle中的release的debuggable要设置为false
+            if (isDebug) {
+                Timber.plant(new Timber.DebugTree());
+            } else {//release版本
+                Timber.plant(new CrashReportingTree());
+            }
+        }
+```
 
 
 

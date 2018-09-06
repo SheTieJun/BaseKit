@@ -1,16 +1,12 @@
 package shetj.me.base.common;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.qcshendeng.toyo.common.bean.UserInfo;
 
-import org.xutils.common.util.LogUtil;
-import org.xutils.x;
-
 import me.shetj.base.base.SimBaseCallBack;
-import me.shetj.base.tools.app.ArmsUtils;
+import me.shetj.base.s;
 import me.shetj.base.tools.file.SPUtils;
 import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.tools.json.GsonKit;
@@ -27,7 +23,7 @@ import shetj.me.base.configs.tag.SPKey;
 
 public class UserManager {
 	private static final UserManager OUR_INSTANCE = new UserManager();
-	private Context context = x.app().getApplicationContext();
+	private Context context = s.getApp().getApplicationContext();
 	private UserInfo custom;
 
 	public static UserManager getInstance() {

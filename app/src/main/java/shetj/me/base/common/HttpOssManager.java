@@ -3,9 +3,9 @@ package shetj.me.base.common;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.model.CacheMode;
 
-import org.xutils.common.util.MD5;
 
 import me.shetj.base.http.callback.EasyCallBack;
+import me.shetj.base.tools.app.ArmsUtils;
 import shetj.me.base.api.API;
 
 /**
@@ -33,7 +33,7 @@ public class HttpOssManager {
 
   public  void getOSSFromSever(final EasyCallBack<String> callBack){
     EasyHttp.get(API.QINIU_GET_TOKEN)
-            .cacheKey(MD5.md5(API.QINIU_GET_TOKEN))
+            .cacheKey(ArmsUtils.encodeToMD5(API.QINIU_GET_TOKEN))
             .cacheMode(CacheMode.FIRSTCACHE)
             .cacheTime(1000*60)
             .execute(callBack);
