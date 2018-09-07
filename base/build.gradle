@@ -5,7 +5,12 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-apply from: 'E:\\myGitProject\\Base\\aspectjx.gradle'
+apply plugin: 'android-aspectjx'//面向切面
+
+aspectjx {
+    exclude 'android.support'
+}
+
 
 android {
     compileSdkVersion 27
@@ -14,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 5
-        versionName "0.0.5"
+        versionCode 6
+        versionName "0.0.6"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -76,6 +81,7 @@ android {
             }
         }
     }
+
 }
 
 dependencies {

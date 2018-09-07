@@ -55,6 +55,7 @@ public class ImageUtils {
 		view.buildDrawingCache();
 		Bitmap bitmap = view.getDrawingCache();
 		if (bitmap != null) {
+
 		} else {
 		}
 		return bitmap;

@@ -46,7 +46,6 @@ public abstract class BaseQMUIActivity<T extends BasePresenter> extends QMUIFrag
             EventBus.getDefault().register(this);
         }
         HideUtil.init(this);
-        rxPermissions = new RxPermissions(this);
         startAnimation();
         initView();
         initData();

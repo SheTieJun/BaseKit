@@ -11,7 +11,7 @@ if (project.rootProject.findProject('local.properties') != null){
 def siteUrl = ' '      // 项目的主页   这个是说明，可随便填
 def gitUrl = ' '      // Git仓库的url  这个是说明，可随便填
 
-version = "0.0.1"
+version = "0.0.6"
 group = "me.shetj"
 
 install {
