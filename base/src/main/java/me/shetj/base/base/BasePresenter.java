@@ -19,8 +19,8 @@ import timber.log.Timber;
 public  class BasePresenter< T extends BaseModel> implements IPresenter {
 
     private CompositeDisposable mCompositeDisposable;
-    private IView view;
-    private T model;
+    protected IView view;
+    protected T model;
 
     public BasePresenter(IView view) {
         Timber.i("onStart");
