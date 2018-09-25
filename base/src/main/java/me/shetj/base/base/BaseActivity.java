@@ -32,7 +32,6 @@ import static me.shetj.base.tools.app.ThirdViewUtil.convertAutoView;
 public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatActivity implements IView {
 
     protected T mPresenter ;
-    protected RxPermissions rxPermissions = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +41,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
             EventBus.getDefault().register(this);
         }
         HideUtil.init(this);
-        rxPermissions = new RxPermissions(this);
         startAnimation();
 
     }

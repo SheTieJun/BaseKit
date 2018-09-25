@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -293,6 +294,10 @@ public class  ArmsUtils {
     }
 
 
+    public static RxPermissions getRxPermissions(Activity activity){
+        return new RxPermissions(activity);
+    }
+
     /**
      * MD5
      *
@@ -366,7 +371,6 @@ public class  ArmsUtils {
             QMUIStatusBarHelper.setStatusBarDarkMode(activity);
         }
     }
-
 
     /**
      * 全屏
@@ -457,13 +461,10 @@ public class  ArmsUtils {
         });
     }
 
-	public static InputStream getAssetsFile(String fileName) throws IOException {
-		return  Utils.getApp().getApplicationContext().getAssets().open(fileName);
-	}
-
-    public static int dip2px(int i) {
-        return 0;
+    public static InputStream getAssetsFile(String fileName) throws IOException {
+        return  Utils.getApp().getApplicationContext().getAssets().open(fileName);
     }
+
 
     private static float density = -1F;
 
@@ -481,7 +482,6 @@ public class  ArmsUtils {
     public static int px2dip(float pxValue) {
         return (int) (pxValue / getDensity() + 0.5F);
     }
-
 
 
 }

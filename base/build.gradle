@@ -108,10 +108,11 @@ dependencies {
     api 'com.zhy:autolayout:1.4.5'
 //    api 'com.just.agentweb:agentweb:2.0.1'
 //    api 'com.wx.goodview:goodview:1.0.0'
-//    api 'me.imid.swipebacklayout.lib:library:1.1.0' 用qmuiteam替代了
+    api 'me.imid.swipebacklayout.lib:library:1.1.0'
     api 'com.github.razerdp:BasePopup:1.9.3'
     api 'com.afollestad.material-dialogs:core:0.9.1.0'
 //    api 'com.ycjiang:imgepreviewlibrary:1.1.2'
+
     api 'com.airbnb.android:lottie:2.5.6'
     kapt 'com.github.bumptech.glide:compiler:4.5.0'
     api 'com.aliyun.dpa:oss-android-sdk:2.9.0'
