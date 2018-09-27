@@ -11,7 +11,6 @@ import android.support.annotation.Keep;
  * <b>@describe</b><br>
  */
 
-@Keep
 public class UrlUtils {
 	private static final String HEX_STRING = "0123456789ABCDEF";
 

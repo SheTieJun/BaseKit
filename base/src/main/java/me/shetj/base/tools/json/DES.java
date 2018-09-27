@@ -15,7 +15,6 @@ import static android.util.Base64.NO_WRAP;
  * 将字符串进行DES加密解密
  * @author shetj
  */
-@Keep
 public class DES {
 
 	/** 加密KEY */

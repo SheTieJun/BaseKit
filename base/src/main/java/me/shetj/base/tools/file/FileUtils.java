@@ -15,7 +15,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-@Keep
 public final class FileUtils {
 
 	private FileUtils() {

@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 /**
  */
-@Keep
 public class CharactorHandler {
     public static final InputFilter emojiFilter = new InputFilter() {//emoji过滤器
 
