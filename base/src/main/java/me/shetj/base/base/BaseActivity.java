@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.simple.eventbus.EventBus;
@@ -18,9 +17,7 @@ import org.simple.eventbus.EventBus;
 import me.shetj.base.R;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.tools.app.HideUtil;
-import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.view.LoadingDialog;
-import timber.log.Timber;
 
 import static me.shetj.base.tools.app.ThirdViewUtil.convertAutoView;
 
@@ -175,9 +172,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
 
     @SuppressWarnings("unchecked")
     @Override
-    public void updateView(BaseMessage message){
-        if (EmptyUtils.isNotEmpty(message)) {
-            Timber.i(message.obj.toString());
-        }
+    public void updateView(@NonNull BaseMessage message){
     }
 }

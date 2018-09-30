@@ -136,6 +136,7 @@ dependencies {
     api 'me.jessyan:autosize:0.9.1'
     //腾讯Android开发框架
     api 'com.qmuiteam:qmui:1.1.7'
+    api 'com.tencent:mmkv:1.0.10'
 
 }
 
