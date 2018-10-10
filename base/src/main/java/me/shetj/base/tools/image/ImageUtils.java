@@ -205,6 +205,13 @@ public class ImageUtils {
 	}
 
 
+	/**
+	 * 在 {@link Activity } onActivityResult 下使用
+	 * @param context
+	 * @param requestCode
+	 * @param data
+	 * @param callBack
+	 */
 	public void onActivityResult(Activity context, int requestCode, Intent data, CommonCallBack callBack) {
 		switch (requestCode) {
 			default:

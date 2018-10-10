@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import me.shetj.base.R;
 
+
+/**
+ * I think QMUIDialog is better
+ */
 @Keep
 public class LoadingDialog {
 
