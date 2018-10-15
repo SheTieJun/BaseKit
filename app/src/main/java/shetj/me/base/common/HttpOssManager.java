@@ -3,7 +3,6 @@ package shetj.me.base.common;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.model.CacheMode;
 
-
 import me.shetj.base.http.callback.EasyCallBack;
 import me.shetj.base.tools.app.ArmsUtils;
 import shetj.me.base.api.API;

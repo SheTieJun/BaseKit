@@ -1,7 +1,5 @@
 package me.shetj.base.tools.json;
 
-import android.support.annotation.Keep;
-
 /**
  * <b>@packageName：</b> com.mobile.pipiti.utils.tools<br>
  * <b>@author：</b> shetj<br>

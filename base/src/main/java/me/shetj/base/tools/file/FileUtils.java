@@ -1,7 +1,6 @@
 package me.shetj.base.tools.file;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.Keep;
 
 import java.io.BufferedInputStream;
 import java.io.File;

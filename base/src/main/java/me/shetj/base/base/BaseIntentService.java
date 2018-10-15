@@ -1,7 +1,6 @@
 package me.shetj.base.base;
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Keep;

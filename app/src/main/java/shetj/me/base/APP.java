@@ -4,8 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import java.util.List;
-
 import me.shetj.base.s;
 import shetj.me.base.api.API;
 

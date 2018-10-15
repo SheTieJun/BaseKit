@@ -2,13 +2,10 @@ package me.shetj.base.base;
 
 import android.support.annotation.Keep;
 
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.model.HttpParams;
 
 import java.util.Map;
 
-import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import me.shetj.base.http.easyhttp.EasyHttpUtils;
 

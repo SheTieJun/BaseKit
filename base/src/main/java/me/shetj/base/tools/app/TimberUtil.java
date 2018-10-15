@@ -5,7 +5,6 @@ import android.util.Log;
 
 import java.io.File;
 
-import me.shetj.base.BuildConfig;
 import timber.log.Timber;
 
 public class TimberUtil {

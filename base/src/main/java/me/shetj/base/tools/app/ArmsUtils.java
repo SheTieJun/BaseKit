@@ -18,11 +18,13 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
 import android.text.style.AbsoluteSizeSpan;
+import android.view.DisplayCutout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
+import java.util.List;
 
 import me.shetj.base.s;
 import retrofit2.HttpException;
@@ -78,7 +81,24 @@ public class  ArmsUtils {
         v.setHint(new SpannedString(ss));
     }
 
-
+    /**
+     * 全面屏幕检查
+     * @param activity
+     */
+    public static boolean checkIsNotchScreen(Activity activity ){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                WindowInsets windowInsets = activity.getWindow().getDecorView().getRootWindowInsets();
+                if (windowInsets != null) {
+                    DisplayCutout displayCutout = windowInsets.getDisplayCutout();
+                    if (displayCutout != null) {
+                        List<Rect> rects = displayCutout.getBoundingRects();
+                        //通过判断是否存在rects来确定是否刘海屏手机
+                        return rects != null && rects.size() > 0;
+                    }
+                }
+        }
+        return false;
+    }
 
     /**
      * 获得资源

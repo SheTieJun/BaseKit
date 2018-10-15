@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import me.shetj.base.base.BaseMessage;
 import me.shetj.base.base.BasePresenter;
 import me.shetj.base.base.IView;
-import me.shetj.base.qmui.QMUIFragment;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.view.LoadingDialog;
 

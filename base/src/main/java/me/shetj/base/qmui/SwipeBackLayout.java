@@ -1,6 +1,5 @@
 package me.shetj.base.qmui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;

@@ -19,7 +19,6 @@ import me.shetj.base.R;
 import me.shetj.base.base.BaseMessage;
 import me.shetj.base.base.BasePresenter;
 import me.shetj.base.base.IView;
-import me.shetj.base.qmui.QMUIFragmentActivity;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.tools.app.HideUtil;
 import me.shetj.base.tools.json.EmptyUtils;
