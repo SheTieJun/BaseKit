@@ -25,6 +25,15 @@
         <meta-data
             android:name="design_height_in_dp"
             android:value="640"/>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/base_file_path"/>
+        </provider>
     </application>
 
 </manifest>
