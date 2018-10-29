@@ -1,4 +1,4 @@
-package shetj.me.base.common;
+package shetj.me.base.common.manager;
 
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.model.CacheMode;

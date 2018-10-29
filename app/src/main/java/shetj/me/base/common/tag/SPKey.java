@@ -1,4 +1,4 @@
-package shetj.me.base.configs.tag;
+package shetj.me.base.common.tag;
 
 /**
  * <b>@packageName：</b> com.aycm.dsy.event<br>

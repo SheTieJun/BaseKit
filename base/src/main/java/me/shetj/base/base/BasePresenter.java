@@ -69,7 +69,7 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
 
     /**
      * 将 {@link Disposable} 添加到 {@link CompositeDisposable} 中统一管理
-     * 可在 {onDestroy() 中使用 {@link #unDispose()} 停止正在执行的 RxJava 任务,避免内存泄漏
+     * 可在 {@link android.app.Activity#onDestroy() 中使用 {@link #unDispose()} 停止正在执行的 RxJava 任务,避免内存泄漏
      *
      * @param disposable
      */

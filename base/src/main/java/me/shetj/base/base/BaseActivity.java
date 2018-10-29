@@ -45,16 +45,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
 		initData();
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
 	/**
 	 * 容器id
 	 * @return LayoutRes

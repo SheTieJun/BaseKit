@@ -1,4 +1,4 @@
-package shetj.me.base.configs;
+package shetj.me.base.common.other;
 
 
 import com.bumptech.glide.annotation.GlideModule;

@@ -16,6 +16,9 @@ import timber.log.Timber;
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b> MMKV 是基于 mmap 内存映射的 key-value 组件，
  * 底层序列化/反序列化使用 protobuf 实现，性能高，稳定性强。 <br>
+ * <b>初始化 {@link #init(Context)} <b/> <br>
+ * <b>存 {@link #put(String, Object)}<b/> <br>
+ * <b>取 {@link #get(String, Object)}<b/> <br>
  */
 public class KVUtils {
 

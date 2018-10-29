@@ -1,9 +1,11 @@
-package shetj.me.base.common;
+package shetj.me.base.common.manager;
 
 import android.content.Context;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.qcshendeng.toyo.common.bean.UserInfo;
+
+import org.simple.eventbus.EventBus;
 
 import me.shetj.base.base.SimBaseCallBack;
 import me.shetj.base.s;
@@ -11,7 +13,7 @@ import me.shetj.base.tools.file.SPUtils;
 import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.tools.json.GsonKit;
 import shetj.me.base.R;
-import shetj.me.base.configs.tag.SPKey;
+import shetj.me.base.common.tag.SPKey;
 
 /**
  * <b>@author：</b> shetj<br>
@@ -31,6 +33,7 @@ public class UserManager {
 	}
 
 	private UserManager() {
+		EventBus.getDefault().register(this);
 	}
 
 

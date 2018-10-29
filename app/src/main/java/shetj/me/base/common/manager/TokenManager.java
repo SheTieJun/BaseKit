@@ -1,11 +1,13 @@
-package shetj.me.base.common;
+package shetj.me.base.common.manager;
 
+
+import org.simple.eventbus.EventBus;
 
 import me.shetj.base.s;
 import me.shetj.base.tools.file.SPUtils;
 import me.shetj.base.tools.json.EmptyUtils;
 
-import static shetj.me.base.configs.tag.SPKey.SAVE_TOKEN;
+import static shetj.me.base.common.tag.SPKey.SAVE_TOKEN;
 
 
 /**
@@ -19,6 +21,7 @@ public class TokenManager {
 
 	private static TokenManager instance = null;
 	private TokenManager() {
+			EventBus.getDefault().register(this);
 	}
 
 	public static TokenManager getInstance() {

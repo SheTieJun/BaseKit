@@ -1,4 +1,4 @@
-package shetj.me.base.common;
+package shetj.me.base.common.manager;
 
 import com.zhouyou.http.EasyHttp;
 
@@ -15,7 +15,7 @@ import me.shetj.base.tools.json.GsonKit;
 import shetj.me.base.api.API;
 import timber.log.Timber;
 
-import static shetj.me.base.configs.tag.SPKey.SAVE_TOKEN;
+import static shetj.me.base.common.tag.SPKey.SAVE_TOKEN;
 
 
 /**

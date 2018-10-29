@@ -4,6 +4,7 @@ import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author shetj
  */
 @Keep
-public class AdapterViewPager extends FragmentPagerAdapter {
+public class AdapterViewPager extends FragmentStatePagerAdapter {
     private List<BaseFragment> mList;
     private  List<String> mTitles;
 
