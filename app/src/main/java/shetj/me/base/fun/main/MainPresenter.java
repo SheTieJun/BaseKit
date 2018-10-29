@@ -1,4 +1,4 @@
-package shetj.me.base.fun;
+package shetj.me.base.fun.main;
 
 import me.shetj.base.base.BasePresenter;
 import me.shetj.base.base.IView;

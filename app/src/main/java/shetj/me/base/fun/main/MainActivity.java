@@ -1,23 +1,13 @@
-package shetj.me.base.fun;
+package shetj.me.base.fun.main;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import me.shetj.base.base.BaseActivity;
 import shetj.me.base.R;
 
 public class MainActivity extends BaseActivity<MainPresenter> {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     protected int getContextViewId() {
