@@ -1,14 +1,22 @@
 package shetj.me.base.common.other;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
 import me.shetj.base.base.ImageLoader;
+import me.shetj.base.tools.app.Utils;
+import me.shetj.base.view.LoadingDialog;
 
 /**
  * <b>@packageName：</b> me.shetj.base.base<br>
@@ -23,22 +31,55 @@ import me.shetj.base.base.ImageLoader;
 public class GlideImageLoader implements ImageLoader {
 	@Override
 	public void load(@NonNull ImageView simpleView,@NonNull String url) {
-
+		GlideApp.with(simpleView.getContext())
+						.load(url)
+						.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+						.into(simpleView);
 	}
 
 	@Override
 	public void load(@NonNull ImageView simpleView,@NonNull String url,@NonNull boolean hasProgress) {
+			if (hasProgress){
+				GlideApp.with(simpleView.getContext())
+								.load(url)
+								.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+								.into(new SimpleTarget<Drawable>() {
+									@Override
+									public void onStart() {
+										super.onStart();
+										LoadingDialog.showLoading((Activity) simpleView.getContext());
+									}
 
+									@Override
+									public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+										simpleView.setImageDrawable(resource);
+										LoadingDialog.hideLoading();
+									}
+								});
+			}else {
+				load(simpleView,url);
+			}
 	}
 
+	/**
+	 * 未写
+	 * @param mSimpleView 容器
+	 * @param url url地址
+	 */
 	@Override
 	public void loadProgressive(@NonNull ImageView mSimpleView, @NonNull String url) {
-
+		GlideApp.with(mSimpleView.getContext())
+						.load(url)
+						.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+						.into(mSimpleView);
 	}
 
 	@Override
 	public void loadGif(@NonNull ImageView simpleView,@NonNull String url,@NonNull boolean isAuto) {
-
+		GlideApp.with(simpleView.getContext())
+						.load(url)
+						.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+						.into(simpleView);
 	}
 
 	@Override
@@ -61,11 +102,17 @@ public class GlideImageLoader implements ImageLoader {
 
 	@Override
 	public void clearMemCache() {
+		Glide.get(Utils.getApp().getApplicationContext()).clearMemory();
+	
 
 	}
 
 	@Override
 	public void clearCacheFiles() {
-
+		Flowable.just(1).observeOn(Schedulers.newThread())
+						.subscribe(integer -> {
+							//清理磁盘缓存 需要在子线程中执行
+							Glide.get(Utils.getApp().getApplicationContext()).clearDiskCache();
+						});
 	}
 }
