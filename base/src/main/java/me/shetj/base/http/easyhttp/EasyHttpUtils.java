@@ -8,14 +8,17 @@ import android.support.annotation.Keep;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;
 import com.zhouyou.http.cache.model.CacheMode;
+import com.zhouyou.http.callback.SimpleCallBack;
+import com.zhouyou.http.exception.ApiException;
 import com.zhouyou.http.model.HttpHeaders;
 import com.zhouyou.http.model.HttpParams;
 import com.zhouyou.http.subsciber.IProgressDialog;
 
 import java.util.Map;
 
-import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import me.shetj.base.http.callback.EasyCallBack;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.tools.json.GsonKit;
@@ -38,14 +41,10 @@ public class EasyHttpUtils {
 	private static void initConfig(boolean isDebug,String baseUrl) {
 		//全局设置请求头
 		HttpHeaders headers = new HttpHeaders();
-
 		//全局设置请求参数
 		HttpParams params = new HttpParams();
-
-
 		//以下设置的所有参数是全局参数,同样的参数可以在请求的时候再设置一遍,那么对于该请求来讲,请求中的参数会覆盖全局参数
 		EasyHttp.getInstance()
-
 						//可以全局统一设置全局URL
 						.setBaseUrl(baseUrl)
 						//设置全局URL
@@ -112,52 +111,39 @@ public class EasyHttpUtils {
 			}
 		};
 	}
-
-	public static Observable<String> doPost(String url, Map<String, String> map){
-		return	doPost(url,map,String.class);
-	}
-
-	public static Observable<String> doPostCache(String url, Map<String, String> map){
-		return	doPostCache(url,map,String.class);
-	}
-
-	public static Observable<String> doGet(String url, Map<String, String> map){
-		return	doGet(url, map,String.class);
-	}
-	public static Observable<String> doGetCache(String url, Map<String, String> map){
-
-		return	doGetCache(url, map,String.class);
-	}
-
-
-	public static <T> Observable<T> doPost(String url, Map<String, String> map, Class<T> Class){
-		return	EasyHttp.post(url)
+	public static <T> Disposable doPost(String url, Map<String, String> map, EasyCallBack<T> simpleCallBack){
+		 return 	EasyHttp.post(url)
 						.params(getParamsFromMap(map))
-						.execute(Class);
+						.execute(simpleCallBack);
 	}
 
-	public static <T> Observable<T> doPostCache(String url, Map<String, String> map, Class<T> Class){
-		return	EasyHttp.post(url)
-						.params(getParamsFromMap(map))
-						.cacheKey(ArmsUtils.encodeToMD5(url+ GsonKit.objectToJson(map)))
-						.cacheMode(CacheMode.FIRSTCACHE)
-						.execute(Class);
-	}
-
-	public static <T> Observable<T> doGet(String url, Map<String, String> map, Class<T> Class){
-		return	EasyHttp.get(url)
-						.params(getParamsFromMap(map))
-						.execute(Class);
-	}
-
-	public static <T> Observable<T> doGetCache(String url, Map<String, String> map, Class<T> Class){
-		return	EasyHttp.post(url)
+	public static <T> Disposable doPostCache(String url, Map<String, String> map, EasyCallBack<T> simpleCallBack){
+		return 	EasyHttp.post(url)
 						.params(getParamsFromMap(map))
 						.cacheKey(ArmsUtils.encodeToMD5(url+ GsonKit.objectToJson(map)))
 						.cacheMode(CacheMode.FIRSTREMOTE)
-						.execute(Class);
+						.execute(simpleCallBack);
 	}
 
+	public static <T> Disposable doGet(String url, Map<String, String> map,EasyCallBack<T> simpleCallBack){
+		return EasyHttp.get(url)
+						.params(getParamsFromMap(map))
+						.execute(simpleCallBack);
+	}
+
+	public static <T> Disposable doGetCache(String url, Map<String, String> map, EasyCallBack<T> simpleCallBack){
+		 return	EasyHttp.get(url)
+						.params(getParamsFromMap(map))
+						.cacheKey(ArmsUtils.encodeToMD5(url+ GsonKit.objectToJson(map)))
+						.cacheMode(CacheMode.FIRSTREMOTE)
+						.execute(simpleCallBack);
+	}
+
+	public static <T> Disposable upJson(String url, Object map, EasyCallBack<T> simpleCallBack){
+		return  EasyHttp.post(url)
+						.upJson(GsonKit.objectToJson(map))
+						.execute(simpleCallBack);
+	}
 
 	@NonNull
 	public static HttpParams getParamsFromMap(@NonNull Map<String,String > map ){
@@ -169,7 +155,4 @@ public class EasyHttpUtils {
 		}
 		return httpParams;
 	}
-
-
-
 }

@@ -6,7 +6,7 @@ import com.zhouyou.http.callback.CallBack;
 import com.zhouyou.http.exception.ApiException;
 
 @Keep
-public class EasyCallBack<Object> extends CallBack<Object> {
+public class EasyCallBack<T> extends CallBack<T> {
 	@Override
 	public void onStart() {
 
@@ -23,7 +23,7 @@ public class EasyCallBack<Object> extends CallBack<Object> {
 	}
 
 	@Override
-	public void onSuccess(Object o) {
+	public void onSuccess(T o) {
 
 	}
 }
