@@ -13,15 +13,14 @@ aspectjx {
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     resourcePrefix 'base_'
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 6
-        versionName "0.0.6"
-
+        targetSdkVersion rootProject.ext.compileSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }

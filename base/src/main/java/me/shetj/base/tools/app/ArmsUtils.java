@@ -101,6 +101,15 @@ public class  ArmsUtils {
     }
 
     /**
+     * 设置命名常亮
+     * other :android:keepScreenOn="true"
+     * @param activity 常亮的界面
+     */
+    public static void wakey(Activity activity){
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    /**
      * 获得资源
      */
     public static Resources getResources(Context context) {
