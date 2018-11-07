@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.60'
+    ext.kotlin_version = '1.2.71'
     ext.support = '28.0.0'
     ext.compileSdkVersion       = 28
     ext.versionCode             = 6
@@ -10,21 +10,25 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0' // Add this line
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
-        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.10'
-        classpath 'com.devyok.ipc:ipc-gradle-plugin:0.0.1'
-        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.2'
+//        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.10'//资源混淆
+        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.2'//Aspect
     }
 }
 
 allprojects {
     repositories {
         google()
+        mavenCentral()
+        mavenLocal()
         jcenter()
         maven { url "https://jitpack.io" }
     }

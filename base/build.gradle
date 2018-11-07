@@ -116,10 +116,9 @@ dependencies {
     api 'com.github.razerdp:BasePopup:1.9.3'
     api 'com.afollestad.material-dialogs:core:0.9.1.0'
 //    api 'com.ycjiang:imgepreviewlibrary:1.1.2'
-
+    //工具
     api 'com.airbnb.android:lottie:2.5.6'
     kapt 'com.github.bumptech.glide:compiler:4.5.0'
-    //工具
     api 'org.simple:androideventbus:1.0.5.1'
     api 'com.google.code.gson:gson:2.8.2'
     api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
