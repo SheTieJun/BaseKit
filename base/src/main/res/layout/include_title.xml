@@ -12,19 +12,19 @@
 
     <RelativeLayout
         android:id="@+id/toolbar_back"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="left"
-        android:visibility="gone"
         >
 
         <ImageView
             android:id="@+id/iv_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="20px"
             android:layout_marginRight="20px"
-            android:layout_centerVertical="true"
             android:src="@mipmap/ic_arrow_back_white_24dp"/>
 
     </RelativeLayout>
@@ -33,9 +33,9 @@
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:textSize="18dp"
         android:textColor="#fff"
-        android:layout_gravity="center"
         tools:text="title"/>
 
 

@@ -6,7 +6,6 @@ buildscript {
     ext.compileSdkVersion       = 28
     ext.versionCode             = 6
     ext.versionName             = "0.0.6"
-    ext.baseVersion             = "21bbbba885"
     repositories {
         google()
         jcenter()
