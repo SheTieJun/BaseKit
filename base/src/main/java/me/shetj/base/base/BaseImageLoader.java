@@ -18,7 +18,7 @@ public interface BaseImageLoader {
 	 * @param url
 	 * @param view
 	 */
-	void disPlayImage(Context context, String url, ImageView view);
+	void displayImage(Context context, String url, ImageView view);
 
 	/**
 	 * 加载用户头像
@@ -26,7 +26,7 @@ public interface BaseImageLoader {
 	 * @param url
 	 * @param view
 	 */
-	void disPlayUserImage(Context context, String url, ImageView view);
+	void displayUserImage(Context context, String url, ImageView view);
 
 	/**
 	 * 预加载

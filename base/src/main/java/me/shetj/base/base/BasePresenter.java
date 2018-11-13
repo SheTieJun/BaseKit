@@ -4,6 +4,8 @@ package me.shetj.base.base;
 import android.content.Intent;
 import android.support.annotation.Keep;
 
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
 import org.simple.eventbus.EventBus;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -32,7 +34,7 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
     public void onStart() {
         if (useEventBus())
         {
-	        EventBus.getDefault().register(this);
+            EventBus.getDefault().register(this);
         }
     }
 
@@ -47,7 +49,7 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
         Timber.i("onDestroy");
         if (useEventBus())
         {
-	        EventBus.getDefault().unregister(this);
+            EventBus.getDefault().unregister(this);
         }
         unDispose();
         this.mCompositeDisposable = null;
@@ -102,4 +104,7 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
         return message;
     }
 
+    RxAppCompatActivity getRxContext(){
+        return view.getRxContext();
+    }
 }

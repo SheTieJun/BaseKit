@@ -35,4 +35,8 @@ public abstract class BaseModel implements IModel {
 		return EasyHttpUtils.getParamsFromMap(map);
 	}
 
+	@Override
+	public void onDestroy() {
+
+	}
 }
