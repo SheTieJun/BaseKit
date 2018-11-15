@@ -14,7 +14,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
-import me.shetj.base.base.ImageLoader;
+import shetj.me.base.utils.ImageLoader;
 import me.shetj.base.tools.app.Utils;
 import me.shetj.base.view.LoadingDialog;
 

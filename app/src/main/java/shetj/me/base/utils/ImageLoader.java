@@ -1,4 +1,4 @@
-package me.shetj.base.base;
+package shetj.me.base.utils;
 
 
 import android.content.Context;
