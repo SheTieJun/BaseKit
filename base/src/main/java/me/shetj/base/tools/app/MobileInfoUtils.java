@@ -1,23 +1,32 @@
 package me.shetj.base.tools.app;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.Keep;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import me.shetj.base.R;
 import me.shetj.base.tools.file.SPUtils;
+import me.shetj.base.tools.time.TimeUtil;
 
 @Keep
 public class MobileInfoUtils {
 
-    /**
+
+	private static Method mSetStopAutoStart = null;
+	private static Method mgetStopAutoStart = null;
+
+	/**
      * Get Mobile Type
      *
      * @return
@@ -38,50 +47,48 @@ public class MobileInfoUtils {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Log.e("HLQ_Struggle", "******************当前手机型号为：" + getMobileType());
             ComponentName componentName = null;
-            switch (getMobileType()) {
-                case "Xiaomi":
-                	// 红米Note4测试通过
-                    componentName = new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity");
-                    break;
-                case "samsung":
-                	// 三星Note5测试通过
-                    componentName = new ComponentName("com.samsung.android.sm_cn", "com.samsung.android.sm.ui.ram.AutoRunActivity");
-                    break;
-                case "HUAWEI":
-                	// 华为测试通过
-                    componentName = new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity");
-                    break;
-                case "vivo":
-                	// VIVO测试通过
-                    componentName = ComponentName.unflattenFromString("com.iqoo.secure/.ui.phoneoptimize.AddWhiteListActivity");
-                    break;
-                case "Meizu":
-                	//万恶的魅族
-                    // 通过测试，发现魅族是真恶心，也是够了，之前版本还能查看到关于设置自启动这一界面，系统更新之后，完全找不到了，心里默默Fuck！
-                    // 针对魅族，我们只能通过魅族内置手机管家去设置自启动，所以我在这里直接跳转到魅族内置手机管家界面，具体结果请看图
-                    componentName = ComponentName.unflattenFromString("com.meizu.safe/.permission.PermissionMainActivity");
-                    break;
-                case "OPPO":
-                	// OPPO R8205测试通过
-                    componentName = ComponentName.unflattenFromString("com.oppo.safe/.permission.startup.StartupAppListActivity");
-                    Intent intentOppo = new Intent();
-                    intentOppo.setClassName("com.oppo.safe/.permission.startup", "StartupAppListActivity");
-                    if (context.getPackageManager().resolveActivity(intentOppo, 0) == null) {
-                        componentName = ComponentName.unflattenFromString("com.coloros.safecenter/.startupapp.StartupAppListActivity");
-                    }
-                    break;
-                case "yulong":
-                	// 360手机 未测试
-                    componentName = new ComponentName("com.yulong.android.coolsafe", ".ui.activity.autorun.AutoRunListActivity");
-                    break;
-                default:
-                    // 以上只是市面上主流机型，由于公司你懂的，所以很不容易才凑齐以上设备
-                    // 针对于其他设备，我们只能调整当前系统app查看详情界面
-                    // 在此根据用户手机当前版本跳转系统设置界面
-                    intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                    intent.setData(Uri.fromParts("package", context.getPackageName(), null));
-                    break;
-            }
+		        String brand = android.os.Build.BRAND;
+		        switch (brand.toLowerCase()) {
+			        case "samsung":
+				        componentName = new ComponentName("com.samsung.android.sm",
+								        "com.samsung.android.sm.app.dashboard.SmartManagerDashBoardActivity");
+				        break;
+			        case "huawei":
+				        componentName = new ComponentName("com.huawei.systemmanager",
+								        "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity");
+				        break;
+			        case "xiaomi":
+				        componentName = new ComponentName("com.miui.securitycenter",
+								        "com.miui.permcenter.autostart.AutoStartManagementActivity");
+				        break;
+			        case "vivo":
+				        componentName = new ComponentName("com.iqoo.secure",
+								        "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity");
+				        break;
+			        case "oppo":
+				        componentName = new ComponentName("com.coloros.oppoguardelf",
+								        "com.coloros.powermanager.fuelgaue.PowerUsageModelActivity");
+				        break;
+			        case "360":
+				        componentName = new ComponentName("com.yulong.android.coolsafe",
+								        "com.yulong.android.coolsafe.ui.activity.autorun.AutoRunListActivity");
+				        break;
+			        case "meizu":
+				        componentName = new ComponentName("com.meizu.safe",
+								        "com.meizu.safe.permission.SmartBGActivity");
+				        break;
+			        case "oneplus":
+				        componentName = new ComponentName("com.oneplus.security",
+								        "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity");
+				        break;
+			        default:
+				        break;
+		        }
+		        if (componentName != null) {
+			        intent.setComponent(componentName);
+		        } else {
+			        intent.setAction(Settings.ACTION_SETTINGS);
+		        }
             intent.setComponent(componentName);
             context.startActivity(intent);
         } catch (Exception e) {//抛出异常就直接打开设置页面
@@ -90,36 +97,94 @@ public class MobileInfoUtils {
         }
     }
 
-    public static void jumpStartInterface(final Activity activity) {
-        if (isOpenAuto(activity)) {
-	        try {
-		        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-		        builder.setMessage("\n由于安卓系统设置，为获取最新的消息推送，请手动开启自启动权限！");
-		        builder.setPositiveButton("立即设置",
-						        new DialogInterface.OnClickListener() {
-							        @Override
-							        public void onClick(DialogInterface dialog, int which) {
-								        SPUtils.put(activity, "AutoStart", false);
-								        jumpStartInterface((Context) activity);
-							        }
-						        });
-		        builder.setNegativeButton("暂不设置",
-						        new DialogInterface.OnClickListener() {
-							        @Override
-							        public void onClick(DialogInterface dialog, int which) {
-								        SPUtils.put(activity, "AutoStart", false);
-								        dialog.dismiss();
-							        }
-						        });
-		        builder.setCancelable(false);
-		        builder.create().show();
-	        } catch (Exception ignored) {
-	        }
-        }
 
-    }
+	public static void jumpStartInterface(final Activity activity) {
+		if (isOpenAuto(activity)) {
+			//一天提醒一次
+			SPUtils.put(activity,"AutoStart"+TimeUtil.getYMDime(),false);
+			try {
+				MaterialDialog materialdialog = new MaterialDialog.Builder(activity)
+								.title("推送管理")
+								.titleColorRes(R.color.colorPrimary)
+								.content("由于安卓系统设置，为获取最新的信息推送，请手动开启自启动权限！")
+								.positiveText("立即设置")
+								.positiveColorRes(R.color.colorPrimary)
+								.neutralColorRes(R.color.blackHintText)
+								.onPositive((dialog, which) -> {
+									SPUtils.put(activity,"AutoStart",false);
+									jumpStartInterface((Context) activity);
+									dialog.dismiss();
+								})
+								.onNeutral((dialog, which) -> {
+									dialog.dismiss();
+									SPUtils.put(activity,"AutoStart"+AppUtils.getAppVersionCode(),false);
+								})
+								.neutralText("暂不设置").build();
+				materialdialog.show();
+			} catch (Exception ignored) {
+			}
+		}
 
-    private static  boolean isOpenAuto(Activity activity){
-        return (boolean) SPUtils.get(activity,"AutoStart",true);
-    }
+	}
+
+	/**
+	 * 是否开启提醒
+	 *
+	 * 默认一天打开一次
+	 * 如果点击暂不设置，一个版本提醒一次
+	 * 如果点击设置，则默认打开了自启动，以后不再提醒
+	 * @param activity
+	 * @return
+	 */
+	private static  boolean isOpenAuto(Activity activity){
+		return (boolean) SPUtils.get(activity,"AutoStart",true) &&
+						//根据版本来，这个版本不提醒
+						(boolean)SPUtils.get(activity,"AutoStart"+AppUtils.getAppVersionCode(),true)
+						&& (boolean)SPUtils.get(activity,"AutoStart"+TimeUtil.getYMDime(),true);
+	}
+
+
+	//需要root
+	public static void fobidAutoRun(Context context, String pkg, boolean isFobid) {
+
+		if (isForceStopAutoStartMethodExist(context)) {
+			try {
+				ActivityManager am = (ActivityManager) context
+								.getSystemService(Context.ACTIVITY_SERVICE);
+				mSetStopAutoStart.invoke(am, pkg,
+								isFobid);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public static boolean isForceStopAutoStartMethodExist(Context context) {
+		synchronized (MobileInfoUtils.class) {
+			if (mSetStopAutoStart == null) {
+				try {
+					ActivityManager am = (ActivityManager) context
+									.getSystemService(Context.ACTIVITY_SERVICE);
+					mSetStopAutoStart = am.getClass().getMethod(
+									"setForbiddenAutorunPackages", String.class,
+									boolean.class);
+					mgetStopAutoStart = am.getClass()
+									.getMethod("getForbiddenAutorunPackages");
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+			}
+			if (mSetStopAutoStart == null || mgetStopAutoStart == null) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+
 }
