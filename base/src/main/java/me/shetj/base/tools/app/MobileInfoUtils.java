@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.Keep;
@@ -27,78 +28,78 @@ public class MobileInfoUtils {
 	private static Method mgetStopAutoStart = null;
 
 	/**
-     * Get Mobile Type
-     *
-     * @return
-     */
-    private static String getMobileType() {
-        return Build.MANUFACTURER;
-    }
+	 * Get Mobile Type
+	 *
+	 * @return
+	 */
+	private static String getMobileType() {
+		return Build.MANUFACTURER;
+	}
 
-    /**
-     * GoTo Open Self Setting Layout
-     * Compatible Mainstream Models 兼容市面主流机型
-     *
-     * @param context 上下文
-     */
-    private static void jumpStartInterface(Context context) {
-        Intent intent = new Intent();
-        try {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Log.e("HLQ_Struggle", "******************当前手机型号为：" + getMobileType());
-            ComponentName componentName = null;
-		        String brand = android.os.Build.BRAND;
-		        switch (brand.toLowerCase()) {
-			        case "samsung":
-				        componentName = new ComponentName("com.samsung.android.sm",
-								        "com.samsung.android.sm.app.dashboard.SmartManagerDashBoardActivity");
-				        break;
-			        case "huawei":
-				        componentName = new ComponentName("com.huawei.systemmanager",
-								        "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity");
-				        break;
-			        case "xiaomi":
-				        componentName = new ComponentName("com.miui.securitycenter",
-								        "com.miui.permcenter.autostart.AutoStartManagementActivity");
-				        break;
-			        case "vivo":
-				        componentName = new ComponentName("com.iqoo.secure",
-								        "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity");
-				        break;
-			        case "oppo":
-				        componentName = new ComponentName("com.coloros.oppoguardelf",
-								        "com.coloros.powermanager.fuelgaue.PowerUsageModelActivity");
-				        break;
-			        case "360":
-				        componentName = new ComponentName("com.yulong.android.coolsafe",
-								        "com.yulong.android.coolsafe.ui.activity.autorun.AutoRunListActivity");
-				        break;
-			        case "meizu":
-				        componentName = new ComponentName("com.meizu.safe",
-								        "com.meizu.safe.permission.SmartBGActivity");
-				        break;
-			        case "oneplus":
-				        componentName = new ComponentName("com.oneplus.security",
-								        "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity");
-				        break;
-			        default:
-				        break;
-		        }
-		        if (componentName != null) {
-			        intent.setComponent(componentName);
-		        } else {
-			        intent.setAction(Settings.ACTION_SETTINGS);
-		        }
-            intent.setComponent(componentName);
-            context.startActivity(intent);
-        } catch (Exception e) {//抛出异常就直接打开设置页面
-            intent = new Intent(Settings.ACTION_SETTINGS);
-            context.startActivity(intent);
-        }
-    }
+	/**
+	 * GoTo Open Self Setting Layout
+	 * Compatible Mainstream Models 兼容市面主流机型
+	 *
+	 * @param context 上下文
+	 */
+	private static void jumpStartInterface(Context context) {
+		Intent intent = new Intent();
+		try {
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			Log.e("HLQ_Struggle", "******************当前手机型号为：" + getMobileType());
+			ComponentName componentName = null;
+			String brand = android.os.Build.BRAND;
+			switch (brand.toLowerCase()) {
+				case "samsung":
+					componentName = new ComponentName("com.samsung.android.sm",
+									"com.samsung.android.sm.app.dashboard.SmartManagerDashBoardActivity");
+					break;
+				case "huawei":
+					componentName = new ComponentName("com.huawei.systemmanager",
+									"com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity");
+					break;
+				case "xiaomi":
+					componentName = new ComponentName("com.miui.securitycenter",
+									"com.miui.permcenter.autostart.AutoStartManagementActivity");
+					break;
+				case "vivo":
+					componentName = new ComponentName("com.iqoo.secure",
+									"com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity");
+					break;
+				case "oppo":
+					componentName = new ComponentName("com.coloros.oppoguardelf",
+									"com.coloros.powermanager.fuelgaue.PowerUsageModelActivity");
+					break;
+				case "360":
+					componentName = new ComponentName("com.yulong.android.coolsafe",
+									"com.yulong.android.coolsafe.ui.activity.autorun.AutoRunListActivity");
+					break;
+				case "meizu":
+					componentName = new ComponentName("com.meizu.safe",
+									"com.meizu.safe.permission.SmartBGActivity");
+					break;
+				case "oneplus":
+					componentName = new ComponentName("com.oneplus.security",
+									"com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity");
+					break;
+				default:
+					break;
+			}
+			if (componentName != null) {
+				intent.setComponent(componentName);
+			} else {
+				intent.setAction(Settings.ACTION_SETTINGS);
+			}
+			intent.setComponent(componentName);
+			context.startActivity(intent);
+		} catch (Exception e) {//抛出异常就直接打开设置页面
+			intent = new Intent(Settings.ACTION_SETTINGS);
+			context.startActivity(intent);
+		}
+	}
 
 
-	public static void jumpStartInterface(final Activity activity) {
+	public static void jumpStartInterface(final Activity activity,boolean isSelf) {
 		if (isOpenAuto(activity)) {
 			//一天提醒一次
 			SPUtils.put(activity,"AutoStart"+TimeUtil.getYMDime(),false);
@@ -112,7 +113,11 @@ public class MobileInfoUtils {
 								.neutralColorRes(R.color.blackHintText)
 								.onPositive((dialog, which) -> {
 									SPUtils.put(activity,"AutoStart",false);
-									jumpStartInterface((Context) activity);
+									if (isSelf){
+										toSelfSetting(activity);
+									}else {
+										jumpStartInterface((Context) activity);
+									}
 									dialog.dismiss();
 								})
 								.onNeutral((dialog, which) -> {
@@ -187,4 +192,11 @@ public class MobileInfoUtils {
 		}
 	}
 
+	public static void toSelfSetting(Context context) {
+		Intent mIntent = new Intent();
+		mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		mIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+		mIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
+		context.startActivity(mIntent);
+	}
 }
