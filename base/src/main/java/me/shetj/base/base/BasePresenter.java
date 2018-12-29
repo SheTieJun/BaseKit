@@ -10,6 +10,7 @@ import org.simple.eventbus.EventBus;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import me.shetj.base.http.easyhttp.EasyHttpUtils;
 import timber.log.Timber;
 
 /**
@@ -98,10 +99,7 @@ public  class BasePresenter< T extends BaseModel> implements IPresenter {
     }
 
     public BaseMessage getMessage(int code,Object msg){
-        BaseMessage message = new BaseMessage();
-        message.obj = msg;
-        message.type = code;
-        return message;
+        return EasyHttpUtils.getMessage(code,msg);
     }
 
     RxAppCompatActivity getRxContext(){
