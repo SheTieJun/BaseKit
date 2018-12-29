@@ -16,6 +16,7 @@ import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import me.shetj.base.base.BaseMessage;
 import me.shetj.base.http.callback.EasyCallBack;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.tools.json.EmptyUtils;
@@ -152,5 +153,13 @@ public class EasyHttpUtils {
 			}
 		}
 		return httpParams;
+	}
+
+	@NonNull
+	public static BaseMessage getMessage(int code , Object obj) {
+		BaseMessage message = new BaseMessage();
+		message.obj = obj;
+		message.type = code;
+		return message;
 	}
 }

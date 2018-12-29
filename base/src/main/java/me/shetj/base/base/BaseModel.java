@@ -24,10 +24,7 @@ public abstract class BaseModel implements IModel {
 	@Override
 	@NonNull
 	public BaseMessage getMessage(int code ,Object obj) {
-		BaseMessage message = new BaseMessage();
-		message.obj = obj;
-		message.type = code;
-		return message;
+		return EasyHttpUtils.getMessage(code,obj);
 	}
 
 	@NonNull

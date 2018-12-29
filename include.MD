@@ -1,19 +1,6 @@
 # Base
    自用
 
-### 版本控制 ###
-
-```
-    versionCode 3
-        versionName "0.0.3"
-基础第一版，java
-```
-```
-    versionCode 4
-        versionName "0.0.4"
-基础第一版，kotlin
-```
-
 #### 可能使用的库介绍
 1. 事件总线 [androideventbus](https://github.com/hehonghui/AndroidEventBus)
 2. 数据库  [xUtils3（Db](https://github.com/wyouflf/xUtils3)）
