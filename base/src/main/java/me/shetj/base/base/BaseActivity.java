@@ -40,17 +40,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
 		}
 		HideUtil.init(this);
 		startAnimation();
-		setContentView(getContextViewId());
-		initView();
-		initData();
 	}
 
-	/**
-	 * 容器id
-	 * @return LayoutRes
-	 */
-	@LayoutRes
-	protected abstract int getContextViewId();
 	/**
 	 * 连接view
 	 */
