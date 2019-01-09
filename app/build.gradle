@@ -104,4 +104,7 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+
+    implementation 'com.github.iielse:ImageWatcher:1.1.5'
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.2'
 }

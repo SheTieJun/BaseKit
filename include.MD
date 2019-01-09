@@ -109,7 +109,21 @@ RxView.clicks(findViewById(R.id.enableCamera))
             }
         }
 ```
+27. 图片查看
 
+```
+
+    api 'com.github.iielse:ImageWatcher:1.1.5'
+Activity.onCreate()
+
+ImageWatcherHelper iwHelper = ImageWatcherHelper.with(this, new SimpleLoader());  // SimpleLoader demo中有简单实现
+Activity.onBackPressed()
+
+if (!iwHelper.handleBackPressed()) {
+    super.onBackPressed();
+}
+
+```
 
 
 #### 第三方平台 ####

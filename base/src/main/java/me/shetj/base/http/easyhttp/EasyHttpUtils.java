@@ -14,6 +14,7 @@ import com.zhouyou.http.subsciber.IProgressDialog;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import me.shetj.base.base.BaseMessage;
@@ -142,6 +143,41 @@ public class EasyHttpUtils {
 		return  EasyHttp.post(url)
 						.upJson(GsonKit.objectToJson(map))
 						.execute(simpleCallBack);
+	}
+
+
+	public static Observable<String> doPost(String url, Map<String, String> map){
+		return 	EasyHttp.post(url)
+						.params(getParamsFromMap(map))
+						.execute(String.class);
+	}
+
+	public static Observable<String> doPostCache(String url, Map<String, String> map ){
+		return 	EasyHttp.post(url)
+						.params(getParamsFromMap(map))
+						.cacheKey(ArmsUtils.encodeToMD5(url+ GsonKit.objectToJson(map)))
+						.cacheMode(CacheMode.FIRSTREMOTE)
+						.execute(String.class);
+	}
+
+	public static Observable<String> doGet(String url, Map<String, String> map){
+		return EasyHttp.get(url)
+						.params(getParamsFromMap(map))
+						.execute(String.class);
+	}
+
+	public static Observable<String> doGetCache(String url, Map<String, String> map ){
+		return	EasyHttp.get(url)
+						.params(getParamsFromMap(map))
+						.cacheKey(ArmsUtils.encodeToMD5(url+ GsonKit.objectToJson(map)))
+						.cacheMode(CacheMode.FIRSTREMOTE)
+						.execute(String.class);
+	}
+
+	public static Observable<String> upJson(String url, Object map ){
+		return  EasyHttp.post(url)
+						.upJson(GsonKit.objectToJson(map))
+						.execute(String.class);
 	}
 
 	@NonNull
