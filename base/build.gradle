@@ -113,7 +113,7 @@ dependencies {
 //    api 'com.just.agentweb:agentweb:2.0.1'
 //    api 'com.wx.goodview:goodview:1.0.0'
     api 'me.imid.swipebacklayout.lib:library:1.1.0'
-    api 'com.github.razerdp:BasePopup:1.9.3'
+    api 'com.github.razerdp:BasePopup:2.1.7'
     api 'com.afollestad.material-dialogs:core:0.9.1.0'
 //    api 'com.ycjiang:imgepreviewlibrary:1.1.2'
     //工具
@@ -128,16 +128,16 @@ dependencies {
     //Rxlifecycle
     api 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
     api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.0'
-    api 'io.reactivex.rxjava2:rxjava:2.1.8'
-    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    api 'io.reactivex.rxjava2:rxjava:2.2.5'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.0'
     api 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     api 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     //框架
-    api 'com.zhouyou:rxeasyhttp:2.0.5'
+    api 'com.zhouyou:rxeasyhttp:2.1.2'
     api 'com.jakewharton.timber:timber:4.7.1'
     api 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     api 'com.github.ybq:Android-SpinKit:1.2.0'
-    api 'me.jessyan:autosize:0.9.1'
+    api 'me.jessyan:autosize:1.1.2'
     //腾讯Android开发框架
     api 'com.qmuiteam:qmui:1.1.7'
     api 'com.tencent:mmkv:1.0.10'
