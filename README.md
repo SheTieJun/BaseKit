@@ -17,7 +17,7 @@
 或者自己用
 ```
 buildscript {
-    ext.base_version ="21bbbba885" //最新的提交
+    ext.base_version ="4d7385e2fd" //最新的提交
     }
 ```
 
@@ -32,4 +32,7 @@ buildscript {
 [码云-shetj](https://gitee.com/shetj/DIYAlbume)
 
 [GitHub-shetj](https://github.com/SheTieJun)
+
+
+AndroidX ....~~~
 
