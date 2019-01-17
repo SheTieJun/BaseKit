@@ -29,26 +29,26 @@
     </declare-styleable>
 
     <declare-styleable name="PagerSlidingTabStrip">
-        <attr name="pstsIndicatorColor" format="color" />
-        <attr name="pstsUnderlineColor" format="color" />
-        <attr name="pstsDividerColor" format="color" />
-        <attr name="pstsIndicatorHeight" format="dimension" />
-        <attr name="pstsUnderlineHeight" format="dimension" />
-        <attr name="pstsDividerPadding" format="dimension" />
-        <attr name="pstsTabPaddingLeftRight" format="dimension" />
-        <attr name="pstsScrollOffset" format="dimension" />
-        <attr name="pstsTabBackground" format="reference" />
-        <attr name="pstsShouldExpand" format="boolean" />
-        <attr name="pstsTextAllCaps" format="boolean" />
-        <attr name="pstsIndicatorWidth" format="dimension" />
+        <attr name="pstsIndicatorColor" format="color"/>
+        <attr name="pstsUnderlineColor" format="color"/>
+        <attr name="pstsDividerColor" format="color"/>
+        <attr name="pstsIndicatorHeight" format="dimension"/>
+        <attr name="pstsUnderlineHeight" format="dimension"/>
+        <attr name="pstsDividerPadding" format="dimension"/>
+        <attr name="pstsTabPaddingLeftRight" format="dimension"/>
+        <attr name="pstsScrollOffset" format="dimension"/>
+        <attr name="pstsTabBackground" format="reference"/>
+        <attr name="pstsShouldExpand" format="boolean"/>
+        <attr name="pstsTextAllCaps" format="boolean"/>
+        <attr name="pstsIndicatorWidth" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="SwipeBackLayout">
         <attr name="edge_flag">
-            <enum name="left" value="0" />
-            <enum name="right" value="1" />
-            <enum name="bottom" value="2" />
-            <enum name="all" value="3" />
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+            <enum name="bottom" value="2"/>
+            <enum name="all" value="3"/>
         </attr>
         <attr name="shadow_left" format="reference"/>
         <attr name="shadow_right" format="reference"/>

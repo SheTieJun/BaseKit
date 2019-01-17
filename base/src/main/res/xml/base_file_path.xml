@@ -3,9 +3,19 @@
     <external-path
         name="base_external_path"
         path="base/"/>
-    <cache-path name="cache-path" path="." />
-    <files-path name="files-path" path="." />
-    <external-files-path name="external-files-path" path="." />
-    <external-cache-path name="external-cache-path" path="." />
-    <root-path name="root-path" path="" />
+    <cache-path
+        name="cache-path"
+        path="."/>
+    <files-path
+        name="files-path"
+        path="."/>
+    <external-files-path
+        name="external-files-path"
+        path="."/>
+    <external-cache-path
+        name="external-cache-path"
+        path="."/>
+    <root-path
+        name="root-path"
+        path="."/>
 </paths>

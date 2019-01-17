@@ -40,7 +40,7 @@
 
     <!--普通dialog-->
     <style name="CustomProgressDialog" parent="@style/CustomDialog">
-        <item name="android:windowBackground">@color/Transparent2a</item>
+        <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
@@ -60,6 +60,7 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
+
     <style name="SwipeTheme" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
@@ -78,7 +79,8 @@
     <style name="titleBackground">
         <item name="android:background">?android:attr/windowBackground</item>
     </style>
-    <style name="SwipeBackLayout" >
+
+    <style name="SwipeBackLayout">
         <item name="shadow_left">@drawable/shadow_left</item>
         <item name="shadow_right">@drawable/shadow_right</item>
         <item name="shadow_bottom">@drawable/shadow_bottom</item>

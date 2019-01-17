@@ -178,7 +178,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends RxFragment i
 	@Override
 	public void showLoading(String msg) {
 
-		LoadingDialog.showLoading(getRxContext(), msg, true);
+		LoadingDialog.showLoading(getRxContext(), true);
 	}
 	@Override
 	public void hideLoading() {
@@ -192,7 +192,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends RxFragment i
 
 	/**
 	 * 返回当前的activity
-	 * @return
+	 * @return RxAppCompatActivity
 	 */
 	@Override
 	public RxAppCompatActivity getRxContext(){

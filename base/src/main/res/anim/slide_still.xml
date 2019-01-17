@@ -5,6 +5,6 @@
         android:duration="@integer/qmui_anim_duration"
         android:fromAlpha="1.0"
         android:toAlpha="1.0"
-        android:interpolator="@android:interpolator/decelerate_quad" />
+        android:interpolator="@android:interpolator/decelerate_quad"/>
 
 </set>

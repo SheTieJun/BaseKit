@@ -179,8 +179,7 @@ public abstract class BaseQMUIFragment<T extends BasePresenter> extends QMUIFrag
 
     @Override
     public void showLoading(String msg) {
-
-        LoadingDialog.showLoading(getRxContext(), msg, true);
+        LoadingDialog.showLoading(getRxContext(), true);
     }
     @Override
     public void hideLoading() {
@@ -194,7 +193,7 @@ public abstract class BaseQMUIFragment<T extends BasePresenter> extends QMUIFrag
 
     /**
      * 返回当前的activity
-     * @return
+     * @return RxAppCompatActivity
      */
     @Override
     public RxAppCompatActivity getRxContext(){

@@ -1,7 +1,6 @@
-package shetj.me.base.utils;
+package me.shetj.base.tools.image;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.github.ielse.imagewatcher.ImageWatcher;
 import com.github.ielse.imagewatcher.ImageWatcherHelper;
 
 import java.util.ArrayList;
@@ -30,28 +28,34 @@ public class ImageWatcherUtils {
 	private ImageWatcherHelper iwHelper;
 
 	public ImageWatcherUtils(Activity activity) {
-		iwHelper =  ImageWatcherHelper.with(activity, new ImageWatcher.Loader() {
-			@Override
-			public void load(Context context, Uri uri, ImageWatcher.LoadCallback loadCallback) {
-				Glide.with(context).load(uri)
-								.into(new SimpleTarget<Drawable>() {
-									@Override
-									public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-										loadCallback.onResourceReady(resource);
-									}
-								});
-			}
-		});
+		iwHelper =  ImageWatcherHelper.with(activity, (context, uri, loadCallback) -> Glide.with(context).load(uri)
+						.into(new SimpleTarget<Drawable>() {
+							@Override
+							public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+								loadCallback.onResourceReady(resource);
+							}
+						}));
+	}
+
+	public void showPic(ImageView imageView, String url ){
+		List<String> dataList =new ArrayList<>();
+		dataList.add(url);
+		showPic(imageView,dataList,0);
 	}
 
 	public void showPic(ImageView imageView, List<String> dataList,int   position){
-		SparseArray mapping = new   SparseArray<ImageView>();
+		SparseArray<ImageView> mapping = new SparseArray<>();
 		mapping.put(position, imageView);
 		iwHelper.show(imageView, mapping, convert(dataList));
 	}
 
-	public List<Uri> convert(List<String>   data  ){
-		ArrayList<Uri> list =  new  ArrayList<Uri>();
+	public void showPic(ImageView imageView, List<String> dataList, SparseArray<ImageView> mapping){
+		iwHelper.show(imageView, mapping, convert(dataList));
+	}
+
+
+	private List<Uri> convert(List<String> data){
+		ArrayList<Uri> list = new ArrayList<>();
 		for (String datum : data) {
 			list.add(Uri.parse(datum));
 		}

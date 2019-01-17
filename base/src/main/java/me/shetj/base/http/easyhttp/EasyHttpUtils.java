@@ -104,12 +104,7 @@ public class EasyHttpUtils {
 	}
 
 	public static IProgressDialog getProgressDialog(final Activity context){
-		return new IProgressDialog() {
-			@Override
-			public Dialog getDialog() {
-				return LoadingDialog.showLoading(context,"正在加载...",true);
-			}
-		};
+		return () -> LoadingDialog.showLoading(context,true);
 	}
 	public static <T> Disposable doPost(String url, Map<String, String> map, EasyCallBack<T> simpleCallBack){
 		 return 	EasyHttp.post(url)

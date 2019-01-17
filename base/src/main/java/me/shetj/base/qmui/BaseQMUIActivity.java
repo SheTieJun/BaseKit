@@ -117,7 +117,7 @@ public abstract class BaseQMUIActivity<T extends BasePresenter> extends QMUIFrag
 
     @Override
     public void showLoading(String msg) {
-       LoadingDialog.showLoading(this, msg, true);
+       LoadingDialog.showLoading(this, true);
     }
     @Override
     public void hideLoading() {

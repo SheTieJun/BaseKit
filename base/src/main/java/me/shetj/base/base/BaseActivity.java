@@ -98,7 +98,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
 
 	@Override
 	public void showLoading(String msg) {
-		LoadingDialog.showLoading(this, msg, true);
+		LoadingDialog.showLoading(this, true);
 	}
 	@Override
 	public void hideLoading() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
-    <color name="colorPrimary" >#037BFF</color>
+    <color name="colorPrimary">#037BFF</color>
     <color name="colorPrimaryDark">#037BFF</color>
     <color name="colorAccent">#037BFF</color>
 
@@ -10,6 +10,9 @@
 
     <color name="toolbar_color">#ffffff</color>
     <color name="toolbar_title_color">#DD000000</color>
+
+    <color name="loading_color">#037BFF</color>
+
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="halfTransparent">#66000000</color>
     <color name="transparent">#00000000</color>
@@ -66,7 +69,6 @@
 
     <color name="mdtp_accent_color">#009688</color>
     <color name="mdtp_accent_color_dark">#00796b</color>
-
 
 
     <!--reds-->

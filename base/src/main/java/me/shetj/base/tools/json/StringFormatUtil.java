@@ -2,6 +2,7 @@ package me.shetj.base.tools.json;
 
 import android.content.Context;
 import android.support.annotation.Keep;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -18,7 +19,7 @@ public class StringFormatUtil {
       
     /** 
      *  
-     * @param context 
+     * @param context 上下文
      * @param wholeStr 全部文字 
      * @param highlightStr 改变颜色的文字 
      * @param color 颜色 
@@ -48,7 +49,7 @@ public class StringFormatUtil {
             return null;  
         }  
         spBuilder=new SpannableStringBuilder(wholeStr);  
-        color=mContext.getResources().getColor(color);  
+        color=ContextCompat.getColor(mContext,color) ;
         CharacterStyle charaStyle=new ForegroundColorSpan(color);
         spBuilder.setSpan(charaStyle, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return this;  

@@ -46,7 +46,7 @@
     <!--12sp 小字提示-->
 
 
-    <dimen name="smallTipText" >12sp</dimen>
+    <dimen name="smallTipText">12sp</dimen>
 
     <!--14sp（桌面端13sp） 正文/按钮文字-->
     <dimen name="mainBodyText">14sp</dimen>
