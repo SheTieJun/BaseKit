@@ -607,6 +607,9 @@ public class SwipeBackLayout extends QMUIWindowInsetLayout {
 
 
     public interface Callback {
+        /**
+         * @return 是否可以滑动
+         */
         boolean canSwipeBack();
     }
 }

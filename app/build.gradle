@@ -62,7 +62,7 @@ android {
             def requested = details.requested
             if (requested.group == 'com.android.support') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion  "$support"
+                    details.useVersion "$support"
                 }
             }
             if (requested.group == 'com.google.code.gson') {
