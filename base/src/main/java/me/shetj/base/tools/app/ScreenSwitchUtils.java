@@ -8,7 +8,6 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 
-
 import me.shetj.base.base.BaseFragment;
 import me.shetj.base.base.BaseMessage;
 import me.shetj.base.http.easyhttp.EasyHttpUtils;

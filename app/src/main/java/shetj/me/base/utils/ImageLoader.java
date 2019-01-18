@@ -49,10 +49,10 @@ public interface ImageLoader {
 
     /**
      * 获取view
-     * @param context
+     * @param context 上下文
      * @return {@link ImageView}
      */
-    <T extends ImageView> T getSimpleView(Context context, String url);
+    ImageView  getSimpleView(Context context, String url);
 
     /**
      * 清理内存

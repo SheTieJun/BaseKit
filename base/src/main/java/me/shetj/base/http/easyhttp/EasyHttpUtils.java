@@ -2,7 +2,6 @@ package me.shetj.base.http.easyhttp;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.Dialog;
 import android.support.annotation.Keep;
 
 import com.zhouyou.http.EasyHttp;

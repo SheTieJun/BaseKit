@@ -116,8 +116,8 @@ public abstract class QMUIFragment extends RxFragment {
     /**
      * see {@link QMUIFragmentActivity#startFragmentAndDestroyCurrent(QMUIFragment, boolean)}
      *
-     * @param fragment
-     * @param useNewTransitionConfigWhenPop
+     * @param fragment fragment
+     * @param useNewTransitionConfigWhenPop ~
      */
     protected void startFragmentAndDestroyCurrent(QMUIFragment fragment, boolean useNewTransitionConfigWhenPop) {
         if (getTargetFragment() != null) {
@@ -176,7 +176,7 @@ public abstract class QMUIFragment extends RxFragment {
             return;
         }
         Fragment fragment = getTargetFragment();
-        if (fragment == null || !(fragment instanceof QMUIFragment)) {
+        if (!(fragment instanceof QMUIFragment)) {
             return;
         }
         QMUIFragment targetFragment = (QMUIFragment) fragment;
@@ -235,14 +235,11 @@ public abstract class QMUIFragment extends RxFragment {
             rootView.setFitsSystemWindows(true);
         }
         final SwipeBackLayout swipeBackLayout = SwipeBackLayout.wrap(rootView, dragBackEdge(),
-                new SwipeBackLayout.Callback() {
-                    @Override
-                    public boolean canSwipeBack() {
-                        if (mEnterAnimationStatus != ANIMATION_ENTER_STATUS_END) {
-                            return false;
-                        }
-                        return canDragBack();
+                () -> {
+                    if (mEnterAnimationStatus != ANIMATION_ENTER_STATUS_END) {
+                        return false;
                     }
+                    return canDragBack();
                 });
         swipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
 
@@ -257,8 +254,8 @@ public abstract class QMUIFragment extends RxFragment {
                     if (scrollPercent <= 0.0F) {
                         for (int i = childCount - 1; i >= 0; i--) {
                             View view = container.getChildAt(i);
-                            Object tag = view.getTag(R.id.swipe_layout_in_back);
-                            if (tag != null && SWIPE_BACK_VIEW.equals(tag)) {
+                            Object tag = view.getTag(R.id.base_swipe_layout_in_back);
+                            if (SWIPE_BACK_VIEW.equals(tag)) {
                                 container.removeView(view);
                                 if (mModifiedFragment != null) {
                                     // give up swipe back, we should reset the revise
@@ -287,37 +284,34 @@ public abstract class QMUIFragment extends RxFragment {
                     } else if (scrollPercent >= 1.0F) {
                         for (int i = childCount - 1; i >= 0; i--) {
                             View view = container.getChildAt(i);
-                            Object tag = view.getTag( R.id.swipe_layout_in_back);
-                            if (tag != null && SWIPE_BACK_VIEW.equals(tag)) {
+                            Object tag = view.getTag( R.id.base_swipe_layout_in_back);
+                            if (SWIPE_BACK_VIEW.equals(tag)) {
                                 container.removeView(view);
                             }
                         }
                         FragmentManager fragmentManager = getFragmentManager();
-                        Utils.findAndModifyOpInBackStackRecord(fragmentManager, -1, new Utils.OpHandler() {
-                            @Override
-                            public boolean handle(Object op) {
-                                Field cmdField;
-                                try {
-                                    cmdField = op.getClass().getDeclaredField("cmd");
-                                    cmdField.setAccessible(true);
-                                    int cmd = (int) cmdField.get(op);
-                                    if (cmd == 1) {
-                                        Field popEnterAnimField = op.getClass().getDeclaredField("popEnterAnim");
-                                        popEnterAnimField.setAccessible(true);
-                                        popEnterAnimField.set(op, 0);
-                                    } else if (cmd == 3) {
-                                        Field popExitAnimField = op.getClass().getDeclaredField("popExitAnim");
-                                        popExitAnimField.setAccessible(true);
-                                        popExitAnimField.set(op, 0);
-                                    }
-                                } catch (NoSuchFieldException e) {
-                                    e.printStackTrace();
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
+                        Utils.findAndModifyOpInBackStackRecord(fragmentManager, -1, op -> {
+                            Field cmdField;
+                            try {
+                                cmdField = op.getClass().getDeclaredField("cmd");
+                                cmdField.setAccessible(true);
+                                int cmd = (int) cmdField.get(op);
+                                if (cmd == 1) {
+                                    Field popEnterAnimField = op.getClass().getDeclaredField("popEnterAnim");
+                                    popEnterAnimField.setAccessible(true);
+                                    popEnterAnimField.set(op, 0);
+                                } else if (cmd == 3) {
+                                    Field popExitAnimField = op.getClass().getDeclaredField("popExitAnim");
+                                    popExitAnimField.setAccessible(true);
+                                    popExitAnimField.set(op, 0);
                                 }
-
-                                return false;
+                            } catch (NoSuchFieldException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
                             }
+
+                            return false;
                         });
                         popBackStack();
                     }
@@ -331,8 +325,8 @@ public abstract class QMUIFragment extends RxFragment {
                 int childCount = container.getChildCount();
                 for (int i = childCount - 1; i >= 0; i--) {
                     View view = container.getChildAt(i);
-                    Object tag = view.getTag( R.id.swipe_layout_in_back);
-                    if (tag != null && SWIPE_BACK_VIEW.equals(tag)) {
+                    Object tag = view.getTag( R.id.base_swipe_layout_in_back);
+                    if (SWIPE_BACK_VIEW.equals(tag)) {
                         if (edgeFlag == EDGE_BOTTOM) {
                             ViewCompat.offsetTopAndBottom(view, targetOffset - view.getTop());
                         } else if (edgeFlag == EDGE_RIGHT) {
@@ -383,7 +377,7 @@ public abstract class QMUIFragment extends RxFragment {
                                         View baseView = mModifiedFragment.onCreateView(LayoutInflater.from(getContext()), container, null);
                                         mModifiedFragment.isCreateForSwipeBack = false;
                                         if (baseView != null) {
-                                            baseView.setTag( R.id.swipe_layout_in_back, SWIPE_BACK_VIEW);
+                                            baseView.setTag( R.id.base_swipe_layout_in_back, SWIPE_BACK_VIEW);
                                             container.addView(baseView, 0);
 
                                             // handle issue #235
@@ -468,7 +462,7 @@ public abstract class QMUIFragment extends RxFragment {
 
         if (!isCreateForSwipeBack) {
             mBaseView = swipeBackLayout.getContentView();
-            swipeBackLayout.setTag(R.id.swipe_layout_in_back, null);
+            swipeBackLayout.setTag(R.id.base_swipe_layout_in_back, null);
         }
 
         ViewCompat.setTranslationZ(swipeBackLayout, mBackStackIndex);
@@ -564,7 +558,7 @@ public abstract class QMUIFragment extends RxFragment {
     /**
      * disable or enable drag back
      *
-     * @return
+     * @return boolean canDragBack
      */
     protected boolean canDragBack() {
         return true;
@@ -573,7 +567,7 @@ public abstract class QMUIFragment extends RxFragment {
     /**
      * if enable drag back,
      *
-     * @return
+     * @return backViewInitOffset
      */
     protected int backViewInitOffset() {
         return 0;

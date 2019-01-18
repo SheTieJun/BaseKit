@@ -22,6 +22,7 @@ import me.shetj.base.base.IView;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.tools.app.HideUtil;
 import me.shetj.base.tools.json.EmptyUtils;
+import me.shetj.base.tools.json.GsonKit;
 import me.shetj.base.view.LoadingDialog;
 import timber.log.Timber;
 
@@ -137,15 +138,6 @@ public abstract class BaseQMUIActivity<T extends BasePresenter> extends QMUIFrag
     protected void endAnimation() {// 开始动画
         overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
     }
-
-
-
-
-    @Override
-    public void finish() {// 设置回退动画
-        super.finish();
-    }
-
     /**
      * 返回
      */
@@ -156,9 +148,6 @@ public abstract class BaseQMUIActivity<T extends BasePresenter> extends QMUIFrag
             finish();
         }
     }
-
-
-
 
     @Override
     public void showMessage(@NonNull String message) {
@@ -182,7 +171,7 @@ public abstract class BaseQMUIActivity<T extends BasePresenter> extends QMUIFrag
     @Override
     public void updateView(BaseMessage message){
         if (EmptyUtils.isNotEmpty(message)) {
-            Timber.i(message.obj.toString());
+            Timber.i(GsonKit.objectToJson(message));
         }
     }
 }

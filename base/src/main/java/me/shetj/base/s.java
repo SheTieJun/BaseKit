@@ -22,14 +22,14 @@ import me.shetj.base.tools.app.Utils;
 public final class s {
 	/**
 	 * 初始化
-	 * @param application
-	 * @param isDebug
-	 * @param baseUrl
+	 * @param application 初始
+	 * @param isDebug 是否是Debug
+	 * @param baseUrl http的baseUrl
 	 */
 	public static void init(Application application, boolean isDebug,String baseUrl){
 		EasyHttpUtils.init(application,isDebug,baseUrl);
 		Utils.init(application);
-		ViewTarget.setTagId(R.id.glide_tag);
+		ViewTarget.setTagId(R.id.base_glide_tag);
 		TimberUtil.setLogAuto(isDebug);
 	}
 

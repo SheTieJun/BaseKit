@@ -2,10 +2,10 @@ package shetj.me.base.fun.main;
 
 import android.os.Bundle;
 
-import me.shetj.base.base.BaseActivity;
+import me.shetj.base.base.BaseSwipeBackActivity;
 import shetj.me.base.R;
 
-public class MainActivity extends BaseActivity<MainPresenter> {
+public class MainActivity extends BaseSwipeBackActivity<MainPresenter> {
 
 
     @Override

@@ -52,18 +52,20 @@ public abstract class BaseQMUIFragment<T extends BasePresenter> extends QMUIFrag
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        isFirstLoad = true;
-        //绑定View
-        isPrepared = true;
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        isFirstLoad = true;
+        //绑定View
+        isPrepared = true;
         initEventAndData();
         lazyLoad();
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

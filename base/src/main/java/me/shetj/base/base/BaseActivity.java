@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Keep;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -18,7 +17,10 @@ import org.simple.eventbus.EventBus;
 import me.shetj.base.R;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.tools.app.HideUtil;
+import me.shetj.base.tools.json.EmptyUtils;
+import me.shetj.base.tools.json.GsonKit;
 import me.shetj.base.view.LoadingDialog;
+import timber.log.Timber;
 
 import static me.shetj.base.tools.app.ThirdViewUtil.convertAutoView;
 
@@ -153,6 +155,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
 	@SuppressWarnings("unchecked")
 	@Override
 	public void updateView(@NonNull BaseMessage message){
-
+		if (EmptyUtils.isNotEmpty(message)) {
+			Timber.i(GsonKit.objectToJson(message));
+		}
 	}
 }

@@ -19,7 +19,10 @@ import org.simple.eventbus.EventBus;
 import java.lang.reflect.Field;
 
 import me.shetj.base.tools.app.ArmsUtils;
+import me.shetj.base.tools.json.EmptyUtils;
+import me.shetj.base.tools.json.GsonKit;
 import me.shetj.base.view.LoadingDialog;
+import timber.log.Timber;
 
 /**
  * fragment基类
@@ -209,6 +212,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends RxFragment i
 	@SuppressLint("unchecked")
 	@Override
 	public void updateView(BaseMessage message) {
-
+		if (EmptyUtils.isNotEmpty(message)) {
+			Timber.i(GsonKit.objectToJson(message));
+		}
 	}
 }

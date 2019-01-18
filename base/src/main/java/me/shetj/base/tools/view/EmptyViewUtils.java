@@ -3,6 +3,8 @@ package me.shetj.base.tools.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,12 +52,12 @@ public class EmptyViewUtils {
 		return emptyView;
 	}
 
-	public static View  getEmptyView(Activity context, String msg,int Image){
+	public static View  getEmptyView(Activity context, @NonNull String msg, @DrawableRes int image){
 		View emptyView = LayoutInflater.from(context).inflate(R.layout.base_empty_date_view, null);
 		TextView emptyTextView = emptyView.findViewById(R.id.tv_msg_foot);
 		emptyTextView.setText(msg);
 		ImageView emptyImage = emptyView.findViewById(R.id.iv_empty_view);
-		emptyImage.setImageResource(Image);
+		emptyImage.setImageResource(image);
 		return emptyView;
 	}
 
