@@ -7,10 +7,16 @@ package shetj.me.base.common.tag;
  */
 
 public interface EventTags {
+
+  /**
+   * 退出信号
+   */
+  String EXIT = "exit";
+
   /**
    * 登录
    */
-	interface LoginState{
+  interface LoginState{
     String SEND_LOGIN = "send_login";
     String SEND_LOGOUT = "send_logout";
   }
