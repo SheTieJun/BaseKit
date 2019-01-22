@@ -47,8 +47,6 @@ public abstract class BaseQMUIActivity<T extends BasePresenter> extends QMUIFrag
         }
         HideUtil.init(this);
         startAnimation();
-        initView();
-        initData();
     }
 
     @Override

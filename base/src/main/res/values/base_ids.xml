@@ -2,4 +2,5 @@
 <resources>
     <item type="id" name="base_glide_tag"/>
     <item type="id" name="base_swipe_layout_in_back"/>
+    <item type="id" name="base_qmui"/>
 </resources>

@@ -42,6 +42,7 @@ public class MainActivity extends BaseSwipeBackActivity<MainPresenter> implement
 			default:
 				break;
 			case R.id.btn_test:
+				showLoading("测试哦");
 				break;
 		}
 	}
