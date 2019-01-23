@@ -109,7 +109,7 @@ dependencies {
     //view
 //    api 'com.jaeger.ninegridimageview:library:1.1.1'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-    api 'com.zhy:autolayout:1.4.5'
+//    api 'com.zhy:autolayout:1.4.5'
 //    api 'com.just.agentweb:agentweb:2.0.1'
 //    api 'com.wx.goodview:goodview:1.0.0'
     api 'me.imid.swipebacklayout.lib:library:1.1.0'
@@ -139,7 +139,7 @@ dependencies {
     api 'com.github.ybq:Android-SpinKit:1.2.0'
     api 'me.jessyan:autosize:1.1.2'
     //腾讯Android开发框架
-    api 'com.qmuiteam:qmui:1.1.7'
+    api 'com.qmuiteam:qmui:1.1.11'
     api 'com.tencent:mmkv:1.0.10'
 
 }

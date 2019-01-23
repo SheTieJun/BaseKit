@@ -26,8 +26,6 @@ import me.shetj.base.tools.json.GsonKit;
 import me.shetj.base.view.LoadingDialog;
 import timber.log.Timber;
 
-import static me.shetj.base.tools.app.ThirdViewUtil.convertAutoView;
-
 /**
  * 基础类  view 层
  * @author shetj
@@ -71,8 +69,7 @@ public abstract class BaseQMUIActivity<T extends BasePresenter> extends QMUIFrag
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
-        View view = convertAutoView(name, context, attrs);
-        return view == null ? super.onCreateView(name, context, attrs) : view;
+        return super.onCreateView(name, context, attrs) ;
     }
     /**
      * 针对6.0动态请求权限问题

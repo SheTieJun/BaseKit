@@ -175,7 +175,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends RxFragment i
 	/**
 	 * Lazy load data.
 	 */
-	public abstract void lazyLoadData();
+	public void lazyLoadData(){
+
+	}
 
 
 	@Override

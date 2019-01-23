@@ -176,7 +176,9 @@ public abstract class BaseQMUIFragment<T extends BasePresenter> extends QMUIFrag
     /**
      * Lazy load data.
      */
-    public abstract void lazyLoadData();
+    public  void lazyLoadData(){
+
+    }
 
 
     @Override
