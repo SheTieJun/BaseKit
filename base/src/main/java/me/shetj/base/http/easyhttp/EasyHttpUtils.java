@@ -2,7 +2,7 @@ package me.shetj.base.http.easyhttp;
 
 import android.app.Activity;
 import android.app.Application;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.SerializableDiskConverter;

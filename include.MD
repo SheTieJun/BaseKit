@@ -31,21 +31,22 @@ RxView.clicks(findViewById(R.id.enableCamera))
 20. 二维码
 21. Dialog [MaterialDialog](https://github.com/afollestad/material-dialogs)
 ```
-	MaterialDialog materialdialog = new MaterialDialog.Builder(getRxContext())
-								.title("版本更新：V"+info.getAppVersionName())
-								.titleColorRes(R.color.themColor)
-								.content(HtmlCompat.fromHtml(info.getAppChangeLog()))
-								.positiveText("更新")
-								.positiveColorRes(R.color.themColor)
-								.neutralColorRes(R.color.gray)
-								.onPositive((dialog, which) -> {
-									dialog.dismiss();
-								})
-								.onNeutral((dialog, which) -> {
-									dialog.dismiss();
-								})
-								.neutralText("暂不更新").build();
-				materialdialog.show();
+	MaterialDialog(this).show {
+	 title(R.string.your_title)
+
+      message(R.string.your_message)
+      positiveButton(text = "Agree")
+      negativeButton(text = "Disagree")
+        positiveButton(R.string.agree)
+        negativeButton(R.string.disagree)
+        positiveButton(R.string.agree) { dialog ->
+          // Do something
+        }
+        negativeButton(R.string.disagree) { dialog ->
+          // Do something
+        }
+         listItemsSingleChoice(R.array.my_items, initialSelection = 1)
+    }
 ```
 22. 视频播放[GSYVideoPlayer](https://github.com/CarGuo/GSYVideoPlayer)
 23. Android-SpinKit 加载进度条（登录，网络请求）[SpinKit](https://github.com/ybq/Android-SpinKit)

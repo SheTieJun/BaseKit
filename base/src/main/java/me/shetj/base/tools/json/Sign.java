@@ -1,6 +1,6 @@
 package me.shetj.base.tools.json;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import java.io.IOException;
 import java.util.Map;

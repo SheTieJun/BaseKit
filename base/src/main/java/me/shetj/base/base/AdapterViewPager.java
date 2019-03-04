@@ -1,9 +1,9 @@
 package me.shetj.base.base;
 
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 

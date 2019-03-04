@@ -7,6 +7,8 @@ import com.qcshendeng.toyo.common.bean.UserInfo;
 
 import org.simple.eventbus.EventBus;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import me.shetj.base.base.SimBaseCallBack;
 import me.shetj.base.s;
 import me.shetj.base.tools.file.SPUtils;
@@ -42,21 +44,6 @@ public class UserManager {
 	}
 
 	public boolean isLogin(Context context){
-		if (!isLoginNow()) {
-			MaterialDialog materialdialog = new MaterialDialog.Builder(context)
-							.title("登录提示")
-							.content("您还没有登录,无法继续操作！")
-							.positiveText("取消")
-							.positiveColorRes(R.color.actionSheet_blue)
-							.negativeColorRes(R.color.actionSheet_blue)
-							.onPositive((dialog, which) -> dialog.dismiss())
-							.onNegative((dialog, which) -> {
-								loginIn(context);
-							})
-							.negativeText("确定").build();
-			materialdialog.show();
-			return false;
-		}
 		return true;
 	}
 

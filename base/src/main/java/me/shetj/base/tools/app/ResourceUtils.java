@@ -1,7 +1,7 @@
 package me.shetj.base.tools.app;
 
 import android.content.Context;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 /**
  * @author shetj

@@ -1,8 +1,8 @@
 package me.shetj.base.view;
 
 import android.content.Context;
-import android.support.annotation.Keep;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.annotation.Keep;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;

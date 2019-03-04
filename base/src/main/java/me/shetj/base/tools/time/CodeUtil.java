@@ -1,7 +1,7 @@
 package me.shetj.base.tools.time;
 
 import android.app.Activity;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 import android.widget.TextView;
 
 import java.util.Timer;

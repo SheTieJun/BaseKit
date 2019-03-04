@@ -1,6 +1,6 @@
 package me.shetj.base.tools.file;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

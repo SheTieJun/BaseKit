@@ -1,6 +1,6 @@
 package me.shetj.base.view.buttomtablayout;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 /**
  * 底部tab对象

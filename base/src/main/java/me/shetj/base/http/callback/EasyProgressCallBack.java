@@ -1,6 +1,6 @@
 package me.shetj.base.http.callback;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import com.zhouyou.http.callback.ProgressDialogCallBack;
 import com.zhouyou.http.subsciber.IProgressDialog;

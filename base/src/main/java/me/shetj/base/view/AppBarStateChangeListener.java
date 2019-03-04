@@ -1,6 +1,6 @@
 package me.shetj.base.view;
 
-import android.support.design.widget.AppBarLayout;
+import com.google.android.material.appbar.AppBarLayout;
 
 /**
  * AppBar的监听

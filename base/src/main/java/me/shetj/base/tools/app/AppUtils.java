@@ -11,7 +11,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package me.shetj.base.tools.app;
 
 import android.graphics.Color;
-import android.support.annotation.Keep;
-import android.support.design.widget.Snackbar;
+import androidx.annotation.Keep;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,8 +1,8 @@
 package me.shetj.base.tools.json;
 
 import android.content.Context;
-import android.support.annotation.Keep;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.Keep;
+import androidx.core.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;

@@ -2,9 +2,11 @@ package me.shetj.base.base;
 
 
 import android.content.Intent;
-import android.support.annotation.Keep;
 
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+
+import androidx.annotation.Keep;
+
 
 import org.simple.eventbus.EventBus;
 

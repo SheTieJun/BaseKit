@@ -1,6 +1,6 @@
 package me.shetj.base.base;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 /**
  * @author shetj

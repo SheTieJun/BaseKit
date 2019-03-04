@@ -2,7 +2,7 @@ package shetj.me.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
+import androidx.multidex.MultiDex;
 
 import me.shetj.base.s;
 import shetj.me.base.api.API;

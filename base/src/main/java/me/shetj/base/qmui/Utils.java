@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.os.Build;
 import android.os.Looper;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
 import com.qmuiteam.qmui.QMUILog;
 

@@ -5,7 +5,7 @@
 package me.shetj.base.tools.app;
 
 import android.os.Build;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 import android.text.Html;
 import android.text.Spanned;
 

@@ -1,9 +1,10 @@
 package me.shetj.base.base;
 
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
+
 
 
 /**

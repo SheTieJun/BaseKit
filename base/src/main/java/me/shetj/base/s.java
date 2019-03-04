@@ -1,7 +1,7 @@
 package me.shetj.base;
 
 import android.app.Application;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 import com.bumptech.glide.request.target.ViewTarget;
 
