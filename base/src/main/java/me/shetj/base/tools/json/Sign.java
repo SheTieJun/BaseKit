@@ -45,7 +45,7 @@ public class Sign {
             baseString.append(param.getKey()).append("=").append(param.getValue());
         }
         baseString.append(secret);
-        return ArmsUtils.encodeToMD5(baseString.toString());
+        return ArmsUtils.Companion.encodeToMD5(baseString.toString());
     }
 
 }

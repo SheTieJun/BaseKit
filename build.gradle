@@ -5,6 +5,7 @@ buildscript {
     ext.support = '1.0.2'
     ext.androidx = "1.0.0"
     ext.compileSdkVersion       = 28
+    ext.minVersion              = 16
     ext.versionCode             = 6
     ext.versionName             = "0.0.6"
     repositories {

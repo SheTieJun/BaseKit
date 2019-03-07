@@ -32,7 +32,7 @@ public class HttpOssManager {
 
   public  void getOSSFromSever(final EasyCallBack<String> callBack){
     EasyHttp.get(API.QINIU_GET_TOKEN)
-            .cacheKey(ArmsUtils.encodeToMD5(API.QINIU_GET_TOKEN))
+            .cacheKey(ArmsUtils.Companion.encodeToMD5(API.QINIU_GET_TOKEN))
             .cacheMode(CacheMode.FIRSTCACHE)
             .cacheTime(1000*60)
             .execute(callBack);

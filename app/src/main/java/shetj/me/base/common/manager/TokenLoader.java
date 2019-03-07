@@ -51,7 +51,7 @@ public class TokenLoader {
     }
 
     public String getCacheToken() {
-        String token = (String) SPUtils.get(s.getApp().getApplicationContext(), SAVE_TOKEN, "");
+        String token = (String) SPUtils.Companion.get(s.INSTANCE.getApp().getApplicationContext(), SAVE_TOKEN, "");
         if (EmptyUtils.isEmpty(token)){
             return "token_fail";
         }

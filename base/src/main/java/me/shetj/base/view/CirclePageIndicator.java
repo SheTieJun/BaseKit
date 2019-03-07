@@ -51,7 +51,7 @@ public class CirclePageIndicator extends LinearLayout implements ViewPager.OnPag
     private int mActivePosition = 0;
     private int mIndicatorSpacing;  
     private boolean mIndicatorTypeChanged = false;
-    private int size = ArmsUtils.dip2px(5);
+    private int size = ArmsUtils.Companion.dip2px(5);
   
     private IndicatorType mIndicatorType = IndicatorType.of(INDICATOR_TYPE_CIRCLE);  
     private ViewPager mViewPager;

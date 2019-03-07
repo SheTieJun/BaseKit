@@ -102,7 +102,7 @@ public class GlideImageLoader implements ImageLoader {
 
 	@Override
 	public void clearMemCache() {
-		Glide.get(Utils.getApp().getApplicationContext()).clearMemory();
+		Glide.get(Utils.Companion.getApp().getApplicationContext()).clearMemory();
 	
 
 	}
@@ -112,7 +112,7 @@ public class GlideImageLoader implements ImageLoader {
 		Flowable.just(1).observeOn(Schedulers.newThread())
 						.subscribe(integer -> {
 							//清理磁盘缓存 需要在子线程中执行
-							Glide.get(Utils.getApp().getApplicationContext()).clearDiskCache();
+							Glide.get(Utils.Companion.getApp().getApplicationContext()).clearDiskCache();
 						});
 	}
 }

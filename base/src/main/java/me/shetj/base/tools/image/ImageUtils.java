@@ -154,7 +154,7 @@ public class ImageUtils {
 		}
 		Uri uri;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-			uri = FileProvider.getUriForFile(context.getApplicationContext(), AppUtils.getAppPackageName()+".FileProvider", file);
+			uri = FileProvider.getUriForFile(context.getApplicationContext(), AppUtils.Companion.getAppPackageName()+".FileProvider", file);
 		} else {
 			uri = Uri.fromFile(file);
 		}

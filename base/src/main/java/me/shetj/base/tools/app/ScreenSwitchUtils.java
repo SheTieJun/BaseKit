@@ -34,32 +34,32 @@ public class ScreenSwitchUtils {
      Timber.i( "横屏翻转: ");
      if (oldState != 1&& baseFragment!=null) {
       oldState = 1;
-      BaseMessage message = EasyHttpUtils.getMessage(oldState, 270);
-      message.msg = "横屏翻转";
+      BaseMessage message = EasyHttpUtils.INSTANCE.getMessage(oldState, 270);
+      message.setMsg("横屏翻转");
       baseFragment.updateView(message);
      }
     } else if (orientation > 135 && orientation < 225) {
      Timber.i(   "竖屏翻转: ");
      if (oldState != 2 && baseFragment!=null) {
       oldState = 2;
-      BaseMessage message = EasyHttpUtils.getMessage(oldState, 180);
-      message.msg = "竖屏翻转";
+      BaseMessage message = EasyHttpUtils.INSTANCE.getMessage(oldState, 180);
+      message.setMsg("竖屏翻转");
       baseFragment.updateView(message);
      }
     } else if (orientation > 225 && orientation < 315) {
      Timber.i(   "横屏: ");
      if (oldState != 3&& baseFragment!=null) {
       oldState = 3;
-      BaseMessage message = EasyHttpUtils.getMessage(oldState, 90);
-      message.msg = "横屏";
+      BaseMessage message = EasyHttpUtils.INSTANCE.getMessage(oldState, 90);
+      message.setMsg("横屏");
       baseFragment.updateView(message);
      }
     } else if ((orientation > 315 && orientation < 360) || (orientation > 0 && orientation < 45)) {
      Timber.i(  "竖屏: ");
      if (oldState != 4 && baseFragment!=null) {
       oldState = 4;
-      BaseMessage message = EasyHttpUtils.getMessage(oldState, 0);
-      message.msg = "竖屏";
+      BaseMessage message = EasyHttpUtils.INSTANCE.getMessage(oldState, 0);
+      message.setMsg("竖屏");
       baseFragment.updateView(message);
      }
     }

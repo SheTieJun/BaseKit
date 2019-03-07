@@ -57,7 +57,7 @@ public class ContainsEmojiEditText extends AppCompatEditText {
                 if (!resetText) {
                     if (count-before >= 2) {
                         CharSequence input = s.subSequence(start+before, start + count);
-                        if (CharactorHandler.containsEmoji(input.toString())) {
+                        if (CharactorHandler.INSTANCE.containsEmoji(input.toString())) {
                             resetText = true;
                             Toast.makeText(mContext, "请不要使用特殊符号表情！", Toast.LENGTH_SHORT).show();
                             setText(inputAfterText);

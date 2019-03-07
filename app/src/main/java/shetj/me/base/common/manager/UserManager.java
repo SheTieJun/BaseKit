@@ -27,7 +27,7 @@ import shetj.me.base.common.tag.SPKey;
 
 public class UserManager {
 	private static final UserManager OUR_INSTANCE = new UserManager();
-	private Context context = s.getApp().getApplicationContext();
+	private Context context = s.INSTANCE.getApp().getApplicationContext();
 	private UserInfo custom;
 
 	public static UserManager getInstance() {
@@ -59,7 +59,7 @@ public class UserManager {
 
 	public UserInfo getUserInfo(){
 		if (isLoginNow() &&  custom == null ){
-			String userInfo = (String) SPUtils.get(context, SPKey.SAVE_USER, "");
+			String userInfo = (String) SPUtils.Companion.get(context, SPKey.SAVE_USER, "");
 			if (EmptyUtils.isNotEmpty(userInfo)){
 				custom = GsonKit.jsonToBean(userInfo,UserInfo.class);
 			}
@@ -68,20 +68,20 @@ public class UserManager {
 	}
 
 	public void saveUserInfo(String userInfo) {
-		SPUtils.put(context, SPKey.SAVE_USER,userInfo);
+		SPUtils.Companion.put(context, SPKey.SAVE_USER,userInfo);
 	}
 
 	public void saveUserInfo(UserInfo userInfo, SimBaseCallBack commonCallback) {
 		custom = userInfo;
 		TokenManager.getInstance().setToken(custom.getToken());
-		SPUtils.put(context, SPKey.SAVE_USER,GsonKit.objectToJson(userInfo));
+		SPUtils.Companion.put(context, SPKey.SAVE_USER,GsonKit.objectToJson(userInfo));
 	}
 
 
 	private void cleanUserInfo(){
 		custom = null;
 		TokenManager.getInstance().setToken("");
-		SPUtils.put(context, SPKey.SAVE_USER,"");
+		SPUtils.Companion.put(context, SPKey.SAVE_USER,"");
 	}
 
 

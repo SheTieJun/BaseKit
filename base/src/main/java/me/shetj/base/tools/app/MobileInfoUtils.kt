@@ -10,6 +10,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.annotation.Keep
 import android.util.Log
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import com.afollestad.materialdialogs.MaterialDialog
 
@@ -19,6 +20,7 @@ import java.lang.reflect.Method
 import me.shetj.base.R
 import me.shetj.base.tools.file.SPUtils
 import me.shetj.base.tools.time.TimeUtil
+import setSwipeRefresh
 
 @Keep
 object MobileInfoUtils {
@@ -100,15 +102,14 @@ object MobileInfoUtils {
                         }
                         dialog.dismiss()
                     }
-                    neutralButton(text = "暂不设置" )  { dialog ->
+                     negativeButton(text = "暂不设置" )  { dialog ->
                         dialog.dismiss()
-                        SPUtils.put(activity, "AutoStart" + AppUtils.getAppVersionCode(), false)
+                        SPUtils.put(activity, "AutoStart" + AppUtils.appVersionCode, false)
                     }
 
                 }
             } catch (ignored: Exception) {
             }
-
         }
 
     }
@@ -125,7 +126,7 @@ object MobileInfoUtils {
     private fun isOpenAuto(activity: Activity): Boolean {
         return (SPUtils.get(activity, "AutoStart", true) as Boolean &&
                 //根据版本来，这个版本不提醒
-                SPUtils.get(activity, "AutoStart" + AppUtils.getAppVersionCode(), true) as Boolean
+                SPUtils.get(activity, "AutoStart" + AppUtils.appVersionCode, true) as Boolean
                 && SPUtils.get(activity, "AutoStart" + TimeUtil.getYMDime(), true) as Boolean)
     }
 

@@ -158,7 +158,7 @@ public class MediaPickerUtil {
 		switch (requestCode) {
 			case PictureConfig.CHOOSE_REQUEST:
 				BaseMessage<List<LocalMedia>> message = new BaseMessage<>();
-				message.obj  = PictureSelector.obtainMultipleResult(data);
+				message.setObj(PictureSelector.obtainMultipleResult(data));
 				commonCallback.onSuccess(message);
 				break;
 			default:
@@ -171,7 +171,7 @@ public class MediaPickerUtil {
 		switch (requestCode) {
 			case CHOOSE_REQUEST_PHOTO_SIZE:
 				BaseMessage<List<LocalMedia>> message = new BaseMessage<>();
-				message.obj  = PictureSelector.obtainMultipleResult(data);
+				message.setObj(PictureSelector.obtainMultipleResult(data));
 				commonCallback.onSuccess(message);
 				break;
 			default:
@@ -186,7 +186,7 @@ public class MediaPickerUtil {
 		switch (requestCode) {
 			case CHOOSE_REQUEST_VIDEO:
 				BaseMessage<List<LocalMedia>> message = new BaseMessage<>();
-				message.obj  = PictureSelector.obtainMultipleResult(data);
+				message.setObj(PictureSelector.obtainMultipleResult(data));
 				commonCallback.onSuccess(message);
 				break;
 			default:

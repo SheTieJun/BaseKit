@@ -146,7 +146,7 @@ public class DeviceUtils {
      * @return
      */
     public static int getStatusBarHeight(Context context) {
-        return BarUtils.getStatusBarHeight(context);
+        return BarUtils.Companion.getStatusBarHeight(context);
     }
 
 

@@ -79,7 +79,7 @@ public class EmptyUtils {
 
     private boolean checkStrEmpty(String str, String display) {
         if (TextUtils.isEmpty(str)) {
-            ArmsUtils.makeText(display);
+            ArmsUtils.Companion.makeText(display);
             return true;
         }
         return false;

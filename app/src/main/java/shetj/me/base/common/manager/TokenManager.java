@@ -37,7 +37,7 @@ public class TokenManager {
 
 
 	public  String  getToken() {
-			String token = (String) SPUtils.get(s.getApp().getApplicationContext(), SAVE_TOKEN, "");
+			String token = (String) SPUtils.Companion.get(s.INSTANCE.getApp().getApplicationContext(), SAVE_TOKEN, "");
 			if (EmptyUtils.isEmpty(token)){
 				return "";
 			}
@@ -45,13 +45,13 @@ public class TokenManager {
 
 	}
 	public  boolean isLogin(){
-		String token= (String) SPUtils.get(s.getApp().getApplicationContext(), SAVE_TOKEN,"");
+		String token= (String) SPUtils.Companion.get(s.INSTANCE.getApp().getApplicationContext(), SAVE_TOKEN,"");
 		return EmptyUtils.isNotEmpty(token);
 	}
 
 
 	public void setToken(String token) {
-		SPUtils.put(s.getApp().getApplicationContext(), SAVE_TOKEN,token);
+		SPUtils.Companion.put(s.INSTANCE.getApp().getApplicationContext(), SAVE_TOKEN,token);
 	}
 
 

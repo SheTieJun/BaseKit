@@ -110,7 +110,7 @@ public class BottomTabLayout extends LinearLayout {
     public void initTabViews(){
         View tabView;
         for (int index=0;index<mBottomTabs.size();index++){
-            tabView= LayoutInflater.from(mContext).inflate(R.layout.view_bottom_tab,null);
+            tabView= LayoutInflater.from(mContext).inflate(R.layout.base_view_bottom_tab,null);
             tabView.setTag(index);
             addTabView(index,tabView);
             mBottomTabViews.add(tabView);

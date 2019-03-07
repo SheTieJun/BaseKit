@@ -14,6 +14,6 @@ import me.shetj.base.base.IView;
 class MainPresenter extends BasePresenter<MainModel> {
 	public MainPresenter(IView view) {
 		super(view);
-		model = new MainModel();
+		setModel(new MainModel());
 	}
 }
