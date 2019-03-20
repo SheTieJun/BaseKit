@@ -2,9 +2,9 @@ package me.shetj.base.base;
 
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
@@ -49,18 +49,6 @@ public class AdapterViewPager extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mList.size();
-    }
-
-
-    @NonNull
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        BaseFragment f = (BaseFragment) super.instantiateItem(container, position);
-        View view = f.getView();
-        if (view != null) {
-            container.addView(view);
-        }
-        return f;
     }
 
     @Override
