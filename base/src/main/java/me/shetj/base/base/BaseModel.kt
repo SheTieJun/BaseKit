@@ -1,11 +1,11 @@
 package me.shetj.base.base
 
+import android.os.Message
 import androidx.annotation.Keep
 
-import com.zhouyou.http.model.HttpParams
 
 import io.reactivex.annotations.NonNull
-import me.shetj.base.http.easyhttp.EasyHttpUtils
+import me.shetj.base.tools.app.getMessage
 
 /**
  * **@packageName：** me.shetj.base.base<br></br>
@@ -20,13 +20,8 @@ import me.shetj.base.http.easyhttp.EasyHttpUtils
 abstract class BaseModel : IModel {
 
     @NonNull
-    override fun getMessage(code: Int, obj: Any): BaseMessage<*> {
-        return EasyHttpUtils.getMessage(code, obj)
-    }
-
-    @NonNull
-    fun getParamsFromMap(@NonNull map: Map<String, String>): HttpParams {
-        return EasyHttpUtils.getParamsFromMap(map)
+    override fun getMessage(code: Int, obj: Any): Message {
+        return Message.obtain().getMessage(code,obj)
     }
 
     override fun onDestroy() {

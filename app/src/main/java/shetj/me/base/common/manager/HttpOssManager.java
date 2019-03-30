@@ -1,12 +1,5 @@
 package shetj.me.base.common.manager;
 
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.cache.model.CacheMode;
-
-import me.shetj.base.http.callback.EasyCallBack;
-import me.shetj.base.tools.app.ArmsUtils;
-import shetj.me.base.api.API;
-
 /**
  * Created by shetj
  * on 2017/9/28.
@@ -30,12 +23,7 @@ public class HttpOssManager {
     return instance;
   }
 
-  public  void getOSSFromSever(final EasyCallBack<String> callBack){
-    EasyHttp.get(API.QINIU_GET_TOKEN)
-            .cacheKey(ArmsUtils.Companion.encodeToMD5(API.QINIU_GET_TOKEN))
-            .cacheMode(CacheMode.FIRSTCACHE)
-            .cacheTime(1000*60)
-            .execute(callBack);
+  public  void getOSSFromSever( ){
   }
 
 }

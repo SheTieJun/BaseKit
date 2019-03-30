@@ -2,6 +2,7 @@ package me.shetj.base.base
 
 
 import android.content.Intent
+import android.os.Message
 
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 
@@ -12,7 +13,7 @@ import org.simple.eventbus.EventBus
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import me.shetj.base.http.easyhttp.EasyHttpUtils
+import me.shetj.base.tools.app.getMessage
 import timber.log.Timber
 
 /**
@@ -90,11 +91,20 @@ open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter
 
     fun startActivity(intent: Intent) {
         if (null != view) {
-            view!!.rxContext.startActivity(intent)
+            view?.rxContext?.startActivity(intent)
         }
     }
 
-    fun getMessage(code: Int, msg: Any): BaseMessage<*> {
-        return EasyHttpUtils.getMessage(code, msg)
+
+
+    fun getMessage(code: Int, msg: Any): Message {
+        return  Message.obtain().getMessage (code,msg)
+    }
+
+
+    fun updateMessage(code: Int, msg: Any){
+        view?.updateView(getMessage(code,msg))
     }
 }
+
+

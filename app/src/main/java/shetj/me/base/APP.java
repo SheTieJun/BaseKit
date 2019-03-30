@@ -21,7 +21,7 @@ public class APP extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		s.INSTANCE.init(this,BuildConfig.LOG_DEBUG, API.BASE_URL,1);
+		s.INSTANCE.init(this,BuildConfig.LOG_DEBUG);
 	}
 
 

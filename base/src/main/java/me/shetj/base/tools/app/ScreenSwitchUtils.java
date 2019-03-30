@@ -8,9 +8,6 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 
-import me.shetj.base.base.BaseFragment;
-import me.shetj.base.base.BaseMessage;
-import me.shetj.base.http.easyhttp.EasyHttpUtils;
 import timber.log.Timber;
 
 /**
@@ -19,7 +16,6 @@ import timber.log.Timber;
 public class ScreenSwitchUtils {
 
  private volatile static ScreenSwitchUtils mInstance;
- private BaseFragment baseFragment;
  private SensorManager sm;
  private OrientationSensorListener listener;
  private Sensor sensor;
@@ -31,36 +27,24 @@ public class ScreenSwitchUtils {
    if (msg.what == 888) {
     int orientation = msg.arg1;
     if (orientation > 45 && orientation < 135) {
-     Timber.i( "横屏翻转: ");
-     if (oldState != 1&& baseFragment!=null) {
+     if (oldState != 1 ) {
       oldState = 1;
-      BaseMessage message = EasyHttpUtils.INSTANCE.getMessage(oldState, 270);
-      message.setMsg("横屏翻转");
-      baseFragment.updateView(message);
+      Timber.i( "横屏翻转: ");
      }
     } else if (orientation > 135 && orientation < 225) {
-     Timber.i(   "竖屏翻转: ");
-     if (oldState != 2 && baseFragment!=null) {
+     if (oldState != 2  ) {
       oldState = 2;
-      BaseMessage message = EasyHttpUtils.INSTANCE.getMessage(oldState, 180);
-      message.setMsg("竖屏翻转");
-      baseFragment.updateView(message);
+      Timber.i(   "竖屏翻转: ");
      }
     } else if (orientation > 225 && orientation < 315) {
-     Timber.i(   "横屏: ");
-     if (oldState != 3&& baseFragment!=null) {
+     if (oldState != 3 ) {
       oldState = 3;
-      BaseMessage message = EasyHttpUtils.INSTANCE.getMessage(oldState, 90);
-      message.setMsg("横屏");
-      baseFragment.updateView(message);
+      Timber.i(   "横屏: ");
      }
     } else if ((orientation > 315 && orientation < 360) || (orientation > 0 && orientation < 45)) {
-     Timber.i(  "竖屏: ");
-     if (oldState != 4 && baseFragment!=null) {
+     if (oldState != 4  ) {
       oldState = 4;
-      BaseMessage message = EasyHttpUtils.INSTANCE.getMessage(oldState, 0);
-      message.setMsg("竖屏");
-      baseFragment.updateView(message);
+      Timber.i(  "竖屏: ");
      }
     }
    }
@@ -86,8 +70,7 @@ public class ScreenSwitchUtils {
   listener = new OrientationSensorListener(new ChangeOrientationHandler());
  }
  /** 开始监听 */
- public void start(BaseFragment baseFragment) {
-  this.baseFragment = baseFragment;
+ public void start() {
   sm.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_UI);
  }
 

@@ -8,39 +8,30 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
-import androidx.annotation.Keep
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.RecyclerView
+import android.os.Message
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.SpannedString
 import android.text.style.AbsoluteSizeSpan
-import android.view.DisplayCutout
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
-import android.view.ViewTreeObserver
-import android.view.Window
-import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
-
+import androidx.annotation.Keep
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.snackbar.Snackbar
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.tbruyelle.rxpermissions2.RxPermissions
-
+import io.reactivex.annotations.NonNull
+import me.shetj.base.s
 import java.io.IOException
 import java.io.InputStream
 import java.security.MessageDigest
-
-import me.shetj.base.qmui.SwipeBackLayout
-import me.shetj.base.s
-import retrofit2.HttpException
-import kotlin.experimental.and
 
 
 /**
@@ -441,18 +432,18 @@ class ArmsUtils private constructor() {
         }
 
 
-        fun convertStatusCode(httpException: HttpException): String {
+        fun convertStatusCode(code :Int): String {
             val msg: String
-            if (httpException.code() == 500) {
+            if (code == 500) {
                 msg = "服务器发生错误"
-            } else if (httpException.code() == 404) {
+            } else if (code == 404) {
                 msg = "请求地址不存在"
-            } else if (httpException.code() == 403) {
+            } else if (code == 403) {
                 msg = "请求被服务器拒绝"
-            } else if (httpException.code() == 307) {
+            } else if (code == 307) {
                 msg = "请求被重定向到其他页面"
             } else {
-                msg = httpException.message()
+                msg = "其他错误"
             }
             return msg
         }
@@ -513,5 +504,8 @@ class ArmsUtils private constructor() {
         }
     }
 
-
+    @NonNull
+     fun getMessage(code: Int, obj: Any): Message {
+        return Message.obtain().getMessage(code,obj)
+    }
 }

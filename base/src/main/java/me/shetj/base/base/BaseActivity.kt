@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Message
 import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 import android.util.AttributeSet
@@ -147,7 +148,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
         back()
     }
 
-    override fun updateView(message: BaseMessage<*>) {
+    override fun updateView(message: Message) {
         if (EmptyUtils.isNotEmpty(message)) {
             Timber.i(GsonKit.objectToJson(message))
         }

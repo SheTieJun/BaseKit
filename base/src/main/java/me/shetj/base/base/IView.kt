@@ -1,5 +1,6 @@
 package me.shetj.base.base
 
+import android.os.Message
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 
 import androidx.annotation.Keep
@@ -40,6 +41,6 @@ interface IView {
      * 在每次接到信息时,把信息显示view上,---更新view
      * @param message 接收到的信息
      */
-    fun updateView(message: BaseMessage<*>)
+    fun updateView(message: Message)
 
 }

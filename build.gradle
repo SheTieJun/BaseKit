@@ -16,12 +16,12 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0' // Add this line
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
-//        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.10'//资源混淆
         classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.2'//Aspect
+        classpath "com.alibaba:arouter-register:1.0.2"
     }
 }
 

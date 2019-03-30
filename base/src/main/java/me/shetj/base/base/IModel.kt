@@ -1,5 +1,6 @@
 package me.shetj.base.base
 
+import android.os.Message
 import androidx.annotation.Keep
 
 /**
@@ -14,7 +15,7 @@ interface IModel {
      * @param obj 数据
      * @return BaseMessage
      */
-    fun getMessage(code: Int, obj: Any): BaseMessage<*>
+    fun getMessage(code: Int, obj: Any): Message
 
     /**
      * 结束

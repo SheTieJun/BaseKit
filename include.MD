@@ -151,3 +151,6 @@ com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4
 1. Schema(预留跳转方式)
 2. web
 3. 固定
+
+#### 路由
+[ARouter](https://github.com/SheTieJun/Shetj/blob/master/router/router.md)

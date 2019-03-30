@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Message
 import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 import android.util.AttributeSet
@@ -15,7 +16,6 @@ import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import org.simple.eventbus.EventBus
 
 import me.shetj.base.R
-import me.shetj.base.base.BaseMessage
 import me.shetj.base.base.BasePresenter
 import me.shetj.base.base.IView
 import me.shetj.base.tools.app.ArmsUtils
@@ -153,7 +153,7 @@ abstract class BaseQMUIActivity<T : BasePresenter<*>> : QMUIFragmentActivity(), 
         back()
     }
 
-    override fun updateView(message: BaseMessage<*>) {
+    override fun updateView(message: Message) {
         if (EmptyUtils.isNotEmpty(message)) {
             Timber.i(GsonKit.objectToJson(message))
         }

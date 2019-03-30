@@ -27,6 +27,7 @@ abstract class BaseSwipeBackActivity<T : BasePresenter<*>> : BaseActivity<T>(), 
         mHelper!!.onPostCreate()
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <V : View> findViewById(id: Int): V? {
         val v = super.findViewById<V>(id)
         return if (v == null && mHelper != null) {

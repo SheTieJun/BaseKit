@@ -46,7 +46,7 @@ class StringUtils private constructor() {
         fun equals(a: CharSequence, b: CharSequence): Boolean {
             if (a === b) return true
             val length  = a.length
-            if (a != null && b != null && length  == b.length) {
+            if (length  == b.length) {
                 if (a is String && b is String) {
                     return a == b
                 } else {

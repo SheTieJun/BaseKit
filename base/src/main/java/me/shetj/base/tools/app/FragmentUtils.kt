@@ -991,8 +991,7 @@ class FragmentUtils private constructor() {
             if (fragments == null || fragments.isEmpty()) return false
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
-                if (fragment != null
-                        && fragment.isResumed
+                if (fragment.isResumed
                         && fragment.isVisible
                         && fragment.userVisibleHint
                         && fragment is OnBackClickListener
@@ -1003,44 +1002,6 @@ class FragmentUtils private constructor() {
             return false
         }
 
-        /**
-         * Set background color for fragment.
-         *
-         * @param fragment The fragment.
-         * @param color    The background color.
-         */
-        fun setBackgroundColor(fragment: Fragment,
-                               @ColorInt color: Int) {
-            val view = fragment.view
-            view?.setBackgroundColor(color)
-        }
-
-        /**
-         * Set background resource for fragment.
-         *
-         * @param fragment The fragment.
-         * @param resId    The resource id.
-         */
-        fun setBackgroundResource(fragment: Fragment,
-                                  @DrawableRes resId: Int) {
-            val view = fragment.view
-            view?.setBackgroundResource(resId)
-        }
-
-        /**
-         * Set background color for fragment.
-         *
-         * @param fragment   The fragment.
-         * @param background The background.
-         */
-        fun setBackground(fragment: Fragment, background: Drawable) {
-            val view = fragment.view ?: return
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                view.background = background
-            } else {
-                view.setBackgroundDrawable(background)
-            }
-        }
 
         /**
          * Return the simple name of fragment.
@@ -1053,83 +1014,3 @@ class FragmentUtils private constructor() {
         }
     }
 }
-/**
- * Add fragment.
- *
- * @param fm          The manager of fragment.
- * @param add         The fragment will be add.
- * @param containerId The id of container.
- */
-/**
- * Add fragment.
- *
- * @param fm          The manager of fragment.
- * @param add         The fragment will be add.
- * @param containerId The id of container.
- * @param isHide      True to hide, false otherwise.
- */
-/**
- * Add fragment.
- *
- * @param fm          The manager of fragment.
- * @param containerId The id of container.
- * @param add         The fragment will be add.
- * @param isAddStack  True to add fragment in stack, false otherwise.
- * @param enterAnim   An animation or animator resource ID used for the enter animation on the
- * view of the fragment being added or attached.
- * @param exitAnim    An animation or animator resource ID used for the exit animation on the
- * view of the fragment being removed or detached.
- */
-/**
- * Replace fragment.
- *
- * @param srcFragment  The source of fragment.
- * @param destFragment The destination of fragment.
- */
-/**
- * Replace fragment.
- *
- * @param srcFragment  The source of fragment.
- * @param destFragment The destination of fragment.
- * @param isAddStack   True to add fragment in stack, false otherwise.
- * @param enterAnim    An animation or animator resource ID used for the enter animation on the
- * view of the fragment being added or attached.
- * @param exitAnim     An animation or animator resource ID used for the exit animation on the
- * view of the fragment being removed or detached.
- */
-/**
- * Replace fragment.
- *
- * @param fm          The manager of fragment.
- * @param fragment    The new fragment to place in the container.
- * @param containerId The id of container.
- */
-/**
- * Replace fragment.
- *
- * @param fm          The manager of fragment.
- * @param containerId The id of container.
- * @param fragment    The new fragment to place in the container.
- * @param isAddStack  True to add fragment in stack, false otherwise.
- * @param enterAnim   An animation or animator resource ID used for the enter animation on the
- * view of the fragment being added or attached.
- * @param exitAnim    An animation or animator resource ID used for the exit animation on the
- * view of the fragment being removed or detached.
- */
-/**
- * Pop fragment.
- *
- * @param fm The manager of fragment.
- */
-/**
- * Pop to fragment.
- *
- * @param fm            The manager of fragment.
- * @param popClz        The class of fragment will be popped to.
- * @param isIncludeSelf True to include the fragment, false otherwise.
- */
-/**
- * Pop all fragments.
- *
- * @param fm The manager of fragment.
- */

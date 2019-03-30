@@ -3,6 +3,7 @@ package shetj.me.base.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Message;
 
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -14,7 +15,6 @@ import java.io.File;
 import java.util.List;
 
 import me.shetj.base.base.BaseCallback;
-import me.shetj.base.base.BaseMessage;
 import shetj.me.base.R;
 import timber.log.Timber;
 
@@ -154,11 +154,11 @@ public class MediaPickerUtil {
 	}
 
 	public static void onActivityResult(int requestCode, int resultCode, Intent data,
-	                                    BaseCallback<BaseMessage<List<LocalMedia>>> commonCallback){
+	                                    BaseCallback<Message> commonCallback){
 		switch (requestCode) {
 			case PictureConfig.CHOOSE_REQUEST:
-				BaseMessage<List<LocalMedia>> message = new BaseMessage<>();
-				message.setObj(PictureSelector.obtainMultipleResult(data));
+				Message message = Message.obtain();
+				message.obj = PictureSelector.obtainMultipleResult(data);
 				commonCallback.onSuccess(message);
 				break;
 			default:
@@ -167,11 +167,11 @@ public class MediaPickerUtil {
 	}
 
 	public static void onActivityResultPhotoSize(int requestCode, int resultCode, Intent data,
-	                                    BaseCallback<BaseMessage<List<LocalMedia>>> commonCallback){
+	                                    BaseCallback<Message> commonCallback){
 		switch (requestCode) {
 			case CHOOSE_REQUEST_PHOTO_SIZE:
-				BaseMessage<List<LocalMedia>> message = new BaseMessage<>();
-				message.setObj(PictureSelector.obtainMultipleResult(data));
+				Message message = Message.obtain();
+				message.obj = PictureSelector.obtainMultipleResult(data);
 				commonCallback.onSuccess(message);
 				break;
 			default:
@@ -182,11 +182,11 @@ public class MediaPickerUtil {
 
 
 	public static void onActivityResultVideo(int requestCode, int resultCode, Intent data,
-	                                         BaseCallback<BaseMessage<List<LocalMedia>>> commonCallback){
+	                                         BaseCallback<Message> commonCallback){
 		switch (requestCode) {
 			case CHOOSE_REQUEST_VIDEO:
-				BaseMessage<List<LocalMedia>> message = new BaseMessage<>();
-				message.setObj(PictureSelector.obtainMultipleResult(data));
+				Message message = Message.obtain();
+				message.obj = PictureSelector.obtainMultipleResult(data);
 				commonCallback.onSuccess(message);
 				break;
 			default:

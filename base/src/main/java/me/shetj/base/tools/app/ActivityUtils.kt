@@ -5,12 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Message
 import android.transition.Explode
 import android.transition.Fade
 import android.transition.Slide
 import android.transition.Transition
 import android.view.Gravity
 import android.view.View
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
@@ -50,6 +53,31 @@ fun FragmentManager.replaceFragment(fragment: Fragment, frameId: Int) {
 
 
 /**
+ * Set background color for fragment.
+ * @param color    The background color.
+ */
+fun Fragment.setBackgroundColor(@ColorInt color: Int) {
+    val view = this.view
+    view?.setBackgroundColor(color)
+}
+
+/**
+ * Set background resource for fragment.
+ *
+ * @param fragment The fragment.
+ * @param resId    The resource id.
+ */
+fun Fragment.setBackgroundResource(@DrawableRes resId: Int) {
+    val view = this.view
+    view?.setBackgroundResource(resId)
+}
+
+fun Message.getMessage(code: Int, msg: Any): Message {
+    obj = msg
+    arg1 = code
+    return this
+}
+/**
  * 当你需要当前界面中的某个元素和新界面中的元素有关时，你可以使用这个动画。效果很赞~！
  */
 fun Activity.getActivityOptions(sharedCardView: View, TRANSITION_NAME_CARD: String): ActivityOptionsCompat {
@@ -83,7 +111,7 @@ fun Activity.startNewAcitivity( options: ActivityOptionsCompat, activityClass: C
 
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun Activity.setEnterTransition(  type: String) {
+fun Activity.setEnterTransition( type: String) {
     when (type) {
         "explode" -> {
             val explode = Explode()

@@ -3,6 +3,7 @@ package me.shetj.base.qmui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.Message
 import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +15,6 @@ import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 
 import org.simple.eventbus.EventBus
 
-import me.shetj.base.base.BaseMessage
 import me.shetj.base.base.BasePresenter
 import me.shetj.base.base.IView
 import me.shetj.base.tools.app.ArmsUtils
@@ -193,7 +193,7 @@ abstract class BaseQMUIFragment<T : BasePresenter<*>> : QMUIFragment(), IView {
     }
 
     @SuppressLint("unchecked")
-    override fun updateView(message: BaseMessage<*>) {
+    override fun updateView(message: Message) {
 
     }
 
