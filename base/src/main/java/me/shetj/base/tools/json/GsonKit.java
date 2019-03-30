@@ -59,7 +59,7 @@ public class GsonKit {
      */
     public static String objectToJson(@NonNull Object ts, final String dateformat) {
         try {
-            gson = new GsonBuilder().registerTypeHierarchyAdapter(Date.class, new JsonSerializer<Date>() {
+           Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Date.class, new JsonSerializer<Date>() {
                 @Override
                 public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
                     SimpleDateFormat format = new SimpleDateFormat(dateformat);
