@@ -42,12 +42,8 @@ public class StringFormatUtil {
                  */  
                 start=wholeStr.indexOf(highlightStr);  
                 end=start+highlightStr.length();  
-            }else{  
-                return null;  
-            }  
-        }else{  
-            return null;  
-        }  
+            }
+        }
         spBuilder=new SpannableStringBuilder(wholeStr);  
         color=ContextCompat.getColor(mContext,color) ;
         CharacterStyle charaStyle=new ForegroundColorSpan(color);
