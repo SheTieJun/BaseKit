@@ -86,4 +86,9 @@
         <item name="shadow_bottom">@drawable/shadow_bottom</item>
     </style>
 
+    <style name="tip_pop_anim_style">
+        <item name="android:windowEnterAnimation">@anim/fade_ins</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
 </resources>
