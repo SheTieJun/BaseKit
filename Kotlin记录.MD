@@ -1,4 +1,5 @@
-##### 修饰词
+##### 修饰词 
+
 `internal` // 在同一module中可见
 
 `private `只在该类(以及它的成员)中可见
@@ -9,5 +10,16 @@
 
 `public` 任何地方可见 (public — any client who sees the declaring class sees its public members.)+
 
-##### 扩展
-1. 函数扩展
+##### 特性
+1. 函数扩展 
+2. 默认参数
+3. Coroutine 协程异步 
+```  
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20'
+ implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.20'
+ ```

@@ -11,7 +11,7 @@ import me.shetj.base.base.IView;
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b><br>
  */
-class MainPresenter extends BasePresenter<MainModel> {
+public class MainPresenter extends BasePresenter<MainModel> {
 	public MainPresenter(IView view) {
 		super(view);
 		setModel(new MainModel());

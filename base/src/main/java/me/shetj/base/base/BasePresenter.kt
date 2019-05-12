@@ -13,8 +13,14 @@ import org.simple.eventbus.EventBus
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.android.Main
+import kotlinx.coroutines.cancelChildren
 import me.shetj.base.tools.app.getMessage
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 /**
  *
@@ -22,10 +28,19 @@ import timber.log.Timber
  * @author shetj
  */
 @Keep
-open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter {
+open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter,CoroutineScope {
 
     private var mCompositeDisposable: CompositeDisposable? = null
     protected var model: T? = null
+
+    private val job = SupervisorJob()
+
+    private fun SupervisorJob(): Job {
+        return Job()
+    }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     internal val rxContext: RxAppCompatActivity
         get() = view!!.rxContext
@@ -51,6 +66,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }
+        coroutineContext.cancelChildren()
         unDispose()
         this.mCompositeDisposable = null
         if (model != null) {

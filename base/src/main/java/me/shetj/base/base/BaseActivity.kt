@@ -12,6 +12,11 @@ import android.view.View
 
 
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.android.Main
+import kotlinx.coroutines.cancelChildren
 
 import org.simple.eventbus.EventBus
 
@@ -23,6 +28,7 @@ import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
 import me.shetj.base.view.LoadingDialog
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 
 /**
@@ -30,12 +36,19 @@ import timber.log.Timber
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView {
+abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView , CoroutineScope {
 
     protected var mPresenter: T? = null
 
     override val rxContext: RxAppCompatActivity
         get() = this
+
+
+    private val job = Job()
+
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +59,13 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
         }
         HideUtil.init(this)
         startAnimation()
+
     }
 
     /**
      * 连接view
      */
     protected abstract fun initView()
-
     /**
      * 连接数据
      */
@@ -95,6 +108,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
             //如果要使用eventbus请将此方法返回true
             EventBus.getDefault().unregister(this)
         }
+        coroutineContext.cancelChildren()
         if (null != mPresenter) {
             mPresenter!!.onDestroy()
         }
@@ -120,10 +134,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
      */
     protected fun endAnimation() {// 开始动画
         overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out)
-    }
-
-    override fun finish() {// 设置回退动画
-        super.finish()
     }
 
     /**
