@@ -38,7 +38,7 @@ public class TokenManager {
 
 	public  String  getToken() {
 			String token = (String) SPUtils.Companion.get(s.INSTANCE.getApp().getApplicationContext(), SAVE_TOKEN, "");
-			if (EmptyUtils.isEmpty(token)){
+			if (EmptyUtils.Companion.isEmpty(token)){
 				return "";
 			}
 			return token;
@@ -46,7 +46,7 @@ public class TokenManager {
 	}
 	public  boolean isLogin(){
 		String token= (String) SPUtils.Companion.get(s.INSTANCE.getApp().getApplicationContext(), SAVE_TOKEN,"");
-		return EmptyUtils.isNotEmpty(token);
+		return EmptyUtils.Companion.isNotEmpty(token);
 	}
 
 

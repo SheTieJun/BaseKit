@@ -20,19 +20,24 @@ import me.shetj.base.tools.app.Utils
 @Keep
 object s {
 
+    @JvmStatic
     val app: Application
         get() = Utils.app
+
+    @JvmField
+    var isDebug  = true
 
     /**
      * 初始化
      * @param application 初始
      * @param isDebug 是否是Debug
-     * @param baseUrl http的baseUrl
      */
+    @JvmStatic
     fun init(application: Application, isDebug: Boolean) {
         Utils.init(application)
         ViewTarget.setTagId(R.id.base_glide_tag)
         TimberUtil.setLogAuto(isDebug)
+        this.isDebug = isDebug
     }
 
 

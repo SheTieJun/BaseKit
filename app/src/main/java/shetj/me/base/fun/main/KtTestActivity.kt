@@ -2,8 +2,6 @@ package shetj.me.base.`fun`.main
 
 import android.os.Bundle
 import kotlinx.coroutines.*
-import kotlinx.coroutines.android.Main
-import kotlinx.coroutines.android.UI
 import me.shetj.base.base.BaseActivity
 import shetj.me.base.R
 import kotlin.system.measureNanoTime

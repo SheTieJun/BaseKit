@@ -358,7 +358,7 @@ public class ReflectUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> T getObjectByFieldName(Object object, String fieldName, Class<T> clas){
-        if(object != null && EmptyUtils.isNotEmpty(fieldName) && clas != null){
+        if(object != null && EmptyUtils.Companion.isNotEmpty(fieldName) && clas != null){
             try {
                 Field field = ReflectUtils.getField(object.getClass(), fieldName, true, true);
                 if(field != null){

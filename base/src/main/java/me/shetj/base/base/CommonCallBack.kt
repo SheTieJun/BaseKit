@@ -9,16 +9,14 @@ package me.shetj.base.base
  * **@describe**<br></br>
  */
 
-interface CommonCallBack {
-
+interface CommonCallBack<T> {
     /**
      * 成功
      * @param key 成功
      */
-    fun onSuccess(key: String)
-
+    fun onSuccess(key: T)
     /**
      * 结束
      */
-    fun onClose()
+    fun onFail(ex: Exception)
 }

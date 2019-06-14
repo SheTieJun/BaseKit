@@ -1,13 +1,13 @@
 package shetj.me.base.utils;
 
 import android.app.Activity;
-import androidx.annotation.Keep;
 import android.view.ViewGroup;
 
 import com.irozon.sneaker.Sneaker;
 import com.irozon.sneaker.interfaces.OnSneakerClickListener;
 import com.irozon.sneaker.interfaces.OnSneakerDismissListener;
 
+import androidx.annotation.Keep;
 import shetj.me.base.R;
 
 /**

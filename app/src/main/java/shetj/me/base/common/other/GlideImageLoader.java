@@ -3,8 +3,6 @@ package shetj.me.base.common.other;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -12,10 +10,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
 import me.shetj.base.tools.app.Utils;
-import me.shetj.base.view.LoadingDialog;
+import shetj.me.base.view.LoadingDialog;
 import shetj.me.base.utils.ImageLoader;
 
 /**

@@ -2,10 +2,9 @@ package shetj.me.base;
 
 import android.app.Application;
 import android.content.Context;
-import androidx.multidex.MultiDex;
 
+import androidx.multidex.MultiDex;
 import me.shetj.base.s;
-import shetj.me.base.api.API;
 
 /**
  * <b>@packageName：</b> com.ebu.master<br>

@@ -70,7 +70,7 @@ class CodeUtil {
     }
 
     /**
-     * 停止集合中正在执行的 RxJava 任务
+     * 停止集合中正在执行的 [RxJava] 任务
      */
     private fun unDispose() {
         if (mCompositeDisposable != null) {

@@ -15,18 +15,17 @@ import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.cancelChildren
 
 import org.simple.eventbus.EventBus
 
 import me.shetj.base.R
+import me.shetj.base.s
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.HideUtil
-import me.shetj.base.tools.app.openActivity
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
-import me.shetj.base.view.LoadingDialog
+import shetj.me.base.view.LoadingDialog
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -115,11 +114,11 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     }
 
     override fun showLoading(msg: String) {
-        LoadingDialog.showLoading(this, true)
+        shetj.me.base.view.LoadingDialog.showLoading(this, true)
     }
 
     override fun hideLoading() {
-        LoadingDialog.hideLoading()
+        shetj.me.base.view.LoadingDialog.hideLoading()
     }
 
     /**
@@ -159,7 +158,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     }
 
     override fun updateView(message: Message) {
-        if (EmptyUtils.isNotEmpty(message)) {
+        if (s.isDebug && EmptyUtils.isNotEmpty(message)) {
             Timber.i(GsonKit.objectToJson(message))
         }
     }

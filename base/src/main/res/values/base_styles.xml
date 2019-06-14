@@ -1,14 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
 
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="StartAppTheme" parent="AppTheme.NoActionBar">
+
+    <style name="StartAppTheme" parent="AppTheme">
         <!-- 隐藏状态栏 -->
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>

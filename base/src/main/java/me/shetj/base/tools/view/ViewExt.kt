@@ -12,6 +12,10 @@ import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
+/**
+ * 收集一些扩展函数
+ */
+
 @Suppress("UNCHECKED_CAST")
 internal fun <R : View> ViewGroup.inflate(
         ctxt: Context = context,

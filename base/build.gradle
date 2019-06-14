@@ -64,7 +64,7 @@ android {
             def requested = details.requested
             if (requested.group == 'com.google.code.gson') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion '2.8.2'
+                    details.useVersion "$gosnVersion"
                 }
             }
             if (requested.group == 'com.google.code.findbugs') {
@@ -94,7 +94,7 @@ dependencies {
     })
     testImplementation 'junit:junit:4.12'
     implementation "androidx.appcompat:appcompat:$androidx"
-    implementation "com.google.android.material:material:1.1.0-alpha06"
+    implementation "com.google.android.material:material:1.1.0-alpha07"
     implementation "androidx.legacy:legacy-support-v4:$androidx"
     implementation "com.google.android.material:material:$androidx"
     implementation "androidx.recyclerview:recyclerview:$androidx"
@@ -106,12 +106,9 @@ dependencies {
 
     api 'androidx.multidex:multidex:2.0.1'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
-    api 'me.imid.swipebacklayout.lib:library:1.1.0'
-    api 'com.github.razerdp:BasePopup:2.1.8'
-    api 'com.afollestad.material-dialogs:core:2.0.3'
-    api 'com.airbnb.android:lottie:2.5.6'
+
     api 'org.simple:androideventbus:1.0.5.1'
-    api 'com.google.code.gson:gson:2.8.2'
+    api "com.google.code.gson:gson:$gosnVersion"
     api 'com.github.tbruyelle:rxpermissions:0.10.2'
     //图片加载
     api 'com.github.bumptech.glide:glide:4.9.0'
@@ -125,13 +122,12 @@ dependencies {
     api 'io.reactivex.rxjava2:rxkotlin:2.3.0'
     //框架
     api 'com.jakewharton.timber:timber:4.7.1'
-    api 'com.github.ybq:Android-SpinKit:1.2.0'
+
     api 'me.jessyan:autosize:1.1.2'
-    //腾讯Android开发框架
-    api 'com.qmuiteam:qmui:1.2.0'
+
     //组件化 路由
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.27.0-eap13'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.27.0-eap13'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0'
 }
 
 apply from: 'bintray.gradle'

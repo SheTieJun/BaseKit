@@ -9,26 +9,13 @@ package me.shetj.base.base
  * **@describe**<br></br>
  */
 
-interface BaseCallback<T> {
+interface BaseCallback<T> :CommonCallBack<T>{
     /**
      * 成功
      */
     fun onSuccess()
-
-    /**
-     * 成功带有结果
-     * @param result 成功结果
-     */
-    fun onSuccess(result: T)
-
     /**
      * 失败
      */
     fun onFail()
-
-    /**
-     * 失败,并且带上失败信息
-     * @param result 失败结果
-     */
-    fun onFail(result: T)
 }

@@ -138,7 +138,7 @@ fun Activity.setEnterTransition( type: String) {
  * @param transition  share view 的transition  一般为changeBound
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun Fragment.setEnterTransition(  slideTransition: Objects, transition: Transition) {
+fun Fragment.setEnterTransition(  slideTransition: Transition, transition: Transition) {
     enterTransition = slideTransition
     allowEnterTransitionOverlap = true
     allowReturnTransitionOverlap = true

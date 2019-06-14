@@ -19,6 +19,7 @@ import me.shetj.base.tools.app.ArmsUtils;
 
 /** 
  * 指示器
+ * @author shetj
  */  
 public class CirclePageIndicator extends LinearLayout implements ViewPager.OnPageChangeListener {
     public static final int INDICATOR_TYPE_CIRCLE = 0;  

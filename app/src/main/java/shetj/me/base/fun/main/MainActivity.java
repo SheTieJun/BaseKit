@@ -5,11 +5,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import me.shetj.base.base.BaseSwipeBackActivity;
+import me.shetj.base.base.BaseActivity;
 import me.shetj.base.tools.time.CodeUtil;
 import shetj.me.base.R;
 
-public class MainActivity extends BaseSwipeBackActivity<MainPresenter> implements View.OnClickListener {
+public class MainActivity extends BaseActivity<MainPresenter> implements View.OnClickListener {
 
 
 	/**

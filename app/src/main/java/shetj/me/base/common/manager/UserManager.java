@@ -2,19 +2,15 @@ package shetj.me.base.common.manager;
 
 import android.content.Context;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.qcshendeng.toyo.common.bean.UserInfo;
 
 import org.simple.eventbus.EventBus;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import me.shetj.base.base.SimBaseCallBack;
 import me.shetj.base.s;
+import me.shetj.base.sim.SimpleCallBack;
 import me.shetj.base.tools.file.SPUtils;
 import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.tools.json.GsonKit;
-import shetj.me.base.R;
 import shetj.me.base.common.tag.SPKey;
 
 /**
@@ -27,7 +23,7 @@ import shetj.me.base.common.tag.SPKey;
 
 public class UserManager {
 	private static final UserManager OUR_INSTANCE = new UserManager();
-	private Context context = s.INSTANCE.getApp().getApplicationContext();
+	private Context context = s.getApp().getApplicationContext();
 	private UserInfo custom;
 
 	public static UserManager getInstance() {
@@ -60,7 +56,7 @@ public class UserManager {
 	public UserInfo getUserInfo(){
 		if (isLoginNow() &&  custom == null ){
 			String userInfo = (String) SPUtils.Companion.get(context, SPKey.SAVE_USER, "");
-			if (EmptyUtils.isNotEmpty(userInfo)){
+			if (EmptyUtils.Companion.isNotEmpty(userInfo)){
 				custom = GsonKit.jsonToBean(userInfo,UserInfo.class);
 			}
 		}
@@ -71,10 +67,10 @@ public class UserManager {
 		SPUtils.Companion.put(context, SPKey.SAVE_USER,userInfo);
 	}
 
-	public void saveUserInfo(UserInfo userInfo, SimBaseCallBack commonCallback) {
+	public void saveUserInfo(UserInfo userInfo, SimpleCallBack commonCallback) {
 		custom = userInfo;
 		TokenManager.getInstance().setToken(custom.getToken());
-		SPUtils.Companion.put(context, SPKey.SAVE_USER,GsonKit.objectToJson(userInfo));
+		SPUtils.Companion.put(context, SPKey.SAVE_USER, GsonKit.objectToJson(userInfo));
 	}
 
 

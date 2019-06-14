@@ -18,7 +18,7 @@ import org.simple.eventbus.EventBus
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
-import me.shetj.base.view.LoadingDialog
+import shetj.me.base.view.LoadingDialog
 import timber.log.Timber
 
 /**
@@ -175,11 +175,11 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
 
     override fun showLoading(msg: String) {
 
-        LoadingDialog.showLoading(rxContext, true)
+        shetj.me.base.view.LoadingDialog.showLoading(rxContext, true)
     }
 
     override fun hideLoading() {
-        LoadingDialog.hideLoading()
+        shetj.me.base.view.LoadingDialog.hideLoading()
     }
 
     override fun showMessage(message: String) {

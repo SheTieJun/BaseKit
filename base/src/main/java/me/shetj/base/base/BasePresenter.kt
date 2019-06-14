@@ -16,9 +16,10 @@ import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.cancelChildren
 import me.shetj.base.tools.app.getMessage
+import org.simple.eventbus.Subscriber
+import org.simple.eventbus.ThreadMode
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -56,6 +57,13 @@ open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter
         }
     }
 
+    /**
+     * eventbus 默认主线程处理
+     */
+    @Subscriber(mode = ThreadMode.MAIN,tag = "onMainEvent")
+    fun onEvent(message: Message){
+
+    }
 
     /**
      * //解除订阅

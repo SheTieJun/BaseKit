@@ -528,7 +528,7 @@ class AppUtils private constructor() {
          * @return `true`: 是<br></br>`false`: 否
          */
         fun isAppForeground(packageName: String): Boolean {
-            return !isSpace(packageName) && packageName == ProcessUtils.getForegroundProcessName()
+            return !isSpace(packageName) && packageName == ProcessUtils.foregroundProcessName
         }
 
         /**

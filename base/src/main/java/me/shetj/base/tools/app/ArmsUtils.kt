@@ -224,22 +224,6 @@ class ArmsUtils private constructor() {
             mToast!!.show()
         }
 
-        /**
-         * 使用 [Snackbar] 显示文本消息
-         *
-         */
-        fun shortSnackbar(activity: Activity, message: String) {
-            val view = activity.window.decorView.findViewById<View>(android.R.id.content)
-            SnackbarUtil.ShortSnackbar(view, message, SnackbarUtil.Info).show()
-        }
-
-        /**
-         * 使用 [Snackbar] 长时间显示文本消息
-         */
-        fun longSnackbar(activity: Activity, message: String) {
-            val view = activity.window.decorView.findViewById<View>(android.R.id.content)
-            SnackbarUtil.LongSnackbar(view, message, SnackbarUtil.Warning).show()
-        }
 
 
         /**
@@ -296,13 +280,6 @@ class ArmsUtils private constructor() {
          */
         fun getColor(context: Context, rid: Int): Int {
             return ContextCompat.getColor(context, rid)
-        }
-
-        /**
-         * 获得颜色
-         */
-        fun getColor(context: Context, colorName: String): Int {
-            return getColor(context, ResourceUtils.getIdByName(context, colorName, "color"))
         }
 
         /**

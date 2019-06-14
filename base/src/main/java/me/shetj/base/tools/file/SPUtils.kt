@@ -70,6 +70,7 @@ class SPUtils {
          * @param key
          * @param object
          */
+        @JvmStatic
         fun put(context: Context, key: String, `object`: Any) {
 
             val sp = context.getSharedPreferences(FILE_NAME,
@@ -101,6 +102,7 @@ class SPUtils {
          * @param defaultObject
          * @return
          */
+        @JvmStatic
         operator fun get(context: Context, key: String, defaultObject: Any): Any? {
             val sp = context.getSharedPreferences(FILE_NAME,
                     Context.MODE_PRIVATE)
@@ -126,6 +128,7 @@ class SPUtils {
          * @param context
          * @param key
          */
+        @JvmStatic
         fun remove(context: Context, key: String) {
             val sp = context.getSharedPreferences(FILE_NAME,
                     Context.MODE_PRIVATE)
@@ -139,6 +142,7 @@ class SPUtils {
          *
          * @param context
          */
+        @JvmStatic
         fun clear(context: Context) {
             val sp = context.getSharedPreferences(FILE_NAME,
                     Context.MODE_PRIVATE)
@@ -154,6 +158,7 @@ class SPUtils {
          * @param key
          * @return
          */
+        @JvmStatic
         fun contains(context: Context, key: String): Boolean {
             val sp = context.getSharedPreferences(FILE_NAME,
                     Context.MODE_PRIVATE)
@@ -166,6 +171,7 @@ class SPUtils {
          * @param context
          * @return
          */
+        @JvmStatic
         fun getAll(context: Context): Map<String, *> {
             val sp = context.getSharedPreferences(FILE_NAME,
                     Context.MODE_PRIVATE)

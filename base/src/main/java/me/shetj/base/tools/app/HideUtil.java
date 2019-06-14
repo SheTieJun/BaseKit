@@ -80,48 +80,36 @@ public class HideUtil {
             View view = viewGroup.getChildAt(i);
             if (view instanceof ScrollView) {
                 ScrollView newDtv = (ScrollView) view;
-                newDtv.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                        dispatchTouchEvent(activity, motionEvent);
-                        return false;
-                    }
+                newDtv.setOnTouchListener((view1, motionEvent) -> {
+                    dispatchTouchEvent(activity, motionEvent);
+                    return false;
                 });
             } else if (view instanceof AbsListView) {
                 AbsListView newDtv = (AbsListView) view;
-                newDtv.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        dispatchTouchEvent(activity, motionEvent);
-                        return false;
-                    }
+                newDtv.setOnTouchListener((view12, motionEvent) -> {
+                    dispatchTouchEvent(activity, motionEvent);
+                    return false;
                 });
             } else if (view instanceof RecyclerView) {
                 RecyclerView newDtv = (RecyclerView) view;
-                newDtv.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                newDtv.setOnTouchListener((view13, motionEvent) -> {
 
-                        dispatchTouchEvent(activity, motionEvent);
-                        return false;
-                    }
+                    dispatchTouchEvent(activity, motionEvent);
+                    return false;
                 });
             } else if (view instanceof ViewGroup) {
                 this.getScrollView((ViewGroup) view, activity);
             }
 
             if (view.isClickable() && view instanceof TextView && !(view instanceof EditText)) {
-                view.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        dispatchTouchEvent(activity, motionEvent);
-                        return false;
-                    }
+                view.setOnTouchListener((view14, motionEvent) -> {
+                    dispatchTouchEvent(activity, motionEvent);
+                    return false;
                 });
             }
         }
     }
+
 
     /**
      * @param mActivity

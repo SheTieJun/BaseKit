@@ -71,7 +71,7 @@ android {
             }
             if (requested.group == 'com.google.code.gson') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion '2.8.2'
+                    details.useVersion "$gosnVersion"
                 }
             }
             if (requested.group == 'com.google.code.findbugs') {
@@ -97,13 +97,13 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$support"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation "com.google.android.material:material:1.1.0-alpha06"
+    implementation "com.google.android.material:material:1.1.0-alpha07"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     testImplementation 'junit:junit:4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':base')
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
@@ -111,4 +111,14 @@ dependencies {
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
     implementation 'com.irozon.sneaker:sneaker:1.0.3'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.2'
+    implementation 'com.zhouyou:rxeasyhttp:2.1.5'
+
+    api 'com.github.ybq:Android-SpinKit:1.2.0'
+    api 'com.airbnb.android:lottie:2.7.0'
+
+    //腾讯Android开发框架
+    api 'com.qmuiteam:qmui:1.2.0'
+
+    api 'com.github.razerdp:BasePopup:2.1.8'
+    api 'com.afollestad.material-dialogs:core:2.0.3'
 }
