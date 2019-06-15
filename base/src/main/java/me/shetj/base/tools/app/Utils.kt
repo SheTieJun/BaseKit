@@ -58,6 +58,7 @@ class Utils private constructor() {
          *
          * @param app 应用
          */
+        @JvmStatic
         fun init(app: Application) {
             Utils.sApplication = app
             app.registerActivityLifecycleCallbacks(mCallbacks)
@@ -68,6 +69,7 @@ class Utils private constructor() {
          *
          * @return Application
          */
+        @JvmStatic
         val app: Application
             get() {
                 if (sApplication != null) {

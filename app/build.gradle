@@ -105,8 +105,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':base')
-    kapt 'com.github.bumptech.glide:compiler:4.8.0'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-2'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
     implementation 'com.irozon.sneaker:sneaker:1.0.3'

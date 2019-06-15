@@ -10,9 +10,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.reactivex.Flowable;
+import io.reactivex.SingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import me.shetj.base.tools.app.Utils;
 import shetj.me.base.view.LoadingDialog;
@@ -114,5 +117,20 @@ public class GlideImageLoader implements ImageLoader {
 							//清理磁盘缓存 需要在子线程中执行
 							Glide.get(Utils.Companion.getApp().getApplicationContext()).clearDiskCache();
 						});
+	}
+
+	@Override
+	public void displayImage(@NotNull Context context, @NotNull String url, @NotNull ImageView view) {
+
+	}
+
+	@Override
+	public void displayUserImage(@NotNull Context context, @NotNull String url, @NotNull ImageView view) {
+
+	}
+
+	@Override
+	public void preLoad(@NotNull Context context, @NotNull String url, @NotNull ImageView view) {
+
 	}
 }
