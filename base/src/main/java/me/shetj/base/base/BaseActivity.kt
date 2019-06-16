@@ -21,11 +21,9 @@ import org.simple.eventbus.EventBus
 
 import me.shetj.base.R
 import me.shetj.base.s
-import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.HideUtil
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
-import shetj.me.base.view.LoadingDialog
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -113,14 +111,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
         }
     }
 
-    override fun showLoading(msg: String) {
-        shetj.me.base.view.LoadingDialog.showLoading(this, true)
-    }
-
-    override fun hideLoading() {
-        shetj.me.base.view.LoadingDialog.hideLoading()
-    }
-
     /**
      * 界面开始动画 (此处输入方法执行任务.)
      */
@@ -146,9 +136,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
         }
     }
 
-    override fun showMessage(message: String) {
-        ArmsUtils.makeText(message)
-    }
 
     override fun onBackPressed() {
         HideUtil.hideSoftKeyboard(rxContext)

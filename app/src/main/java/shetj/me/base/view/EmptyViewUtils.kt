@@ -1,4 +1,4 @@
-package me.shetj.base.tools.view
+package shetj.me.base.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -11,8 +11,8 @@ import android.widget.TextView
 
 import com.github.ybq.android.spinkit.SpinKitView
 import com.github.ybq.android.spinkit.sprite.Sprite
+import shetj.me.base.R
 
-import me.shetj.base.R
 
 /**
  * **@packageName：** shetj.me.base.utils<br></br>

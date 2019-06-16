@@ -108,13 +108,6 @@ abstract class BaseQMUIActivity<T : BasePresenter<*>> : QMUIFragmentActivity(), 
         }
     }
 
-    override fun showLoading(msg: String) {
-        shetj.me.base.view.LoadingDialog.showLoading(this, true)
-    }
-
-    override fun hideLoading() {
-        shetj.me.base.view.LoadingDialog.hideLoading()
-    }
 
     /**
      * 界面开始动画 (此处输入方法执行任务.)
@@ -141,9 +134,6 @@ abstract class BaseQMUIActivity<T : BasePresenter<*>> : QMUIFragmentActivity(), 
         }
     }
 
-    override fun showMessage(message: String) {
-        ArmsUtils.makeText(message)
-    }
 
     override fun onBackPressed() {
         HideUtil.hideSoftKeyboard(rxContext)

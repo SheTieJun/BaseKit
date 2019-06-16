@@ -172,18 +172,6 @@ abstract class BaseQMUIFragment<T : BasePresenter<*>> : QMUIFragment(), IView {
     }
 
 
-    override fun showLoading(msg: String) {
-        shetj.me.base.view.LoadingDialog.showLoading(rxContext, true)
-    }
-
-    override fun hideLoading() {
-        shetj.me.base.view.LoadingDialog.hideLoading()
-    }
-
-    override fun showMessage(message: String) {
-        ArmsUtils.makeText(message)
-    }
-
     override fun onDestroyView() {
         if (mPresenter != null) {
             mPresenter!!.onDestroy()

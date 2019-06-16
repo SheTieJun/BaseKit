@@ -15,10 +15,8 @@ import com.trello.rxlifecycle3.components.support.RxFragment
 
 import org.simple.eventbus.EventBus
 
-import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
-import shetj.me.base.view.LoadingDialog
 import timber.log.Timber
 
 /**
@@ -172,19 +170,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
 
     }
 
-
-    override fun showLoading(msg: String) {
-
-        shetj.me.base.view.LoadingDialog.showLoading(rxContext, true)
-    }
-
-    override fun hideLoading() {
-        shetj.me.base.view.LoadingDialog.hideLoading()
-    }
-
-    override fun showMessage(message: String) {
-        ArmsUtils.makeText(message)
-    }
 
     override fun onDestroyView() {
         if (mPresenter != null) {

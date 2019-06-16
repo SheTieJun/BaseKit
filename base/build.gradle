@@ -125,6 +125,8 @@ dependencies {
 
     api 'me.jessyan:autosize:1.1.2'
 
+    //腾讯Android开发框架
+    api 'com.qmuiteam:qmui:1.2.0'
     //组件化 路由
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0'

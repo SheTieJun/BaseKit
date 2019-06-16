@@ -24,7 +24,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.snackbar.Snackbar
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.annotations.NonNull
@@ -172,8 +171,7 @@ class ArmsUtils private constructor() {
         </T> */
         fun <T : View> findViewByName(context: Context, view: View, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
-            val v = view.findViewById<T>(id)
-            return v
+            return view.findViewById(id)
         }
 
         /**

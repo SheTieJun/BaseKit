@@ -52,7 +52,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 			default:
 				break;
 			case R.id.btn_test:
-				showLoading("测试哦");
 				break;
 			case R.id.tv_test_code:
 				codeUtil.start();
