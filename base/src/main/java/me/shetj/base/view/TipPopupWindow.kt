@@ -58,7 +58,7 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ tipPopupWindow ->
                     tipPopupWindow?.dismiss()
-                }, { TipPopupWindow.tipDismiss() })
+                }, { tipDismiss() })
     }
 
 
@@ -70,13 +70,11 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
     fun showTip(tip: Tip, view: View, tipMsg: String) {
         //设置背景
         when (tip) {
-            TipPopupWindow.Tip.INFO -> tvTip!!.background = ColorDrawable(INFO_COLOR)
-            TipPopupWindow.Tip.ERROR -> tvTip!!.background = ColorDrawable(ERROR_COLOR)
-            TipPopupWindow.Tip.DEFAULT -> tvTip!!.background = ColorDrawable(NORMAL_COLOR)
-            TipPopupWindow.Tip.SUCCESS -> tvTip!!.background = ColorDrawable(SUCCESS_COLOR)
-            TipPopupWindow.Tip.WARNING -> tvTip!!.background = ColorDrawable(WARNING_COLOR)
-            else -> {
-            }
+            Tip.INFO -> tvTip!!.background = ColorDrawable(INFO_COLOR)
+            Tip.ERROR -> tvTip!!.background = ColorDrawable(ERROR_COLOR)
+            Tip.DEFAULT -> tvTip!!.background = ColorDrawable(NORMAL_COLOR)
+            Tip.SUCCESS -> tvTip!!.background = ColorDrawable(SUCCESS_COLOR)
+            Tip.WARNING -> tvTip!!.background = ColorDrawable(WARNING_COLOR)
         }
         //设置文子
         tvTip!!.text = tipMsg

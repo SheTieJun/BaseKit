@@ -19,7 +19,7 @@ class Utils private constructor() {
         @SuppressLint("StaticFieldLeak")
         private var sApplication: Application? = null
 
-        var sTopActivityWeakRef: WeakReference<Activity>? = null
+        private var sTopActivityWeakRef: WeakReference<Activity>? = null
         var sActivityList: MutableList<Activity> = LinkedList()
 
         private val mCallbacks = object : Application.ActivityLifecycleCallbacks {
@@ -60,7 +60,7 @@ class Utils private constructor() {
          */
         @JvmStatic
         fun init(app: Application) {
-            Utils.sApplication = app
+            sApplication = app
             app.registerActivityLifecycleCallbacks(mCallbacks)
         }
 

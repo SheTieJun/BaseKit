@@ -2,10 +2,14 @@ package me.shetj.base.tools.file;
 
 import android.os.Environment;
 import androidx.annotation.Keep;
+import me.shetj.base.tools.app.Utils;
 
 import java.io.File;
 
-//SD卡相关的辅助类
+/**
+ * SD卡相关的辅助类
+ * @author shetj
+ */
 @Keep
 public class SDCardUtils
 {
@@ -20,14 +24,7 @@ public class SDCardUtils
 	 * @return
 	 */
 	public static String getPath(String packagePath){
-		StringBuilder path;
-		if (isSDCardEnable()){
-			path = new StringBuilder(getSDCardPath());
-		}else {
-			path = new StringBuilder(getRootDirectoryPath());
-		}
-		//如何路径下的文件（夹）不存在，就创建
-		//可能是多层次的 要创建多次
+		StringBuilder path = new StringBuilder(getFilesDir());
 		String  f[]=packagePath.split("/");
 		for (String aF : f) {
 			File dirFile = new File(path + "/" + aF);
@@ -54,7 +51,7 @@ public class SDCardUtils
 	/**
 	 * 获取SD卡路径
 	 *
-	 * @return   /storage/emulated/0/DESIGN_TEST/
+	 * @return  mnt/sdcard/
 	 */
 	public static String getSDCardPath()
 	{
@@ -74,6 +71,32 @@ public class SDCardUtils
 	public static String getRootDirectoryPath()
 	{
 		return Environment.getRootDirectory().getAbsolutePath() ;
+	}
+
+
+	/**
+	 * data/data/< package name >/files/
+	 */
+	public static String getFilesDir(){
+		return Utils.getApp().getFilesDir().getAbsolutePath();
+	}
+
+
+	/**
+	 * mnt/sdcard/Android/data/< package name >/files/type
+	 * <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	 * <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	 */
+	public static String getExternalFilesDir(String type){
+		return Utils.getApp().getExternalFilesDir(type).getAbsolutePath();
+	}
+
+	/**
+	 * data/data/packagename/cache
+	 * @return
+	 */
+	public static String getCache(){
+		return Utils.getApp().getCacheDir().getAbsolutePath();
 	}
 
 
