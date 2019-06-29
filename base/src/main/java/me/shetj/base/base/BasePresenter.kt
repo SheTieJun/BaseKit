@@ -29,7 +29,7 @@ import kotlin.coroutines.CoroutineContext
  * @author shetj
  */
 @Keep
-open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter,CoroutineScope {
+open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,CoroutineScope {
 
     private var mCompositeDisposable: CompositeDisposable? = null
     protected var model: T? = null
@@ -44,7 +44,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter
         get() = Dispatchers.Main + job
 
     internal val rxContext: RxAppCompatActivity
-        get() = view!!.rxContext
+        get() = view.rxContext
 
     init {
         Timber.i("onStart")
@@ -61,7 +61,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter
      * eventbus 默认主线程处理
      */
     @Subscriber(mode = ThreadMode.MAIN,tag = "onMainEvent")
-    fun onEvent(message: Message){
+    open fun onEvent(message: Message){
 
     }
 
@@ -77,10 +77,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter
         coroutineContext.cancelChildren()
         unDispose()
         this.mCompositeDisposable = null
-        if (model != null) {
-            model!!.onDestroy()
-            model = null
-        }
+        model?.onDestroy()
     }
 
     /**
@@ -114,20 +111,16 @@ open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter
     }
 
     fun startActivity(intent: Intent) {
-        if (null != view) {
-            view?.rxContext?.startActivity(intent)
-        }
+        view.rxContext.startActivity(intent)
     }
-
 
 
     fun getMessage(code: Int, msg: Any): Message {
         return  Message.obtain().getMessage (code,msg)
     }
 
-
     fun updateMessage(code: Int, msg: Any){
-        view?.updateView(getMessage(code,msg))
+        view.updateView(getMessage(code,msg))
     }
 }
 

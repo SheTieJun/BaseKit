@@ -38,11 +38,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 		mBtnTest.setOnClickListener(this);
 		mTvTestCode = (TextView) findViewById(R.id.tv_test_code);
 		mTvTestCode.setOnClickListener(this);
+
 	}
 
 	@Override
 	protected void initData() {
 		codeUtil = new CodeUtil(mTvTestCode);
+
 
 	}
 
