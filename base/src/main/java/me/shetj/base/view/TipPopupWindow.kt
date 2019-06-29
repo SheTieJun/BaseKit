@@ -102,7 +102,7 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
          * 展示信息
          */
         fun showTipMsg(context: Context, tip: Tip, view: View, tipMsg: String) {
-            if (tipPopupWindow != null && tipPopupWindow!!.isShowing) {
+            if (tipPopupWindow != null && context == tipPopupWindow!!.context && tipPopupWindow!!.isShowing) {
                 tipPopupWindow!!.showTip(tip, view, tipMsg)
             } else {
                 tipPopupWindow = TipPopupWindow(context)
