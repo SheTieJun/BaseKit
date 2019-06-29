@@ -85,7 +85,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
      *
      * @return boolean
      */
-    protected fun useEventBus(): Boolean {
+    open fun useEventBus(): Boolean {
         return true
     }
 
@@ -138,19 +138,19 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
     /**
      * On visible.
      */
-    protected fun onVisible() {
+    open fun onVisible() {
         lazyLoad()
     }
 
     /**
      * On invisible.
      */
-    protected fun onInvisible() {}
+    open fun onInvisible() {}
 
     /**
      * Lazy load.
      */
-    protected fun lazyLoad() {
+    open fun lazyLoad() {
         if (!isPrepared || !isShow || !isFirstLoad) {
             return
         }
@@ -166,7 +166,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
     /**
      * Lazy load data.
      */
-    protected fun lazyLoadData() {
+    open fun lazyLoadData() {
 
     }
 

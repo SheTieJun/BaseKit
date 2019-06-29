@@ -94,7 +94,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
      *
      * @return useEventBus
      */
-    protected fun useEventBus(): Boolean {
+    open fun useEventBus(): Boolean {
         return true
     }
 
@@ -114,21 +114,21 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     /**
      * 界面开始动画 (此处输入方法执行任务.)
      */
-    protected fun startAnimation() {
+    open fun startAnimation() {
         overridePendingTransition(R.anim.push_right_in, R.anim.push_left_out)
     }
 
     /**
      * 界面回退动画 (此处输入方法执行任务.)
      */
-    protected fun endAnimation() {// 开始动画
+    open fun endAnimation() {// 开始动画
         overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out)
     }
 
     /**
      * 返回
      */
-    protected  fun back() {
+    open  fun back() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition()
         } else {

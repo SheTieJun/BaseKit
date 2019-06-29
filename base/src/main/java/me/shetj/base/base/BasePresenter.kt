@@ -88,7 +88,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView?) : IPresenter
      *
      * @return
      */
-    fun useEventBus(): Boolean {
+    open fun useEventBus(): Boolean {
         return true
     }
 
