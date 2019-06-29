@@ -8,7 +8,7 @@ buildscript {
     ext.compileSdkVersion       = 28
     ext.minVersion              = 16
     ext.versionCode             = 6
-    ext.versionName             = "0.0.6"
+    ext.versionName             = "0.0.7"
 
     ext.gosnVersion  = "2.8.5"
 

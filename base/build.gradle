@@ -31,8 +31,6 @@ android {
 
     buildTypes {
         release {
-            aaptOptions.cruncherEnabled = false
-            aaptOptions.useNewCruncher = false
 //            对齐
             zipAlignEnabled true
             //minifyEnabled true           //混淆
@@ -50,6 +48,7 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
 
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
@@ -76,7 +75,7 @@ android {
             }
             if (requested.group == 'com.github.bumptech.glide') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion '4.8.0'
+                    details.useVersion '4.9.0'
                 }
             }
             if (requested.group == 'com.tencent.mm.opensdk') {
