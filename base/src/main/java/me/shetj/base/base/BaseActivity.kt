@@ -128,7 +128,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     /**
      * 返回
      */
-    fun back() {
+    protected  fun back() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition()
         } else {

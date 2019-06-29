@@ -109,6 +109,8 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-2'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+
+
     implementation 'com.irozon.sneaker:sneaker:1.0.3'
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.2'
     implementation 'com.zhouyou:rxeasyhttp:2.1.5'

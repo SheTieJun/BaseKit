@@ -69,6 +69,7 @@ class AppUtils private constructor() {
     }
 
     companion object {
+        @JvmStatic
         fun scanLocalInstallAppList(packageManager: PackageManager, name: String): List<AppInfos> {
             val myAppInfos = ArrayList<AppInfos>()
             val packages = packageManager.getInstalledPackages(0)
@@ -97,6 +98,7 @@ class AppUtils private constructor() {
          * @param category category
          * @return `true`: 已安装<br></br>`false`: 未安装
          */
+        @JvmStatic
         fun isInstallApp(action: String, category: String): Boolean {
             val intent = Intent(action)
             intent.addCategory(category)
@@ -111,6 +113,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return `true`: 已安装<br></br>`false`: 未安装
          */
+        @JvmStatic
         fun isInstallApp(packageName: String): Boolean {
             return !isSpace(packageName) && IntentUtils.getLaunchAppIntent(packageName) != null
         }
@@ -124,6 +127,7 @@ class AppUtils private constructor() {
          * @param authority 7.0及以上安装需要传入清单文件中的`<provider>`的authorities属性
          * <br></br>参看https://developer.android.com/reference/android/support/v4/content/FileProvider.html
          */
+        @JvmStatic
         fun installApp(filePath: String, authority: String) {
             installApp(FileUtils.getFileByPath(filePath), authority)
         }
@@ -137,6 +141,7 @@ class AppUtils private constructor() {
          * @param authority 7.0及以上安装需要传入清单文件中的`<provider>`的authorities属性
          * <br></br>参看https://developer.android.com/reference/android/support/v4/content/FileProvider.html
          */
+        @JvmStatic
         fun installApp(file: File?, authority: String) {
             if (!FileUtils.isFileExists(file)) {
                 return
@@ -155,6 +160,7 @@ class AppUtils private constructor() {
          * <br></br>参看https://developer.android.com/reference/android/support/v4/content/FileProvider.html
          * @param requestCode 请求值
          */
+        @JvmStatic
         fun installApp(activity: Activity, filePath: String, authority: String, requestCode: Int) {
             installApp(activity, FileUtils.getFileByPath(filePath), authority, requestCode)
         }
@@ -170,6 +176,7 @@ class AppUtils private constructor() {
          * <br></br>参看https://developer.android.com/reference/android/support/v4/content/FileProvider.html
          * @param requestCode 请求值
          */
+        @JvmStatic
         fun installApp(activity: Activity, file: File?, authority: String, requestCode: Int) {
             if (!FileUtils.isFileExists(file)) {
                 return
@@ -183,6 +190,7 @@ class AppUtils private constructor() {
          *
          * @param packageName 包名
          */
+        @JvmStatic
         fun uninstallApp(packageName: String) {
             if (isSpace(packageName)) {
                 return
@@ -197,6 +205,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @param requestCode 请求值
          */
+        @JvmStatic
         fun uninstallApp(activity: Activity, packageName: String, requestCode: Int) {
             if (isSpace(packageName)) {
                 return
@@ -210,6 +219,7 @@ class AppUtils private constructor() {
          *
          * @param packageName 包名
          */
+        @JvmStatic
         fun launchApp(packageName: String) {
             if (isSpace(packageName)) {
                 return
@@ -224,6 +234,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @param requestCode 请求值
          */
+        @JvmStatic
         fun launchApp(activity: Activity, packageName: String, requestCode: Int) {
             if (isSpace(packageName)) {
                 return
@@ -234,6 +245,7 @@ class AppUtils private constructor() {
         /**
          * 关闭App
          */
+        @JvmStatic
         fun exitApp() {
             val activityList = Utils.sActivityList
             for (i in activityList.indices.reversed()) {
@@ -248,6 +260,7 @@ class AppUtils private constructor() {
          *
          * @return App包名
          */
+        @JvmStatic
         val appPackageName: String
             get() = Utils.app.packageName
 
@@ -257,6 +270,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          */
         @JvmOverloads
+        @JvmStatic
         fun getAppDetailsSettings(packageName: String = Utils.app.packageName) {
             if (isSpace(packageName)) {
                 return
@@ -269,6 +283,7 @@ class AppUtils private constructor() {
          *
          * @return App名称
          */
+        @JvmStatic
         val appName: String?
             get() = getAppName(Utils.app.packageName)
 
@@ -278,6 +293,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return App名称
          */
+        @JvmStatic
         fun getAppName(packageName: String): String? {
             if (isSpace(packageName)) {
                 return null
@@ -298,6 +314,7 @@ class AppUtils private constructor() {
          *
          * @return App图标
          */
+        @JvmStatic
         val appIcon: Drawable?
             get() = getAppIcon(Utils.app.packageName)
 
@@ -307,6 +324,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return App图标
          */
+        @JvmStatic
         fun getAppIcon(packageName: String): Drawable? {
             if (isSpace(packageName)) {
                 return null
@@ -327,6 +345,7 @@ class AppUtils private constructor() {
          *
          * @return App路径
          */
+        @JvmStatic
         val appPath: String?
             get() = getAppPath(Utils.app.packageName)
 
@@ -336,6 +355,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return App路径
          */
+        @JvmStatic
         fun getAppPath(packageName: String): String? {
             if (isSpace(packageName)) {
                 return null
@@ -356,6 +376,7 @@ class AppUtils private constructor() {
          *
          * @return App版本号
          */
+        @JvmStatic
         val appVersionName: String?
             get() = getAppVersionName(Utils.app.packageName)
 
@@ -365,6 +386,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return App版本号
          */
+        @JvmStatic
         fun getAppVersionName(packageName: String): String? {
             if (isSpace(packageName)) {
                 return null
@@ -385,6 +407,7 @@ class AppUtils private constructor() {
          *
          * @return App版本码
          */
+        @JvmStatic
         val appVersionCode: Int
             get() = getAppVersionCode(Utils.app.packageName)
 
@@ -394,6 +417,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return App版本码
          */
+        @JvmStatic
         fun getAppVersionCode(packageName: String): Int {
             if (isSpace(packageName)) {
                 return -1
@@ -414,6 +438,7 @@ class AppUtils private constructor() {
          *
          * @return `true`: 是<br></br>`false`: 否
          */
+        @JvmStatic
         val isSystemApp: Boolean
             get() = isSystemApp(Utils.app.packageName)
 
@@ -423,6 +448,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return `true`: 是<br></br>`false`: 否
          */
+        @JvmStatic
         fun isSystemApp(packageName: String): Boolean {
             if (isSpace(packageName)) {
                 return false
@@ -443,6 +469,7 @@ class AppUtils private constructor() {
          *
          * @return `true`: 是<br></br>`false`: 否
          */
+        @JvmStatic
         val isAppDebug: Boolean
             get() = isAppDebug(Utils.app.packageName)
 
@@ -452,6 +479,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return `true`: 是<br></br>`false`: 否
          */
+        @JvmStatic
         fun isAppDebug(packageName: String): Boolean {
             if (isSpace(packageName)) {
                 return false
@@ -472,6 +500,7 @@ class AppUtils private constructor() {
          *
          * @return App签名
          */
+        @JvmStatic
         val appSignature: Array<Signature>?
             get() = getAppSignature(Utils.app.packageName)
 
@@ -481,6 +510,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return App签名
          */
+        @JvmStatic
         fun getAppSignature(packageName: String): Array<Signature>? {
             if (isSpace(packageName)) {
                 return null
@@ -503,6 +533,7 @@ class AppUtils private constructor() {
          *
          * @return `true`: 是<br></br>`false`: 否
          */
+        @JvmStatic
         val isAppForeground: Boolean
             get() {
                 val manager = Utils.app.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -527,6 +558,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return `true`: 是<br></br>`false`: 否
          */
+        @JvmStatic
         fun isAppForeground(packageName: String): Boolean {
             return !isSpace(packageName) && packageName == ProcessUtils.foregroundProcessName
         }
@@ -538,6 +570,7 @@ class AppUtils private constructor() {
          *
          * @return 当前应用的AppInfo
          */
+        @JvmStatic
         val appInfo: AppInfo?
             get() = getAppInfo(Utils.app.packageName)
 
@@ -549,6 +582,7 @@ class AppUtils private constructor() {
          * @param packageName 包名
          * @return 当前应用的AppInfo
          */
+        @JvmStatic
         fun getAppInfo(packageName: String): AppInfo? {
             try {
                 val pm = Utils.app.packageManager
@@ -593,6 +627,7 @@ class AppUtils private constructor() {
          * @return 所有已安装的AppInfo列表
          */
         // 获取系统中安装的所有软件信息
+        @JvmStatic
         val appsInfo: List<AppInfo>
             get() {
                 val list = ArrayList<AppInfo>()
@@ -611,6 +646,7 @@ class AppUtils private constructor() {
          * @param dirPaths 目录路径
          * @return `true`: 成功<br></br>`false`: 失败
          */
+        @JvmStatic
         fun cleanAppData(vararg dirPaths: String): Boolean {
             val dirs = arrayOfNulls<File>(dirPaths.size)
             var i = 0
@@ -626,6 +662,7 @@ class AppUtils private constructor() {
          * @param dirs 目录
          * @return `true`: 成功<br></br>`false`: 失败
          */
+        @JvmStatic
         fun cleanAppData(dirs: Array<File?>): Boolean {
             var isSuccess = CleanUtils.cleanInternalCache()
             isSuccess = isSuccess and CleanUtils.cleanInternalDbs()

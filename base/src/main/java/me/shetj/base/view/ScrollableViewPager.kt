@@ -13,7 +13,7 @@ import android.view.MotionEvent
 @Keep
 class ScrollableViewPager : ViewPager {
 
-    private var isScrollable = true
+    public var isScrollable = true
     /** 触摸时按下的点  */
     private var downP = PointF()
     /** 触摸时当前的点  */

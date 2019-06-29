@@ -64,6 +64,7 @@ class ArmsUtils private constructor() {
          * @param v
          * @param res
          */
+        @JvmStatic
         fun setViewHintSize(context: Context, size: Int, v: TextView, res: Int) {
             val ss = SpannableString(getResources(context).getString(
                     res))
@@ -80,6 +81,7 @@ class ArmsUtils private constructor() {
          * 全面屏幕检查
          * @param activity
          */
+        @JvmStatic
         fun checkIsNotchScreen(activity: Activity): Boolean {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val windowInsets = activity.window.decorView.rootWindowInsets
@@ -100,6 +102,7 @@ class ArmsUtils private constructor() {
          * other :android:keepScreenOn="true"
          * @param activity 常亮的界面
          */
+        @JvmStatic
         fun wakey(activity: Activity) {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
@@ -107,6 +110,7 @@ class ArmsUtils private constructor() {
         /**
          * 获得资源
          */
+        @JvmStatic
         fun getResources(context: Context): Resources {
             return context.resources
         }
@@ -114,6 +118,7 @@ class ArmsUtils private constructor() {
         /**
          * 得到字符数组
          */
+        @JvmStatic
         fun getStringArray(context: Context, id: Int): Array<String> {
             return getResources(context).getStringArray(id)
         }
@@ -126,6 +131,7 @@ class ArmsUtils private constructor() {
          * @param id
          * @return
          */
+        @JvmStatic
         fun getDimens(context: Context, id: Int): Int {
             return getResources(context).getDimension(id).toInt()
         }
@@ -137,6 +143,7 @@ class ArmsUtils private constructor() {
          * @param dimenName
          * @return
          */
+        @JvmStatic
         fun getDimens(context: Context, dimenName: String): Float {
             return getResources(context).getDimension(getResources(context).getIdentifier(dimenName, "dimen", context.packageName))
         }
@@ -146,7 +153,7 @@ class ArmsUtils private constructor() {
          *
          * @return
          */
-
+        @JvmStatic
         fun getString(context: Context, stringID: Int): String {
             return getResources(context).getString(stringID)
         }
@@ -156,7 +163,7 @@ class ArmsUtils private constructor() {
          *
          * @return
          */
-
+        @JvmStatic
         fun getString(context: Context, strName: String): String {
             return getString(context, getResources(context).getIdentifier(strName, "string", context.packageName))
         }
@@ -169,6 +176,7 @@ class ArmsUtils private constructor() {
          * @param <T>
          * @return
         </T> */
+        @JvmStatic
         fun <T : View> findViewByName(context: Context, view: View, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
             return view.findViewById(id)
@@ -182,6 +190,7 @@ class ArmsUtils private constructor() {
          * @param <T>
          * @return
         </T> */
+        @JvmStatic
         fun <T : View> findViewByName(context: Context, activity: Activity, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
             val v = activity.findViewById<T>(id)
@@ -194,6 +203,7 @@ class ArmsUtils private constructor() {
          * @param layoutName
          * @return
          */
+        @JvmStatic
         fun findLayout(context: Context, layoutName: String): Int {
             val id = getResources(context).getIdentifier(layoutName, "layout", context.packageName)
             return id
@@ -205,6 +215,7 @@ class ArmsUtils private constructor() {
          * @param detailScreen
          * @return
          */
+        @JvmStatic
         fun inflate(context: Context, detailScreen: Int): View {
             return View.inflate(context, detailScreen, null)
         }
@@ -214,6 +225,7 @@ class ArmsUtils private constructor() {
          *
          * @param string
          */
+        @JvmStatic
         fun makeText(string: String) {
             if (mToast == null) {
                 mToast = Toast.makeText(Utils.app.applicationContext, string, Toast.LENGTH_SHORT)
@@ -230,6 +242,7 @@ class ArmsUtils private constructor() {
          * @param rID
          * @return
          */
+        @JvmStatic
         fun getDrawablebyResource(context: Context, rID: Int): Drawable? {
             return ContextCompat.getDrawable(context, rID)
         }
@@ -240,6 +253,7 @@ class ArmsUtils private constructor() {
          * @param activity
          * @param homeActivityClass
          */
+        @JvmStatic
         fun startActivity(activity: Activity, homeActivityClass: Class<*>) {
             val intent = Intent(activity.applicationContext, homeActivityClass)
             activity.startActivity(intent)
@@ -250,6 +264,7 @@ class ArmsUtils private constructor() {
          *
          * @param
          */
+        @JvmStatic
         fun startActivity(activity: Activity, intent: Intent) {
             activity.startActivity(intent)
         }
@@ -259,6 +274,7 @@ class ArmsUtils private constructor() {
          *
          * @return
          */
+        @JvmStatic
         fun getScreenWidth(context: Context): Int {
             return getResources(context).displayMetrics.widthPixels
         }
@@ -268,6 +284,7 @@ class ArmsUtils private constructor() {
          *
          * @return
          */
+        @JvmStatic
         fun getScreenHeight(context: Context): Int {
             return getResources(context).displayMetrics.heightPixels
         }
@@ -276,6 +293,7 @@ class ArmsUtils private constructor() {
         /**
          * 获得颜色
          */
+        @JvmStatic
         fun getColor(context: Context, rid: Int): Int {
             return ContextCompat.getColor(context, rid)
         }
@@ -285,6 +303,7 @@ class ArmsUtils private constructor() {
          *
          * @param view
          */
+        @JvmStatic
         fun removeChild(view: View) {
             val parent = view.parent
             if (parent is ViewGroup) {
@@ -292,7 +311,7 @@ class ArmsUtils private constructor() {
             }
         }
 
-
+        @JvmStatic
         fun getRxPermissions(activity: FragmentActivity): RxPermissions {
             return RxPermissions(activity)
         }
@@ -304,6 +323,7 @@ class ArmsUtils private constructor() {
          * @return
          * @throws Exception
          */
+        @JvmStatic
         fun encodeToMD5(string: String): String {
             var hash = ByteArray(0)
             try {
@@ -328,6 +348,7 @@ class ArmsUtils private constructor() {
          *
          * @param navi true不设置导航栏|false设置导航栏
          */
+        @JvmStatic
         fun setStatusBar(activity: Activity, navi: Boolean) {
             //api>21,全透明状态栏和导航栏;api>19,半透明状态栏和导航栏
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -361,6 +382,7 @@ class ArmsUtils private constructor() {
          *
          * @param activity
          */
+        @JvmStatic
         fun statuInScreen(activity: Activity, isBlack: Boolean) {
             // 沉浸式状态栏
             QMUIStatusBarHelper.translucent(activity)
@@ -374,6 +396,7 @@ class ArmsUtils private constructor() {
         /**
          * 全屏
          */
+        @JvmStatic
         fun fullScreencall(activity: Activity) {
             if (Build.VERSION.SDK_INT < 19) {
                 val v = activity.window.decorView
@@ -399,6 +422,7 @@ class ArmsUtils private constructor() {
          * @param recyclerView
          * @param layoutManager
          */
+        @JvmStatic
         fun configRecycleView(recyclerView: RecyclerView, layoutManager: RecyclerView.LayoutManager) {
             recyclerView.layoutManager = layoutManager
             //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
@@ -406,7 +430,7 @@ class ArmsUtils private constructor() {
             recyclerView.itemAnimator = DefaultItemAnimator()
         }
 
-
+        @JvmStatic
         fun convertStatusCode(code :Int): String {
             val msg: String
             if (code == 500) {
@@ -422,7 +446,7 @@ class ArmsUtils private constructor() {
             }
             return msg
         }
-
+        @JvmStatic
         fun setSwipeRefresh(mSwipeRefreshLayout: SwipeRefreshLayout,
                             them2Color: Int, listener: SwipeRefreshLayout.OnRefreshListener) {
             mSwipeRefreshLayout.setColorSchemeResources(them2Color)
@@ -433,6 +457,7 @@ class ArmsUtils private constructor() {
          * @param root 最外层布局，需要调整的布局
          * @param scrollToView 被键盘遮挡的scrollToView，滚动root,使scrollToView在root可视区域的底部
          */
+        @JvmStatic
         fun controlKeyboardLayout(root: View, scrollToView: View) {
             root.viewTreeObserver.addOnGlobalLayoutListener {
                 val rect = Rect()
@@ -456,31 +481,35 @@ class ArmsUtils private constructor() {
         }
 
         @Throws(IOException::class)
+        @JvmStatic
         fun getAssetsFile(fileName: String): InputStream {
             return Utils.app.applicationContext.assets.open(fileName)
         }
 
 
         private var density = -1f
-
+        @JvmStatic
         fun getDensity(): Float {
             if (density <= 0f) {
                 density = s.app.resources.displayMetrics.density
             }
             return density
         }
-
+        @JvmStatic
         fun dip2px(dpValue: Float): Int {
             return (dpValue * getDensity() + 0.5f).toInt()
         }
-
+        @JvmStatic
         fun px2dip(pxValue: Float): Int {
             return (pxValue / getDensity() + 0.5f).toInt()
         }
+
+        @JvmStatic
+        @NonNull
+        fun getMessage(code: Int, obj: Any): Message {
+            return Message.obtain().getMessage(code,obj)
+        }
     }
 
-    @NonNull
-     fun getMessage(code: Int, obj: Any): Message {
-        return Message.obtain().getMessage(code,obj)
-    }
+
 }

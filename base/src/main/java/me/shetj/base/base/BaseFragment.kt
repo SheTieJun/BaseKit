@@ -166,7 +166,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
     /**
      * Lazy load data.
      */
-    fun lazyLoadData() {
+    protected fun lazyLoadData() {
 
     }
 
