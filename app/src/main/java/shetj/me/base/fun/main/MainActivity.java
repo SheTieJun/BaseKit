@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 		codeUtil = new CodeUtil(mTvTestCode);
 
 
+
 	}
 
 	@Override

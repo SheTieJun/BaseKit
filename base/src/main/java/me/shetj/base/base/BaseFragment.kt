@@ -33,9 +33,9 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
     /**是否可见状态 */
     protected var isShow: Boolean = false
     /**View已经初始化完成 */
-    private var isPrepared: Boolean = false
+    protected var isPrepared: Boolean = false
     /**是否第一次加载完 */
-    private var isFirstLoad = true
+    protected var isFirstLoad = true
 
     protected var mPresenter: T? = null
 
@@ -172,9 +172,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
 
 
     override fun onDestroyView() {
-        if (mPresenter != null) {
-            mPresenter!!.onDestroy()
-        }
+        mPresenter?.onDestroy()
         super.onDestroyView()
     }
 

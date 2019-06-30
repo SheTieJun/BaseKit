@@ -106,9 +106,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
             EventBus.getDefault().unregister(this)
         }
         coroutineContext.cancelChildren()
-        if (null != mPresenter) {
-            mPresenter!!.onDestroy()
-        }
+        mPresenter?.onDestroy()
     }
 
     /**
