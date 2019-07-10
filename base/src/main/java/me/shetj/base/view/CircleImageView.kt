@@ -34,7 +34,7 @@ import me.shetj.base.R
 /**
  * 圆形头像
  */
-class CircleImageView : AppCompatImageView {
+open class CircleImageView : AppCompatImageView {
 
     private val mDrawableRect = RectF()
     private val mBorderRect = RectF()
@@ -231,7 +231,6 @@ class CircleImageView : AppCompatImageView {
     }
 
 
-    @Deprecated("Use {@link #setBorderColor(int)} instead")
     fun setBorderColorResource(@ColorRes borderColorRes: Int) {
         borderColor = context.resources.getColor(borderColorRes)
     }
@@ -248,7 +247,6 @@ class CircleImageView : AppCompatImageView {
      * drawn behind the drawable
      *
      */
-    @Deprecated("Use {@link #setCircleBackgroundColorResource(int)} instead.")
     fun setFillColorResource(@ColorRes fillColorRes: Int) {
         setCircleBackgroundColorResource(fillColorRes)
     }
@@ -288,9 +286,7 @@ class CircleImageView : AppCompatImageView {
     }
 
     private fun applyColorFilter() {
-        if (mBitmapPaint != null) {
-            mBitmapPaint.colorFilter = mColorFilter
-        }
+        mBitmapPaint.colorFilter = mColorFilter
     }
 
     private fun getBitmapFromDrawable(drawable: Drawable?): Bitmap? {
@@ -302,22 +298,20 @@ class CircleImageView : AppCompatImageView {
             return drawable.bitmap
         }
 
-        try {
-            val bitmap: Bitmap
-
-            if (drawable is ColorDrawable) {
-                bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG)
+        return try {
+            val bitmap: Bitmap = if (drawable is ColorDrawable) {
+                Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG)
             } else {
-                bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, BITMAP_CONFIG)
+                Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, BITMAP_CONFIG)
             }
 
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, canvas.width, canvas.height)
             drawable.draw(canvas)
-            return bitmap
+            bitmap
         } catch (e: Exception) {
             e.printStackTrace()
-            return null
+            null
         }
 
     }
@@ -423,7 +417,7 @@ class CircleImageView : AppCompatImageView {
 
     companion object {
 
-        private val SCALE_TYPE = ImageView.ScaleType.CENTER_CROP
+        private val SCALE_TYPE = ScaleType.CENTER_CROP
 
         private val BITMAP_CONFIG = Bitmap.Config.ARGB_8888
         private val COLORDRAWABLE_DIMENSION = 2

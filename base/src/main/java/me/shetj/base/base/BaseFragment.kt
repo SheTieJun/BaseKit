@@ -12,6 +12,7 @@ import android.view.ViewGroup
 
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import com.trello.rxlifecycle3.components.support.RxFragment
+import me.shetj.base.s
 
 import org.simple.eventbus.EventBus
 
@@ -45,14 +46,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
      */
     override val rxContext: RxAppCompatActivity
         get() = (mActivity as RxAppCompatActivity?)!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -178,7 +171,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
 
     @SuppressLint("unchecked")
     override fun updateView(message: Message) {
-        if (EmptyUtils.isNotEmpty(message)) {
+        if (s.isDebug && EmptyUtils.isNotEmpty(message)) {
             Timber.i(GsonKit.objectToJson(message))
         }
     }
