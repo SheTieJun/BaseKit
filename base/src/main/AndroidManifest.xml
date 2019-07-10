@@ -28,6 +28,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/base_file_path"/>
         </provider>
+
+        <service android:name=".tools.app.DownloadService"
+            android:enabled="true"/>
     </application>
 
 </manifest>
