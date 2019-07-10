@@ -1,47 +1,4 @@
 # Base
-   自用[include](include.MD)
-
-
-
-最新
-```
-    configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-    }
-```
-
-```
-  implementation 'com.github.SheTieJun:Base:master-SNAPSHOT'
-```
-
-或者自己用
-```
-buildscript {
-    ext.base_version ="bfd7192479" //最新的提交
-    }
-```
-
-```
-    implementation "com.github.SheTieJun:Base:$base_version"
-```
-抽离出来功能的放在shetj作为module，未独立
-
-测试也是在shetj
-
-
-[码云-shetj](https://gitee.com/shetj/DIYAlbume)
-
-[GitHub-shetj](https://github.com/SheTieJun)
-
-
-AndroidX ....~~~
-
-
-```
-buildscript {
-    ext.base_version ="a34b2a258b"
-    }
-```
 
 ```
     implementation "com.github.SheTieJun:Base:$base_version"
