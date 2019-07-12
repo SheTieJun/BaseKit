@@ -11,7 +11,7 @@ if (project.rootProject.findProject('local.properties') != null){
 def siteUrl = ' '      // 项目的主页   这个是说明，可随便填
 def gitUrl = ' '      // Git仓库的url  这个是说明，可随便填
 
-version = "0.0.6"
+version = "0.0.9"
 group = "me.shetj"
 
 install {
@@ -34,7 +34,7 @@ install {
                     developer {
                         id 'shetiejun'        //填写开发者的一些基本信息
                         name 'shetj'    //填写开发者的一些基本信息
-                        email 'tiejunshet@gmail.com'   //填写开发者的一些基本信息
+                        email 'tiejunshe@gmail.com'   //填写开发者的一些基本信息
                     }
                 }
                 scm {
@@ -60,7 +60,7 @@ bintray {
         vcsUrl = gitUrl
         publish = true // 是否是公开项目。
         version {
-            name = '0.0.6'
+            name = '0.0.9'
             desc = 'a base lib for me develper'//描述，自己定义
             released  = new Date()
             released = new Date()
