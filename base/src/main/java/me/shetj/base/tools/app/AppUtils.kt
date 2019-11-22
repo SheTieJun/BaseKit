@@ -8,15 +8,12 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.content.pm.Signature
 import android.graphics.drawable.Drawable
 import androidx.annotation.Keep
-
-import java.io.File
-import java.util.ArrayList
-
 import me.shetj.base.tools.file.FileUtils
+import java.io.File
+import java.util.*
 
 @Keep
 class AppUtils private constructor() {
@@ -670,7 +667,7 @@ class AppUtils private constructor() {
             isSuccess = isSuccess and CleanUtils.cleanInternalFiles()
             isSuccess = isSuccess and CleanUtils.cleanExternalCache()
             for (dir in dirs) {
-                isSuccess = isSuccess and CleanUtils.cleanCustomCache(dir)
+                isSuccess = isSuccess and CleanUtils.cleanCustomCache(dir!!)
             }
             return isSuccess
         }

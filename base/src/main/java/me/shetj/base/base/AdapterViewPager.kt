@@ -1,10 +1,10 @@
 package me.shetj.base.base
 
+import android.view.ViewGroup
 import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import android.view.ViewGroup
 
 /**
  * @author shetj
@@ -15,23 +15,23 @@ class AdapterViewPager : FragmentStatePagerAdapter {
     private var mTitles: MutableList<String>? =null
     private var mFragmentManager: FragmentManager? = null
 
-    constructor(fragmentManager: FragmentManager, list: MutableList<Fragment>) : super(fragmentManager) {
+    constructor(fragmentManager: FragmentManager, list: MutableList<Fragment>) : super(fragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         mFragmentManager = fragmentManager
         this.mList = list
     }
 
 
-    constructor(fragmentManager: FragmentManager, list: MutableList<Fragment>, titles: MutableList<String>) : super(fragmentManager) {
+    constructor(fragmentManager: FragmentManager, list: MutableList<Fragment>, titles: MutableList<String>) : super(fragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         mFragmentManager = fragmentManager
         this.mList = list
         this.mTitles = titles
     }
 
     fun setData(list: List<BaseFragment<*>>, titles: List<String>) {
-        this.mList!!.clear()
-        this.mTitles!!.clear()
-        this.mList!!.addAll(list)
-        this.mTitles!!.addAll(titles)
+        this.mList?.clear()
+        this.mTitles?.clear()
+        this.mList?.addAll(list)
+        this.mTitles?.addAll(titles)
         notifyDataSetChanged()
     }
 

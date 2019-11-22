@@ -1,34 +1,24 @@
 package me.shetj.base.view
 
 import android.content.Context
-import android.content.res.TypedArray
-import android.graphics.Bitmap
-import android.graphics.BitmapShader
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.Matrix
-import android.graphics.Outline
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.RectF
-import android.graphics.Shader
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.util.AttributeSet
+import android.view.View
+import android.view.ViewOutlineProvider
+import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
-import android.util.AttributeSet
-import android.view.View
-import android.view.ViewOutlineProvider
-import android.widget.ImageView
-
 import me.shetj.base.R
+import me.shetj.base.tools.app.ArmsUtils
+import kotlin.math.min
 
 
 /**
@@ -95,12 +85,6 @@ open class CircleImageView : AppCompatImageView {
             invalidate()
         }
 
-    /**
-     * Return the color drawn behind the circle-shaped drawable.
-     *
-     * @return The color drawn behind the drawable
-     *
-     */
     /**
      * Set a color to be drawn behind the circle-shaped drawable. Note that
      * this has no effect if the drawable is opaque or no drawable is set.
@@ -185,15 +169,11 @@ open class CircleImageView : AppCompatImageView {
     }
 
     override fun setScaleType(scaleType: ImageView.ScaleType) {
-        if (scaleType != SCALE_TYPE) {
-            throw IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType))
-        }
+        require(scaleType == SCALE_TYPE) { String.format("ScaleType %s not supported.", scaleType) }
     }
 
     override fun setAdjustViewBounds(adjustViewBounds: Boolean) {
-        if (adjustViewBounds) {
-            throw IllegalArgumentException("adjustViewBounds not supported.")
-        }
+        require(!adjustViewBounds) { "adjustViewBounds not supported." }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -232,17 +212,16 @@ open class CircleImageView : AppCompatImageView {
 
 
     fun setBorderColorResource(@ColorRes borderColorRes: Int) {
-        borderColor = context.resources.getColor(borderColorRes)
+        borderColor = ArmsUtils.getColor(context,borderColorRes)
     }
 
     fun setCircleBackgroundColorResource(@ColorRes circleBackgroundRes: Int) {
-        circleBackgroundColor = context.resources.getColor(circleBackgroundRes)
+        circleBackgroundColor = ArmsUtils.getColor(context,circleBackgroundRes)
     }
 
     /**
      * Set a color to be drawn behind the circle-shaped drawable. Note that
      * this has no effect if the drawable is opaque or no drawable is set.
-     *
      * @param fillColorRes The color resource to be resolved to a color and
      * drawn behind the drawable
      *
@@ -358,13 +337,13 @@ open class CircleImageView : AppCompatImageView {
         mBitmapWidth = mBitmap!!.width
 
         mBorderRect.set(calculateBounds())
-        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f)
+        mBorderRadius = min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f)
 
         mDrawableRect.set(mBorderRect)
         if (!mBorderOverlay && mBorderWidth > 0) {
             mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f)
         }
-        mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f)
+        mDrawableRadius = min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f)
 
         applyColorFilter()
         updateShaderMatrix()
@@ -375,7 +354,7 @@ open class CircleImageView : AppCompatImageView {
         val availableWidth = width - paddingLeft - paddingRight
         val availableHeight = height - paddingTop - paddingBottom
 
-        val sideLength = Math.min(availableWidth, availableHeight)
+        val sideLength = min(availableWidth, availableHeight)
 
         val left = paddingLeft + (availableWidth - sideLength) / 2f
         val top = paddingTop + (availableHeight - sideLength) / 2f

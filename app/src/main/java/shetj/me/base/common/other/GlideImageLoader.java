@@ -130,7 +130,7 @@ public class GlideImageLoader implements ImageLoader {
 	}
 
 	@Override
-	public void preLoad(@NotNull Context context, @NotNull String url, @NotNull ImageView view) {
+	public void preLoad(@NotNull Context context, @NotNull String url) {
 
 	}
 }

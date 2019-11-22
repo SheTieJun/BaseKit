@@ -13,10 +13,10 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 
 import com.qmuiteam.qmui.widget.QMUIWindowInsetLayout
+import shetj.me.base.R
 
 import java.util.ArrayList
 
-import me.shetj.base.R
 
 /**
  * Created by cgspine on 2018/1/7.

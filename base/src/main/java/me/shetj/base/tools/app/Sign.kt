@@ -3,9 +3,7 @@ package me.shetj.base.tools.app
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.MessageDigest
-import java.util.HashMap
-import java.util.TreeMap
-import kotlin.experimental.and
+import java.util.*
 
 /**
  * 签名算法

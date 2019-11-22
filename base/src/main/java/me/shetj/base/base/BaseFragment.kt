@@ -4,40 +4,33 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Message
-import androidx.annotation.Keep
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.annotation.Keep
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import com.trello.rxlifecycle3.components.support.RxFragment
+import me.shetj.base.kt.toJson
 import me.shetj.base.s
-
-import org.simple.eventbus.EventBus
-
 import me.shetj.base.tools.json.EmptyUtils
-import me.shetj.base.tools.json.GsonKit
+import org.simple.eventbus.EventBus
 import timber.log.Timber
 
 /**
  * fragment基类
  * @author shetj
+ * 不需要懒加载，viewPager2 执行顺序就是
+ * 开始必须可见才会初始化:[onCreateView]-> [Lifecycle.Event.ON_CREATE] -> [onViewCreated]-> [Lifecycle.Event.ON_START] -> [Lifecycle.Event.ON_RESUME]
+ * 结束前现会:[Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_STOP] -> [Lifecycle.Event.ON_DESTROY]
+ * 不可见:   [Lifecycle.Event.ON_RESUME]  ->[Lifecycle.Event.ON_PAUSE]
+ * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
-
-    /**
-     * The M activity.
-     */
+abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView ,LifecycleObserver{
     protected var mActivity: Context? = null
-    /**是否可见状态 */
-    protected var isShow: Boolean = false
-    /**View已经初始化完成 */
-    protected var isPrepared: Boolean = false
-    /**是否第一次加载完 */
-    protected var isFirstLoad = true
-
     protected var mPresenter: T? = null
 
     /**
@@ -47,19 +40,18 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
     override val rxContext: RxAppCompatActivity
         get() = (mActivity as RxAppCompatActivity?)!!
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        isFirstLoad = true
-        //绑定View
-        isPrepared = true
-        initEventAndData()
-        lazyLoad()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycle.addObserver(this)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mActivity = activity
-        //如果要使用eventbus请将此方法返回true
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
@@ -92,38 +84,11 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
         super.onAttach(context)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        try {
-            val childFragmentManager = Fragment::class.java.getDeclaredField("mChildFragmentManager")
-            childFragmentManager.isAccessible = true
-            childFragmentManager.set(this, null)
-        } catch (e: NoSuchFieldException) {
-            throw RuntimeException(e)
-        } catch (e: IllegalAccessException) {
-            e.printStackTrace()
-        }
-
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (userVisibleHint) {
-            isShow = true
-            onVisible()
-        } else {
-            isShow = false
-            onInvisible()
-        }
-    }
-
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            isShow = true
             onVisible()
         } else {
-            isShow = false
             onInvisible()
         }
     }
@@ -131,37 +96,22 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
     /**
      * On visible.
      */
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     open fun onVisible() {
-        lazyLoad()
     }
 
     /**
      * On invisible.
      */
-    open fun onInvisible() {}
-
-    /**
-     * Lazy load.
-     */
-    open fun lazyLoad() {
-        if (!isPrepared || !isShow || !isFirstLoad) {
-            return
-        }
-        isFirstLoad = false
-        lazyLoadData()
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    open fun onInvisible() {
     }
 
     /**
      * Init event and data.
      */
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     protected abstract fun initEventAndData()
-
-    /**
-     * Lazy load data.
-     */
-    open fun lazyLoadData() {
-
-    }
 
 
     override fun onDestroyView() {
@@ -172,7 +122,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView {
     @SuppressLint("unchecked")
     override fun updateView(message: Message) {
         if (s.isDebug && EmptyUtils.isNotEmpty(message)) {
-            Timber.i(GsonKit.objectToJson(message))
+            Timber.i(message.toJson())
         }
     }
 

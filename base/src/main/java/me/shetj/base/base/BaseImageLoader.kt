@@ -32,8 +32,7 @@ interface BaseImageLoader {
      * 预加载
      * @param context
      * @param url
-     * @param view
      */
-    fun preLoad(context: Context, url: String, view: ImageView)
+    fun preLoad(context: Context, url: String)
 
 }

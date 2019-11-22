@@ -72,23 +72,16 @@ class SPUtils {
          */
         @JvmStatic
         fun put(context: Context, key: String, `object`: Any) {
-
             val sp = context.getSharedPreferences(FILE_NAME,
                     Context.MODE_PRIVATE)
             val editor = sp.edit()
-
-            if (`object` is String) {
-                editor.putString(key, `object`)
-            } else if (`object` is Int) {
-                editor.putInt(key, `object`)
-            } else if (`object` is Boolean) {
-                editor.putBoolean(key, `object`)
-            } else if (`object` is Float) {
-                editor.putFloat(key, `object`)
-            } else if (`object` is Long) {
-                editor.putLong(key, `object`)
-            } else {
-                editor.putString(key, `object`.toString())
+            when (`object`) {
+                is String -> editor.putString(key, `object`)
+                is Int -> editor.putInt(key, `object`)
+                is Boolean -> editor.putBoolean(key, `object`)
+                is Float -> editor.putFloat(key, `object`)
+                is Long -> editor.putLong(key, `object`)
+                else -> editor.putString(key, `object`.toString())
             }
 
             SharedPreferencesCompat.apply(editor)
@@ -103,23 +96,17 @@ class SPUtils {
          * @return
          */
         @JvmStatic
-        operator fun get(context: Context, key: String, defaultObject: Any): Any? {
+        fun get(context: Context, key: String, defaultObject: Any): Any? {
             val sp = context.getSharedPreferences(FILE_NAME,
                     Context.MODE_PRIVATE)
-
-            if (defaultObject is String) {
-                return sp.getString(key, defaultObject)
-            } else if (defaultObject is Int) {
-                return sp.getInt(key, defaultObject)
-            } else if (defaultObject is Boolean) {
-                return sp.getBoolean(key, defaultObject)
-            } else if (defaultObject is Float) {
-                return sp.getFloat(key, defaultObject)
-            } else if (defaultObject is Long) {
-                return sp.getLong(key, defaultObject)
+            return when (defaultObject) {
+                is String -> sp.getString(key, defaultObject)
+                is Int -> sp.getInt(key, defaultObject)
+                is Boolean -> sp.getBoolean(key, defaultObject)
+                is Float -> sp.getFloat(key, defaultObject)
+                is Long -> sp.getLong(key, defaultObject)
+                else -> null
             }
-
-            return null
         }
 
         /**

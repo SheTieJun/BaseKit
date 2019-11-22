@@ -1,8 +1,7 @@
 package me.shetj.base.tools.app
 
 import androidx.annotation.Keep
-
-import java.util.HashMap
+import java.util.*
 
 @Keep
 object SingletonManager {
@@ -16,5 +15,9 @@ object SingletonManager {
 
     fun getService(key: String): Any? {
         return objMap[key]
+    }
+
+    fun reMove(key: String){
+        objMap.remove(key)
     }
 }

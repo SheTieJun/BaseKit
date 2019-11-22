@@ -1,5 +1,6 @@
 package me.shetj.base.view
 
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
@@ -8,15 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
-
-
-import java.util.concurrent.TimeUnit
-
 import androidx.annotation.ColorInt
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import me.shetj.base.R
+import java.util.concurrent.TimeUnit
 
 /**
  * 消息提示框

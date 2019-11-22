@@ -1,11 +1,10 @@
-package me.shetj.base.tools.app
+package me.shetj.base.kt
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Message
 import android.transition.Explode
 import android.transition.Fade
 import android.transition.Slide
@@ -20,8 +19,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import java.util.*
-
 
 fun Context.openActivity(scheme: String){
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scheme))
@@ -34,7 +31,6 @@ fun Context.openActivityByPackageName(ackageName: String){
 }
 
 fun FragmentManager.addFragmentToActivity(fragment: Fragment, frameId: Int){
-    checkNotNull(fragment)
     val transaction = beginTransaction()
     transaction.add(frameId, fragment)
     transaction.commit()
@@ -72,11 +68,6 @@ fun Fragment.setBackgroundResource(@DrawableRes resId: Int) {
     view?.setBackgroundResource(resId)
 }
 
-fun Message.getMessage(code: Int, msg: Any): Message {
-    obj = msg
-    arg1 = code
-    return this
-}
 /**
  * 当你需要当前界面中的某个元素和新界面中的元素有关时，你可以使用这个动画。效果很赞~！
  */
@@ -143,7 +134,6 @@ fun Fragment.setEnterTransition(  slideTransition: Transition, transition: Trans
     allowEnterTransitionOverlap = true
     allowReturnTransitionOverlap = true
     sharedElementEnterTransition = transition
-
 }
 
 fun Context.getIdByName (className: String, resName: String): Int {

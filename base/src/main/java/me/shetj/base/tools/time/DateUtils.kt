@@ -2,8 +2,7 @@ package me.shetj.base.tools.time
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
+import java.util.*
 
 /**
  * 日期工具类
@@ -79,6 +78,8 @@ object DateUtils {
      */
     var FORMAT_FULL_CN = "yyyy年MM月dd日  HH时mm分ss秒SSS毫秒"
 
+    var ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+
     var calendar: Calendar? = null
     private val FORMAT = "yyyy-MM-dd HH:mm:ss"
 
@@ -111,10 +112,10 @@ object DateUtils {
     @JvmOverloads
     fun str2Date(str: String?, format: String? = null): Date? {
         var format = format
-        if (str == null || str.length == 0) {
+        if (str == null || str.isEmpty()) {
             return null
         }
-        if (format == null || format.length == 0) {
+        if (format == null || format.isEmpty()) {
             format = FORMAT
         }
         var date: Date? = null
@@ -154,7 +155,7 @@ object DateUtils {
         if (d == null) {
             return null
         }
-        if (format == null || format.length == 0) {
+        if (format == null || format.isEmpty()) {
             format = FORMAT
         }
         val sdf = SimpleDateFormat(format)

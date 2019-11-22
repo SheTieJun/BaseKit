@@ -1,11 +1,8 @@
 package me.shetj.base.base
 
-import android.os.Message
 import androidx.annotation.Keep
 
 
-import io.reactivex.annotations.NonNull
-import me.shetj.base.tools.app.getMessage
 
 /**
  * **@packageName：** me.shetj.base.base<br></br>
@@ -18,11 +15,6 @@ import me.shetj.base.tools.app.getMessage
 
 @Keep
 abstract class BaseModel : IModel {
-
-    @NonNull
-    override fun getMessage(code: Int, obj: Any): Message {
-        return Message.obtain().getMessage(code,obj)
-    }
 
     override fun onDestroy() {
 

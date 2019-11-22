@@ -5,13 +5,11 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.SparseArray
 import android.widget.ImageView
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.ielse.imagewatcher.ImageWatcherHelper
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * **@packageName：** shetj.me.base.utils<br></br>
@@ -22,6 +20,7 @@ import java.util.ArrayList
  * **@describe**<br> ImageWatcherHelper 加载库 </br>
  */
 class ImageWatcherUtils(activity: Activity) {
+
     private val iwHelper: ImageWatcherHelper
 
     init {

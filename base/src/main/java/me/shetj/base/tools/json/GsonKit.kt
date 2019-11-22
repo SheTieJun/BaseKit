@@ -1,26 +1,12 @@
 package me.shetj.base.tools.json
 
 import androidx.annotation.Keep
-
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
-import com.google.gson.JsonParser
-import com.google.gson.JsonPrimitive
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
-import com.google.gson.internal.`$Gson$Types`
+import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-
-import java.lang.reflect.Type
-import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Date
-import java.util.HashMap
-
 import io.reactivex.annotations.NonNull
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * @author shetj
@@ -42,15 +28,15 @@ object GsonKit {
      */
     @JvmStatic
     fun objectToJson(@NonNull ts: Any): String? {
-        try {
+        return try {
             var jsonStr: String? = null
             if (gson != null) {
                 jsonStr = gson!!.toJson(ts)
             }
-            return jsonStr
+            jsonStr
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }
@@ -63,15 +49,16 @@ object GsonKit {
      */
     @JvmStatic
     fun objectToJson(@NonNull ts: Any, dateformat: String): String? {
-        try {
-            val gson = GsonBuilder().registerTypeHierarchyAdapter(Date::class.java, JsonSerializer<Date> { src, typeOfSrc, context ->
+        return try {
+            val info = GsonBuilder().registerTypeHierarchyAdapter(Date::class.java,
+                    JsonSerializer<Date> { src, _, _ ->
                 val format = SimpleDateFormat(dateformat)
                 JsonPrimitive(format.format(src))
             }).setDateFormat(dateformat).create()
-            return gson.toJson(ts)
+            info.toJson(ts)
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }
@@ -83,7 +70,7 @@ object GsonKit {
      */
     @JvmStatic
     fun <T> jsonToList(@NonNull jsonStr: String): List<T>? {
-        try {
+        return try {
             var objList: List<T>? = null
             if (gson != null) {
                 val type = object : TypeToken<List<T>>() {
@@ -91,10 +78,10 @@ object GsonKit {
                 }.type
                 objList = gson!!.fromJson<List<T>>(jsonStr, type)
             }
-            return objList
+            objList
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }
@@ -107,7 +94,7 @@ object GsonKit {
      */
     @JvmStatic
     fun <T> GsonToListMaps(@NonNull gsonString: String): List<Map<String, T>>? {
-        try {
+        return try {
             var list: List<Map<String, T>>? = null
             if (gson != null) {
                 list = gson!!.fromJson<List<Map<String, T>>>(gsonString,
@@ -115,10 +102,10 @@ object GsonKit {
 
                         }.type)
             }
-            return list
+            list
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }
@@ -133,17 +120,17 @@ object GsonKit {
     </T> */
     @JvmStatic
     fun <T> jsonToList(@NonNull json: String, cls: Class<T>): List<T>? {
-        try {
+        return try {
             val gson = Gson()
             val list = ArrayList<T>()
             val array = JsonParser().parse(json).asJsonArray
             for (elem in array) {
                 list.add(gson.fromJson(elem, cls))
             }
-            return list
+            list
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }
@@ -157,17 +144,17 @@ object GsonKit {
     @JvmStatic
     fun jsonToMap(@NonNull gsonString: String): Map<String, Any>? {
 
-        try {
+        return try {
             var map: Map<String, Any>? = null
             if (gson != null) {
                 map = gson!!.fromJson<Map<String, Any>>(gsonString, object : TypeToken<Map<String, Any>>() {
 
                 }.type)
             }
-            return map
+            map
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }
@@ -181,17 +168,17 @@ object GsonKit {
     @JvmStatic
     fun jsonToStringMap(@NonNull gsonString: String): Map<String, String>? {
 
-        try {
+        return try {
             var map: Map<String, String>? = null
             if (gson != null) {
                 map = gson!!.fromJson<Map<String, String>>(gsonString, object : TypeToken<Map<String, String>>() {
 
                 }.type)
             }
-            return map
+            map
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }
@@ -203,15 +190,15 @@ object GsonKit {
      */
     @JvmStatic
     fun <T> jsonToBean(@NonNull jsonStr: String, cl: Class<T>): T? {
-        try {
+        return try {
             var obj: T? = null
             if (gson != null) {
                 obj = gson!!.fromJson(jsonStr, cl)
             }
-            return obj
+            obj
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }
@@ -232,7 +219,7 @@ object GsonKit {
 
                 }.type)
             }
-            if (rusMap != null && rusMap.size > 0) {
+            if (rusMap != null && rusMap.isNotEmpty()) {
                 rusObj = rusMap[key]
             }
             return rusObj
@@ -242,41 +229,4 @@ object GsonKit {
         }
 
     }
-
-
 }
-
-//class TypeFactory {
-//
-//    public static Type $List(Type type) {
-//        return $Gson$Types.newParameterizedTypeWithOwner(null, List.class, type);
-//    }
-//
-//    public static Type $Set(Type type) {
-//        return $Gson$Types.newParameterizedTypeWithOwner(null, Set.class, type);
-//    }
-//
-//    public static Type $HashMap(Type type, Type type2) {
-//        return $Gson$Types.newParameterizedTypeWithOwner(null, HashMap.class, type, type2);
-//    }
-//
-//    public static Type $Map(Type type, Type type2) {
-//        return $Gson$Types.newParameterizedTypeWithOwner(null, Map.class, type, type2);
-//    }
-//
-//    public static Type $Parameterized(Type ownerType, Type rawType, Type... typeArguments) {
-//        return $Gson$Types.newParameterizedTypeWithOwner(ownerType, rawType, typeArguments);
-//    }
-//
-//    public static Type $Array(Type type) {
-//        return $Gson$Types.arrayOf(type);
-//    }
-//
-//    public static Type $SubtypeOf(Type type) {
-//        return $Gson$Types.subtypeOf(type);
-//    }
-//
-//    public static Type $SupertypeOf(Type type) {
-//        return $Gson$Types.supertypeOf(type);
-//    }
-//}

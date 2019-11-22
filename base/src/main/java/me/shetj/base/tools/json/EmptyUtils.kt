@@ -1,16 +1,14 @@
 package me.shetj.base.tools.json
 
 import android.os.Build
-import androidx.annotation.Keep
 import android.text.TextUtils
 import android.util.SparseArray
 import android.util.SparseBooleanArray
 import android.util.SparseIntArray
 import android.util.SparseLongArray
-
-import java.lang.reflect.Array
-
+import androidx.annotation.Keep
 import me.shetj.base.tools.app.ArmsUtils
+import java.lang.reflect.Array
 
 /**
  * <pre>

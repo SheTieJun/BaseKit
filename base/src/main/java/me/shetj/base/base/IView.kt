@@ -1,9 +1,8 @@
 package me.shetj.base.base
 
 import android.os.Message
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-
 import androidx.annotation.Keep
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 
 
 /**

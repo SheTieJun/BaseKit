@@ -1,8 +1,6 @@
 package me.shetj.base.view
 
 import android.content.Context
-import android.content.res.TypedArray
-import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.ViewGroup
@@ -10,9 +8,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-
-import java.lang.reflect.Field
-
+import androidx.viewpager.widget.ViewPager
 import me.shetj.base.R
 import me.shetj.base.tools.app.ArmsUtils
 

@@ -4,11 +4,9 @@ import android.app.IntentService
 import android.content.Intent
 import android.os.IBinder
 import androidx.annotation.Keep
-
-import org.simple.eventbus.EventBus
-
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import org.simple.eventbus.EventBus
 
 /**
  * ================================================

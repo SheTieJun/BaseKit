@@ -1,4 +1,4 @@
-package me.shetj.base.tools.app
+package shetj.me.base.common.other
 
 import android.app.DownloadManager
 import android.app.Service
@@ -9,6 +9,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Environment
 import android.os.IBinder
+import me.shetj.base.tools.app.AppUtils
 
 import java.io.File
 

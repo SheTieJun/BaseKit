@@ -1,8 +1,7 @@
 package me.shetj.base.tools.time
 
 import androidx.annotation.Keep
-
-import java.util.Calendar
+import java.util.*
 
 @Keep
 object CalendarUtils {
@@ -13,7 +12,7 @@ object CalendarUtils {
      * @return
      */
     fun getDaysInMonth(month: Int, year: Int): Int {
-        var month = month
+        var month = month -1
         month -= 1
         return when (month) {
             Calendar.JANUARY, Calendar.MARCH, Calendar.MAY, Calendar.JULY, Calendar.AUGUST, Calendar.OCTOBER, Calendar.DECEMBER -> 31

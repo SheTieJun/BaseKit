@@ -1,20 +1,15 @@
 package me.shetj.base.tools.app
 
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.annotation.AnimRes
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import android.util.Log
-import android.view.View
-
-import java.util.ArrayList
-import java.util.Collections
+import java.util.*
 
 /**
  * <pre>

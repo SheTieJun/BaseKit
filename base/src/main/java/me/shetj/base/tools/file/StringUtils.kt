@@ -31,7 +31,7 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun isEmpty(s: CharSequence?): Boolean {
-            return s == null || s.length == 0
+            return s == null || s.isEmpty()
         }
 
         /**
@@ -42,7 +42,7 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun isSpace(s: String?): Boolean {
-            return s == null || s.trim { it <= ' ' }.length == 0
+            return s == null || s.trim { it <= ' ' }.isEmpty()
         }
 
         /**

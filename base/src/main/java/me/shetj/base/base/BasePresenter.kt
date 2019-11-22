@@ -3,21 +3,16 @@ package me.shetj.base.base
 
 import android.content.Intent
 import android.os.Message
-
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-
 import androidx.annotation.Keep
-
-
-import org.simple.eventbus.EventBus
-
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
-import me.shetj.base.tools.app.getMessage
+import me.shetj.base.kt.toMessage
+import org.simple.eventbus.EventBus
 import org.simple.eventbus.Subscriber
 import org.simple.eventbus.ThreadMode
 import timber.log.Timber
@@ -34,11 +29,9 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     private var mCompositeDisposable: CompositeDisposable? = null
     protected var model: T? = null
 
-    private val job = SupervisorJob()
+    private val job = supervisorJob()
 
-    private fun SupervisorJob(): Job {
-        return Job()
-    }
+    open fun supervisorJob() = Job()
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
@@ -49,6 +42,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     init {
         Timber.i("onStart")
         onStart()
+
     }
 
     override fun onStart() {
@@ -78,6 +72,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         unDispose()
         this.mCompositeDisposable = null
         model?.onDestroy()
+        model = null
     }
 
     /**
@@ -85,42 +80,33 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      *
      * @return
      */
-    open fun useEventBus(): Boolean {
-        return true
-    }
+    open fun useEventBus() = true
 
 
     /**
      * 将 [Disposable] 添加到 [CompositeDisposable] 中统一管理
-     * 可在 [中使用 ][android.app.Activity.onDestroy]
+     * 可在[android.app.Activity.onDestroy] 释放
      */
     fun addDispose(disposable: Disposable) {
         if (mCompositeDisposable == null) {
             mCompositeDisposable = CompositeDisposable()
         }
-        mCompositeDisposable!!.add(disposable)
+        mCompositeDisposable?.add(disposable)
     }
 
     /**
      * 停止集合中正在执行的 RxJava 任务
      */
     fun unDispose() {
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable!!.clear()
-        }
+        mCompositeDisposable?.clear()
     }
 
     fun startActivity(intent: Intent) {
         view.rxContext.startActivity(intent)
     }
 
-
-    fun getMessage(code: Int, msg: Any): Message {
-        return  Message.obtain().getMessage (code,msg)
-    }
-
-    fun updateMessage(code: Int, msg: Any){
-        view.updateView(getMessage(code,msg))
+    fun updateView(code: Int, msg: Any){
+        view.updateView(msg.toMessage(code))
     }
 }
 

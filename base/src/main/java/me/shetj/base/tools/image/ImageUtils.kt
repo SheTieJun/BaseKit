@@ -43,13 +43,11 @@ class ImageUtils {
             if (context == null) {
                 throw NullPointerException()
             }
-            val uri: Uri
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uri = FileProvider.getUriForFile(context.applicationContext, AppUtils.appPackageName + ".FileProvider", file)
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                FileProvider.getUriForFile(context.applicationContext, AppUtils.appPackageName + ".FileProvider", file)
             } else {
-                uri = Uri.fromFile(file)
+                Uri.fromFile(file)
             }
-            return uri
         }
         @JvmStatic
         fun createImagePath(): String {
@@ -60,21 +58,20 @@ class ImageUtils {
         }
         @JvmStatic
         fun openCameraImage(activity: Activity) {
-            ImageUtils.imageUriFromCamera = ImageUtils.createImagePathUri(activity)
+            imageUriFromCamera = createImagePathUri(activity)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, ImageUtils.imageUriFromCamera)
-            activity.startActivityForResult(intent, ImageUtils.GET_IMAGE_BY_CAMERA)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUriFromCamera)
+            activity.startActivityForResult(intent, GET_IMAGE_BY_CAMERA)
         }
         @JvmStatic
         fun openLocalImage(activity: Activity) {
-            val intent: Intent
-            intent = Intent(Intent.ACTION_PICK)
+            val intent = Intent(Intent.ACTION_PICK)
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-            activity.startActivityForResult(intent, ImageUtils.GET_IMAGE_FROM_PHONE)
+            activity.startActivityForResult(intent, GET_IMAGE_FROM_PHONE)
         }
         @JvmStatic
         fun cropImage(activity: Activity, srcUri: Uri?) {
-            ImageUtils.cropImageUri = Uri.fromFile(File(createImagePath()))
+            cropImageUri = Uri.fromFile(File(createImagePath()))
             val intent = Intent("com.android.camera.action.CROP")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -88,7 +85,7 @@ class ImageUtils {
             intent.putExtra("scale", true)
             //支持缩放
             intent.putExtra("return-data", false)
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, ImageUtils.cropImageUri)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, cropImageUri)
             intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())
             //输出图片格式
             intent.putExtra("noFaceDetection", true)
@@ -198,16 +195,16 @@ class ImageUtils {
         @JvmStatic
         fun onActivityResult(context: Activity, requestCode: Int, data: Intent?, callBack: BaseCallback<String>?) {
             when (requestCode) {
-                ImageUtils.GET_IMAGE_BY_CAMERA -> if (ImageUtils.imageUriFromCamera != null) {
+                GET_IMAGE_BY_CAMERA -> if (imageUriFromCamera != null) {
                     // 对图片进行裁剪
-                    ImageUtils.cropImage(context, ImageUtils.imageUriFromCamera)
+                    cropImage(context, imageUriFromCamera)
                 }
-                ImageUtils.GET_IMAGE_FROM_PHONE -> if (data != null && data.data != null) {
-                    ImageUtils.cropImage(context, data.data)
+                GET_IMAGE_FROM_PHONE -> if (data != null && data.data != null) {
+                    cropImage(context, data.data)
                 }
-                ImageUtils.CROP_IMAGE -> {
-                    val path = ImageUtils.cropImageUri!!.path
-                    if (ImageUtils.cropImageUri != null && File(path!!).exists()) {
+                CROP_IMAGE -> {
+                    val path = cropImageUri!!.path
+                    if (cropImageUri != null && File(path!!).exists()) {
                         callBack?.onSuccess(path)
                     } else {
                         callBack?.onFail()

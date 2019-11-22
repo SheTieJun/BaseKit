@@ -1,6 +1,7 @@
 package me.shetj.base.view
 
 import com.google.android.material.appbar.AppBarLayout
+import kotlin.math.abs
 
 /**
  * AppBar的监听
@@ -24,7 +25,7 @@ abstract class AppBarStateChangeListener : AppBarLayout.OnOffsetChangedListener 
                 }
                 mCurrentState = State.EXPANDED
             }
-            Math.abs(i) >= appBarLayout.totalScrollRange -> {
+            abs(i) >= appBarLayout.totalScrollRange -> {
                 if (mCurrentState != State.COLLAPSED) {
                     onStateChanged(appBarLayout, State.COLLAPSED)
                 }

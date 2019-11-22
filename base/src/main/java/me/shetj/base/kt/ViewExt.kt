@@ -1,44 +1,48 @@
+package me.shetj.base.kt
+
 import android.content.Context
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.JELLY_BEAN_MR1
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
+import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import me.shetj.base.R
 
 /**
  * 收集一些扩展函数
  */
 
 @Suppress("UNCHECKED_CAST")
-internal fun <R : View> ViewGroup.inflate(
+fun <R : View> ViewGroup.inflate(
         ctxt: Context = context,
         @LayoutRes res: Int
 ) = LayoutInflater.from(ctxt).inflate(res, this, false) as R
 
+
 @Suppress("UNCHECKED_CAST")
-internal fun SwipeRefreshLayout.setSwipeRefresh(
-        @ColorRes color :Int,
+@JvmOverloads
+fun SwipeRefreshLayout.setSwipeRefresh(
+        @ColorRes color :Int = R.color.colorAccent,
         listener : SwipeRefreshLayout.OnRefreshListener ?= null ){
     this.setColorSchemeResources(color)
     this.setOnRefreshListener(listener)
 }
 
 
-
 @Suppress("UNCHECKED_CAST")
-internal fun <T> ViewGroup.inflate(
+@JvmOverloads
+fun <T> ViewGroup.inflate(
         @LayoutRes res: Int,
         root: ViewGroup? = this
 ) = LayoutInflater.from(context).inflate(res, root, false) as T
 
-internal fun <T : View> T?.updatePadding(
+
+
+@JvmOverloads
+fun <T : View> T?.updatePadding(
         left: Int = this?.paddingLeft ?: 0,
         top: Int = this?.paddingTop ?: 0,
         right: Int = this?.paddingRight ?: 0,
@@ -55,7 +59,7 @@ internal fun <T : View> T?.updatePadding(
     this?.setPadding(left, top, right, bottom)
 }
 
-internal inline fun <T : View> T.waitForLayout(crossinline f: T.() -> Unit) =
+inline fun <T : View> T.waitForLayout(crossinline f: T.() -> Unit) =
         viewTreeObserver.apply {
             addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -65,7 +69,7 @@ internal inline fun <T : View> T.waitForLayout(crossinline f: T.() -> Unit) =
             })
         }!!
 
-internal fun <T : View> T.isVisible(): Boolean {
+fun <T : View> T.isVisible(): Boolean {
     return if (this is Button) {
         this.visibility == View.VISIBLE && this.text.trim().isNotBlank()
     } else {
@@ -73,25 +77,37 @@ internal fun <T : View> T.isVisible(): Boolean {
     }
 }
 
-internal fun <T : View> T.isNotVisible(): Boolean {
+fun <T : View> T.isNotVisible(): Boolean {
     return !isVisible()
 }
 
-internal fun <T : View> T.isRtl(): Boolean {
+fun <T : View> T.isRtl(): Boolean {
     if (SDK_INT < JELLY_BEAN_MR1) return false
     return resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 }
 
-internal fun TextView.setGravityStartCompat() {
+fun TextView.setGravityStartCompat() {
     if (SDK_INT >= JELLY_BEAN_MR1) {
         this.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
     this.gravity = Gravity.START or Gravity.CENTER_VERTICAL
 }
 
-internal fun TextView.setGravityEndCompat() {
+fun TextView.setGravityEndCompat() {
     if (SDK_INT >= JELLY_BEAN_MR1) {
         this.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
     }
     this.gravity = Gravity.END or Gravity.CENTER_VERTICAL
+}
+/**
+ * 点击动画
+ */
+fun View.setClicksAnima( ){
+    setOnTouchListener { _, event->
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> animate().scaleX(0.8f).scaleY(0.8f).setDuration(500).start()
+            MotionEvent.ACTION_UP -> animate().scaleX(1f).scaleY(1f).setDuration(500).start()
+        }
+        false
+    }
 }

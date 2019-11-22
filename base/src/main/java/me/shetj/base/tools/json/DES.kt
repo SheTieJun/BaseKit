@@ -1,15 +1,13 @@
 package me.shetj.base.tools.json
 
-import androidx.annotation.Keep
 import android.util.Base64
-
+import android.util.Base64.NO_WRAP
+import androidx.annotation.Keep
+import java.nio.charset.Charset
 import javax.crypto.Cipher
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.DESKeySpec
 import javax.crypto.spec.IvParameterSpec
-
-import android.util.Base64.NO_WRAP
-import java.nio.charset.Charset
 
 /**
  * 将字符串进行DES加密解密

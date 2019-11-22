@@ -9,13 +9,11 @@ import android.webkit.WebView
  * @author Administrator
  */
 class WebViewManager(private val webView: WebView) {
-    private val webSettings: WebSettings
+    private val webSettings: WebSettings = webView.settings
 
     init {
-        webSettings = webView.settings
         webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
     }
-
 
     /**
      * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放
@@ -127,11 +125,11 @@ class WebViewManager(private val webView: WebView) {
      * @return true：已经返回，false：到头了没法返回了
      */
     fun goBack(): Boolean {
-        if (webView.canGoBack()) {
+        return if (webView.canGoBack()) {
             webView.goBack()
-            return true
+            true
         } else {
-            return false
+            false
         }
     }
 }

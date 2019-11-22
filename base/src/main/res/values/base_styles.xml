@@ -10,14 +10,6 @@
     </style>
 
 
-    <style name="StartAppTheme" parent="AppTheme">
-        <!-- 隐藏状态栏 -->
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <!--启动页优先显示的-->
-        <item name="android:windowBackground">@color/halfTransparent</item>
-    </style>
-
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -26,13 +18,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-
-    <style name="AppTheme.Main">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
 
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
@@ -82,11 +67,7 @@
         <item name="android:background">?android:attr/windowBackground</item>
     </style>
 
-    <style name="SwipeBackLayout">
-        <item name="shadow_left">@drawable/shadow_left</item>
-        <item name="shadow_right">@drawable/shadow_right</item>
-        <item name="shadow_bottom">@drawable/shadow_bottom</item>
-    </style>
+
 
     <style name="tip_pop_anim_style">
         <item name="android:windowEnterAnimation">@anim/fade_ins</item>

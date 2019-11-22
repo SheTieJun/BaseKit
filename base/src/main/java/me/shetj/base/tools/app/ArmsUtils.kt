@@ -1,6 +1,9 @@
 package me.shetj.base.tools.app
 
 import android.app.Activity
+import android.app.ActivityOptions
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -8,26 +11,21 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Environment
 import android.os.Message
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.SpannedString
-import android.text.style.AbsoluteSizeSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
-import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.annotations.NonNull
+import me.shetj.base.kt.setSwipeRefresh
+import me.shetj.base.kt.toMessage
 import me.shetj.base.s
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.security.MessageDigest
@@ -36,19 +34,9 @@ import java.security.MessageDigest
 /**
  * ================================================
  * 一些框架常用的工具
- *
- *
- *
- * @author JessYan
- * @date 2015/11/23
- * @update update by shetj 2018年4月11日10:15:40
- * [Contact me](mailto:jess.yan.effort@gmail.com)
- * [Follow me](https://github.com/JessYanCoding)
- * ================================================
  */
 @Keep
 class ArmsUtils private constructor() {
-
 
     init {
         throw IllegalStateException("you can't instantiate me!")
@@ -56,26 +44,6 @@ class ArmsUtils private constructor() {
 
     companion object {
         var mToast: Toast? = null
-
-        /**
-         * 设置hint大小
-         *
-         * @param size
-         * @param v
-         * @param res
-         */
-        @JvmStatic
-        fun setViewHintSize(context: Context, size: Int, v: TextView, res: Int) {
-            val ss = SpannableString(getResources(context).getString(
-                    res))
-            // 新建一个属性对象,设置文字的大小
-            val ass = AbsoluteSizeSpan(size, true)
-            // 附加属性到文本
-            ss.setSpan(ass, 0, ss.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-            // 设置hint
-            v.hint = SpannedString(ss)
-        }
 
         /**
          * 全面屏幕检查
@@ -90,21 +58,11 @@ class ArmsUtils private constructor() {
                     if (displayCutout != null) {
                         val rects = displayCutout.boundingRects
                         //通过判断是否存在rects来确定是否刘海屏手机
-                        return rects != null && rects.size > 0
+                        return rects.size > 0
                     }
                 }
             }
             return false
-        }
-
-        /**
-         * 设置命名常亮
-         * other :android:keepScreenOn="true"
-         * @param activity 常亮的界面
-         */
-        @JvmStatic
-        fun wakey(activity: Activity) {
-            activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
         /**
@@ -123,10 +81,8 @@ class ArmsUtils private constructor() {
             return getResources(context).getStringArray(id)
         }
 
-
         /**
          * 从 dimens 中获得尺寸
-         *
          * @param context
          * @param id
          * @return
@@ -193,8 +149,7 @@ class ArmsUtils private constructor() {
         @JvmStatic
         fun <T : View> findViewByName(context: Context, activity: Activity, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
-            val v = activity.findViewById<T>(id)
-            return v
+            return activity.findViewById(id)
         }
 
         /**
@@ -205,8 +160,7 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun findLayout(context: Context, layoutName: String): Int {
-            val id = getResources(context).getIdentifier(layoutName, "layout", context.packageName)
-            return id
+            return getResources(context).getIdentifier(layoutName, "layout", context.packageName)
         }
 
         /**
@@ -222,7 +176,6 @@ class ArmsUtils private constructor() {
 
         /**
          * 单例 toast
-         *
          * @param string
          */
         @JvmStatic
@@ -233,8 +186,6 @@ class ArmsUtils private constructor() {
             mToast!!.setText(string)
             mToast!!.show()
         }
-
-
 
         /**
          * 通过资源id获得drawable
@@ -256,7 +207,7 @@ class ArmsUtils private constructor() {
         @JvmStatic
         fun startActivity(activity: Activity, homeActivityClass: Class<*>) {
             val intent = Intent(activity.applicationContext, homeActivityClass)
-            activity.startActivity(intent)
+            startActivity(activity,intent)
         }
 
         /**
@@ -266,7 +217,11 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun startActivity(activity: Activity, intent: Intent) {
-            activity.startActivity(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+            } else {
+                activity.startActivity(intent)
+            }
         }
 
         /**
@@ -311,10 +266,6 @@ class ArmsUtils private constructor() {
             }
         }
 
-        @JvmStatic
-        fun getRxPermissions(activity: FragmentActivity): RxPermissions {
-            return RxPermissions(activity)
-        }
 
         /**
          * MD5
@@ -379,17 +330,18 @@ class ArmsUtils private constructor() {
 
         /**
          * 全屏,并且沉侵式状态栏
-         *
          * @param activity
+         * @param isBlack 是否是黑色的字体和icon
          */
         @JvmStatic
-        fun statuInScreen(activity: Activity, isBlack: Boolean) {
+        @JvmOverloads
+        fun Activity.statuInScreen(isBlack: Boolean = false) {
             // 沉浸式状态栏
-            QMUIStatusBarHelper.translucent(activity)
+            QMUIStatusBarHelper.translucent(this)
             if (isBlack) {
-                QMUIStatusBarHelper.setStatusBarLightMode(activity)
+                QMUIStatusBarHelper.setStatusBarLightMode(this)
             } else {
-                QMUIStatusBarHelper.setStatusBarDarkMode(activity)
+                QMUIStatusBarHelper.setStatusBarDarkMode(this)
             }
         }
 
@@ -416,69 +368,13 @@ class ArmsUtils private constructor() {
             }
         }
 
-        /**
-         * 配置 recycleview
-         *
-         * @param recyclerView
-         * @param layoutManager
-         */
-        @JvmStatic
-        fun configRecycleView(recyclerView: RecyclerView, layoutManager: RecyclerView.LayoutManager) {
-            recyclerView.layoutManager = layoutManager
-            //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-            recyclerView.setHasFixedSize(true)
-            recyclerView.itemAnimator = DefaultItemAnimator()
-        }
-
-        @JvmStatic
-        fun convertStatusCode(code :Int): String {
-            val msg: String
-            if (code == 500) {
-                msg = "服务器发生错误"
-            } else if (code == 404) {
-                msg = "请求地址不存在"
-            } else if (code == 403) {
-                msg = "请求被服务器拒绝"
-            } else if (code == 307) {
-                msg = "请求被重定向到其他页面"
-            } else {
-                msg = "其他错误"
-            }
-            return msg
-        }
         @JvmStatic
         fun setSwipeRefresh(mSwipeRefreshLayout: SwipeRefreshLayout,
                             them2Color: Int, listener: SwipeRefreshLayout.OnRefreshListener) {
-            mSwipeRefreshLayout.setColorSchemeResources(them2Color)
-            mSwipeRefreshLayout.setOnRefreshListener(listener)
+            mSwipeRefreshLayout.setSwipeRefresh(them2Color,listener)
         }
 
-        /**
-         * @param root 最外层布局，需要调整的布局
-         * @param scrollToView 被键盘遮挡的scrollToView，滚动root,使scrollToView在root可视区域的底部
-         */
-        @JvmStatic
-        fun controlKeyboardLayout(root: View, scrollToView: View) {
-            root.viewTreeObserver.addOnGlobalLayoutListener {
-                val rect = Rect()
-                //获取root在窗体的可视区域
-                root.getWindowVisibleDisplayFrame(rect)
-                //获取root在窗体的不可视区域高度(被其他View遮挡的区域高度)
-                val rootInvisibleHeight = root.rootView.height - rect.bottom
-                //若不可视区域高度大于100，则键盘显示
-                if (rootInvisibleHeight > 100) {
-                    val location = IntArray(2)
-                    //获取scrollToView在窗体的坐标
-                    scrollToView.getLocationInWindow(location)
-                    //计算root滚动高度，使scrollToView在可见区域的底部
-                    val scrollHeight = location[1] + scrollToView.height - rect.bottom
-                    root.scrollTo(0, scrollHeight)
-                } else {
-                    //键盘隐藏
-                    root.scrollTo(0, 0)
-                }
-            }
-        }
+
 
         @Throws(IOException::class)
         @JvmStatic
@@ -486,19 +382,20 @@ class ArmsUtils private constructor() {
             return Utils.app.applicationContext.assets.open(fileName)
         }
 
-
         private var density = -1f
-        @JvmStatic
-        fun getDensity(): Float {
+
+        private fun getDensity(): Float {
             if (density <= 0f) {
                 density = s.app.resources.displayMetrics.density
             }
             return density
         }
+
         @JvmStatic
         fun dip2px(dpValue: Float): Int {
             return (dpValue * getDensity() + 0.5f).toInt()
         }
+
         @JvmStatic
         fun px2dip(pxValue: Float): Int {
             return (pxValue / getDensity() + 0.5f).toInt()
@@ -507,7 +404,49 @@ class ArmsUtils private constructor() {
         @JvmStatic
         @NonNull
         fun getMessage(code: Int, obj: Any): Message {
-            return Message.obtain().getMessage(code,obj)
+            return obj.toMessage(code)
+        }
+
+        @JvmStatic
+        fun getActivityHeight(context: Context?): Int {
+            if (null == context) {
+                return 0
+            }
+            val outRect1 = Rect()
+            try {
+                (context as Activity).window.decorView.getWindowVisibleDisplayFrame(outRect1)
+            } catch (e: ClassCastException) {
+                e.printStackTrace()
+                return getScreenHeight(context)
+            }
+            return outRect1.height()
+        }
+
+        /**
+         * 为app创建保存路径，
+         * 如果不存在需要makdir
+         */
+        @JvmStatic
+        fun getAppPath(): String {
+            val sb = StringBuilder()
+            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+                sb.append(Environment.getExternalStorageDirectory().path)
+            } else {
+                sb.append(Environment.getDataDirectory().path)
+            }
+            sb.append(File.separator)
+            sb.append(AppUtils.appPackageName)
+            sb.append(File.separator)
+
+            return sb.toString()
+        }
+
+        fun copyText(context: Context, text: String) {
+            val cm =  context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            // 创建普通字符型ClipData
+            val mClipData = ClipData.newPlainText("Label", text)
+            // 将ClipData内容放到系统剪贴板里。
+            cm.setPrimaryClip(mClipData)
         }
     }
 

@@ -27,19 +27,19 @@ class CodeUtil {
 
     fun start() {
         second = timeLength
-        codeTV!!.post { codeTV!!.isEnabled = false }
+        codeTV?.post { codeTV?.isEnabled = false }
         val subscribe =
                 Flowable.interval(1, TimeUnit.SECONDS)
                 .take(timeLength.toLong())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( {
                     second--
-                    codeTV!!.text = String.format("%s秒后重发", second)
+                    codeTV?.text = String.format("%s秒后重发", second)
                 },{
-
+                    stop()
                 },{
-                    codeTV!!.text = "获取验证码"
-                    codeTV!!.isEnabled = true
+                    codeTV?.text = "获取验证码"
+                    codeTV?.isEnabled = true
                 })
         addDispose(subscribe)
     }
@@ -52,21 +52,21 @@ class CodeUtil {
         Timber.i("stop_code_util")
         unDispose()
         this.mCompositeDisposable = null
-        codeTV!!.post {
-            codeTV!!.text = "获取验证码"
-            codeTV!!.isEnabled = true
+        codeTV?.post {
+            codeTV?.text = "获取验证码"
+            codeTV?.isEnabled = true
         }
     }
 
     /**
      * 将 [Disposable] 添加到 [CompositeDisposable] 中统一管理
-     * 可在 [中使用 ][android.app.Activity.onDestroy]
+     * 可在 [android.app.Activity.onDestroy]中使用
      */
     private fun addDispose(disposable: Disposable) {
         if (mCompositeDisposable == null) {
             mCompositeDisposable = CompositeDisposable()
         }
-        mCompositeDisposable!!.add(disposable)
+        mCompositeDisposable?.add(disposable)
     }
 
     /**
@@ -74,7 +74,7 @@ class CodeUtil {
      */
     private fun unDispose() {
         if (mCompositeDisposable != null) {
-            mCompositeDisposable!!.clear()
+            mCompositeDisposable?.clear()
         }
     }
 

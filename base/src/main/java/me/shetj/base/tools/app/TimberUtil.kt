@@ -2,10 +2,8 @@ package me.shetj.base.tools.app
 
 import android.os.Environment
 import android.util.Log
-
-import java.io.File
-
 import timber.log.Timber
+import java.io.File
 
 object TimberUtil {
 
@@ -26,7 +24,7 @@ object TimberUtil {
 
     /**
      * 设置log自动，并且想在release时仅在测试时有打印，
-     * 在release版本时增加判断磁盘目录下是否存在文件 log.test，
+     * 在release版本时增加判断磁盘目录下是否存在文件 baseLog.test，
      * 测试时让测试人员在磁盘目录下建立这么个文件。
      * 注意，如果读取存储需要权限申请的话，需要先获得权限，才能调用
      */
