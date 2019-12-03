@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -78,6 +79,7 @@ fun <T:View> T.animator() = ViewCompat.animate(this)
 /**
  * 展示toast
  */
+@MainThread
 fun String.showToast() = ArmsUtils.makeText(this)
 
 /**

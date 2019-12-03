@@ -88,7 +88,7 @@ dependencies {
     })
     testImplementation 'junit:junit:4.12'
     implementation "androidx.appcompat:appcompat:$support"
-    implementation "androidx.legacy:legacy-support-v4:$androidx"
+//    implementation "androidx.legacy:legacy-support-v4:$androidx"
     implementation "com.google.android.material:material:$androidx"
     implementation "androidx.recyclerview:recyclerview:$androidx"
     implementation "androidx.cardview:cardview:$androidx"
@@ -101,7 +101,7 @@ dependencies {
 
     api 'com.github.SheTieJun:SimQUMI:6a8d9b1159'
     api 'androidx.multidex:multidex:2.0.1'
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.49-androidx'
 
     api 'org.simple:androideventbus:1.0.5.1'
     api "com.google.code.gson:gson:$gosnVersion"
@@ -120,8 +120,8 @@ dependencies {
     api 'com.jakewharton.timber:timber:4.7.1'
     api 'me.jessyan:autosize:1.1.2'
     //腾讯Android开发框架
-    api 'com.qmuiteam:qmui:1.4.0'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
+    api 'com.qmuiteam:qmui:2.0.0-alpha02'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
 
     //https://github.com/code-mc/material-icon-lib icon图片库

@@ -18,7 +18,6 @@ import org.simple.eventbus.EventBus
 import me.shetj.base.R
 import me.shetj.base.base.BasePresenter
 import me.shetj.base.base.IView
-import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.HideUtil
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit

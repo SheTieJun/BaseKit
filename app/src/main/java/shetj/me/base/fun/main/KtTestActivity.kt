@@ -61,11 +61,11 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
 
 
 
-        print(    async.getCompleted())
+        print( async.isCompleted)
 
         //阻塞主线程
         runBlocking {
-            delay(2000)
+            delay(500)
         }
 
 

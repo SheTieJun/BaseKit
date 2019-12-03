@@ -16,7 +16,10 @@ import androidx.core.content.ContextCompat
  * @param color 颜色
  */
 @Keep
-class StringFormatUtil(private val mContext: Context, private val wholeStr: String, private val highlightStr: String, private var color: Int) {
+class StringFormatUtil(private val mContext: Context,
+                       private val wholeStr: String,
+                       private val highlightStr: String,
+                       private var color: Int) {
     private var spBuilder: SpannableStringBuilder? = null
     private var start = 0
     private var end = 0

@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Message
 import android.transition.Slide
 import android.view.Gravity
+import android.view.View
 import androidx.annotation.Keep
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -58,6 +59,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
             //注册到事件主线
             EventBus.getDefault().register(this)
         }
+        findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
         initView()
         initData()
     }

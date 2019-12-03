@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.Keep
+import androidx.annotation.MainThread
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
@@ -179,6 +180,7 @@ class ArmsUtils private constructor() {
          * @param string
          */
         @JvmStatic
+        @MainThread
         fun makeText(string: String) {
             if (mToast == null) {
                 mToast = Toast.makeText(Utils.app.applicationContext, string, Toast.LENGTH_SHORT)
