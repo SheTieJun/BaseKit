@@ -102,22 +102,12 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
      * 界面开始动画 (此处输入方法执行任务.)
      */
     open fun startAnimation() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.enterTransition = Slide(Gravity.END)
-        }else{
-            overridePendingTransition(R.anim.push_right_in, R.anim.push_left_out)
-        }
     }
 
     /**
      * 界面回退动画 (此处输入方法执行任务.)
      */
     open fun endAnimation() {// 开始动画
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.exitTransition = Slide(Gravity.START)
-        }else{
-            overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out)
-        }
     }
 
     /**
@@ -135,7 +125,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     override fun onBackPressed() {
         HideUtil.hideSoftKeyboard(rxContext)
         super.onBackPressed()
-        endAnimation()
         back()
     }
 
