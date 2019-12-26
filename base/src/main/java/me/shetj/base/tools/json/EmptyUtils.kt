@@ -25,15 +25,6 @@ class EmptyUtils private constructor() {
         throw UnsupportedOperationException("u can't instantiate me...")
     }
 
-
-    private fun checkStrEmpty(str: String, display: String): Boolean {
-        if (TextUtils.isEmpty(str)) {
-            ArmsUtils.makeText(display)
-            return true
-        }
-        return false
-    }
-
     companion object {
 
         /**
@@ -80,8 +71,18 @@ class EmptyUtils private constructor() {
          * @return `true`: 非空<br></br>`false`: 空
          */
         @JvmStatic
-        fun isNotEmpty(obj: Any): Boolean {
+        fun isNotEmpty(obj: Any?): Boolean {
             return !isEmpty(obj)
         }
+
+        @JvmStatic
+        fun checkStrEmpty(str: String, display: String): Boolean {
+            if (TextUtils.isEmpty(str)) {
+                ArmsUtils.makeText(display)
+                return true
+            }
+            return false
+        }
+
     }
 }

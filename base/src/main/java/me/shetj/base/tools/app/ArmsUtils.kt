@@ -337,6 +337,12 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         @JvmOverloads
+        fun statuInScreen2(activity: Activity,isBlack: Boolean = false) {
+           activity.statuInScreen(isBlack)
+        }
+
+        @JvmStatic
+        @JvmOverloads
         fun Activity.statuInScreen(isBlack: Boolean = false) {
             // 沉浸式状态栏
             QMUIStatusBarHelper.translucent(this)
@@ -439,7 +445,6 @@ class ArmsUtils private constructor() {
             sb.append(File.separator)
             sb.append(AppUtils.appPackageName)
             sb.append(File.separator)
-
             return sb.toString()
         }
 

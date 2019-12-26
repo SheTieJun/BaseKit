@@ -3,6 +3,8 @@ package me.shetj.base.kt
 import android.content.Context
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES.JELLY_BEAN_MR1
+import android.text.SpannableString
+import android.text.style.LeadingMarginSpan
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
@@ -10,6 +12,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import me.shetj.base.R
+import me.shetj.base.tools.app.ArmsUtils
 
 /**
  * 收集一些扩展函数
@@ -82,21 +85,14 @@ fun <T : View> T.isNotVisible(): Boolean {
 }
 
 fun <T : View> T.isRtl(): Boolean {
-    if (SDK_INT < JELLY_BEAN_MR1) return false
     return resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 }
 
 fun TextView.setGravityStartCompat() {
-    if (SDK_INT >= JELLY_BEAN_MR1) {
-        this.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-    }
     this.gravity = Gravity.START or Gravity.CENTER_VERTICAL
 }
 
 fun TextView.setGravityEndCompat() {
-    if (SDK_INT >= JELLY_BEAN_MR1) {
-        this.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
-    }
     this.gravity = Gravity.END or Gravity.CENTER_VERTICAL
 }
 /**
@@ -111,3 +107,15 @@ fun View.setClicksAnima( ){
         false
     }
 }
+
+/**
+ * 设置文字显示缩进
+ */
+fun TextView.setTextAndMargin(content: String,marginStart:Float){
+    val spannableString = SpannableString(content)
+    val what = LeadingMarginSpan.Standard(ArmsUtils.dip2px(marginStart), 0)
+    spannableString.setSpan(what, 0, spannableString.length, SpannableString.SPAN_INCLUSIVE_INCLUSIVE)
+    text = spannableString
+}
+
+//TODO TextView 设置图片

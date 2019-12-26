@@ -40,7 +40,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         get() = view.rxContext
 
     init {
-        Timber.i("onStart")
+        Timber.i("${this.javaClass.simpleName}:onStart")
         onStart()
 
     }
@@ -56,7 +56,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      */
     @Subscriber(mode = ThreadMode.MAIN,tag = "onMainEvent")
     open fun onEvent(message: Message){
-
     }
 
     /**
@@ -64,7 +63,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      * Activity#onDestroy() 调用[IPresenter.onDestroy]
      */
     override fun onDestroy() {
-        Timber.i("onDestroy")
+        Timber.i("${this.javaClass.simpleName}:onDestroy")
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }
@@ -81,7 +80,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      * @return
      */
     open fun useEventBus() = true
-
 
     /**
      * 将 [Disposable] 添加到 [CompositeDisposable] 中统一管理

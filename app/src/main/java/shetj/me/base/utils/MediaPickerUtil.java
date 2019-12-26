@@ -31,7 +31,7 @@ public class MediaPickerUtil {
 
 
 	public static final int CHOOSE_REQUEST_VIDEO = 189 ;
-	public static final int CHOOSE_REQUEST_PHOTO_SIZE = 189 ;
+	public static final int CHOOSE_REQUEST_PHOTO_SIZE = 190 ;
 	public static void startPicke(Activity activity){
 		// 进入相册 以下是例子：用不到的api可以不写
 		PictureSelector.create(activity)
@@ -155,44 +155,21 @@ public class MediaPickerUtil {
 
 	public static void onActivityResult(int requestCode, int resultCode, Intent data,
 	                                    BaseCallback<Message> commonCallback){
-		switch (requestCode) {
-			case PictureConfig.CHOOSE_REQUEST:
-				Message message = Message.obtain();
-				message.obj = PictureSelector.obtainMultipleResult(data);
-				commonCallback.onSuccess(message);
-				break;
-			default:
-				break;
+		if (resultCode == Activity.RESULT_OK) {
+			Message message = Message.obtain();
+			switch (requestCode) {
+				case PictureConfig.CHOOSE_REQUEST:
+				case CHOOSE_REQUEST_PHOTO_SIZE:
+				case CHOOSE_REQUEST_VIDEO:
+					message.obj = PictureSelector.obtainMultipleResult(data);
+					commonCallback.onSuccess(message);
+					break;
+				default:
+					break;
+			}
 		}
 	}
 
-	public static void onActivityResultPhotoSize(int requestCode, int resultCode, Intent data,
-	                                    BaseCallback<Message> commonCallback){
-		switch (requestCode) {
-			case CHOOSE_REQUEST_PHOTO_SIZE:
-				Message message = Message.obtain();
-				message.obj = PictureSelector.obtainMultipleResult(data);
-				commonCallback.onSuccess(message);
-				break;
-			default:
-				break;
-		}
-	}
-
-
-
-	public static void onActivityResultVideo(int requestCode, int resultCode, Intent data,
-	                                         BaseCallback<Message> commonCallback){
-		switch (requestCode) {
-			case CHOOSE_REQUEST_VIDEO:
-				Message message = Message.obtain();
-				message.obj = PictureSelector.obtainMultipleResult(data);
-				commonCallback.onSuccess(message);
-				break;
-			default:
-				break;
-		}
-	}
 
 	public static String getImageName(LocalMedia media){
 		String name = "";

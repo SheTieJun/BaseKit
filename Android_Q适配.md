@@ -19,3 +19,10 @@ Android Q 引入了新的位置权限 ACCESS_BACKGROUND_LOCATION。
 
 #### 非SDK接口介绍
 非SDK接口限制就是某些SDK中的私用方法，如private方法，你通过Java反射等方法获取并调用了。那么这些调用将在target>=P或target>=Q的设备上被限制使用，当你使用了这些方法后，会报错:
+
+
+
+#### 文件访问错误
+```
+android:requestLegacyExternalStorage="true"
+```

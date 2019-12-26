@@ -56,7 +56,7 @@ public class TokenLoader {
             Timber.i("token过期了");
             return getNetTokenLocked();
         } else {
-            Timber.i("使用本地缓存token = " + cacheToken);
+            Timber.i("使用本地缓存token = %s", cacheToken);
             return Observable.just(cacheToken);
         }
     }

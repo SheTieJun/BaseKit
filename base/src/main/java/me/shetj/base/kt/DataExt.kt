@@ -6,9 +6,11 @@ import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
+import timber.log.Timber
 
 /************************ 转化成message****************************************/
 
+@JvmOverloads
 fun <T> T.toMessage(code:Int = 1,action: (Message.() -> Unit?)? =null): Message {
     return  Message.obtain().apply {
         what = code
@@ -36,9 +38,18 @@ fun String.fromHtml() = parseAsHtml()
 
 fun Any.isEmpty() = EmptyUtils.isEmpty(this)
 
+@JvmOverloads
 fun String.copy(context :Context,action: (() -> Unit?)? =null){
         //获取剪贴板管理器：
         ArmsUtils.copyText(context,this)
         action?.let { it }
     }
 
+
+fun String.log(){
+    Timber.i(this)
+}
+
+fun Throwable.log(){
+    Timber.i(this)
+}

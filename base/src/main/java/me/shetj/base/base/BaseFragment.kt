@@ -83,16 +83,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView ,Lifecyc
         this.mActivity = context
         super.onAttach(context)
     }
-
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if (!hidden) {
-            onVisible()
-        } else {
-            onInvisible()
-        }
-    }
-
     /**
      * On visible.
      */

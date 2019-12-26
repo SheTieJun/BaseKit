@@ -38,8 +38,6 @@ class BlankFragment : BaseFragment<BasePresenter<*>>() {
     }
 
     companion object {
-
-        // TODO: Customize parameters
         fun newInstance(itemCount: Int): BlankFragment =
                 BlankFragment().apply {
                     arguments = Bundle().apply {

@@ -5,8 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.transition.Slide
-import android.view.Gravity
 import android.view.View
 import androidx.annotation.Keep
 import androidx.lifecycle.Lifecycle
@@ -90,25 +88,23 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     }
 
     /**
-     * 是否使用eventBus,默认为不使用(false)，
+     * 是否使用eventBus,默认为使用(true)，
      *
      * @return useEventBus
      */
     open fun useEventBus(): Boolean {
-        return false
+        return true
     }
 
     /**
      * 界面开始动画 (此处输入方法执行任务.)
      */
-    open fun startAnimation() {
-    }
+    open fun startAnimation() {}
 
     /**
      * 界面回退动画 (此处输入方法执行任务.)
      */
-    open fun endAnimation() {// 开始动画
-    }
+    open fun endAnimation() {}
 
     /**
      * 返回

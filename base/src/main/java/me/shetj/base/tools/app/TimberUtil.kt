@@ -1,13 +1,12 @@
 package me.shetj.base.tools.app
 
-import android.os.Environment
 import android.util.Log
 import timber.log.Timber
 import java.io.File
 
 object TimberUtil {
 
-    private val LOG_FILE_PATH = Environment.getExternalStorageDirectory().path + File.separator + "baseLog.test"
+    private val LOG_FILE_PATH = Utils.app.externalCacheDir?.path  + File.separator + "baseLog.test"
 
     /**
      * 设置log自动在debug打开，在release关闭，可以在Application的onCreate中设置

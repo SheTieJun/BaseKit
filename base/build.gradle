@@ -121,8 +121,8 @@ dependencies {
     api 'me.jessyan:autosize:1.1.2'
     //腾讯Android开发框架
     api 'com.qmuiteam:qmui:2.0.0-alpha02'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0'
 
     //https://github.com/code-mc/material-icon-lib icon图片库
     api 'net.steamcrafted:materialiconlib:1.1.5'
