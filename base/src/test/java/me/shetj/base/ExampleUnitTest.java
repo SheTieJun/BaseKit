@@ -44,6 +44,6 @@ public class ExampleUnitTest {
 
     @Test
     public void test(){
-        System.out.print(encodeToMD5("我是佘铁军"));
+        System.out.print(encodeToMD5("我是xxx"));
     }
 }

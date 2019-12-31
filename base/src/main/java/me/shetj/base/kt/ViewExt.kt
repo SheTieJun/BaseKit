@@ -9,9 +9,12 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import me.shetj.base.R
+import me.shetj.base.constant.Constant
 import me.shetj.base.tools.app.ArmsUtils
 
 /**
@@ -95,6 +98,7 @@ fun TextView.setGravityStartCompat() {
 fun TextView.setGravityEndCompat() {
     this.gravity = Gravity.END or Gravity.CENTER_VERTICAL
 }
+
 /**
  * 点击动画
  */
@@ -118,4 +122,20 @@ fun TextView.setTextAndMargin(content: String,marginStart:Float){
     text = spannableString
 }
 
-//TODO TextView 设置图片
+/**
+ * 设置textView 的 Drawable
+ */
+fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
+                                  @Constant.DrawableDirection direction : Int = Constant.TOP){
+     ContextCompat.getDrawable(context, resId)?.apply {
+        setBounds(0, 0, minimumWidth, minimumHeight)
+    }?.let {
+        when(direction){
+            Constant.LEFT ->    setCompoundDrawables(it, null, null, null)
+            Constant.TOP ->     setCompoundDrawables(null, it, null, null)
+            Constant.RIGHT ->   setCompoundDrawables(null, null, it, null)
+            Constant.BOTTOM ->  setCompoundDrawables(null, null , null, it)
+        }
+    }
+
+}

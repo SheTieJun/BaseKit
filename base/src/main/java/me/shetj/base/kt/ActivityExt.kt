@@ -17,8 +17,9 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.SoftKeyBoardListener
 
+
 /**
- * 防止重新进入的时候多次展示Splash
+ * 用来防止重新进入的时候多次展示 Splash
  * 是否是栈的底部
  */
 fun AppCompatActivity.isRoot(){

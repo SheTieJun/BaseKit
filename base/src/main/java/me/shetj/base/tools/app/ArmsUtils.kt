@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.Message
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -64,6 +65,28 @@ class ArmsUtils private constructor() {
                 }
             }
             return false
+        }
+
+
+        /**
+         * 为 View 添加点击态
+         * @param view
+         */
+        @JvmStatic
+        fun addScaleTouchEffect(vararg view: View) {
+            for (v in view) {
+                v.setOnTouchListener { v, event ->
+                    when (event?.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            v?.animate()?.scaleX(0.95f)?.scaleY(0.95f)?.setDuration(120)?.start()
+                        }
+                        MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
+                            v?.animate()?.scaleX(1f)?.scaleY(1f)?.setDuration(120)?.start()
+                        }
+                    }
+                    false
+                }
+            }
         }
 
         /**
