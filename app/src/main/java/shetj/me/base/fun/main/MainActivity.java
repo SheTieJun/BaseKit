@@ -10,8 +10,11 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.qmuiteam.qmui.kotlin.ViewKtKt;
+
 import me.shetj.base.base.BaseActivity;
 import me.shetj.base.kt.ActivityExtKt;
+import me.shetj.base.kt.ViewExtKt;
 import me.shetj.base.tools.app.ArmsUtils;
 import me.shetj.base.tools.time.CodeUtil;
 import shetj.me.base.R;
@@ -34,6 +37,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 	}
 
 
@@ -63,7 +67,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 				super.onPageScrollStateChanged(state);
 			}
 		});
-
 	}
 
 	@Override
@@ -103,7 +106,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 
 	@OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 	public void onActivitypause() {
-		Timber.i("onActivitypause");
+		Timber.i("onActivityPause");
 	}
 
 	@Override

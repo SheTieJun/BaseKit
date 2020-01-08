@@ -8,7 +8,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'android-aspectjx'//面向切面
 
 aspectjx {
-    exclude 'android.support'
+    exclude 'androidx.*'
 }
 
 kotlin {
@@ -83,12 +83,12 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     testImplementation 'junit:junit:4.12'
+    //https://developer.android.google.cn/jetpack/
+    //https://maven.google.com/web/index.html
     implementation "androidx.appcompat:appcompat:$support"
 //    implementation "androidx.legacy:legacy-support-v4:$androidx"
+    //https://material.io/develop/android/
     implementation "com.google.android.material:material:$androidx"
     implementation "androidx.recyclerview:recyclerview:$androidx"
     implementation "androidx.cardview:cardview:$androidx"
@@ -99,15 +99,16 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    api 'com.github.SheTieJun:SimQUMI:6a8d9b1159'
     api 'androidx.multidex:multidex:2.0.1'
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.49-androidx'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.0-beta9'
 
     api 'org.simple:androideventbus:1.0.5.1'
     api "com.google.code.gson:gson:$gosnVersion"
+    //权限判断 https://github.com/tbruyelle/RxPermissions
     api 'com.github.tbruyelle:rxpermissions:0.10.2'
     //图片加载
     api 'com.github.bumptech.glide:glide:4.10.0'
+    //图片预览 https://github.com/iielse/ImageWatcher
     api 'com.github.iielse:ImageWatcher:1.1.5'
     //Rxlifecycle
     api 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
@@ -115,11 +116,11 @@ dependencies {
     api 'io.reactivex.rxjava2:rxjava:2.2.13'
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     api 'com.jakewharton.rxbinding3:rxbinding:3.0.0'
-    api 'io.reactivex.rxjava2:rxkotlin:2.3.0'
+    api 'io.reactivex.rxjava2:rxkotlin:2.4.0' //https://github.com/ReactiveX/RxKotlin
     //框架
     api 'com.jakewharton.timber:timber:4.7.1'
     api 'me.jessyan:autosize:1.1.2'
-    //腾讯Android开发框架
+    //腾讯Android开发框架 https://qmuiteam.com/android/get-started/
     api 'com.qmuiteam:qmui:2.0.0-alpha02'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0'

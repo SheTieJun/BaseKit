@@ -6,7 +6,9 @@ import android.os.Build.VERSION_CODES.JELLY_BEAN_MR1
 import android.text.SpannableString
 import android.text.style.LeadingMarginSpan
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -138,4 +140,19 @@ fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
         }
     }
 
+}
+
+/**
+ * edit 获取焦点打开键盘
+ */
+fun EditText?.requestFocusEdit() {
+    if (null != this) {
+        isEnabled = true
+        isFocusable = true
+        isFocusableInTouchMode = true
+        requestFocus()
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        setSelection(text.length)
+        inputManager.showSoftInput(this, 0)
+    }
 }
