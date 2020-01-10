@@ -75,13 +75,13 @@ class ArmsUtils private constructor() {
         @JvmStatic
         fun addScaleTouchEffect(vararg view: View) {
             for (v in view) {
-                v.setOnTouchListener { v, event ->
+                v.setOnTouchListener { v1, event ->
                     when (event?.action) {
                         MotionEvent.ACTION_DOWN -> {
-                            v?.animate()?.scaleX(0.95f)?.scaleY(0.95f)?.setDuration(120)?.start()
+                            v1?.animate()?.scaleX(0.95f)?.scaleY(0.95f)?.setDuration(120)?.start()
                         }
                         MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
-                            v?.animate()?.scaleX(1f)?.scaleY(1f)?.setDuration(120)?.start()
+                            v1?.animate()?.scaleX(1f)?.scaleY(1f)?.setDuration(120)?.start()
                         }
                     }
                     false

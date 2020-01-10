@@ -16,15 +16,14 @@ import androidx.annotation.Keep
 import androidx.recyclerview.widget.RecyclerView
 
 @Keep
-class HideUtil private constructor(activity: Activity, content: ViewGroup?) {
+class HideUtil private constructor(activity: Activity, private var content: ViewGroup?) {
 
     init {
-        var content = content
         if (content == null) {
             content = activity.findViewById(android.R.id.content)
         }
         getScrollView(content, activity)
-        content!!.setOnTouchListener { view, motionEvent ->
+        content!!.setOnTouchListener { _, motionEvent ->
             dispatchTouchEvent(activity, motionEvent)
             false
         }
@@ -55,7 +54,7 @@ class HideUtil private constructor(activity: Activity, content: ViewGroup?) {
             }
 
             if (view.isClickable && view is TextView && view !is EditText) {
-                view.setOnTouchListener { view14, motionEvent ->
+                view.setOnTouchListener { _, motionEvent ->
                     dispatchTouchEvent(activity, motionEvent)
                     false
                 }
@@ -63,13 +62,7 @@ class HideUtil private constructor(activity: Activity, content: ViewGroup?) {
         }
     }
 
-
-    /**
-     * @param mActivity
-     * @param ev
-     * @return
-     */
-    fun dispatchTouchEvent(mActivity: Activity, ev: MotionEvent): Boolean {
+    private fun dispatchTouchEvent(mActivity: Activity, ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val v = mActivity.currentFocus
             if (null != v && isShouldHideInput(v, ev)) {

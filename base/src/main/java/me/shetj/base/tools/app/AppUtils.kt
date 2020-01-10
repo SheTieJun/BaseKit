@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
@@ -10,6 +12,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.graphics.drawable.Drawable
+import android.os.Build
 import androidx.annotation.Keep
 import me.shetj.base.tools.file.FileUtils
 import java.io.File
@@ -450,13 +453,13 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return false
             }
-            try {
+            return try {
                 val pm = Utils.app.packageManager
                 val ai = pm.getApplicationInfo(packageName, 0)
-                return ai != null && ai.flags and ApplicationInfo.FLAG_SYSTEM != 0
+                ai.flags and ApplicationInfo.FLAG_SYSTEM != 0
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return false
+                false
             }
 
         }
@@ -481,13 +484,13 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return false
             }
-            try {
+            return try {
                 val pm = Utils.app.packageManager
                 val ai = pm.getApplicationInfo(packageName, 0)
-                return ai != null && ai.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
+                ai.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return false
+                false
             }
 
         }

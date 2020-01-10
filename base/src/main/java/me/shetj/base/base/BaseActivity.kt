@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.Keep
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -72,6 +73,11 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
         mPresenter?.onDestroy()
     }
 
+    open fun setTitle(title:String){
+        findViewById<TextView>(R.id.toolbar_title)?.apply {
+            text = title
+        }
+    }
     /**
      * 连接view
      */

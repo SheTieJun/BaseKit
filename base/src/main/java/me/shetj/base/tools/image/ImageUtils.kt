@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package me.shetj.base.tools.image
 
 import android.app.Activity
@@ -112,7 +114,7 @@ class ImageUtils {
                     buff.append("(").append(MediaStore.Images.ImageColumns.DATA).append("=").append("'$path'").append(")")
                     val cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.ImageColumns._ID, MediaStore.Images.ImageColumns.DATA), buff.toString(), null, null)
                     var index = 0
-                    var dataIdx = 0
+                    var dataIdx: Int
                     cur!!.moveToFirst()
                     while (!cur.isAfterLast) {
                         index = cur.getColumnIndex(MediaStore.Images.ImageColumns._ID)
@@ -161,27 +163,34 @@ class ImageUtils {
             val paint = Paint()
             // 画笔颜色
             paint.color = Color.BLACK
-
-            val textpaint = TextPaint(paint)
+            val textPaint = TextPaint(paint)
             // 文字大小
-            textpaint.textSize = textSize.toFloat()
+            textPaint.textSize = textSize.toFloat()
             // 抗锯齿
-            textpaint.isAntiAlias = true
+            textPaint.isAntiAlias = true
+            val staticLayout : StaticLayout
+            staticLayout = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                StaticLayout.Builder
+                        .obtain(des,0,des.length,textPaint,sourceBitmapWidth)
+                        .apply {
+                            setAlignment(Layout.Alignment.ALIGN_CENTER)
+                            setIncludePad(true)
+                        }.build()
+            }else {
+                StaticLayout(des, textPaint,
+                        sourceBitmapWidth, Layout.Alignment.ALIGN_CENTER, 1f, 1f, true)
+            }
 
-            val title_layout = StaticLayout(des, textpaint,
-                    sourceBitmapWidth, Layout.Alignment.ALIGN_CENTER, 1f, 1f, true)
-
-            val share_bitmap = Bitmap.createBitmap(sourceBitmapWidth, sourceBitmapHeight + title_layout.height, config)
-            val canvas = Canvas(share_bitmap)
+            val shareBitmap = Bitmap.createBitmap(sourceBitmapWidth, sourceBitmapHeight + staticLayout.height, config)
+            val canvas = Canvas(shareBitmap)
 
             canvas.drawColor(Color.WHITE)
-
             // 绘制图片
             canvas.drawBitmap(imageBitmap, 0f, 0f, paint)
-            canvas.translate(0f, sourceBitmapHeight.toFloat())
-            title_layout.draw(canvas)
-            canvas.translate(0f, title_layout.height.toFloat())
-            return share_bitmap
+            // 玩下移动
+            canvas.translate(0f, sourceBitmapHeight.toFloat()-staticLayout.height)
+            staticLayout.draw(canvas)
+            return shareBitmap
         }
 
 

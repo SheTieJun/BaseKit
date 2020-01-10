@@ -12,12 +12,12 @@ import android.net.Uri
 import android.util.SparseArray
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.ielse.imagewatcher.ImageWatcherHelper
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import me.shetj.base.tools.app.ArmsUtils
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import timber.log.Timber
 import java.util.*
 import javax.microedition.khronos.egl.EGL10
@@ -29,26 +29,28 @@ import kotlin.math.min
 /**
  * 因为可能加载大图，所有自己多一层图片处理
  */
+@Suppress("DEPRECATION")
 class ImageWatcherUtils(activity: Activity) {
 
     private val iwHelper: ImageWatcherHelper
     private val maxSize = getMaxTextureSize()/2-1000
+    private var mCompositeDisposable: CompositeDisposable? = null
+
     init {
         iwHelper = ImageWatcherHelper.with(activity) { context, uri, loadCallback ->
             Glide.with(context).load(uri)
                     //sim 加载原始大小图片
-                    .into(object : SimpleTarget<Drawable>() {
+                    .into(object : com.bumptech.glide.request.target.SimpleTarget<Drawable>() {
                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                            Flowable.just(resource)
+                            addDispose(Flowable.just(resource)
                                     .map {
-                                        zoomDrawable(context,it, ArmsUtils.getScreenWidth(activity), ArmsUtils.getScreenHeight(activity))
+                                        zoomDrawable(context,it)
                                     }.observeOn(AndroidSchedulers.mainThread())
                                     .subscribe( {
                                         loadCallback.onResourceReady(it)
                                     },{
                                         Timber.i("ImageWatcherUtils:${it.message}")
-                                    })
-
+                                    }))
                         }
                     })
         }
@@ -66,7 +68,7 @@ class ImageWatcherUtils(activity: Activity) {
         return bitmap
     }
 
-    fun zoomDrawable(context: Context, drawable: Drawable, w: Int, h: Int): Drawable? {
+    fun zoomDrawable(context: Context, drawable: Drawable): Drawable? {
 
         return if (drawable.intrinsicHeight  >= maxSize || drawable.intrinsicWidth >= maxSize) {
             val width = drawable.intrinsicWidth
@@ -83,6 +85,25 @@ class ImageWatcherUtils(activity: Activity) {
             drawable
         }
     }
+
+    /**
+     * 将 [Disposable] 添加到 [CompositeDisposable] 中统一管理
+     * 可在[android.app.Activity.onDestroy] 释放
+     */
+    fun addDispose(disposable: Disposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = CompositeDisposable()
+        }
+        mCompositeDisposable?.add(disposable)
+    }
+
+    /**
+     * 停止集合中正在执行的 RxJava 任务
+     */
+    fun unDispose() {
+        mCompositeDisposable?.clear()
+    }
+
 
     private fun getMaxTextureSize(): Int { // Safe minimum default size
         val IMAGE_MAX_BITMAP_DIMENSION = 2048
@@ -143,6 +164,7 @@ class ImageWatcherUtils(activity: Activity) {
     }
 
     fun onBackPressed(): Boolean {
+        unDispose()
         return !iwHelper.handleBackPressed()
     }
 

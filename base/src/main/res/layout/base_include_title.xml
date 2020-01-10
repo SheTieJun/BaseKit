@@ -6,9 +6,9 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:background="@color/toolbar_color"
-    android:elevation="1px"
+    app:elevation="1dp"
     app:contentInsetStart="0dp"
+    app:popupTheme="@style/AppTheme.PopupOverlay"
     >
 
     <FrameLayout
@@ -20,10 +20,10 @@
             android:id="@+id/toolbar_back"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
-            android:gravity="left"
+            android:gravity="start"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
-            >
+            android:focusable="true">
 
             <ImageView
                 android:id="@+id/iv_left"
@@ -31,7 +31,7 @@
                 android:layout_height="44dp"
                 android:layout_centerVertical="true"
                 android:padding="10dp"
-                android:tint="@color/titleColor"
+                android:tint="?android:attr/textColorPrimary"
                 android:src="@mipmap/icon_all_return1"/>
 
             <TextView
@@ -39,10 +39,10 @@
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
-                android:layout_toRightOf="@id/iv_left"
+                android:layout_toEndOf="@id/iv_left"
                 android:gravity="center"
                 android:textSize="@dimen/sp_14"
-                android:textColor="@color/titleColor"
+                android:textColor="?android:attr/textColorPrimary"
                 android:text="返回"/>
         </RelativeLayout>
 
@@ -55,20 +55,19 @@
             android:ellipsize="end"
             android:maxLength="12"
             android:maxLines="1"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/AppbarText"
-            android:textColor="@color/toolbar_title_color"
             tools:text="title"/>
 
         <TextView
             android:id="@+id/tv_right"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
-            android:layout_gravity="right|center_vertical"
+            android:layout_gravity="end|center_vertical"
             android:padding="10dp"
             android:gravity="center"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/sp_14"
-            android:textColor="@color/titleColor"
             android:text=""/>
     </FrameLayout>
 

@@ -24,7 +24,7 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
     override fun initView() {
         //协程？默认后台？
 //        在 GlobalScope 中启动的活动中的协程就像守护线程一样，不能使它们所在的进程保活。
-
+        setTitle("KtTestActivity")
         val launch = GlobalScope.launch(Dispatchers.IO) {
             //在后台创建协程
 

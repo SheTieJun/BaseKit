@@ -43,14 +43,12 @@ android {
         sourceCompatibility 1.8
     }
 
-    libraryVariants.all { variant ->
-        variant.outputs.all { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.aar')) {
-                def fileName = outputFile.name.replace(".aar", "-shetj-${defaultConfig.versionName}.aar")
-                outputFileName = fileName
+
+    libraryVariants.all {
+        variant ->
+            variant.outputs.all {
+                output -> output.outputFileName = "shetj-${variant.name}-${defaultConfig.versionName}.aar"
             }
-        }
     }
 
     configurations.all {
@@ -92,7 +90,6 @@ dependencies {
     implementation "com.google.android.material:material:$androidx"
     implementation "androidx.recyclerview:recyclerview:$androidx"
     implementation "androidx.cardview:cardview:$androidx"
-    implementation "androidx.percentlayout:percentlayout:$androidx"
     implementation "androidx.core:core-ktx:$androidx"
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
