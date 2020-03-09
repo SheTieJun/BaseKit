@@ -15,13 +15,12 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.transition.Slide
 import me.shetj.base.R
 import me.shetj.base.constant.Constant
 import me.shetj.base.tools.app.ArmsUtils
 
-/**
- * 收集一些扩展函数
- */
+/* *收集一些扩展函数 * */
 
 @Suppress("UNCHECKED_CAST")
 fun <R : View> ViewGroup.inflate(
@@ -85,27 +84,15 @@ fun <T : View> T.isVisible(): Boolean {
     }
 }
 
-fun <T : View> T.isNotVisible(): Boolean {
-    return !isVisible()
-}
+fun <T : View> T.isNotVisible() = !isVisible()
 
-fun <T : View> T.isRtl(): Boolean {
-    return resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
-}
-
-fun TextView.setGravityStartCompat() {
-    this.gravity = Gravity.START or Gravity.CENTER_VERTICAL
-}
-
-fun TextView.setGravityEndCompat() {
-    this.gravity = Gravity.END or Gravity.CENTER_VERTICAL
-}
+fun <T : View> T.isRtl()= resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 
 /**
  * 点击动画
  */
-fun View.setClicksAnima( ){
-    setOnTouchListener { _, event->
+fun View?.setClicksAnima(){
+    this?.setOnTouchListener { _, event ->
         when (event.action) {
             MotionEvent.ACTION_DOWN -> animate().scaleX(0.8f).scaleY(0.8f).setDuration(500).start()
             MotionEvent.ACTION_UP -> animate().scaleX(1f).scaleY(1f).setDuration(500).start()
@@ -128,15 +115,15 @@ fun TextView.setTextAndMargin(content: String,marginStart:Float){
  * 设置textView 的 Drawable
  */
 fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
-                                  @Constant.DrawableDirection direction : Int = Constant.TOP){
+                                  @Constant.GravityType gravity : Int = Gravity.TOP){
      ContextCompat.getDrawable(context, resId)?.apply {
         setBounds(0, 0, minimumWidth, minimumHeight)
     }?.let {
-        when(direction){
-            Constant.LEFT ->    setCompoundDrawables(it, null, null, null)
-            Constant.TOP ->     setCompoundDrawables(null, it, null, null)
-            Constant.RIGHT ->   setCompoundDrawables(null, null, it, null)
-            Constant.BOTTOM ->  setCompoundDrawables(null, null , null, it)
+        when(gravity){
+            Gravity.START  ->  setCompoundDrawables(it, null, null, null)
+            Gravity.TOP ->     setCompoundDrawables(null, it, null, null)
+            Gravity.END ->     setCompoundDrawables(null, null, it, null)
+            Gravity.BOTTOM ->  setCompoundDrawables(null, null , null, it)
         }
     }
 
@@ -146,7 +133,7 @@ fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
  * edit 获取焦点打开键盘
  */
 fun EditText?.requestFocusEdit() {
-    if (null != this) {
+    this?.let{
         isEnabled = true
         isFocusable = true
         isFocusableInTouchMode = true

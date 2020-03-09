@@ -1,6 +1,7 @@
 package me.shetj.base.base
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import androidx.annotation.Keep
@@ -28,8 +29,16 @@ abstract class BaseService : Service() {
         init()
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (needNotification()) {
+            createNotification(this)
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        stopForeground(true)
         EventBus.getDefault().unregister(this)
         unDispose()//解除订阅
         this.mCompositeDisposable = null
@@ -43,15 +52,26 @@ abstract class BaseService : Service() {
         mCompositeDisposable!!.add(disposable)
     }
 
-    protected fun unDispose() {
+    private fun unDispose() {
         //保证activity结束时取消所有正在执行的订阅
         if (mCompositeDisposable != null) {
             mCompositeDisposable!!.clear()
         }
     }
 
+    open fun needNotification ():Boolean {
+        return false
+    }
+
     /**
      * 初始化
      */
     abstract fun init()
+    /**
+     * 展示通知栏
+     */
+    open fun createNotification(context: Context){
+
+    }
+
 }

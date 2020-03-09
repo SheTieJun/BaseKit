@@ -1,5 +1,6 @@
 package me.shetj.base.kt
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,13 +10,17 @@ import android.view.WindowManager
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
+import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.tbruyelle.rxpermissions2.RxPermissions
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.SoftKeyBoardListener
+import java.lang.reflect.Method
 
 
 /**
@@ -76,7 +81,6 @@ fun AppCompatActivity.clearKeepScreenOn() {
  */
 fun <T:View> T.animator() = ViewCompat.animate(this)
 
-
 /**
  * 展示toast
  */
@@ -94,13 +98,27 @@ fun AppCompatActivity.isAtLeast(@NonNull state: Lifecycle.State) = lifecycle.cur
 fun AppCompatActivity.getHeight() = ArmsUtils.getActivityHeight(this)
 
 /**
- * 键盘监听
+ * 键盘监听关闭
  */
 fun AppCompatActivity.setKeyBoardListener(onSoftKeyBoardChangeListener: SoftKeyBoardListener.OnSoftKeyBoardChangeListener) {
     val softKeyBoardListener = SoftKeyBoardListener(this)
     softKeyBoardListener.setOnSoftKeyBoardChangeListener(onSoftKeyBoardChangeListener)
 }
 
+/**
+ * 关闭手机的通知管理界面
+ */
+fun Context.collapseStatusBar( ) {
+    try {
+        @SuppressLint("WrongConstant")
+        val statusBarManager = getSystemService("statusbar")
+        val collapse: Method
+        collapse = statusBarManager.javaClass.getMethod("collapsePanels")
+        collapse.invoke(statusBarManager)
+    } catch (localException: Exception) {
+        localException.printStackTrace()
+    }
+}
 
 fun AppCompatActivity.getRxPermissions() = RxPermissions(this)
 
@@ -117,3 +135,13 @@ fun Context.hasPermission(vararg permissions: String): Boolean {
     }
     return true
 }
+
+fun runOnMain(run:()->Unit = {}){
+    AndroidSchedulers.mainThread().scheduleDirect { run() }
+}
+
+fun runOnIo(run:()->Unit = { }){
+    Schedulers.io().scheduleDirect {run() }
+}
+
+

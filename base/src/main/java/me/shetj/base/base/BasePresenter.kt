@@ -52,15 +52,16 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     }
 
     /**
-     * eventbus 默认主线程处理
+     * 让[EventBus] 默认主线程处理
      */
     @Subscriber(mode = ThreadMode.MAIN,tag = "onMainEvent")
     open fun onEvent(message: Message){
+
     }
 
     /**
      * //解除订阅
-     * Activity#onDestroy() 调用[IPresenter.onDestroy]
+     * [BaseActivity.onDestroy] 调用[IPresenter.onDestroy]
      */
     override fun onDestroy() {
         Timber.i("${this.javaClass.simpleName}:onDestroy")

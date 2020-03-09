@@ -48,12 +48,16 @@ object TimberUtil {
                 return
             }
             if (t != null) {
-                if (priority == Log.ERROR) {
-                    //FakeCrashLibrary.logError(t);
-                } else if (priority == Log.WARN) {
-                    // FakeCrashLibrary.logWarning(t);
-                } else {
+                when (priority) {
+                    Log.ERROR -> {
+                        Log.e(tag,message)
+                    }
+                    Log.WARN -> {
+                        // FakeCrashLibrary.logWarning(t);
+                    }
+                    else -> {
 
+                    }
                 }
             }
         }

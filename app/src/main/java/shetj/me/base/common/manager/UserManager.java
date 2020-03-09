@@ -2,7 +2,7 @@ package shetj.me.base.common.manager;
 
 import android.content.Context;
 
-import com.qcshendeng.toyo.common.bean.UserInfo;
+import shetj.me.base.common.bean.UserInfo;
 
 import org.simple.eventbus.EventBus;
 

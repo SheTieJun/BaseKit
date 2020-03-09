@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -84,21 +85,15 @@ public class ReflectUtils {
             //如果是降序获取
             if(isDESCGet){
                 for(int w = classList.size()-1; w > -1; w--){
-                    for(Field field : isGetDeclaredField ? classList.get(w).getDeclaredFields() : classList.get(w).getFields()){
-                        fieldList.add(field);
-                    }
+                    fieldList.addAll(Arrays.asList(isGetDeclaredField ? classList.get(w).getDeclaredFields() : classList.get(w).getFields()));
                 }
             }else{
                 for(int w = 0; w < classList.size(); w++){
-                    for(Field field : isGetDeclaredField ? classList.get(w).getDeclaredFields() : classList.get(w).getFields()){
-                        fieldList.add(field);
-                    }
+                    fieldList.addAll(Arrays.asList(isGetDeclaredField ? classList.get(w).getDeclaredFields() : classList.get(w).getFields()));
                 }
             }
         }else{
-            for(Field field : isGetDeclaredField ? sourceClass.getDeclaredFields() : sourceClass.getFields()){
-                fieldList.add(field);
-            }
+            fieldList.addAll(Arrays.asList(isGetDeclaredField ? sourceClass.getDeclaredFields() : sourceClass.getFields()));
         }
         return fieldList;
     }
@@ -206,21 +201,15 @@ public class ReflectUtils {
             //如果是降序获取
             if(isDESCGet){
                 for(int w = classList.size()-1; w > -1; w--){
-                    for(Method method : isGetDeclaredMethod ? classList.get(w).getDeclaredMethods() : classList.get(w).getMethods()){
-                        methodList.add(method);
-                    }
+                    methodList.addAll(Arrays.asList(isGetDeclaredMethod ? classList.get(w).getDeclaredMethods() : classList.get(w).getMethods()));
                 }
             }else{
                 for(int w = 0; w < classList.size(); w++){
-                    for(Method method : isGetDeclaredMethod ? classList.get(w).getDeclaredMethods() : classList.get(w).getMethods()){
-                        methodList.add(method);
-                    }
+                    methodList.addAll(Arrays.asList(isGetDeclaredMethod ? classList.get(w).getDeclaredMethods() : classList.get(w).getMethods()));
                 }
             }
         }else{
-            for(Method method : isGetDeclaredMethod ? clas.getDeclaredMethods() : clas.getMethods()){
-                methodList.add(method);
-            }
+            methodList.addAll(Arrays.asList(isGetDeclaredMethod ? clas.getDeclaredMethods() : clas.getMethods()));
         }
         return methodList;
     }
@@ -302,21 +291,15 @@ public class ReflectUtils {
             //如果是降序获取
             if(isDESCGet){
                 for(int w = classList.size()-1; w > -1; w--){
-                    for(Constructor<?> constructor : isFindDeclaredConstructor ? classList.get(w).getDeclaredConstructors() : classList.get(w).getConstructors()){
-                        constructorList.add(constructor);
-                    }
+                    constructorList.addAll(Arrays.asList(isFindDeclaredConstructor ? classList.get(w).getDeclaredConstructors() : classList.get(w).getConstructors()));
                 }
             }else{
                 for(int w = 0; w < classList.size(); w++){
-                    for(Constructor<?> constructor : isFindDeclaredConstructor ? classList.get(w).getDeclaredConstructors() : classList.get(w).getConstructors()){
-                        constructorList.add(constructor);
-                    }
+                    constructorList.addAll(Arrays.asList(isFindDeclaredConstructor ? classList.get(w).getDeclaredConstructors() : classList.get(w).getConstructors()));
                 }
             }
         }else{
-            for(Constructor<?> constructor : isFindDeclaredConstructor ? sourceClass.getDeclaredConstructors() : sourceClass.getConstructors()){
-                constructorList.add(constructor);
-            }
+            constructorList.addAll(Arrays.asList(isFindDeclaredConstructor ? sourceClass.getDeclaredConstructors() : sourceClass.getConstructors()));
         }
         return constructorList;
     }
