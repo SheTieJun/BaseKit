@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -142,6 +143,10 @@ fun runOnMain(run:()->Unit = {}){
 
 fun runOnIo(run:()->Unit = { }){
     Schedulers.io().scheduleDirect {run() }
+}
+
+fun isMainThread(): Boolean {
+    return Looper.getMainLooper().thread === Thread.currentThread()
 }
 
 

@@ -42,7 +42,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     init {
         Timber.i("${this.javaClass.simpleName}:onStart")
         onStart()
-
     }
 
     override fun onStart() {

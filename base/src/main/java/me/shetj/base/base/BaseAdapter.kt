@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import me.shetj.base.kt.getRequestOptions
 
 abstract class BaseAdapter<T, K : BaseViewHolder>
 @JvmOverloads constructor(@LayoutRes layoutResId: Int,
@@ -33,8 +34,9 @@ abstract class BaseAdapter<T, K : BaseViewHolder>
 
     protected val defaultRequestOptions: RequestOptions
         get() {
-            if (requestOptions == null) requestOptions = RequestOptions()
-            return requestOptions!!
+            return requestOptions?: getRequestOptions().apply {
+                requestOptions = this
+            }
         }
 
     protected fun getDimension(@DimenRes id: Int): Float {

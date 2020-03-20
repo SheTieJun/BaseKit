@@ -27,6 +27,7 @@ import io.reactivex.annotations.NonNull
 import me.shetj.base.kt.setSwipeRefresh
 import me.shetj.base.kt.toMessage
 import me.shetj.base.s
+import me.shetj.base.tools.file.SDCardUtils
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -461,7 +462,7 @@ class ArmsUtils private constructor() {
         fun getAppPath(): String {
             val sb = StringBuilder()
             if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-                sb.append(Environment.getExternalStorageDirectory().path)
+                sb.append(SDCardUtils.sdCardPath)
             } else {
                 sb.append(Environment.getDataDirectory().path)
             }
@@ -472,7 +473,7 @@ class ArmsUtils private constructor() {
         }
 
         fun copyText(context: Context, text: String) {
-            val cm =  context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val cm:ClipboardManager =  context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             // 创建普通字符型ClipData
             val mClipData = ClipData.newPlainText("Label", text)
             // 将ClipData内容放到系统剪贴板里。

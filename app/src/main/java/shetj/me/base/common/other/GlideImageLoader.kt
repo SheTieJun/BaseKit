@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import io.reactivex.Flowable
@@ -25,7 +26,22 @@ import shetj.me.base.view.LoadingDialog
  * 加载图片三步走，1,with; 2,load; 3 into;
  * 取消图片也是三步走，1,with; 2,load; 3 clear;
  */
-class GlideImageLoader : ImageLoader {
+class GlideImageLoader private constructor(): ImageLoader {
+
+    companion object {
+
+      @Volatile private var instance: GlideImageLoader? = null
+
+        fun getInstance(): GlideImageLoader {
+            return instance?: synchronized(GlideImageLoader::class.java){
+                GlideImageLoader().also {
+                    instance = it
+                }
+            }
+        }
+    }
+
+
     override fun load(simpleView: ImageView, url: String) {
         GlideApp.with(simpleView.context)
                 .load(url)
@@ -38,7 +54,7 @@ class GlideImageLoader : ImageLoader {
             GlideApp.with(simpleView.context)
                     .load(url)
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .into(object : SimpleTarget<Drawable?>() {
+                    .into(object : CustomTarget<Drawable?>() {
                         override fun onStart() {
                             super.onStart()
                             LoadingDialog.showLoading(simpleView.context as Activity)
@@ -47,6 +63,11 @@ class GlideImageLoader : ImageLoader {
                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable?>?) {
                             simpleView.setImageDrawable(resource)
                             LoadingDialog.hideLoading()
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {
+
+
                         }
 
                     })

@@ -8,8 +8,7 @@ import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
 import timber.log.Timber
 
-/************************ 转化成message****************************************/
-
+//region 转化成message
 @JvmOverloads
 fun <T> T.toMessage(code:Int = 1,action: (Message.() -> Unit?)? =null): Message {
     return  Message.obtain().apply {
@@ -19,7 +18,9 @@ fun <T> T.toMessage(code:Int = 1,action: (Message.() -> Unit?)? =null): Message 
     }
 }
 
-/***************************Json 相关**********************************/
+//endregion 转化成message
+
+//region Json相关
 
 fun Any.toJson() = GsonKit.objectToJson(this)
 
@@ -29,8 +30,9 @@ fun <T> String.toList(clazz: Class<T>) = GsonKit.jsonToList(this,clazz)
 
 fun  String.toMap() = GsonKit.jsonToMap(this)
 
-/**************************String 相关**********************************/
+//endregion Json相关
 
+//region String 相关
 fun String.toMD5() = ArmsUtils.encodeToMD5(this)
 
 fun String.fromHtml() = parseAsHtml()
@@ -45,7 +47,9 @@ fun String.copy(context :Context,action: (() -> Unit?)? =null){
         action?.let { it }
     }
 
+//endregion String 相关
 
+//region log 相关
 fun String.log(){
     Timber.i(this)
 }
@@ -53,3 +57,4 @@ fun String.log(){
 fun Throwable.log(){
     Timber.i(this)
 }
+//endregion log 相关

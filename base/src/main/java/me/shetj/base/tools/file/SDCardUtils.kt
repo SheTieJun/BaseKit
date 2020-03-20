@@ -19,7 +19,7 @@ class SDCardUtils private constructor() {
 
     companion object {
         /**
-         *
+         * 当路径不路径不存在会自动创建
          * @param packagePath 包的路径
          * @return
          */
@@ -62,8 +62,7 @@ class SDCardUtils private constructor() {
 
         /**
          * 获取系统存储路径
-         *
-         * @return     /data/data/包名/cache/
+         * /system
          */
         @JvmStatic
         val rootDirectoryPath: String
@@ -82,14 +81,21 @@ class SDCardUtils private constructor() {
          * mnt/sdcard/Android/data/< package name >/files/type
          * <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
          * <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+         *   type =   {@link android.os.Environment#DIRECTORY_MUSIC},
+         *            {@link android.os.Environment#DIRECTORY_PODCASTS},
+         *            {@link android.os.Environment#DIRECTORY_RINGTONES},
+         *            {@link android.os.Environment#DIRECTORY_ALARMS},
+         *            {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
+         *            {@link android.os.Environment#DIRECTORY_PICTURES}, or
+         *            {@link android.os.Environment#DIRECTORY_MOVIES}. or null
          */
         @JvmStatic
-        fun getExternalFilesDir(type: String): String {
+        fun getExternalFilesDir(type: String?=null): String {
             return Utils.app.getExternalFilesDir(type)!!.absolutePath
         }
 
         /**
-         * data/data/packagename/cache
+         * data/data/< package name >/cache
          * @return
          */
         @JvmStatic

@@ -13,21 +13,72 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.transition.Slide
+import com.google.android.material.appbar.AppBarLayout
 import me.shetj.base.R
 import me.shetj.base.constant.Constant
 import me.shetj.base.tools.app.ArmsUtils
 
 /* *收集一些扩展函数 * */
 
+//region TextView
+/**
+ * 设置textView 的 Drawable
+ */
+fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
+                                  @Constant.GravityType gravity : Int = Gravity.TOP){
+    ContextCompat.getDrawable(context, resId)?.apply {
+        setBounds(0, 0, minimumWidth, minimumHeight)
+    }?.let {
+        when(gravity){
+            Gravity.START  ->  setCompoundDrawables(it, null, null, null)
+            Gravity.TOP ->     setCompoundDrawables(null, it, null, null)
+            Gravity.END ->     setCompoundDrawables(null, null, it, null)
+            Gravity.BOTTOM ->  setCompoundDrawables(null, null , null, it)
+        }
+    }
+
+}
+
+/**
+ * 设置文字显示缩进
+ */
+fun TextView.setTextAndMargin(content: String,marginStart:Float){
+    val spannableString = SpannableString(content)
+    val what = LeadingMarginSpan.Standard(ArmsUtils.dip2px(marginStart), 0)
+    spannableString.setSpan(what, 0, spannableString.length, SpannableString.SPAN_INCLUSIVE_INCLUSIVE)
+    text = spannableString
+}
+
+/**
+ * 文字加粗
+ */
+internal fun TextView.testBold(isBold: Boolean){
+    paint.isFakeBoldText = isBold
+}
+//endregion TextView
+
+
+//region ViewGroup
 @Suppress("UNCHECKED_CAST")
 fun <R : View> ViewGroup.inflate(
         ctxt: Context = context,
         @LayoutRes res: Int
 ) = LayoutInflater.from(ctxt).inflate(res, this, false) as R
 
+@Suppress("UNCHECKED_CAST")
+@JvmOverloads
+fun <T:View> ViewGroup.inflate(
+        @LayoutRes res: Int,
+        root: ViewGroup? = this
+) = LayoutInflater.from(context).inflate(res, root, false) as T
+
+//endregion ViewGroup
+
+//region SwipeRefreshLayout
 
 @Suppress("UNCHECKED_CAST")
 @JvmOverloads
@@ -37,16 +88,8 @@ fun SwipeRefreshLayout.setSwipeRefresh(
     this.setColorSchemeResources(color)
     this.setOnRefreshListener(listener)
 }
-
-
-@Suppress("UNCHECKED_CAST")
-@JvmOverloads
-fun <T> ViewGroup.inflate(
-        @LayoutRes res: Int,
-        root: ViewGroup? = this
-) = LayoutInflater.from(context).inflate(res, root, false) as T
-
-
+//endregion SwipeRefreshLayout
+//region 泛型
 
 @JvmOverloads
 fun <T : View> T?.updatePadding(
@@ -87,7 +130,10 @@ fun <T : View> T.isVisible(): Boolean {
 fun <T : View> T.isNotVisible() = !isVisible()
 
 fun <T : View> T.isRtl()= resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+//endregion 泛型
 
+
+//region View
 /**
  * 点击动画
  */
@@ -101,33 +147,9 @@ fun View?.setClicksAnima(){
     }
 }
 
-/**
- * 设置文字显示缩进
- */
-fun TextView.setTextAndMargin(content: String,marginStart:Float){
-    val spannableString = SpannableString(content)
-    val what = LeadingMarginSpan.Standard(ArmsUtils.dip2px(marginStart), 0)
-    spannableString.setSpan(what, 0, spannableString.length, SpannableString.SPAN_INCLUSIVE_INCLUSIVE)
-    text = spannableString
-}
+//endregion View
 
-/**
- * 设置textView 的 Drawable
- */
-fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
-                                  @Constant.GravityType gravity : Int = Gravity.TOP){
-     ContextCompat.getDrawable(context, resId)?.apply {
-        setBounds(0, 0, minimumWidth, minimumHeight)
-    }?.let {
-        when(gravity){
-            Gravity.START  ->  setCompoundDrawables(it, null, null, null)
-            Gravity.TOP ->     setCompoundDrawables(null, it, null, null)
-            Gravity.END ->     setCompoundDrawables(null, null, it, null)
-            Gravity.BOTTOM ->  setCompoundDrawables(null, null , null, it)
-        }
-    }
-
-}
+//region EditText
 
 /**
  * edit 获取焦点打开键盘
@@ -143,3 +165,22 @@ fun EditText?.requestFocusEdit() {
         inputManager.showSoftInput(this, 0)
     }
 }
+
+//endregion EditText
+//region AppBarLayout
+/**
+ * AppbarLayout "高度比较高", 高概率遇到AppbarLayout无法滑动的问题.
+ */
+fun AppBarLayout.canDrag(){
+    post {
+        val layoutParams =  layoutParams as  (CoordinatorLayout.LayoutParams)
+        val behavior =layoutParams.behavior as  (AppBarLayout.Behavior)
+        behavior.setDragCallback(object :AppBarLayout.Behavior.DragCallback(){
+            override fun canDrag(p0: AppBarLayout): Boolean {
+                return true
+            }
+        })
+    }
+}
+//endregion AppBarLayout
+

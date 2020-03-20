@@ -31,6 +31,7 @@ public final class FileIOUtils {
 
     private static int sBufferSize = 8192;
 
+    //region writeFile 写文件
     /**
      * 将输入流写入文件
      *
@@ -332,6 +333,9 @@ public final class FileIOUtils {
             CloseUtils.closeIO(bw);
         }
     }
+    //endregion writeFile 写文件
+
+    //region readFile 读取文件
 
     ///////////////////////////////////////////////////////////////////////////
     // the divide line of write and read
@@ -620,7 +624,9 @@ public final class FileIOUtils {
             CloseUtils.closeIO(fc);
         }
     }
+    //endregion readFile
 
+    //region 判断是否存在或者创建
     /**
      * 设置缓冲区尺寸
      *
@@ -667,4 +673,5 @@ public final class FileIOUtils {
         }
         return true;
     }
+    //endregion 判断是否存在或者创建
 }
