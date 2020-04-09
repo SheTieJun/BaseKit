@@ -2,26 +2,25 @@ package shetj.me.base.`fun`.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Process.myPid
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.BinderThread
+import androidx.annotation.UiThread
+import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
 import me.shetj.base.base.BaseActivity
+import me.shetj.base.base.TaskExecutor
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
 import timber.log.Timber
 
 class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
-    /**
-     * 测试_swipe
-     */
     private var mBtnTest: Button? = null
-    /**
-     * 测试codeutils
-     */
     private var mTvTestCode: TextView? = null
     private var codeUtil: CodeUtil? = null
     private var viewpage2: ViewPager2? = null
@@ -52,7 +51,22 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
                 super.onPageScrollStateChanged(state)
             }
         })
-        findViewById<View>(R.id.fab).setOnClickListener { v: View? -> AppCompatDelegate.setDefaultNightMode(mPresenter!!.getNightModel()) }
+        findViewById<View>(R.id.fab).setOnClickListener { AppCompatDelegate.setDefaultNightMode(mPresenter!!.getNightModel()) }
+        testExecutor()
+    }
+
+    private fun testExecutor() {
+        for (i in 0..100) {
+            TaskExecutor.getInstance().executeOnDiskIO(Runnable {
+                Thread.sleep(100)
+                Timber.i("executeOnDiskIO:${Thread.currentThread().name}")
+            })
+        }
+        for (i in 0..9) {
+            TaskExecutor.getInstance().executeOnMainThread(Runnable {
+                Timber.i("executeOnMainThread:${Thread.currentThread().name}")
+            })
+        }
     }
 
     public override fun initData() {
@@ -84,7 +98,7 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onActivitypause() {
+    fun onActivityPause() {
         Timber.i("onActivityPause")
     }
 

@@ -6,7 +6,8 @@ import java.util.concurrent.Executors
 
 class TaskExecutor private constructor() {
 
-    private val mDiskIO = Executors.newFixedThreadPool(3) { r -> Thread(r) }
+    //最大线程2，当不够时所有进入等待
+    private val mDiskIO = Executors.newFixedThreadPool(2) { r -> Thread(r) }
 
     fun executeOnDiskIO(runnable: Runnable) {
         mDiskIO.execute(runnable)
@@ -25,13 +26,12 @@ class TaskExecutor private constructor() {
         @Volatile
         private var sInstance: TaskExecutor? = null
 
-        val instance: TaskExecutor
-            get() {
-                return sInstance?: synchronized(TaskExecutor::class.java) {
-                    return TaskExecutor().also {
-                        sInstance = it
-                    }
+        fun getInstance(): TaskExecutor {
+            return sInstance?: synchronized(TaskExecutor::class.java) {
+                return TaskExecutor().also {
+                    sInstance = it
                 }
             }
+        }
     }
 }

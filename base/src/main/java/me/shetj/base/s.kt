@@ -5,6 +5,7 @@ import androidx.annotation.Keep
 
 import me.shetj.base.tools.app.TimberUtil
 import me.shetj.base.tools.app.Utils
+import me.shetj.base.tools.debug.DebugFunc
 
 /**
  * **@packageName：** me.shetj.base<br></br>
@@ -31,6 +32,10 @@ object s {
     fun init(application: Application, isDebug: Boolean) {
         Utils.init(application)
         TimberUtil.setLogAuto(isDebug)
+        DebugFunc.getInstance().apply {
+            initContext(application)
+            setRxJavaErrorHandler()
+        }
         this.isDebug = isDebug
     }
 }

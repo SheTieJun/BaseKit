@@ -27,12 +27,12 @@ class ImageUtils {
 
     companion object {
 
-        val GET_IMAGE_BY_CAMERA = 5001
-        val GET_IMAGE_FROM_PHONE = 5002
-        val CROP_IMAGE = 5003
-        var imageUriFromCamera: Uri? = null
-        var cropImageUri: Uri? = null
-        private val imagePath = "shetj_base/image"
+        private const val GET_IMAGE_BY_CAMERA = 5001
+        private const val GET_IMAGE_FROM_PHONE = 5002
+        private const val CROP_IMAGE = 5003
+        private var imageUriFromCamera: Uri? = null
+        private var cropImageUri: Uri? = null
+        private const val imagePath = "shetj_base/image"
 
         /**
          * 创建一条图片地址uri,用于保存拍照后的照片

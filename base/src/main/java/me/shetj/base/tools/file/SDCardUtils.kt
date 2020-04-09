@@ -101,6 +101,15 @@ class SDCardUtils private constructor() {
         @JvmStatic
         val cache: String
             get() = Utils.app.cacheDir.absolutePath
+
+
+        @JvmStatic
+        val downloadCache:String
+            get() = if (Utils.app.externalCacheDir == null) {
+                Environment.getDownloadCacheDirectory().absolutePath
+            } else {
+                Utils.app.externalCacheDir!!.absolutePath
+            }
     }
 
 

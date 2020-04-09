@@ -14,7 +14,7 @@ fun <T> T.toMessage(code:Int = 1,action: (Message.() -> Unit?)? =null): Message 
     return  Message.obtain().apply {
         what = code
         obj = this@toMessage
-        action?.let { it(this) }
+        action?.invoke(this)
     }
 }
 
@@ -26,9 +26,9 @@ fun Any.toJson() = GsonKit.objectToJson(this)
 
 fun <T> String.toBean(clazz: Class<T>) = GsonKit.jsonToBean(this,clazz)
 
-fun <T> String.toList(clazz: Class<T>) = GsonKit.jsonToList(this,clazz)
+fun <T> String.toBeanList(clazz: Class<T>) = GsonKit.jsonToList(this,clazz)
 
-fun  String.toMap() = GsonKit.jsonToMap(this)
+fun  String.toStringMap() = GsonKit.jsonToStringMap(this)
 
 //endregion Json相关
 
@@ -44,8 +44,8 @@ fun Any.isEmpty() = EmptyUtils.isEmpty(this)
 fun String.copy(context :Context,action: (() -> Unit?)? =null){
         //获取剪贴板管理器：
         ArmsUtils.copyText(context,this)
-        action?.let { it }
-    }
+        action?.invoke()
+}
 
 //endregion String 相关
 

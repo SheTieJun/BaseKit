@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Looper
 import android.view.Gravity
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.WindowManager
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
@@ -149,4 +150,5 @@ fun isMainThread(): Boolean {
     return Looper.getMainLooper().thread === Thread.currentThread()
 }
 
-
+//用户滑动最小距离
+fun Context.getScaledTouch() =  ViewConfiguration.get(this).scaledTouchSlop

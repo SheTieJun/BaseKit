@@ -80,6 +80,7 @@ class ImageWatcherUtils(activity: Activity) {
             val min = min(scaleWidth, scaleHeight)
             matrix.postScale(min, min) // 设置缩放比例
             val newBmp = Bitmap.createBitmap(oldBmp, 0, 0, width, height, matrix, true) // 建立新的 bitmap ，其内容是对原 bitmap 的缩放后的图
+            oldBmp.recycle()
             BitmapDrawable(context.resources, newBmp) // 把 bitmap 转换成 drawable 并返回
         }else{
             drawable

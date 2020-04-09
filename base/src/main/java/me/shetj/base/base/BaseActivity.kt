@@ -115,7 +115,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     open fun endAnimation() {}
 
     /**
-     * 返回
+     * 用来替换 [finish] 返回
      */
     open  fun back() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -132,7 +132,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     override fun onBackPressed() {
         HideUtil.hideSoftKeyboard(rxContext)
         super.onBackPressed()
-        back()
     }
 
     override fun updateView(message: Message) {

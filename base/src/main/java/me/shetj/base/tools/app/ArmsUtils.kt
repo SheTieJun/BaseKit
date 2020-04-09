@@ -250,6 +250,21 @@ class ArmsUtils private constructor() {
             }
         }
 
+        @JvmStatic
+        fun getScreenWidth(): Int {
+            return getScreenWidth(Utils.app.applicationContext)
+        }
+
+        /**
+         * 获得屏幕的高度
+         *
+         * @return
+         */
+        @JvmStatic
+        fun getScreenHeight(): Int {
+            return getScreenWidth(Utils.app.applicationContext)
+        }
+
         /**
          * 获得屏幕的宽度
          *

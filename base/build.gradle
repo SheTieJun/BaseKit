@@ -85,10 +85,11 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     //https://developer.android.google.cn/jetpack/
     //https://maven.google.com/web/index.html
-    implementation "androidx.appcompat:appcompat:$support"
+    implementation "androidx.appcompat:appcompat:$androidx"
 //    implementation "androidx.legacy:legacy-support-v4:$androidx"
     //https://material.io/develop/android/
     implementation "com.google.android.material:material:$androidx"

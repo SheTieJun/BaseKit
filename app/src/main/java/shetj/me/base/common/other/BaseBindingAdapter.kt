@@ -43,13 +43,14 @@ class BaseBindingAdapter {
         if (url == null){
             imageView.setImageDrawable(null)
         }else{
-            imageView.loadImage(url)
+            imageView.loadImage(url = url)
         }
     }
 
     /**
      *   bind:progressColor="@{@android:color/holo_green_dark}"
      */
+    @Suppress("DEPRECATION")
     @BindingAdapter("progressColor")
     fun setProgressBarColor(loader: ProgressBar?, color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

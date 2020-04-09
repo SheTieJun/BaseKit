@@ -40,7 +40,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         get() = view.rxContext
 
     init {
-        Timber.i("${this.javaClass.simpleName}:onStart")
+        Timber.i("${this.javaClass.name}:onStart")
         onStart()
     }
 

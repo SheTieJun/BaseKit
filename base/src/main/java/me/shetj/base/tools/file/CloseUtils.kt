@@ -25,7 +25,7 @@ class CloseUtils private constructor() {
          * @param closeables closeables
          */
         @JvmStatic
-        fun closeIO(vararg closeables: Closeable) {
+        fun closeIO(vararg closeables: Closeable?) {
             if (closeables == null) return
             for (closeable in closeables) {
                 if (closeable != null) {
@@ -45,7 +45,7 @@ class CloseUtils private constructor() {
          * @param closeables closeables
          */
         @JvmStatic
-        fun closeIOQuietly(vararg closeables: Closeable) {
+        fun closeIOQuietly(vararg closeables: Closeable?) {
             if (closeables == null) return
             for (closeable in closeables) {
                 if (closeable != null) {

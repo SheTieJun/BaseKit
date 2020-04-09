@@ -3,6 +3,7 @@ package me.shetj.base.tools.app
 import android.annotation.SuppressLint
 import android.webkit.WebSettings
 import android.webkit.WebView
+import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 
 /**
  * WebView管理器，提供常用设置
@@ -47,6 +48,25 @@ class WebViewManager(private val webView: WebView) {
                 "    }  " +
                 "}" +
                 "})()")
+    }
+
+
+    /**
+     * 给设置localStorage 设置数据
+     */
+    private fun setLocalStorage(itmes: Map<String, String>) {
+        val jsonBuf = StringBuilder()
+        for (key in itmes.keys) {
+            if (isNotEmpty(itmes[key])) {
+                jsonBuf.append("localStorage.setItem('key', '")
+                        .append(itmes[key])
+                        .append("');")
+            }
+        }
+        val info = jsonBuf.toString()
+        if (isNotEmpty(info)) {
+            webView.evaluateJavascript(info, null)
+        }
     }
 
     /**

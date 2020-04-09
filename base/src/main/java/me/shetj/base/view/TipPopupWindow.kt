@@ -74,9 +74,9 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
             Tip.WARNING -> tvTip!!.background = ColorDrawable(WARNING_COLOR)
         }
         //设置文子
-        tvTip!!.text = tipMsg
+        tvTip?.text = tipMsg
         showAsDropDown(view)
-        publishSubject!!.onNext(this)
+        publishSubject?.onNext(this)
     }
 
     companion object {

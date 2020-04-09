@@ -10,4 +10,10 @@ interface Constant {
     annotation class GravityType
 
 
+    companion object{
+        val KEY_IS_OUTPUT_HTTP = "key_is_output_http";
+        val KEY_IS_OUTPUT_LOG = "key_is_output_log";
+
+        val KEY_SETTING_INFO = "key_setting_info";
+    }
 }

@@ -75,4 +75,12 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
+    <style name="transparent_bottom_dialog_style" parent="@android:style/Theme.Dialog">
+        <item name="behavior_peekHeight">510dp</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
 </resources>

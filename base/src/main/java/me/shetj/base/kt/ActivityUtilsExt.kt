@@ -59,9 +59,6 @@ fun Fragment.setBackgroundColor(@ColorInt color: Int) {
 
 /**
  * Set background resource for fragment.
- *
- * @param fragment The fragment.
- * @param resId    The resource id.
  */
 fun Fragment.setBackgroundResource(@DrawableRes resId: Int) {
     val view = this.view
@@ -94,7 +91,7 @@ fun Activity.getActivityOptions(  vararg arg1: Pair<View, String>): ActivityOpti
     return ActivityOptionsCompat.makeSceneTransitionAnimation(this, *arg1)
 }
 
-fun Activity.startNewAcitivity( options: ActivityOptionsCompat, activityClass: Class<*>) {
+fun Activity.startNewActivity(options: ActivityOptionsCompat, activityClass: Class<*>) {
     val intent = Intent(this, activityClass)
     intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
     ActivityCompat.startActivity(this, intent, options.toBundle())

@@ -59,9 +59,7 @@ class EmptyUtils private constructor() {
             if (obj is SparseIntArray && obj.size() == 0) {
                 return true
             }
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                obj is SparseLongArray && obj.size() == 0
-            } else false
+            return obj is SparseLongArray && obj.size() == 0
         }
 
         /**

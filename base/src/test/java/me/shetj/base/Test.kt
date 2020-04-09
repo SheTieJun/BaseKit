@@ -1,5 +1,7 @@
 package me.shetj.base
 
+import me.shetj.base.kt.toJson
+import me.shetj.base.tools.json.GsonKit
 import org.junit.Test
 import java.security.MessageDigest
 

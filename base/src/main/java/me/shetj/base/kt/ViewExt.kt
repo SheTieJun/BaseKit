@@ -1,8 +1,7 @@
 package me.shetj.base.kt
 
 import android.content.Context
-import android.os.Build.VERSION.SDK_INT
-import android.os.Build.VERSION_CODES.JELLY_BEAN_MR1
+import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.style.LeadingMarginSpan
 import android.view.*
@@ -13,14 +12,15 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
+import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.transition.Slide
 import com.google.android.material.appbar.AppBarLayout
 import me.shetj.base.R
 import me.shetj.base.constant.Constant
 import me.shetj.base.tools.app.ArmsUtils
+import java.lang.NullPointerException
 
 /* *收集一些扩展函数 * */
 
@@ -58,6 +58,14 @@ fun TextView.setTextAndMargin(content: String,marginStart:Float){
  */
 internal fun TextView.testBold(isBold: Boolean){
     paint.isFakeBoldText = isBold
+}
+
+fun TextView.setBold(isBold: Boolean){
+    typeface = if (isBold) {
+        Typeface.defaultFromStyle(Typeface.BOLD);
+    }else {
+        Typeface.defaultFromStyle(Typeface.NORMAL);
+    }
 }
 //endregion TextView
 
@@ -137,13 +145,87 @@ fun <T : View> T.isRtl()= resources.configuration.layoutDirection == View.LAYOUT
 /**
  * 点击动画
  */
-fun View?.setClicksAnima(){
+fun View?.setClicksAnimate(){
     this?.setOnTouchListener { _, event ->
         when (event.action) {
             MotionEvent.ACTION_DOWN -> animate().scaleX(0.8f).scaleY(0.8f).setDuration(500).start()
             MotionEvent.ACTION_UP -> animate().scaleX(1f).scaleY(1f).setDuration(500).start()
         }
         false
+    }
+}
+
+/**
+ * @param ratioW 宽占比
+ * @param ratioH 高占比
+ * @param parentH 基准高
+ * @param parentW 基准框
+ */
+@UiThread
+fun View?.layoutRatio(parentW:Int?= null,parentH:Int? =null,ratioW:Int,ratioH:Int){
+    this?.apply {
+        if (parentH == null && parentW == null) {
+            throw NullPointerException("parentW and parentH no all be null")
+        }
+        if (parentW != null && parentH == null){
+            layoutRationByWidth(parentW, ratioW, ratioH)
+        }else if (parentW == null && parentH != null){
+            layoutRationByHeight(parentH, ratioH, ratioW)
+        }else if (parentH != null && parentW != null){
+            if ( ratioW/ratioH > parentW/ parentH ){
+                layoutRationByWidth(parentW, ratioW, ratioH)
+            }else{
+                layoutRationByHeight(parentH, ratioH, ratioW)
+            }
+        }
+    }
+}
+
+@UiThread
+fun View?.layoutRationByHeight(parentH: Int, ratioH: Int, ratioW: Int) {
+    this?.apply {
+        var layoutParams: ViewGroup.LayoutParams? = layoutParams
+        val width = (parentH / ratioH * ratioW + 0.5f).toInt()
+        if (layoutParams == null) {
+            layoutParams = ViewGroup.LayoutParams(-1, height)
+            this.layoutParams = layoutParams
+        } else {
+            if (layoutParams.width != width) {
+                layoutParams.width = width
+                this.layoutParams = layoutParams
+            }
+        }
+    }
+}
+
+@UiThread
+fun View?.layoutRationByWidth(parentW: Int, ratioW: Int, ratioH: Int) {
+    this?.apply {
+        val height = (parentW / ratioW * ratioH + 0.5f).toInt()
+        var layoutParams: ViewGroup.LayoutParams? = layoutParams
+        if (layoutParams == null) {
+            layoutParams = ViewGroup.LayoutParams(-1, height)
+            this.layoutParams = layoutParams
+        } else {
+            if (layoutParams.height != height) {
+                layoutParams.height = height
+                this.layoutParams = layoutParams
+            }
+        }
+    }
+}
+
+@UiThread
+fun View?.use16And9() {
+    this?.apply {
+        layoutRationByWidth(ArmsUtils.getScreenWidth(), 16, 9)
+    }
+}
+
+@UiThread
+fun View?.use16And9ByView(view:View) {
+    this?.apply {
+        layoutRatio(view.width, view.height, 16, 9)
     }
 }
 
