@@ -76,7 +76,7 @@ android {
             }
             if (requested.group == 'com.github.bumptech.glide') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion '4.9.0'
+                    details.useVersion '4.10.0'
                 }
             }
             if (requested.group == 'com.tencent.mm.opensdk') {

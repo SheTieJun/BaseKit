@@ -20,7 +20,6 @@ import com.google.android.material.appbar.AppBarLayout
 import me.shetj.base.R
 import me.shetj.base.constant.Constant
 import me.shetj.base.tools.app.ArmsUtils
-import java.lang.NullPointerException
 
 /* *收集一些扩展函数 * */
 
@@ -29,15 +28,15 @@ import java.lang.NullPointerException
  * 设置textView 的 Drawable
  */
 fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
-                                  @Constant.GravityType gravity : Int = Gravity.TOP){
+                                  @Constant.GravityType gravity: Int = Gravity.TOP) {
     ContextCompat.getDrawable(context, resId)?.apply {
         setBounds(0, 0, minimumWidth, minimumHeight)
     }?.let {
-        when(gravity){
-            Gravity.START  ->  setCompoundDrawables(it, null, null, null)
-            Gravity.TOP ->     setCompoundDrawables(null, it, null, null)
-            Gravity.END ->     setCompoundDrawables(null, null, it, null)
-            Gravity.BOTTOM ->  setCompoundDrawables(null, null , null, it)
+        when (gravity) {
+            Gravity.START -> setCompoundDrawables(it, null, null, null)
+            Gravity.TOP -> setCompoundDrawables(null, it, null, null)
+            Gravity.END -> setCompoundDrawables(null, null, it, null)
+            Gravity.BOTTOM -> setCompoundDrawables(null, null, null, it)
         }
     }
 
@@ -46,7 +45,7 @@ fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
 /**
  * 设置文字显示缩进
  */
-fun TextView.setTextAndMargin(content: String,marginStart:Float){
+fun TextView.setTextAndMargin(content: String, marginStart: Float) {
     val spannableString = SpannableString(content)
     val what = LeadingMarginSpan.Standard(ArmsUtils.dip2px(marginStart), 0)
     spannableString.setSpan(what, 0, spannableString.length, SpannableString.SPAN_INCLUSIVE_INCLUSIVE)
@@ -56,15 +55,15 @@ fun TextView.setTextAndMargin(content: String,marginStart:Float){
 /**
  * 文字加粗
  */
-internal fun TextView.testBold(isBold: Boolean){
+internal fun TextView.testBold(isBold: Boolean) {
     paint.isFakeBoldText = isBold
 }
 
-fun TextView.setBold(isBold: Boolean){
+fun TextView.setBold(isBold: Boolean) {
     typeface = if (isBold) {
-        Typeface.defaultFromStyle(Typeface.BOLD);
-    }else {
-        Typeface.defaultFromStyle(Typeface.NORMAL);
+        Typeface.defaultFromStyle(Typeface.BOLD)
+    } else {
+        Typeface.defaultFromStyle(Typeface.NORMAL)
     }
 }
 //endregion TextView
@@ -79,7 +78,7 @@ fun <R : View> ViewGroup.inflate(
 
 @Suppress("UNCHECKED_CAST")
 @JvmOverloads
-fun <T:View> ViewGroup.inflate(
+fun <T : View> ViewGroup.inflate(
         @LayoutRes res: Int,
         root: ViewGroup? = this
 ) = LayoutInflater.from(context).inflate(res, root, false) as T
@@ -91,8 +90,8 @@ fun <T:View> ViewGroup.inflate(
 @Suppress("UNCHECKED_CAST")
 @JvmOverloads
 fun SwipeRefreshLayout.setSwipeRefresh(
-        @ColorRes color :Int = R.color.colorAccent,
-        listener : SwipeRefreshLayout.OnRefreshListener ?= null ){
+        @ColorRes color: Int = R.color.colorAccent,
+        listener: SwipeRefreshLayout.OnRefreshListener? = null) {
     this.setColorSchemeResources(color)
     this.setOnRefreshListener(listener)
 }
@@ -137,7 +136,7 @@ fun <T : View> T.isVisible(): Boolean {
 
 fun <T : View> T.isNotVisible() = !isVisible()
 
-fun <T : View> T.isRtl()= resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+fun <T : View> T.isRtl() = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 //endregion 泛型
 
 
@@ -145,7 +144,7 @@ fun <T : View> T.isRtl()= resources.configuration.layoutDirection == View.LAYOUT
 /**
  * 点击动画
  */
-fun View?.setClicksAnimate(){
+fun View?.setClicksAnimate() {
     this?.setOnTouchListener { _, event ->
         when (event.action) {
             MotionEvent.ACTION_DOWN -> animate().scaleX(0.8f).scaleY(0.8f).setDuration(500).start()
@@ -162,19 +161,19 @@ fun View?.setClicksAnimate(){
  * @param parentW 基准框
  */
 @UiThread
-fun View?.layoutRatio(parentW:Int?= null,parentH:Int? =null,ratioW:Int,ratioH:Int){
+fun View?.layoutRatio(parentW: Int? = null, parentH: Int? = null, ratioW: Int, ratioH: Int) {
     this?.apply {
         if (parentH == null && parentW == null) {
             throw NullPointerException("parentW and parentH no all be null")
         }
-        if (parentW != null && parentH == null){
+        if (parentW != null && parentH == null) {
             layoutRationByWidth(parentW, ratioW, ratioH)
-        }else if (parentW == null && parentH != null){
+        } else if (parentW == null && parentH != null) {
             layoutRationByHeight(parentH, ratioH, ratioW)
-        }else if (parentH != null && parentW != null){
-            if ( ratioW/ratioH > parentW/ parentH ){
+        } else if (parentH != null && parentW != null) {
+            if (ratioW / ratioH > parentW / parentH) {
                 layoutRationByWidth(parentW, ratioW, ratioH)
-            }else{
+            } else {
                 layoutRationByHeight(parentH, ratioH, ratioW)
             }
         }
@@ -223,7 +222,7 @@ fun View?.use16And9() {
 }
 
 @UiThread
-fun View?.use16And9ByView(view:View) {
+fun View?.use16And9ByView(view: View) {
     this?.apply {
         layoutRatio(view.width, view.height, 16, 9)
     }
@@ -237,7 +236,7 @@ fun View?.use16And9ByView(view:View) {
  * edit 获取焦点打开键盘
  */
 fun EditText?.requestFocusEdit() {
-    this?.let{
+    this?.let {
         isEnabled = true
         isFocusable = true
         isFocusableInTouchMode = true
@@ -253,11 +252,11 @@ fun EditText?.requestFocusEdit() {
 /**
  * AppbarLayout "高度比较高", 高概率遇到AppbarLayout无法滑动的问题.
  */
-fun AppBarLayout.canDrag(){
+fun AppBarLayout.canDrag() {
     post {
-        val layoutParams =  layoutParams as  (CoordinatorLayout.LayoutParams)
-        val behavior =layoutParams.behavior as  (AppBarLayout.Behavior)
-        behavior.setDragCallback(object :AppBarLayout.Behavior.DragCallback(){
+        val layoutParams = layoutParams as (CoordinatorLayout.LayoutParams)
+        val behavior = layoutParams.behavior as (AppBarLayout.Behavior)
+        behavior.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
             override fun canDrag(p0: AppBarLayout): Boolean {
                 return true
             }

@@ -4,11 +4,6 @@ class ApiResult<T> {
     var code = 0
     var msg: String? = null
     var data: T? = null
-        private set
-
-    fun setData(data: T) {
-        this.data = data
-    }
 
     val isOk: Boolean
         get() = code == 0
@@ -20,4 +15,8 @@ class ApiResult<T> {
                 ", data=" + data +
                 '}'
     }
+}
+
+fun ApiResult<*>?.isOkData(): Boolean {
+    return this?.isOk ?: false
 }

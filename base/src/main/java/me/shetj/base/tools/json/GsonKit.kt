@@ -1,15 +1,15 @@
 package me.shetj.base.tools.json
 
 import androidx.annotation.Keep
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import io.reactivex.annotations.NonNull
 import timber.log.Timber
+import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -17,12 +17,11 @@ import kotlin.collections.ArrayList
  */
 @Keep
 object GsonKit {
-    private var gson: Gson? = null
-
-    init {
-        if (gson == null) {
-            gson = Gson()
-        }
+    val gson: Gson by lazy {
+        GsonBuilder()
+                .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+                .serializeNulls()
+                .create()
     }
 
     /**
@@ -32,9 +31,7 @@ object GsonKit {
     fun objectToJson(@NonNull ts: Any): String? {
         return try {
             var jsonStr: String? = null
-            if (gson != null) {
-                jsonStr = gson!!.toJson(ts)
-            }
+            jsonStr = gson.toJson(ts)
             jsonStr
         } catch (e: Exception) {
             Timber.e(e)
@@ -51,12 +48,10 @@ object GsonKit {
     fun <T> jsonToListMaps(@NonNull gsonString: String): List<Map<String, T>>? {
         return try {
             val list: ArrayList<Map<String, T>> = ArrayList()
-            if (gson != null) {
-                val array = JsonParser().parse(gsonString).asJsonArray
-                for (elem in array) {
-                    list.add(gson!!.fromJson<Map<String, T>>(gsonString, object : TypeToken<Map<String, Any>>() {
-                    }.type))
-                }
+            val array = JsonParser().parse(gsonString).asJsonArray
+            for (elem in array) {
+                list.add(gson.fromJson<Map<String, T>>(gsonString, object : TypeToken<Map<String, Any>>() {
+                }.type))
             }
             list
         } catch (e: Exception) {
@@ -92,13 +87,13 @@ object GsonKit {
      * 解决泛型擦除问题
      */
     fun <T> jsonToList2(strJson: String, cls: Class<T>): List<T>? {
-       return try {
-           var list: List<T>? = ArrayList()
-           val gson = Gson()
-           val type: Type = ListParameterizedType(cls)
-           list = gson.fromJson(strJson, type)
-           list
-       }catch (e: Exception) {
+        return try {
+            var list: List<T>? = ArrayList()
+            val gson = Gson()
+            val type: Type = ListParameterizedType(cls)
+            list = gson.fromJson(strJson, type)
+            list
+        } catch (e: Exception) {
             Timber.e(e)
             null
         }
@@ -113,11 +108,9 @@ object GsonKit {
 
         return try {
             var map: Map<String, Any>? = null
-            if (gson != null) {
-                map = gson!!.fromJson<Map<String, Any>>(gsonString, object : TypeToken<Map<String, Any>>() {
+            map = gson.fromJson<Map<String, Any>>(gsonString, object : TypeToken<Map<String, Any>>() {
 
-                }.type)
-            }
+            }.type)
             map
         } catch (e: Exception) {
             Timber.e(e)
@@ -134,11 +127,9 @@ object GsonKit {
 
         return try {
             var map: Map<String, String>? = null
-            if (gson != null) {
-                map = gson!!.fromJson<Map<String, String>>(gsonString, object : TypeToken<Map<String, String>>() {
+            map = gson.fromJson<Map<String, String>>(gsonString, object : TypeToken<Map<String, String>>() {
 
-                }.type)
-            }
+            }.type)
             map
         } catch (e: Exception) {
             Timber.e(e)
@@ -154,15 +145,28 @@ object GsonKit {
     fun <T> jsonToBean(@NonNull jsonStr: String, cl: Class<T>): T? {
         return try {
             var obj: T? = null
-            if (gson != null) {
-                obj = gson!!.fromJson(jsonStr, cl)
-            }
+            obj = gson.fromJson(jsonStr, cl)
             obj
         } catch (e: Exception) {
             Timber.e(e)
             null
         }
 
+    }
+
+    /**
+     * 将json转换成bean对象
+     */
+    @JvmStatic
+    fun <T> jsonToBean(@NonNull jsonStr: String, type: Type): T? {
+        return try {
+            var obj: T? = null
+            obj = gson.fromJson(jsonStr, type)
+            obj
+        } catch (e: Exception) {
+            Timber.e(e)
+            null
+        }
     }
 
     /**
@@ -173,11 +177,9 @@ object GsonKit {
         try {
             var rusObj: Any? = null
             var rusMap: Map<String, Any>? = null
-            if (gson != null) {
-                rusMap = gson!!.fromJson<Map<String, Any>>(jsonStr, object : TypeToken<Map<String, Any>>() {
+            rusMap = gson.fromJson<Map<String, Any>>(jsonStr, object : TypeToken<Map<String, Any>>() {
 
-                }.type)
-            }
+            }.type)
             if (rusMap != null && rusMap.isNotEmpty()) {
                 rusObj = rusMap[key]
             }

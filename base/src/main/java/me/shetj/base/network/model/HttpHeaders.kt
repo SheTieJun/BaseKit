@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.text.TextUtils
 import me.shetj.base.BuildConfig
-import me.shetj.base.tools.app.ArmsUtils
+import me.shetj.base.kt.toJson
 import me.shetj.base.tools.app.ArmsUtils.Companion.getString
 import me.shetj.base.tools.app.NetworkUtils
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.app.Utils.Companion.app
-import org.json.JSONException
-import org.json.JSONObject
-import timber.log.Timber
 import java.io.Serializable
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -41,14 +38,9 @@ class HttpHeaders : Serializable {
     }
 
     fun put(headers: HttpHeaders?) {
-        if (headers != null) {
-            if (headers.headersMap != null && !headers.headersMap!!.isEmpty()) {
-                val set: Set<Map.Entry<String, String>> = headers.headersMap!!.entries
-                for ((key, value) in set) {
-                    headersMap!!.remove(key)
-                    headersMap!![key] = value
-                }
-            }
+        headers?.headersMap?.forEach {
+            headersMap?.remove(it.key)
+            headersMap?.put(it.key, it.value)
         }
     }
 
@@ -71,15 +63,7 @@ class HttpHeaders : Serializable {
         get() = headersMap!!.keys
 
     fun toJSONString(): String {
-        val jsonObject = JSONObject()
-        try {
-            for ((key, value) in headersMap!!) {
-                jsonObject.put(key, value)
-            }
-        } catch (e: JSONException) {
-            Timber.e(e)
-        }
-        return jsonObject.toString()
+        return headersMap?.toJson() ?: ""
     }
 
     override fun toString(): String {
@@ -121,17 +105,18 @@ class HttpHeaders : Serializable {
         @SuppressLint("ConstantLocale")
         private val USER_AGENT =
                 String.format(
-                " Base /%s SystemName/%s SystemVersion/%s Device/%s NetType/%s Language/%s DeviceName/%s SdkVersion/%d Flavor/%s APPVersion/%d",
-                BuildConfig.VERSION_NAME,
-                "Android",
-                Build.VERSION.RELEASE,
-                Build.MODEL,
-                NetworkUtils.getNetWorkTypeName(Utils.app.applicationContext),
-                Locale.getDefault().language + "_" + Locale.getDefault().country,
-                checkNameAndValue(Build.MANUFACTURER),
-                Build.VERSION.SDK_INT,
-                BuildConfig.FLAVOR,
-                BuildConfig.VERSION_CODE)
+                        " APPVersionName /%s SystemName/%s SystemVersion/%s Device/%s NetType/%s Language/%s DeviceName/%s SdkVersion/%d Flavor/%s APPVersion/%d",
+                        BuildConfig.VERSION_NAME,
+                        "Android",
+                        Build.VERSION.RELEASE,
+                        Build.MODEL,
+                        NetworkUtils.getNetWorkTypeName(Utils.app.applicationContext),
+                        Locale.getDefault().language + "_" + Locale.getDefault().country,
+                        checkNameAndValue(Build.MANUFACTURER),
+                        Build.VERSION.SDK_INT,
+                        BuildConfig.FLAVOR,
+                        BuildConfig.VERSION_CODE)
+
         /**
          * Accept-Language: zh-CN,zh;q=0.8
          */
@@ -157,8 +142,7 @@ class HttpHeaders : Serializable {
                         val webUserAgentField = sysResCls.getDeclaredField("web_user_agent")
                         val resId = webUserAgentField[null] as Int
                         webUserAgent = getString(app.applicationContext, resId)
-                    } catch (e: Exception) {
-                        // We have nothing to do
+                    } catch (_: Exception) {
                     }
                     if (TextUtils.isEmpty(webUserAgent)) {
                         webUserAgent = USER_AGENT

@@ -27,7 +27,7 @@ class HttpParams : Serializable {
     /**
      * 普通的键值对参数
      */
-    var urlParamsMap: LinkedHashMap<String?, String?>? = null
+    var urlParamsMap: LinkedHashMap<String, String>? = null
 
     /**
      * 文件的键值对参数
@@ -38,7 +38,7 @@ class HttpParams : Serializable {
         init()
     }
 
-    constructor(key: String?, value: String?) {
+    constructor(key: String, value: String) {
         init()
         put(key, value)
     }
@@ -57,12 +57,12 @@ class HttpParams : Serializable {
         }
     }
 
-    fun put(params: Map<String?, String?>?) {
+    fun put(params: Map<String, String>?) {
         if (params == null || params.isEmpty()) return
         urlParamsMap!!.putAll(params)
     }
 
-    fun put(key: String?, value: String?) {
+    fun put(key: String, value: String) {
         urlParamsMap!![key] = value
     }
 

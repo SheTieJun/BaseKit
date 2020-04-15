@@ -1,7 +1,11 @@
 package me.shetj.base.network
 
+import me.shetj.base.network.api.ApiService
+import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
+import me.shetj.base.network.request.BaseRequest
+import me.shetj.base.network.request.GetRequest
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -12,23 +16,23 @@ import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class RxHttp private constructor() {
+open class RxHttp private constructor() {
     // region 相关的参数
     val DEFAULT_MILLISECONDS = 30000 //默认的超时时间20秒
 
     private val DEFAULT_RETRY_COUNT = 3 //默认重试次数
 
-    private val DEFAULT_RETRY_INCREASEDELAY = 0 //默认重试叠加时间
+    private val DEFAULT_RETRY_INCREASEDELAY = 0L //默认重试叠加时间
 
-    private val DEFAULT_RETRY_DELAY = 500 //默认重试延时
+    private val DEFAULT_RETRY_DELAY = 500L //默认重试延时
 
     val DEFAULT_CACHE_NEVER_EXPIRE = -1 //缓存过期时间，默认永久缓存
 
     private var mRetryCount: Int = DEFAULT_RETRY_COUNT //重试次数默认3次
 
-    private var mRetryDelay: Int = DEFAULT_RETRY_DELAY //延迟xxms重试
+    private var mRetryDelay: Long = DEFAULT_RETRY_DELAY //延迟xxms重试
 
-    private var mRetryIncreaseDelay: Int = DEFAULT_RETRY_INCREASEDELAY //叠加延迟
+    private var mRetryIncreaseDelay: Long = DEFAULT_RETRY_INCREASEDELAY //叠加延迟
 
     private var mCommonHeaders: HttpHeaders? = null //全局公共请求头
     private var mCommonParams: HttpParams? = null //全局公共请求参数
@@ -39,6 +43,10 @@ class RxHttp private constructor() {
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
     private val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
     private var mBaseUrl: String? = null
+    private val apiManager: ApiService by lazy {
+        getApiManagerDef()
+    }
+
 
     //region retrofit 相关
     init {
@@ -60,14 +68,29 @@ class RxHttp private constructor() {
 
     companion object {
         private var rxHttp: RxHttp? = null
-
         fun getInstance(): RxHttp {
-            return rxHttp ?: RxHttp().also {
-                rxHttp = it
+            return rxHttp ?: synchronized(RxHttp::class.java) {
+                RxHttp().also {
+                    rxHttp = it
+                }
             }
         }
 
+        fun get(url: String): GetRequest {
+            return GetRequest(url)
+        }
 
+        fun post(url: String) {
+
+        }
+
+        fun put(url: String) {
+
+        }
+
+        fun download(url: String) {
+
+        }
     }
 
     fun debug(isPrintException: Boolean): RxHttp {
@@ -79,16 +102,105 @@ class RxHttp private constructor() {
         return this
     }
 
-    //region public方法
+    //region  ApiManager的获取
+
+    fun getDeApiManager(): ApiService {
+        return apiManager
+    }
+
+    fun getApiManager(baseRequest: BaseRequest<*>): ApiService {
+        return if (baseRequest.isDefault) {
+            getDeApiManager()
+        } else {
+            val okHttpClientBuilder: OkHttpClient.Builder = generateOkClient(baseRequest)
+            val retrofitBuilder: Retrofit.Builder = generateRetrofit(baseRequest)
+            return retrofitBuilder.client(okHttpClientBuilder.build()).build().create(ApiService::class.java)
+        }
+    }
 
     //对外暴露 OkHttpClient,方便自定义
-    fun getOkHttpClientBuilder(): OkHttpClient.Builder {
+    private fun getOkHttpClientBuilder(): OkHttpClient.Builder {
         return getInstance().okHttpClientBuilder
     }
 
     //对外暴露 Retrofit,方便自定义
-    fun getRetrofitBuilder(): Retrofit.Builder {
+    private fun getRetrofitBuilder(): Retrofit.Builder {
         return getInstance().retrofitBuilder
+    }
+
+    private fun getOkHttpClient(): OkHttpClient {
+        return getInstance().okHttpClientBuilder.build()
+    }
+
+    private fun getApiManagerDef(): ApiService {
+        return getRetrofitBuilder().apply {
+            client(getOkHttpClientBuilder()
+                    .apply {
+                        if (mCommonHeaders?.isEmpty != true) {
+                            addInterceptor(HeadersInterceptor(mCommonHeaders!!))
+                        }
+                    }.build())
+            mBaseUrl?.let { this.baseUrl(it) }
+        }.build().create(ApiService::class.java)
+    }
+
+    //根据当前的请求参数，生成对应的OkClient
+    private fun generateOkClient(baseRequest: BaseRequest<*>): OkHttpClient.Builder {
+        return if (baseRequest.readTimeOut <= 0 && baseRequest.writeTimeOut <= 0
+                && baseRequest.connectTimeout <= 0 && baseRequest.headers.isEmpty) {
+            getOkHttpClientBuilder().apply {
+
+            }
+        } else {
+            getOkHttpClient().newBuilder().apply {
+                if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
+                if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)
+                //处理head
+                if (!baseRequest.headers.isEmpty) {
+                    addInterceptor(HeadersInterceptor(baseRequest.headers))
+                }
+                //处理拦截器
+                baseRequest.interceptors.forEach {
+                    addInterceptor(it)
+                }
+                //处理netInterceptor
+                baseRequest.networkInterceptors.forEach {
+                    addNetworkInterceptor(it)
+                }
+            }
+        }.apply {
+            //处理共同的
+        }
+    }
+
+
+    private fun generateRetrofit(baseRequest: BaseRequest<*>): Retrofit.Builder {
+        return if (baseRequest.converterFactories.isEmpty() && baseRequest.adapterFactories.isEmpty()) {
+            getRetrofitBuilder()
+        } else {
+            Retrofit.Builder().apply {
+                //添加转换器
+                if (baseRequest.converterFactories.isEmpty()) {
+                    getRetrofitBuilder().converterFactories()
+                } else {
+                    baseRequest.converterFactories
+                }.forEach {
+                    addConverterFactory(it)
+                }
+                //添加callAdapter
+                if (baseRequest.adapterFactories.isEmpty()) {
+                    getRetrofitBuilder().callAdapterFactories()
+                } else {
+                    baseRequest.adapterFactories
+                }.forEach {
+                    addCallAdapterFactory(it)
+                }
+            }
+        }.apply {
+            if (!baseRequest.baseUrl.isNullOrEmpty()) {
+                this.baseUrl(baseRequest.baseUrl)
+            }
+        }
     }
 
     //endregion
@@ -177,7 +289,7 @@ class RxHttp private constructor() {
     /**
      * 超时重试延迟时间
      */
-    fun setRetryDelay(retryDelay: Int): RxHttp? {
+    fun setRetryDelay(retryDelay: Long): RxHttp? {
         require(retryDelay >= 0) { "retryDelay must > 0" }
         mRetryDelay = retryDelay
         return this
@@ -186,14 +298,14 @@ class RxHttp private constructor() {
     /**
      * 超时重试延迟时间
      */
-    fun getRetryDelay(): Int {
+    fun getRetryDelay(): Long {
         return getInstance().mRetryDelay
     }
 
     /**
      * 超时重试延迟叠加时间
      */
-    fun setRetryIncreaseDelay(retryIncreaseDelay: Int): RxHttp? {
+    fun setRetryIncreaseDelay(retryIncreaseDelay: Long): RxHttp? {
         require(retryIncreaseDelay >= 0) { "retryIncreaseDelay must > 0" }
         mRetryIncreaseDelay = retryIncreaseDelay
         return this
@@ -202,7 +314,7 @@ class RxHttp private constructor() {
     /**
      * 超时重试延迟叠加时间
      */
-    fun getRetryIncreaseDelay(): Int {
+    fun getRetryIncreaseDelay(): Long {
         return getInstance().mRetryIncreaseDelay
     }
 
@@ -236,22 +348,5 @@ class RxHttp private constructor() {
 
     //endregion
 
-    //region 请求归类
-    fun get(url: String) {
-
-    }
-
-    fun post(url: String) {
-
-    }
-
-    fun put(url: String) {
-
-    }
-
-    fun download(url: String) {
-
-    }
-    //endregion
 
 }

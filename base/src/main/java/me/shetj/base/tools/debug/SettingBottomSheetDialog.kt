@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.widget.CheckBox
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import me.shetj.base.R
-//底部 课程介绍
-class SettingBottomSheetDialog(private val mContext: Context ) {
+
+class SettingBottomSheetDialog(private val mContext: Context) {
     private val bottomSheetDialog: BottomSheetDialog?
+
     init {
         this.bottomSheetDialog = buildBottomSheetDialog()
     }

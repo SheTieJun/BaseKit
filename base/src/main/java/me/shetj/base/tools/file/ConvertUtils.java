@@ -1,7 +1,6 @@
 package me.shetj.base.tools.file;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,7 +31,7 @@ public class ConvertUtils {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
-    private static final char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     /**
      * byteArr转hexString
@@ -130,13 +129,13 @@ public class ConvertUtils {
      * 以unit为单位的内存大小转字节数
      *
      * @param memorySize 大小
-     * @param unit 单位类型
-     *             <ul>
-     *             <li>{@link ConstUtils.MemoryUnit#BYTE}: 字节</li>
-     *             <li>{@link ConstUtils.MemoryUnit#KB}  : 千字节</li>
-     *             <li>{@link ConstUtils.MemoryUnit#MB}  : 兆</li>
-     *             <li>{@link ConstUtils.MemoryUnit#GB}  : GB</li>
-     *             </ul>
+     * @param unit       单位类型
+     *                   <ul>
+     *                   <li>{@link ConstUtils.MemoryUnit#BYTE}: 字节</li>
+     *                   <li>{@link ConstUtils.MemoryUnit#KB}  : 千字节</li>
+     *                   <li>{@link ConstUtils.MemoryUnit#MB}  : 兆</li>
+     *                   <li>{@link ConstUtils.MemoryUnit#GB}  : GB</li>
+     *                   </ul>
      * @return 字节数
      */
     public static long memorySize2Byte(long memorySize, ConstUtils.MemoryUnit unit) {
@@ -579,30 +578,5 @@ public class ConvertUtils {
         }
         view.draw(canvas);
         return ret;
-    }
-
-
-    /**
-     * sp转px
-     *
-     * @param context 上下文
-     * @param spValue sp值
-     * @return px值
-     */
-    public static int sp2px(Context context, float spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
-    }
-
-    /**
-     * px转sp
-     *
-     * @param context 上下文
-     * @param pxValue px值
-     * @return sp值
-     */
-    public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (pxValue / fontScale + 0.5f);
     }
 }

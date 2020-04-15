@@ -10,23 +10,23 @@ interface ApiService {
 
     @POST
     @FormUrlEncoded
-    fun post(@Url url: String, @FieldMap maps: Map<String, String>): Observable<ResponseBody>
+    fun post(@Url url: String?, @FieldMap maps: Map<String, String>?): Observable<ResponseBody>
 
     @POST
-    fun postBody(@Url url: String,@Body any: Any): Observable<ResponseBody>
+    fun postBody(@Url url: String?, @Body any: Any?): Observable<ResponseBody>
 
     @POST
     @Headers("Content-Type: application/json", "Accept: application/json")
-    fun postJosn(@Url url: String,@Body jsonBody: ResponseBody): Observable<ResponseBody>
+    fun postJson(@Url url: String?, @Body jsonBody: RequestBody?): Observable<ResponseBody>
 
     @POST
-    fun postBody(@Url url: String,@Body body: ResponseBody): Observable<ResponseBody>
+    fun postBody(@Url url: String?, @Body body: RequestBody?): Observable<ResponseBody>
 
     @DELETE
-    fun delete(@Url url: String, @QueryMap maps: Map<String, String>): Observable<ResponseBody>
+    fun delete(@Url url: String?, @QueryMap maps: Map<String, String>?): Observable<ResponseBody>
 
     @GET
-    fun get(@Url url: String,@QueryMap maps: Map<String, String>):Observable<ResponseBody>
+    fun get(@Url url: String?, @QueryMap maps: Map<String, String>?): Observable<ResponseBody>
 
     //@DELETE()//delete body请求比较特殊 需要自定义
     @HTTP(method = "DELETE", hasBody = true)
@@ -34,15 +34,15 @@ interface ApiService {
 
     //@DELETE()//delete body请求比较特殊 需要自定义
     @HTTP(method = "DELETE", hasBody = true)
-    fun deleteBody(@Url url: String?, @Body body: RequestBody): Observable<ResponseBody>
+    fun deleteBody(@Url url: String?, @Body body: RequestBody?): Observable<ResponseBody>
 
     //@DELETE()//delete body请求比较特殊 需要自定义
     @Headers("Content-Type: application/json", "Accept: application/json")
     @HTTP(method = "DELETE", hasBody = true)
-    fun deleteJson(@Url url: String?, @Body jsonBody: RequestBody): Observable<ResponseBody>
+    fun deleteJson(@Url url: String?, @Body jsonBody: RequestBody?): Observable<ResponseBody>
 
     @PUT
-    fun put(@Url url: String?, @QueryMap maps: Map<String, String>): Observable<ResponseBody>
+    fun put(@Url url: String?, @QueryMap maps: Map<String, String>?): Observable<ResponseBody>
 
     @PUT
     fun putBody(@Url url: String?, @Body `object`: Any?): Observable<ResponseBody>
@@ -56,17 +56,17 @@ interface ApiService {
 
     @Multipart
     @POST
-    fun uploadFlie(@Url fileUrl: String, @Part("description") description: RequestBody?, @Part("files") file: MultipartBody.Part?): Observable<ResponseBody>
+    fun uploadFile(@Url fileUrl: String?, @Part("description") description: RequestBody?, @Part("files") file: MultipartBody.Part?): Observable<ResponseBody>
 
     @Multipart
     @POST
-    fun uploadFiles(@Url url: String, @PartMap maps: Map<String, RequestBody>): Observable<ResponseBody>
+    fun uploadFiles(@Url url: String?, @PartMap maps: Map<String, RequestBody>?): Observable<ResponseBody>
 
     @Multipart
     @POST
-    fun uploadFiles(@Url url: String, @Part parts: List<MultipartBody.Part>): Observable<ResponseBody>
+    fun uploadFiles(@Url url: String?, @Part parts: List<MultipartBody.Part>?): Observable<ResponseBody>
 
     @Streaming
     @GET
-    fun downloadFile(@Url fileUrl: String): Observable<ResponseBody>
+    fun downloadFile(@Url fileUrl: String?): Observable<ResponseBody>
 }

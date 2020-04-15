@@ -1,5 +1,6 @@
-package me.shetj.base.network.callBack;
-public interface ProgressResponseCallBack {
+package me.shetj.base.network.callBack
+
+interface ProgressResponseCallBack {
     /**
      * 回调进度
      *
@@ -7,5 +8,5 @@ public interface ProgressResponseCallBack {
      * @param contentLength 总长度
      * @param done          是否读取完成
      */
-    void onResponseProgress(long bytesWritten, long contentLength, boolean done);
+    fun onResponseProgress(bytesWritten: Long, contentLength: Long, done: Boolean)
 }

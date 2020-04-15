@@ -2,19 +2,18 @@ package shetj.me.base.`fun`.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Process.myPid
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.annotation.BinderThread
-import androidx.annotation.UiThread
-import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.content_main.*
 import me.shetj.base.base.BaseActivity
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.network.RxHttp
+import me.shetj.base.network.callBack.SimpleCallBack
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
 import timber.log.Timber
@@ -51,6 +50,21 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
                 super.onPageScrollStateChanged(state)
             }
         })
+        btn_test_net.setOnClickListener {
+            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+                    .execute(object : SimpleCallBack<String>() {
+                        override fun onSuccess(data: String) {
+                            super.onSuccess(data)
+
+                        }
+
+                        override fun onError(e: Exception) {
+                            super.onError(e)
+
+                        }
+                    })
+
+        }
         findViewById<View>(R.id.fab).setOnClickListener { AppCompatDelegate.setDefaultNightMode(mPresenter!!.getNightModel()) }
         testExecutor()
     }
