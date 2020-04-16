@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Project Name:LiZhiWeiKe
  * Package Name:com.lizhiweike.base.decoration
@@ -50,13 +52,13 @@ public class SimpleItemDecoration extends RecyclerView.ItemDecoration {
 
 
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets(@NotNull Rect outRect, @NotNull View view, @NotNull RecyclerView parent, @NotNull RecyclerView.State state) {
         if (orientation == OrientationHelper.VERTICAL) outRect.bottom = dividerHeight;// 竖直方向
         else outRect.right = dividerWidth;// 水平方向
     }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDraw(@NotNull Canvas c, @NotNull RecyclerView parent, @NotNull RecyclerView.State state) {
         super.onDraw(c, parent, state);
         if (orientation == OrientationHelper.VERTICAL) {
             // 竖直方向

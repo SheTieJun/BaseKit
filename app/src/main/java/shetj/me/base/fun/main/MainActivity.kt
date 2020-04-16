@@ -52,7 +52,10 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
         })
         btn_test_net.setOnClickListener {
             RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-                    .execute(object : SimpleCallBack<String>() {
+                    .apply {
+                        isDefault = true
+                    }
+                    .execute(object : SimpleCallBack<String>(this) {
                         override fun onSuccess(data: String) {
                             super.onSuccess(data)
 
@@ -60,13 +63,13 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
 
                         override fun onError(e: Exception) {
                             super.onError(e)
-
+                            Timber.e(e)
                         }
                     })
 
         }
         findViewById<View>(R.id.fab).setOnClickListener { AppCompatDelegate.setDefaultNightMode(mPresenter!!.getNightModel()) }
-        testExecutor()
+//        testExecutor()
     }
 
     private fun testExecutor() {

@@ -17,7 +17,6 @@ import com.bumptech.glide.request.transition.Transition
 import com.github.ielse.imagewatcher.ImageWatcherHelper
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import me.shetj.base.tools.app.ArmsUtils
 import timber.log.Timber
 import java.util.*
 import javax.microedition.khronos.egl.EGL10
@@ -46,7 +45,7 @@ class ImageWatcherUtils(activity: Activity) {
                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                             Flowable.just(resource)
                                     .map {
-                                        zoomDrawable(context,it,ArmsUtils.getScreenWidth(activity),ArmsUtils.getScreenHeight(activity))
+                                        zoomDrawable(context, it)
                                     }.observeOn(AndroidSchedulers.mainThread())
                                     .subscribe( {
                                         loadCallback.onResourceReady(it)
@@ -71,7 +70,7 @@ class ImageWatcherUtils(activity: Activity) {
         return bitmap
     }
 
-    fun zoomDrawable(context: Context, drawable: Drawable, w: Int, h: Int): Drawable? {
+    fun zoomDrawable(context: Context, drawable: Drawable): Drawable? {
 
         return if (drawable.intrinsicHeight  >= maxSize || drawable.intrinsicWidth >= maxSize) {
             val width = drawable.intrinsicWidth
@@ -83,6 +82,7 @@ class ImageWatcherUtils(activity: Activity) {
             val min = min(scaleWidth, scaleHeight)
             matrix.postScale(min, min) // 设置缩放比例
             val newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true) // 建立新的 bitmap ，其内容是对原 bitmap 的缩放后的图
+            oldbmp.recycle()
             BitmapDrawable(context.resources, newbmp) // 把 bitmap 转换成 drawable 并返回
         }else{
             drawable

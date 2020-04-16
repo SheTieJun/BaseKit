@@ -120,22 +120,22 @@ object Utils {
     }
 
     internal fun findAndModifyOpInBackStackRecord(fragmentManager: FragmentManager?, backStackIndex: Int, handler: OpHandler?) {
-        var backStackIndex = backStackIndex
+        var backStackIndex1 = backStackIndex
         if (fragmentManager == null || handler == null) {
             return
         }
         val backStackCount = fragmentManager.backStackEntryCount
         if (backStackCount > 0) {
-            if (backStackIndex >= backStackCount || backStackIndex < -backStackCount) {
+            if (backStackIndex1 >= backStackCount || backStackIndex1 < -backStackCount) {
                 QMUILog.d("findAndModifyOpInBackStackRecord", "backStackIndex error: " +
-                        "backStackIndex = " + backStackIndex + " ; backStackCount = " + backStackCount)
+                        "backStackIndex = " + backStackIndex1 + " ; backStackCount = " + backStackCount)
                 return
             }
-            if (backStackIndex < 0) {
-                backStackIndex += backStackCount
+            if (backStackIndex1 < 0) {
+                backStackIndex1 += backStackCount
             }
             try {
-                val backStackEntry = fragmentManager.getBackStackEntryAt(backStackIndex)
+                val backStackEntry = fragmentManager.getBackStackEntryAt(backStackIndex1)
 
                 val opsField = backStackEntry.javaClass.getDeclaredField("mOps")
                 opsField.isAccessible = true

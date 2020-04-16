@@ -68,6 +68,8 @@ open class RxHttp private constructor() {
 
     companion object {
         private var rxHttp: RxHttp? = null
+
+        @JvmStatic
         fun getInstance(): RxHttp {
             return rxHttp ?: synchronized(RxHttp::class.java) {
                 RxHttp().also {
@@ -104,10 +106,6 @@ open class RxHttp private constructor() {
 
     //region  ApiManager的获取
 
-    fun getDeApiManager(): ApiService {
-        return apiManager
-    }
-
     fun getApiManager(baseRequest: BaseRequest<*>): ApiService {
         return if (baseRequest.isDefault) {
             getDeApiManager()
@@ -132,14 +130,13 @@ open class RxHttp private constructor() {
         return getInstance().okHttpClientBuilder.build()
     }
 
+    private fun getDeApiManager(): ApiService {
+        return apiManager
+    }
+
     private fun getApiManagerDef(): ApiService {
         return getRetrofitBuilder().apply {
-            client(getOkHttpClientBuilder()
-                    .apply {
-                        if (mCommonHeaders?.isEmpty != true) {
-                            addInterceptor(HeadersInterceptor(mCommonHeaders!!))
-                        }
-                    }.build())
+            client(getOkHttpClientBuilder().build())
             mBaseUrl?.let { this.baseUrl(it) }
         }.build().create(ApiService::class.java)
     }

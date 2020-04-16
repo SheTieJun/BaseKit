@@ -41,6 +41,7 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     }
 
     constructor(url: String) : this() {
+        this.url = url
         initRequest()
     }
 
@@ -79,6 +80,14 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     //一些默认配置
     private fun initSetting(config: RxHttp) {
         baseUrl = config.getBaseUrl()
+        if (!TextUtils.isEmpty(baseUrl)) {
+            httpUrl = HttpUrl.parse(baseUrl)
+        }
+        if (baseUrl == null && url != null && (url!!.startsWith("http://") || url!!.startsWith("https://"))) {
+            httpUrl = HttpUrl.parse(url)
+            baseUrl = httpUrl!!.url().protocol + "://" + httpUrl!!.url().host + "/"
+        }
+
         retryCount = config.getRetryCount() //超时重试次数
         retryDelay = config.getRetryDelay() //超时重试延时
         retryIncreaseDelay = config.getRetryIncreaseDelay() //超时重试叠加延时

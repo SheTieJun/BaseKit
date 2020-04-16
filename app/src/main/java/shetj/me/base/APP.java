@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.multidex.MultiDex;
+
+import me.shetj.base.network.RxHttp;
 import me.shetj.base.s;
 
 /**
@@ -21,6 +23,9 @@ public class APP extends Application {
 	public void onCreate() {
 		super.onCreate();
 		s.init(this,BuildConfig.LOG_DEBUG);
+		RxHttp.getInstance()
+				.debug(true)
+				.setBaseUrl("https://ban-image-1253442168.cosgz.myqcloud.com");
 	}
 
 

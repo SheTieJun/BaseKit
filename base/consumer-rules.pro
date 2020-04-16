@@ -279,3 +279,13 @@
 -keep class com.zhouyou.http.cache.stategy.**
 
 -keep class me.shetj.base.tools.**{}
+
+#retrofit
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn sun.misc.**
+-dontwarn sorg.codehaus.mojo.animal_sniffer.**
+-dontwarn org.codehaus.**
+-dontwarn java.nio.**
+-dontwarn java.lang.invoke.**
+
