@@ -1,8 +1,6 @@
 package me.shetj.base.network.kt
 
 import okhttp3.RequestBody
-import java.io.Closeable
-import java.io.IOException
 import java.lang.reflect.GenericArrayType
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
@@ -11,20 +9,6 @@ import java.util.*
 
 object ClassUtils {
 
-
-    fun close(close: Closeable?) {
-        if (close != null) {
-            try {
-                closeThrowException(close)
-            } catch (ignored: IOException) {
-            }
-        }
-    }
-
-    @Throws(IOException::class)
-    fun closeThrowException(close: Closeable?) {
-        close?.close()
-    }
 
     /**
      * find the type by interfaces
@@ -104,7 +88,8 @@ object ClassUtils {
     }
 
     fun getGenericClass(parameterizedType: ParameterizedType, i: Int): Class<*> {
-        return when (val genericClass = parameterizedType.actualTypeArguments[i]) {
+        val genericClass = parameterizedType.actualTypeArguments[i]
+        return when (genericClass) {
             is ParameterizedType -> { // 处理多级泛型
                 genericClass.rawType as Class<*>
             }

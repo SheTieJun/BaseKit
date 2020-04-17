@@ -67,13 +67,7 @@ object GsonKit {
     @JvmStatic
     fun <T> jsonToList(@NonNull json: String, cls: Class<T>): List<T>? {
         return try {
-            val gson = Gson()
-            val list = ArrayList<T>()
-            val array = JsonParser().parse(json).asJsonArray
-            for (elem in array) {
-                list.add(gson.fromJson(elem, cls))
-            }
-            list
+            return gson.fromJson(json, TypeToken.getParameterized(MutableList::class.java, cls).type)
         } catch (e: Exception) {
             Timber.e(e)
             null
@@ -89,7 +83,6 @@ object GsonKit {
     fun <T> jsonToList2(strJson: String, cls: Class<T>): List<T>? {
         return try {
             var list: List<T>? = ArrayList()
-            val gson = Gson()
             val type: Type = ListParameterizedType(cls)
             list = gson.fromJson(strJson, type)
             list

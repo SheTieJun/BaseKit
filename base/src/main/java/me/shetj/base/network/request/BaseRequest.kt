@@ -15,26 +15,27 @@ import java.util.*
 
 abstract class BaseRequest<R : BaseRequest<R>>() {
     var baseUrl: String? = null
-    protected var httpUrl: HttpUrl? = null
-    protected var url: String? = null //请求url
     var readTimeOut: Long = 0 //读超时
     var writeTimeOut: Long = 0 //写超时
     var connectTimeout: Long = 0//链接超时
-    protected var retryCount = 0//重试次数默认3次
-    protected var retryDelay = 0L //延迟xxms重试
-    protected var retryIncreaseDelay = 0L//叠加延迟
-    protected var isSyncRequest = false //是否是同步请求
-    private val sign = false //是否需要签名
-    private val timeStamp = false //是否需要追加时间戳
-    private val accessToken = false //是否需要追加token
     val networkInterceptors: List<Interceptor> = ArrayList() //添加网络拦截器
     val interceptors: List<Interceptor> = ArrayList() //自定义拦截器，对数据处理
     var converterFactories: MutableList<Converter.Factory> = ArrayList()
     var adapterFactories: MutableList<CallAdapter.Factory> = ArrayList()
-    protected var apiManager: ApiService? = null //通用的的api接口
     var headers: HttpHeaders = HttpHeaders() //添加的header
-    protected var params: HttpParams = HttpParams() //添加的param
     var isDefault = true //使用默认的ApiManager
+    var sign = false //是否需要签名
+    var timeStamp = false //是否需要追加时间戳
+    var accessToken = false //是否需要追加token
+
+    protected var httpUrl: HttpUrl? = null
+    protected var url: String? = null //请求url
+    protected var retryCount = 0//重试次数默认3次
+    protected var retryDelay = 0L //延迟xxms重试
+    protected var retryIncreaseDelay = 0L//叠加延迟
+    protected var isSyncRequest = false //是否是同步请求
+    protected var params: HttpParams = HttpParams() //添加的param
+    protected var apiManager: ApiService? = null //通用的的api接口
 
     constructor(url: String, isDefault: Boolean) : this(url) {
         this.isDefault = isDefault

@@ -14,6 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 open class RxHttp private constructor() {
@@ -44,9 +45,10 @@ open class RxHttp private constructor() {
     private val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
     private var mBaseUrl: String? = null
     private val apiManager: ApiService by lazy {
-        getApiManagerDef()
+        getApiManager(ApiService::class.java)
     }
 
+    private val apiMap =  WeakHashMap<String,Any>()
 
     //region retrofit 相关
     init {
@@ -106,6 +108,25 @@ open class RxHttp private constructor() {
 
     //region  ApiManager的获取
 
+    open fun <T> getApiManager(clazz: Class<T>) :T{
+        val apiManager = apiMap[clazz.simpleName]
+        return if (apiManager == null) {
+            val client = getOkHttpClientBuilder().apply {
+                mCommonHeaders?.let {
+                    addInterceptor(HeadersInterceptor(it))
+                }
+            }.build()
+            getRetrofitBuilder().apply {
+                client(client)
+                mBaseUrl?.let { this.baseUrl(it) }
+            }.build().create(clazz).also {
+                apiMap[clazz.simpleName] = it
+            }
+        }else{
+            apiManager as T
+        }
+    }
+
     fun getApiManager(baseRequest: BaseRequest<*>): ApiService {
         return if (baseRequest.isDefault) {
             getDeApiManager()
@@ -134,13 +155,6 @@ open class RxHttp private constructor() {
         return apiManager
     }
 
-    private fun getApiManagerDef(): ApiService {
-        return getRetrofitBuilder().apply {
-            client(getOkHttpClientBuilder().build())
-            mBaseUrl?.let { this.baseUrl(it) }
-        }.build().create(ApiService::class.java)
-    }
-
     //根据当前的请求参数，生成对应的OkClient
     private fun generateOkClient(baseRequest: BaseRequest<*>): OkHttpClient.Builder {
         return if (baseRequest.readTimeOut <= 0 && baseRequest.writeTimeOut <= 0
@@ -152,10 +166,6 @@ open class RxHttp private constructor() {
             getOkHttpClient().newBuilder().apply {
                 if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
                 if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)
-                //处理head
-                if (!baseRequest.headers.isEmpty) {
-                    addInterceptor(HeadersInterceptor(baseRequest.headers))
-                }
                 //处理拦截器
                 baseRequest.interceptors.forEach {
                     addInterceptor(it)
@@ -167,6 +177,10 @@ open class RxHttp private constructor() {
             }
         }.apply {
             //处理共同的
+            //处理header
+            if (!baseRequest.headers.isEmpty) {
+                addInterceptor(HeadersInterceptor(baseRequest.headers))
+            }
         }
     }
 
@@ -253,7 +267,7 @@ open class RxHttp private constructor() {
     /**
      * 添加全局公共请求参数
      */
-    fun addCommonParams(commonParams: HttpParams?): RxHttp? {
+    fun addCommonParams(commonParams: HttpParams?): RxHttp {
         if (mCommonParams == null) mCommonParams = HttpParams()
         mCommonParams?.put(commonParams)
         return this
@@ -276,7 +290,7 @@ open class RxHttp private constructor() {
     /**
      * 添加全局公共请求参数
      */
-    fun addCommonHeaders(commonHeaders: HttpHeaders?): RxHttp? {
+    fun addCommonHeaders(commonHeaders: HttpHeaders?): RxHttp {
         if (mCommonHeaders == null) mCommonHeaders = HttpHeaders()
         mCommonHeaders?.put(commonHeaders)
         return this
@@ -302,7 +316,7 @@ open class RxHttp private constructor() {
     /**
      * 超时重试延迟叠加时间
      */
-    fun setRetryIncreaseDelay(retryIncreaseDelay: Long): RxHttp? {
+    fun setRetryIncreaseDelay(retryIncreaseDelay: Long): RxHttp {
         require(retryIncreaseDelay >= 0) { "retryIncreaseDelay must > 0" }
         mRetryIncreaseDelay = retryIncreaseDelay
         return this

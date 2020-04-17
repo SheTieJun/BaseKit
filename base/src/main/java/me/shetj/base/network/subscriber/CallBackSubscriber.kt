@@ -1,9 +1,9 @@
 package me.shetj.base.network.subscriber
 
-import me.shetj.base.network.callBack.CallBack
+import me.shetj.base.network.callBack.NetCallBack
 import me.shetj.base.network.exception.ApiException
 
-class CallBackSubscriber<T>(private val mCallBack: CallBack<T>)
+class CallBackSubscriber<T>(private val mCallBack: NetCallBack<T>)
     : BaseSubscriber<T>(mCallBack.context) {
 
     override fun onStart() {

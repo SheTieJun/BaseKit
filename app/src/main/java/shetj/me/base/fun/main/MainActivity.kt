@@ -9,13 +9,18 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
+import com.zhouyou.http.model.ApiResult
 import kotlinx.android.synthetic.main.content_main.*
 import me.shetj.base.base.BaseActivity
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.kt.toJson
 import me.shetj.base.network.RxHttp
-import me.shetj.base.network.callBack.SimpleCallBack
+import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
+import shetj.me.base.bean.ApiResult1
+import shetj.me.base.bean.MusicBean
+import shetj.me.base.bean.ResultMusic
 import timber.log.Timber
 
 class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
@@ -51,14 +56,33 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
             }
         })
         btn_test_net.setOnClickListener {
-            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-                    .apply {
-                        isDefault = true
-                    }
-                    .execute(object : SimpleCallBack<String>(this) {
-                        override fun onSuccess(data: String) {
-                            super.onSuccess(data)
+//            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+//                    .executeCus(object : SimpleNetCallBack<ResultMusic>(this) {
+//                        override fun onSuccess(data: ResultMusic) {
+//                            super.onSuccess(data)
+//                            Timber.i(data.toJson())
+//                        }
+//
+//                        override fun onError(e: Exception) {
+//                            super.onError(e)
+//                            Timber.e(e)
+//                        }
+//                    })
 
+//            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+//                    .executeCus(ResultMusic::class.java)
+//                    .map { it.data }
+//                    .subscribe ({
+//                        Timber.i(it.toJson())
+//                    },{
+//                        Timber.e(it)
+//                    })
+
+            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+                    .executeCus(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
+                        override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
+                            super.onSuccess(data)
+                            Timber.i(data.toJson())
                         }
 
                         override fun onError(e: Exception) {
@@ -66,6 +90,20 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
                             Timber.e(e)
                         }
                     })
+
+
+//            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+//                    .execute(object : SimpleNetCallBack<List<MusicBean>>(this) {
+//                        override fun onSuccess(data: List<MusicBean>) {
+//                            super.onSuccess(data)
+//                            Timber.i(data.toJson())
+//                        }
+//
+//                        override fun onError(e: Exception) {
+//                            super.onError(e)
+//                            Timber.e(e)
+//                        }
+//                    })
 
         }
         findViewById<View>(R.id.fab).setOnClickListener { AppCompatDelegate.setDefaultNightMode(mPresenter!!.getNightModel()) }

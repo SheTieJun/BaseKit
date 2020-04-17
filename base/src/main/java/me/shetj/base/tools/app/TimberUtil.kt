@@ -1,6 +1,7 @@
 package me.shetj.base.tools.app
 
 import android.util.Log
+import org.jetbrains.annotations.NonNls
 import timber.log.Timber
 import java.io.File
 
@@ -9,7 +10,7 @@ object TimberUtil {
     private val LOG_FILE_PATH = Utils.app.externalCacheDir?.path  + File.separator + "baseLog.test"
 
     /**
-     * 设置log自动在debug打开，在release关闭，可以在Application的onCreate中设置
+     * 设置log自动在debug打开，在release关闭，可以在[Application]的onCreate中设置
      * @param isDebug
      */
     fun setLogAuto(isDebug: Boolean) {
@@ -19,6 +20,34 @@ object TimberUtil {
         } else {//release版本
             Timber.plant(CrashReportingTree())
         }
+    }
+
+    fun i(@NonNls message: String?, vararg args: Any?) {
+        Timber.i(message, *args)
+    }
+
+    fun i(t: Throwable?, @NonNls message: String?, vararg args: Any?) {
+        Timber.i(t, message, *args)
+    }
+
+    fun i(t: Throwable?) {
+        Timber.i(t)
+    }
+
+    fun log(priority: Int, @NonNls message: String?, vararg args: Any?) {
+        Timber.log(priority, message, *args)
+    }
+
+    fun log(priority: Int, t: Throwable?, @NonNls message: String?, vararg args: Any?) {
+        Timber.log(priority, t, message, *args)
+    }
+
+    fun log(priority: Int, t: Throwable?) {
+        Timber.log(priority, t)
+    }
+
+    fun e(t: Throwable?) {
+        Timber.e(t)
     }
 
     /**
