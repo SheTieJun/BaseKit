@@ -13,12 +13,14 @@ import android.view.Gravity
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 fun Context.openActivity(scheme: String){
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scheme))
@@ -33,7 +35,7 @@ fun Context.openActivityByPackageName(ackageName: String){
 fun FragmentManager.addFragmentToActivity(fragment: Fragment, frameId: Int){
     val transaction = beginTransaction()
     transaction.add(frameId, fragment)
-    transaction.commit()
+    transaction.commitAllowingStateLoss()
 }
 fun FragmentManager.removeFragment( ){
     if ( backStackEntryCount > 1) {
@@ -47,6 +49,25 @@ fun FragmentManager.replaceFragment(fragment: Fragment, frameId: Int) {
     transaction.commit()
 }
 
+
+fun Fragment.show(supportFragmentManager: FragmentManager, @IdRes rootLayoutId:Int) {
+    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+    val  fragment = supportFragmentManager.findFragmentByTag(this::class.java.simpleName)
+    if (fragment ==null){
+        ft.add(rootLayoutId,this,this::class.java.simpleName)
+    }else {
+        ft.show(this)
+    }
+    ft.commitAllowingStateLoss()
+}
+
+fun Fragment.hide(supportFragmentManager: FragmentManager) {
+    if (!isHidden) {
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        ft.hide(this)
+        ft.commitAllowingStateLoss()
+    }
+}
 
 /**
  * Set background color for fragment.

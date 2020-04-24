@@ -21,22 +21,22 @@ fun ByteArray.toRequestBody(): RequestBody {
     return RequestBody.create(MediaType.parse("application/octet-stream"), this)
 }
 
-fun String.createJson(): RequestBody {
+fun String?.createJson(): RequestBody {
     checkNotNull(this, { "json not null!" })
     return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), this)
 }
 
-fun String.createFile(): RequestBody {
+fun String?.createFile(): RequestBody {
     checkNotNull(this, { "name not null!" })
     return RequestBody.create(MediaType.parse("multipart/form-data; charset=utf-8"), this)
 }
 
-fun File.createFile(): RequestBody {
+fun File?.createFile(): RequestBody {
     checkNotNull(this, { "file not null!" })
     return RequestBody.create(MediaType.parse("multipart/form-data; charset=utf-8"), this)
 }
 
-fun File.createImage(): RequestBody {
+fun File?.createImage(): RequestBody {
     checkNotNull(this, { "file not null!" })
     return RequestBody.create(MediaType.parse("image/jpg; charset=utf-8"), this)
 }

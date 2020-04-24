@@ -167,7 +167,7 @@ object GsonKit {
      */
     @JvmStatic
     fun getJsonValue(@NonNull jsonStr: String, key: String): Any? {
-        try {
+        return try {
             var rusObj: Any? = null
             var rusMap: Map<String, Any>? = null
             rusMap = gson.fromJson<Map<String, Any>>(jsonStr, object : TypeToken<Map<String, Any>>() {
@@ -176,10 +176,10 @@ object GsonKit {
             if (rusMap != null && rusMap.isNotEmpty()) {
                 rusObj = rusMap[key]
             }
-            return rusObj
+            rusObj
         } catch (e: Exception) {
             Timber.e(e)
-            return null
+            null
         }
 
     }

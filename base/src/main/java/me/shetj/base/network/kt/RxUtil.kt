@@ -20,8 +20,6 @@ internal object RxUtil {
             upstream
                     .subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
-                    .doOnSubscribe { disposable: Disposable -> Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed) }
-                    .doFinally { Timber.i("+++doFinally+++") }
                     .observeOn(AndroidSchedulers.mainThread())
         }
     }
@@ -33,9 +31,6 @@ internal object RxUtil {
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(HandleFuc<T>())
-                    .doOnSubscribe { disposable: Disposable ->
-                        Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed)
-                    }
                     .doFinally { Timber.i("+++doFinally+++") }
                     .onErrorResumeNext(HttpResponseFunc<T>())
         }
@@ -43,10 +38,7 @@ internal object RxUtil {
 
     fun <T> _main(): ObservableTransformer<ApiResult<T>, T> {
         return ObservableTransformer<ApiResult<T>, T> { upstream ->
-            upstream //.observeOn(AndroidSchedulers.mainThread())
-                    .map(HandleFuc<T>())
-                    .doOnSubscribe(Consumer { disposable: Disposable -> Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed) })
-                    .doFinally(Action { Timber.i("+++doFinally+++") })
+            upstream.map(HandleFuc<T>())
                     .onErrorResumeNext(HttpResponseFunc<T>())
         }
     }

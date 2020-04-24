@@ -1,67 +1,67 @@
 package me.shetj.base.kt
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import me.shetj.base.tools.app.ArmsUtils
 
 //region Glide 加载
 
 @JvmOverloads
 fun ImageView.loadImageBitmap(url: String? = null,
-                              isCenterCrop: Boolean = true,
-                              @DrawableRes rId: Int? = null,
-                              @DrawableRes placeholder: Int? = null) {
-    val requestOptions = getRequestOptions(isCenterCrop, placeholder)
+                              @DrawableRes rId: Int? = null) {
     Glide.with(context)
             .asBitmap()
             .load(url ?: rId)
-            .apply(requestOptions)
             .into(this)
 }
 
 @JvmOverloads
-fun ImageView.loadImage(url: String? = null,
-                        isCenterCrop: Boolean = true,
+fun ImageView.loadImageAny(url: String? = null,
                         @DrawableRes rId: Int? = null,
-                        @DrawableRes placeholder: Int? = null,
                         placeholderDrawable: Drawable? = null,
                         errorDrawable: Drawable? = null) {
-    val requestOptions = getRequestOptions(isCenterCrop, placeholder,
-            placeholderDrawable = placeholderDrawable,
-            errorDrawable = errorDrawable)
-    url ?: rId?.let { loadByGlide(it, requestOptions) }
+    Glide.with(context)
+            .load(url ?: rId)
+            .placeholder(placeholderDrawable)
+            .error(errorDrawable)
+            .into(this)
 }
 
 @JvmOverloads
 fun ImageView.loadImage(obj: Any,
-                        isCenterCrop: Boolean = true,
-                        @DrawableRes placeholder: Int? = null,
                         placeholderDrawable: Drawable? = null,
                         errorDrawable: Drawable? = null) {
-    val requestOptions = getRequestOptions(isCenterCrop, placeholder,
-            placeholderDrawable = placeholderDrawable,
-            errorDrawable = errorDrawable)
-    loadByGlide(obj, requestOptions)
+    Glide.with(context)
+            .load(obj)
+            .placeholder(placeholderDrawable)
+            .error(errorDrawable)
+            .into(this)
 }
 
 /**
  * 使用Glide 下载图片
  */
-fun downloadImage(context: Context, url: String, onSuccess: ((String) -> Unit)? = null) {
+inline fun downloadImage(context: Context, url: String, crossinline onSuccess: ((String) -> Unit)) {
     Glide.with(context).downloadOnly().load(url).submit().get().apply {
-        onSuccess?.invoke(this.absolutePath)
+        onSuccess.invoke(this.absolutePath)
     }
 }
 
-
-internal fun ImageView.loadByGlide(obj: Any, requestOptions: RequestOptions) {
+fun ImageView.loadImage(obj: Any, requestOptions: RequestOptions?=null) {
     Glide.with(context)
-            .load(obj)
-            .apply(requestOptions)
+            .load(obj).apply {
+                if (requestOptions!=null){
+                    apply(requestOptions)
+                }
+            }
             .into(this)
 }
 //endregion Glide 加载
@@ -78,8 +78,6 @@ fun getRequestOptions(isCenterCrop: Boolean = true,
     return RequestOptions().apply {
         if (isCenterCrop) {
             centerCrop()
-        } else {
-            fitCenter()
         }
         diskCacheStrategy?.let {
             diskCacheStrategy(diskCacheStrategy)

@@ -150,6 +150,30 @@ class ArmsUtils private constructor() {
         }
 
         /**
+         * 获取随机数字
+         */
+        @JvmStatic
+        fun getRandomString(): String {
+            var linkNo = ""
+            // 用字符数组的方式随机
+            val model = "0aAbBc1CdDeE2fFgGh3HiIjJ4kKlLm5MnNoO6pPqQr7RsStT8uUvVw9WxXyY0zZ"
+            val m = model.toCharArray()
+            var j = 0
+            while (j < 9) {
+                val c = m[(Math.random() * 62).toInt()]
+                //随机数之间没有重复的
+                if (linkNo.contains(c.toString())) {
+                    j--
+                    j++
+                    continue
+                }
+                linkNo += c
+                j++
+            }
+            return linkNo
+        }
+
+        /**
          * findview
          *
          * @param view
@@ -233,7 +257,7 @@ class ArmsUtils private constructor() {
         @JvmStatic
         fun startActivity(activity: Activity, homeActivityClass: Class<*>) {
             val intent = Intent(activity.applicationContext, homeActivityClass)
-            startActivity(activity,intent)
+            startActivity(activity, intent)
         }
 
         /**
@@ -327,8 +351,8 @@ class ArmsUtils private constructor() {
 
             val hex = StringBuilder(hash.size * 2)
             for (b in hash) {
-                if (b.toInt() and 0xFF< 0x10) {
-                        hex.append("0")
+                if (b.toInt() and 0xFF < 0x10) {
+                    hex.append("0")
                 }
                 hex.append(Integer.toHexString((b.toInt() and 0xFF)))
             }
@@ -376,8 +400,8 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         @JvmOverloads
-        fun statuInScreen2(activity: Activity,isBlack: Boolean = false) {
-           activity.statuInScreen(isBlack)
+        fun statuInScreen2(activity: Activity, isBlack: Boolean = false) {
+            activity.statuInScreen(isBlack)
         }
 
         @JvmStatic
@@ -418,9 +442,8 @@ class ArmsUtils private constructor() {
         @JvmStatic
         fun setSwipeRefresh(mSwipeRefreshLayout: SwipeRefreshLayout,
                             them2Color: Int, listener: SwipeRefreshLayout.OnRefreshListener) {
-            mSwipeRefreshLayout.setSwipeRefresh(them2Color,listener)
+            mSwipeRefreshLayout.setSwipeRefresh(them2Color, listener)
         }
-
 
 
         @Throws(IOException::class)
@@ -488,7 +511,7 @@ class ArmsUtils private constructor() {
         }
 
         fun copyText(context: Context, text: String) {
-            val cm:ClipboardManager =  context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val cm: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             // 创建普通字符型ClipData
             val mClipData = ClipData.newPlainText("Label", text)
             // 将ClipData内容放到系统剪贴板里。

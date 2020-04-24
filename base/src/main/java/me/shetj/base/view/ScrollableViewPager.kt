@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager
 
 /**
  * 多层滚动的viewpager
+ * 系统自带的viewpager 好像已经支持
  */
 @Keep
 class ScrollableViewPager : ViewPager {

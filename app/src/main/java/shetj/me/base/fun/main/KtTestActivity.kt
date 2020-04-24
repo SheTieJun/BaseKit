@@ -5,6 +5,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import kotlinx.coroutines.*
 import me.shetj.base.base.BaseActivity
+import me.shetj.base.kt.copy
+import me.shetj.base.kt.runOnIo
+import me.shetj.base.kt.toMessage
 import me.shetj.base.tools.app.ArmsUtils.Companion.statuInScreen
 import shetj.me.base.R
 import timber.log.Timber
@@ -143,8 +146,20 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
     }
 
     override fun initData() {
+        "ss".copy(this) {
+            return@copy
+        }
 
+        "ss".toMessage {
+            return@toMessage
+        }
+        runOnIo{
+            return@runOnIo
+        }
     }
+
+
+
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onActivityStart() {

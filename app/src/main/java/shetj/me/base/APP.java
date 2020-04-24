@@ -2,11 +2,19 @@ package shetj.me.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Message;
+import android.widget.Toast;
 
 import androidx.multidex.MultiDex;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
+import me.shetj.base.kt.ActivityExtKt;
+import me.shetj.base.kt.DataExtKt;
 import me.shetj.base.network.RxHttp;
 import me.shetj.base.s;
+import me.shetj.base.tools.app.ArmsUtils;
 
 /**
  * <b>@packageName：</b> com.ebu.master<br>
@@ -25,7 +33,7 @@ public class APP extends Application {
 		s.init(this,BuildConfig.LOG_DEBUG);
 		RxHttp.getInstance()
 				.debug(true)
-				.setBaseUrl("https://ban-image-1253442168.cosgz.myqcloud.com");
+				.setBaseUrl("https://baidu.com");
 	}
 
 

@@ -61,7 +61,8 @@ implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20'
     - 不带结构体的函数可以省略大括号，且不用强制重写带结构体的函数就可以直接调用。
 - `annotation` 声明一个注解类
 - `companion` 声明一个伴生对象
-- `inline` 告诉编译器在调用处内联传给它的函数和 lambda 表达式
+- `inline` 告诉编译器在调用处内联传给它的函数和 lambda 表达式 (内联才是copy ,否则是生成一个对象)
+  - crossinline 不允许内部直接返回
 - `infix` 允许以中缀表示法调用函数
 - `operator` 将一个函数标记为重载一个操作符或者实现一个约定
 - `data` 表数据类

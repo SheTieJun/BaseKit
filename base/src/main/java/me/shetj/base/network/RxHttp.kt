@@ -27,8 +27,6 @@ open class RxHttp private constructor() {
 
     private val DEFAULT_RETRY_DELAY = 500L //默认重试延时
 
-    val DEFAULT_CACHE_NEVER_EXPIRE = -1 //缓存过期时间，默认永久缓存
-
     private var mRetryCount: Int = DEFAULT_RETRY_COUNT //重试次数默认3次
 
     private var mRetryDelay: Long = DEFAULT_RETRY_DELAY //延迟xxms重试
@@ -37,6 +35,8 @@ open class RxHttp private constructor() {
 
     private var mCommonHeaders: HttpHeaders? = null //全局公共请求头
     private var mCommonParams: HttpParams? = null //全局公共请求参数
+
+    private var isPrintException :Boolean = false
 
     //endregion
 
@@ -48,7 +48,7 @@ open class RxHttp private constructor() {
         getApiManager(ApiService::class.java)
     }
 
-    private val apiMap =  WeakHashMap<String,Any>()
+    private val apiMap = WeakHashMap<String, Any>()
 
     //region retrofit 相关
     init {
@@ -98,6 +98,7 @@ open class RxHttp private constructor() {
     }
 
     fun debug(isPrintException: Boolean): RxHttp {
+        this.isPrintException = isPrintException
         if (isPrintException) {
             okHttpClientBuilder.addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
                 Timber.i(it)
@@ -108,7 +109,7 @@ open class RxHttp private constructor() {
 
     //region  ApiManager的获取
 
-    open fun <T> getApiManager(clazz: Class<T>) :T{
+    open fun <T> getApiManager(clazz: Class<T>): T {
         val apiManager = apiMap[clazz.simpleName]
         return if (apiManager == null) {
             val client = getOkHttpClientBuilder().apply {
@@ -122,15 +123,16 @@ open class RxHttp private constructor() {
             }.build().create(clazz).also {
                 apiMap[clazz.simpleName] = it
             }
-        }else{
+        } else {
             apiManager as T
         }
     }
 
     fun getApiManager(baseRequest: BaseRequest<*>): ApiService {
         return if (baseRequest.isDefault) {
-            getDeApiManager()
+            getDeApiManager() //默认尽量是常用的
         } else {
+            //直接生成新的
             val okHttpClientBuilder: OkHttpClient.Builder = generateOkClient(baseRequest)
             val retrofitBuilder: Retrofit.Builder = generateRetrofit(baseRequest)
             return retrofitBuilder.client(okHttpClientBuilder.build()).build().create(ApiService::class.java)
@@ -157,23 +159,16 @@ open class RxHttp private constructor() {
 
     //根据当前的请求参数，生成对应的OkClient
     private fun generateOkClient(baseRequest: BaseRequest<*>): OkHttpClient.Builder {
-        return if (baseRequest.readTimeOut <= 0 && baseRequest.writeTimeOut <= 0
-                && baseRequest.connectTimeout <= 0 && baseRequest.headers.isEmpty) {
-            getOkHttpClientBuilder().apply {
-
+        return getOkHttpClient().newBuilder().apply {
+            if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
+            if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)
+            //处理拦截器
+            baseRequest.interceptors.forEach {
+                addInterceptor(it)
             }
-        } else {
-            getOkHttpClient().newBuilder().apply {
-                if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
-                if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)
-                //处理拦截器
-                baseRequest.interceptors.forEach {
-                    addInterceptor(it)
-                }
-                //处理netInterceptor
-                baseRequest.networkInterceptors.forEach {
-                    addNetworkInterceptor(it)
-                }
+            //处理netInterceptor
+            baseRequest.networkInterceptors.forEach {
+                addNetworkInterceptor(it)
             }
         }.apply {
             //处理共同的
@@ -181,31 +176,35 @@ open class RxHttp private constructor() {
             if (!baseRequest.headers.isEmpty) {
                 addInterceptor(HeadersInterceptor(baseRequest.headers))
             }
+            mCommonHeaders?.let {
+                addInterceptor(HeadersInterceptor(it))
+            }
+            if (isPrintException) {
+                addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
+                    Timber.i(it)
+                }).apply { level = HttpLoggingInterceptor.Level.BODY })
+            }
         }
     }
 
 
     private fun generateRetrofit(baseRequest: BaseRequest<*>): Retrofit.Builder {
-        return if (baseRequest.converterFactories.isEmpty() && baseRequest.adapterFactories.isEmpty()) {
-            getRetrofitBuilder()
-        } else {
-            Retrofit.Builder().apply {
-                //添加转换器
-                if (baseRequest.converterFactories.isEmpty()) {
-                    getRetrofitBuilder().converterFactories()
-                } else {
-                    baseRequest.converterFactories
-                }.forEach {
-                    addConverterFactory(it)
-                }
-                //添加callAdapter
-                if (baseRequest.adapterFactories.isEmpty()) {
-                    getRetrofitBuilder().callAdapterFactories()
-                } else {
-                    baseRequest.adapterFactories
-                }.forEach {
-                    addCallAdapterFactory(it)
-                }
+        return Retrofit.Builder().apply {
+            //添加转换器
+            if (baseRequest.converterFactories.isEmpty()) {
+                getRetrofitBuilder().converterFactories()
+            } else {
+                baseRequest.converterFactories
+            }.forEach {
+                addConverterFactory(it)
+            }
+            //添加callAdapter
+            if (baseRequest.adapterFactories.isEmpty()) {
+                getRetrofitBuilder().callAdapterFactories()
+            } else {
+                baseRequest.adapterFactories
+            }.forEach {
+                addCallAdapterFactory(it)
             }
         }.apply {
             if (!baseRequest.baseUrl.isNullOrEmpty()) {

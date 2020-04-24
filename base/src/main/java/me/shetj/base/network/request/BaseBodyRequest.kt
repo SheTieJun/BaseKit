@@ -107,7 +107,7 @@ abstract class BaseBodyRequest<R : BaseBodyRequest<R>>(url: String) : BaseReques
         return this as R
     }
 
-    override fun generateRequest(): Observable<ResponseBody> {
+    override fun generateRequest(): Observable<ResponseBody> ?{
         return when {
             this.request != null -> {
                 apiManager!!.postBody(this.url, this.request)

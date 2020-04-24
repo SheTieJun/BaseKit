@@ -1,7 +1,6 @@
 package me.shetj.base.view
 
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -91,14 +90,12 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
         @ColorInt
         private val NORMAL_COLOR = Color.parseColor("#CCCCCC")
 
-        @SuppressLint("StaticFieldLeak")
         private var tipPopupWindow: TipPopupWindow? = null
-
 
         /**
          * 展示信息
          */
-        fun showTipMsg(context: Context, tip: Tip, view: View, tipMsg: String) {
+        fun showTipMsg(context: Context, tip: Tip = Tip.INFO, view: View, tipMsg: String) {
             if (tipPopupWindow != null && context == tipPopupWindow!!.context && tipPopupWindow!!.isShowing) {
                 tipPopupWindow!!.showTip(tip, view, tipMsg)
             } else {

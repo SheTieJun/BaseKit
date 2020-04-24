@@ -5,10 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Looper
-import android.view.Gravity
-import android.view.View
-import android.view.ViewConfiguration
-import android.view.WindowManager
+import android.view.*
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
@@ -138,11 +135,11 @@ fun Context.hasPermission(vararg permissions: String): Boolean {
     return true
 }
 
-fun runOnMain(run:()->Unit = {}){
+inline fun runOnMain(crossinline run:()->Unit = {}){
     AndroidSchedulers.mainThread().scheduleDirect { run() }
 }
 
-fun runOnIo(run:()->Unit = { }){
+inline fun runOnIo(crossinline run:()->Unit = { }){
     Schedulers.io().scheduleDirect {run() }
 }
 
@@ -152,3 +149,16 @@ fun isMainThread(): Boolean {
 
 //用户滑动最小距离
 fun Context.getScaledTouch() =  ViewConfiguration.get(this).scaledTouchSlop
+
+
+//拦截回退按钮
+fun onKeyUp(keyCode: Int, @NonNull event: KeyEvent,call:() -> Boolean = { true } ): Boolean {
+    if ((keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE)
+            && event.isTracking
+            && !event.isCanceled) {
+        if (call()) {
+            return true
+        }
+    }
+    return false
+}
