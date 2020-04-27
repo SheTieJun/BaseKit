@@ -110,7 +110,7 @@ class HttpHeaders : Serializable {
                         "Android",
                         Build.VERSION.RELEASE,
                         Build.MODEL,
-                        NetworkUtils.getNetWorkTypeName(Utils.app.applicationContext),
+                        NetworkUtils.getNetWorkTypeName(app.applicationContext),
                         Locale.getDefault().language + "_" + Locale.getDefault().country,
                         checkNameAndValue(Build.MANUFACTURER),
                         Build.VERSION.SDK_INT,
@@ -134,6 +134,7 @@ class HttpHeaders : Serializable {
                 return field
             }
         var userAgent: String? = null
+            @SuppressLint("PrivateApi")
             get() {
                 if (TextUtils.isEmpty(field)) {
                     var webUserAgent: String? = null
@@ -191,8 +192,8 @@ class HttpHeaders : Serializable {
             if (TextUtils.isEmpty(gmtTime)) return 0
             val formatter = SimpleDateFormat(FORMAT_HTTP_DATA, Locale.US)
             formatter.timeZone = GMT_TIME_ZONE
-            val date = formatter.parse(gmtTime)
-            return date.time
+            val date = formatter.parse(gmtTime!!)
+            return date?.time?:0
         }
 
         fun formatMillisToGMT(milliseconds: Long): String {
@@ -203,19 +204,19 @@ class HttpHeaders : Serializable {
         }
 
         private fun checkNameAndValue(value: String?): String? {
-            var MANUFACTURER = value
+            var valueClone = value
             if (value == null) return Build.UNKNOWN
             var i = 0
             val length = value.length
             while (i < length) {
                 val c = value[i]
                 if (c <= '\u001f' || c >= '\u007f') {
-                    MANUFACTURER = Build.UNKNOWN
+                    valueClone = Build.UNKNOWN
                     break
                 }
                 i++
             }
-            return MANUFACTURER
+            return valueClone
         }
     }
 }

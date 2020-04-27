@@ -29,7 +29,7 @@ object RequestBodyUtils {
                 var source: Source? = null
                 try {
                     source = Okio.source(inputStream)
-                    sink.writeAll(source)
+                    source?.let { sink.writeAll(it) }
                 } finally {
                     Util.closeQuietly(source)
                 }

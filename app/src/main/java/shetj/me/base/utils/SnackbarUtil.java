@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
+
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.Keep;
 import me.shetj.base.R;
 
 /**

@@ -12,17 +12,17 @@ class ByteUtils {
     }
 
     fun getBytes(s: Long, bBigEnding: Boolean): ByteArray {
-        var s = s
+        var s1 = s
         val buf = ByteArray(8)
         if (bBigEnding)
             for (i in buf.indices.reversed()) {
-                buf[i] = (s and 0x00000000000000ff).toByte()
-                s = s shr 8
+                buf[i] = (s1 and 0x00000000000000ff).toByte()
+                s1 = s1 shr 8
             }
         else
             for (i in buf.indices) {
-                buf[i] = (s and 0x00000000000000ff).toByte()
-                s = s shr 8
+                buf[i] = (s1 and 0x00000000000000ff).toByte()
+                s1 = s1 shr 8
             }
         return buf
     }

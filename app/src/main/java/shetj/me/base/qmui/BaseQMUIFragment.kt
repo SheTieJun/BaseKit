@@ -1,23 +1,21 @@
 package shetj.me.base.qmui
 
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Message
-import androidx.annotation.Keep
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
+import androidx.annotation.Keep
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.OnLifecycleEvent
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-
-import org.simple.eventbus.EventBus
-
 import me.shetj.base.base.BasePresenter
 import me.shetj.base.base.IView
-import me.shetj.base.tools.app.ArmsUtils
+import org.simple.eventbus.EventBus
 
 /**
  * fragment基类
@@ -114,16 +112,6 @@ abstract class BaseQMUIFragment<T : BasePresenter<*>> : QMUIFragment(), IView {
 
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (userVisibleHint) {
-            isShow = true
-            onVisible()
-        } else {
-            isShow = false
-            onInvisible()
-        }
-    }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
@@ -139,14 +127,17 @@ abstract class BaseQMUIFragment<T : BasePresenter<*>> : QMUIFragment(), IView {
     /**
      * On visible.
      */
-    protected fun onVisible() {
-        lazyLoad()
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    open fun onVisible() {
     }
 
     /**
      * On invisible.
      */
-    protected fun onInvisible() {}
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    open fun onInvisible() {
+    }
+
 
     /**
      * Lazy load.

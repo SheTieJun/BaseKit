@@ -1,10 +1,10 @@
 package shetj.me.base.utils;
 
+import androidx.annotation.Keep;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import androidx.annotation.Keep;
 
 /**
  * 类名称：TimeUtil.java <br>

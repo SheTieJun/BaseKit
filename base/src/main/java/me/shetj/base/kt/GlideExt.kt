@@ -1,16 +1,12 @@
 package me.shetj.base.kt
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import me.shetj.base.tools.app.ArmsUtils
 
 //region Glide 加载
 
@@ -50,8 +46,10 @@ fun ImageView.loadImage(obj: Any,
  * 使用Glide 下载图片
  */
 inline fun downloadImage(context: Context, url: String, crossinline onSuccess: ((String) -> Unit)) {
-    Glide.with(context).downloadOnly().load(url).submit().get().apply {
-        onSuccess.invoke(this.absolutePath)
+    runOnIo {
+        Glide.with(context).downloadOnly().load(url).submit().get().apply {
+            onSuccess.invoke(this.absolutePath)
+        }
     }
 }
 

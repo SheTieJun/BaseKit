@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package shetj.me.base.utils
 
 import android.app.Activity

@@ -9,7 +9,6 @@ import android.view.*
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
-import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment

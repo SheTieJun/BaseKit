@@ -27,7 +27,6 @@ open class BaseLifecycleHandler : Handler, LifecycleObserver {
         bindLifecycleOwner(owner)
     }
 
-    @JvmOverloads
     constructor(@NonNull owner: LifecycleOwner, looper: Looper, callback: Callback) : super(looper, callback) {
         bindLifecycleOwner(owner)
     }

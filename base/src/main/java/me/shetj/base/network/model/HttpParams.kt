@@ -134,10 +134,10 @@ class HttpParams : Serializable {
     }
 
     private fun guessMimeType(path: String): MediaType? {
-        var path = path
+        var pathClone = path
         val fileNameMap = URLConnection.getFileNameMap()
-        path = path.replace("#", "") //解决文件名中含有#号异常的问题
-        var contentType = fileNameMap.getContentTypeFor(path)
+        pathClone = pathClone.replace("#", "") //解决文件名中含有#号异常的问题
+        var contentType = fileNameMap.getContentTypeFor(pathClone)
         if (contentType == null) {
             contentType = "application/octet-stream"
         }

@@ -22,7 +22,7 @@ class PutRequest(url:String) :BaseBodyRequest<PutRequest>(url) {
                 apiManager!!.putBody(url, obj)
             }
             string != null -> { //文本内容
-                val body = RequestBody.create(mediaType, string)
+                val body = RequestBody.create(mediaType, string!!)
                 apiManager!!.putBody(url, body)
             }
             else -> {

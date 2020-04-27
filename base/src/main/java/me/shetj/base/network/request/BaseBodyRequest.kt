@@ -15,6 +15,7 @@ import java.io.File
 import java.io.InputStream
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 abstract class BaseBodyRequest<R : BaseBodyRequest<R>>(url: String) : BaseRequest<R>(url) {
 
     protected var string: String? = null //文本类型

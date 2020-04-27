@@ -2,18 +2,18 @@
 
 
     <declare-styleable name="CircleImageView">
-        <attr name="civ_border_width" format="dimension"/>
-        <attr name="civ_border_color" format="color"/>
-        <attr name="civ_border_overlay" format="boolean"/>
-        <attr name="civ_fill_color" format="color"/>
-        <attr name="civ_circle_background_color" format="color"/>
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+        <attr name="civ_circle_background_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="CirclePageIndicator">
-        <attr name="indicator_spacing" format="dimension"/>
+        <attr name="indicator_spacing" format="dimension" />
         <attr name="indicator_type" format="enum">
-            <enum name="circle" value="0"/>
-            <enum name="fraction" value="1"/>
+            <enum name="circle" value="0" />
+            <enum name="fraction" value="1" />
         </attr>
     </declare-styleable>
 

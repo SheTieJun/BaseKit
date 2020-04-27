@@ -2,20 +2,20 @@
 <paths>
     <external-path
         name="base_external_path"
-        path="base/"/>
+        path="base/" />
     <cache-path
         name="cache-path"
-        path="."/>
+        path="." />
     <files-path
         name="files-path"
-        path="."/>
+        path="." />
     <external-files-path
         name="external-files-path"
-        path="."/>
+        path="." />
     <external-cache-path
         name="external-cache-path"
-        path="."/>
+        path="." />
     <root-path
         name="root-path"
-        path="."/>
+        path="." />
 </paths>

@@ -9,6 +9,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -19,6 +20,7 @@ import java.util.*
  * desc  : utils about fragment
 </pre> *
  */
+@Suppress("DEPRECATION")
 class FragmentUtils private constructor() {
 
     init {
@@ -723,7 +725,7 @@ class FragmentUtils private constructor() {
                             src: Fragment?,
                             vararg dest: Fragment) {
             if (src != null && src.isRemoving) {
-                Log.e("FragmentUtils", src.javaClass.name + " is isRemoving")
+                Timber.e("%s is isRemoving", src.javaClass.name)
                 return
             }
             var name: String
@@ -819,14 +821,12 @@ class FragmentUtils private constructor() {
             val fragments = getFragments(fm)
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
-                if (fragment != null) {
-                    if (isInStack) {
-                        if (fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
-                            return fragment
-                        }
-                    } else {
+                if (isInStack) {
+                    if (fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
                         return fragment
                     }
+                } else {
+                    return fragment
                 }
             }
             return null
@@ -857,10 +857,7 @@ class FragmentUtils private constructor() {
             val fragments = getFragments(fm)
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
-                if (fragment != null
-                        && fragment.isResumed
-                        && fragment.isVisible
-                        && fragment.userVisibleHint) {
+                if (fragment.isResumed && fragment.isVisible && fragment.userVisibleHint) {
                     if (isInStack) {
                         if (fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
                             return fragment
@@ -881,7 +878,7 @@ class FragmentUtils private constructor() {
          */
         fun getFragments(fm: FragmentManager): List<Fragment> {
             val fragments = fm.fragments
-            return if (fragments == null || fragments.isEmpty()) emptyList() else fragments
+            return if (fragments.isEmpty()) emptyList() else fragments
         }
 
         /**
@@ -894,7 +891,7 @@ class FragmentUtils private constructor() {
             val fragments = getFragments(fm)
             val result = ArrayList<Fragment>()
             for (fragment in fragments) {
-                if (fragment != null && fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
+                if (fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
                     result.add(fragment)
                 }
             }
@@ -916,11 +913,9 @@ class FragmentUtils private constructor() {
             val fragments = getFragments(fm)
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
-                if (fragment != null) {
-                    result.add(FragmentNode(fragment,
-                            getAllFragments(fragment.childFragmentManager,
-                                    ArrayList())))
-                }
+                result.add(FragmentNode(fragment,
+                        getAllFragments(fragment.childFragmentManager,
+                                ArrayList())))
             }
             return result
         }
@@ -940,7 +935,7 @@ class FragmentUtils private constructor() {
             val fragments = getFragments(fm)
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
-                if (fragment != null && fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
+                if (fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
                     result.add(FragmentNode(fragment,
                             getAllFragmentsInStack(fragment.childFragmentManager,
                                     ArrayList())))
@@ -983,7 +978,7 @@ class FragmentUtils private constructor() {
          */
         fun dispatchBackPress(fm: FragmentManager): Boolean {
             val fragments = getFragments(fm)
-            if (fragments == null || fragments.isEmpty()) return false
+            if (fragments.isEmpty()) return false
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
                 if (fragment.isResumed

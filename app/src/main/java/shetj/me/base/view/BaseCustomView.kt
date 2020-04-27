@@ -54,7 +54,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     }
 
     fun measureHeight(measureSpec: Int, defaultSize: Int): Int {
-        var result = 0
+        var result: Int
         val specMode = MeasureSpec.getMode(measureSpec)
         val specSize = MeasureSpec.getSize(measureSpec)
         if (specMode == MeasureSpec.EXACTLY) {
@@ -70,7 +70,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     }
 
     fun measureWidth(measureSpec: Int, defaultSize: Int): Int {
-        var result = 0
+        var result: Int
         val specMode = MeasureSpec.getMode(measureSpec)
         val specSize = MeasureSpec.getSize(measureSpec)
 

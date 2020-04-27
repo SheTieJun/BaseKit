@@ -9,18 +9,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
-import com.zhouyou.http.model.ApiResult
 import kotlinx.android.synthetic.main.content_main.*
 import me.shetj.base.base.BaseActivity
 import me.shetj.base.base.TaskExecutor
-import me.shetj.base.kt.*
+import me.shetj.base.kt.toJson
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
-import shetj.me.base.bean.ResultMusic
 import timber.log.Timber
 
 class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
@@ -62,10 +60,10 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
     }
 
     private fun imgTest() {
-        iv_test.loadImage("https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png")
-        downloadImage(this,url ="https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png"){
-
-        }
+//        iv_test.loadImage("https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png")
+//        downloadImage(this,url ="https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png"){
+//
+//        }
     }
 
     private fun netTest() {

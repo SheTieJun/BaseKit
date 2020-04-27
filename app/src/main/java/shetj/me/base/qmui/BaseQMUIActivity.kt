@@ -5,22 +5,19 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Message
-import androidx.annotation.Keep
-import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
-
+import androidx.annotation.Keep
+import androidx.core.content.ContextCompat
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-
-import org.simple.eventbus.EventBus
-
 import me.shetj.base.R
 import me.shetj.base.base.BasePresenter
 import me.shetj.base.base.IView
 import me.shetj.base.tools.app.HideUtil
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
+import org.simple.eventbus.EventBus
 import timber.log.Timber
 
 /**

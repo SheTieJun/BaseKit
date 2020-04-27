@@ -3,12 +3,13 @@ package shetj.me.base.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import androidx.annotation.Keep;
-import shetj.me.base.R;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Keep;
+
+import shetj.me.base.R;
 
 
 

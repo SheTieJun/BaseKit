@@ -12,7 +12,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.graphics.drawable.Drawable
-import android.os.Build
 import androidx.annotation.Keep
 import me.shetj.base.tools.file.FileUtils
 import java.io.File

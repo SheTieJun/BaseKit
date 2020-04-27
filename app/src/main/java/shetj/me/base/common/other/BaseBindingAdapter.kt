@@ -43,7 +43,7 @@ class BaseBindingAdapter {
         if (url == null){
             imageView.setImageDrawable(null)
         }else{
-            imageView.loadImage(url = url)
+            imageView.loadImage(obj = url)
         }
     }
 
@@ -60,6 +60,7 @@ class BaseBindingAdapter {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     @BindingAdapter(value = ["src", "placeholder", "error", "blur", "cropCircle"], requireAll = false)
     fun setGlideAdapter(view: ImageView?, src: String?, placeholder: Drawable?,
                         error: Drawable?, blurValue: Int, cropCircle: Boolean) {

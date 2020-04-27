@@ -4,8 +4,7 @@ import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
-import me.shetj.base.network.request.BaseRequest
-import me.shetj.base.network.request.GetRequest
+import me.shetj.base.network.request.*
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -84,16 +83,16 @@ open class RxHttp private constructor() {
             return GetRequest(url)
         }
 
-        fun post(url: String) {
-
+        fun post(url : String):PostRequest {
+            return PostRequest(url)
         }
 
-        fun put(url: String) {
-
+        fun put(url: String) :PutRequest{
+            return PutRequest(url)
         }
 
-        fun download(url: String) {
-
+        fun delete(url: String):DeleteRequest {
+            return DeleteRequest(url)
         }
     }
 
@@ -109,6 +108,7 @@ open class RxHttp private constructor() {
 
     //region  ApiManager的获取
 
+    @Suppress("UNCHECKED_CAST")
     open fun <T> getApiManager(clazz: Class<T>): T {
         val apiManager = apiMap[clazz.simpleName]
         return if (apiManager == null) {
@@ -208,7 +208,11 @@ open class RxHttp private constructor() {
             }
         }.apply {
             if (!baseRequest.baseUrl.isNullOrEmpty()) {
-                this.baseUrl(baseRequest.baseUrl)
+                this.baseUrl(baseRequest.baseUrl!!)
+            }else{
+                mBaseUrl?.let {
+                    this.baseUrl(it)
+                }
             }
         }
     }

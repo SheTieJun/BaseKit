@@ -22,6 +22,7 @@ import java.lang.reflect.Type
  *   1.普通的class
  *   2.自定义泛型处理
  */
+@Suppress("UNCHECKED_CAST")
 class ApiResultFunc<T>(val type: Type) : Function<ResponseBody, ApiResult<T>> {
 
     override fun apply(responseBody: ResponseBody): ApiResult<T> {
@@ -73,8 +74,8 @@ class ApiResultFunc<T>(val type: Type) : Function<ResponseBody, ApiResult<T>> {
                     e.printStackTrace()
                     apiResult.msg = (e.message)
                 } catch (e: IOException) {
-                    e.printStackTrace();
-                    apiResult.msg = (e.message);
+                    e.printStackTrace()
+                    apiResult.msg = (e.message)
                 } finally {
                     responseBody.close()
                 }
@@ -97,8 +98,8 @@ class ApiResultFunc<T>(val type: Type) : Function<ResponseBody, ApiResult<T>> {
                 e.printStackTrace()
                 apiResult.msg = (e.message)
             } catch (e: IOException) {
-                e.printStackTrace();
-                apiResult.msg = (e.message);
+                e.printStackTrace()
+                apiResult.msg = (e.message)
             } finally {
                 responseBody.close()
             }

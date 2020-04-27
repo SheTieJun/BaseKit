@@ -1,5 +1,6 @@
 package me.shetj.base.tools.app
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
@@ -180,11 +181,12 @@ class BarUtils private constructor() {
          * 设置MIUI6+的状态栏是否为darkMode,darkMode时候字体颜色及icon变黑
          * http://dev.xiaomi.com/doc/p=4769/
          */
+        @SuppressLint("PrivateApi")
         @JvmStatic
         fun darkModeForMIUI6(window: Window, darkmode: Boolean): Boolean {
             val clazz = window.javaClass
             return try {
-                var darkModeFlag = 0
+                var darkModeFlag: Int
                 val layoutParams = Class.forName("android.view.MiuiWindowManager\$LayoutParams")
                 val field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE")
                 darkModeFlag = field.getInt(layoutParams)
@@ -208,6 +210,7 @@ class BarUtils private constructor() {
 
         /** 判断是否为MIUI6以上  */
         private val isMIUI6Later: Boolean
+            @SuppressLint("PrivateApi")
             get() {
                 return try {
                     val clz = Class.forName("android.os.SystemProperties")

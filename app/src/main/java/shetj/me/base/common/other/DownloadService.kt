@@ -10,10 +10,11 @@ import android.net.Uri
 import android.os.Environment
 import android.os.IBinder
 import me.shetj.base.tools.app.AppUtils
-
-import java.io.File
-
+import me.shetj.base.tools.file.SDCardUtils.Companion.getExternalFilesDir
+import shetj.me.base.common.other.DownloadService.Companion.getApkName
+import shetj.me.base.common.other.DownloadService.Companion.install
 import timber.log.Timber
+import java.io.File
 
 /**
  * ** [DownloadService] 主要是为了app更新下载，直接执行安装处理</br>
@@ -70,7 +71,7 @@ class DownloadService : Service() {
             mDownloadUrl = intent.getStringExtra(EXTRA_DOWNLOAD_APK_URL)
             startDownLoad()
         }
-        return Service.START_STICKY
+        return START_STICKY
     }
 
     override fun onDestroy() {
@@ -166,8 +167,7 @@ class DownloadService : Service() {
         //--- Private static methods -------------------------------------------------------------------
 
         private val downloadDir: String
-            get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    .absolutePath
+            get() = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
 
         private fun getDownloadedApkPath(apkName: String): String {
             return downloadDir + File.separator + apkName
@@ -176,7 +176,7 @@ class DownloadService : Service() {
         private fun cleanUpOldApkThan(newestVersion: String?) {
             val downloadDir = File(downloadDir)
             if (downloadDir.isDirectory) {
-                val files = downloadDir.listFiles()
+                val files = downloadDir.listFiles() ?: return
                 for (file in files) {
                     if (file.name.startsWith(APK_SUFFIX)) {
                         if (!file.name.contains(newestVersion!!)) {

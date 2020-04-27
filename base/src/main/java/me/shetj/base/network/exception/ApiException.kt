@@ -4,7 +4,6 @@ import android.net.ParseException
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSerializer
 import com.google.gson.JsonSyntaxException
-import org.apache.http.conn.ConnectTimeoutException
 import org.json.JSONException
 import retrofit2.HttpException
 import java.io.NotSerializableException
@@ -13,6 +12,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
 
+@Suppress("DEPRECATION")
 class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
     var displayMessage: String? = null
         private set
@@ -103,8 +103,7 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
         fun handleException(e: Throwable): ApiException {
             val ex: ApiException
             return if (e is HttpException) {
-                val httpException = e
-                ex = ApiException(httpException, httpException.code())
+                ex = ApiException(e, e.code())
                 /*switch (httpException.code()) {
                 case BADREQUEST:
                 case UNAUTHORIZED:
@@ -118,12 +117,11 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                 default:
                     ex.message = "网络错误,Code:"+httpException.code()+" ,err:"+httpException.getMessage();
                     break;
-            }*/ex.message = httpException.message!!
+            }*/ex.message = e.message!!
                 ex
             } else if (e is ServerException) {
-                val resultException = e
-                ex = ApiException(resultException, resultException.errCode)
-                ex.message = resultException.message!!
+                ex = ApiException(e, e.errCode)
+                ex.message = e.message!!
                 ex
             } else if (e is JsonParseException
                     || e is JSONException
@@ -146,11 +144,7 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                 ex = ApiException(e, ERROR.SSL_ERROR)
                 ex.message = "证书验证失败"
                 ex
-            } else if (e is ConnectTimeoutException) {
-                ex = ApiException(e, ERROR.TIMEOUT_ERROR)
-                ex.message = "连接超时"
-                ex
-            } else if (e is SocketTimeoutException) {
+            }  else if (e is SocketTimeoutException) {
                 ex = ApiException(e, ERROR.TIMEOUT_ERROR)
                 ex.message = "连接超时"
                 ex

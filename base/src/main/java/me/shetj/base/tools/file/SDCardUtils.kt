@@ -10,6 +10,7 @@ import java.io.File
  * SD卡相关的辅助类
  * @author shetj
  */
+@Suppress("DEPRECATION")
 @Keep
 class SDCardUtils private constructor() {
     init {

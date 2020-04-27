@@ -2,7 +2,6 @@ package me.shetj.base.kt
 
 import android.content.Context
 import android.os.Message
-import android.view.View
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
@@ -40,9 +39,7 @@ fun String.toMD5() = ArmsUtils.encodeToMD5(this)
 fun String.fromHtml() = parseAsHtml()
 
 fun Int.unitFormat(): String {
-    var retStr: String? = null
-    retStr = if (this in 0..9) "0$this" else "" + this
-    return retStr
+    return if (this in 0..9) "0$this" else "" + this
 }
 
 

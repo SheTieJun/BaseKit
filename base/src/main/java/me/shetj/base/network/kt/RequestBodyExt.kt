@@ -9,7 +9,7 @@ fun String.toRequestBody(): RequestBody {
     return toRequestBody("application/json;charset=utf-8")
 }
 
-fun String.toRequestBody(mediaType: String?): RequestBody {
+fun String.toRequestBody(mediaType: String): RequestBody {
     return toRequestBody(MediaType.parse(mediaType))
 }
 

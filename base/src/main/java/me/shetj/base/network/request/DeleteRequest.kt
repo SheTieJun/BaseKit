@@ -2,7 +2,6 @@ package me.shetj.base.network.request
 
 import io.reactivex.Observable
 import me.shetj.base.network.kt.createJson
-import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 
@@ -22,7 +21,7 @@ class DeleteRequest(url:String) :BaseBodyRequest<DeleteRequest>(url) {
                 apiManager!!.deleteBody(url, obj)
             }
             string != null -> { //文本内容
-                val body = RequestBody.create(mediaType, string)
+                val body = RequestBody.create(mediaType, string!!)
                 apiManager!!.deleteBody(url, body)
             }
             else -> {

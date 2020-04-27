@@ -2,7 +2,6 @@ package me.shetj.base.network.callBack
 
 import android.content.Context
 import me.shetj.base.network.kt.ClassUtils
-import java.lang.ref.WeakReference
 import java.lang.reflect.Type
 
 // T  = List<MusicBean>

@@ -85,6 +85,7 @@ object Utils {
     /**
      * Calling the convertToTranslucent method on platforms after Android 5.0
      */
+    @SuppressLint("DiscouragedPrivateApi")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun convertActivityToTranslucentAfterL(activity: Activity) {
         try {
@@ -112,7 +113,7 @@ object Utils {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             val elements = Thread.currentThread().stackTrace
             var methodMsg: String? = null
-            if (elements != null && elements.size >= 4) {
+            if (elements.size >= 4) {
                 methodMsg = elements[3].toString()
             }
             throw IllegalStateException("Call the method must be in main thread: " + methodMsg!!)

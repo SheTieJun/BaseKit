@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="base_log_print">特定点日志文件输出</string>
+    <string name="base_http_print">HTTP日志文件输出</string>
+</resources>

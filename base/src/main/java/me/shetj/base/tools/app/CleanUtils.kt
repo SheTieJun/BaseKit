@@ -45,7 +45,8 @@ class CleanUtils private constructor() {
          */
         @JvmStatic
         fun cleanInternalDbs(): Boolean {
-            return deleteFilesInDir(Utils.app.filesDir.parent + File.separator + "databases")
+            Utils.app.filesDir.parent?:return true
+            return deleteFilesInDir(Utils.app.filesDir.parent!! + File.separator + "databases")
         }
 
         /**
@@ -70,7 +71,8 @@ class CleanUtils private constructor() {
          */
         @JvmStatic
         fun cleanInternalSP(): Boolean {
-            return deleteFilesInDir(Utils.app.filesDir.parent + File.separator + "shared_prefs")
+            if (Utils.app.filesDir.parent == null) return true
+            return deleteFilesInDir(Utils.app.filesDir.parent!! + File.separator + "shared_prefs")
         }
 
         /**

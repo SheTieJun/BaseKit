@@ -11,6 +11,7 @@ import me.shetj.base.kt.toMessage
 import me.shetj.base.tools.app.ArmsUtils.Companion.statuInScreen
 import shetj.me.base.R
 import timber.log.Timber
+import java.util.concurrent.Executors
 import kotlin.system.measureNanoTime
 import kotlin.system.measureTimeMillis
 
@@ -41,14 +42,14 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
 
         }
 
-        launch{
-                async {
+//        launch{
+//                async {
+//
+//                }
+//        }
 
-                }
-        }
 
-
-        val list = List(100) {
+        List(100) {
             launch {
 
             }
@@ -78,9 +79,9 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
     }
 
     fun test() {
-        val async1 = async {
-
-        }
+//        val async1 = async {
+//
+//        }
         runBlocking{
 
             launch { // 运行在父协程的上下文中，即 runBlocking 主协程
@@ -95,7 +96,7 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
             launch(Dispatchers.Default) { // 将会获取默认调度器
                 println("Default               : I'm working in thread ${Thread.currentThread().name}")
             }
-            launch(newSingleThreadContext("MyOwnThread")) { // 将使它获得一个新的线程
+            launch(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) { // 将使它获得一个新的线程
                 println("newSingleThreadContext: I'm working in thread ${Thread.currentThread().name}")
             }
 
@@ -130,7 +131,7 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
             }
 
             //异步
-            async1
+//            async1
 
             //使用一个可选的参数 start 并传值 CoroutineStart.LAZY，可以对 async 进行惰性操作。
             // 只有当结果需要被 await 或者如果一个 start 函数被调用，协程才会被启动

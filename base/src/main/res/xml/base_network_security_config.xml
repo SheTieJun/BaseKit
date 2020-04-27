@@ -12,7 +12,7 @@
     </base-config>
 </network-security-config>
 
-<!--
-application
-       android:networkSecurityConfig="@xml/network_security_config"
--->
+    <!--
+    application
+           android:networkSecurityConfig="@xml/network_security_config"
+    -->

@@ -271,13 +271,17 @@ abstract class QMUIFragment : RxFragment() {
                     val view = container.getChildAt(i)
                     val tag = view.getTag(R.id.base_swipe_layout_in_back)
                     if (SWIPE_BACK_VIEW == tag) {
-                        if (edgeFlag == EDGE_BOTTOM) {
-                            ViewCompat.offsetTopAndBottom(view, targetOffset - view.top)
-                        } else if (edgeFlag == EDGE_RIGHT) {
-                            ViewCompat.offsetLeftAndRight(view, targetOffset - view.left)
-                        } else {
-                            Timber.i(TAG, "targetOffset = " + targetOffset + " ; view.getLeft() = " + view.left)
-                            ViewCompat.offsetLeftAndRight(view, -targetOffset - view.left)
+                        when (edgeFlag) {
+                            EDGE_BOTTOM -> {
+                                ViewCompat.offsetTopAndBottom(view, targetOffset - view.top)
+                            }
+                            EDGE_RIGHT -> {
+                                ViewCompat.offsetLeftAndRight(view, targetOffset - view.left)
+                            }
+                            else -> {
+                                Timber.i("targetOffset = %s ; view.getLeft() = %s",+ targetOffset , view.left)
+                                ViewCompat.offsetLeftAndRight(view, -targetOffset - view.left)
+                            }
                         }
                     }
                 }
@@ -469,7 +473,7 @@ abstract class QMUIFragment : RxFragment() {
         mCalled = false
         onEnterAnimationEnd(animation)
         if (!mCalled) {
-            throw RuntimeException("QMUIFragment " + this + " did not call through to super.onEnterAnimationEnd(Animation)")
+            throw RuntimeException("QMUIFragment $this did not call through to super.onEnterAnimationEnd(Animation)")
         }
     }
 
@@ -486,6 +490,7 @@ abstract class QMUIFragment : RxFragment() {
      * @param resultCode  result code
      * @param data        extra data
      */
+    @Suppress("UNUSED_PARAMETER")
     protected fun onFragmentResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
     }
@@ -535,10 +540,12 @@ abstract class QMUIFragment : RxFragment() {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     protected fun onEnterAnimationStart(animation: Animation?) {
         mEnterAnimationStatus = ANIMATION_ENTER_STATUS_STARTED
     }
 
+    @Suppress("UNUSED_PARAMETER")
     protected fun onEnterAnimationEnd(animation: Animation?) {
         if (mCalled) {
             throw IllegalAccessError("don't call #onEnterAnimationEnd() directly")
@@ -625,10 +632,4 @@ abstract class QMUIFragment : RxFragment() {
         private val NO_REQUEST_CODE = 0
     }
 }
-/**
- * the action will be performed before the start of the enter animation start or after the
- * enter animation is finished
- *
- * @param runnable the action to perform
- */
 

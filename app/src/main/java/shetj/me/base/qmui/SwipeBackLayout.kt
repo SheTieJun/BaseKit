@@ -1,21 +1,21 @@
 package shetj.me.base.qmui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import androidx.core.view.ViewCompat
-import androidx.customview.widget.ViewDragHelper
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.customview.widget.ViewDragHelper
 import com.qmuiteam.qmui.widget.QMUIWindowInsetLayout
 import shetj.me.base.R
-
-import java.util.ArrayList
+import java.util.*
 
 
 /**
@@ -38,8 +38,6 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
     /**
      * Set up contentView which will be moved by user gesture
-     *
-     * @param view
      */
     var contentView: View? = null
         private set
@@ -266,7 +264,7 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
      * @see .EDGE_BOTTOM
      */
     fun setShadow(resId: Int, edgeFlag: Int) {
-        setShadow(resources.getDrawable(resId), edgeFlag)
+        ContextCompat.getDrawable(context,resId)?.let { setShadow(it, edgeFlag) }
     }
 
     /**
@@ -278,15 +276,19 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
         var left = 0
         var top = 0
-        if (mEdgeFlag and EDGE_LEFT != 0) {
-            left = childWidth + mShadowLeft!!.intrinsicWidth + OVERSCROLL_DISTANCE
-            mTrackingEdge = EDGE_LEFT
-        } else if (mEdgeFlag and EDGE_RIGHT != 0) {
-            left = -childWidth - mShadowRight!!.intrinsicWidth - OVERSCROLL_DISTANCE
-            mTrackingEdge = EDGE_RIGHT
-        } else if (mEdgeFlag and EDGE_BOTTOM != 0) {
-            top = -childHeight - mShadowBottom!!.intrinsicHeight - OVERSCROLL_DISTANCE
-            mTrackingEdge = EDGE_BOTTOM
+        when {
+            mEdgeFlag and EDGE_LEFT != 0 -> {
+                left = childWidth + mShadowLeft!!.intrinsicWidth + OVERSCROLL_DISTANCE
+                mTrackingEdge = EDGE_LEFT
+            }
+            mEdgeFlag and EDGE_RIGHT != 0 -> {
+                left = -childWidth - mShadowRight!!.intrinsicWidth - OVERSCROLL_DISTANCE
+                mTrackingEdge = EDGE_RIGHT
+            }
+            mEdgeFlag and EDGE_BOTTOM != 0 -> {
+                top = -childHeight - mShadowBottom!!.intrinsicHeight - OVERSCROLL_DISTANCE
+                mTrackingEdge = EDGE_BOTTOM
+            }
         }
 
         mDragHelper.smoothSlideViewTo(contentView!!, left, top)
@@ -294,11 +296,11 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun preventSwipeBack(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_DOWN) {
+        return if (event.action == MotionEvent.ACTION_DOWN) {
             mPreventSwipeBackWhenDown = !canSwipeBack()
-            return mPreventSwipeBackWhenDown
+            mPreventSwipeBackWhenDown
         } else {
-            return !canSwipeBack() || mPreventSwipeBackWhenDown
+            !canSwipeBack() || mPreventSwipeBackWhenDown
         }
     }
 
@@ -306,14 +308,14 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         if (preventSwipeBack(event)) {
             return false
         }
-        try {
-            return mDragHelper.shouldInterceptTouchEvent(event)
+        return try {
+            mDragHelper.shouldInterceptTouchEvent(event)
         } catch (e: ArrayIndexOutOfBoundsException) {
-            return false
+            false
         }
-
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (preventSwipeBack(event)) {
             return false
@@ -592,7 +594,7 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         fun wrap(child: View, edgeFlag: Int, callback: Callback): SwipeBackLayout {
             val wrapper = SwipeBackLayout(child.context)
             wrapper.setEdgeTrackingEnabled(edgeFlag)
-            val lp = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            val lp = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             child.layoutParams = lp
             wrapper.addView(child)
             wrapper.contentView = child

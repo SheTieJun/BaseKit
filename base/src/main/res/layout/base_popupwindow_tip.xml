@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-   >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/tv_tip"
@@ -13,7 +13,7 @@
         android:paddingRight="20dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:text="tip"
+        tools:text="tip"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
         android:textSize="14sp" />

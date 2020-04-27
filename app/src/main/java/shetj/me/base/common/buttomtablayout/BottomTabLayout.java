@@ -9,13 +9,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Keep;
-import androidx.core.content.ContextCompat;
 import shetj.me.base.R;
 
 /**
@@ -65,7 +66,6 @@ public class BottomTabLayout extends LinearLayout {
 
     /**
      * 设置tab数据
-     * @param mBottomTabs
      */
     public void setBottomTabData(List<BottomTab> mBottomTabs){
         if(mBottomTabs==null||mBottomTabs.size()==0){
@@ -80,8 +80,6 @@ public class BottomTabLayout extends LinearLayout {
 
     /**
      * 设置底部小红点的数量
-     * @param index
-     * @param num
      */
     public void setBottomTabNum(int index,int num){
         for (int i=0;i<mBottomTabViews.size();i++){
@@ -120,8 +118,6 @@ public class BottomTabLayout extends LinearLayout {
 
     /**
      * 添加tabview
-     * @param index
-     * @param tabView
      */
     private void addTabView(int index, View tabView) {
         TextView mTabName= tabView.findViewById(R.id.tab_item_name);
@@ -142,19 +138,16 @@ public class BottomTabLayout extends LinearLayout {
         }
 
         //设置tab点击事件 其中多加了一个重复点击的回调 为了有的需求是点击多次也要刷新的奇葩需求  比如我们
-        tabView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = (Integer) v.getTag();
-                if (currentTab != position) {
-                    setCurrentTab(position);
-                    if (mOnTabChangeListener != null) {
-                        mOnTabChangeListener.onTabSelect(position);
-                    }
-                } else {
-                    if (mOnTabChangeListener != null) {
-                        mOnTabChangeListener.onTabSelected(position);
-                    }
+        tabView.setOnClickListener(v -> {
+            int position = (Integer) v.getTag();
+            if (currentTab != position) {
+                setCurrentTab(position);
+                if (mOnTabChangeListener != null) {
+                    mOnTabChangeListener.onTabSelect(position);
+                }
+            } else {
+                if (mOnTabChangeListener != null) {
+                    mOnTabChangeListener.onTabSelected(position);
                 }
             }
         });
@@ -164,7 +157,6 @@ public class BottomTabLayout extends LinearLayout {
 
     /**
      * 设置选中
-     * @param currentTab
      */
     public void setCurrentTab(int currentTab) {
         this.currentTab = currentTab;
@@ -174,7 +166,6 @@ public class BottomTabLayout extends LinearLayout {
 
     /**
      * 更新选中的和未选中的样式
-     * @param currentTab
      */
     private void updateTabState(int currentTab) {
         for (int index=0;index<mBottomTabs.size();index++){
@@ -202,7 +193,6 @@ public class BottomTabLayout extends LinearLayout {
 
     /**
      * 设置回调实现
-     * @param mOnTabChangeListener
      */
     public void setOnTabChangeListener(OnTabChangeListener mOnTabChangeListener){
         this.mOnTabChangeListener=mOnTabChangeListener;

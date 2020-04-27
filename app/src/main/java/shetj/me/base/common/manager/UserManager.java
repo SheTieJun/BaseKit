@@ -1,8 +1,7 @@
 package shetj.me.base.common.manager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-
-import shetj.me.base.common.bean.UserInfo;
 
 import org.simple.eventbus.EventBus;
 
@@ -11,6 +10,7 @@ import me.shetj.base.sim.SimpleCallBack;
 import me.shetj.base.tools.file.SPUtils;
 import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.tools.json.GsonKit;
+import shetj.me.base.common.bean.UserInfo;
 import shetj.me.base.common.tag.SPKey;
 
 /**
@@ -56,7 +56,7 @@ public class UserManager {
 	public UserInfo getUserInfo(){
 		if (isLoginNow() &&  custom == null ){
 			String userInfo = (String) SPUtils.Companion.get(context, SPKey.SAVE_USER, "");
-			if (EmptyUtils.Companion.isNotEmpty(userInfo)){
+			if (EmptyUtils.isNotEmpty(userInfo)){
 				custom = GsonKit.jsonToBean(userInfo,UserInfo.class);
 			}
 		}
@@ -70,7 +70,11 @@ public class UserManager {
 	public void saveUserInfo(UserInfo userInfo, SimpleCallBack commonCallback) {
 		custom = userInfo;
 		TokenManager.getInstance().setToken(custom.getToken());
-		SPUtils.Companion.put(context, SPKey.SAVE_USER, GsonKit.objectToJson(userInfo));
+		String toJson = GsonKit.objectToJson(userInfo);
+		if (toJson != null){
+			SPUtils.Companion.put(context, SPKey.SAVE_USER, toJson);
+		}
+
 	}
 
 

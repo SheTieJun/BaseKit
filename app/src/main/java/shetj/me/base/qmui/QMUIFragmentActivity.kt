@@ -2,17 +2,14 @@ package shetj.me.base.qmui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import android.widget.FrameLayout
-
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.QMUIWindowInsetLayout
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-
-import java.lang.reflect.Field
-
 import timber.log.Timber
+import java.lang.reflect.Field
 
 /**
  * the container activity for [QMUIFragment].
@@ -68,10 +65,10 @@ abstract class QMUIFragmentActivity : RxAppCompatActivity() {
         val index = transaction.commit()
         Utils.findAndModifyOpInBackStackRecord(fragmentManager, -1, object :  Utils.OpHandler {
             override fun handle(op: Any): Boolean {
-                var cmdField: Field? = null
+                val cmdField: Field?
                 try {
                     cmdField = op.javaClass.getDeclaredField("cmd")
-                    cmdField!!.isAccessible = true
+                    cmdField.isAccessible = true
                     val cmd = cmdField.get(op) as Int
                     if (cmd == 1) {
                         if (useNewTransitionConfigWhenPop) {

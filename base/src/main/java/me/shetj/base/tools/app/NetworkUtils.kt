@@ -1,10 +1,11 @@
+@file:Suppress("DEPRECATION")
+
 package me.shetj.base.tools.app
 
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.os.Build
 import android.provider.Settings
 import android.telephony.TelephonyManager
 
@@ -52,7 +53,7 @@ object NetworkUtils {
      * @param context 上下文
      * @return NetworkInfo
      */
-    private fun getActiveNetworkInfo(context: Context): NetworkInfo {
+    private fun getActiveNetworkInfo(context: Context): NetworkInfo? {
         val cm = context
                 .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetworkInfo
@@ -97,8 +98,8 @@ object NetworkUtils {
      */
     fun isWifiConnected(context: Context): Boolean {
         val cm = context
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return cm != null && cm.activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI
+                .getSystemService(Context.CONNECTIVITY_SERVICE)
+        return cm?.let {  it as ConnectivityManager }?.activeNetworkInfo?.type == ConnectivityManager.TYPE_WIFI
     }
 
     /**
@@ -109,8 +110,8 @@ object NetworkUtils {
      */
     fun getNetworkOperatorName(context: Context): String? {
         val tm = context
-                .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return tm?.networkOperatorName
+                .getSystemService(Context.TELEPHONY_SERVICE)
+        return tm?.let { it  as TelephonyManager }?.networkOperatorName
     }
 
     /**
@@ -124,8 +125,8 @@ object NetworkUtils {
      */
     fun getPhoneType(context: Context): Int {
         val tm = context
-                .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        return tm?.phoneType ?: -1
+                .getSystemService(Context.TELEPHONY_SERVICE)
+        return tm?.let {  it as TelephonyManager }?.phoneType ?: -1
     }
 
     /**

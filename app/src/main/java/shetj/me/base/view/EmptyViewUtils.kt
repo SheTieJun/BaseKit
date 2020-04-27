@@ -3,12 +3,11 @@ package shetj.me.base.view
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.drawable.Drawable
-import androidx.annotation.DrawableRes
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-
+import androidx.annotation.DrawableRes
 import com.github.ybq.android.spinkit.SpinKitView
 import com.github.ybq.android.spinkit.sprite.Sprite
 import shetj.me.base.R

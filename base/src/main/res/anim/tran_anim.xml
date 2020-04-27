@@ -6,7 +6,7 @@
         android:fromXDelta="35"
         android:fromYDelta="0"
         android:toXDelta="-110"
-        android:toYDelta="30"/>
+        android:toYDelta="30" />
     <!--
      translate 位置转移动画效果
         整型值:

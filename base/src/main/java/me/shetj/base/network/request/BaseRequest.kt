@@ -17,12 +17,14 @@ import me.shetj.base.network.model.ApiResult
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
 import me.shetj.base.network.subscriber.CallBackSubscriber
-import okhttp3.*
+import okhttp3.HttpUrl
+import okhttp3.Interceptor
+import okhttp3.ResponseBody
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import timber.log.Timber
-import kotlin.collections.ArrayList
 
+@Suppress("UNCHECKED_CAST")
 abstract class BaseRequest<R : BaseRequest<R>>() {
     var baseUrl: String? = null
     var readTimeOut: Long = 0 //读超时
@@ -220,10 +222,10 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     private fun initSetting(config: RxHttp) {
         baseUrl = config.getBaseUrl()
         if (!TextUtils.isEmpty(baseUrl)) {
-            httpUrl = HttpUrl.parse(baseUrl)
+            httpUrl = HttpUrl.parse(baseUrl!!)
         }
         if (baseUrl == null && url != null && (url!!.startsWith("http://") || url!!.startsWith("https://"))) {
-            httpUrl = HttpUrl.parse(url)
+            httpUrl = HttpUrl.parse(url!!)
             baseUrl = httpUrl!!.url().protocol + "://" + httpUrl!!.url().host + "/"
         }
 

@@ -1,14 +1,15 @@
 package shetj.me.base.utils;
 
+import androidx.annotation.Keep;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
-
-import androidx.annotation.Keep;
 
 /**
  * 主要是计算周
@@ -35,9 +36,7 @@ public class DateUtils2 {
     }
 
     /**
-     * 获取当前年月日 
-     *
-     * @return
+     * 获取当前年月日
      */
     public static String StringData() {
 
@@ -51,8 +50,6 @@ public class DateUtils2 {
 
     /**
      * 获取当前年
-     *
-     * @return
      */
     public static String StringYear() {
         final Calendar c = Calendar.getInstance();
@@ -63,7 +60,6 @@ public class DateUtils2 {
 
     /**
      *获取一个月前的日期
-     * @return
      */
     public static String getMonthAfter(int i) {
         Calendar calendar = Calendar.getInstance();
@@ -91,60 +87,64 @@ public class DateUtils2 {
     public static String getWeekString() {
         final Calendar c = Calendar.getInstance();
         mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
-        if ("1".equals(mWay)) {
-            mWay = "周天";
-        } else if ("2".equals(mWay)) {
-            mWay = "周一";
-        } else if ("3".equals(mWay)) {
-            mWay = "周二";
-        } else if ("4".equals(mWay)) {
-            mWay = "周三";
-        } else if ("5".equals(mWay)) {
-            mWay = "周四";
-        } else if ("6".equals(mWay)) {
-            mWay = "周五";
-        } else if ("7".equals(mWay)) {
-            mWay = "周六";
+        switch (mWay) {
+            case "1":
+                mWay = "周天";
+                break;
+            case "2":
+                mWay = "周一";
+                break;
+            case "3":
+                mWay = "周二";
+                break;
+            case "4":
+                mWay = "周三";
+                break;
+            case "5":
+                mWay = "周四";
+                break;
+            case "6":
+                mWay = "周五";
+                break;
+            case "7":
+                mWay = "周六";
+                break;
         }
         return mDay;
     }
 
     /**
      * 根据当前日期获得是星期几 
-     *
-     * @return
      */
     public static String getWeek(String time) {
         String Week = "";
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Calendar c = Calendar.getInstance();
         try {
-
             c.setTime(format.parse(time));
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 1) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             Week += "周日";
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 2) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
             Week += "周一";
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 3) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
             Week += "周二";
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 4) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
             Week += "周三";
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 5) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
             Week += "周四";
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 6) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
             Week += "周五";
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 7) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             Week += "周六";
         }
         return Week;
@@ -153,11 +153,10 @@ public class DateUtils2 {
     /**
      * 根据当前日期获得是星期几
      *
-     * @return
      */
     public static int getDayWeek(String time) {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
         Calendar c = Calendar.getInstance();
         try {
             c.setTime(format.parse(time));
@@ -165,25 +164,25 @@ public class DateUtils2 {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 1) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
            return 0;
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 2) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
            return 1;
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 3) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
             return 2;
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 4) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
             return 3;
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 5) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
             return 4;
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 6) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
             return 5;
         }
-        if (c.get(Calendar.DAY_OF_WEEK) == 7) {
+        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             return 6;
         }
         return 0;
@@ -195,7 +194,7 @@ public class DateUtils2 {
         List<String> dates = new ArrayList<String>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
         String date = sim.format(c.getTime());
         dates.add(date);
         for (int i = 0; i < 6; i++) {
@@ -209,7 +208,7 @@ public class DateUtils2 {
      * 获取今天往后一周的日期（几月几号）
      */
 
-    public static  List<String> getSevendate() {
+    public static  List<String> getSevenDate() {
         List<String > dates = new ArrayList<String>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));

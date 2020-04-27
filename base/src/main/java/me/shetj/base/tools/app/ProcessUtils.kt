@@ -8,11 +8,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.provider.Settings
-import android.util.Log
 import androidx.annotation.Keep
 import timber.log.Timber
 import java.util.*
 
+@Suppress("DEPRECATION")
 @Keep
 class ProcessUtils private constructor() {
 
@@ -56,7 +56,6 @@ class ProcessUtils private constructor() {
                                 Utils.app.startActivity(intent)
                             }
                             if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, info.uid, info.packageName) != AppOpsManager.MODE_ALLOWED) {
-                                Log.d("getForegroundApp", "没有打开\"有权查看使用权限的应用\"选项")
                                 return null
                             }
                             val usageStatsManager = Utils.app.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
@@ -155,7 +154,7 @@ class ProcessUtils private constructor() {
                 return true
             }
             for (aInfo in info) {
-                if (Arrays.asList(*aInfo.pkgList).contains(packageName)) {
+                if (listOf(*aInfo.pkgList).contains(packageName)) {
                     return false
                 }
             }

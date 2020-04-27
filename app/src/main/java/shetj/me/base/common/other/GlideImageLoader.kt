@@ -7,9 +7,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import me.shetj.base.tools.app.Utils.Companion.app
 import shetj.me.base.utils.ImageLoader

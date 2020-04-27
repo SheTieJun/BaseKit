@@ -1,5 +1,6 @@
 package me.shetj.base.tools.time
 
+import android.annotation.SuppressLint
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -7,6 +8,7 @@ import java.util.*
 /**
  * 日期工具类
  */
+@SuppressLint("SimpleDateFormat")
 object DateUtils {
 
     /**
@@ -111,16 +113,16 @@ object DateUtils {
     @JvmStatic
     @JvmOverloads
     fun str2Date(str: String?, format: String? = null): Date? {
-        var format = format
+        var formatClone = format
         if (str == null || str.isEmpty()) {
             return null
         }
-        if (format == null || format.isEmpty()) {
-            format = FORMAT
+        if (formatClone == null || formatClone.isEmpty()) {
+            formatClone = FORMAT
         }
         var date: Date? = null
         try {
-            val sdf = SimpleDateFormat(format)
+            val sdf = SimpleDateFormat(formatClone)
             date = sdf.parse(str)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -151,14 +153,14 @@ object DateUtils {
     @JvmStatic
     @JvmOverloads
     fun date2Str(d: Date?, format: String? = null): String? {// yyyy-MM-dd HH:mm:ss
-        var format = format
+        var formatClone = format
         if (d == null) {
             return null
         }
-        if (format == null || format.isEmpty()) {
-            format = FORMAT
+        if (formatClone == null || formatClone.isEmpty()) {
+            formatClone = FORMAT
         }
-        val sdf = SimpleDateFormat(format)
+        val sdf = SimpleDateFormat(formatClone)
         return sdf.format(d)
     }
 
@@ -353,14 +355,14 @@ object DateUtils {
     /**
      * 按默认格式的字符串距离今天的天数
      *
-     * @param date 日期字符串
+     * @param dateString 日期字符串
      * @return 按默认格式的字符串距离今天的天数
      */
     @JvmStatic
-    fun countDays(date: String): Int {
+    fun countDays(dateString: String): Int {
         val t = Calendar.getInstance().time.time
         val c = Calendar.getInstance()
-        c.time = parse(date)
+        c.time = parse(dateString)?:return -1
         val t1 = c.time.time
         return (t / 1000 - t1 / 1000).toInt() / 3600 / 24
 
@@ -377,11 +379,11 @@ object DateUtils {
     @JvmOverloads
     fun parse(strDate: String, pattern: String = datePattern): Date? {
         val df = SimpleDateFormat(pattern)
-        try {
-            return df.parse(strDate)
+        return try {
+            df.parse(strDate)
         } catch (e: ParseException) {
             e.printStackTrace()
-            return null
+            null
         }
 
     }
@@ -392,13 +394,13 @@ object DateUtils {
      *
      * @param date 日期字符串
      * @param format 日期格式
-     * @return  按用户格式字符串距离今天的天数
+     * @return  按用户格式字符串距离今天的天数 -1等于字符错误
      */
     @JvmStatic
-    fun countDays(date: String, format: String): Int {
+    fun countDays(strDate: String, format: String): Int {
         val t = Calendar.getInstance().time.time
         val c = Calendar.getInstance()
-        c.time = parse(date, format)
+        c.time = parse(strDate, format)?:return  -1
         val t1 = c.time.time
         return (t / 1000 - t1 / 1000).toInt() / 3600 / 24
 
