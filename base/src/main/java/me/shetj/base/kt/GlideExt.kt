@@ -21,9 +21,9 @@ fun ImageView.loadImageBitmap(url: String? = null,
 
 @JvmOverloads
 fun ImageView.loadImageAny(url: String? = null,
-                        @DrawableRes rId: Int? = null,
-                        placeholderDrawable: Drawable? = null,
-                        errorDrawable: Drawable? = null) {
+                           @DrawableRes rId: Int? = null,
+                           placeholderDrawable: Drawable? = null,
+                           errorDrawable: Drawable? = null) {
     Glide.with(context)
             .load(url ?: rId)
             .placeholder(placeholderDrawable)
@@ -53,10 +53,10 @@ inline fun downloadImage(context: Context, url: String, crossinline onSuccess: (
     }
 }
 
-fun ImageView.loadImage(obj: Any, requestOptions: RequestOptions?=null) {
+fun ImageView.loadImage(obj: Any, requestOptions: RequestOptions? = null) {
     Glide.with(context)
             .load(obj).apply {
-                if (requestOptions!=null){
+                if (requestOptions != null) {
                     apply(requestOptions)
                 }
             }

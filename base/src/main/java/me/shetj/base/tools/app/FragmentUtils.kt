@@ -27,7 +27,7 @@ class FragmentUtils private constructor() {
         throw UnsupportedOperationException("u can't instantiate me...")
     }
 
-    private class Args (internal var id: Int, internal var isHide: Boolean, internal var isAddStack: Boolean)
+    private class Args(internal var id: Int, internal var isHide: Boolean, internal var isAddStack: Boolean)
 
     class FragmentNode(internal var fragment: Fragment, internal var next: List<FragmentNode>?) {
 

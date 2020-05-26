@@ -99,7 +99,7 @@ object NetworkUtils {
     fun isWifiConnected(context: Context): Boolean {
         val cm = context
                 .getSystemService(Context.CONNECTIVITY_SERVICE)
-        return cm?.let {  it as ConnectivityManager }?.activeNetworkInfo?.type == ConnectivityManager.TYPE_WIFI
+        return cm?.let { it as ConnectivityManager }?.activeNetworkInfo?.type == ConnectivityManager.TYPE_WIFI
     }
 
     /**
@@ -111,7 +111,7 @@ object NetworkUtils {
     fun getNetworkOperatorName(context: Context): String? {
         val tm = context
                 .getSystemService(Context.TELEPHONY_SERVICE)
-        return tm?.let { it  as TelephonyManager }?.networkOperatorName
+        return tm?.let { it as TelephonyManager }?.networkOperatorName
     }
 
     /**
@@ -126,7 +126,7 @@ object NetworkUtils {
     fun getPhoneType(context: Context): Int {
         val tm = context
                 .getSystemService(Context.TELEPHONY_SERVICE)
-        return tm?.let {  it as TelephonyManager }?.phoneType ?: -1
+        return tm?.let { it as TelephonyManager }?.phoneType ?: -1
     }
 
     /**

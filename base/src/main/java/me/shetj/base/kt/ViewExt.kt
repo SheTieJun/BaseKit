@@ -96,7 +96,7 @@ fun SwipeRefreshLayout.setSwipeRefresh(
     this.setOnRefreshListener(listener)
 }
 //endregion SwipeRefreshLayout
-//region 泛型
+//region view
 
 @JvmOverloads
 fun <T : View> T?.updatePadding(
@@ -116,15 +116,15 @@ fun <T : View> T?.updatePadding(
     this?.setPadding(left, top, right, bottom)
 }
 
-inline fun <T : View> T.waitForLayout(crossinline f: T.() -> Unit) =
-        viewTreeObserver.apply {
-            addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+inline fun <T : View> T?.waitForLayout(crossinline f: T.() -> Unit) =
+        this?.viewTreeObserver.apply {
+            this?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     removeOnGlobalLayoutListener(this)
-                    this@waitForLayout.f()
+                    this@waitForLayout?.f()
                 }
             })
-        }!!
+        }
 
 fun <T : View> T.isVisible(): Boolean {
     return if (this is Button) {
@@ -158,7 +158,7 @@ fun View?.setClicksAnimate() {
  * @param ratioW 宽占比
  * @param ratioH 高占比
  * @param parentH 基准高
- * @param parentW 基准框
+ * @param parentW 基准宽
  */
 @UiThread
 fun View?.layoutRatio(parentW: Int? = null, parentH: Int? = null, ratioW: Int, ratioH: Int) {

@@ -241,7 +241,7 @@ object DateUtils {
      */
     @JvmStatic
     @JvmOverloads
-    fun addDay(date: Date, n: Int =1): Date {
+    fun addDay(date: Date, n: Int = 1): Date {
         val cal = Calendar.getInstance()
         cal.time = date
         cal.add(Calendar.DATE, n)
@@ -362,7 +362,7 @@ object DateUtils {
     fun countDays(dateString: String): Int {
         val t = Calendar.getInstance().time.time
         val c = Calendar.getInstance()
-        c.time = parse(dateString)?:return -1
+        c.time = parse(dateString) ?: return -1
         val t1 = c.time.time
         return (t / 1000 - t1 / 1000).toInt() / 3600 / 24
 
@@ -400,7 +400,7 @@ object DateUtils {
     fun countDays(strDate: String, format: String): Int {
         val t = Calendar.getInstance().time.time
         val c = Calendar.getInstance()
-        c.time = parse(strDate, format)?:return  -1
+        c.time = parse(strDate, format) ?: return -1
         val t1 = c.time.time
         return (t / 1000 - t1 / 1000).toInt() / 3600 / 24
 

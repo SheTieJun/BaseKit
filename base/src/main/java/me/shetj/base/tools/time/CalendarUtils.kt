@@ -12,7 +12,7 @@ object CalendarUtils {
      * @return
      */
     fun getDaysInMonth(month: Int, year: Int): Int {
-        var month1 = month -1
+        var month1 = month - 1
         month1 -= 1
         return when (month1) {
             Calendar.JANUARY, Calendar.MARCH, Calendar.MAY, Calendar.JULY, Calendar.AUGUST, Calendar.OCTOBER, Calendar.DECEMBER -> 31

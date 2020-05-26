@@ -6,7 +6,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 
 
-class PutRequest(url:String) :BaseBodyRequest<PutRequest>(url) {
+class PutRequest(url: String) : BaseBodyRequest<PutRequest>(url) {
 
 
     override fun generateRequest(): Observable<ResponseBody>? {

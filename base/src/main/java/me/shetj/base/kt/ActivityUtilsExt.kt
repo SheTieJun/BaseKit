@@ -5,11 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.transition.Explode
-import android.transition.Fade
-import android.transition.Slide
 import android.transition.Transition
-import android.view.Gravity
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
@@ -22,23 +18,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
-fun Context.openActivity(scheme: String){
+fun Context.openActivity(scheme: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scheme))
     startActivity(intent)
 }
 
-fun Context.openActivityByPackageName(ackageName: String){
-    val intent =  packageManager.getLaunchIntentForPackage(ackageName)
+fun Context.openActivityByPackageName(ackageName: String) {
+    val intent = packageManager.getLaunchIntentForPackage(ackageName)
     startActivity(intent)
 }
 
-fun FragmentManager.addFragmentToActivity(fragment: Fragment, frameId: Int){
+fun FragmentManager.addFragmentToActivity(fragment: Fragment, frameId: Int) {
     val transaction = beginTransaction()
     transaction.add(frameId, fragment)
     transaction.commitAllowingStateLoss()
 }
-fun FragmentManager.removeFragment( ){
-    if ( backStackEntryCount > 1) {
+
+fun FragmentManager.removeFragment() {
+    if (backStackEntryCount > 1) {
         popBackStack()
     }
 }
@@ -50,12 +47,12 @@ fun FragmentManager.replaceFragment(fragment: Fragment, frameId: Int) {
 }
 
 
-fun Fragment.show(supportFragmentManager: FragmentManager, @IdRes rootLayoutId:Int) {
+fun Fragment.show(supportFragmentManager: FragmentManager, @IdRes rootLayoutId: Int) {
     val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-    val  fragment = supportFragmentManager.findFragmentByTag(this::class.java.simpleName)
-    if (fragment ==null){
-        ft.add(rootLayoutId,this,this::class.java.simpleName)
-    }else {
+    val fragment = supportFragmentManager.findFragmentByTag(this::class.java.simpleName)
+    if (fragment == null) {
+        ft.add(rootLayoutId, this, this::class.java.simpleName)
+    } else {
         ft.show(this)
     }
     ft.commitAllowingStateLoss()
@@ -108,7 +105,7 @@ fun Activity.getActivityOptions(view: View): ActivityOptionsCompat {
 /**
  * 多个元素和新的Activity相关的情况，注意下第二个参数Pair这个键值对后面有...，标明是可以传入多个Pair对象的
  */
-fun Activity.getActivityOptions(  vararg arg1: Pair<View, String>): ActivityOptionsCompat {
+fun Activity.getActivityOptions(vararg arg1: Pair<View, String>): ActivityOptionsCompat {
     return ActivityOptionsCompat.makeSceneTransitionAnimation(this, *arg1)
 }
 
@@ -119,42 +116,19 @@ fun Activity.startNewActivity(options: ActivityOptionsCompat, activityClass: Cla
 }
 
 
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun Activity.setEnterTransition( type: String) {
-    when (type) {
-        "explode" -> {
-            val explode = Explode()
-            explode.duration = 500L
-            window.enterTransition = explode
-        }
-        "slide" -> {
-            val slide = Slide(Gravity.BOTTOM)
-            slide.duration = 500L
-            window.enterTransition = slide
-        }
-        "fade" -> {
-            val fade = Fade()
-            fade.duration = 500L
-            window.enterTransition = fade
-        }
-        else -> {
-        }
-    }
-}
-
 /**
  * @param slideTransition  = explode(),slide()(),fade
- * @param transition  share view 的transition  一般为changeBound
+ * @param shareTransition  share view 的transition  一般为changeBound
  */
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun Fragment.setEnterTransition(  slideTransition: Transition, transition: Transition) {
+fun Fragment.setEnterTransition(slideTransition: Transition, shareTransition: Transition) {
     enterTransition = slideTransition
     allowEnterTransitionOverlap = true
     allowReturnTransitionOverlap = true
-    sharedElementEnterTransition = transition
+    sharedElementEnterTransition = shareTransition
 }
 
-fun Context.getIdByName (className: String, resName: String): Int {
+fun Context.getIdByName(className: String, resName: String): Int {
     val packageName = packageName
     return applicationContext.resources.getIdentifier(resName, className, packageName)
 }

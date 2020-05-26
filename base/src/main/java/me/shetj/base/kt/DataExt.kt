@@ -2,10 +2,12 @@ package me.shetj.base.kt
 
 import android.content.Context
 import android.os.Message
+import androidx.annotation.ColorRes
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
+import me.shetj.base.tools.json.HighStringFormatUtil
 import timber.log.Timber
 import kotlin.random.Random
 
@@ -46,7 +48,7 @@ fun Int.unitFormat(): String {
 fun Any.isEmpty() = EmptyUtils.isEmpty(this)
 
 @JvmOverloads
-  fun String.copy(context: Context,   action: (() -> Unit) = {}) {
+fun String.copy(context: Context, action: (() -> Unit) = {}) {
     //获取剪贴板管理器：
     ArmsUtils.copyText(context, this)
     action.invoke()
@@ -66,13 +68,13 @@ fun Throwable.log() {
 
 
 //region 获取随机数
-fun getRandomString(): String{
+fun getRandomString(num: Int): String {
     var linkNo = ""
     // 用字符数组的方式随机
     val model = "0aAbBc1CdDeE2fFgGh3HiIjJ4kKlLm5MnNoO6pPqQr7RsStT8uUvVw9WxXyY0zZ"
     val m = model.toCharArray()
     var j = 0
-    while (j < 9) {
+    while (j < num) {
         val c = m[Random.nextInt(62)]
         //随机数之间没有重复的
         if (linkNo.contains(c.toString())) {

@@ -16,15 +16,15 @@ abstract class NetCallBackProxy<T : ApiResult<R>, R>(private var mCallBack: NetC
 
         val rawCallType: Type = mCallBack.getRawType() //如果用户的信息是返回List需单独处理
         val typeArguments: Type = if (MutableList::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0))
-                    || MutableMap::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0))) {
-                mCallBack.getType()
-            } else if (CacheResult::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0))) {
-                val type = mCallBack.getType()
-                ClassUtils.getParameterizedType(type, 0)
-            } else {
-                val type = mCallBack.getType()
-                ClassUtils.getClass(type, 0)
-            }
+                || MutableMap::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0))) {
+            mCallBack.getType()
+        } else if (CacheResult::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0))) {
+            val type = mCallBack.getType()
+            ClassUtils.getParameterizedType(type, 0)
+        } else {
+            val type = mCallBack.getType()
+            ClassUtils.getClass(type, 0)
+        }
         var rawType: Type = ClassUtils.findNeedType(javaClass)
         if (rawType is ParameterizedType) {
             rawType = rawType.rawType

@@ -17,7 +17,7 @@ object SingletonManager {
         return objMap[key]
     }
 
-    fun reMove(key: String){
+    fun reMove(key: String) {
         objMap.remove(key)
     }
 }

@@ -35,7 +35,7 @@ class RetryExceptionFunc : Function<Observable<out Throwable>, Observable<*>> {
 
     @Throws(Exception::class)
     override fun apply(observable: Observable<out Throwable>): Observable<*> {
-        return observable.zipWith<Int,Wrapper>(Observable.range(1, count + 1),
+        return observable.zipWith<Int, Wrapper>(Observable.range(1, count + 1),
                 BiFunction { throwable, integer -> Wrapper(throwable, integer) })
                 .flatMap(Function<Wrapper, ObservableSource<*>> { wrapper ->
                     if (wrapper.index > 1) Timber.i("重试次数：%s", wrapper.index)

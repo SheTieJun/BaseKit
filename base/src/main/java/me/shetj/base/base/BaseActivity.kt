@@ -32,9 +32,9 @@ import kotlin.coroutines.CoroutineContext
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView , CoroutineScope,LifecycleObserver {
+abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView, CoroutineScope, LifecycleObserver {
     protected val TAG = this.javaClass.simpleName
-    private  var myHandler: Handler ?=null
+    private var myHandler: Handler? = null
     protected var mPresenter: T? = null
 
     override val rxContext: RxAppCompatActivity
@@ -53,7 +53,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    open fun onActivityCreate(){
+    open fun onActivityCreate() {
         HideUtil.init(this)
         if (useEventBus()) {
             //注册到事件主线
@@ -65,7 +65,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    open fun onActivityDestroy(){
+    open fun onActivityDestroy() {
         if (useEventBus()) {
             //如果要使用eventbus请将此方法返回true
             EventBus.getDefault().unregister(this)
@@ -74,15 +74,17 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
         mPresenter?.onDestroy()
     }
 
-    open fun setTitle(title:String){
+    open fun setTitle(title: String) {
         findViewById<TextView>(R.id.toolbar_title)?.apply {
             text = title
         }
     }
+
     /**
      * 连接view
      */
     protected abstract fun initView()
+
     /**
      * 连接数据
      */
@@ -116,7 +118,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     /**
      * 用来替换 [finish] 返回
      */
-    open  fun back() {
+    open fun back() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition()
         } else {
@@ -125,7 +127,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     }
 
     fun addDispose(disposable: Disposable) {
-         mPresenter?.addDispose(disposable)
+        mPresenter?.addDispose(disposable)
     }
 
     override fun onBackPressed() {

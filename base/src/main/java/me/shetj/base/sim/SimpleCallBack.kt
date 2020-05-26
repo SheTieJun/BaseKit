@@ -9,7 +9,7 @@ import me.shetj.base.base.BaseCallback
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b> 简易处理的callback <br>
  */
-class SimpleCallBack<T> :BaseCallback<T>{
+class SimpleCallBack<T> : BaseCallback<T> {
     override fun onSuccess() {
     }
 

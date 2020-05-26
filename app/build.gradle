@@ -111,7 +111,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':base')
-    kapt 'com.github.bumptech.glide:compiler:4.10.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-2'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
@@ -119,7 +119,7 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.2'
 
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
-    implementation 'com.airbnb.android:lottie:3.0.7'
+    implementation 'com.airbnb.android:lottie:3.4.0'
 
     //腾讯Android开发框架
     implementation 'com.qmuiteam:qmui:2.0.0-alpha02'

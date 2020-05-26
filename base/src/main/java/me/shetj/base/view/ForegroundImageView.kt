@@ -18,7 +18,7 @@ class ForegroundImageView @JvmOverloads constructor(context: Context, attrs: Att
      * @param drawableResId The drawable resource to be drawn on top of the children.
      */
     fun setForegroundResource(drawableResId: Int) {
-        foreground = ContextCompat.getDrawable(context,drawableResId)
+        foreground = ContextCompat.getDrawable(context, drawableResId)
     }
 
     /**

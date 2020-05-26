@@ -35,7 +35,7 @@ open class RxHttp private constructor() {
     private var mCommonHeaders: HttpHeaders? = null //全局公共请求头
     private var mCommonParams: HttpParams? = null //全局公共请求参数
 
-    private var isPrintException :Boolean = false
+    private var isPrintException: Boolean = false
 
     //endregion
 
@@ -83,15 +83,15 @@ open class RxHttp private constructor() {
             return GetRequest(url)
         }
 
-        fun post(url : String):PostRequest {
+        fun post(url: String): PostRequest {
             return PostRequest(url)
         }
 
-        fun put(url: String) :PutRequest{
+        fun put(url: String): PutRequest {
             return PutRequest(url)
         }
 
-        fun delete(url: String):DeleteRequest {
+        fun delete(url: String): DeleteRequest {
             return DeleteRequest(url)
         }
     }
@@ -209,7 +209,7 @@ open class RxHttp private constructor() {
         }.apply {
             if (!baseRequest.baseUrl.isNullOrEmpty()) {
                 this.baseUrl(baseRequest.baseUrl!!)
-            }else{
+            } else {
                 mBaseUrl?.let {
                     this.baseUrl(it)
                 }

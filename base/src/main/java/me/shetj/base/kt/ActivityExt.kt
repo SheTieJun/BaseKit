@@ -6,8 +6,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Looper
 import android.view.*
+import android.widget.LinearLayout
+import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -25,24 +28,24 @@ import java.lang.reflect.Method
  * 用来防止重新进入的时候多次展示 Splash
  * 是否是栈的底部
  */
-fun AppCompatActivity.isRoot(){
-    if (!isTaskRoot){
+fun AppCompatActivity.isRoot() {
+    if (!isTaskRoot) {
         finish()
     }
 }
 
 @JvmOverloads
-fun Context.start(activity : Class<*>,isFinish :Boolean = false){
-    ArmsUtils.startActivity(this as AppCompatActivity,activity)
-    if (isFinish){
+fun Context.start(activity: Class<*>, isFinish: Boolean = false) {
+    ArmsUtils.startActivity(this as AppCompatActivity, activity)
+    if (isFinish) {
         finish()
     }
 }
 
 @JvmOverloads
-fun Context.start(intent: Intent,isFinish: Boolean = false){
-    ArmsUtils.startActivity(this as AppCompatActivity,intent)
-    if (isFinish){
+fun Context.start(intent: Intent, isFinish: Boolean = false) {
+    ArmsUtils.startActivity(this as AppCompatActivity, intent)
+    if (isFinish) {
         finish()
     }
 }
@@ -51,7 +54,7 @@ fun Context.start(intent: Intent,isFinish: Boolean = false){
  * @param isFinishOnTouchOutside 是否点击window 关闭activity
  */
 @JvmOverloads
-fun AppCompatActivity.cleanBackground(isFinishOnTouchOutside: Boolean = true){
+fun AppCompatActivity.cleanBackground(isFinishOnTouchOutside: Boolean = true) {
     val mWindow = window
     mWindow.setBackgroundDrawable(null)
     mWindow.setGravity(Gravity.CENTER)
@@ -62,22 +65,20 @@ fun AppCompatActivity.cleanBackground(isFinishOnTouchOutside: Boolean = true){
  * 保持常亮
  */
 fun AppCompatActivity.addKeepScreenOn() {
-    if (window == null) return
-    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 }
 
 /**
  * 去除常亮
  */
 fun AppCompatActivity.clearKeepScreenOn() {
-    if (window == null) return
-    window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 }
 
 /**
  * 动画兼容
  */
-fun <T:View> T.animator() = ViewCompat.animate(this)
+fun <T : View> T.animator() = ViewCompat.animate(this)
 
 /**
  * 展示toast
@@ -106,7 +107,7 @@ fun AppCompatActivity.setKeyBoardListener(onSoftKeyBoardChangeListener: SoftKeyB
 /**
  * 关闭手机的通知管理界面
  */
-fun Context.collapseStatusBar( ) {
+fun Context.collapseStatusBar() {
     try {
         @SuppressLint("WrongConstant")
         val statusBarManager = getSystemService("statusbar")
@@ -134,12 +135,12 @@ fun Context.hasPermission(vararg permissions: String): Boolean {
     return true
 }
 
-inline fun runOnMain(crossinline run:()->Unit = {}){
+inline fun runOnMain(crossinline run: () -> Unit = {}) {
     AndroidSchedulers.mainThread().scheduleDirect { run() }
 }
 
-inline fun runOnIo(crossinline run:()->Unit = { }){
-    Schedulers.io().scheduleDirect {run() }
+inline fun runOnIo(crossinline run: () -> Unit = { }) {
+    Schedulers.io().scheduleDirect { run() }
 }
 
 fun isMainThread(): Boolean {
@@ -147,17 +148,33 @@ fun isMainThread(): Boolean {
 }
 
 //用户滑动最小距离
-fun Context.getScaledTouch() =  ViewConfiguration.get(this).scaledTouchSlop
+fun Context.getScaledTouch() = ViewConfiguration.get(this).scaledTouchSlop
 
 
 //拦截回退按钮
-fun onKeyUp(keyCode: Int, @NonNull event: KeyEvent,call:() -> Boolean = { true } ): Boolean {
+inline fun onBackKeyUp(keyCode: Int, @NonNull event: KeyEvent,
+                       crossinline onBack: () -> Boolean = { true }): Boolean {
     if ((keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE)
             && event.isTracking
             && !event.isCanceled) {
-        if (call()) {
+        if (onBack()) {
             return true
         }
     }
     return false
+}
+
+
+inline fun Context.createSimDialog(@LayoutRes layoutId: Int,
+                                   crossinline viewListener: ((view: View) -> Unit) = {},
+                                   crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
+                                       it?.setLayout(ArmsUtils.dip2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT);
+                                   }): AlertDialog {
+    val view = LayoutInflater.from(this).inflate(layoutId, null)
+    viewListener.invoke(view)
+    return AlertDialog.Builder(this)
+            .setView(view)
+            .show().apply {
+                setWindowSizeChange.invoke(window)
+            }
 }

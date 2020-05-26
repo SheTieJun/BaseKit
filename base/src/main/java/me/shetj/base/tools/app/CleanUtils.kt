@@ -45,7 +45,7 @@ class CleanUtils private constructor() {
          */
         @JvmStatic
         fun cleanInternalDbs(): Boolean {
-            Utils.app.filesDir.parent?:return true
+            Utils.app.filesDir.parent ?: return true
             return deleteFilesInDir(Utils.app.filesDir.parent!! + File.separator + "databases")
         }
 

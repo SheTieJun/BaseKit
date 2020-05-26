@@ -12,16 +12,16 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 @Keep
 class AdapterViewPager : FragmentStatePagerAdapter {
     private var mList: MutableList<Fragment>? = null
-    private var mTitles: MutableList<String>? =null
+    private var mTitles: MutableList<String>? = null
     private var mFragmentManager: FragmentManager? = null
 
-    constructor(fragmentManager: FragmentManager, list: MutableList<Fragment>) : super(fragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    constructor(fragmentManager: FragmentManager, list: MutableList<Fragment>) : super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         mFragmentManager = fragmentManager
         this.mList = list
     }
 
 
-    constructor(fragmentManager: FragmentManager, list: MutableList<Fragment>, titles: MutableList<String>) : super(fragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    constructor(fragmentManager: FragmentManager, list: MutableList<Fragment>, titles: MutableList<String>) : super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         mFragmentManager = fragmentManager
         this.mList = list
         this.mTitles = titles

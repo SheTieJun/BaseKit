@@ -29,7 +29,6 @@ class ApiResultFunc<T>(val type: Type) : Function<ResponseBody, ApiResult<T>> {
         var apiResult: ApiResult<T> = ApiResult<T>().apply {
             code = -1
         }
-        TimberUtil.i("type is ParameterizedType: ${type is ParameterizedType}")
         if (type is ParameterizedType) { //class me.shetj.base.network.model.ApiResult<T> 是泛型
             val cls = (type.rawType as Class<*>) //me.shetj.base.network.model.ApiResult
             //isAssignableFrom()方法是从类继承的角度去判断，instanceof关键字是从实例继承的角度去判断。
@@ -85,7 +84,6 @@ class ApiResultFunc<T>(val type: Type) : Function<ResponseBody, ApiResult<T>> {
             try {
                 val json = responseBody.string()
                 val clazz = ClassUtils.getClass(type, 0) //获取顶层的类型
-                TimberUtil.i(" ClassUtils.getClass(type, 0) : ${clazz.simpleName}")
                 //默认是成成功了，如果解析异常就是表示获取失败
                 apiResult.code = 0
                 if (clazz != String::class.java) {

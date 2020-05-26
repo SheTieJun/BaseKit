@@ -12,16 +12,16 @@ class SoftKeyBoardListener(activity: Activity) {
     private var onSoftKeyBoardChangeListener: OnSoftKeyBoardChangeListener? = null
 
     init {
-          activity.window.decorView.findViewById<View>(android.R.id.content).apply {
-              viewTreeObserver.addOnGlobalLayoutListener {
-                  val mKeyboardUp = isKeyboardShown(this)
-                  if (mKeyboardUp) {
-                      onSoftKeyBoardChangeListener?.keyBoardShow()
-                  } else {
-                      onSoftKeyBoardChangeListener?.keyBoardHide()
-                  }
-              }
-          }
+        activity.window.decorView.findViewById<View>(android.R.id.content).apply {
+            viewTreeObserver.addOnGlobalLayoutListener {
+                val mKeyboardUp = isKeyboardShown(this)
+                if (mKeyboardUp) {
+                    onSoftKeyBoardChangeListener?.keyBoardShow()
+                } else {
+                    onSoftKeyBoardChangeListener?.keyBoardHide()
+                }
+            }
+        }
     }
 
     fun setOnSoftKeyBoardChangeListener(onSoftKeyBoardChangeListener: OnSoftKeyBoardChangeListener) {

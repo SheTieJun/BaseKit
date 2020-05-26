@@ -24,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
  * @author shetj
  */
 @Keep
-open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,CoroutineScope {
+open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter, CoroutineScope {
 
     private var mCompositeDisposable: CompositeDisposable? = null
     protected var model: T? = null
@@ -53,8 +53,8 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     /**
      * 让[EventBus] 默认主线程处理
      */
-    @Subscriber(mode = ThreadMode.MAIN,tag = "onMainEvent")
-    open fun onEvent(message: Message){
+    @Subscriber(mode = ThreadMode.MAIN, tag = "onMainEvent")
+    open fun onEvent(message: Message) {
 
     }
 
@@ -103,7 +103,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         view.rxContext.startActivity(intent)
     }
 
-    fun updateView(code: Int, msg: Any){
+    fun updateView(code: Int, msg: Any) {
         view.updateView(msg.toMessage(code))
     }
 }

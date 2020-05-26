@@ -102,12 +102,12 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     }
 
     open fun addInterceptor(interceptor: Interceptor?): R {
-        interceptors.add(checkNotNull(interceptor, {"interceptor == null"}))
+        interceptors.add(checkNotNull(interceptor, { "interceptor == null" }))
         return this as R
     }
 
     open fun addNetworkInterceptor(interceptor: Interceptor?): R {
-        networkInterceptors.add(checkNotNull(interceptor, {"interceptor == null"}))
+        networkInterceptors.add(checkNotNull(interceptor, { "interceptor == null" }))
         return this as R
     }
 

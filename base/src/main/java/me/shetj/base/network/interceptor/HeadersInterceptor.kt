@@ -6,8 +6,7 @@ import okhttp3.Response
 import timber.log.Timber
 import java.io.IOException
 
-class HeadersInterceptor(headers: HttpHeaders) : Interceptor {
-    private val headers: HttpHeaders = headers
+class HeadersInterceptor(private val headers: HttpHeaders) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {

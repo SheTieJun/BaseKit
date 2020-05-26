@@ -29,7 +29,7 @@ import timber.log.Timber
  * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView ,LifecycleObserver{
+abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView, LifecycleObserver {
     protected var mActivity: Context? = null
     protected var mPresenter: T? = null
 
@@ -83,6 +83,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView ,Lifecyc
         this.mActivity = context
         super.onAttach(context)
     }
+
     /**
      * On visible.
      */

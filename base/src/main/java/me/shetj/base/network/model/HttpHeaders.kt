@@ -193,7 +193,7 @@ class HttpHeaders : Serializable {
             val formatter = SimpleDateFormat(FORMAT_HTTP_DATA, Locale.US)
             formatter.timeZone = GMT_TIME_ZONE
             val date = formatter.parse(gmtTime!!)
-            return date?.time?:0
+            return date?.time ?: 0
         }
 
         fun formatMillisToGMT(milliseconds: Long): String {

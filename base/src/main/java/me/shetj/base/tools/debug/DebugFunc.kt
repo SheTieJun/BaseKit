@@ -20,47 +20,50 @@ import java.util.concurrent.Executors
  * 1. 对一些日志进行特殊的保留
  * 2. 对http请求日志进行文件输出
  */
-class DebugFunc private constructor(){
+class DebugFunc private constructor() {
 
-    val saveLogFile  = SDCardUtils.cache + File.separatorChar + "BaseDebug.text"
-    val saveHttpFile  = SDCardUtils.cache + File.separatorChar + "HttpDebug.text"
+    val saveLogFile = SDCardUtils.cache + File.separatorChar + "BaseDebug.text"
+    val saveHttpFile = SDCardUtils.cache + File.separatorChar + "HttpDebug.text"
 
-    private val settingDialog :SettingBottomSheetDialog by lazy { SettingBottomSheetDialog(mContext!!) }
-    private var mContext: Context?=null
+    private val settingDialog: SettingBottomSheetDialog by lazy { SettingBottomSheetDialog(mContext!!) }
+    private var mContext: Context? = null
 
-    private var isOutputHttp = mContext?.let {SPUtils.get(it,KEY_IS_OUTPUT_HTTP,BuildConfig.DEBUG)  as Boolean}?:false
-    private var isOutputLog = mContext?.let {SPUtils.get(it,KEY_IS_OUTPUT_LOG,BuildConfig.DEBUG) as Boolean}?:false
+    private var isOutputHttp = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_HTTP, BuildConfig.DEBUG) as Boolean }
+            ?: false
+    private var isOutputLog = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_LOG, BuildConfig.DEBUG) as Boolean }
+            ?: false
 
     //用来专门记录文件的IO线程
     private val mDiskIO = Executors.newSingleThreadExecutor() { r -> Thread(r) }
 
-    companion object{
-        private var mDebugFunc :DebugFunc ?= null
+    companion object {
+        private var mDebugFunc: DebugFunc? = null
 
         @JvmStatic
-        fun getInstance():DebugFunc{
-            return mDebugFunc?:DebugFunc().also {
+        fun getInstance(): DebugFunc {
+            return mDebugFunc ?: DebugFunc().also {
                 mDebugFunc = it
             }
         }
     }
+
     //region 必须设置
-    fun initContext(context: Context){
+    fun initContext(context: Context) {
         mContext = context.applicationContext
     }
     //endregion
 
     //region httpSetting
-    fun saveHttpToFile(info: String?){
+    fun saveHttpToFile(info: String?) {
         if (!isOutputHttp) return
-        outputToFile(info,saveHttpFile)
+        outputToFile(info, saveHttpFile)
     }
 
     fun getHttpSetting(): Boolean {
         return isOutputHttp
     }
 
-    fun setIsOutputHttp(isOutput:Boolean){
+    fun setIsOutputHttp(isOutput: Boolean) {
         isOutputHttp = isOutput
         mContext?.let {
             SPUtils.put(it, KEY_IS_OUTPUT_HTTP, isOutput)
@@ -73,26 +76,26 @@ class DebugFunc private constructor(){
         return isOutputLog
     }
 
-    fun setIsOutputLog(isOutput:Boolean){
+    fun setIsOutputLog(isOutput: Boolean) {
         isOutputLog = isOutput
         mContext?.let {
-            SPUtils.put(it, KEY_IS_OUTPUT_LOG,isOutput)
+            SPUtils.put(it, KEY_IS_OUTPUT_LOG, isOutput)
         }
     }
 
-    fun saveLogToFile(info: String?){
+    fun saveLogToFile(info: String?) {
         if (!isOutputLog) return
-        outputToFile(info,saveLogFile)
+        outputToFile(info, saveLogFile)
     }
     //endregion logSetting
 
-    fun showSettingDialog(){
-        checkNotNull(mContext,{ "need initContext() first" })
+    fun showSettingDialog() {
+        checkNotNull(mContext, { "need initContext() first" })
         settingDialog.showBottomSheet()
     }
 
-    fun hideSettingDialog(){
-        checkNotNull(mContext,{ "need initContext() first" })
+    fun hideSettingDialog() {
+        checkNotNull(mContext, { "need initContext() first" })
         settingDialog.dismissBottomSheet()
     }
 
@@ -109,26 +112,26 @@ class DebugFunc private constructor(){
         })
     }
 
-    fun outputToFile(info:String?,path:String? = saveLogFile) {
+    fun outputToFile(info: String?, path: String? = saveLogFile) {
         mDiskIO.execute {
             if (info.isNullOrEmpty()) return@execute
             if (path.isNullOrEmpty()) return@execute
             try {
-                val fw = BufferedWriter(FileWriter(path,true))
+                val fw = BufferedWriter(FileWriter(path, true))
                 fw.write(info)
                 fw.close()
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun clearAll(){
+    fun clearAll() {
         delFile(saveHttpFile)
         delFile(saveLogFile)
     }
 
-    fun delFile(path:String? = saveLogFile){
+    fun delFile(path: String? = saveLogFile) {
         FileUtils.deleteFile(path)
     }
 

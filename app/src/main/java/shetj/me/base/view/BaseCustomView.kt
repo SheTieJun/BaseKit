@@ -96,8 +96,16 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
         canvas.drawText(text,x,y,paint)
     }
 
-    fun getPaintTextYCenter(paint: Paint):Float{
+    open fun getPaintTextYCenter(paint: Paint):Float{
         return  (paint.ascent() + paint.descent()) / 2
+    }
+
+    //强行绘制得到宽高
+    fun forceSpec(){
+        val widthMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+        val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+        measure(widthMeasureSpec,heightMeasureSpec);
+        Timber.i("widthMeasureSpec = $widthMeasureSpec \n heightMeasureSpec = $heightMeasureSpec")
     }
 }
 

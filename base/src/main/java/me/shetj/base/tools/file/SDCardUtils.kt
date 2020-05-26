@@ -91,7 +91,7 @@ class SDCardUtils private constructor() {
          *            {@link android.os.Environment#DIRECTORY_MOVIES}. or null
          */
         @JvmStatic
-        fun getExternalFilesDir(type: String?=null): String {
+        fun getExternalFilesDir(type: String? = null): String {
             return Utils.app.getExternalFilesDir(type)!!.absolutePath
         }
 
@@ -105,7 +105,7 @@ class SDCardUtils private constructor() {
 
 
         @JvmStatic
-        val downloadCache:String
+        val downloadCache: String
             get() = if (Utils.app.externalCacheDir == null) {
                 Environment.getDownloadCacheDirectory().absolutePath
             } else {

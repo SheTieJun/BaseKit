@@ -14,6 +14,7 @@ interface CommonCallBack<T> {
      * @param key 成功
      */
     fun onSuccess(key: T)
+
     /**
      * 结束
      */

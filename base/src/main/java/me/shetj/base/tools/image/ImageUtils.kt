@@ -51,6 +51,7 @@ class ImageUtils {
                 Uri.fromFile(file)
             }
         }
+
         @JvmStatic
         fun createImagePath(): String {
             val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
@@ -58,6 +59,7 @@ class ImageUtils {
             val imageName = timeFormatter.format(Date(time))
             return SDCardUtils.getPath(imagePath) + "/" + imageName + ".jpg"
         }
+
         @JvmStatic
         fun openCameraImage(activity: Activity) {
             imageUriFromCamera = createImagePathUri(activity)
@@ -65,12 +67,14 @@ class ImageUtils {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUriFromCamera)
             activity.startActivityForResult(intent, GET_IMAGE_BY_CAMERA)
         }
+
         @JvmStatic
         fun openLocalImage(activity: Activity) {
             val intent = Intent(Intent.ACTION_PICK)
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             activity.startActivityForResult(intent, GET_IMAGE_FROM_PHONE)
         }
+
         @JvmStatic
         fun cropImage(activity: Activity, srcUri: Uri?) {
             cropImageUri = Uri.fromFile(File(createImagePath()))
@@ -168,15 +172,15 @@ class ImageUtils {
             textPaint.textSize = textSize.toFloat()
             // 抗锯齿
             textPaint.isAntiAlias = true
-            val staticLayout : StaticLayout
+            val staticLayout: StaticLayout
             staticLayout = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 StaticLayout.Builder
-                        .obtain(des,0,des.length,textPaint,sourceBitmapWidth)
+                        .obtain(des, 0, des.length, textPaint, sourceBitmapWidth)
                         .apply {
                             setAlignment(Layout.Alignment.ALIGN_CENTER)
                             setIncludePad(true)
                         }.build()
-            }else {
+            } else {
                 StaticLayout(des, textPaint,
                         sourceBitmapWidth, Layout.Alignment.ALIGN_CENTER, 1f, 1f, true)
             }
@@ -188,7 +192,7 @@ class ImageUtils {
             // 绘制图片
             canvas.drawBitmap(imageBitmap, 0f, 0f, paint)
             // 玩下移动
-            canvas.translate(0f, sourceBitmapHeight.toFloat()-staticLayout.height)
+            canvas.translate(0f, sourceBitmapHeight.toFloat() - staticLayout.height)
             staticLayout.draw(canvas)
             return shareBitmap
         }

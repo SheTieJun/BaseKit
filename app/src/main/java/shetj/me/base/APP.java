@@ -22,10 +22,7 @@ public class APP extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		s.init(this,BuildConfig.LOG_DEBUG);
-		RxHttp.getInstance()
-				.debug(true)
-				.setBaseUrl("https://baidu.com");
+		s.init(this,BuildConfig.LOG_DEBUG,"https://baidu.com");
 	}
 
 

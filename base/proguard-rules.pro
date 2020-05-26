@@ -302,9 +302,5 @@
 -dontwarn io.reactivex.internal.util.unsafe.**
 
 
-#easyHttp
--keep class com.zhouyou.http.model.** {*;}
--keep class com.zhouyou.http.cache.model.** {*;}
--keep class com.zhouyou.http.cache.stategy.**
-
+#base
 -keep class me.shetj.base.tools.**{}

@@ -144,7 +144,7 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                 ex = ApiException(e, ERROR.SSL_ERROR)
                 ex.message = "证书验证失败"
                 ex
-            }  else if (e is SocketTimeoutException) {
+            } else if (e is SocketTimeoutException) {
                 ex = ApiException(e, ERROR.TIMEOUT_ERROR)
                 ex.message = "连接超时"
                 ex

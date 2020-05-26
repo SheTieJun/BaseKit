@@ -20,6 +20,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+
 @Keep
 public final class FileIOUtils {
 
@@ -32,6 +33,7 @@ public final class FileIOUtils {
     private static int sBufferSize = 8192;
 
     //region writeFile 写文件
+
     /**
      * 将输入流写入文件
      *
@@ -627,6 +629,7 @@ public final class FileIOUtils {
     //endregion readFile
 
     //region 判断是否存在或者创建
+
     /**
      * 设置缓冲区尺寸
      *

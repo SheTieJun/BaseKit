@@ -109,10 +109,13 @@ class DES {
 
         /** 加密KEY  */
         private val KEY = "6;9Ku7;:84VG*B68".toByteArray()
+
         /** 算法  */
         private val ALGORITHM = "DES"
+
         /** IV  */
         private val IV = "sHjrydLq".toByteArray()
+
         /** TRANSFORMATION  */
         private val TRANSFORMATION = "DES/CBC/PKCS5Padding"
     }

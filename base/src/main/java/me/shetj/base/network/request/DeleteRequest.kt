@@ -6,7 +6,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 
 
-class DeleteRequest(url:String) :BaseBodyRequest<DeleteRequest>(url) {
+class DeleteRequest(url: String) : BaseBodyRequest<DeleteRequest>(url) {
 
     override fun generateRequest(): Observable<ResponseBody>? {
         return when {

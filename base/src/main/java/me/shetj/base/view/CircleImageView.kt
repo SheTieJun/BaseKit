@@ -212,11 +212,11 @@ open class CircleImageView : AppCompatImageView {
 
 
     fun setBorderColorResource(@ColorRes borderColorRes: Int) {
-        borderColor = ArmsUtils.getColor(context,borderColorRes)
+        borderColor = ArmsUtils.getColor(context, borderColorRes)
     }
 
     fun setCircleBackgroundColorResource(@ColorRes circleBackgroundRes: Int) {
-        circleBackgroundColor = ArmsUtils.getColor(context,circleBackgroundRes)
+        circleBackgroundColor = ArmsUtils.getColor(context, circleBackgroundRes)
     }
 
     /**

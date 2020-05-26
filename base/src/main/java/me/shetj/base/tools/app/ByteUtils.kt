@@ -41,12 +41,12 @@ class ByteUtils {
         var r: Short = 0
         if (bBigEnding) {
             for (aBuf in buf) {
-                r = r.toInt().shl( 8).toShort()
+                r = r.toInt().shl(8).toShort()
                 r = r or (aBuf.toInt() and 0x00ff).toShort()
             }
         } else {
             for (i in buf.indices.reversed()) {
-                r = r.toInt().shl( 8).toShort()
+                r = r.toInt().shl(8).toShort()
                 r = r or (buf[i].toInt() and 0x00ff).toShort()
             }
         }

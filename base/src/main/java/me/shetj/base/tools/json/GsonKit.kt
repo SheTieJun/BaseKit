@@ -98,7 +98,7 @@ object GsonKit {
     fun jsonToMap(@NonNull gsonString: String): Map<String, Any>? {
 
         return try {
-            val map:Map<String, Any>? = gson.fromJson<Map<String, Any>>(gsonString, object : TypeToken<Map<String, Any>>() {
+            val map: Map<String, Any>? = gson.fromJson<Map<String, Any>>(gsonString, object : TypeToken<Map<String, Any>>() {
             }.type)
             map
         } catch (e: Exception) {
@@ -132,7 +132,7 @@ object GsonKit {
     @JvmStatic
     fun <T> jsonToBean(@NonNull jsonStr: String, cl: Class<T>): T? {
         return try {
-            val obj: T?  = gson.fromJson(jsonStr, cl)
+            val obj: T? = gson.fromJson(jsonStr, cl)
             obj
         } catch (e: Exception) {
             Timber.e(e)

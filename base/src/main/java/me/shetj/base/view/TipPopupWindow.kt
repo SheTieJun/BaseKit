@@ -1,10 +1,13 @@
 package me.shetj.base.view
 
 
+import android.animation.Animator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -13,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import me.shetj.base.R
 import java.util.concurrent.TimeUnit
+import kotlin.math.hypot
 
 /**
  * 消息提示框
@@ -45,9 +49,7 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
         val rootView = View.inflate(context, R.layout.base_popupwindow_tip, null)
         tvTip = rootView.findViewById(R.id.tv_tip)
         contentView = rootView
-
         publishSubject = PublishSubject.create()
-
         publishSubject!!
                 .debounce(1000, TimeUnit.MILLISECONDS)
                 .delay(500, TimeUnit.MILLISECONDS)
@@ -74,19 +76,25 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
         }
         //设置文子
         tvTip?.text = tipMsg
+
         showAsDropDown(view)
         publishSubject?.onNext(this)
     }
 
+
     companion object {
         @ColorInt
         private val ERROR_COLOR = Color.parseColor("#ff0000")
+
         @ColorInt
         private val INFO_COLOR = Color.parseColor("#1CD67C")
+
         @ColorInt
         private val SUCCESS_COLOR = Color.parseColor("#FFFF5A31")
+
         @ColorInt
         private val WARNING_COLOR = Color.parseColor("#FFBB22")
+
         @ColorInt
         private val NORMAL_COLOR = Color.parseColor("#CCCCCC")
 
@@ -95,6 +103,7 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
         /**
          * 展示信息
          */
+        @JvmStatic
         fun showTipMsg(context: Context, tip: Tip = Tip.INFO, view: View, tipMsg: String) {
             if (tipPopupWindow != null && context == tipPopupWindow!!.context && tipPopupWindow!!.isShowing) {
                 tipPopupWindow!!.showTip(tip, view, tipMsg)
@@ -107,6 +116,7 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
         /**
          * 在展示的[android.app.Activity.onDestroy] 中调用
          */
+        @JvmStatic
         fun tipDismiss() {
             if (tipPopupWindow != null) {
                 tipPopupWindow!!.dismiss()

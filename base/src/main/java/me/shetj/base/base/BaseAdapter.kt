@@ -11,7 +11,7 @@ import me.shetj.base.kt.getRequestOptions
 abstract class BaseAdapter<T, K : BaseViewHolder>
 @JvmOverloads constructor(@LayoutRes layoutResId: Int,
                           data: MutableList<T>? = null)
-    : BaseQuickAdapter<T, K>(layoutResId,data) {
+    : BaseQuickAdapter<T, K>(layoutResId, data) {
 
     private var requestOptions: RequestOptions? = null
 
@@ -25,16 +25,16 @@ abstract class BaseAdapter<T, K : BaseViewHolder>
 
     @ColorInt
     protected fun getColor(@ColorRes id: Int): Int {
-        return ContextCompat.getColor(context,id)
+        return ContextCompat.getColor(context, id)
     }
 
     protected fun getDrawable(@DrawableRes id: Int): Drawable? {
-        return ContextCompat.getDrawable(context,id)
+        return ContextCompat.getDrawable(context, id)
     }
 
     protected val defaultRequestOptions: RequestOptions
         get() {
-            return requestOptions?: getRequestOptions().apply {
+            return requestOptions ?: getRequestOptions().apply {
                 requestOptions = this
             }
         }

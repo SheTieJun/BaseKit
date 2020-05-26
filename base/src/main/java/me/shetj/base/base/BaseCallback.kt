@@ -9,11 +9,12 @@ package me.shetj.base.base
  * **@describe**<br></br>
  */
 
-interface BaseCallback<T> :CommonCallBack<T>{
+interface BaseCallback<T> : CommonCallBack<T> {
     /**
      * 成功
      */
     fun onSuccess()
+
     /**
      * 失败
      */

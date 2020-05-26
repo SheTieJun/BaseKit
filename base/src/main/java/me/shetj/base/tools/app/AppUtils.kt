@@ -516,6 +516,7 @@ class AppUtils private constructor() {
             }
             try {
                 val pm = Utils.app.packageManager
+
                 @SuppressLint("PackageManagerGetSignatures")
                 val pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
                 return pi?.signatures

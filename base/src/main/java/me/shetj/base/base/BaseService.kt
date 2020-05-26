@@ -59,7 +59,7 @@ abstract class BaseService : Service() {
         }
     }
 
-    open fun needNotification ():Boolean {
+    open fun needNotification(): Boolean {
         return false
     }
 
@@ -67,10 +67,11 @@ abstract class BaseService : Service() {
      * 初始化
      */
     abstract fun init()
+
     /**
      * 展示通知栏
      */
-    open fun createNotification(context: Context){
+    open fun createNotification(context: Context) {
 
     }
 

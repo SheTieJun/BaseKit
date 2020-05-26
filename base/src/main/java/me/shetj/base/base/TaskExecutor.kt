@@ -27,7 +27,7 @@ class TaskExecutor private constructor() {
         private var sInstance: TaskExecutor? = null
 
         fun getInstance(): TaskExecutor {
-            return sInstance?: synchronized(TaskExecutor::class.java) {
+            return sInstance ?: synchronized(TaskExecutor::class.java) {
                 return TaskExecutor().also {
                     sInstance = it
                 }

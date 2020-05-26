@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import me.shetj.base.base.BaseActivity
 import me.shetj.base.base.TaskExecutor
@@ -16,6 +17,7 @@ import me.shetj.base.kt.toJson
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.tools.time.CodeUtil
+import me.shetj.base.view.TipPopupWindow
 import shetj.me.base.R
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
@@ -53,6 +55,10 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
                 super.onPageScrollStateChanged(state)
             }
         })
+
+        btn_test_tip.setOnClickListener {
+            TipPopupWindow.showTipMsg(this,view = toolbar,tipMsg = "测试一下INFO")
+        }
         netTest()
         imgTest()
         findViewById<View>(R.id.fab).setOnClickListener { AppCompatDelegate.setDefaultNightMode(mPresenter!!.getNightModel()) }

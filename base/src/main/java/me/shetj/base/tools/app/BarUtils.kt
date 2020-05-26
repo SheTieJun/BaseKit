@@ -33,6 +33,7 @@ class BarUtils private constructor() {
 
 
         var DEFAULT_COLOR = 0
+
         /**
          * Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? 0.2f : 0.3f;
          */

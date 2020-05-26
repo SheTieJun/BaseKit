@@ -20,7 +20,7 @@ class CodeUtil {
         codeTV = tv
     }
 
-    constructor( tv: TextView, timeLength: Int) {
+    constructor(tv: TextView, timeLength: Int) {
         codeTV = tv
         this.timeLength = timeLength
     }
@@ -30,22 +30,19 @@ class CodeUtil {
         codeTV?.post { codeTV?.isEnabled = false }
         val subscribe =
                 Flowable.interval(1, TimeUnit.SECONDS)
-                .take(timeLength.toLong())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( {
-                    second--
-                    codeTV?.text = String.format("%s秒后重发", second)
-                },{
-                    stop()
-                },{
-                    codeTV?.text = "获取验证码"
-                    codeTV?.isEnabled = true
-                })
+                        .take(timeLength.toLong())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            second--
+                            codeTV?.text = String.format("%s秒后重发", second)
+                        }, {
+                            stop()
+                        }, {
+                            codeTV?.text = "获取验证码"
+                            codeTV?.isEnabled = true
+                        })
         addDispose(subscribe)
     }
-
-
-
 
 
     fun stop() {

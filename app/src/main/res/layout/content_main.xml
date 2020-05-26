@@ -59,10 +59,15 @@
         app:layout_constraintStart_toEndOf="@+id/btn_test"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_test"
-        app:layout_constraintTop_toBottomOf="@id/btn_test_net"
-        app:layout_constraintStart_toStartOf="parent"
+
+    <Button
+        android:id="@+id/btn_test_tip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAllCaps="false"
+        android:text="测TipPopupWindow "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_test_net" />
 </androidx.constraintlayout.widget.ConstraintLayout>
