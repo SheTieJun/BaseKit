@@ -12,9 +12,9 @@ import androidx.annotation.Keep;
 import shetj.me.base.R;
 
 
-
 /**
  * I think QMUIDialog is better but maybe user
+ *
  * @author shetj
  */
 @Keep
@@ -23,8 +23,8 @@ public class LoadingDialog {
 
     private static Dialog mLoadingDialog;
 
-    public static Dialog showLoading(Activity context,  boolean cancelable){
-        if (null != mLoadingDialog){
+    public static Dialog showLoading(Activity context, boolean cancelable) {
+        if (null != mLoadingDialog) {
             mLoadingDialog.cancel();
         }
         View view = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null);
@@ -34,11 +34,11 @@ public class LoadingDialog {
         mLoadingDialog.setCanceledOnTouchOutside(false);
         mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         mLoadingDialog.show();
-        return  mLoadingDialog;
+        return mLoadingDialog;
     }
 
     public static Dialog showLoading(Activity context) {
-        if (null != mLoadingDialog){
+        if (null != mLoadingDialog) {
             mLoadingDialog.cancel();
         }
         View view = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null);
@@ -47,11 +47,11 @@ public class LoadingDialog {
         mLoadingDialog.setCanceledOnTouchOutside(false);
         mLoadingDialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         mLoadingDialog.show();
-        return  mLoadingDialog;
+        return mLoadingDialog;
     }
 
-    public static void hideLoading(){
-        if (null != mLoadingDialog){
+    public static void hideLoading() {
+        if (null != mLoadingDialog) {
             mLoadingDialog.cancel();
         }
     }

@@ -2,44 +2,44 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <declare-styleable name="SwipeBackLayout">
         <attr name="edge_flag">
-            <enum name="left" value="0"/>
-            <enum name="right" value="1"/>
-            <enum name="bottom" value="2"/>
-            <enum name="all" value="3"/>
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="bottom" value="2" />
+            <enum name="all" value="3" />
         </attr>
-        <attr name="shadow_left" format="reference"/>
-        <attr name="shadow_right" format="reference"/>
-        <attr name="shadow_bottom" format="reference"/>
+        <attr name="shadow_left" format="reference" />
+        <attr name="shadow_right" format="reference" />
+        <attr name="shadow_bottom" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="PagerSlidingTabStrip">
-        <attr name="pstsIndicatorColor" format="color"/>
-        <attr name="pstsUnderlineColor" format="color"/>
-        <attr name="pstsDividerColor" format="color"/>
-        <attr name="pstsIndicatorHeight" format="dimension"/>
-        <attr name="pstsUnderlineHeight" format="dimension"/>
-        <attr name="pstsDividerPadding" format="dimension"/>
-        <attr name="pstsTabPaddingLeftRight" format="dimension"/>
-        <attr name="pstsScrollOffset" format="dimension"/>
-        <attr name="pstsTabBackground" format="reference"/>
-        <attr name="pstsShouldExpand" format="boolean"/>
-        <attr name="pstsTextAllCaps" format="boolean"/>
-        <attr name="pstsIndicatorWidth" format="dimension"/>
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+        <attr name="pstsIndicatorWidth" format="dimension" />
     </declare-styleable>
     <!--AutoLinkStyleTextView-->
     <declare-styleable name="AutoLinkStyleTextView" tools:ignore="ResourceName">
-        <attr name="AutoLinkStyleTextView_text_value" format="string|reference"/>
-        <attr name="AutoLinkStyleTextView_default_color" format="color|reference"/>
-        <attr name="AutoLinkStyleTextView_has_under_line" format="boolean"/>
+        <attr name="AutoLinkStyleTextView_text_value" format="string|reference" />
+        <attr name="AutoLinkStyleTextView_default_color" format="color|reference" />
+        <attr name="AutoLinkStyleTextView_has_under_line" format="boolean" />
     </declare-styleable>
 
-    <attr name="SwipeBackLayoutStyle" format="reference"/>
+    <attr name="SwipeBackLayoutStyle" format="reference" />
 
     <declare-styleable name="ButtonBarContainerTheme" tools:ignore="ResourceName">
-        <attr name="metaButtonBarStyle" format="reference"/>
-        <attr name="metaButtonBarButtonStyle" format="reference"/>
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
     <declare-styleable name="AutoTabLayout">
-        <attr name="auto_textSize_base_width" format="boolean"/>
+        <attr name="auto_textSize_base_width" format="boolean" />
     </declare-styleable>
 </resources>

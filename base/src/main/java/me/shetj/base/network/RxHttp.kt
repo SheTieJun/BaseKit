@@ -10,7 +10,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.*
@@ -56,7 +56,7 @@ open class RxHttp private constructor() {
     }
 
     private fun initRetrofit() {
-        retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        retrofitBuilder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         retrofitBuilder.addConverterFactory(GsonConverterFactory.create())
     }
 
@@ -79,18 +79,22 @@ open class RxHttp private constructor() {
             }
         }
 
+        @JvmStatic
         fun get(url: String): GetRequest {
             return GetRequest(url)
         }
 
+        @JvmStatic
         fun post(url: String): PostRequest {
             return PostRequest(url)
         }
 
+        @JvmStatic
         fun put(url: String): PutRequest {
             return PutRequest(url)
         }
 
+        @JvmStatic
         fun delete(url: String): DeleteRequest {
             return DeleteRequest(url)
         }

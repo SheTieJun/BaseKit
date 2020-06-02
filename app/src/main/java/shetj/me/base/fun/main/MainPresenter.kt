@@ -29,10 +29,10 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
         //系统默认 - MODE_NIGHT_FOLLOW_SYSTEM
         val defaultNightMode = AppCompatDelegate.getDefaultNightMode()
 
-        if (defaultNightMode == AppCompatDelegate.MODE_NIGHT_NO){
+        if (defaultNightMode == AppCompatDelegate.MODE_NIGHT_NO) {
             return AppCompatDelegate.MODE_NIGHT_YES
         }
-        if (defaultNightMode == AppCompatDelegate.MODE_NIGHT_YES){
+        if (defaultNightMode == AppCompatDelegate.MODE_NIGHT_YES) {
             return AppCompatDelegate.MODE_NIGHT_NO
         }
         return AppCompatDelegate.MODE_NIGHT_YES

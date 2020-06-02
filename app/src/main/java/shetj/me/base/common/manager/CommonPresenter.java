@@ -12,8 +12,8 @@ import me.shetj.base.base.IView;
  * <b>@describe</b> 有些Activity 的活动少  <br>
  */
 public class CommonPresenter extends BasePresenter<CommonModel> {
-	public CommonPresenter(IView view) {
-		super(view);
-		setModel(new CommonModel());
-	}
+    public CommonPresenter(IView view) {
+        super(view);
+        setModel(new CommonModel());
+    }
 }

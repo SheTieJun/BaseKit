@@ -71,9 +71,9 @@ class SimpleItemDecoration private constructor(context: Context, options: ItemDe
 
     init {
         dividerMainPaint = Paint()
-        dividerMainPaint.color = ContextCompat.getColor(context,options.mainColorId)
+        dividerMainPaint.color = ContextCompat.getColor(context, options.mainColorId)
         dividerSecondPaint = Paint()
-        dividerSecondPaint.color = ContextCompat.getColor(context,options.secondColorId)
+        dividerSecondPaint.color = ContextCompat.getColor(context, options.secondColorId)
         orientation = options.orientation
         dividerHeight = options.dividerHeight
         dividerMarginLeft = options.dividerMarginLeft

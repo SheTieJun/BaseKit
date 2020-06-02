@@ -1,6 +1,6 @@
 package shetj.me.base.common.bean
 
-class UserInfo{
+class UserInfo {
     var uid: String? = null
     var sex: String? = null
     var username: String? = null

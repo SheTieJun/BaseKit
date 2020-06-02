@@ -7,7 +7,7 @@ class ApiResult1<T> {
     var code = 0
     var msg: String? = null
     var data: T? = null
-    var s :String ? =null
+    var s: String? = null
 
     val isOk: Boolean
         get() = code == 0

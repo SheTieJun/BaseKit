@@ -5,7 +5,6 @@ import android.content.Context;
 
 import androidx.multidex.MultiDex;
 
-import me.shetj.base.network.RxHttp;
 import me.shetj.base.s;
 
 /**
@@ -19,17 +18,17 @@ import me.shetj.base.s;
 
 public class APP extends Application {
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		s.init(this,BuildConfig.LOG_DEBUG,"https://baidu.com");
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        s.init(this, BuildConfig.LOG_DEBUG, "https://baidu.com");
+    }
 
 
-	@Override
-	protected void attachBaseContext(Context base) {
-		super.attachBaseContext(base);
-		MultiDex.install(this);
-	}
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
 }

@@ -21,42 +21,42 @@ import shetj.me.base.R;
 
 /**
  * Android官方底部Tab栏设计规范
- *
+ * <p>
  * 1、推荐底部可以放置3到5个。
  * 2、推荐选中的图标或者文字为APP的主色调，如果Tab栏本身就是彩色，推荐黑色和白色作为图标或者文字
  * 3、选中的Tab同时显示icon和text。
- *    如果只有三个Tab，无论选中未选中，一直显示icon和文字。
- *    如果有四到五个Tab，选中的Tab显示文字和icon，未选中的Tab只显示icon
+ * 如果只有三个Tab，无论选中未选中，一直显示icon和文字。
+ * 如果有四到五个Tab，选中的Tab显示文字和icon，未选中的Tab只显示icon
  * 4、文字要求言简意赅
  * 5、Bottom navigation bars的高度推荐为56dp，icon的尺寸为24*24，这种Google一般推荐使用8的倍数。选中tab的字体大小为14sp,未选中为12sp
- *
+ * <p>
  * 底部tab切换布局
  */
 
 @Keep
 public class BottomTabLayout extends LinearLayout {
     //上下文
-    private  Context mContext;
+    private Context mContext;
     //底部tab数据
-    private List<BottomTab> mBottomTabs=new ArrayList<>();
+    private List<BottomTab> mBottomTabs = new ArrayList<>();
     //底部所有itemViews
-    private List<View> mBottomTabViews=new ArrayList<>();
+    private List<View> mBottomTabViews = new ArrayList<>();
     //当前选择的tab index
     private int currentTab;
     //tab切换回调接口
     private OnTabChangeListener mOnTabChangeListener;
 
     public BottomTabLayout(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public BottomTabLayout(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public BottomTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.mContext=context;
+        this.mContext = context;
         init();
     }
 
@@ -67,26 +67,26 @@ public class BottomTabLayout extends LinearLayout {
     /**
      * 设置tab数据
      */
-    public void setBottomTabData(List<BottomTab> mBottomTabs){
-        if(mBottomTabs==null||mBottomTabs.size()==0){
-          return;
+    public void setBottomTabData(List<BottomTab> mBottomTabs) {
+        if (mBottomTabs == null || mBottomTabs.size() == 0) {
+            return;
         }
         this.mBottomTabViews.clear();
         //清除所有的子view
         removeAllViews();
-        this.mBottomTabs=mBottomTabs;
+        this.mBottomTabs = mBottomTabs;
         initTabViews();
     }
 
     /**
      * 设置底部小红点的数量
      */
-    public void setBottomTabNum(int index,int num){
-        for (int i=0;i<mBottomTabViews.size();i++){
-            TextView mTabNum= mBottomTabViews.get(i).findViewById(R.id.tab_item_num);
-            if(index==i&&num>0){
+    public void setBottomTabNum(int index, int num) {
+        for (int i = 0; i < mBottomTabViews.size(); i++) {
+            TextView mTabNum = mBottomTabViews.get(i).findViewById(R.id.tab_item_num);
+            if (index == i && num > 0) {
                 mTabNum.setVisibility(VISIBLE);
-                mTabNum.setText(num>=100?"99+":String.valueOf(num));
+                mTabNum.setText(num >= 100 ? "99+" : String.valueOf(num));
             }
         }
     }
@@ -94,9 +94,9 @@ public class BottomTabLayout extends LinearLayout {
     /**
      * 清除所有的小红点的数量
      */
-    public void clearAllBottomTabNum(){
-        for (int i=0;i<mBottomTabViews.size();i++){
-            TextView mTabNum= mBottomTabViews.get(i).findViewById(R.id.tab_item_num);
+    public void clearAllBottomTabNum() {
+        for (int i = 0; i < mBottomTabViews.size(); i++) {
+            TextView mTabNum = mBottomTabViews.get(i).findViewById(R.id.tab_item_num);
             mTabNum.setText("");
             mTabNum.setVisibility(GONE);
         }
@@ -105,12 +105,12 @@ public class BottomTabLayout extends LinearLayout {
     /**
      * 初始化tabviews
      */
-    public void initTabViews(){
+    public void initTabViews() {
         View tabView;
-        for (int index=0;index<mBottomTabs.size();index++){
-            tabView= LayoutInflater.from(mContext).inflate(R.layout.base_view_bottom_tab,null);
+        for (int index = 0; index < mBottomTabs.size(); index++) {
+            tabView = LayoutInflater.from(mContext).inflate(R.layout.base_view_bottom_tab, null);
             tabView.setTag(index);
-            addTabView(index,tabView);
+            addTabView(index, tabView);
             mBottomTabViews.add(tabView);
         }
         setCurrentTab(0);
@@ -120,18 +120,18 @@ public class BottomTabLayout extends LinearLayout {
      * 添加tabview
      */
     private void addTabView(int index, View tabView) {
-        TextView mTabName= tabView.findViewById(R.id.tab_item_name);
-        ImageView mTabIcon= tabView.findViewById(R.id.tab_item_icon);
+        TextView mTabName = tabView.findViewById(R.id.tab_item_name);
+        ImageView mTabIcon = tabView.findViewById(R.id.tab_item_icon);
         mTabName.setText(mBottomTabs.get(index).getTabName());
 
-        int tabUnSelectIcon=mBottomTabs.get(index).getTabUnSelectIcon();
-        String tabUnSelectUrl=mBottomTabs.get(index).getTabUnSelectUrl();
-        String tabSelectUrl=mBottomTabs.get(index).getTabSelectUrl();
+        int tabUnSelectIcon = mBottomTabs.get(index).getTabUnSelectIcon();
+        String tabUnSelectUrl = mBottomTabs.get(index).getTabUnSelectUrl();
+        String tabSelectUrl = mBottomTabs.get(index).getTabSelectUrl();
 
         //如果网络图片中选中或者不选中的图片其中之一为空都使用本地图片
-        if(TextUtils.isEmpty(tabUnSelectUrl)||TextUtils.isEmpty(tabSelectUrl)){
+        if (TextUtils.isEmpty(tabUnSelectUrl) || TextUtils.isEmpty(tabSelectUrl)) {
             mTabIcon.setImageResource(tabUnSelectIcon);
-        }else{
+        } else {
             Glide.with(mContext)
                     .load(tabUnSelectUrl)
                     .into(mTabIcon);
@@ -151,7 +151,7 @@ public class BottomTabLayout extends LinearLayout {
                 }
             }
         });
-        LayoutParams params =  new LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f);
+        LayoutParams params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f);
         addView(tabView, index, params);
     }
 
@@ -168,7 +168,7 @@ public class BottomTabLayout extends LinearLayout {
      * 更新选中的和未选中的样式
      */
     private void updateTabState(int currentTab) {
-        for (int index=0;index<mBottomTabs.size();index++){
+        for (int index = 0; index < mBottomTabs.size(); index++) {
             View tabView = getChildAt(index);
             final boolean isSelect = index == currentTab;
             BottomTab mBottomTab = mBottomTabs.get(index);
@@ -176,15 +176,15 @@ public class BottomTabLayout extends LinearLayout {
             ImageView mTabIcon = tabView.findViewById(R.id.tab_item_icon);
 
             //根据判别是否是选择的哪一个来设置对应的颜色值
-            mTabName.setTextColor(isSelect ? ContextCompat.getColor(getContext(),mBottomTab.getTabNameSelectColor())
-                    : ContextCompat.getColor(getContext(),mBottomTab.getTabNameUnSelectColor()));
+            mTabName.setTextColor(isSelect ? ContextCompat.getColor(getContext(), mBottomTab.getTabNameSelectColor())
+                    : ContextCompat.getColor(getContext(), mBottomTab.getTabNameUnSelectColor()));
 
             //判别网络图片url是不是为空要是为空的话就是使用本地的图片如果不为空就用网络图片  默认加载的图片为对应的本地图片 避免加载空白问题
-            if(TextUtils.isEmpty(mBottomTab.getTabSelectUrl())||
-                    TextUtils.isEmpty(mBottomTab.getTabUnSelectUrl())){
-                mTabIcon.setImageResource(isSelect ?mBottomTab.getTabSelectIcon(): mBottomTab.getTabUnSelectIcon());
-            }else{
-                Glide.with(mContext).load(isSelect?mBottomTab.getTabSelectUrl():mBottomTab.getTabUnSelectUrl())
+            if (TextUtils.isEmpty(mBottomTab.getTabSelectUrl()) ||
+                    TextUtils.isEmpty(mBottomTab.getTabUnSelectUrl())) {
+                mTabIcon.setImageResource(isSelect ? mBottomTab.getTabSelectIcon() : mBottomTab.getTabUnSelectIcon());
+            } else {
+                Glide.with(mContext).load(isSelect ? mBottomTab.getTabSelectUrl() : mBottomTab.getTabUnSelectUrl())
                         .into(mTabIcon);
             }
         }
@@ -194,8 +194,8 @@ public class BottomTabLayout extends LinearLayout {
     /**
      * 设置回调实现
      */
-    public void setOnTabChangeListener(OnTabChangeListener mOnTabChangeListener){
-        this.mOnTabChangeListener=mOnTabChangeListener;
+    public void setOnTabChangeListener(OnTabChangeListener mOnTabChangeListener) {
+        this.mOnTabChangeListener = mOnTabChangeListener;
     }
 
     /**
@@ -205,6 +205,7 @@ public class BottomTabLayout extends LinearLayout {
     public interface OnTabChangeListener {
         //tab选择回调
         void onTabSelect(int position);
+
         //tab重复选择回调
         void onTabSelected(int position);
     }

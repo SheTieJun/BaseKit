@@ -18,7 +18,7 @@ public class AFragmentStateAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return   BlankFragment.Companion.newInstance(position);
+        return BlankFragment.Companion.newInstance(position);
     }
 
     @Override

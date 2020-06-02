@@ -71,6 +71,7 @@ object EmptyViewUtils {
         emptyTextView.text = ""
         return emptyView
     }
+
     @JvmStatic
     fun getEmptyView(context: Activity, msg: String, @DrawableRes image: Int): View {
         val emptyView = LayoutInflater.from(context).inflate(R.layout.base_empty_date_view, null)
@@ -80,6 +81,7 @@ object EmptyViewUtils {
         emptyImage.setImageResource(image)
         return emptyView
     }
+
     @JvmStatic
     fun getEmptyView(context: Activity, msg: String): View {
         val emptyView = LayoutInflater.from(context).inflate(R.layout.base_empty_date_view, null)

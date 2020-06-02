@@ -10,11 +10,11 @@ package shetj.me.base.common.tag;
  */
 
 public interface SPKey {
-	String SAVE_TOKEN = "save_token";
-	String SAVE_TOKEN_TIME = "save_token_time";
-	String SAVE_USER = "save_userInfo";
-	String SAVE_USER_PHONE = "save_user_phone";
-	String SAVE_USER_NAME = "save_user_name";
-	String SAVE_USER_ADDRESS = "save_user_address";
-	String SAVE_QINIU_TOKEN = "save_qiniu_token";
+    String SAVE_TOKEN = "save_token";
+    String SAVE_TOKEN_TIME = "save_token_time";
+    String SAVE_USER = "save_userInfo";
+    String SAVE_USER_PHONE = "save_user_phone";
+    String SAVE_USER_NAME = "save_user_name";
+    String SAVE_USER_ADDRESS = "save_user_address";
+    String SAVE_QINIU_TOKEN = "save_qiniu_token";
 }

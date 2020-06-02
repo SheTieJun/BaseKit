@@ -20,19 +20,18 @@ class NetInfoUtils {
     //NET_CAPABILITY_WIFI_P2P:Wifi Peer to Peer(Wifi Direct)，网络支持WIFI直连
     //NET_CAPABILITY_INTERNET：网络支持互联网访问
 
-    fun Context.requestNetWork(){
-        val  cm =  getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-        val builder =   NetworkRequest.Builder()
+    fun Context.requestNetWork() {
+        val cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val builder = NetworkRequest.Builder()
         val request = builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
                 .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
                 .build()
-        cm.requestNetwork(request, object :ConnectivityManager.NetworkCallback() {
+        cm.requestNetwork(request, object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
                 Timber.i("网络连接了")
             }
-
 
 
             override fun onUnavailable() {
@@ -40,7 +39,7 @@ class NetInfoUtils {
                 Timber.i("网络断开了")
             }
 
-            override fun onCapabilitiesChanged(network: Network?, networkCapabilities: NetworkCapabilities) {
+            override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
                 super.onCapabilitiesChanged(network, networkCapabilities)
                 if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
                     if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {

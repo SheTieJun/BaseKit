@@ -24,7 +24,7 @@ public class DateUtils2 {
 
 
     /**
-     * 获取当前日期几月几号 
+     * 获取当前日期几月几号
      */
     public static String getDateString() {
 
@@ -55,21 +55,23 @@ public class DateUtils2 {
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         mYear = String.valueOf(c.get(Calendar.YEAR));// 获取当前年份
-        return  mYear ;
+        return mYear;
     }
 
     /**
-     *获取一个月前的日期
+     * 获取一个月前的日期
      */
     public static String getMonthAfter(int i) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, i);
         mMonth = String.valueOf(calendar.get(Calendar.MONTH) + 1);// 获取当前月份
-        return  mMonth ;
+        return mMonth;
     }
+
     /**
-     *获取一个月前的日期
+     * 获取一个月前的日期
+     *
      * @return
      */
     public static String getYearAfter(int i) {
@@ -77,12 +79,11 @@ public class DateUtils2 {
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, i);
         mYear = String.valueOf(calendar.get(Calendar.YEAR));// 获取当前年份
-        return  mYear ;
+        return mYear;
     }
 
     /**
-     * 获取当前是周几 
-     *
+     * 获取当前是周几
      */
     public static String getWeekString() {
         final Calendar c = Calendar.getInstance();
@@ -114,7 +115,7 @@ public class DateUtils2 {
     }
 
     /**
-     * 根据当前日期获得是星期几 
+     * 根据当前日期获得是星期几
      */
     public static String getWeek(String time) {
         String Week = "";
@@ -152,11 +153,10 @@ public class DateUtils2 {
 
     /**
      * 根据当前日期获得是星期几
-     *
      */
     public static int getDayWeek(String time) {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Calendar c = Calendar.getInstance();
         try {
             c.setTime(format.parse(time));
@@ -165,10 +165,10 @@ public class DateUtils2 {
             e.printStackTrace();
         }
         if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-           return 0;
+            return 0;
         }
         if (c.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
-           return 1;
+            return 1;
         }
         if (c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
             return 2;
@@ -189,12 +189,13 @@ public class DateUtils2 {
     }
 
     /**
-     * 获取今天往后一周的日期（年-月-日） */
+     * 获取今天往后一周的日期（年-月-日）
+     */
     public static List<String> get7date() {
         List<String> dates = new ArrayList<String>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String date = sim.format(c.getTime());
         dates.add(date);
         for (int i = 0; i < 6; i++) {
@@ -204,12 +205,13 @@ public class DateUtils2 {
         }
         return dates;
     }
+
     /**
      * 获取今天往后一周的日期（几月几号）
      */
 
-    public static  List<String> getSevenDate() {
-        List<String > dates = new ArrayList<String>();
+    public static List<String> getSevenDate() {
+        List<String> dates = new ArrayList<String>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
@@ -221,16 +223,17 @@ public class DateUtils2 {
             mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);
 
             //获取当前日份的日期号码
-            mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH)+i);
+            mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH) + i);
 
 
-            String date =mMonth + "月" + mDay + "日";
+            String date = mMonth + "月" + mDay + "日";
             dates.add(date);
         }
         return dates;
     }
-    public  static List<String> get7dateT() {
-        List<String > dates = new ArrayList<String>();
+
+    public static List<String> get7dateT() {
+        List<String> dates = new ArrayList<String>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
@@ -251,15 +254,15 @@ public class DateUtils2 {
     /**
      * 获取今天往后一周的集合
      */
-    public static List<String > get7week(){
-        String week="";
-        List<String > weeksList = new ArrayList<String>();
+    public static List<String> get7week() {
+        String week = "";
+        List<String> weeksList = new ArrayList<String>();
         List<String> dateList = get7date();
-        for(String s:dateList ){
+        for (String s : dateList) {
             if (s.equals(StringData())) {
-                week="今天";
-            }else {
-                week=getWeek(s);
+                week = "今天";
+            } else {
+                week = getWeek(s);
             }
             weeksList.add(week);
         }
@@ -274,12 +277,12 @@ public class DateUtils2 {
         return Integer.parseInt(mDay);
     }
 
-    public  static List<String> get7dateAndToday() {
-        List<String > dates = new ArrayList<>();
+    public static List<String> get7dateAndToday() {
+        List<String> dates = new ArrayList<>();
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         for (int i = 0; i < 7; i++) {
-            if (i != 0 ) {
+            if (i != 0) {
                 c.add(Calendar.DAY_OF_MONTH, 1);
             }
             String date = String.valueOf(c.get(Calendar.DAY_OF_MONTH));

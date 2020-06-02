@@ -28,10 +28,13 @@ abstract class BaseQMUIFragment<T : BasePresenter<*>> : QMUIFragment(), IView {
      * The M activity.
      */
     protected var mActivity: Context? = null
+
     /**是否可见状态 */
     protected var isShow: Boolean = false
+
     /**View已经初始化完成 */
     private var isPrepared: Boolean = false
+
     /**是否第一次加载完 */
     private var isFirstLoad = true
 

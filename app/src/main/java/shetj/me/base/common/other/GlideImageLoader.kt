@@ -24,14 +24,15 @@ import shetj.me.base.view.LoadingDialog
  * 加载图片三步走，1,with; 2,load; 3 into;
  * 取消图片也是三步走，1,with; 2,load; 3 clear;
  */
-class GlideImageLoader private constructor(): ImageLoader {
+class GlideImageLoader private constructor() : ImageLoader {
 
     companion object {
 
-      @Volatile private var instance: GlideImageLoader? = null
+        @Volatile
+        private var instance: GlideImageLoader? = null
 
         fun getInstance(): GlideImageLoader {
-            return instance?: synchronized(GlideImageLoader::class.java){
+            return instance ?: synchronized(GlideImageLoader::class.java) {
                 GlideImageLoader().also {
                     instance = it
                 }

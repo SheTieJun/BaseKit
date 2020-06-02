@@ -1,6 +1,5 @@
 package shetj.me.base.common.manager;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 
 import org.simple.eventbus.EventBus;
@@ -22,78 +21,78 @@ import shetj.me.base.common.tag.SPKey;
  */
 
 public class UserManager {
-	private static final UserManager OUR_INSTANCE = new UserManager();
-	private Context context = s.getApp().getApplicationContext();
-	private UserInfo custom;
+    private static final UserManager OUR_INSTANCE = new UserManager();
+    private Context context = s.getApp().getApplicationContext();
+    private UserInfo custom;
 
-	public static UserManager getInstance() {
-		return OUR_INSTANCE;
-	}
+    public static UserManager getInstance() {
+        return OUR_INSTANCE;
+    }
 
-	private UserManager() {
-		EventBus.getDefault().register(this);
-	}
-
-
-	public boolean isLoginNow() {
-		return TokenManager.getInstance().isLogin();
-	}
-
-	public boolean isLogin(Context context){
-		return true;
-	}
-
-	private void loginIn(Context context){
-
-	}
-
-	public void loginOut(){
-		custom = null;
-		TokenManager.getInstance().setToken("");
-		cleanUserInfo();
-	}
-
-	public UserInfo getUserInfo(){
-		if (isLoginNow() &&  custom == null ){
-			String userInfo = (String) SPUtils.Companion.get(context, SPKey.SAVE_USER, "");
-			if (EmptyUtils.isNotEmpty(userInfo)){
-				custom = GsonKit.jsonToBean(userInfo,UserInfo.class);
-			}
-		}
-		return custom;
-	}
-
-	public void saveUserInfo(String userInfo) {
-		SPUtils.Companion.put(context, SPKey.SAVE_USER,userInfo);
-	}
-
-	public void saveUserInfo(UserInfo userInfo, SimpleCallBack commonCallback) {
-		custom = userInfo;
-		TokenManager.getInstance().setToken(custom.getToken());
-		String toJson = GsonKit.objectToJson(userInfo);
-		if (toJson != null){
-			SPUtils.Companion.put(context, SPKey.SAVE_USER, toJson);
-		}
-
-	}
+    private UserManager() {
+        EventBus.getDefault().register(this);
+    }
 
 
-	private void cleanUserInfo(){
-		custom = null;
-		TokenManager.getInstance().setToken("");
-		SPUtils.Companion.put(context, SPKey.SAVE_USER,"");
-	}
+    public boolean isLoginNow() {
+        return TokenManager.getInstance().isLogin();
+    }
+
+    public boolean isLogin(Context context) {
+        return true;
+    }
+
+    private void loginIn(Context context) {
+
+    }
+
+    public void loginOut() {
+        custom = null;
+        TokenManager.getInstance().setToken("");
+        cleanUserInfo();
+    }
+
+    public UserInfo getUserInfo() {
+        if (isLoginNow() && custom == null) {
+            String userInfo = (String) SPUtils.Companion.get(context, SPKey.SAVE_USER, "");
+            if (EmptyUtils.isNotEmpty(userInfo)) {
+                custom = GsonKit.jsonToBean(userInfo, UserInfo.class);
+            }
+        }
+        return custom;
+    }
+
+    public void saveUserInfo(String userInfo) {
+        SPUtils.Companion.put(context, SPKey.SAVE_USER, userInfo);
+    }
+
+    public void saveUserInfo(UserInfo userInfo, SimpleCallBack commonCallback) {
+        custom = userInfo;
+        TokenManager.getInstance().setToken(custom.getToken());
+        String toJson = GsonKit.objectToJson(userInfo);
+        if (toJson != null) {
+            SPUtils.Companion.put(context, SPKey.SAVE_USER, toJson);
+        }
+
+    }
 
 
-	public  String  getUid(){
-		if (isLoginNow()) {
-			return getUserInfo().getUid();
-		}else {
-			return "";
-		}
-	}
+    private void cleanUserInfo() {
+        custom = null;
+        TokenManager.getInstance().setToken("");
+        SPUtils.Companion.put(context, SPKey.SAVE_USER, "");
+    }
 
-	public String getVip() {
-		return getUserInfo().is_vip();
-	}
+
+    public String getUid() {
+        if (isLoginNow()) {
+            return getUserInfo().getUid();
+        } else {
+            return "";
+        }
+    }
+
+    public String getVip() {
+        return getUserInfo().is_vip();
+    }
 }

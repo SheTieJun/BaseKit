@@ -11,7 +11,6 @@ import static shetj.me.base.common.tag.SPKey.SAVE_TOKEN;
 
 
 /**
- *
  * @author shetj
  * @date 2017/10/16
  */
@@ -19,40 +18,42 @@ import static shetj.me.base.common.tag.SPKey.SAVE_TOKEN;
 public class TokenManager {
 
 
-	private static TokenManager instance = null;
-	private TokenManager() {
-			EventBus.getDefault().register(this);
-	}
+    private static TokenManager instance = null;
 
-	public static TokenManager getInstance() {
-		if (instance == null) {
-			synchronized (TokenManager.class) {
-				if (instance == null) {
-					instance = new TokenManager();
-				}
-			}
-		}
-		return instance;
-	}
+    private TokenManager() {
+        EventBus.getDefault().register(this);
+    }
 
-
-	public  String  getToken() {
-			String token = (String) SPUtils.get(s.getApp().getApplicationContext(), SAVE_TOKEN, "");
-			if (EmptyUtils.Companion.isEmpty(token)){
-				return "";
-			}
-			return token;
-
-	}
-	public  boolean isLogin(){
-		String token= (String) SPUtils.get(s.getApp().getApplicationContext(), SAVE_TOKEN,"");
-		return EmptyUtils.Companion.isNotEmpty(token);
-	}
+    public static TokenManager getInstance() {
+        if (instance == null) {
+            synchronized (TokenManager.class) {
+                if (instance == null) {
+                    instance = new TokenManager();
+                }
+            }
+        }
+        return instance;
+    }
 
 
-	public void setToken(String token) {
-		SPUtils.put(s.getApp().getApplicationContext(), SAVE_TOKEN,token);
-	}
+    public String getToken() {
+        String token = (String) SPUtils.get(s.getApp().getApplicationContext(), SAVE_TOKEN, "");
+        if (EmptyUtils.Companion.isEmpty(token)) {
+            return "";
+        }
+        return token;
+
+    }
+
+    public boolean isLogin() {
+        String token = (String) SPUtils.get(s.getApp().getApplicationContext(), SAVE_TOKEN, "");
+        return EmptyUtils.Companion.isNotEmpty(token);
+    }
+
+
+    public void setToken(String token) {
+        SPUtils.put(s.getApp().getApplicationContext(), SAVE_TOKEN, token);
+    }
 
 
 }

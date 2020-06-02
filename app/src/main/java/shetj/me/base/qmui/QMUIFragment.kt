@@ -5,25 +5,22 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.view.ViewCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import com.qmuiteam.qmui.QMUILog
 import com.qmuiteam.qmui.util.QMUIKeyboardHelper
 import com.qmuiteam.qmui.util.QMUIViewHelper
 import com.trello.rxlifecycle3.components.support.RxFragment
-
-import java.lang.reflect.Field
-import java.lang.reflect.InvocationTargetException
-
 import me.shetj.base.R
 import timber.log.Timber
+import java.lang.reflect.Field
+import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 
@@ -176,7 +173,7 @@ abstract class QMUIFragment : RxFragment() {
 
         rootView.fitsSystemWindows = !translucentFull()
 
-        val swipeBackLayout = SwipeBackLayout.wrap(rootView, dragBackEdge(),object :SwipeBackLayout.Callback{
+        val swipeBackLayout = SwipeBackLayout.wrap(rootView, dragBackEdge(), object : SwipeBackLayout.Callback {
             override fun canSwipeBack(): Boolean {
                 if (mEnterAnimationStatus != ANIMATION_ENTER_STATUS_END) {
                     return false
@@ -233,7 +230,7 @@ abstract class QMUIFragment : RxFragment() {
                             }
                         }
                         val fragmentManager = fragmentManager
-                        Utils.findAndModifyOpInBackStackRecord(fragmentManager, -1,object :  Utils.OpHandler {
+                        Utils.findAndModifyOpInBackStackRecord(fragmentManager, -1, object : Utils.OpHandler {
                             override fun handle(op: Any): Boolean {
                                 val cmdField: Field
                                 try {
@@ -279,7 +276,7 @@ abstract class QMUIFragment : RxFragment() {
                                 ViewCompat.offsetLeftAndRight(view, targetOffset - view.left)
                             }
                             else -> {
-                                Timber.i("targetOffset = %s ; view.getLeft() = %s",+ targetOffset , view.left)
+                                Timber.i("targetOffset = %s ; view.getLeft() = %s", +targetOffset, view.left)
                                 ViewCompat.offsetLeftAndRight(view, -targetOffset - view.left)
                             }
                         }

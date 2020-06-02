@@ -1,6 +1,5 @@
 package me.shetj.base.tools.file
 
-import android.content.Context
 import me.shetj.base.s
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -42,7 +41,7 @@ object BaseProperties {
     /**
      * 保存到其他地方
      */
-    fun saveConfig(context: Context, file: String, properties: Properties) {
+    fun saveConfig(file: String, properties: Properties) {
         try {
             val s = FileOutputStream(file, false)
             properties.store(s, "")

@@ -10,6 +10,6 @@ package shetj.me.base.api;
  */
 
 public interface API {
-	String BASE_URL = "http://xxxx.cn/appapi/index.php/v1/";
-	String QINIU_GET_TOKEN = "get_qiniu_token";
+    String BASE_URL = "http://xxxx.cn/appapi/index.php/v1/";
+    String QINIU_GET_TOKEN = "get_qiniu_token";
 }

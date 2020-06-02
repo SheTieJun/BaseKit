@@ -13,7 +13,7 @@ import timber.log.Timber
 open class BaseCustomView
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
-        View(context, attrs, defStyle){
+        View(context, attrs, defStyle) {
     protected val defaultSize = ArmsUtils.dip2px(88f)
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -24,8 +24,8 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     //测量
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         Timber.i("onMeasure($widthMeasureSpec,$heightMeasureSpec)")
-        val width = measureWidth(widthMeasureSpec,defaultSize)
-        val height = measureHeight(heightMeasureSpec,defaultSize)
+        val width = measureWidth(widthMeasureSpec, defaultSize)
+        val height = measureHeight(heightMeasureSpec, defaultSize)
         setMeasuredDimension(width, height)
     }
 
@@ -60,8 +60,8 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
         if (specMode == MeasureSpec.EXACTLY) {
             result = specSize
         } else {
-            result = defaultSize +paddingTop +paddingBottom
-            if (specMode == MeasureSpec.AT_MOST){
+            result = defaultSize + paddingTop + paddingBottom
+            if (specMode == MeasureSpec.AT_MOST) {
                 result = result.coerceAtMost(specSize)
             }
         }
@@ -89,22 +89,22 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     /**
      * 绘制文字在中心
      */
-    fun drawnTextCenter(canvas: Canvas,text:String,paint: Paint){
+    fun drawnTextCenter(canvas: Canvas, text: String, paint: Paint) {
         val measureText = paint.measureText(text)
-        val x = width/2 - measureText / 2
-        val y = height/2 - getPaintTextYCenter(paint)
-        canvas.drawText(text,x,y,paint)
+        val x = width / 2 - measureText / 2
+        val y = height / 2 - getPaintTextYCenter(paint)
+        canvas.drawText(text, x, y, paint)
     }
 
-    open fun getPaintTextYCenter(paint: Paint):Float{
-        return  (paint.ascent() + paint.descent()) / 2
+    open fun getPaintTextYCenter(paint: Paint): Float {
+        return (paint.ascent() + paint.descent()) / 2
     }
 
     //强行绘制得到宽高
-    fun forceSpec(){
+    fun forceSpec() {
         val widthMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-        measure(widthMeasureSpec,heightMeasureSpec);
+        measure(widthMeasureSpec, heightMeasureSpec);
         Timber.i("widthMeasureSpec = $widthMeasureSpec \n heightMeasureSpec = $heightMeasureSpec")
     }
 }

@@ -63,7 +63,7 @@ abstract class QMUIFragmentActivity : RxAppCompatActivity() {
                         transitionConfig.popenter, transitionConfig.popout)
                 .replace(contextViewId, fragment, tagName)
         val index = transaction.commit()
-        Utils.findAndModifyOpInBackStackRecord(fragmentManager, -1, object :  Utils.OpHandler {
+        Utils.findAndModifyOpInBackStackRecord(fragmentManager, -1, object : Utils.OpHandler {
             override fun handle(op: Any): Boolean {
                 val cmdField: Field?
                 try {

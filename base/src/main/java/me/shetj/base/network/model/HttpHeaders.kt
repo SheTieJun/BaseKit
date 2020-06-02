@@ -114,7 +114,7 @@ class HttpHeaders : Serializable {
                         Locale.getDefault().language + "_" + Locale.getDefault().country,
                         checkNameAndValue(Build.MANUFACTURER),
                         Build.VERSION.SDK_INT,
-                        BuildConfig.FLAVOR,
+                        BuildConfig.BUILD_TYPE,
                         BuildConfig.VERSION_CODE)
 
         /**

@@ -21,7 +21,7 @@ object StreamUtils {
 
             val buffer = ByteArray(1024)
             var len = inputStream.read(buffer)
-            while (len!= -1) {
+            while (len != -1) {
                 out.write(buffer, 0, len)
                 out.flush()
                 len = inputStream.read(buffer)

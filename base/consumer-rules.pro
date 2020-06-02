@@ -273,13 +273,6 @@
 -dontwarn io.reactivex.internal.util.unsafe.**
 
 
-#easyHttp
--keep class com.zhouyou.http.model.** {*;}
--keep class com.zhouyou.http.cache.model.** {*;}
--keep class com.zhouyou.http.cache.stategy.**
-
--keep class me.shetj.base.tools.**{}
-
 #retrofit
 -dontwarn okio.**
 -dontwarn javax.annotation.**

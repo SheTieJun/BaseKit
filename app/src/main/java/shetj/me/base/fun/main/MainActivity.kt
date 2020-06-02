@@ -57,7 +57,7 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
         })
 
         btn_test_tip.setOnClickListener {
-            TipPopupWindow.showTipMsg(this,view = toolbar,tipMsg = "测试一下INFO")
+            TipPopupWindow.showTipMsg(this, view = toolbar, tipMsg = "测试一下INFO")
         }
         netTest()
         imgTest()
@@ -74,27 +74,27 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
 
     private fun netTest() {
         btn_test_net.setOnClickListener {
-    //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-    //                    .executeCus(object : SimpleNetCallBack<ResultMusic>(this) {
-    //                        override fun onSuccess(data: ResultMusic) {
-    //                            super.onSuccess(data)
-    //                            Timber.i(data.toJson())
-    //                        }
-    //
-    //                        override fun onError(e: Exception) {
-    //                            super.onError(e)
-    //                            Timber.e(e)
-    //                        }
-    //                    })
+            //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+            //                    .executeCus(object : SimpleNetCallBack<ResultMusic>(this) {
+            //                        override fun onSuccess(data: ResultMusic) {
+            //                            super.onSuccess(data)
+            //                            Timber.i(data.toJson())
+            //                        }
+            //
+            //                        override fun onError(e: Exception) {
+            //                            super.onError(e)
+            //                            Timber.e(e)
+            //                        }
+            //                    })
 
-    //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-    //                    .executeCus(ResultMusic::class.java)
-    //                    .map { it.data }
-    //                    .subscribe ({
-    //                        Timber.i(it.toJson())
-    //                    },{
-    //                        Timber.e(it)
-    //                    })
+            //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+            //                    .executeCus(ResultMusic::class.java)
+            //                    .map { it.data }
+            //                    .subscribe ({
+            //                        Timber.i(it.toJson())
+            //                    },{
+            //                        Timber.e(it)
+            //                    })
 
             RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
                     .executeCus(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
@@ -110,18 +110,18 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
                     })
 
 
-    //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-    //                    .execute(object : SimpleNetCallBack<List<MusicBean>>(this) {
-    //                        override fun onSuccess(data: List<MusicBean>) {
-    //                            super.onSuccess(data)
-    //                            Timber.i(data.toJson())
-    //                        }
-    //
-    //                        override fun onError(e: Exception) {
-    //                            super.onError(e)
-    //                            Timber.e(e)
-    //                        }
-    //                    })
+            //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+            //                    .execute(object : SimpleNetCallBack<List<MusicBean>>(this) {
+            //                        override fun onSuccess(data: List<MusicBean>) {
+            //                            super.onSuccess(data)
+            //                            Timber.i(data.toJson())
+            //                        }
+            //
+            //                        override fun onError(e: Exception) {
+            //                            super.onError(e)
+            //                            Timber.e(e)
+            //                        }
+            //                    })
 
         }
     }

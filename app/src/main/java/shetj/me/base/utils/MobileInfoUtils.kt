@@ -85,7 +85,7 @@ object MobileInfoUtils {
             //一天提醒一次
             SPUtils.put(activity, "AutoStart" + shetj.me.base.utils.TimeUtil.getYMDime(), false)
             try {
-                 MaterialDialog(activity).show{
+                MaterialDialog(activity).show {
                     title(R.string.base_title)
                     message(text = "由于安卓系统设置，为获取最新的信息推送，请手动开启自启动权限！")
                     positiveButton(text = "立即设置") { dialog ->
@@ -97,7 +97,7 @@ object MobileInfoUtils {
                         }
                         dialog.dismiss()
                     }
-                     negativeButton(text = "暂不设置" )  { dialog ->
+                    negativeButton(text = "暂不设置") { dialog ->
                         dialog.dismiss()
                         SPUtils.put(activity, "AutoStart" + AppUtils.appVersionCode, false)
                     }

@@ -13,7 +13,7 @@ import me.shetj.base.kt.loadImage
 
 class BaseBindingAdapter {
 
-    @BindingAdapter(value = ["android:onClick", "android:clickable"],requireAll = false)
+    @BindingAdapter(value = ["android:onClick", "android:clickable"], requireAll = false)
     fun setOnClick(view: View, clickListener: View.OnClickListener?,
                    clickable: Boolean) {
         view.setOnClickListener(clickListener)
@@ -24,12 +24,12 @@ class BaseBindingAdapter {
     @BindingAdapter("android:onLayoutChange")
     fun setOnLayoutChangeListener(view: View, oldValue: View.OnLayoutChangeListener?,
                                   newValue: View.OnLayoutChangeListener?) {
-            if (oldValue != null) {
-                view.removeOnLayoutChangeListener(oldValue)
-            }
-            if (newValue != null) {
-                view.addOnLayoutChangeListener(newValue)
-            }
+        if (oldValue != null) {
+            view.removeOnLayoutChangeListener(oldValue)
+        }
+        if (newValue != null) {
+            view.addOnLayoutChangeListener(newValue)
+        }
     }
 
     /**
@@ -39,10 +39,10 @@ class BaseBindingAdapter {
     app:imageUrl="@{product.imageUrl}"/>
      */
     @BindingAdapter("imageUrl")
-    fun setImageUrl(imageView: ImageView,url:String?) {
-        if (url == null){
+    fun setImageUrl(imageView: ImageView, url: String?) {
+        if (url == null) {
             imageView.setImageDrawable(null)
-        }else{
+        } else {
             imageView.loadImage(obj = url)
         }
     }
@@ -55,7 +55,7 @@ class BaseBindingAdapter {
     fun setProgressBarColor(loader: ProgressBar?, color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             loader?.indeterminateDrawable?.colorFilter = BlendModeColorFilter(color, BlendMode.SRC_IN)
-        }else{
+        } else {
             loader?.indeterminateDrawable?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
         }
     }

@@ -11,8 +11,8 @@ import me.shetj.base.base.BaseModel;
  * <b>@describe</b><br>
  */
 class CommonModel extends BaseModel {
-	@Override
-	public void onDestroy() {
+    @Override
+    public void onDestroy() {
 
-	}
+    }
 }

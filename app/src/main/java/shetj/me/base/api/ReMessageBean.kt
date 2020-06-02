@@ -9,7 +9,7 @@ package shetj.me.base.api
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b><br>
  */
-class ReMessageBean{
-      var code: String? = null
-      var msg: String? = null
+class ReMessageBean {
+    var code: String? = null
+    var msg: String? = null
 }

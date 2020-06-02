@@ -4,21 +4,19 @@ import me.shetj.base.base.BaseIntentService;
 
 /**
  * 初始化
+ *
  * @author shetj
  */
 public class InitService extends BaseIntentService {
 
-	public InitService(String name) {
-		super(name);
-	}
+    public InitService(String name) {
+        super(name);
+    }
 
-	@Override
-	public void init() {
+    @Override
+    public void init() {
 
-	}
-
-
-
+    }
 
 
 }

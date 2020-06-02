@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
@@ -264,7 +263,7 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
      * @see .EDGE_BOTTOM
      */
     fun setShadow(resId: Int, edgeFlag: Int) {
-        ContextCompat.getDrawable(context,resId)?.let { setShadow(it, edgeFlag) }
+        ContextCompat.getDrawable(context, resId)?.let { setShadow(it, edgeFlag) }
     }
 
     /**
@@ -477,7 +476,7 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
             var top = 0
             if (mTrackingEdge and EDGE_LEFT != 0) {
                 left = if (xvel > 0 || xvel == 0f && mScrollPercent > mScrollThreshold)
-                    childWidth+ mShadowLeft!!.intrinsicWidth + OVERSCROLL_DISTANCE
+                    childWidth + mShadowLeft!!.intrinsicWidth + OVERSCROLL_DISTANCE
                 else
                     0
             } else if (mTrackingEdge and EDGE_RIGHT != 0) {

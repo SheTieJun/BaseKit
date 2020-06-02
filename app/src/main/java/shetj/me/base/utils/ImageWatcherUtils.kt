@@ -38,7 +38,8 @@ import kotlin.math.min
 @Suppress("DEPRECATION")
 class ImageWatcherUtils(activity: Activity) {
     private val iwHelper: ImageWatcherHelper
-    private val maxSize = getMaxTextureSize()/2-1000
+    private val maxSize = getMaxTextureSize() / 2 - 1000
+
     init {
         iwHelper = ImageWatcherHelper.with(activity) { context, uri, loadCallback ->
             Glide.with(context).load(uri)
@@ -49,9 +50,9 @@ class ImageWatcherUtils(activity: Activity) {
                                     .map {
                                         zoomDrawable(context, it)
                                     }.observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe( {
+                                    .subscribe({
                                         loadCallback.onResourceReady(it)
-                                    },{
+                                    }, {
                                         Timber.i("ImageWatcherUtils:${it.message}")
                                     })
 
@@ -74,19 +75,19 @@ class ImageWatcherUtils(activity: Activity) {
 
     fun zoomDrawable(context: Context, drawable: Drawable): Drawable? {
 
-        return if (drawable.intrinsicHeight  >= maxSize || drawable.intrinsicWidth >= maxSize) {
+        return if (drawable.intrinsicHeight >= maxSize || drawable.intrinsicWidth >= maxSize) {
             val width = drawable.intrinsicWidth
             val height = drawable.intrinsicHeight
             val oldbmp = drawableToBitmap(drawable) // drawable 转换成 bitmap
             val matrix = Matrix() // 创建操作图片用的 Matrix 对象
-            val scaleWidth =  maxSize.toFloat()/width // 计算缩放比例
-            val scaleHeight = maxSize.toFloat()/height
+            val scaleWidth = maxSize.toFloat() / width // 计算缩放比例
+            val scaleHeight = maxSize.toFloat() / height
             val min = min(scaleWidth, scaleHeight)
             matrix.postScale(min, min) // 设置缩放比例
             val newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true) // 建立新的 bitmap ，其内容是对原 bitmap 的缩放后的图
             oldbmp.recycle()
             BitmapDrawable(context.resources, newbmp) // 把 bitmap 转换成 drawable 并返回
-        }else{
+        } else {
             drawable
         }
     }
@@ -126,8 +127,8 @@ class ImageWatcherUtils(activity: Activity) {
         iwHelper.show(imageView, mapping, convert(dataList))
     }
 
-    fun showPic( dataList: List<String>, position: Int){
-        iwHelper.show(convert(dataList),position)
+    fun showPic(dataList: List<String>, position: Int) {
+        iwHelper.show(convert(dataList), position)
     }
 
     fun showPic(imageView: ImageView, dataList: List<String>, mapping: SparseArray<ImageView>) {

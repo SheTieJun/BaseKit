@@ -32,7 +32,7 @@ object s {
      */
     @JvmOverloads
     @JvmStatic
-    fun init(application: Application, isDebug: Boolean, baseUrl: String?) {
+    fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
         Utils.init(application)
         TimberUtil.setLogAuto(isDebug)
         if (isDebug) {

@@ -17,7 +17,7 @@ import kotlin.system.measureTimeMillis
 
 class KtTestActivity : BaseActivity<MainPresenter>() {
 
-    val scope =CoroutineScope(Dispatchers.Main)
+    val scope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +56,6 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
         }
 
 
-
         val async = GlobalScope.async {
             delay(100)
 
@@ -65,7 +64,7 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
 
 
 
-        print( async.isCompleted)
+        print(async.isCompleted)
 
         //阻塞主线程
         runBlocking {
@@ -82,7 +81,7 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
 //        val async1 = async {
 //
 //        }
-        runBlocking{
+        runBlocking {
 
             launch { // 运行在父协程的上下文中，即 runBlocking 主协程
                 println("main runBlocking      : I'm working in thread ${Thread.currentThread().name}")
@@ -102,7 +101,7 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
 
 
             //挂起函数
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
 
             }
             val launch = launch {
@@ -140,7 +139,7 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
 
             }
             async.start()
-    //        async.await()
+            //        async.await()
 
             print("")
         }
@@ -154,12 +153,10 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
         "ss".toMessage {
             return@toMessage
         }
-        runOnIo{
+        runOnIo {
             return@runOnIo
         }
     }
-
-
 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/clickStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp">
+    style="@style/clickStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 
     <ImageView
         android:id="@+id/tab_item_icon"
@@ -12,7 +12,7 @@
         android:layout_height="32dp"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/tab_item_name"
@@ -22,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="2px"
         android:singleLine="true"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tab_item_num"
@@ -40,5 +40,5 @@
         android:background="@drawable/tab_num_view"
         android:textSize="10sp"
         android:textColor="@android:color/white"
-        android:text=""/>
+        android:text="" />
 </RelativeLayout>

@@ -6,9 +6,9 @@ buildscript {
     ext.androidx = "1.0.0"
     ext.androidx_2 = "1.2.0"
     ext.compileSdkVersion       = 29
-    ext.minVersion              = 19
-    ext.versionCode             = 6
-    ext.versionName             = "0.0.8"
+    ext.minVersion              = 21
+    ext.versionCode             = 7
+    ext.versionName             = "0.0.9"
     ext.gosnVersion             = "2.8.5"
 
     repositories {
@@ -20,7 +20,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Add this line
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'

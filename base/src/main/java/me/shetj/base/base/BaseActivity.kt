@@ -1,6 +1,7 @@
 package me.shetj.base.base
 
 
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -77,6 +78,15 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     open fun setTitle(title: String) {
         findViewById<TextView>(R.id.toolbar_title)?.apply {
             text = title
+        }
+    }
+
+    //设置横竖屏
+    open fun setOrientation(landscape: Boolean) {
+        requestedOrientation = if (landscape) {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
 
