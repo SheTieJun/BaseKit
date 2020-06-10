@@ -118,7 +118,7 @@ dependencies {
 
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
 
-    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.airbnb.android:lottie:3.4.0'
 
     //腾讯Android开发框架

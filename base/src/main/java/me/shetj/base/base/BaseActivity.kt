@@ -21,7 +21,7 @@ import kotlinx.coroutines.cancelChildren
 import me.shetj.base.R
 import me.shetj.base.kt.toJson
 import me.shetj.base.s
-import me.shetj.base.tools.app.HideUtil
+import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.json.EmptyUtils
 import org.simple.eventbus.EventBus
 import timber.log.Timber
@@ -55,7 +55,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     open fun onActivityCreate() {
-        HideUtil.init(this)
+        KeyboardUtil.init(this)
         if (useEventBus()) {
             //注册到事件主线
             EventBus.getDefault().register(this)
@@ -141,7 +141,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
     }
 
     override fun onBackPressed() {
-        HideUtil.hideSoftKeyboard(rxContext)
+        KeyboardUtil.hideSoftKeyboard(rxContext)
         super.onBackPressed()
     }
 

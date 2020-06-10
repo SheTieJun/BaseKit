@@ -1,11 +1,15 @@
 package shetj.me.base.`fun`.main
 
+import android.animation.ValueAnimator
+import android.animation.ValueAnimator.REVERSE
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.animation.*
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.animation.addListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
@@ -58,6 +62,28 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
 
         btn_test_tip.setOnClickListener {
             TipPopupWindow.showTipMsg(this, view = toolbar, tipMsg = "测试一下INFO")
+        }
+
+        tv_test_number.setOnClickListener { text ->
+
+            val va = ValueAnimator.ofInt(0, 50).apply {
+                duration = 300
+                interpolator = DecelerateInterpolator()
+                this.addUpdateListener {
+                    (text as TextView).text = "X${(it.animatedValue as Int)}"
+                }
+                addListener(onStart = {
+                    tv_test_number.animation =  AnimationUtils.loadAnimation(this@MainActivity,R.anim.zoom_in)?.apply {
+                        interpolator = OvershootInterpolator()
+                        repeatCount = -1
+                        repeatMode = REVERSE
+                    }
+                },onEnd = {
+                    tv_test_number.clearAnimation()
+                })
+            }
+            va.start()
+
         }
         netTest()
         imgTest()

@@ -13,8 +13,6 @@ abstract class BaseAdapter<T, K : BaseViewHolder>
                           data: MutableList<T>? = null)
     : BaseQuickAdapter<T, K>(layoutResId, data) {
 
-    private var requestOptions: RequestOptions? = null
-
     protected fun getString(@StringRes resId: Int): String {
         return context.getString(resId)
     }
@@ -31,13 +29,6 @@ abstract class BaseAdapter<T, K : BaseViewHolder>
     protected fun getDrawable(@DrawableRes id: Int): Drawable? {
         return ContextCompat.getDrawable(context, id)
     }
-
-    protected val defaultRequestOptions: RequestOptions
-        get() {
-            return requestOptions ?: getRequestOptions().apply {
-                requestOptions = this
-            }
-        }
 
     protected fun getDimension(@DimenRes id: Int): Float {
         return context.resources.getDimension(id)

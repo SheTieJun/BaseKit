@@ -58,6 +58,16 @@
         android:text="测试codeutils"
         app:layout_constraintStart_toEndOf="@+id/btn_test"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_test_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="测试"
+        android:textSize="50sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_test_code"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <Button

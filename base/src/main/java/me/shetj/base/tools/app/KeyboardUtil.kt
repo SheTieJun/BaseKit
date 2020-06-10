@@ -16,7 +16,7 @@ import androidx.annotation.Keep
 import androidx.recyclerview.widget.RecyclerView
 
 @Keep
-class HideUtil private constructor(activity: Activity, private var content: ViewGroup?) {
+class KeyboardUtil private constructor(activity: Activity, private var content: ViewGroup?) {
 
     init {
         if (content == null) {
@@ -106,7 +106,7 @@ class HideUtil private constructor(activity: Activity, private var content: View
          */
         @JvmStatic
         fun init(activity: Activity) {
-            HideUtil(activity, null)
+            KeyboardUtil(activity, null)
         }
 
         /**
@@ -117,7 +117,7 @@ class HideUtil private constructor(activity: Activity, private var content: View
          */
         @JvmStatic
         fun init(activity: Activity, content: ViewGroup) {
-            HideUtil(activity, content)
+            KeyboardUtil(activity, content)
         }
 
         /**
@@ -131,6 +131,33 @@ class HideUtil private constructor(activity: Activity, private var content: View
                 val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
+        }
+
+        @JvmStatic
+        fun requestFocusEdit(editText: EditText) {
+            editText.isEnabled = true
+            editText.isFocusable = true
+            editText.isFocusableInTouchMode = true
+            editText.requestFocus()
+            val inputManager = editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            editText.setSelection(editText.text.length)
+            inputManager.showSoftInput(editText, 0)
+        }
+
+
+        @JvmStatic
+        fun hideSoftInputMethod(editText: EditText?) {
+            editText?.apply {
+                val inputManager  =  editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(editText.applicationWindowToken, 0)
+                editText.clearFocus()
+            }
+        }
+
+        @JvmStatic
+        fun changeKeyBoard(activity: Activity){
+            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         }
     }
 }

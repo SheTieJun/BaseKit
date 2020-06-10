@@ -78,8 +78,6 @@ fun getRandomString(num: Int): String {
         val c = m[Random.nextInt(62)]
         //随机数之间没有重复的
         if (linkNo.contains(c.toString())) {
-            j--
-            j++
             continue
         }
         linkNo += c

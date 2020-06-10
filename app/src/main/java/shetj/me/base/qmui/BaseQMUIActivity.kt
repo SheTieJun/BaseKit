@@ -14,7 +14,7 @@ import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import me.shetj.base.R
 import me.shetj.base.base.BasePresenter
 import me.shetj.base.base.IView
-import me.shetj.base.tools.app.HideUtil
+import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
 import org.simple.eventbus.EventBus
@@ -40,7 +40,7 @@ abstract class BaseQMUIActivity<T : BasePresenter<*>> : QMUIFragmentActivity(), 
             //注册到事件主线
             EventBus.getDefault().register(this)
         }
-        HideUtil.init(this)
+        KeyboardUtil.init(this)
         startAnimation()
     }
 
@@ -132,7 +132,7 @@ abstract class BaseQMUIActivity<T : BasePresenter<*>> : QMUIFragmentActivity(), 
 
 
     override fun onBackPressed() {
-        HideUtil.hideSoftKeyboard(rxContext)
+        KeyboardUtil.hideSoftKeyboard(rxContext)
         super.onBackPressed()
         endAnimation()
         back()
