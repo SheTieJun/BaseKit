@@ -83,7 +83,7 @@ android {
             }
             if (requested.group == 'com.tencent.mm.opensdk') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion '5.1.4'
+                    details.useVersion '5.5.8'
                 }
             }
         }

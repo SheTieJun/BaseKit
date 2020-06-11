@@ -74,11 +74,6 @@ android {
                     details.useVersion "$glideVersion"
                 }
             }
-            if (requested.group == 'com.tencent.mm.opensdk') {
-                if (!requested.name.startsWith("multidex")) {
-                    details.useVersion '5.5.8'
-                }
-            }
         }
     }
 
