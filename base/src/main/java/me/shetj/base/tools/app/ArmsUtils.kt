@@ -24,8 +24,8 @@ import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import io.reactivex.annotations.NonNull
-import me.shetj.base.kt.setSwipeRefresh
-import me.shetj.base.kt.toMessage
+import me.shetj.base.ktx.setSwipeRefresh
+import me.shetj.base.ktx.toMessage
 import me.shetj.base.s
 import me.shetj.base.tools.file.SDCardUtils
 import java.io.File

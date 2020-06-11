@@ -19,6 +19,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.github.ielse.imagewatcher.ImageWatcherHelper
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import timber.log.Timber
 import java.util.*
 import javax.microedition.khronos.egl.EGL10
@@ -28,25 +30,22 @@ import javax.microedition.khronos.egl.EGLDisplay
 import kotlin.math.min
 
 /**
- * **@packageName：** shetj.me.base.utils<br></br>
- * **@author：** shetj<br></br>
- * **@createTime：** 2019/1/9 0009<br></br>
- * **@company：**<br></br>
- * **@email：** 375105540@qq.com<br></br>
- * **@describe**<br></br>
+ * 因为可能加载大图，所有自己多一层图片处理
  */
 @Suppress("DEPRECATION")
 class ImageWatcherUtils(activity: Activity) {
+
     private val iwHelper: ImageWatcherHelper
     private val maxSize = getMaxTextureSize() / 2 - 1000
+    private var mCompositeDisposable: CompositeDisposable? = null
 
     init {
         iwHelper = ImageWatcherHelper.with(activity) { context, uri, loadCallback ->
             Glide.with(context).load(uri)
                     //sim 加载原始大小图片
-                    .into(object : SimpleTarget<Drawable>() {
+                    .into(object : com.bumptech.glide.request.target.SimpleTarget<Drawable>() {
                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                            Flowable.just(resource)
+                            addDispose(Flowable.just(resource)
                                     .map {
                                         zoomDrawable(context, it)
                                     }.observeOn(AndroidSchedulers.mainThread())
@@ -54,8 +53,7 @@ class ImageWatcherUtils(activity: Activity) {
                                         loadCallback.onResourceReady(it)
                                     }, {
                                         Timber.i("ImageWatcherUtils:${it.message}")
-                                    })
-
+                                    }))
                         }
                     })
         }
@@ -78,21 +76,40 @@ class ImageWatcherUtils(activity: Activity) {
         return if (drawable.intrinsicHeight >= maxSize || drawable.intrinsicWidth >= maxSize) {
             val width = drawable.intrinsicWidth
             val height = drawable.intrinsicHeight
-            val oldbmp = drawableToBitmap(drawable) // drawable 转换成 bitmap
+            val oldBmp = drawableToBitmap(drawable) // drawable 转换成 bitmap
             val matrix = Matrix() // 创建操作图片用的 Matrix 对象
             val scaleWidth = maxSize.toFloat() / width // 计算缩放比例
             val scaleHeight = maxSize.toFloat() / height
             val min = min(scaleWidth, scaleHeight)
             matrix.postScale(min, min) // 设置缩放比例
-            val newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true) // 建立新的 bitmap ，其内容是对原 bitmap 的缩放后的图
-            oldbmp.recycle()
-            BitmapDrawable(context.resources, newbmp) // 把 bitmap 转换成 drawable 并返回
+            val newBmp = Bitmap.createBitmap(oldBmp, 0, 0, width, height, matrix, true) // 建立新的 bitmap ，其内容是对原 bitmap 的缩放后的图
+            oldBmp.recycle()
+            BitmapDrawable(context.resources, newBmp) // 把 bitmap 转换成 drawable 并返回
         } else {
             drawable
         }
     }
 
-    fun getMaxTextureSize(): Int { // Safe minimum default size
+    /**
+     * 将 [Disposable] 添加到 [CompositeDisposable] 中统一管理
+     * 可在[android.app.Activity.onDestroy] 释放
+     */
+    fun addDispose(disposable: Disposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = CompositeDisposable()
+        }
+        mCompositeDisposable?.add(disposable)
+    }
+
+    /**
+     * 停止集合中正在执行的 RxJava 任务
+     */
+    fun unDispose() {
+        mCompositeDisposable?.clear()
+    }
+
+
+    private fun getMaxTextureSize(): Int { // Safe minimum default size
         val IMAGE_MAX_BITMAP_DIMENSION = 2048
         // Get EGL Display
         val egl = EGLContext.getEGL() as EGL10
@@ -121,21 +138,28 @@ class ImageWatcherUtils(activity: Activity) {
     }
 
 
+    fun showPic(imageView: ImageView, url: String) {
+        val dataList = ArrayList<String>()
+        dataList.add(url)
+        showPic(imageView, dataList, 0)
+    }
+
     fun showPic(imageView: ImageView, dataList: List<String>, position: Int) {
         val mapping = SparseArray<ImageView>()
         mapping.put(position, imageView)
-        iwHelper.show(imageView, mapping, convert(dataList))
-    }
-
-    fun showPic(dataList: List<String>, position: Int) {
-        iwHelper.show(convert(dataList), position)
+        showPic(imageView, dataList, mapping)
     }
 
     fun showPic(imageView: ImageView, dataList: List<String>, mapping: SparseArray<ImageView>) {
-        iwHelper.show(imageView, mapping, convert(dataList))
+        showPic(imageView, mapping, convert(dataList))
     }
 
-    fun convert(data: List<String>): List<Uri> {
+    fun showPic(imageView: ImageView, mapping: SparseArray<ImageView>, dataList: List<Uri>) {
+        iwHelper.show(imageView, mapping, dataList)
+    }
+
+
+    private fun convert(data: List<String>): List<Uri> {
         val list = ArrayList<Uri>()
         for (datum in data) {
             list.add(Uri.parse(datum))
@@ -144,6 +168,7 @@ class ImageWatcherUtils(activity: Activity) {
     }
 
     fun onBackPressed(): Boolean {
+        unDispose()
         return !iwHelper.handleBackPressed()
     }
 

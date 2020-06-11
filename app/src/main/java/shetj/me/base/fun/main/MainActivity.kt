@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import me.shetj.base.base.BaseActivity
 import me.shetj.base.base.TaskExecutor
-import me.shetj.base.kt.toJson
+import me.shetj.base.ktx.toJson
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.tools.time.CodeUtil

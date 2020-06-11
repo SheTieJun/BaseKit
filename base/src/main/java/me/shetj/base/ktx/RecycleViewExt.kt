@@ -1,10 +1,9 @@
-package me.shetj.base.kt
+package me.shetj.base.ktx
 
 import android.content.Context
 import android.util.DisplayMetrics
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import java.text.FieldPosition
 
 
 /**

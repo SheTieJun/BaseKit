@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">base</string>
-    <!--footer-->
     <string name="base_empty_msg">暂无数据!</string>
-    <string name="base_title">推送管理</string>
 </resources>

@@ -4,10 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.text.TextUtils
 import me.shetj.base.BuildConfig
-import me.shetj.base.kt.toJson
+import me.shetj.base.ktx.toJson
 import me.shetj.base.tools.app.ArmsUtils.Companion.getString
 import me.shetj.base.tools.app.NetworkUtils
-import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.app.Utils.Companion.app
 import java.io.Serializable
 import java.text.ParseException

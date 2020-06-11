@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
-import me.shetj.base.kt.loadImage
+import me.shetj.base.ktx.loadImage
 
 class BaseBindingAdapter {
 

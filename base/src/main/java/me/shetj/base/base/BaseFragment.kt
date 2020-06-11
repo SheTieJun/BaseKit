@@ -13,10 +13,12 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import com.trello.rxlifecycle3.components.support.RxFragment
-import me.shetj.base.kt.toJson
+import me.shetj.base.ktx.toJson
 import me.shetj.base.s
 import me.shetj.base.tools.json.EmptyUtils
-import org.simple.eventbus.EventBus
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 /**
@@ -74,6 +76,13 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView, Lifecyc
         return true
     }
 
+    /**
+     * 让[EventBus] 默认主线程处理
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onEvent(message: Message) {
+
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden)

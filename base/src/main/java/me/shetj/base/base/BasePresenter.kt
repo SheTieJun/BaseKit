@@ -11,10 +11,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
-import me.shetj.base.kt.toMessage
-import org.simple.eventbus.EventBus
-import org.simple.eventbus.Subscriber
-import org.simple.eventbus.ThreadMode
+import me.shetj.base.ktx.toMessage
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -53,7 +53,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     /**
      * 让[EventBus] 默认主线程处理
      */
-    @Subscriber(mode = ThreadMode.MAIN, tag = "onMainEvent")
+    @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onEvent(message: Message) {
 
     }

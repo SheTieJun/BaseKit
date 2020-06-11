@@ -19,11 +19,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import me.shetj.base.R
-import me.shetj.base.kt.toJson
+import me.shetj.base.ktx.toJson
 import me.shetj.base.s
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.json.EmptyUtils
-import org.simple.eventbus.EventBus
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -73,6 +75,14 @@ abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView
         }
         coroutineContext.cancelChildren()
         mPresenter?.onDestroy()
+    }
+
+    /**
+     * 让[EventBus] 默认主线程处理
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    open fun onEvent(message: Message) {
+
     }
 
     open fun setTitle(title: String) {

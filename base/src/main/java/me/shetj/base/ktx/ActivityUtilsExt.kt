@@ -1,4 +1,4 @@
-package me.shetj.base.kt
+package me.shetj.base.ktx
 
 import android.app.Activity
 import android.content.Context

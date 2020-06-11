@@ -1,7 +1,7 @@
 package me.shetj.base.base
 
 import io.reactivex.android.schedulers.AndroidSchedulers
-import me.shetj.base.kt.isMainThread
+import me.shetj.base.ktx.isMainThread
 import java.util.concurrent.Executors
 
 class TaskExecutor private constructor() {

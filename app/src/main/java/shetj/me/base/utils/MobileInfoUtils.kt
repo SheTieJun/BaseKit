@@ -86,7 +86,7 @@ object MobileInfoUtils {
             SPUtils.put(activity, "AutoStart" + shetj.me.base.utils.TimeUtil.getYMDime(), false)
             try {
                 MaterialDialog(activity).show {
-                    title(R.string.base_title)
+                    title(R.string.app_name)
                     message(text = "由于安卓系统设置，为获取最新的信息推送，请手动开启自启动权限！")
                     positiveButton(text = "立即设置") { dialog ->
                         SPUtils.put(activity, "AutoStart", false)

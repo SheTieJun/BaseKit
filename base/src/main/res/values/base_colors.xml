@@ -4,47 +4,46 @@
     <color name="colorPrimaryDark">#037BFF</color>
     <color name="colorAccent">#037BFF</color>
 
-    <color name="black_overlay">#66000000</color>
-    <color name="line">#c9caca</color>
-    <color name="pink">#E91E63</color>
+    <!--100%	FF-->
+    <!--95%	F2-->
+    <!--90%	E6-->
+    <!--85%	D9-->
+    <!--80%	CC-->
+    <!--75%	BF-->
+    <!--70%	B3-->
+    <!--65%	A6-->
+    <!--60%	99-->
+    <!--55%	8C-->
+    <!--50%	80-->
+    <!--45%	73-->
+    <!--40%	66-->
+    <!--35%	59-->
+    <!--30%	4D-->
+    <!--25%	40-->
+    <!--20%	33-->
+    <!--15%	26-->
+    <!--10%	1A-->
+    <!--5%	0D-->
+    <!--0%	00-->
+    <!-- 烟白色 -->
+    <color name="whiteSmoke">#f4f4f4</color>
+
+    <!--灰色-->
+    <color name="deepGray">#D0D0D0</color>
+
+    <color name="statusBar">#f0f0f0</color>
 
     <color name="toolbar_color">#ffffff</color>
     <color name="toolbar_title_color">#DD000000</color>
 
+    <color name="textColor">#424242</color>
     <color name="loading_color">#037BFF</color>
-
-    <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="lineColor">#f3f3f3</color>
 
     <color name="halfTransparent">#66000000</color>
     <color name="transparent">#00000000</color>
     <color name="Transparent2a">#2a000000</color>
-    <!-- 烟白色 -->
-    <color name="whiteSmoke">#f4f4f4</color>
-    <color name="clayBank">#ff691d</color>
-    <color name="base_blue">#76B5FA</color>
-    <!--灰色-->
-    <color name="deepGray">#D0D0D0</color>
-    <color name="brown">#556B78</color>
-    <color name="textColor">#424242</color>
-    <!--淡灰色-->
-    <!--深灰色-->
-    <color name="dgray">#8C8C8C</color>
-    <color name="money_blue">#2CB4EB</color>
 
-    <color name="red">#FA2C2C</color>
-
-    <color name="line_color">#f3f3f3</color>
-
-    <color name="statusBar">#f0f0f0</color>
-    <color name="me_title_bg">#FF376F</color>
-    <color name="photo_title_bg">#21282C</color>
-    <color name="color_ff">#F0F0F0</color>
-    <color name="color_00">#8A000000</color>
-    <color name="actionSheet_gray">#8F8F8F</color>
-    <color name="actionSheet_blue">#2CB4EB</color>
-    <color name="alertDialog_line">#c6c6c6</color>
-    <color name="color_cbcbcf">#CBCBCF</color>
-    <color name="titleColor">#DD000000</color>
 
     <!--黑色：[87% 普通文字] [54% 减淡文字] [26% 禁用状态/提示文字] [12% 分隔线]
 白色：[100% 普通文字] [70% 减淡文字] [30% 禁用状态/提示文字] [12% 分隔线]-->
@@ -70,7 +69,6 @@
 
     <color name="mdtp_accent_color">#009688</color>
     <color name="mdtp_accent_color_dark">#00796b</color>
-
 
     <!--reds-->
     <color name="md_red_50">#fde0dc</color>

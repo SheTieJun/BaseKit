@@ -6,7 +6,7 @@ import android.os.IBinder
 import androidx.annotation.Keep
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.simple.eventbus.EventBus
+import org.greenrobot.eventbus.EventBus
 
 /**
  * ================================================

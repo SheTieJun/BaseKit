@@ -38,15 +38,14 @@
 #继承activity,application,service,broadcastReceiver,contentprovider....不进行混淆
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
--keep public class * extends android.support.multidex.MultiDexApplication
+-keep public class * extends androidx.multidex.MultiDexApplication
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class * extends android.view.View
--keep public class com.android.vending.licensing.ILicensingService
--keep class android.support.** {*;}
+-keep class androidx.* {*;}
 
 -keep public class * extends android.view.View{
     *** get*();
@@ -156,121 +155,52 @@
 -keep interface org.apache.http.**
 -dontwarn org.apache.**
 
-#okhttp3.x
--dontwarn com.squareup.okhttp3.**
--keep class com.squareup.okhttp3.** { *;}
--dontwarn okio.**
 
-## okhttp
--dontwarn com.squareup.okhttp.**
--keep class com.squareup.okhttp.{*;}
-#retrofit
--dontwarn retrofit.**
--keep class retrofit.** { *; }
--keepattributes Signature
--keepattributes Exceptions
--dontwarn okio.**
 
 
 #glide 4.x
-#由*	chenyongta*贡献混淆代码
-#作者Github地址：https://github.com/yourtion
 -keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
 }
-
-
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-   long producerIndex;
-   long consumerIndex;
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
 }
 
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
-
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
 
 ################gson###############
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
 -keepattributes Signature
--keepattributes *Annotation*
--keep class sun.misc.Unsafe { *; }
--keep class com.google.gson.stream.** { *; }
-# Application classes that will be serialized/deserialized over Gson
--keep class com.sunloto.shandong.bean.** { *; }
 
-################androidEventBus###############
--keep class org.simple.** { *; }
--keep interface org.simple.** { *; }
--keepclassmembers class * {
-    @org.simple.eventbus.Subscriber <methods>;
-}
+# For using GSON @Expose annotation
 -keepattributes *Annotation*
+
+# Gson specific classes
+-dontwarn sun.misc.**
+#-keep class com.google.gson.stream.** { *; }
+# Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * extends com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+# Prevent R8 from leaving Data object members always null
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
+##---------------End: proguard configuration for Gson  ----------
 
 ################RxJava and RxAndroid###############
 #Rxjava RxAndroid
--dontwarn rx.*
--dontwarn sun.misc.**
-
--dontwarn org.mockito.**
--dontwarn org.junit.**
--dontwarn org.robolectric.**
-
--keep class io.reactivex.** { *; }
--keep interface io.reactivex.** { *; }
-
--keepattributes Signature
--keepattributes *Annotation*
--keep class com.squareup.okhttp.** { *; }
--dontwarn okio.**
--keep interface com.squareup.okhttp.** { *; }
--dontwarn com.squareup.okhttp.**
-
--dontwarn io.reactivex.**
--dontwarn retrofit.**
--keep class retrofit.** { *; }
--keepclasseswithmembers class * {
-    @retrofit.http.* <methods>;
-}
-
--keep class sun.misc.Unsafe { *; }
-
--dontwarn java.lang.invoke.*
-
--keep class io.reactivex.schedulers.Schedulers {
-    public static <methods>;
-}
--keep class io.reactivex.schedulers.ImmediateScheduler {
-    public <methods>;
-}
--keep class io.reactivex.schedulers.TestScheduler {
-    public <methods>;
-}
--keep class io.reactivex.schedulers.Schedulers {
-    public static ** test();
-}
--keepclassmembers class io.reactivex.internal.util.unsafe.*ArrayQueue*Field* {
-    long producerIndex;
-    long consumerIndex;
-}
--keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    long producerNode;
-    long consumerNode;
-}
-
--keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    io.reactivex.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    io.reactivex.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
--dontwarn io.reactivex.internal.util.unsafe.**
+-dontwarn java.util.concurrent.Flow*
 
 
 #retrofit
@@ -282,3 +212,31 @@
 -dontwarn java.nio.**
 -dontwarn java.lang.invoke.**
 
+#okhttp
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+#okio
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+#//Eventbus
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# And if you use AsyncExecutor:
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}

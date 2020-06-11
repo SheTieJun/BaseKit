@@ -1,13 +1,11 @@
-package me.shetj.base.kt
+package me.shetj.base.ktx
 
 import android.content.Context
 import android.os.Message
-import androidx.annotation.ColorRes
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.base.tools.json.GsonKit
-import me.shetj.base.tools.json.HighStringFormatUtil
 import timber.log.Timber
 import kotlin.random.Random
 

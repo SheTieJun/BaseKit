@@ -2,7 +2,6 @@ package shetj.me.base.common.manager;
 
 import android.content.Context;
 
-import org.simple.eventbus.EventBus;
 
 import me.shetj.base.s;
 import me.shetj.base.sim.SimpleCallBack;
@@ -30,7 +29,6 @@ public class UserManager {
     }
 
     private UserManager() {
-        EventBus.getDefault().register(this);
     }
 
 
