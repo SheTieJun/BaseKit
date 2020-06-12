@@ -31,10 +31,10 @@ abstract class BaseSubscriber<T> : DisposableObserver<T> {
     override fun onError(e: Throwable) {
         Timber.i("-->http is onError")
         if (e is ApiException) {
-            Timber.i("--> e instanceof ApiException err:$e")
+            Timber.i("--> e is ApiException err:$e")
             onError(e)
         } else {
-            Timber.i("--> e !instanceof ApiException err:$e")
+            Timber.i("--> e is not ApiException err:$e")
             onError(ApiException.handleException(e))
         }
     }

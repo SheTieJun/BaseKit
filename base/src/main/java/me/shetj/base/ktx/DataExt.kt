@@ -1,6 +1,7 @@
 package me.shetj.base.ktx
 
 import android.content.Context
+import android.os.Bundle
 import android.os.Message
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
@@ -11,12 +12,19 @@ import kotlin.random.Random
 
 //region 转化成message
 @JvmOverloads
-inline fun <T> T.toMessage(code: Int = 1, crossinline action: (Message.() -> Unit) = {}): Message {
+inline fun Any.toMessage(code: Int = 1, crossinline action: (Message.() -> Unit) = {}): Message {
     return Message.obtain().apply {
         what = code
         obj = this@toMessage
         action.invoke(this)
     }
+}
+
+/**
+ * 获取参数
+ */
+inline fun <reified T> Bundle.getDataOrNull(key:String): T? {
+    return getSerializable(key) as? T
 }
 
 //endregion 转化成message
@@ -25,9 +33,9 @@ inline fun <T> T.toMessage(code: Int = 1, crossinline action: (Message.() -> Uni
 
 fun Any?.toJson() = this?.let { GsonKit.objectToJson(this) }
 
-fun <T> String.toBean(clazz: Class<T>) = GsonKit.jsonToBean(this, clazz)
+inline fun <reified T> String.toBean() = GsonKit.jsonToBean(this, T::class.java)
 
-fun <T> String.toBeanList(clazz: Class<T>) = GsonKit.jsonToList(this, clazz)
+inline fun <reified T> String.toBeanList() = GsonKit.jsonToList(this, T::class.java)
 
 fun String.toStringMap() = GsonKit.jsonToStringMap(this)
 
@@ -38,6 +46,9 @@ fun String.toMD5() = ArmsUtils.encodeToMD5(this)
 
 fun String.fromHtml() = parseAsHtml()
 
+/**
+ * 把1~9 之间加0
+ */
 fun Int.unitFormat(): String {
     return if (this in 0..9) "0$this" else "" + this
 }

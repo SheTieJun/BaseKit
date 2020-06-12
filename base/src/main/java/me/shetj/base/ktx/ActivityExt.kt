@@ -1,6 +1,7 @@
 package me.shetj.base.ktx
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import me.shetj.base.base.TaskExecutor
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.SoftKeyBoardListener
 import java.lang.reflect.Method
@@ -35,8 +37,8 @@ fun AppCompatActivity.isRoot() {
 }
 
 @JvmOverloads
-fun Context.start(activity: Class<*>, isFinish: Boolean = false) {
-    ArmsUtils.startActivity(this as AppCompatActivity, activity)
+inline fun <reified T:Activity> Context.start(isFinish: Boolean = false) {
+    ArmsUtils.startActivity(this as AppCompatActivity, T::class.java)
     if (isFinish) {
         finish()
     }
@@ -136,7 +138,7 @@ fun Context.hasPermission(vararg permissions: String): Boolean {
 }
 
 inline fun runOnMain(crossinline run: () -> Unit = {}) {
-    AndroidSchedulers.mainThread().scheduleDirect { run() }
+    TaskExecutor.getInstance().executeOnMainThread(Runnable { run() })
 }
 
 inline fun runOnIo(crossinline run: () -> Unit = { }) {

@@ -382,7 +382,7 @@ class ArmsUtils private constructor() {
                     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 }
 
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            } else {
                 if (navi) {
                     //半透明导航栏
                     activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
@@ -421,21 +421,16 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun fullScreencall(activity: Activity) {
-            if (Build.VERSION.SDK_INT < 19) {
-                val v = activity.window.decorView
-                v.systemUiVisibility = View.GONE
-            } else if (Build.VERSION.SDK_INT >= 19) {
-                val decorView = activity.window.decorView
-                decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-                if (Build.VERSION.SDK_INT >= 21) {
-                    activity.window.statusBarColor = Color.TRANSPARENT
-                    activity.window.navigationBarColor = Color.TRANSPARENT
-                }
+            val decorView = activity.window.decorView
+            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+            if (Build.VERSION.SDK_INT >= 21) {
+                activity.window.statusBarColor = Color.TRANSPARENT
+                activity.window.navigationBarColor = Color.TRANSPARENT
             }
         }
 
