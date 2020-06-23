@@ -27,7 +27,7 @@ import me.shetj.base.tools.app.ArmsUtils
 /**
  * 设置textView 的 Drawable
  */
-fun TextView.setCompoundDrawables(@DrawableRes resId: Int,
+fun TextView.setDrawables(@DrawableRes resId: Int,
                                   @Constant.GravityType gravity: Int = Gravity.TOP) {
     ContextCompat.getDrawable(context, resId)?.apply {
         setBounds(0, 0, minimumWidth, minimumHeight)
@@ -135,6 +135,30 @@ fun <T : View> T.isVisible(): Boolean {
 }
 
 fun <T : View> T.isNotVisible() = !isVisible()
+
+fun View?.setVisible(visible: Boolean) {
+    if (visible) {
+        if (this?.visibility != View.VISIBLE) {
+            this?.visibility = View.VISIBLE
+        }
+    } else {
+        if (this?.visibility != View.INVISIBLE) {
+            this?.visibility = View.INVISIBLE
+        }
+    }
+}
+
+fun View?.setVisibleOrGone(visible: Boolean) {
+    if (visible) {
+        if (this?.visibility != View.VISIBLE) {
+            this?.visibility = View.VISIBLE
+        }
+    } else {
+        if (this?.visibility != View.GONE) {
+            this?.visibility = View.GONE
+        }
+    }
+}
 
 fun <T : View> T.isRtl() = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 //endregion 泛型

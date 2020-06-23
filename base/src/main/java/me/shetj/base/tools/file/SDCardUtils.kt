@@ -13,10 +13,6 @@ import java.io.File
 @Suppress("DEPRECATION")
 @Keep
 class SDCardUtils private constructor() {
-    init {
-        /* cannot be instantiated */
-        throw UnsupportedOperationException("cannot be instantiated")
-    }
 
     companion object {
         /**
@@ -82,7 +78,7 @@ class SDCardUtils private constructor() {
          * mnt/sdcard/Android/data/< package name >/files/type
          * <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
          * <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
-         *   type =   {@link android.os.Environment#DIRECTORY_MUSIC},
+         *   type =   {{@link android.os.EnvironmentDIRECTORY_MUSIC}},
          *            {@link android.os.Environment#DIRECTORY_PODCASTS},
          *            {@link android.os.Environment#DIRECTORY_RINGTONES},
          *            {@link android.os.Environment#DIRECTORY_ALARMS},

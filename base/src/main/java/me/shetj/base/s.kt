@@ -23,6 +23,7 @@ object s {
         get() = Utils.app
 
     var isDebug = true
+        private set
 
     /**
      * 初始化

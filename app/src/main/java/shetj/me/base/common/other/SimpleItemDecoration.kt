@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class SimpleItemDecoration private constructor(context: Context, options: ItemDecorationOptions) : RecyclerView.ItemDecoration() {
-    private val dividerMainPaint: Paint
-    private val dividerSecondPaint: Paint
+    private val dividerMainPaint: Paint = Paint()
+    private val dividerSecondPaint: Paint = Paint()
     private val orientation: Int
 
     // 竖直方向
@@ -70,9 +70,7 @@ class SimpleItemDecoration private constructor(context: Context, options: ItemDe
     }
 
     init {
-        dividerMainPaint = Paint()
         dividerMainPaint.color = ContextCompat.getColor(context, options.mainColorId)
-        dividerSecondPaint = Paint()
         dividerSecondPaint.color = ContextCompat.getColor(context, options.secondColorId)
         orientation = options.orientation
         dividerHeight = options.dividerHeight

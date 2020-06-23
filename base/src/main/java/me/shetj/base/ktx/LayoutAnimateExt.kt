@@ -13,6 +13,10 @@ import androidx.transition.TransitionManager
  * 3.[LayoutTransition.DISAPPEARING] 子View从容器中移除时,其它子view位置改变的过渡动画
  * 4.[LayoutTransition.CHANGE_APPEARING] 变化出现
  * 5.[LayoutTransition.CHANGE_DISAPPEARING] 子View从容器中移除时的过渡动画效果
+ *
+ *   ObjectAnimator addAnimator = ObjectAnimator.ofFloat(null, "rotationY", 0, 90,0)
+ *               .setDuration(mTransitioner.getDuration(LayoutTransition.APPEARING));
+ *   mTransitioner.setAnimator(LayoutTransition.APPEARING, addAnimator);
  */
 inline fun ViewGroup?.addLayoutChangeAnim(crossinline updateAnimator: LayoutTransition.() -> Unit) {
     this?.layoutTransition?.apply {
@@ -24,17 +28,17 @@ inline fun ViewGroup?.addLayoutChangeAnim(crossinline updateAnimator: LayoutTran
 /**
  * 添加开始和结束监听
  */
-fun LayoutTransition?.addTransitionListener(start: (transition: LayoutTransition?, container: ViewGroup?,
+fun LayoutTransition?.addTransitionListener(startTransition: (transition: LayoutTransition?, container: ViewGroup?,
                                                     view: View?, transitionType: Int) -> Unit = { _: LayoutTransition?, _: ViewGroup?, _: View?, _: Int -> },
-                                            end: (transition: LayoutTransition?, container: ViewGroup?,
+                                            endTransition: (transition: LayoutTransition?, container: ViewGroup?,
                                                   view: View?, transitionType: Int) -> Unit = { _: LayoutTransition?, _: ViewGroup?, _: View?, _: Int -> }) {
     this?.addTransitionListener(object : LayoutTransition.TransitionListener {
         override fun startTransition(transition: LayoutTransition?, container: ViewGroup?, view: View?, transitionType: Int) {
-            start.invoke(transition, container, view, transitionType)
+            startTransition.invoke(transition, container, view, transitionType)
         }
 
         override fun endTransition(transition: LayoutTransition?, container: ViewGroup?, view: View?, transitionType: Int) {
-            end.invoke(transition, container, view, transitionType)
+            endTransition.invoke(transition, container, view, transitionType)
         }
     })
 }

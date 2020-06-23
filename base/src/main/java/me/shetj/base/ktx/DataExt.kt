@@ -12,7 +12,7 @@ import kotlin.random.Random
 
 //region 转化成message
 @JvmOverloads
-inline fun Any.toMessage(code: Int = 1, crossinline action: (Message.() -> Unit) = {}): Message {
+inline fun Any?.toMessage(code: Int = 1, crossinline action: (Message.() -> Unit) = {}): Message {
     return Message.obtain().apply {
         what = code
         obj = this@toMessage
@@ -23,28 +23,13 @@ inline fun Any.toMessage(code: Int = 1, crossinline action: (Message.() -> Unit)
 /**
  * 获取参数
  */
-inline fun <reified T> Bundle.getDataOrNull(key:String): T? {
-    return getSerializable(key) as? T
+inline fun <reified T> Bundle?.getDataOrNull(key: String): T? {
+    return this?.getSerializable(key) as? T
 }
 
 //endregion 转化成message
 
-//region Json相关
 
-fun Any?.toJson() = this?.let { GsonKit.objectToJson(this) }
-
-inline fun <reified T> String.toBean() = GsonKit.jsonToBean(this, T::class.java)
-
-inline fun <reified T> String.toBeanList() = GsonKit.jsonToList(this, T::class.java)
-
-fun String.toStringMap() = GsonKit.jsonToStringMap(this)
-
-//endregion Json相关
-
-//region String 相关
-fun String.toMD5() = ArmsUtils.encodeToMD5(this)
-
-fun String.fromHtml() = parseAsHtml()
 
 /**
  * 把1~9 之间加0
@@ -53,28 +38,15 @@ fun Int.unitFormat(): String {
     return if (this in 0..9) "0$this" else "" + this
 }
 
+fun Float.dp2px() = ArmsUtils.dip2px(this)
 
-fun Any.isEmpty() = EmptyUtils.isEmpty(this)
+fun Float.px2dp() = ArmsUtils.px2dip(this)
 
-@JvmOverloads
-fun String.copy(context: Context, action: (() -> Unit) = {}) {
-    //获取剪贴板管理器：
-    ArmsUtils.copyText(context, this)
-    action.invoke()
-}
+fun Any?.isEmpty() = EmptyUtils.isEmpty(this)
 
-//endregion String 相关
-
-//region log 相关
-fun String.log() {
+fun Throwable?.log() {
     Timber.i(this)
 }
-
-fun Throwable.log() {
-    Timber.i(this)
-}
-//endregion log 相关
-
 
 //region 获取随机数
 fun getRandomString(num: Int): String {
@@ -95,3 +67,7 @@ fun getRandomString(num: Int): String {
     return linkNo
 }
 //endregion
+
+fun <E> java.util.ArrayList<E>.addIfNotNull(element: E?) {
+    element?.let { this.add(it) }
+}

@@ -475,7 +475,7 @@ class ArmsUtils private constructor() {
         @JvmStatic
         fun getActivityHeight(context: Context?): Int {
             if (null == context) {
-                return 0
+                return getScreenHeight()
             }
             val outRect1 = Rect()
             try {

@@ -66,7 +66,7 @@ object GsonKit {
     @JvmStatic
     fun <T> jsonToList(@NonNull json: String, cls: Class<T>): List<T>? {
         return try {
-            return gson.fromJson(json, TypeToken.getParameterized(MutableList::class.java, cls).type)
+            return gson.fromJson(json, TypeToken.getParameterized(List::class.java, cls).type)
         } catch (e: Exception) {
             Timber.e(e)
             null

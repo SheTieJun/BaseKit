@@ -154,6 +154,9 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
             }
         }
 
+        /**
+         * 隐藏和显示切换
+         */
         @JvmStatic
         fun changeKeyBoard(activity: Activity){
             val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
