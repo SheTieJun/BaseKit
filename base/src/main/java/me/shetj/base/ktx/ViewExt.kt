@@ -165,6 +165,20 @@ fun <T : View> T.isRtl() = resources.configuration.layoutDirection == View.LAYOU
 
 
 //region View
+fun View?.disableClipOnParents() {
+    if (this == null) {
+        return
+    }
+    if (parent == null) {
+        return
+    }
+    if (this is ViewGroup) {
+        clipChildren = false
+    }
+    if (parent is View) {
+        (parent as View).disableClipOnParents()
+    }
+}
 /**
  * 点击动画
  */

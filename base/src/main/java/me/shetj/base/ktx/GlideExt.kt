@@ -5,8 +5,12 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import jp.wasabeef.glide.transformations.BlurTransformation
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 //region Glide 加载
 
@@ -38,6 +42,18 @@ fun ImageView.loadImage(obj: Any,
     Glide.with(context)
             .load(obj)
             .placeholder(placeholderDrawable)
+            .error(errorDrawable)
+            .into(this)
+}
+
+@JvmOverloads
+fun ImageView.loadBlurImage(obj: Any,
+                            placeholderDrawable: Drawable? = null,
+                            errorDrawable: Drawable? = null){
+    Glide.with(context)
+            .load(obj)
+            .placeholder(placeholderDrawable)
+            .apply(bitmapTransform(BlurTransformation()))
             .error(errorDrawable)
             .into(this)
 }

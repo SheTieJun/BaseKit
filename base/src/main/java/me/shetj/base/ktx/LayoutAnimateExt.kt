@@ -17,6 +17,9 @@ import androidx.transition.TransitionManager
  *   ObjectAnimator addAnimator = ObjectAnimator.ofFloat(null, "rotationY", 0, 90,0)
  *               .setDuration(mTransitioner.getDuration(LayoutTransition.APPEARING));
  *   mTransitioner.setAnimator(LayoutTransition.APPEARING, addAnimator);
+ *
+ *  注意这个地方存在一个 "BUG"
+ *   LayoutChangeAnim 如果隐藏再显示就会出现无法进行点击事件的BUG
  */
 inline fun ViewGroup?.addLayoutChangeAnim(crossinline updateAnimator: LayoutTransition.() -> Unit) {
     this?.layoutTransition?.apply {

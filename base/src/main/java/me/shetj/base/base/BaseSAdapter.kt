@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-abstract class BaseAdapter<T, K : BaseViewHolder>
+abstract class BaseSAdapter<T, K : BaseViewHolder>
 @JvmOverloads constructor(@LayoutRes layoutResId: Int,
                           data: MutableList<T>? = null)
     : BaseQuickAdapter<T, K>(layoutResId, data) {

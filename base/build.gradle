@@ -109,7 +109,7 @@ dependencies {
     api 'com.github.tbruyelle:rxpermissions:0.10.2'
     //图片加载
     api "com.github.bumptech.glide:glide:$glideVersion"
-
+    api 'jp.wasabeef:glide-transformations:4.1.0'
     //Rxlifecycle
     api 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
     api 'com.trello.rxlifecycle3:rxlifecycle-components:3.0.0'
