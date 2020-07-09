@@ -15,9 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.schedulers.Schedulers
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.tools.app.ArmsUtils
@@ -119,10 +117,6 @@ fun Context.collapseStatusBar() {
         localException.printStackTrace()
     }
 }
-
-fun AppCompatActivity.getRxPermissions() = RxPermissions(this)
-
-fun Fragment.getRxPermissions() = RxPermissions(this)
 
 /**
  * 针对6.0动态请求权限问题,判断是否允许此权限

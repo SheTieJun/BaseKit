@@ -12,7 +12,7 @@ buildscript {
     ext.gosnVersion             = "2.8.5"
     ext.glideVersion            = "4.11.0"
     ext.eventBus                = "3.2.0"
-    ext.constraintlayout        = "2.0.0-beta6"
+    ext.constraintlayout        = "2.0.0-beta7"
 
     repositories {
         google()
