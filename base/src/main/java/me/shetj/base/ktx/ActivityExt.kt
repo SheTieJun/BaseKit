@@ -18,7 +18,6 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.tbruyelle.rxpermissions2.RxPermissions
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.tools.app.ArmsUtils

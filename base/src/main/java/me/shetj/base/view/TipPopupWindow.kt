@@ -1,13 +1,10 @@
 package me.shetj.base.view
 
 
-import android.animation.Animator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.view.View
-import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -16,7 +13,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import me.shetj.base.R
 import java.util.concurrent.TimeUnit
-import kotlin.math.hypot
 
 /**
  * 消息提示框

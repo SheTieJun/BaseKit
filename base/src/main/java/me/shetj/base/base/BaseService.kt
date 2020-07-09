@@ -27,6 +27,7 @@ abstract class BaseService : Service() {
         super.onCreate()
         EventBus.getDefault().register(this)
         init()
+        stopForeground(true)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -38,7 +39,6 @@ abstract class BaseService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        stopForeground(true)
         EventBus.getDefault().unregister(this)
         unDispose()//解除订阅
         this.mCompositeDisposable = null

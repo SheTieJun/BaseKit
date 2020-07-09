@@ -5,12 +5,10 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import jp.wasabeef.glide.transformations.BlurTransformation
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 //region Glide 加载
 

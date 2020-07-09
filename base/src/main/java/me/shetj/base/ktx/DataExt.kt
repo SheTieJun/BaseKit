@@ -1,12 +1,9 @@
 package me.shetj.base.ktx
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Message
-import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
-import me.shetj.base.tools.json.GsonKit
 import timber.log.Timber
 import kotlin.random.Random
 

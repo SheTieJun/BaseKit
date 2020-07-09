@@ -35,8 +35,7 @@ class HeadsetBroadcastReceive : BroadcastReceiver() {
                 listener?.disConnected()
             }
             BluetoothAdapter.ACTION_STATE_CHANGED -> {
-                val blueState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
-                when (blueState) {
+                when (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0)) {
                     BluetoothAdapter.STATE_OFF -> {
                         //关闭
                         listener?.blueState(false)

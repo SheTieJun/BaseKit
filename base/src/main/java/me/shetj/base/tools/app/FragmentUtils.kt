@@ -2,7 +2,6 @@ package me.shetj.base.tools.app
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.AnimRes
 import androidx.annotation.IdRes

@@ -86,6 +86,11 @@ android {
                     details.useVersion '5.5.8'
                 }
             }
+            if (requested.group == 'com.github.bumptech.glide') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion "$glideVersion"
+                }
+            }
         }
     }
 }

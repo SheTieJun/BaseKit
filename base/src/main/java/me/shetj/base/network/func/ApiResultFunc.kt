@@ -4,7 +4,6 @@ import android.text.TextUtils
 import io.reactivex.functions.Function
 import me.shetj.base.network.kt.ClassUtils
 import me.shetj.base.network.model.ApiResult
-import me.shetj.base.tools.app.TimberUtil
 import me.shetj.base.tools.json.GsonKit.jsonToBean
 import okhttp3.ResponseBody
 import org.json.JSONException

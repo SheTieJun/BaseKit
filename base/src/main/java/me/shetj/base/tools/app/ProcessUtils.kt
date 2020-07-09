@@ -10,7 +10,6 @@ import android.content.pm.PackageManager
 import android.provider.Settings
 import androidx.annotation.Keep
 import timber.log.Timber
-import java.util.*
 
 @Suppress("DEPRECATION")
 @Keep

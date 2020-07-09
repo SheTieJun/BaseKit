@@ -6,7 +6,6 @@ import android.text.SpannableString
 import android.text.style.LeadingMarginSpan
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -125,40 +124,6 @@ inline fun <T : View> T?.waitForLayout(crossinline f: T.() -> Unit) =
                 }
             })
         }
-
-fun <T : View> T.isVisible(): Boolean {
-    return if (this is Button) {
-        this.visibility == View.VISIBLE && this.text.trim().isNotBlank()
-    } else {
-        this.visibility == View.VISIBLE
-    }
-}
-
-fun <T : View> T.isNotVisible() = !isVisible()
-
-fun View?.setVisible(visible: Boolean) {
-    if (visible) {
-        if (this?.visibility != View.VISIBLE) {
-            this?.visibility = View.VISIBLE
-        }
-    } else {
-        if (this?.visibility != View.INVISIBLE) {
-            this?.visibility = View.INVISIBLE
-        }
-    }
-}
-
-fun View?.setVisibleOrGone(visible: Boolean) {
-    if (visible) {
-        if (this?.visibility != View.VISIBLE) {
-            this?.visibility = View.VISIBLE
-        }
-    } else {
-        if (this?.visibility != View.GONE) {
-            this?.visibility = View.GONE
-        }
-    }
-}
 
 fun <T : View> T.isRtl() = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 //endregion 泛型
