@@ -2,6 +2,7 @@ package me.shetj.base
 
 import android.app.Application
 import androidx.annotation.Keep
+import androidx.lifecycle.ViewModelProvider
 import me.shetj.base.network.RxHttp.Companion.getInstance
 import me.shetj.base.tools.app.TimberUtil
 import me.shetj.base.tools.app.Utils
