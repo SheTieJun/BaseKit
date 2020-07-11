@@ -1,6 +1,6 @@
 package me.shetj.base.base
 
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import me.shetj.base.ktx.isMainThread
 import java.util.concurrent.Executors
 

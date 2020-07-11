@@ -4,8 +4,8 @@ import android.app.IntentService
 import android.content.Intent
 import android.os.IBinder
 import androidx.annotation.Keep
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 
 /**

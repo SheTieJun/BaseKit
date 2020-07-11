@@ -1,10 +1,11 @@
 package me.shetj.base.network.request
 
 import android.text.TextUtils
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.callBack.NetCallBack
@@ -263,7 +264,7 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     /**
      * 执行，自定义数据类型
      */
-    open fun <T> executeCus(callback: NetCallBack<T>): Disposable {
+    open fun <T> executeCus(callback: NetCallBack<T>):Disposable {
         return build().generateRequest()!!
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
@@ -275,6 +276,7 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
                 .onErrorResumeNext(HttpResponseFunc<T>())
                 .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
                 .subscribeWith(CallBackSubscriber<T>(callback))
+
     }
 
     /**

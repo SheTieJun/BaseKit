@@ -1,9 +1,9 @@
 package me.shetj.base.network.kt
 
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.schedulers.Schedulers
 import me.shetj.base.network.func.HandleFuc
 import me.shetj.base.network.func.HttpResponseFunc
 import me.shetj.base.network.model.ApiResult

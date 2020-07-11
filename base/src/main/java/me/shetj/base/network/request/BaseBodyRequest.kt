@@ -1,6 +1,6 @@
 package me.shetj.base.network.request
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import me.shetj.base.network.body.RequestBodyUtils
 import me.shetj.base.network.body.UploadProgressRequestBody
 import me.shetj.base.network.callBack.ProgressResponseCallBack

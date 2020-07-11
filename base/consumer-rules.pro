@@ -75,7 +75,7 @@
 }
 
 ###### 保存所有文件
--keep class me.shetj.base.*{
+-keep class me.shetj.base.**{
 *;
 }
 

@@ -122,7 +122,7 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
             //                        Timber.e(it)
             //                    })
 
-            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+            RxHttp.post("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
                     .executeCus(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
                         override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
                             super.onSuccess(data)

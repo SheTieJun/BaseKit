@@ -2,13 +2,13 @@ package shetj.me.base.`fun`.main
 
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.NonNull
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 
-import io.reactivex.annotations.NonNull
 
 /**
  * 绑定生命周期的Handler

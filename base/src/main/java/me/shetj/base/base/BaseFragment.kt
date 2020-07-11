@@ -11,8 +11,8 @@ import androidx.annotation.Keep
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-import com.trello.rxlifecycle3.components.support.RxFragment
+import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
+import com.trello.rxlifecycle4.components.support.RxFragment
 import me.shetj.base.ktx.toJson
 import me.shetj.base.s
 import me.shetj.base.tools.json.EmptyUtils

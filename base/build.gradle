@@ -74,6 +74,12 @@ android {
                     details.useVersion "$glideVersion"
                 }
             }
+            if (requested.group == 'com.github.bumptech.glide') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion "$glideVersion"
+                }
+            }
+
         }
     }
 
@@ -100,7 +106,7 @@ dependencies {
 
     api 'androidx.multidex:multidex:2.0.1'
 
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.2'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     //腾讯Android开发框架 https://qmuiteam.com/android/get-started/
     api 'com.qmuiteam:qmui:2.0.0-alpha02'
 
@@ -110,11 +116,12 @@ dependencies {
     api "com.github.bumptech.glide:glide:$glideVersion"
     api 'jp.wasabeef:glide-transformations:4.1.0'
     //Rxlifecycle
-    api 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
-    api 'com.trello.rxlifecycle3:rxlifecycle-components:3.0.0'
-    api 'io.reactivex.rxjava3:rxjava:3.0.3'
+    api 'com.trello.rxlifecycle4:rxlifecycle-android:4.0.0'
+    api 'com.trello.rxlifecycle4:rxlifecycle-components:4.0.0'
+    api 'io.reactivex.rxjava3:rxjava:3.0.4'
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    api 'com.jakewharton.rxbinding3:rxbinding:3.0.0'
+    api 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+    api 'com.jakewharton.rxbinding4:rxbinding-core:4.0.0'
     api 'io.reactivex.rxjava3:rxkotlin:3.0.0' //https://github.com/ReactiveX/RxKotlin
     //框架
     api 'com.jakewharton.timber:timber:4.7.1'

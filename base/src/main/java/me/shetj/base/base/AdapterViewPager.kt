@@ -27,7 +27,7 @@ class AdapterViewPager : FragmentStatePagerAdapter {
         this.mTitles = titles
     }
 
-    fun setData(list: List<BaseFragment<*>>, titles: List<String>) {
+    fun setData(list: List<Fragment>, titles: List<String>) {
         this.mList?.clear()
         this.mTitles?.clear()
         this.mList?.addAll(list)

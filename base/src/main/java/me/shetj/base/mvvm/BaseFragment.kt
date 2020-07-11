@@ -1,6 +1,5 @@
 package me.shetj.base.mvvm
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Message
@@ -12,15 +11,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-import com.trello.rxlifecycle3.components.support.RxFragment
-import me.shetj.base.ktx.toJson
-import me.shetj.base.s
-import me.shetj.base.tools.json.EmptyUtils
+import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
+import com.trello.rxlifecycle4.components.support.RxFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
 
 /**
  * fragment基类

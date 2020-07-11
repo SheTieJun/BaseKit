@@ -112,9 +112,9 @@ dependencies {
     implementation project(':base')
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-2'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
-    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-2'
+//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+//    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
 
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
 

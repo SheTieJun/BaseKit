@@ -1,7 +1,7 @@
 package me.shetj.base.network.subscriber
 
 import android.content.Context
-import io.reactivex.observers.DisposableObserver
+import io.reactivex.rxjava3.observers.DisposableObserver
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.tools.app.NetworkUtils.isAvailable
 import timber.log.Timber

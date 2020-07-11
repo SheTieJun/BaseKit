@@ -1,11 +1,11 @@
 package me.shetj.base.tools.json
 
 import androidx.annotation.Keep
+import androidx.annotation.NonNull
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import io.reactivex.annotations.NonNull
 import timber.log.Timber
 import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType

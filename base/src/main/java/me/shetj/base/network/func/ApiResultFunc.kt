@@ -1,7 +1,6 @@
 package me.shetj.base.network.func
 
 import android.text.TextUtils
-import io.reactivex.functions.Function
 import me.shetj.base.network.kt.ClassUtils
 import me.shetj.base.network.model.ApiResult
 import me.shetj.base.tools.json.GsonKit.jsonToBean
@@ -11,7 +10,7 @@ import org.json.JSONObject
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-
+import io.reactivex.rxjava3.functions.Function
 
 /**
  * 一、当是自定义[me.shetj.base.network.model.ApiResult]

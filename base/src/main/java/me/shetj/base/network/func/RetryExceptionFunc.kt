@@ -1,9 +1,9 @@
 package me.shetj.base.network.func
 
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Function
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableSource
+import io.reactivex.rxjava3.functions.BiFunction
+import io.reactivex.rxjava3.functions.Function
 import me.shetj.base.network.exception.ApiException
 import timber.log.Timber
 import java.net.ConnectException

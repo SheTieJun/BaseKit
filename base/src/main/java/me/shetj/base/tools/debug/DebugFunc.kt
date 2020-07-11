@@ -1,8 +1,8 @@
 package me.shetj.base.tools.debug
 
 import android.content.Context
-import io.reactivex.functions.Consumer
-import io.reactivex.plugins.RxJavaPlugins
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import me.shetj.base.BuildConfig
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_HTTP
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_LOG

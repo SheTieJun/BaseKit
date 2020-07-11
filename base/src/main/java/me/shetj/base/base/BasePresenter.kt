@@ -4,9 +4,9 @@ package me.shetj.base.base
 import android.content.Intent
 import android.os.Message
 import androidx.annotation.Keep
-import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

@@ -20,10 +20,10 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.annotation.MainThread
+import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
-import io.reactivex.annotations.NonNull
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.s

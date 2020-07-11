@@ -1,7 +1,7 @@
 package me.shetj.base.network.func
 
-import io.reactivex.Observable
-import io.reactivex.functions.Function
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.Function
 import me.shetj.base.network.exception.ApiException
 
 class HttpResponseFunc<T> : Function<Throwable, Observable<T>> {

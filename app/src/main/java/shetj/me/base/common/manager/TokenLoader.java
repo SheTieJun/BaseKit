@@ -7,9 +7,9 @@ import android.text.TextUtils;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 import me.shetj.base.network.RxHttp;
 import me.shetj.base.s;
 import me.shetj.base.tools.file.SPUtils;
