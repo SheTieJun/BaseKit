@@ -10,7 +10,7 @@ import me.shetj.base.base.BaseModel;
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b><br>
  */
-class CommonModel extends BaseModel {
+public class CommonModel extends BaseModel {
     @Override
     public void onDestroy() {
 

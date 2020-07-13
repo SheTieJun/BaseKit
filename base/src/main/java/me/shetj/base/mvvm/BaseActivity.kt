@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.view.View
+import androidx.activity.viewModels
+import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.core.util.forEach
@@ -25,6 +27,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.coroutines.CoroutineContext
+import kotlin.reflect.KClass
 
 
 /**
@@ -33,7 +36,7 @@ import kotlin.coroutines.CoroutineContext
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<VM : ViewModel> : RxAppCompatActivity(), CoroutineScope, LifecycleObserver {
+abstract class BaseActivity< VM : ViewModel> : RxAppCompatActivity(), CoroutineScope, LifecycleObserver {
 
     private var mActivityProvider: ViewModelProvider? = null
     private val job = SupervisorJob()
@@ -51,6 +54,7 @@ abstract class BaseActivity<VM : ViewModel> : RxAppCompatActivity(), CoroutineSc
         lifecycle.addObserver(this)
     }
 
+    @CallSuper
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     open fun onActivityCreate() {
         KeyboardUtil.init(this)
@@ -70,6 +74,7 @@ abstract class BaseActivity<VM : ViewModel> : RxAppCompatActivity(), CoroutineSc
         mBinding = binding
     }
 
+    @CallSuper
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun onActivityDestroy() {
         if (useEventBus()) {

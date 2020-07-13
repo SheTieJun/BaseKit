@@ -22,6 +22,7 @@ import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.tools.time.CodeUtil
 import me.shetj.base.view.TipPopupWindow
+import org.koin.androidx.scope.lifecycleScope
 import shetj.me.base.R
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
@@ -32,10 +33,12 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
     private var mTvTestCode: TextView? = null
     private var codeUtil: CodeUtil? = null
     private var viewpage2: ViewPager2? = null
+    private val testPresenter:MainPresenter by lifecycleScope.inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mPresenter = MainPresenter(this)
+
     }
 
     public override fun initView() {
@@ -87,7 +90,9 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
         }
         netTest()
         imgTest()
-        findViewById<View>(R.id.fab).setOnClickListener { AppCompatDelegate.setDefaultNightMode(mPresenter!!.getNightModel()) }
+        findViewById<View>(R.id.fab).setOnClickListener {
+            AppCompatDelegate.setDefaultNightMode( testPresenter.getNightModel())
+        }
 //        testExecutor()
     }
 

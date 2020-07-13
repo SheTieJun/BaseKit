@@ -3,6 +3,7 @@ package shetj.me.base.`fun`.main
 import androidx.appcompat.app.AppCompatDelegate
 import me.shetj.base.base.BasePresenter
 import me.shetj.base.base.IView
+import me.shetj.base.ktx.showToast
 
 /**
  * **@packageName：** shetj.me.base.fun<br></br>
@@ -22,7 +23,6 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
         //?android:attr/textColorPrimary 这是一种通用型文本颜色。它在浅色主题背景下接近于黑色，在深色主题背景下接近于白色。该颜色包含一个停用状态。
         //?attr/colorControlNormal 一种通用图标颜色。该颜色包含一个停用状态。
         //主题背景属性 ?attr/colorSurface 和 ?attr/colorOnSurface）轻松获取合适的颜色
-
         //浅色 - MODE_NIGHT_NO
         //深色 - MODE_NIGHT_YES
         //由省电模式设置 - MODE_NIGHT_AUTO_BATTERY

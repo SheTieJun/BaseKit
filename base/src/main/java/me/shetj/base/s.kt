@@ -3,10 +3,17 @@ package me.shetj.base
 import android.app.Application
 import androidx.annotation.Keep
 import androidx.lifecycle.ViewModelProvider
+import me.shetj.base.base.TaskExecutor
 import me.shetj.base.network.RxHttp.Companion.getInstance
 import me.shetj.base.tools.app.TimberUtil
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.debug.DebugFunc
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidFileProperties
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.fragment.koin.fragmentFactory
+import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 
 /**
  * **@packageName：** me.shetj.base<br></br>
@@ -35,18 +42,34 @@ object s {
     @JvmOverloads
     @JvmStatic
     fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
-        Utils.init(application)
-        TimberUtil.setLogAuto(isDebug)
-        if (isDebug) {
-            DebugFunc.getInstance().apply {
-                initContext(application)
-                setRxJavaErrorHandler()
+        TaskExecutor.getInstance().executeOnMainThread(Runnable {
+            Utils.init(application)
+            TimberUtil.setLogAuto(isDebug)
+            if (isDebug) {
+                DebugFunc.getInstance().apply {
+                    initContext(application)
+                    setRxJavaErrorHandler()
+                }
             }
-        }
-        this.isDebug = isDebug
-        baseUrl?.let {
-            getInstance().debug(isDebug)
-                    .setBaseUrl(baseUrl)
+            this.isDebug = isDebug
+            baseUrl?.let {
+                getInstance().debug(isDebug)
+                        .setBaseUrl(baseUrl)
+            }
+        })
+
+    }
+
+    @JvmStatic
+    fun initKoin(application: Application,modules: List<Module>){
+        startKoin {
+            if (isDebug) {
+                androidLogger()
+            }
+            androidContext(application)
+            androidFileProperties()
+            fragmentFactory()
+            modules(modules)
         }
     }
 }

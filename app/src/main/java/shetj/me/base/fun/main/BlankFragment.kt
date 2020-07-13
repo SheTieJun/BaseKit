@@ -61,7 +61,7 @@ class BlankFragment : BaseFragment<BasePresenter<*>>() {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun initLazy3() {
-        cout = arguments!!.getInt(ARG_ITEM_COUNT)
+        cout = requireArguments().getInt(ARG_ITEM_COUNT)
         Log.i("Fragment$cout", "initLazy3 = ON_CREATE")
     }
 
