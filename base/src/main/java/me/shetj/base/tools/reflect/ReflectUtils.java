@@ -123,19 +123,24 @@ public class ReflectUtils {
      * @return 设置是否成功。false：字段不存在或新的值与字段的类型不一样，导致转型失败
      */
     public static boolean setField(Object object, String fieldName, Object newValue, boolean isFindDeclaredField, boolean isUpwardFind) {
-        boolean result = false;
+        boolean result;
         Field field = getField(object.getClass(), fieldName, isFindDeclaredField, isUpwardFind);
+        result = setFieldAndResult(object, newValue, field);
+        return result;
+    }
+
+    private static boolean setFieldAndResult(Object object, Object newValue, Field field) {
         if (field != null) {
             try {
                 field.setAccessible(true);
                 field.set(object, newValue);
-                result = true;
+                return true;
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                result = false;
+                return false;
             }
         }
-        return result;
+        return false;
     }
 
 
