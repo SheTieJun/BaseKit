@@ -2,7 +2,7 @@ package me.shetj.base.base
 
 import android.os.Message
 import androidx.annotation.Keep
-import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
 
 /**
@@ -16,7 +16,7 @@ interface IView {
      * 返回当前的activity
      * @return RxAppCompatActivity
      */
-    val rxContext: RxAppCompatActivity
+    val rxContext: AppCompatActivity
 
     /**
      * (唯一更新view的方法)

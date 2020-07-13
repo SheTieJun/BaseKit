@@ -6,16 +6,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.view.View
-import androidx.activity.viewModels
 import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
-import androidx.lifecycle.ViewModel
-import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -27,7 +25,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import kotlin.coroutines.CoroutineContext
-import kotlin.reflect.KClass
 
 
 /**
@@ -36,7 +33,7 @@ import kotlin.reflect.KClass
  * @author shetj
  */
 @Keep
-abstract class BaseActivity< VM : ViewModel> : RxAppCompatActivity(), CoroutineScope, LifecycleObserver {
+abstract class BaseActivity< VM : ViewModel> : AppCompatActivity(), CoroutineScope, LifecycleObserver {
 
     private var mActivityProvider: ViewModelProvider? = null
     private val job = SupervisorJob()

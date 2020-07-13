@@ -1,7 +1,5 @@
 package me.shetj.base.mvvm
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.os.Message
@@ -10,13 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
-import com.trello.rxlifecycle4.components.support.RxFragment
 import me.shetj.base.ktx.getClazz
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -33,7 +30,7 @@ import org.greenrobot.eventbus.ThreadMode
  * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class BaseFragment<VM : ViewModel> : RxFragment(),  LifecycleObserver {
+abstract class BaseFragment<VM : ViewModel> : Fragment(),  LifecycleObserver {
     protected var mActivity: Context? = null
     private var mBinding: ViewDataBinding? = null
     private var mFragmentProvider: ViewModelProvider? = null
@@ -42,8 +39,8 @@ abstract class BaseFragment<VM : ViewModel> : RxFragment(),  LifecycleObserver {
      * 返回当前的activity
      * @return RxAppCompatActivity
      */
-    val rxContext: RxAppCompatActivity
-        get() = (mActivity as RxAppCompatActivity?)!!
+    val rxContext: AppCompatActivity
+        get() = (mActivity as AppCompatActivity?)!!
 
     protected lateinit var mViewModel: VM
 

@@ -8,10 +8,10 @@ import android.os.Message
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.Keep
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,11 +34,11 @@ import kotlin.coroutines.CoroutineContext
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<T : BasePresenter<*>> : RxAppCompatActivity(), IView, CoroutineScope, LifecycleObserver {
+abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, CoroutineScope, LifecycleObserver {
     protected val TAG = this.javaClass.simpleName
     protected var mPresenter: T? = null
 
-    override val rxContext: RxAppCompatActivity
+    override val rxContext: AppCompatActivity
         get() = this
 
     private val job = SupervisorJob()

@@ -115,9 +115,7 @@ dependencies {
     //图片加载
     api "com.github.bumptech.glide:glide:$glideVersion"
     api 'jp.wasabeef:glide-transformations:4.1.0'
-    //Rxlifecycle
-    api 'com.trello.rxlifecycle4:rxlifecycle-android:4.0.0'
-    api 'com.trello.rxlifecycle4:rxlifecycle-components:4.0.0'
+
     api 'io.reactivex.rxjava3:rxjava:3.0.4'
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'
     api 'com.jakewharton.rxbinding4:rxbinding:4.0.0'

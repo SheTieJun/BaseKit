@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Keep
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
-import com.trello.rxlifecycle4.components.support.RxFragment
 import me.shetj.base.ktx.toJson
 import me.shetj.base.s
 import me.shetj.base.tools.json.EmptyUtils
@@ -31,7 +31,7 @@ import timber.log.Timber
  * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView, LifecycleObserver {
+abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, LifecycleObserver {
     protected var mActivity: Context? = null
     protected var mPresenter: T? = null
 
@@ -39,8 +39,8 @@ abstract class BaseFragment<T : BasePresenter<*>> : RxFragment(), IView, Lifecyc
      * 返回当前的activity
      * @return RxAppCompatActivity
      */
-    override val rxContext: RxAppCompatActivity
-        get() = (mActivity as RxAppCompatActivity?)!!
+    override val rxContext: AppCompatActivity
+        get() = (mActivity as AppCompatActivity?)!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

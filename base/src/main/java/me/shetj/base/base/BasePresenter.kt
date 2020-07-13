@@ -3,8 +3,9 @@ package me.shetj.base.base
 
 import android.content.Intent
 import android.os.Message
+import androidx.annotation.CallSuper
 import androidx.annotation.Keep
-import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +37,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    internal val rxContext: RxAppCompatActivity
+    internal val rxContext: AppCompatActivity
         get() = view.rxContext
 
     init {
@@ -44,6 +45,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         onStart()
     }
 
+    @CallSuper
     override fun onStart() {
         if (useEventBus()) {
             EventBus.getDefault().register(this)
@@ -62,6 +64,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      * //解除订阅
      * [BaseActivity.onDestroy] 调用[IPresenter.onDestroy]
      */
+    @CallSuper
     override fun onDestroy() {
         Timber.i("${this.javaClass.simpleName}:onDestroy")
         if (useEventBus()) {
