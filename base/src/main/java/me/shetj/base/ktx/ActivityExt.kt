@@ -192,3 +192,7 @@ fun Context.requestNetWork(callbacks: ConnectivityManager.NetworkCallback) {
             .build()
     cm.requestNetwork(request, callbacks)
 }
+
+fun Context.getFileProvider():String{
+    return "${packageName}.FileProvider"
+}

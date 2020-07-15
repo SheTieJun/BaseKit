@@ -79,7 +79,6 @@ abstract class BaseActivity< VM : ViewModel> : AppCompatActivity(), CoroutineSco
             EventBus.getDefault().unregister(this)
         }
         coroutineContext.cancelChildren()
-
     }
 
 

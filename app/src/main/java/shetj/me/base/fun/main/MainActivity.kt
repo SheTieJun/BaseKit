@@ -3,6 +3,7 @@ package shetj.me.base.`fun`.main
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.REVERSE
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.animation.*
@@ -20,6 +21,8 @@ import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.toJson
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
+import me.shetj.base.sim.SimpleCallBack
+import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import me.shetj.base.view.TipPopupWindow
 import org.koin.androidx.scope.lifecycleScope
@@ -88,6 +91,11 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
             va.start()
 
         }
+
+        btn_select_image.setOnClickListener {
+            ImageUtils.openLocalImage(this)
+        }
+
         netTest()
         imgTest()
         findViewById<View>(R.id.fab).setOnClickListener {
@@ -217,5 +225,21 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        ImageUtils.onActivityResult(this,requestCode,resultCode,data,object :SimpleCallBack<Uri>(){
+            override fun onSuccess(key: Uri) {
+                super.onSuccess(key)
+                Timber.i("url = $key")
+            }
+
+            override fun onFail() {
+                super.onFail()
+
+            }
+        })
     }
 }

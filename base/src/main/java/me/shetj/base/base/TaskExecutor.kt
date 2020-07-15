@@ -13,6 +13,7 @@ class TaskExecutor private constructor() {
         mDiskIO.execute(runnable)
     }
 
+
     fun executeOnMainThread(runnable: Runnable) {
         if (isMainThread()) {
             runnable.run()
@@ -32,6 +33,16 @@ class TaskExecutor private constructor() {
                     sInstance = it
                 }
             }
+        }
+
+        @JvmStatic
+        fun executeOnIO(runnable: Runnable) {
+            getInstance().executeOnDiskIO(runnable)
+        }
+
+        @JvmStatic
+        fun executeOnMain(runnable: Runnable) {
+            getInstance().executeOnMainThread(runnable)
         }
     }
 }

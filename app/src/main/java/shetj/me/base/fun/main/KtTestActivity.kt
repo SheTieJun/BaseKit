@@ -36,6 +36,10 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
 
         }
 
+        launch{
+
+        }
+
         launch.cancel()
 
         scope.launch {
@@ -129,6 +133,7 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
 
             }
 
+            showSomeData()
             //异步
 //            async1
 
@@ -188,6 +193,17 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
     override fun onActivityDestroy() {
         super.onActivityDestroy()
         Timber.i("onActivityDestroy")
+    }
+
+
+    suspend fun showSomeData() = coroutineScope {
+
+        val data = async(Dispatchers.IO) { // <- extension on current scope
+        }
+
+        withContext(Dispatchers.Main) {
+
+        }
     }
 
 }

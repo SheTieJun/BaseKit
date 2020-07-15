@@ -3,17 +3,20 @@
 package me.shetj.base.tools.image
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.annotation.Keep
 import androidx.core.content.FileProvider
+import androidx.core.content.FileProvider.getUriForFile
 import me.shetj.base.base.BaseCallback
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.file.SDCardUtils
@@ -22,6 +25,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 @Keep
 class ImageUtils {
 
@@ -29,6 +33,7 @@ class ImageUtils {
 
         private const val GET_IMAGE_BY_CAMERA = 5001
         private const val GET_IMAGE_FROM_PHONE = 5002
+        private const val GET_IMAGE_FROM_PHONE_NO_CUT = 5004
         private const val CROP_IMAGE = 5003
         private var imageUriFromCamera: Uri? = null
         private var cropImageUri: Uri? = null
@@ -45,19 +50,45 @@ class ImageUtils {
             if (context == null) {
                 throw NullPointerException()
             }
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                FileProvider.getUriForFile(context.applicationContext, AppUtils.appPackageName + ".FileProvider", file)
-            } else {
-                Uri.fromFile(file)
+            return when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                    createImageUri(context)!!
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
+                    getUriForFile(context.applicationContext, AppUtils.appPackageName + ".FileProvider", file)
+                }
+                else -> {
+                    Uri.fromFile(file)
+                }
             }
         }
 
         @JvmStatic
         fun createImagePath(): String {
+
             val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
             val time = System.currentTimeMillis()
             val imageName = timeFormatter.format(Date(time))
             return SDCardUtils.getPath(imagePath) + "/" + imageName + ".jpg"
+        }
+
+
+        @JvmStatic
+        fun createImageUri(context: Context): Uri? {
+            val status: String = Environment.getExternalStorageState()
+            // 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
+            return if (status == Environment.MEDIA_MOUNTED) {
+                context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
+            } else {
+                context.contentResolver.insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, ContentValues())
+            }
+        }
+
+
+        fun selectlocalImage(activity: Activity){
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+            activity.startActivityForResult(intent, GET_IMAGE_FROM_PHONE_NO_CUT)
         }
 
         @JvmStatic
@@ -77,10 +108,11 @@ class ImageUtils {
 
         @JvmStatic
         fun cropImage(activity: Activity, srcUri: Uri?) {
-            cropImageUri = Uri.fromFile(File(createImagePath()))
+            cropImageUri = createImagePathUri(activity)
             val intent = Intent("com.android.camera.action.CROP")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             }
             intent.setDataAndType(srcUri, "image/*")
             //裁剪图片的宽高比例
@@ -92,10 +124,10 @@ class ImageUtils {
             //支持缩放
             intent.putExtra("return-data", false)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, cropImageUri)
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())
             //输出图片格式
-            intent.putExtra("noFaceDetection", true)
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())
             //取消人脸识别
+            intent.putExtra("noFaceDetection", true)
             activity.startActivityForResult(intent, CROP_IMAGE)
         }
 
@@ -206,7 +238,12 @@ class ImageUtils {
          * @param callBack
          */
         @JvmStatic
-        fun onActivityResult(context: Activity, requestCode: Int, data: Intent?, callBack: BaseCallback<String>?) {
+        fun onActivityResult(context: Activity, requestCode: Int, resultCode: Int, data: Intent?, callBack: BaseCallback<Uri>?) {
+            if (resultCode != Activity.RESULT_OK){
+                callBack?.onFail()
+                return
+            }
+
             when (requestCode) {
                 GET_IMAGE_BY_CAMERA -> if (imageUriFromCamera != null) {
                     // 对图片进行裁剪
@@ -215,12 +252,12 @@ class ImageUtils {
                 GET_IMAGE_FROM_PHONE -> if (data != null && data.data != null) {
                     cropImage(context, data.data)
                 }
+                GET_IMAGE_FROM_PHONE_NO_CUT ->{
+                    callBack?.onSuccess(data!!.data!!)
+                }
                 CROP_IMAGE -> {
-                    val path = cropImageUri!!.path
-                    if (cropImageUri != null && File(path!!).exists()) {
-                        callBack?.onSuccess(path)
-                    } else {
-                        callBack?.onFail()
+                    if (cropImageUri != null) {
+                        callBack?.onSuccess(cropImageUri!!)
                     }
                 }
                 else -> callBack?.onFail()
