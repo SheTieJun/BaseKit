@@ -27,7 +27,7 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.s
-import me.shetj.base.tools.file.SDCardUtils
+import me.shetj.base.tools.file.EnvironmentStorage
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -495,7 +495,7 @@ class ArmsUtils private constructor() {
         fun getAppPath(): String {
             val sb = StringBuilder()
             if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-                sb.append(SDCardUtils.sdCardPath)
+                sb.append(EnvironmentStorage.sdCardPath)
             } else {
                 sb.append(Environment.getDataDirectory().path)
             }

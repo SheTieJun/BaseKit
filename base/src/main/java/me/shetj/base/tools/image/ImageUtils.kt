@@ -10,18 +10,20 @@ import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.annotation.Keep
-import androidx.core.content.FileProvider
 import androidx.core.content.FileProvider.getUriForFile
 import me.shetj.base.base.BaseCallback
 import me.shetj.base.tools.app.AppUtils
-import me.shetj.base.tools.file.SDCardUtils
+import me.shetj.base.tools.file.EnvironmentStorage
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileDescriptor
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,7 +71,7 @@ class ImageUtils {
             val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
             val time = System.currentTimeMillis()
             val imageName = timeFormatter.format(Date(time))
-            return SDCardUtils.getPath(imagePath) + "/" + imageName + ".jpg"
+            return EnvironmentStorage.getPath(imagePath) + "/" + imageName + ".jpg"
         }
 
 
@@ -85,7 +87,7 @@ class ImageUtils {
         }
 
 
-        fun selectlocalImage(activity: Activity){
+        fun selectlocalImage(activity: Activity) {
             val intent = Intent(Intent.ACTION_PICK)
             intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
             activity.startActivityForResult(intent, GET_IMAGE_FROM_PHONE_NO_CUT)
@@ -239,7 +241,7 @@ class ImageUtils {
          */
         @JvmStatic
         fun onActivityResult(context: Activity, requestCode: Int, resultCode: Int, data: Intent?, callBack: BaseCallback<Uri>?) {
-            if (resultCode != Activity.RESULT_OK){
+            if (resultCode != Activity.RESULT_OK) {
                 callBack?.onFail()
                 return
             }
@@ -252,7 +254,7 @@ class ImageUtils {
                 GET_IMAGE_FROM_PHONE -> if (data != null && data.data != null) {
                     cropImage(context, data.data)
                 }
-                GET_IMAGE_FROM_PHONE_NO_CUT ->{
+                GET_IMAGE_FROM_PHONE_NO_CUT -> {
                     callBack?.onSuccess(data!!.data!!)
                 }
                 CROP_IMAGE -> {
@@ -325,6 +327,30 @@ class ImageUtils {
                 src.recycle()
             }
             return ret
+        }
+
+        // 通过uri获取bitmap
+        fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
+            var parcelFileDescriptor: ParcelFileDescriptor? = null;
+            var fileDescriptor: FileDescriptor? = null;
+            var bitmap: Bitmap? = null;
+            try {
+                parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r");
+                if ((parcelFileDescriptor?.fileDescriptor) != null) {
+                    fileDescriptor = parcelFileDescriptor.fileDescriptor;
+                    //转换uri为bitmap类型
+                    bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                try {
+                    parcelFileDescriptor?.close()
+                } catch (e: IOException) {
+
+                }
+            }
+            return bitmap
         }
 
         /**

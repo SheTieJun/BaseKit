@@ -10,7 +10,7 @@ import android.net.Uri
 import android.os.Environment
 import android.os.IBinder
 import me.shetj.base.tools.app.AppUtils
-import me.shetj.base.tools.file.SDCardUtils.Companion.getExternalFilesDir
+import me.shetj.base.tools.file.EnvironmentStorage.Companion.getExternalFilesDir
 import shetj.me.base.common.other.DownloadService.Companion.getApkName
 import shetj.me.base.common.other.DownloadService.Companion.install
 import timber.log.Timber

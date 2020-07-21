@@ -7,7 +7,7 @@ import me.shetj.base.BuildConfig
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_HTTP
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_LOG
 import me.shetj.base.tools.file.FileUtils
-import me.shetj.base.tools.file.SDCardUtils
+import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.SPUtils
 import timber.log.Timber
 import java.io.BufferedWriter
@@ -22,8 +22,8 @@ import java.util.concurrent.Executors
  */
 class DebugFunc private constructor() {
 
-    val saveLogFile = SDCardUtils.cache + File.separatorChar + "BaseDebug.text"
-    val saveHttpFile = SDCardUtils.cache + File.separatorChar + "HttpDebug.text"
+    val saveLogFile = EnvironmentStorage.cache + File.separatorChar + "BaseDebug.text"
+    val saveHttpFile = EnvironmentStorage.cache + File.separatorChar + "HttpDebug.text"
 
     private val settingDialog: SettingBottomSheetDialog by lazy { SettingBottomSheetDialog(mContext!!) }
     private var mContext: Context? = null

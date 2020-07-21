@@ -1,5 +1,7 @@
 package me.shetj.base.ktx
 
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.os.Message
 import me.shetj.base.tools.app.ArmsUtils
@@ -65,6 +67,10 @@ fun getRandomString(num: Int): String {
 }
 //endregion
 
-fun <E> java.util.ArrayList<E>.addIfNotNull(element: E?) {
+fun <E>  ArrayList<E>.addIfNotNull(element: E?) {
     element?.let { this.add(it) }
+}
+
+fun Context?.delFile(fileUri:Uri){
+    this?.contentResolver?.delete(fileUri, null, null);
 }

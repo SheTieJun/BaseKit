@@ -1,5 +1,0 @@
-apply plugin: 'android-aspectjx'//面向切面
-
-aspectjx {
-    exclude 'android.support'
-}

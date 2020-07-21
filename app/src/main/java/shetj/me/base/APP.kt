@@ -18,7 +18,7 @@ import shetj.me.base.kointest.allModules
 class APP : Application() {
     override fun onCreate() {
         super.onCreate()
-        init(this, BuildConfig.LOG_DEBUG, "https://baidu.com")
+        init(this, BuildConfig.LOG_DEBUG, "https://xxxx.com")
         initKoin(this, allModules)
     }
 

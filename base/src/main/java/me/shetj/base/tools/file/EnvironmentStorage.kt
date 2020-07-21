@@ -12,7 +12,7 @@ import java.io.File
  */
 @Suppress("DEPRECATION")
 @Keep
-class SDCardUtils private constructor() {
+class EnvironmentStorage private constructor() {
 
     companion object {
         /**
@@ -87,7 +87,7 @@ class SDCardUtils private constructor() {
          *            {@link android.os.Environment#DIRECTORY_MOVIES}. or null
          */
         @JvmStatic
-        fun getExternalFilesDir(type: String? = null): String {
+        fun getExternalFilesDir(type: String = Environment.DIRECTORY_DOWNLOADS): String {
             return Utils.app.getExternalFilesDir(type)!!.absolutePath
         }
 
