@@ -3,6 +3,8 @@ package me.shetj.base.ktx
 import android.content.Context
 import android.graphics.Typeface
 import android.text.SpannableString
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.text.style.LeadingMarginSpan
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -144,6 +146,24 @@ fun View?.disableClipOnParents() {
         (parent as View).disableClipOnParents()
     }
 }
+
+
+/**
+ * 显示密码文本
+ */
+fun EditText.showPassword(){
+    transformationMethod = HideReturnsTransformationMethod.getInstance()
+    setSelection(text.length)
+}
+
+/**
+ * 隐藏密码文本
+ */
+fun EditText.hidePassword(){
+    transformationMethod = PasswordTransformationMethod.getInstance()
+    setSelection(text.length)
+}
+
 /**
  * 点击动画
  */
@@ -225,9 +245,9 @@ fun View?.use16And9() {
 }
 
 @UiThread
-fun View?.use16And9ByView(view: View) {
+fun View?.use16And9ByView() {
     this?.apply {
-        layoutRatio(view.width, view.height, 16, 9)
+        layoutRatio(width, height, 16, 9)
     }
 }
 

@@ -10,9 +10,13 @@
 
 `public` 任何地方可见 (public — any client who sees the declaring class sees its public members.)+
 
-`inline` 内联函数
+`inline` 内联函数 copy 而不是对象
 
+`crossinline`  不允许内部直接返回
 
+`infix` 中缀函数
+
+`open `  标记可以继承，重载，重写 ；默认是不可以
 
 ##### 特性
 1. 函数扩展 
@@ -28,7 +32,7 @@ implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20'
  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.20'
  ```
  
-##### 一下参数
+##### 标记
 `combine ` 
 
 - `public ` 表示公开同Java 任何客户端都可见其 public 成员
@@ -70,4 +74,9 @@ implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20'
     - 生成toString()函数，由类名（参数1 = 值1，参数2 = 值2，....）构成
     - 由所定义的属性自动生成component1()、component2()、...、componentN()函数，其对应于属性的声明顺序。
     - copy()函数。 
-- `typealias`  类型别名    
+- `typealias`  类型别名
+
+
+DSL 特定领域语言：lambda \扩展函数\顶层函数\invoke约定
+
+

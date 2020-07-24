@@ -13,7 +13,8 @@ fun String?.isPhone() = this?.let { StringUtils.isPhone(it) }
 
 fun String?.isIdCard() = this?.let { StringUtils.isIdCard(it) }
 
-fun String?.toMD5() = this?.let { ArmsUtils.encodeToMD5(it) }
+val String?.md5 :String?
+   get() = this?.let { ArmsUtils.encodeToMD5(it) }
 
 fun String?.fromHtml() = this?.parseAsHtml()
 
@@ -30,7 +31,7 @@ fun Any?.toJson() = this?.let { GsonKit.objectToJson(this) }
 
 inline fun <reified T> String?.toBean() = this?.let { GsonKit.jsonToBean(it, T::class.java) }
 
-inline fun <reified T> String?.toBeanList() = this?.let { GsonKit.jsonToList(it, T::class.java) }
+inline fun <reified T> String?.toList() = this?.let { GsonKit.jsonToList(it, T::class.java) }
 
 fun String?.toMap() = this?.let { GsonKit.jsonToStringMap(it) }
 
@@ -46,6 +47,16 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
 }
 
 //region log 相关
-fun String?.log() {
+fun String?.logi() {
     Timber.i(this)
 }
+
+fun String?.loge() {
+    Timber.e(this)
+}
+
+fun String?.logd() {
+    Timber.d(this)
+}
+
+//endregion

@@ -2,12 +2,10 @@ package me.shetj.base.ktx
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ComponentCallbacks
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
-import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Looper
@@ -18,6 +16,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
@@ -25,7 +24,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.SoftKeyBoardListener
-import timber.log.Timber
 import java.lang.reflect.Method
 
 
@@ -127,9 +125,12 @@ fun Context.collapseStatusBar() {
 /**
  * 针对6.0动态请求权限问题,判断是否允许此权限
  */
-fun Context.hasPermission(vararg permissions: String): Boolean {
+fun Context.hasPermission(vararg permissions: String,isRequest: Boolean = false): Boolean {
     for (permission in permissions) {
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (isRequest){
+                ActivityCompat.requestPermissions(this as Activity,permissions,100)
+            }
             return false
         }
     }

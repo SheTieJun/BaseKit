@@ -7,6 +7,13 @@ import java.lang.reflect.Type
 import java.lang.reflect.TypeVariable
 import java.util.*
 
+/**
+ * [Type] 父类
+ * [ParameterizedType] 泛型List<T>
+ * [TypeVariable]
+ * [GenericArrayType] 泛型数组
+ * [WildcardType] type 的子类
+ */
 object ClassUtils {
 
 

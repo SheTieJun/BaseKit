@@ -17,13 +17,25 @@ fun Date?.getWeekOfDate(aLocale:Locale  =Locale.CHINA ): String? {
     return null
 }
 
+/**
+ *  字符串日期格式（比如：2018-4-6)转为毫秒
+ *  @param format 时间的格式，默认是按照yyyy-MM-dd HH:mm:ss来转换，如果您的格式不一样，则需要传入对应的格式
+ */
+fun String.toDateMills(format: String = "yyyy-MM-dd HH:mm:ss"):Long = SimpleDateFormat(format, Locale.getDefault()).parse(this).time
+
+/**
+ * Long类型时间戳转为字符串的日期格式
+ * @param format 时间的格式，默认是按照yyyy-MM-dd HH:mm:ss来转换，如果您的格式不一样，则需要传入对应的格式
+ */
+fun Long.toDateString(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDateFormat(format, Locale.getDefault()).format(Date(this))
+
+fun Int.toDateString(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDateFormat(format, Locale.getDefault()).format(Date(this.toLong()))
 
 /**
  * 获取当前日期几月几号
  */
 fun getDateString(): String? {
-    val c = Calendar.getInstance()
-    c.timeZone = TimeZone.getTimeZone("GMT+8:00")
+    val c = Calendar.getInstance(Locale.getDefault())
     return (c[Calendar.MONTH] + 1).toString() + "月" +  c[Calendar.DAY_OF_MONTH].toString() + "日"
 }
 
@@ -31,8 +43,7 @@ fun getDateString(): String? {
  * 获取当前年月日
  */
 fun getStringData(): String {
-    val c = Calendar.getInstance()
-    c.timeZone = TimeZone.getTimeZone("GMT+8:00")
+    val c = Calendar.getInstance(Locale.getDefault())
     return c[Calendar.YEAR].toString() + "-" + (c[Calendar.MONTH] + 1).toString() + "-" + c[Calendar.DAY_OF_MONTH].toString()
 }
 
@@ -40,8 +51,7 @@ fun getStringData(): String {
  * 获取当前年
  */
 fun getStringYear(): String? {
-    val c = Calendar.getInstance()
-    c.timeZone = TimeZone.getTimeZone("GMT+8:00")
+    val c = Calendar.getInstance(Locale.getDefault())
     return c[Calendar.YEAR].toString()
 }
 

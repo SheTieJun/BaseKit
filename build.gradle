@@ -5,7 +5,7 @@ buildscript {
     ext.kotlin_version = '1.3.72'
     ext.appcompat = '1.1.0'
     ext.androidx = "1.0.0"
-    ext.androidx_2 = "1.3.0"
+    ext.androidx_2 = "1.3.1"
     ext.compileSdkVersion       = 29
     ext.minVersion              = 21
     ext.versionCode             = 8
@@ -13,7 +13,7 @@ buildscript {
     ext.gosnVersion             = "2.8.5"
     ext.glideVersion            = "4.11.0"
     ext.eventBus                = "3.2.0"
-    ext.constraintlayout        = "2.0.0-beta7"
+    ext.constraintlayout        = "2.0.0-beta8"
     ext.koin_version            = '2.1.6'
     ext.coroutines              = "1.3.7"
 
@@ -26,7 +26,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Add this line
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
