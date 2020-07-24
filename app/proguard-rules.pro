@@ -308,3 +308,5 @@
 -keep class com.zhouyou.http.cache.stategy.**
 
 -keep class me.shetj.base.tools.**{}
+
+-keep class com.didichuxing.doraemonkit.kit.**{}

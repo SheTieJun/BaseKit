@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
@@ -48,7 +49,7 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "USE_CANARY", "false"
             debuggable true
-            minifyEnabled true
+            minifyEnabled false
             //Zipalign优化
             zipAlignEnabled true
             // 移除无用的resource文件
@@ -129,4 +130,9 @@ dependencies {
 
     //图片预览 https://github.com/iielse/ImageWatcher
     implementation 'com.github.iielse:ImageWatcher:1.1.5'
+
+    debugImplementation "com.didichuxing.doraemonkit:doraemonkit:3.1.8"
+    releaseImplementation "com.didichuxing.doraemonkit:doraemonkit-no-op:3.1.8"
 }
+
+apply from: file("dokit-config.gradle")
