@@ -2,7 +2,7 @@ package shetj.me.base.test
 
 import android.os.Environment
 import android.text.TextUtils
-import me.shetj.base.tools.file.SDCardUtils.Companion.getExternalFilesDir
+import me.shetj.base.tools.file.EnvironmentStorage.Companion.getExternalFilesDir
 import timber.log.Timber
 import java.io.*
 
@@ -56,7 +56,7 @@ internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
             try {
                 val inputStream = ByteArrayInputStream(errorMessage.toByteArray())
                 outputStream = FileOutputStream(File(file, System.currentTimeMillis().toString() + ".txt"))
-                var len = 0
+                var len: Int
                 val bytes = ByteArray(1024)
                 while (inputStream.read(bytes).also { len = it } != -1) {
                     outputStream.write(bytes, 0, len)
