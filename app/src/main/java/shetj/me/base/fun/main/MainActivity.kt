@@ -6,7 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.view.animation.*
+import android.view.animation.AnimationUtils
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
@@ -14,10 +16,14 @@ import androidx.core.animation.addListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import me.shetj.base.base.BaseActivity
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.ktx.saverCreate
+import me.shetj.base.ktx.saverDB
 import me.shetj.base.ktx.toJson
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
@@ -102,6 +108,27 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
             AppCompatDelegate.setDefaultNightMode( testPresenter.getNightModel())
         }
 //        testExecutor()
+
+        btn_insert.setOnClickListener {
+
+            saverCreate(key = "测试key",value = "测试value").apply {
+                saverDB.insert(this)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError {
+                            Timber.e(it)
+                        }
+                        .subscribe()
+            }
+        }
+
+        btn_find.setOnClickListener {
+            saverDB.getAll(groupN = "base",isDel = false)
+                    .subscribeOn(Schedulers.io())
+                    .doOnNext {
+                Timber.i(it.toJson())
+            }.subscribe()
+        }
     }
 
     private fun imgTest() {

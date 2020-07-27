@@ -151,6 +151,12 @@ dependencies {
     //https://github.com/square/retrofit/tree/master/retrofit-adapters
     api 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     //Android Jetpack
+
+
+    api "androidx.room:room-common:$room_version"
+    api "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    api "androidx.room:room-rxjava3:$room_version"
 }
 
 apply from: 'bintray.gradle'

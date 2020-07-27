@@ -2,7 +2,6 @@ package shetj.me.base.common.manager;
 
 import android.content.Context;
 
-
 import me.shetj.base.s;
 import me.shetj.base.sim.SimpleCallBack;
 import me.shetj.base.tools.file.SPUtils;

@@ -3,7 +3,6 @@ package shetj.me.base.`fun`.main
 import androidx.appcompat.app.AppCompatDelegate
 import me.shetj.base.base.BasePresenter
 import me.shetj.base.base.IView
-import me.shetj.base.ktx.showToast
 
 /**
  * **@packageName：** shetj.me.base.fun<br></br>

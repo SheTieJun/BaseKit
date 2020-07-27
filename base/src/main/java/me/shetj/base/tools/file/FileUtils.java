@@ -1,8 +1,6 @@
 package me.shetj.base.tools.file;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.net.Uri;
 
 import java.io.BufferedInputStream;
 import java.io.File;

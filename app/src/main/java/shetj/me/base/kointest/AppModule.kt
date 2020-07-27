@@ -2,6 +2,7 @@ package shetj.me.base.kointest
 
 import androidx.lifecycle.ViewModel
 import me.shetj.base.base.IView
+import me.shetj.base.ktx.saverDB
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -17,7 +18,7 @@ import shetj.me.base.common.manager.CommonPresenter
 val appModule = module() {
     single { UpToken() } //单例
 
-
+    single { saverDB }
 }
 
 

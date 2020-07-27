@@ -138,7 +138,7 @@ fun Context.hasPermission(vararg permissions: String,isRequest: Boolean = false)
 }
 
 inline fun runOnMain(crossinline run: () -> Unit = {}) {
-    TaskExecutor.getInstance().executeOnMainThread(Runnable { run() })
+    TaskExecutor.executeOnMain(Runnable { run() })
 }
 
 inline fun runOnIo(crossinline run: () -> Unit = { }) {

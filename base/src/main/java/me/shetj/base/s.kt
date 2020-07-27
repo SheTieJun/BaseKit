@@ -2,8 +2,8 @@ package me.shetj.base
 
 import android.app.Application
 import androidx.annotation.Keep
-import androidx.lifecycle.ViewModelProvider
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.di.dbModule
 import me.shetj.base.network.RxHttp.Companion.getInstance
 import me.shetj.base.tools.app.TimberUtil
 import me.shetj.base.tools.app.Utils
@@ -69,7 +69,7 @@ object s {
             androidContext(application)
             androidFileProperties()
             fragmentFactory()
-            modules(modules)
+            modules(  modules+dbModule)
         }
     }
 }

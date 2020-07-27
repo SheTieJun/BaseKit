@@ -92,6 +92,12 @@ android {
                     details.useVersion "$glideVersion"
                 }
             }
+
+            if (requested.group == '"androidx.room') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion "$room_version"
+                }
+            }
         }
     }
 }
