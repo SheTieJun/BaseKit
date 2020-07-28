@@ -5,32 +5,17 @@ import android.graphics.BlendModeColorFilter
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
 import me.shetj.base.ktx.loadImage
 
-class BaseBindingAdapter {
+/**
+ *     //A BindingAdapter in shetj.me.base.common.other.BaseBindingAdapter is not static and requires an object to use,
+ *     需要  @JvmStatic
+ */
+object BaseBindingAdapter {
 
-    @BindingAdapter(value = ["android:onClick", "android:clickable"], requireAll = false)
-    fun setOnClick(view: View, clickListener: View.OnClickListener?,
-                   clickable: Boolean) {
-        view.setOnClickListener(clickListener)
-        view.isClickable = clickable
-    }
-
-
-    @BindingAdapter("android:onLayoutChange")
-    fun setOnLayoutChangeListener(view: View, oldValue: View.OnLayoutChangeListener?,
-                                  newValue: View.OnLayoutChangeListener?) {
-        if (oldValue != null) {
-            view.removeOnLayoutChangeListener(oldValue)
-        }
-        if (newValue != null) {
-            view.addOnLayoutChangeListener(newValue)
-        }
-    }
 
     /**
      * <ImageView
@@ -39,6 +24,7 @@ class BaseBindingAdapter {
     app:imageUrl="@{product.imageUrl}"/>
      */
     @BindingAdapter("imageUrl")
+    @JvmStatic
     fun setImageUrl(imageView: ImageView, url: String?) {
         if (url == null) {
             imageView.setImageDrawable(null)
@@ -52,6 +38,7 @@ class BaseBindingAdapter {
      */
     @Suppress("DEPRECATION")
     @BindingAdapter("progressColor")
+    @JvmStatic
     fun setProgressBarColor(loader: ProgressBar?, color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             loader?.indeterminateDrawable?.colorFilter = BlendModeColorFilter(color, BlendMode.SRC_IN)
@@ -61,6 +48,7 @@ class BaseBindingAdapter {
     }
 
     @Suppress("UNUSED_PARAMETER")
+    @JvmStatic
     @BindingAdapter(value = ["src", "placeholder", "error", "blur", "cropCircle"], requireAll = false)
     fun setGlideAdapter(view: ImageView?, src: String?, placeholder: Drawable?,
                         error: Drawable?, blurValue: Int, cropCircle: Boolean) {

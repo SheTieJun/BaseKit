@@ -1,36 +1,29 @@
-package shetj.me.base.`fun`.main
+package shetj.me.base.func.main
 
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
-import me.shetj.base.base.BaseFragment
-import me.shetj.base.base.BasePresenter
+import me.shetj.base.mvvm.BaseFragment
+import me.shetj.base.mvvm.BaseViewModel
+import me.shetj.base.mvvm.DataBindingConfig
+import shetj.me.base.BR
 import shetj.me.base.R
 import timber.log.Timber
 
-const val ARG_ITEM_COUNT = "item_count"
 
 /**
  * A simple [Fragment] subclass.
  * 测试生命周期
  */
-class BlankFragment : BaseFragment<BasePresenter<*>>() {
+class BlankMVVMkFragment() : BaseFragment<BaseViewModel>() {
     override fun initEventAndData() {
         Timber.i("$cout initEventAndData")
     }
 
     private var cout: Int = 0
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_blank, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,8 +31,8 @@ class BlankFragment : BaseFragment<BasePresenter<*>>() {
     }
 
     companion object {
-        fun newInstance(itemCount: Int): BlankFragment =
-                BlankFragment().apply {
+        fun newInstance(itemCount: Int): BlankMVVMkFragment =
+                BlankMVVMkFragment().apply {
                     arguments = Bundle().apply {
                         putInt(ARG_ITEM_COUNT, itemCount)
                     }
@@ -88,8 +81,13 @@ class BlankFragment : BaseFragment<BasePresenter<*>>() {
         Log.i("Fragment$cout", "initLazy7 = ON_ANY")
     }
 
+    override fun getDataBindingConfig(): DataBindingConfig {
+         return DataBindingConfig(R.layout.fragment_blank_mvvm,BR.vm,mViewModel)
+    }
+
 //    开始onCreateView-> ON_CREATE -> onViewCreated-> ON_START -> ON_RESUME
 //    结束前现会 ON_PAUSE -> ON_STOP -> ON_DESTROY
 //    ON_RESUME -> ON_PAUSE
 //    ON_PAUSE -> ON_RESUME
+
 }

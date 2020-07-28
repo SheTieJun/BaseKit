@@ -24,8 +24,11 @@ import me.shetj.base.tools.app.KeyboardUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
+import org.koin.ext.scope
 import kotlin.coroutines.CoroutineContext
-
+import org.koin.androidx.scope.lifecycleScope as lifScope
 
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能
@@ -33,7 +36,7 @@ import kotlin.coroutines.CoroutineContext
  * @author shetj
  */
 @Keep
-abstract class BaseActivity< VM : ViewModel> : AppCompatActivity(), CoroutineScope, LifecycleObserver {
+abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), CoroutineScope, LifecycleObserver {
 
     private var mActivityProvider: ViewModelProvider? = null
     private val job = SupervisorJob()
@@ -41,8 +44,10 @@ abstract class BaseActivity< VM : ViewModel> : AppCompatActivity(), CoroutineSco
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    private var mBinding: ViewDataBinding? = null
-    protected lateinit var mViewModel: VM
+    protected var mBinding: ViewDataBinding? = null
+        private set
+
+    protected  val mViewModel  by lazy { getViewModel() }
 
     protected abstract fun getDataBindingConfig(): DataBindingConfig?
 
@@ -56,11 +61,9 @@ abstract class BaseActivity< VM : ViewModel> : AppCompatActivity(), CoroutineSco
     open fun onActivityCreate() {
         KeyboardUtil.init(this)
         if (useEventBus()) {
-            //注册到事件主线
             EventBus.getDefault().register(this)
         }
         findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
-        mViewModel = getActivityViewModel(getClazz(this))
         val dataBindingConfig = getDataBindingConfig()
         val binding = DataBindingUtil.setContentView<ViewDataBinding>(this, dataBindingConfig!!.layout)
         binding.lifecycleOwner = this
@@ -71,16 +74,24 @@ abstract class BaseActivity< VM : ViewModel> : AppCompatActivity(), CoroutineSco
         mBinding = binding
     }
 
+    /**
+     * 默认创建一个实例，
+     * 不过可以重写，然后使用单例
+     * 如果不实现，建议写一个emptyVM
+     */
+    @NonNull
+    open fun getViewModel(): VM {
+        return getActivityViewModel(getClazz(this))
+    }
+
     @CallSuper
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun onActivityDestroy() {
         if (useEventBus()) {
-            //如果要使用eventbus请将此方法返回true
             EventBus.getDefault().unregister(this)
         }
         coroutineContext.cancelChildren()
     }
-
 
     protected open fun <T : ViewModel> getActivityViewModel(@NonNull modelClass: Class<T>): T {
         if (mActivityProvider == null) {

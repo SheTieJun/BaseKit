@@ -21,6 +21,8 @@ class NetInfoUtils {
     //NET_CAPABILITY_INTERNET：网络支持互联网访问
 
     fun Context.requestNetWork() {
+
+
         val cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val builder = NetworkRequest.Builder()
         val request = builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)

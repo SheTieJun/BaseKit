@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -18,7 +17,7 @@ import me.shetj.base.ktx.getClazz
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-
+import org.koin.androidx.scope.currentScope
 
 /**
  * fragment基类
@@ -28,21 +27,18 @@ import org.greenrobot.eventbus.ThreadMode
  * 结束前现会:[Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_STOP] -> [Lifecycle.Event.ON_DESTROY]
  * 不可见:   [Lifecycle.Event.ON_RESUME]  ->[Lifecycle.Event.ON_PAUSE]
  * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
+ *
+ * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseFragment<VM : ViewModel> : Fragment(),  LifecycleObserver {
+abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver {
     protected var mActivity: Context? = null
-    private var mBinding: ViewDataBinding? = null
+    protected var mBinding: ViewDataBinding? = null
+        private set
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
-    /**
-     * 返回当前的activity
-     * @return RxAppCompatActivity
-     */
-    val rxContext: AppCompatActivity
-        get() = (mActivity as AppCompatActivity?)!!
 
-    protected lateinit var mViewModel: VM
+    protected  val mViewModel:VM by lazy { getViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +46,6 @@ abstract class BaseFragment<VM : ViewModel> : Fragment(),  LifecycleObserver {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mViewModel = getActivityViewModel(getClazz(this))
         val dataBindingConfig: DataBindingConfig = getDataBindingConfig()
         val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, dataBindingConfig.layout, container, false)
         binding.lifecycleOwner = this
@@ -62,6 +57,15 @@ abstract class BaseFragment<VM : ViewModel> : Fragment(),  LifecycleObserver {
         return binding.root
     }
 
+    /**
+     * 默认创建一个新的，
+     * 可以重写，然后使用单例
+     * 我的实现是不返回空
+     */
+    @NonNull
+    open fun getViewModel():VM {
+        return getActivityViewModel(getClazz(this))
+    }
 
     protected abstract fun getDataBindingConfig(): DataBindingConfig
 
@@ -137,7 +141,7 @@ abstract class BaseFragment<VM : ViewModel> : Fragment(),  LifecycleObserver {
 
     protected open fun <T : ViewModel?> getActivityViewModel(@NonNull modelClass: Class<T>): T {
         if (mActivityProvider == null) {
-            mActivityProvider = ViewModelProvider(rxContext)
+            mActivityProvider = ViewModelProvider(requireActivity())
         }
         return mActivityProvider!!.get(modelClass)
     }

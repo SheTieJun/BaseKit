@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Looper
@@ -14,6 +15,7 @@ import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,8 +24,10 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
 import io.reactivex.rxjava3.schedulers.Schedulers
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.SoftKeyBoardListener
+import timber.log.Timber
 import java.lang.reflect.Method
 
 
@@ -184,14 +188,38 @@ inline fun Context.createSimDialog(@LayoutRes layoutId: Int,
 /**
  * 获取网络状态监听回调
  */
-fun Context.requestNetWork(callbacks: ConnectivityManager.NetworkCallback) {
+@RequiresPermission(allOf=["android.permission.CHANGE_NETWORK_STATE"])
+fun Context.requestNetWork() {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val builder = NetworkRequest.Builder()
     val request = builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .build()
-    cm.requestNetwork(request, callbacks)
+    cm.requestNetwork(request, object :ConnectivityManager.NetworkCallback(){
+
+        override fun onLost(network: Network) {
+            super.onLost(network)
+            NetWorkLiveDate.getInstance().onLost()
+        }
+
+        override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+            super.onCapabilitiesChanged(network, networkCapabilities)
+            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+                when {
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.WIFI)
+                    }
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.PHONE)
+                    }
+                    else -> {
+                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.AUTO)
+                    }
+                }
+            }
+        }
+    })
 }
 
 fun Context.getFileProvider():String{

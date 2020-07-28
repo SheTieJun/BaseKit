@@ -1,4 +1,4 @@
-package shetj.me.base.`fun`.main
+package shetj.me.base.func.main
 
 import me.shetj.base.base.BaseModel
 

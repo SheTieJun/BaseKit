@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main"
-    tools:context="shetj.me.base.fun.main.MainActivity">
+    tools:context="shetj.me.base.func.main.MainActivity">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
@@ -107,6 +107,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="查询数据"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_insert" />
+
+    <Button
+        android:id="@+id/btn_mvvm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="测试MVVM"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"

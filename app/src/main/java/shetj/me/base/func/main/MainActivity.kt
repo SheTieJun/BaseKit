@@ -1,4 +1,4 @@
-package shetj.me.base.`fun`.main
+package shetj.me.base.func.main
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.REVERSE
@@ -13,7 +13,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.animation.addListener
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -22,9 +24,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import me.shetj.base.base.BaseActivity
 import me.shetj.base.base.TaskExecutor
-import me.shetj.base.ktx.saverCreate
-import me.shetj.base.ktx.saverDB
-import me.shetj.base.ktx.toJson
+import me.shetj.base.ktx.*
+import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.sim.SimpleCallBack
@@ -35,6 +36,7 @@ import org.koin.androidx.scope.lifecycleScope
 import shetj.me.base.R
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
+import shetj.me.base.mvvmtest.MVVMTestActivity
 import timber.log.Timber
 
 class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
@@ -42,7 +44,7 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
     private var mTvTestCode: TextView? = null
     private var codeUtil: CodeUtil? = null
     private var viewpage2: ViewPager2? = null
-    private val testPresenter:MainPresenter by lifecycleScope.inject()
+    private val testPresenter: MainPresenter by lifecycleScope.inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,7 +59,17 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
         mTvTestCode!!.setOnClickListener(this)
         viewpage2 = findViewById(R.id.viewPager2)
         viewpage2?.orientation = ViewPager2.ORIENTATION_VERTICAL
-        viewpage2?.adapter = AFragmentStateAdapter(this)
+        val list = arrayListOf<Fragment>().apply {
+            repeat(100) {
+                add(if (it % 2 == 0) {
+                    BlankMVVMkFragment.newInstance(it)
+                } else {
+                    BlankFragment.newInstance(it)
+                })
+            }
+        }
+
+        viewpage2?.adapter = AFragmentStateAdapter(this, list)
         viewpage2?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
@@ -85,12 +97,12 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
                     (text as TextView).text = "X${(it.animatedValue as Int)}"
                 }
                 addListener(onStart = {
-                    tv_test_number.animation =  AnimationUtils.loadAnimation(this@MainActivity,R.anim.zoom_in)?.apply {
+                    tv_test_number.animation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.zoom_in)?.apply {
                         interpolator = OvershootInterpolator()
                         repeatCount = -1
                         repeatMode = REVERSE
                     }
-                },onEnd = {
+                }, onEnd = {
                     tv_test_number.clearAnimation()
                 })
             }
@@ -102,16 +114,19 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
             ImageUtils.openLocalImage(this)
         }
 
+        btn_mvvm.setOnClickListener {
+            start<MVVMTestActivity>()
+        }
         netTest()
         imgTest()
         findViewById<View>(R.id.fab).setOnClickListener {
-            AppCompatDelegate.setDefaultNightMode( testPresenter.getNightModel())
+            AppCompatDelegate.setDefaultNightMode(testPresenter.getNightModel())
         }
 //        testExecutor()
 
         btn_insert.setOnClickListener {
 
-            saverCreate(key = "测试key",value = "测试value").apply {
+            saverCreate(key = "测试key", value = "测试value").apply {
                 saverDB.insert(this)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -123,12 +138,20 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
         }
 
         btn_find.setOnClickListener {
-            saverDB.getAll(groupN = "base",isDel = false)
+            saverDB.getAll(groupN = "base", isDel = false)
                     .subscribeOn(Schedulers.io())
                     .doOnNext {
-                Timber.i(it.toJson())
-            }.subscribe()
+                        Timber.i(it.toJson())
+                    }.subscribe()
         }
+        NetWorkLiveDate.getInstance().observe(this, Observer {
+            when (it.netType) {
+                NetWorkLiveDate.NetType.AUTO -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = AUTO")
+                NetWorkLiveDate.NetType.PHONE -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = PHONE")
+                NetWorkLiveDate.NetType.WIFI -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = WIFI")
+            }
+        })
+        requestNetWork()
     }
 
     private fun imgTest() {
@@ -257,7 +280,7 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        ImageUtils.onActivityResult(this,requestCode,resultCode,data,object :SimpleCallBack<Uri>(){
+        ImageUtils.onActivityResult(this, requestCode, resultCode, data, object : SimpleCallBack<Uri>() {
             override fun onSuccess(key: Uri) {
                 super.onSuccess(key)
                 Timber.i("url = $key")

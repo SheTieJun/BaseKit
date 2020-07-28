@@ -2,30 +2,35 @@ package shetj.me.base.kointest
 
 import androidx.lifecycle.ViewModel
 import me.shetj.base.base.IView
-import me.shetj.base.ktx.saverDB
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import shetj.me.base.`fun`.main.BlankFragment
-import shetj.me.base.`fun`.main.MainActivity
-import shetj.me.base.`fun`.main.MainPresenter
 import shetj.me.base.common.bean.UpToken
 import shetj.me.base.common.manager.CommonModel
 import shetj.me.base.common.manager.CommonPresenter
+import shetj.me.base.func.main.BlankMVVMkFragment
+import shetj.me.base.func.main.MainActivity
+import shetj.me.base.func.main.MainPresenter
+import shetj.me.base.mvvmtest.MVVMViewModel
 
 
 val appModule = module() {
     single { UpToken() } //单例
-
-    single { saverDB }
 }
 
 
 
 val mvvmModule = module {
     viewModel (named("test")){ object :ViewModel(){} }
-    fragment { BlankFragment() }
+    viewModel (named("test1")){ object :ViewModel(){} }
+    fragment { BlankMVVMkFragment() }
+
+//    scope<MVVMTestActivity> {
+//        scoped { MVVMViewModel() }  //会每次创建新的..
+//    }
+//
+    single { MVVMViewModel()  }
 }
 
 /**
@@ -39,8 +44,6 @@ val mvpModule = module {
     factory { (view:IView) -> CommonPresenter(view) }
     //单例
     single { CommonModel() }
-
-    factory {  }
 
     // // Inject presenter from MVPActivity's scope
     //    val scopedPresenter: MainPresenter by lifecycleScope.inject()

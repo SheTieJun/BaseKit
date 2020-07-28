@@ -20,7 +20,11 @@ class LiveDemo : LifecycleOwner {
 
     fun testLiveData() {
 
-        val live = MutableLiveData<MusicBean>()
+        val live = object :LiveData<MusicBean>(){
+           public override fun setValue(value: MusicBean?) {
+                super.setValue(value)
+            }
+        }
 
         live.observe(this, Observer {
             Timber.i(it.toJson())
@@ -29,6 +33,7 @@ class LiveDemo : LifecycleOwner {
         live.value = MusicBean().apply {
             this.title = "music2"
         }
+        live.value = null
     }
 
     override fun getLifecycle(): Lifecycle {
