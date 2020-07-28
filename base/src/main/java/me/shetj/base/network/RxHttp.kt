@@ -1,6 +1,7 @@
 package me.shetj.base.network
 
 import me.shetj.base.network.api.ApiService
+import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
@@ -13,12 +14,13 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.io.InputStream
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 open class RxHttp private constructor() {
     // region 相关的参数
-    val DEFAULT_MILLISECONDS = 30000 //默认的超时时间20秒
+    private val DEFAULT_MILLISECONDS = 20000 //默认的超时时间20秒
 
     private val DEFAULT_RETRY_COUNT = 3 //默认重试次数
 
@@ -51,17 +53,17 @@ open class RxHttp private constructor() {
 
     //region retrofit 相关
     init {
-        initClient()
-        initRetrofit()
+        initClientSetting()
+        initRetrofitSetting()
     }
 
-    private fun initRetrofit() {
+    private fun initRetrofitSetting() {
         retrofitBuilder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         retrofitBuilder.addConverterFactory(GsonConverterFactory.create())
     }
 
-    private fun initClient() {
-        okHttpClientBuilder.hostnameVerifier { _, _ -> true }
+    private fun initClientSetting() {
+        okHttpClientBuilder.hostnameVerifier { _, _ -> true } //主机验证
         okHttpClientBuilder.connectTimeout(DEFAULT_MILLISECONDS.toLong(), TimeUnit.MILLISECONDS)
         okHttpClientBuilder.readTimeout(DEFAULT_MILLISECONDS.toLong(), TimeUnit.MILLISECONDS)
         okHttpClientBuilder.writeTimeout(DEFAULT_MILLISECONDS.toLong(), TimeUnit.MILLISECONDS)
@@ -166,6 +168,12 @@ open class RxHttp private constructor() {
         return getOkHttpClient().newBuilder().apply {
             if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
             if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)
+            if (baseRequest.sslParams != null) {
+                //SSL/TLS证书
+                sslSocketFactory(baseRequest.sslParams!!.sSLSocketFactory,
+                        baseRequest.sslParams!!.trustManager)
+            }
+
             //处理拦截器
             baseRequest.interceptors.forEach {
                 addInterceptor(it)
@@ -353,6 +361,25 @@ open class RxHttp private constructor() {
      */
     fun setOkconnectionPool(connectionPool: ConnectionPool?): RxHttp {
         okHttpClientBuilder.connectionPool(checkNotNull(connectionPool, { "setOkconnectionPool  not null" }))
+        return this
+    }
+
+
+    /**
+     * https的全局自签名证书
+     */
+    open fun setCertificates(vararg certificates: InputStream?): RxHttp? {
+        val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, certificates)
+        okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+        return this
+    }
+
+    /**
+     * https双向认证证书
+     */
+    open fun setCertificates(bksFile: InputStream?, password: String?, vararg certificates: InputStream?): RxHttp? {
+        val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(bksFile, password, certificates)
+        okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
         return this
     }
 

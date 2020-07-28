@@ -38,7 +38,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
 
-    protected  val mViewModel:VM by lazy { getViewModel() }
+    protected val mViewModel: VM by lazy { getViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +63,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
      * 我的实现是不返回空
      */
     @NonNull
-    open fun getViewModel():VM {
+    open fun getViewModel(): VM {
         return getActivityViewModel(getClazz(this))
     }
 

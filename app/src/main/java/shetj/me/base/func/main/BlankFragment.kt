@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
-import me.shetj.base.base.BaseFragment
-import me.shetj.base.base.BasePresenter
+import me.shetj.base.mvp.BaseFragment
+import me.shetj.base.mvp.BasePresenter
 import shetj.me.base.R
 import timber.log.Timber
 

@@ -1,6 +1,6 @@
 package shetj.me.base.common.manager;
 
-import me.shetj.base.base.BaseModel;
+import me.shetj.base.mvp.BaseModel;
 
 /**
  * <b>@packageName：</b> shetj.me.base.common.manager<br>

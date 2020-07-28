@@ -13,6 +13,7 @@ import me.shetj.base.network.func.ApiResultFunc
 import me.shetj.base.network.func.HandleFuc
 import me.shetj.base.network.func.HttpResponseFunc
 import me.shetj.base.network.func.RetryExceptionFunc
+import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.model.ApiResult
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
@@ -23,6 +24,7 @@ import okhttp3.ResponseBody
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import timber.log.Timber
+import java.io.InputStream
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseRequest<R : BaseRequest<R>>() {
@@ -39,6 +41,7 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     var sign = false //是否需要签名
     var timeStamp = false //是否需要追加时间戳
     var accessToken = false //是否需要追加token
+    var sslParams: HttpsUtils.SSLParams? = null
 
     protected var httpUrl: HttpUrl? = null
     protected var url: String? = null //请求url
@@ -48,6 +51,7 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     protected var isSyncRequest = false //是否是同步请求
     protected var params: HttpParams = HttpParams() //添加的param
     protected var apiManager: ApiService? = null //通用的的api接口
+
 
     constructor(url: String, isDefault: Boolean) : this(url) {
         this.isDefault = isDefault
@@ -208,6 +212,22 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
         return this as R
     }
 
+    /**
+     * https的全局自签名证书
+     */
+    open fun certificates(vararg certificates: InputStream?): R {
+        sslParams = HttpsUtils.getSslSocketFactory(null, null, certificates)
+        return this as R
+    }
+
+    /**
+     * https双向认证证书
+     */
+    open fun certificates(bksFile: InputStream?, password: String?, vararg certificates: InputStream?): R {
+        sslParams = HttpsUtils.getSslSocketFactory(bksFile, password, certificates)
+        return this as R
+    }
+
     //endregion
 
     protected abstract fun generateRequest(): Observable<ResponseBody>?
@@ -246,6 +266,7 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
 
     /**
      * 执行，自定义数据类型
+     * @return Observable<T>
      */
     open fun <T> executeCus(type: Class<T>): Observable<T> {
         return build().generateRequest()!!
@@ -262,6 +283,7 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
 
     /**
      * 执行，自定义数据类型
+     *  @return Disposable
      */
     open fun <T> executeCus(callback: NetCallBack<T>):Disposable {
         return build().generateRequest()!!

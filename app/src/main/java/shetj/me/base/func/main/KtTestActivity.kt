@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import kotlinx.coroutines.*
-import me.shetj.base.base.BaseActivity
+import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.ktx.copy
 import me.shetj.base.ktx.runOnIo
 import me.shetj.base.ktx.toMessage

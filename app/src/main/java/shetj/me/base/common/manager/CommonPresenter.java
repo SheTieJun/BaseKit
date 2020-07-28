@@ -1,7 +1,7 @@
 package shetj.me.base.common.manager;
 
-import me.shetj.base.base.BasePresenter;
-import me.shetj.base.base.IView;
+import me.shetj.base.mvp.BasePresenter;
+import me.shetj.base.mvp.IView;
 
 /**
  * <b>@packageName：</b> shetj.me.base.common.manager<br>

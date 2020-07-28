@@ -27,7 +27,6 @@ import me.shetj.base.base.TaskExecutor
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.SoftKeyBoardListener
-import timber.log.Timber
 import java.lang.reflect.Method
 
 

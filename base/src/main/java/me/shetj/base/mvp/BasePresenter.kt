@@ -1,4 +1,4 @@
-package me.shetj.base.base
+package me.shetj.base.mvp
 
 
 import android.content.Intent

@@ -47,7 +47,7 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), Coroutine
     protected var mBinding: ViewDataBinding? = null
         private set
 
-    protected  val mViewModel  by lazy { getViewModel() }
+    protected val mViewModel by lazy { getViewModel() }
 
     protected abstract fun getDataBindingConfig(): DataBindingConfig?
 

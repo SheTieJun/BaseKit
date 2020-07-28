@@ -1,8 +1,8 @@
 package shetj.me.base.func.main
 
 import androidx.appcompat.app.AppCompatDelegate
-import me.shetj.base.base.BasePresenter
-import me.shetj.base.base.IView
+import me.shetj.base.mvp.BasePresenter
+import me.shetj.base.mvp.IView
 
 /**
  * **@packageName：** shetj.me.base.fun<br></br>

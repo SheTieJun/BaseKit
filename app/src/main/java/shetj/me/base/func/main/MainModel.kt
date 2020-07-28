@@ -1,6 +1,6 @@
 package shetj.me.base.func.main
 
-import me.shetj.base.base.BaseModel
+import me.shetj.base.mvp.BaseModel
 
 /**
  * **@packageName：** shetj.me.base.fun<br></br>
