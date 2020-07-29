@@ -17,7 +17,6 @@ import me.shetj.base.ktx.getClazz
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.koin.androidx.scope.currentScope
 
 /**
  * fragment基类
@@ -38,7 +37,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
 
-    protected val mViewModel: VM by lazy { getViewModel() }
+    protected val mViewModel: VM by lazy { initViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +62,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
      * 我的实现是不返回空
      */
     @NonNull
-    open fun getViewModel(): VM {
+    open fun initViewModel(): VM {
         return getActivityViewModel(getClazz(this))
     }
 

@@ -26,7 +26,7 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         }
     }
 
-    override fun getViewModel(): MVVMViewModel {
+    override fun initViewModel(): MVVMViewModel {
         return get()
     }
 
@@ -41,7 +41,7 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         })
         mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
 
-        Timber.tag("getViewModel").i("id = ${getViewModel().toString()}")
+        Timber.tag("getViewModel").i("id = ${initViewModel().toString()}")
     }
 
     override fun getDataBindingConfig(): DataBindingConfig? {

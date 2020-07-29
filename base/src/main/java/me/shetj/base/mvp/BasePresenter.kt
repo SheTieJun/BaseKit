@@ -12,6 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
+import me.shetj.base.ktx.getClazz
+import me.shetj.base.ktx.getObjByClassArg
 import me.shetj.base.ktx.toMessage
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -28,7 +30,8 @@ import kotlin.coroutines.CoroutineContext
 open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter, CoroutineScope {
 
     private var mCompositeDisposable: CompositeDisposable? = null
-    protected var model: T? = null
+    protected val model: T by lazy { initModel() }
+
 
     private val job = supervisorJob()
 
@@ -43,6 +46,10 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     init {
         Timber.i("${this.javaClass.name}:onStart")
         onStart()
+    }
+
+    open fun initModel(): T {
+        return getObjByClassArg(this)
     }
 
     @CallSuper
@@ -73,8 +80,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         coroutineContext.cancelChildren()
         unDispose()
         this.mCompositeDisposable = null
-        model?.onDestroy()
-        model = null
+        model.onDestroy()
     }
 
     /**

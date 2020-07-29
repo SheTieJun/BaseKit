@@ -44,13 +44,15 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
     private var mTvTestCode: TextView? = null
     private var codeUtil: CodeUtil? = null
     private var viewpage2: ViewPager2? = null
-    private val testPresenter: MainPresenter by lifecycleScope.inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mPresenter = MainPresenter(this)
-
     }
+
+  // 框架默认会通过反射创建 MainPresenter ，
+//    override fun initPresenter(): MainPresenter {
+//        return lifecycleScope.get()
+//    }
 
     public override fun initView() {
         mBtnTest = findViewById<View>(R.id.btn_test) as Button
@@ -120,7 +122,7 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
         netTest()
         imgTest()
         findViewById<View>(R.id.fab).setOnClickListener {
-            AppCompatDelegate.setDefaultNightMode(testPresenter.getNightModel())
+            AppCompatDelegate.setDefaultNightMode(mPresenter.getNightModel())
         }
 //        testExecutor()
 

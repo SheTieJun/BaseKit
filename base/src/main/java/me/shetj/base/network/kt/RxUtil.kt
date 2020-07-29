@@ -22,7 +22,7 @@ internal object RxUtil {
     }
 
     fun <T> _io_main(): ObservableTransformer<ApiResult<T>, T> {
-        return ObservableTransformer<ApiResult<T>, T> { upstream ->
+        return ObservableTransformer { upstream ->
             upstream
                     .subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
@@ -34,7 +34,7 @@ internal object RxUtil {
     }
 
     fun <T> _main(): ObservableTransformer<ApiResult<T>, T> {
-        return ObservableTransformer<ApiResult<T>, T> { upstream ->
+        return ObservableTransformer { upstream ->
             upstream.map(HandleFuc<T>())
                     .onErrorResumeNext(HttpResponseFunc<T>())
         }

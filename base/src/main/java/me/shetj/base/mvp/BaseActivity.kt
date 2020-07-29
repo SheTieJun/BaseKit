@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import me.shetj.base.R
+import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.toJson
 import me.shetj.base.s
 import me.shetj.base.tools.app.KeyboardUtil
@@ -36,7 +37,7 @@ import kotlin.coroutines.CoroutineContext
 @Keep
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, CoroutineScope, LifecycleObserver {
     protected val TAG = this.javaClass.simpleName
-    protected var mPresenter: T? = null
+    protected val mPresenter: T by lazy { initPresenter() }
 
     override val rxContext: AppCompatActivity
         get() = this
@@ -72,9 +73,18 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, 
             EventBus.getDefault().unregister(this)
         }
         coroutineContext.cancelChildren()
-        mPresenter?.onDestroy()
+        mPresenter.onDestroy()
     }
 
+    /**
+     * 默认通过反射创建 T：BasePresenter
+     * 可以重新 返回对应的实例 或者单例
+     * 实现思想：
+     *    首先Activity<Presenter> -> Presenter.class -> Presenter的参数构造函数 -> newInstance
+     */
+    open fun initPresenter(): T {
+        return  getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
+    }
     /**
      * 让[EventBus] 默认主线程处理
      */
@@ -145,7 +155,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, 
     }
 
     fun addDispose(disposable: Disposable) {
-        mPresenter?.addDispose(disposable)
+        mPresenter.addDispose(disposable)
     }
 
     override fun onBackPressed() {

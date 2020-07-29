@@ -24,11 +24,7 @@ import me.shetj.base.tools.app.KeyboardUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
-import org.koin.ext.scope
 import kotlin.coroutines.CoroutineContext
-import org.koin.androidx.scope.lifecycleScope as lifScope
 
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能
@@ -47,7 +43,7 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), Coroutine
     protected var mBinding: ViewDataBinding? = null
         private set
 
-    protected val mViewModel by lazy { getViewModel() }
+    protected val mViewModel by lazy { initViewModel() }
 
     protected abstract fun getDataBindingConfig(): DataBindingConfig?
 
@@ -80,7 +76,7 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), Coroutine
      * 如果不实现，建议写一个emptyVM
      */
     @NonNull
-    open fun getViewModel(): VM {
+    open fun initViewModel(): VM {
         return getActivityViewModel(getClazz(this))
     }
 

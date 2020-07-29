@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.toJson
 import me.shetj.base.s
 import me.shetj.base.tools.json.EmptyUtils
@@ -33,7 +34,7 @@ import timber.log.Timber
 @Keep
 abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, LifecycleObserver {
     protected var mActivity: Context? = null
-    protected var mPresenter: T? = null
+    protected val mPresenter: T by lazy { initPresenter() }
 
     /**
      * 返回当前的activity
@@ -65,6 +66,10 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
             EventBus.getDefault().unregister(this)
         }
         this.mActivity = null
+    }
+
+    open fun initPresenter(): T {
+        return  getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
     }
 
     /**
@@ -115,7 +120,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
 
 
     override fun onDestroyView() {
-        mPresenter?.onDestroy()
+        mPresenter.onDestroy()
         super.onDestroyView()
     }
 
