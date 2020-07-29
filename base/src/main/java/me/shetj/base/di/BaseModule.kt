@@ -2,7 +2,6 @@ package me.shetj.base.di
 
 import me.shetj.base.saver.SaverDatabase
 import org.koin.android.ext.koin.androidApplication
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val dbModule = module() {

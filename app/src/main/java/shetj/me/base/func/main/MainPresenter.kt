@@ -3,6 +3,7 @@ package shetj.me.base.func.main
 import androidx.appcompat.app.AppCompatDelegate
 import me.shetj.base.mvp.BasePresenter
 import me.shetj.base.mvp.IView
+import org.koin.java.KoinJavaComponent.get
 
 /**
  * **@packageName：** shetj.me.base.fun<br></br>
@@ -13,6 +14,8 @@ import me.shetj.base.mvp.IView
  * **@describe**<br></br>
  */
 class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
+
+    val view2:IView = get(IView::class.java)
 
     fun getNightModel(): Int {
         //android:forceDarkAllowed="true"

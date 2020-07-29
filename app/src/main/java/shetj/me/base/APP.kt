@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
 import com.didichuxing.doraemonkit.DoraemonKit
+import dagger.hilt.android.HiltAndroidApp
 import me.shetj.base.s.init
 import me.shetj.base.s.initKoin
 import shetj.me.base.kointest.allModules
@@ -16,6 +17,7 @@ import shetj.me.base.kointest.allModules
  * **@email：** 375105540@qq.com<br></br>
  * **@describe**<br></br>
  */
+@HiltAndroidApp
 class APP : Application() {
     override fun onCreate() {
         super.onCreate()

@@ -41,6 +41,7 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         })
         mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
 
+        //用来测试是否时单例的viewModel
         Timber.tag("getViewModel").i("id = ${initViewModel().toString()}")
     }
 

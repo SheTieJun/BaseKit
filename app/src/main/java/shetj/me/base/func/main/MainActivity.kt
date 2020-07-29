@@ -18,6 +18,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,8 +27,10 @@ import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
+import me.shetj.base.mvp.IView
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
+import me.shetj.base.saver.SaverDao
 import me.shetj.base.sim.SimpleCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
@@ -36,14 +39,24 @@ import org.koin.androidx.scope.lifecycleScope
 import shetj.me.base.R
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
+import shetj.me.base.hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import timber.log.Timber
+import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
+@AndroidEntryPoint
+class MainActivity @Inject constructor(): BaseActivity<MainPresenter>(), View.OnClickListener {
     private var mBtnTest: Button? = null
     private var mTvTestCode: TextView? = null
     private var codeUtil: CodeUtil? = null
     private var viewpage2: ViewPager2? = null
+    @Inject  lateinit var musicBean1: MusicBean
+    @Inject  lateinit var musicBean2: MusicBean
+    @Inject  lateinit var saverDao:SaverDao
+
+    val view2: IView = lifecycleScope.get()
+    @main1 @Inject lateinit var view3: IView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -70,6 +83,8 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
                 })
             }
         }
+        Timber.tag("koin").i(view2.rxContext.toString())
+        Timber.tag("hilt").i(view3.rxContext.toString())
 
         viewpage2?.adapter = AFragmentStateAdapter(this, list)
         viewpage2?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -88,6 +103,8 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
 
         btn_test_tip.setOnClickListener {
             TipPopupWindow.showTipMsg(this, view = toolbar, tipMsg = "测试一下INFO")
+            Timber.tag("DL").i(musicBean1.toJson())
+            Timber.tag("DL").i(musicBean2.toJson())
         }
 
         tv_test_number.setOnClickListener { text ->
@@ -135,7 +152,21 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
                         .doOnError {
                             Timber.e(it)
                         }
-                        .subscribe()
+                        .subscribe {
+                            Timber.i("测试koin")
+                        }
+            }
+
+            saverCreate(key = "测试Hilt", value = "测试Hilt").apply {
+                saverDao.insert(this)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError {
+                            Timber.e(it)
+                        }
+                        .subscribe {
+                            Timber.i("测试Hilt:saverDao = saved")
+                        }
             }
         }
 
@@ -187,7 +218,7 @@ class MainActivity : BaseActivity<MainPresenter>(), View.OnClickListener {
             //                        Timber.e(it)
             //                    })
 
-            RxHttp.post("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
+            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
                     .executeCus(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
                         override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
                             super.onSuccess(data)

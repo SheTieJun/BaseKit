@@ -3,19 +3,27 @@ package shetj.me.base.func.main
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
+import dagger.Provides
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.ktx.copy
 import me.shetj.base.ktx.runOnIo
 import me.shetj.base.ktx.toMessage
+import me.shetj.base.mvp.IView
 import me.shetj.base.tools.app.ArmsUtils.Companion.statuInScreen
 import shetj.me.base.R
+import shetj.me.base.hilttest.main1
+import shetj.me.base.hilttest.main2
 import timber.log.Timber
 import java.util.concurrent.Executors
+import javax.inject.Inject
 import kotlin.system.measureNanoTime
 import kotlin.system.measureTimeMillis
 
-class KtTestActivity : BaseActivity<MainPresenter>() {
+
+@AndroidEntryPoint
+class KtTestActivity @Inject constructor(): BaseActivity<MainPresenter>() {
 
     val scope = CoroutineScope(Dispatchers.Main)
 
