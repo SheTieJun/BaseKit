@@ -13,9 +13,6 @@ import me.shetj.base.mvp.IView
  * **@describe**<br></br>
  */
 class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
-    init {
-        model = MainModel()
-    }
 
     fun getNightModel(): Int {
         //android:forceDarkAllowed="true"

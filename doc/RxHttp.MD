@@ -29,3 +29,6 @@
                         }
                     })
 ```
+
+使用header配置缓存
+ @Headers("Cache-Control: public, max-age=3600)

@@ -1,5 +1,11 @@
 # Base
-自用：简化自己写demo
+主要：
+1. [KTX-扩展函数](base/src/main/java/me/shetj/base/ktx)
+2. [架构-MVP](base/src/main/java/me/shetj/base/mvp)
+3. [架构-MVVM](base/src/main/java/me/shetj/base/mvvm)
+4. [NetWork-RxHttp](base/src/main/java/me/shetj/base/network)
+5. [工具包](base/src/main/java/me/shetj/base/tools)
+
 ```
     implementation "com.github.SheTieJun:Base:$base_version"
 ```

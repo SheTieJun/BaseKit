@@ -14,6 +14,5 @@ import me.shetj.base.mvp.IView;
 public class CommonPresenter extends BasePresenter<CommonModel> {
     public CommonPresenter(IView view) {
         super(view);
-        setModel(new CommonModel());
     }
 }
