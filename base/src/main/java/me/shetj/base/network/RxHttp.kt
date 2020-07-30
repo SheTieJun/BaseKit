@@ -107,7 +107,7 @@ open class RxHttp private constructor() {
         if (isPrintException) {
             okHttpClientBuilder.addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
                 Timber.i(it)
-            }).apply { level = HttpLoggingInterceptor.Level.BODY })
+            }).apply { level = HttpLoggingInterceptor.Level.BASIC })
         }
         return this
     }

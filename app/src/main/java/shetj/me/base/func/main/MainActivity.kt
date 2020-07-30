@@ -5,6 +5,7 @@ import android.animation.ValueAnimator.REVERSE
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Message
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
@@ -23,12 +24,13 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import me.shetj.base.mvp.BaseActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
+import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.mvp.IView
-import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.saver.SaverDao
 import me.shetj.base.sim.SimpleCallBack
@@ -36,6 +38,7 @@ import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import me.shetj.base.view.TipPopupWindow
 import org.koin.androidx.scope.lifecycleScope
+import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
@@ -45,27 +48,36 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity @Inject constructor(): BaseActivity<MainPresenter>(), View.OnClickListener {
+class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.OnClickListener {
     private var mBtnTest: Button? = null
     private var mTvTestCode: TextView? = null
     private var codeUtil: CodeUtil? = null
     private var viewpage2: ViewPager2? = null
-    @Inject  lateinit var musicBean1: MusicBean
-    @Inject  lateinit var musicBean2: MusicBean
-    @Inject  lateinit var saverDao:SaverDao
+
+    @Inject
+    lateinit var musicBean1: MusicBean
+
+    @Inject
+    lateinit var musicBean2: MusicBean
+
+    @Inject
+    lateinit var saverDao: SaverDao
 
     val view2: IView = lifecycleScope.get()
-    @main1 @Inject lateinit var view3: IView
+
+    @main1
+    @Inject
+    lateinit var view3: IView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
 
-  // 框架默认会通过反射创建 MainPresenter ，
-//    override fun initPresenter(): MainPresenter {
-//        return lifecycleScope.get()
-//    }
+    // 框架默认会通过反射创建 MainPresenter ，
+    override fun initPresenter(): MainPresenter {
+        return lifecycleScope.get { parametersOf(this) }
+    }
 
     public override fun initView() {
         mBtnTest = findViewById<View>(R.id.btn_test) as Button
@@ -195,56 +207,30 @@ class MainActivity @Inject constructor(): BaseActivity<MainPresenter>(), View.On
     }
 
     private fun netTest() {
+
+
         btn_test_net.setOnClickListener {
-            //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-            //                    .executeCus(object : SimpleNetCallBack<ResultMusic>(this) {
-            //                        override fun onSuccess(data: ResultMusic) {
-            //                            super.onSuccess(data)
-            //                            Timber.i(data.toJson())
-            //                        }
-            //
-            //                        override fun onError(e: Exception) {
-            //                            super.onError(e)
-            //                            Timber.e(e)
-            //                        }
-            //                    })
 
-            //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-            //                    .executeCus(ResultMusic::class.java)
-            //                    .map { it.data }
-            //                    .subscribe ({
-            //                        Timber.i(it.toJson())
-            //                    },{
-            //                        Timber.e(it)
-            //                    })
+            mPresenter.getMusicByRxHttp(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
+                override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
+                    super.onSuccess(data)
+                    Timber.tag("getMusicByRxHttp").i(data.toJson())
+                }
 
-            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-                    .executeCus(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
-                        override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
-                            super.onSuccess(data)
-                            Timber.i(data.toJson())
-                        }
+                override fun onError(e: Exception) {
+                    super.onError(e)
+                    Timber.e(e)
+                }
+            })
 
-                        override fun onError(e: Exception) {
-                            super.onError(e)
-                            Timber.e(e)
-                        }
-                    })
-
-
-            //            RxHttp.get("https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json")
-            //                    .execute(object : SimpleNetCallBack<List<MusicBean>>(this) {
-            //                        override fun onSuccess(data: List<MusicBean>) {
-            //                            super.onSuccess(data)
-            //                            Timber.i(data.toJson())
-            //                        }
-            //
-            //                        override fun onError(e: Exception) {
-            //                            super.onError(e)
-            //                            Timber.e(e)
-            //                        }
-            //                    })
-
+            val launch = launch(Dispatchers.Main) {
+                try {
+                    val music = mPresenter.getMusic()
+                    Timber.tag("getMusic").i(music.toJson())
+                } catch (e: Exception) {
+                    Timber.i(e)
+                }
+            }
         }
     }
 
@@ -308,6 +294,11 @@ class MainActivity @Inject constructor(): BaseActivity<MainPresenter>(), View.On
 
     override fun onDestroy() {
         super.onDestroy()
+    }
+
+    override fun updateView(message: Message) {
+        super.updateView(message)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

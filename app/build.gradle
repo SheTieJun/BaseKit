@@ -150,6 +150,18 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    def work_version = "2.4.0"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+
+    //文件下载
+    // core
+    implementation "com.liulishuo.okdownload:okdownload:1.0.7"
+// provide sqlite to store breakpoints
+    implementation "com.liulishuo.okdownload:sqlite:1.0.7"
+// provide okhttp to connect to backend
+    implementation "com.liulishuo.okdownload:okhttp:1.0.7"
 }
 
 apply from: file("dokit-config.gradle")

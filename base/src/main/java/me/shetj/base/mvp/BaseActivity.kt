@@ -13,10 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.*
 import me.shetj.base.R
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.toJson
@@ -42,7 +39,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, 
     override val rxContext: AppCompatActivity
         get() = this
 
-    private val job = SupervisorJob()
+    val job = SupervisorJob()
 
 
     override val coroutineContext: CoroutineContext
@@ -164,8 +161,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, 
     }
 
     override fun updateView(message: Message) {
-        if (s.isDebug && EmptyUtils.isNotEmpty(message)) {
-            Timber.i(message.toJson())
+        if (s.isDebug) {
+            Timber.tag(TAG).i(message.toJson())
         }
     }
 }

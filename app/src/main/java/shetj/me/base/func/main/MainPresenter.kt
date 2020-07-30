@@ -1,9 +1,12 @@
 package shetj.me.base.func.main
 
 import androidx.appcompat.app.AppCompatDelegate
+import me.shetj.base.ktx.toMessage
 import me.shetj.base.mvp.BasePresenter
 import me.shetj.base.mvp.IView
+import me.shetj.base.network.callBack.SimpleNetCallBack
 import org.koin.java.KoinJavaComponent.get
+import shetj.me.base.bean.ResultMusic
 
 /**
  * **@packageName：** shetj.me.base.fun<br></br>
@@ -15,7 +18,7 @@ import org.koin.java.KoinJavaComponent.get
  */
 class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
 
-    val view2:IView = get(IView::class.java)
+    val view2: IView = get(IView::class.java)
 
     fun getNightModel(): Int {
         //android:forceDarkAllowed="true"
@@ -26,6 +29,7 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
         //深色 - MODE_NIGHT_YES
         //由省电模式设置 - MODE_NIGHT_AUTO_BATTERY
         //系统默认 - MODE_NIGHT_FOLLOW_SYSTEM
+        view.updateView(1.toMessage())
         val defaultNightMode = AppCompatDelegate.getDefaultNightMode()
 
         if (defaultNightMode == AppCompatDelegate.MODE_NIGHT_NO) {
@@ -35,5 +39,13 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
             return AppCompatDelegate.MODE_NIGHT_NO
         }
         return AppCompatDelegate.MODE_NIGHT_YES
+    }
+
+    suspend fun getMusic(): ResultMusic? {
+        return model.getMusic()
+    }
+
+    fun <T> getMusicByRxHttp(simpleNetCallBack: SimpleNetCallBack<T>) {
+        model.getMusicByRxHttp(simpleNetCallBack)
     }
 }

@@ -21,7 +21,7 @@ import shetj.me.base.kointest.allModules
 class APP : Application() {
     override fun onCreate() {
         super.onCreate()
-        init(this, BuildConfig.LOG_DEBUG, "https://xxxx.com")
+        init(this, true, "https://xxxx.com")
         initKoin(this, allModules)
         DoraemonKit.disableUpload();
         DoraemonKit.install(this,"a0b7c73af7016fd6f1e94cdaecc5faa5");

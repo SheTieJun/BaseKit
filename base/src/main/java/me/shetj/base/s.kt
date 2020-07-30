@@ -26,6 +26,8 @@ import org.koin.core.module.Module
 
 @Keep
 object s {
+    var baseUrl: String?=null
+
     @JvmStatic
     val app: Application
         get() = Utils.app
@@ -53,6 +55,7 @@ object s {
             }
             this.isDebug = isDebug
             baseUrl?.let {
+                this.baseUrl = baseUrl
                 getInstance().debug(isDebug)
                         .setBaseUrl(baseUrl)
             }

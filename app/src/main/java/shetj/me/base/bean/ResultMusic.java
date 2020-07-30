@@ -21,6 +21,12 @@ import java.util.List;
 @Keep
 public class ResultMusic {
 
+    public ResultMusic(String msg, int code, List<DataBean> data) {
+        this.msg = msg;
+        this.code = code;
+        this.data = data;
+    }
+
     /**
      * msg : ok
      * code : 0
