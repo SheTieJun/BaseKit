@@ -2,6 +2,9 @@ package shetj.me.base.mvvmtest
 
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.rx3.asFlowable
 import me.shetj.base.ktx.showToast
 import me.shetj.base.mvvm.BaseActivity
 import me.shetj.base.mvvm.DataBindingConfig
@@ -43,6 +46,10 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
 
         //用来测试是否时单例的viewModel
         Timber.tag("getViewModel").i("id = ${initViewModel().toString()}")
+
+        listOf(1,2,3).asFlow().asFlowable().subscribe {
+            Timber.i("asFlow().asFlowable() = $it")
+        }
     }
 
     override fun getDataBindingConfig(): DataBindingConfig? {
