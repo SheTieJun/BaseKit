@@ -4,7 +4,7 @@ import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network_coroutine.KCApiService
-import me.shetj.base.s
+import me.shetj.base.S
 import me.shetj.base.saver.SaverDatabase
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
@@ -40,7 +40,7 @@ val dbModule = module() {
             addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             addConverterFactory(GsonConverterFactory.create())
             client(get())
-            baseUrl(s.baseUrl?:"https://me.shetj.come")
+            baseUrl(S.baseUrl?:"https://me.shetj.come")
         }.build()
     }
 

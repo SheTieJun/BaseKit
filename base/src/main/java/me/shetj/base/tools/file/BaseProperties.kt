@@ -1,6 +1,6 @@
 package me.shetj.base.tools.file
 
-import me.shetj.base.s
+import me.shetj.base.S
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.*
@@ -24,7 +24,7 @@ object BaseProperties {
         }
     }
 
-    private fun loadInputStream(inputStream: InputStream = s.app.applicationContext.assets.open(properties)) {
+    private fun loadInputStream(inputStream: InputStream = S.app.applicationContext.assets.open(properties)) {
         p.load(inputStream)
     }
 

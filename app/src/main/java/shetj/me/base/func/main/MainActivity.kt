@@ -42,7 +42,8 @@ import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
-import shetj.me.base.hilttest.main1
+import shetj.me.base.bean.ResultMusic
+import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import timber.log.Timber
 import javax.inject.Inject
@@ -189,14 +190,14 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                         Timber.i(it.toJson())
                     }.subscribe()
         }
+        requestNetWork()
         NetWorkLiveDate.getInstance().observe(this, Observer {
-            when (it.netType) {
-                NetWorkLiveDate.NetType.AUTO -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = AUTO")
+            when (it?.netType) {
+                NetWorkLiveDate.NetType.NONE -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = NONE")
                 NetWorkLiveDate.NetType.PHONE -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = PHONE")
                 NetWorkLiveDate.NetType.WIFI -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = WIFI")
             }
         })
-        requestNetWork()
     }
 
     private fun imgTest() {
@@ -207,29 +208,54 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
     }
 
     private fun netTest() {
-
-
         btn_test_net.setOnClickListener {
 
-            mPresenter.getMusicByRxHttp(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
-                override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
-                    super.onSuccess(data)
-                    Timber.tag("getMusicByRxHttp").i(data.toJson())
+//            mPresenter.getMusicByRxHttp(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
+//                override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
+//                    super.onSuccess(data)
+//                    Timber.tag("getMusicByRxHttp").i(data.toJson())
+//                }
+//
+//                override fun onError(e: Exception) {
+//                    super.onError(e)
+//                    Timber.e(e)
+//                }
+//            })
+
+            val launch = launch {
+
+                main {
+                    try {
+                        val music = mPresenter.getMusic()
+                        Timber.tag("getMusic").i(music.toJson())
+                        music
+                    } catch (e: Exception) {
+                        Timber.i(e)
+                        null
+                    }
                 }
 
-                override fun onError(e: Exception) {
-                    super.onError(e)
-                    Timber.e(e)
-                }
-            })
+                runOnIO {
 
-            val launch = launch(Dispatchers.Main) {
-                try {
-                    val music = mPresenter.getMusic()
-                    Timber.tag("getMusic").i(music.toJson())
-                } catch (e: Exception) {
-                    Timber.i(e)
+                    try {
+                        val music = mPresenter.getMusic()
+                        Timber.tag("getMusic").i(music.toJson())
+                        music
+                    } catch (e: Exception) {
+                        Timber.i(e)
+                        null
+                    }
                 }
+
+
+                doOnMain {
+
+                }
+
+                val info2 = musicBean1.onMain {
+                      ""
+                }
+
             }
         }
     }

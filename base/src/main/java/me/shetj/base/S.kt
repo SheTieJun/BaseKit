@@ -25,8 +25,9 @@ import org.koin.core.module.Module
  */
 
 @Keep
-object s {
-    var baseUrl: String?=null
+object S {
+    var baseUrl: String? = null
+        private set
 
     @JvmStatic
     val app: Application
@@ -64,7 +65,7 @@ object s {
     }
 
     @JvmStatic
-    fun initKoin(application: Application,modules: List<Module>){
+    fun initKoin(application: Application, modules: List<Module>) {
         startKoin {
             if (isDebug) {
                 androidLogger()
@@ -72,7 +73,7 @@ object s {
             androidContext(application)
             androidFileProperties()
             fragmentFactory()
-            modules(  modules+dbModule)
+            modules(modules + dbModule)
         }
     }
 }

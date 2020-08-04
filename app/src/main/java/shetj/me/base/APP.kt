@@ -5,9 +5,9 @@ import android.content.Context
 import androidx.multidex.MultiDex
 import com.didichuxing.doraemonkit.DoraemonKit
 import dagger.hilt.android.HiltAndroidApp
-import me.shetj.base.s.init
-import me.shetj.base.s.initKoin
-import shetj.me.base.kointest.allModules
+import me.shetj.base.S
+import me.shetj.base.S.initKoin
+import shetj.me.base.di_kointest.allModules
 
 /**
  * **@packageName：** com.ebu.master<br></br>
@@ -21,8 +21,8 @@ import shetj.me.base.kointest.allModules
 class APP : Application() {
     override fun onCreate() {
         super.onCreate()
-        init(this, true, "https://xxxx.com")
-        initKoin(this, allModules)
+        S.init(this, true, "https://xxxx.com")
+        S.initKoin(this, allModules)
         DoraemonKit.disableUpload();
         DoraemonKit.install(this,"a0b7c73af7016fd6f1e94cdaecc5faa5");
     }

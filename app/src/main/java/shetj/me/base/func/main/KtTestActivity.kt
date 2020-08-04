@@ -40,9 +40,8 @@ class KtTestActivity @Inject constructor(): BaseActivity<MainPresenter>() {
 
         }
 
-        launch{
 
-        }
+
 
         launch.cancel()
 
@@ -55,13 +54,6 @@ class KtTestActivity @Inject constructor(): BaseActivity<MainPresenter>() {
 //
 //                }
 //        }
-
-
-        List(100) {
-            launch {
-
-            }
-        }
 
 
         val async = GlobalScope.async {
@@ -79,10 +71,6 @@ class KtTestActivity @Inject constructor(): BaseActivity<MainPresenter>() {
             delay(500)
         }
 
-
-        launch {
-
-        }
     }
 
     fun test() {

@@ -14,17 +14,12 @@ import androidx.core.util.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
 import me.shetj.base.R
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.tools.app.KeyboardUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import kotlin.coroutines.CoroutineContext
 
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能
@@ -32,13 +27,9 @@ import kotlin.coroutines.CoroutineContext
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), CoroutineScope, LifecycleObserver {
+abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), LifecycleObserver {
 
     private var mActivityProvider: ViewModelProvider? = null
-    private val job = SupervisorJob()
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
 
     protected var mBinding: ViewDataBinding? = null
         private set
@@ -86,7 +77,6 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), Coroutine
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }
-        coroutineContext.cancelChildren()
     }
 
     protected open fun <T : ViewModel> getActivityViewModel(@NonNull modelClass: Class<T>): T {

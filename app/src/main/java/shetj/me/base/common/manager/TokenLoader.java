@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import me.shetj.base.network.RxHttp;
-import me.shetj.base.s;
+import me.shetj.base.S;
 import me.shetj.base.tools.file.SPUtils;
 import me.shetj.base.tools.json.EmptyUtils;
 import me.shetj.base.tools.json.GsonKit;
@@ -76,9 +76,9 @@ public class TokenLoader {
     }
 
     private String getCacheToken() {
-        String token = (String) SPUtils.get(s.getApp().getApplicationContext(), "PRE_CUSTOM_TOKEN", "");
+        String token = (String) SPUtils.get(S.getApp().getApplicationContext(), "PRE_CUSTOM_TOKEN", "");
         if (EmptyUtils.Companion.isNotEmpty(token)) {
-            long timeDiff = TimeUtil.getTimeDiff(getExpire(s.getApp().getApplicationContext()));
+            long timeDiff = TimeUtil.getTimeDiff(getExpire(S.getApp().getApplicationContext()));
             if (timeDiff > 50000) {
                 return token;
             } else {

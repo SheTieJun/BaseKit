@@ -12,15 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.lifecycleScope
 import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.*
 import me.shetj.base.R
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.toJson
-import me.shetj.base.s
+import me.shetj.base.S
 import me.shetj.base.tools.app.KeyboardUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -34,18 +32,12 @@ import kotlin.coroutines.CoroutineContext
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, CoroutineScope, LifecycleObserver {
+abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView , LifecycleObserver {
     protected val TAG = this.javaClass.simpleName
     protected val mPresenter: T by lazy { initPresenter() }
 
     override val rxContext: AppCompatActivity
         get() = this
-
-    val job = SupervisorJob()
-
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +63,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, 
             //如果要使用eventbus请将此方法返回true
             EventBus.getDefault().unregister(this)
         }
-        coroutineContext.cancelChildren()
         mPresenter.onDestroy()
     }
 
@@ -163,7 +154,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView, 
     }
 
     override fun updateView(message: Message) {
-        if (s.isDebug) {
+        if (S.isDebug) {
             Timber.tag(TAG).i(message.toJson())
         }
     }

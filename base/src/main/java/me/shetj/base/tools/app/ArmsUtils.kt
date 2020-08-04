@@ -26,7 +26,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
-import me.shetj.base.s
+import me.shetj.base.S
 import me.shetj.base.tools.file.EnvironmentStorage
 import java.io.File
 import java.io.IOException
@@ -451,7 +451,7 @@ class ArmsUtils private constructor() {
 
         private fun getDensity(): Float {
             if (density <= 0f) {
-                density = s.app.resources.displayMetrics.density
+                density = S.app.resources.displayMetrics.density
             }
             return density
         }

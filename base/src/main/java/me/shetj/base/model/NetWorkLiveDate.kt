@@ -10,7 +10,7 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
     sealed class NetType() {
         object WIFI : NetType()
         object PHONE : NetType()
-        object AUTO : NetType()
+        object NONE : NetType() //初始化，或者没有网络
     }
 
     override fun onActive() {
@@ -28,7 +28,7 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
 
     fun onLost() {
         if (value?.hasNet == false) return
-        postValue(value?.copy(hasNet = false,netType = NetType.AUTO))
+        postValue(value?.copy(hasNet = false,netType = NetType.NONE))
     }
 
     fun setNetType(netType: NetType) {
@@ -38,21 +38,21 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
 
     companion object {
 
-        private var networkLiveData: NetWorkLiveDate? = null
+        @Volatile private var networkLiveData: NetWorkLiveDate? = null
 
         @JvmStatic
         fun getInstance(): NetWorkLiveDate {
             return networkLiveData ?: synchronized(NetWorkLiveDate::class.java) {
                 return NetWorkLiveDate().apply {
                     networkLiveData = this
-                    this.value = NetWorkInfo(hasNet = NetworkUtils.isAvailable(Utils.app))
+                    this.value = NetWorkInfo()
                 }
             }
         }
 
     }
 
-    data class NetWorkInfo(var hasNet: Boolean = true,
-                           var netType: NetType = NetType.AUTO) {
+    data class NetWorkInfo(var hasNet: Boolean = NetworkUtils.isAvailable(Utils.app),
+                           var netType: NetType = NetType.NONE) {
     }
 }

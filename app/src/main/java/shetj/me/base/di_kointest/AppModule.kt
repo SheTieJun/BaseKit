@@ -1,4 +1,4 @@
-package shetj.me.base.kointest
+package shetj.me.base.di_kointest
 
 import androidx.lifecycle.ViewModel
 import me.shetj.base.mvp.IView

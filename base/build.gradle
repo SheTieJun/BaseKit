@@ -158,6 +158,8 @@ dependencies {
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     api "androidx.room:room-rxjava3:$room_version"
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
 }
 
 apply from: 'bintray.gradle'

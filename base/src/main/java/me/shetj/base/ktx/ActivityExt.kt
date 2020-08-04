@@ -213,7 +213,7 @@ fun Context.requestNetWork() {
                         NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.PHONE)
                     }
                     else -> {
-                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.AUTO)
+                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
                     }
                 }
             }

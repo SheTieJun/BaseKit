@@ -2,7 +2,7 @@ package shetj.me.base.common.manager;
 
 import android.content.Context;
 
-import me.shetj.base.s;
+import me.shetj.base.S;
 import me.shetj.base.sim.SimpleCallBack;
 import me.shetj.base.tools.file.SPUtils;
 import me.shetj.base.tools.json.EmptyUtils;
@@ -20,7 +20,7 @@ import shetj.me.base.common.tag.SPKey;
 
 public class UserManager {
     private static final UserManager OUR_INSTANCE = new UserManager();
-    private Context context = s.getApp().getApplicationContext();
+    private Context context = S.getApp().getApplicationContext();
     private UserInfo custom;
 
     public static UserManager getInstance() {

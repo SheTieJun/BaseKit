@@ -11,6 +11,7 @@ import me.shetj.base.mvvm.BaseViewModel
 import me.shetj.base.mvvm.DataBindingConfig
 import shetj.me.base.BR
 import shetj.me.base.R
+import shetj.me.base.mvvmtest.MVVMViewModel
 import timber.log.Timber
 
 
@@ -18,7 +19,7 @@ import timber.log.Timber
  * A simple [Fragment] subclass.
  * 测试生命周期
  */
-class BlankMVVMkFragment() : BaseFragment<BaseViewModel>() {
+class BlankMVVMkFragment() : BaseFragment<MVVMViewModel>() {
     override fun initEventAndData() {
         Timber.i("$cout initEventAndData")
     }
@@ -27,7 +28,7 @@ class BlankMVVMkFragment() : BaseFragment<BaseViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.i("$cout onViewCreated")
+        Timber.i("$cout onViewCreated\n ${mViewModel.test}")
     }
 
     companion object {
@@ -82,7 +83,8 @@ class BlankMVVMkFragment() : BaseFragment<BaseViewModel>() {
     }
 
     override fun getDataBindingConfig(): DataBindingConfig {
-         return DataBindingConfig(R.layout.fragment_blank_mvvm,BR.vm,mViewModel)
+         return DataBindingConfig(R.layout.fragment_blank_mvvm,BR.vm,mViewModel).apply {
+         }
     }
 
 //    开始onCreateView-> ON_CREATE -> onViewCreated-> ON_START -> ON_RESUME

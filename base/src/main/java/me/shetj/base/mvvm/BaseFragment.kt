@@ -13,6 +13,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import me.shetj.base.ktx.getClazz
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -63,7 +66,10 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
      */
     @NonNull
     open fun initViewModel(): VM {
-        return getActivityViewModel(getClazz(this))
+        if (useActivityVM()){
+            return getActivityViewModel(getClazz(this))
+        }
+        return getFragmentViewModel(getClazz(this))
     }
 
     protected abstract fun getDataBindingConfig(): DataBindingConfig
@@ -92,6 +98,11 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
     open fun useEventBus(): Boolean {
         return true
     }
+
+    /**
+     * 是否使用Activity的VM，默认不使用
+     */
+    open fun useActivityVM() = false
 
     /**
      * 让[EventBus] 默认主线程处理

@@ -1,4 +1,4 @@
-package shetj.me.base.hilttest
+package shetj.me.base.di_hilttest
 
 import dagger.Binds
 import dagger.Module
