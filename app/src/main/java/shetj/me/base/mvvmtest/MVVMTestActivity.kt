@@ -2,7 +2,6 @@ package shetj.me.base.mvvmtest
 
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.rx3.asFlowable
 import me.shetj.base.ktx.showToast

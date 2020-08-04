@@ -16,6 +16,7 @@ import androidx.annotation.Keep
 import me.shetj.base.tools.file.FileUtils
 import java.io.File
 import java.util.*
+import kotlin.system.exitProcess
 
 @Keep
 class AppUtils private constructor() {
@@ -251,7 +252,7 @@ class AppUtils private constructor() {
                 activityList[i].finish()
                 activityList.removeAt(i)
             }
-            System.exit(0)
+            exitProcess(0)
         }
 
         /**
@@ -297,13 +298,13 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return null
             }
-            try {
+            return try {
                 val pm = Utils.app.packageManager
                 val pi = pm.getPackageInfo(packageName, 0)
-                return pi?.applicationInfo?.loadLabel(pm)?.toString()
+                pi?.applicationInfo?.loadLabel(pm)?.toString()
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return null
+                null
             }
 
         }

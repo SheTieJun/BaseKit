@@ -5,6 +5,11 @@
 3. [架构-MVVM](base/src/main/java/me/shetj/base/mvvm)
 4. [NetWork-RxHttp](base/src/main/java/me/shetj/base/network)
 5. [工具包](base/src/main/java/me/shetj/base/tools)
+6. [Network_Coroutine](base/src/main/java/me/shetj/base/network_coroutine)
+7. [MotionLayout](base/src/main/java/me/shetj/base/anim/motion)
+8. [DOC](doc)
+
+
 
 ```
     implementation "com.github.SheTieJun:Base:$base_version"

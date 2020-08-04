@@ -93,8 +93,8 @@ dependencies {
     api "androidx.appcompat:appcompat:$appcompat"
 //    implementation "androidx.legacy:legacy-support-v4:$androidx"
     //https://material.io/develop/android/
-    api "com.google.android.material:material:$androidx"
-    api "androidx.recyclerview:recyclerview:$androidx"
+    api "com.google.android.material:material:$appcompat"
+    api "androidx.recyclerview:recyclerview:$appcompat"
     api "androidx.cardview:cardview:$androidx"
     api "androidx.core:core-ktx:$androidx_2"
     api "androidx.activity:activity-ktx:$appcompat"
@@ -144,7 +144,6 @@ dependencies {
     //https://github.com/code-mc/material-icon-lib icon图片库
     api 'net.steamcrafted:materialiconlib:1.1.5'
 
-    api 'com.squareup.okhttp3:logging-interceptor:3.12.2'
     api 'com.squareup.okhttp3:okhttp:3.14.9'
     api 'com.jakewharton:disklrucache:2.0.2'
     api 'com.squareup.retrofit2:retrofit:2.9.0'

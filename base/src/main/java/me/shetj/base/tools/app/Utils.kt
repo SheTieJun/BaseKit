@@ -77,6 +77,9 @@ class Utils private constructor() {
                 throw NullPointerException("u should init first")
             }
 
+        @JvmStatic
+        fun getTopActivity() = sTopActivityWeakRef?.get()
+
         private fun setTopActivityWeakRef(activity: Activity) {
             if (sTopActivityWeakRef == null || activity != sTopActivityWeakRef!!.get()) {
                 sTopActivityWeakRef = WeakReference(activity)

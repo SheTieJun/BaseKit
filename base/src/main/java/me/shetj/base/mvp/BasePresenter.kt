@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
-import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.getObjByClassArg
 import me.shetj.base.ktx.toMessage
 import org.greenrobot.eventbus.EventBus

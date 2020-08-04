@@ -13,13 +13,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import me.shetj.base.R
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.toJson
 import me.shetj.base.s
 import me.shetj.base.tools.app.KeyboardUtil
-import me.shetj.base.tools.json.EmptyUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

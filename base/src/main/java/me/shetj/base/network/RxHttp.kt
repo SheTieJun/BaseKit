@@ -3,17 +3,16 @@ package me.shetj.base.network
 import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
+import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
 import me.shetj.base.network.request.*
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
 import java.io.InputStream
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -105,9 +104,9 @@ open class RxHttp private constructor() {
     fun debug(isPrintException: Boolean): RxHttp {
         this.isPrintException = isPrintException
         if (isPrintException) {
-            okHttpClientBuilder.addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-                Timber.i(it)
-            }).apply { level = HttpLoggingInterceptor.Level.BASIC })
+            if (isPrintException) {
+                addInterceptor(HttpLoggingInterceptor("RxHttp").apply { setLevel( HttpLoggingInterceptor.Level.BODY) })
+            }
         }
         return this
     }
@@ -192,9 +191,7 @@ open class RxHttp private constructor() {
                 addInterceptor(HeadersInterceptor(it))
             }
             if (isPrintException) {
-                addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-                    Timber.i(it)
-                }).apply { level = HttpLoggingInterceptor.Level.BODY })
+                addInterceptor(HttpLoggingInterceptor("RxHttp").apply { setLevel( HttpLoggingInterceptor.Level.BODY) })
             }
         }
     }

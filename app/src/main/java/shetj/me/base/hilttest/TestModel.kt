@@ -1,14 +1,11 @@
 package shetj.me.base.hilttest
 
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import me.shetj.base.ktx.getRandomString
-import me.shetj.base.mvp.IView
 import shetj.me.base.bean.MusicBean
-import shetj.me.base.func.main.KtTestActivity
 import javax.inject.Singleton
 
 /**
