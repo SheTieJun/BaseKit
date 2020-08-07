@@ -56,7 +56,7 @@ interface ApiService {
 
     @Multipart
     @POST
-    fun uploadFile(@Url fileUrl: String?, @Part("description") description: RequestBody?, @Part("files") file: MultipartBody.Part?): Observable<ResponseBody>
+    fun uploadFile(@Url url: String?, @Part("description") description: RequestBody?, @Part("files") file: MultipartBody.Part?): Observable<ResponseBody>
 
     @Multipart
     @POST

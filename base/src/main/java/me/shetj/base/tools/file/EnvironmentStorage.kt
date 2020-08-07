@@ -8,6 +8,7 @@ import java.io.File
 
 /**
  * SD卡相关的辅助类
+ * 1.tip 不想被轻易删掉的文件，不可以放在 cache 下面
  * @author shetj
  */
 @Suppress("DEPRECATION")

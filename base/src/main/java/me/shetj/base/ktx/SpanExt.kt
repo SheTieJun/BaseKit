@@ -69,7 +69,7 @@ fun CharSequence.toClickSpan(range: IntRange, color: Int = Color.RED, isUnderlin
                 ds.isUnderlineText = isUnderlineText
             }
         }
-        setSpan(clickableSpan, range.start, range.endInclusive, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(clickableSpan, range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
     }
 }
 

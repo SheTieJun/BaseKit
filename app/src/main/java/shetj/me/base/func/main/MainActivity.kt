@@ -149,6 +149,10 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         btn_mvvm.setOnClickListener {
             start<MVVMTestActivity>()
         }
+
+        btn_setting.setOnClickListener {
+            openSetting()
+        }
         netTest()
         imgTest()
         findViewById<View>(R.id.fab).setOnClickListener {

@@ -15,15 +15,6 @@
     implementation "com.github.SheTieJun:Base:$base_version"
 ```
 
-#### Google's Maven Repository :[最新内容]( https://dl.google.com/dl/android/maven2/index.html)
-```
-    implementation "androidx.*"
-```
-
-
+#### [Google's Maven Repository ]( https://dl.google.com/dl/android/maven2/index.html)
 #### [Material Design 组件](https://material.io/develop/android/)
-```
-    implementation "com.google.android.material:material:$androidx"
-```
-
 #### [Android Jetpack](https://developer.android.google.cn/jetpack/)
