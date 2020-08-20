@@ -39,6 +39,17 @@ fun Int.unitFormat(): String {
     return if (this in 0..9) "0$this" else "" + this
 }
 
+/**
+ * 16进制 255 以内
+ */
+fun intToHStr(x: Int): String {
+    return if (x > 15) {
+        Integer.toHexString(x)
+    } else {
+        "0" + Integer.toHexString(x)
+    }
+}
+
 fun Float.dp2px() = ArmsUtils.dip2px(this)
 
 fun Float.px2dp() = ArmsUtils.px2dip(this)

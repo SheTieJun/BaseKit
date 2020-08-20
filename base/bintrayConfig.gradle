@@ -1,0 +1,19 @@
+ext.bintrayConfig = [
+        libName : "base",
+        groupName : 'me.shetj.sdk',
+        versionName : '1.0.2',
+
+        siteUrl : 'hhttps://github.com/SheTieJun/Base',
+        gitUrl : 'https://github.com/SheTieJun/Base.git',
+        issueUrl : 'https://github.com/SheTieJun/Base/issues',
+
+        developerId : 'shetiejun',
+        developerName : 'shetj',
+        developerEmail : 'tiejunshe@gmail.com',
+
+        pkgRepo : 'maven',
+        pkgIng : 'aar',
+        pkgDes : 'this is a Base lib for myself',
+        pkgUserOrg : 'shetiejun',
+
+]

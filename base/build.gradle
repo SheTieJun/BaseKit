@@ -77,6 +77,10 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
@@ -156,4 +160,5 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$paging_version"
 }
 
+apply from: 'bintrayConfig.gradle'
 apply from: 'bintray.gradle'
