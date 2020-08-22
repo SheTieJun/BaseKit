@@ -76,6 +76,20 @@ fun ImageView.loadImage(obj: Any, requestOptions: RequestOptions? = null) {
             }
             .into(this)
 }
+
+/**
+ * 本地图片不使用缓存加载
+ */
+@JvmOverloads
+fun ImageView.loadImageNoCache(obj: Any,placeholderDrawable: Drawable? = null,
+                               errorDrawable: Drawable? = null) {
+    Glide.with(context)
+            .load(obj)
+            .skipMemoryCache(true) // 不使用内存缓存
+            .diskCacheStrategy(DiskCacheStrategy.NONE) // 不使用磁盘缓存
+            .into(this)
+}
+
 //endregion Glide 加载
 
 //region 获取RequestOptions

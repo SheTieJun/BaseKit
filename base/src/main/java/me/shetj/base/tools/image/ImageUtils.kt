@@ -67,11 +67,11 @@ class ImageUtils {
 
         @JvmStatic
         fun createImagePath(): String {
-
             val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
             val time = System.currentTimeMillis()
             val imageName = timeFormatter.format(Date(time))
-            return EnvironmentStorage.getPath(imagePath) + "/" + imageName + ".jpg"
+            return EnvironmentStorage.getPath(root = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    packagePath = imagePath) + "/" + imageName + ".jpg"
         }
 
 
@@ -87,9 +87,14 @@ class ImageUtils {
         }
 
 
-        fun selectlocalImage(activity: Activity) {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+        fun selectLocalImage(activity: Activity) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                flags = (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
             activity.startActivityForResult(intent, GET_IMAGE_FROM_PHONE_NO_CUT)
         }
 

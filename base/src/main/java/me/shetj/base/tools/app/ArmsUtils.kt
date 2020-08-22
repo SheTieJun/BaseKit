@@ -286,7 +286,7 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun getScreenHeight(): Int {
-            return getScreenWidth(Utils.app.applicationContext)
+            return getScreenHeight(Utils.app.applicationContext)
         }
 
         /**

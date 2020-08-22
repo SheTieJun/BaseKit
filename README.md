@@ -42,6 +42,8 @@ implementation 'me.shetj.sdk:base:+'
 ```
 
 #### [Google's Maven Repository ]( https://dl.google.com/dl/android/maven2/index.html)
+
 #### [Material Design 组件](https://material.io/develop/android/)
+
 #### [Android Jetpack](https://developer.android.google.cn/jetpack/)
 

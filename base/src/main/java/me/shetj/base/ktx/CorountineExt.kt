@@ -8,24 +8,6 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 
-suspend inline fun <T> doOnIO(crossinline action: () -> T) = withContext(Dispatchers.IO) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T> doOnMain(crossinline action: () -> T) = withContext(Dispatchers.Main) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T> doOnDef(crossinline action: () -> T) = withContext(Dispatchers.Default) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T> doOnUn(crossinline action: () -> T) = withContext(Dispatchers.Unconfined) {
-    return@withContext action()
-}
 
 suspend inline fun <T> doOnContext(context: CoroutineContext = EmptyCoroutineContext, crossinline action: () -> T) = withContext(context) {
     return@withContext action()
@@ -53,24 +35,6 @@ suspend inline fun <T> runOnContext(context: CoroutineContext = EmptyCoroutineCo
     return@withContext action()
 }
 
-suspend inline fun <T, R> T.onIO(crossinline action: T.() -> R) = withContext(Dispatchers.IO) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T, R> T.onMain(crossinline action: T.() -> R) = withContext(Dispatchers.Main) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T, R> T.onDef(crossinline action: T.() -> R) = withContext(Dispatchers.Default) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T, R> T.onUn(crossinline action: T.() -> R) = withContext(Dispatchers.Unconfined) {
-    return@withContext action()
-}
 
 suspend inline fun <T, R> T.onContext(context: CoroutineContext = EmptyCoroutineContext, crossinline action: T.() -> R) = withContext(context) {
     return@withContext action()

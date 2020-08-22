@@ -1,6 +1,7 @@
 package me.shetj.base.tools.file
 
 import android.os.Environment
+import android.provider.DocumentsContract
 import androidx.annotation.Keep
 import me.shetj.base.tools.app.Utils
 
@@ -21,8 +22,9 @@ class EnvironmentStorage private constructor() {
          * @param packagePath 包的路径
          * @return
          */
+        @JvmOverloads
         @JvmStatic
-        fun getPath(packagePath: String): String {
+        fun getPath(root:String = filesDir ,packagePath: String): String {
             val path = StringBuilder(filesDir)
             val f = packagePath.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             for (aF in f) {

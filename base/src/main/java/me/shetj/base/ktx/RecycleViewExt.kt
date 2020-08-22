@@ -12,13 +12,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter
  * startSmoothScroll(smoothScroller)
  * mLinearLayoutManager.startSmoothScroll(mSmoothScroller);
  * 滚动
+ * speedTime 越小 速度越快
  */
-fun Context.getSmoothScroller(): LinearSmoothScroller {
+fun Context.getSmoothScroller(speedTime:Float = 150f): LinearSmoothScroller {
     return object : LinearSmoothScroller(this) {
         // 返回：滑过1px时经历的时间(ms)。
         override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics?): Float {
             return displayMetrics?.let {
-                150f / displayMetrics.densityDpi
+                speedTime / displayMetrics.densityDpi
             } ?: super.calculateSpeedPerPixel(displayMetrics)
         }
     }

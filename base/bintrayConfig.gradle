@@ -3,7 +3,7 @@ ext.bintrayConfig = [
         groupName : 'me.shetj.sdk',
         versionName : '1.0.2',
 
-        siteUrl : 'hhttps://github.com/SheTieJun/Base',
+        siteUrl : 'https://github.com/SheTieJun/Base',
         gitUrl : 'https://github.com/SheTieJun/Base.git',
         issueUrl : 'https://github.com/SheTieJun/Base/issues',
 
