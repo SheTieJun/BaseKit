@@ -1,9 +1,6 @@
 package shetj.me.base.func.main
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import me.shetj.base.ktx.doOnIO
-import me.shetj.base.ktx.runOnIO
 import me.shetj.base.mvp.BaseModel
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
@@ -22,7 +19,7 @@ class MainModel : BaseModel() {
     private val testUrl = "https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json"
     override fun onDestroy() {}
 
-    suspend fun getMusic(): ResultMusic? = runOnIO {
+    suspend fun getMusic(): ResultMusic? = doOnIO {
        KCHttp.get<ResultMusic>(testUrl)
     }
 

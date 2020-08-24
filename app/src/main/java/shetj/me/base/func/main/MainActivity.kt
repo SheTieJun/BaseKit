@@ -24,14 +24,11 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.mvp.IView
-import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.saver.SaverDao
 import me.shetj.base.sim.SimpleCallBack
 import me.shetj.base.tools.image.ImageUtils
@@ -40,9 +37,7 @@ import me.shetj.base.view.TipPopupWindow
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
-import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
-import shetj.me.base.bean.ResultMusic
 import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import timber.log.Timber
@@ -239,7 +234,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                     }
                 }
 
-                runOnIO {
+                doOnIO {
 
                     try {
                         val music = mPresenter.getMusic()

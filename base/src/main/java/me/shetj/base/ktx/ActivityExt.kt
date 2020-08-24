@@ -140,7 +140,7 @@ fun Context.hasPermission(vararg permissions: String,isRequest: Boolean = false)
     return true
 }
 
-inline fun runOnMain(crossinline run: () -> Unit = {}) {
+inline fun doOnMain(crossinline run: () -> Unit = {}) {
     TaskExecutor.executeOnMain(Runnable { run() })
 }
 

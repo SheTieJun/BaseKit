@@ -8,25 +8,25 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 
-suspend inline fun <T> runOnIO(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.IO) {
+suspend inline fun <T> doOnIO(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.IO) {
     return@withContext this.action()
 }
 
-suspend inline fun <T> runOnMain(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Main) {
+suspend inline fun <T> doOnMain(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Main) {
     return@withContext action()
 }
 
 
-suspend inline fun <T> runOnDef(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Default) {
+suspend inline fun <T> doOnDef(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Default) {
     return@withContext action()
 }
 
 
-suspend inline fun <T> runOnUn(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Unconfined) {
+suspend inline fun <T> doOnUn(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Unconfined) {
     return@withContext action()
 }
 
-suspend inline fun <T> runOnContext(context: CoroutineContext = EmptyCoroutineContext, crossinline action: suspend CoroutineScope.() -> T) = withContext(context) {
+suspend inline fun <T> doOnContext(context: CoroutineContext = EmptyCoroutineContext, crossinline action: suspend CoroutineScope.() -> T) = withContext(context) {
     return@withContext action()
 }
 
