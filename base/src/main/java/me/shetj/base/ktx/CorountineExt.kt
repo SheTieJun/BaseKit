@@ -8,16 +8,11 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 
-
-suspend inline fun <T> doOnContext(context: CoroutineContext = EmptyCoroutineContext, crossinline action: () -> T) = withContext(context) {
-    return@withContext action()
-}
-
-suspend inline fun <T> runOnIO(crossinline action:suspend CoroutineScope.() -> T) = withContext(Dispatchers.IO) {
+suspend inline fun <T> runOnIO(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.IO) {
     return@withContext this.action()
 }
 
-suspend inline fun <T> runOnMain(crossinline action:suspend CoroutineScope.() -> T) = withContext(Dispatchers.Main) {
+suspend inline fun <T> runOnMain(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Main) {
     return@withContext action()
 }
 
@@ -27,16 +22,11 @@ suspend inline fun <T> runOnDef(crossinline action: suspend CoroutineScope.() ->
 }
 
 
-suspend inline fun <T> runOnUn(crossinline action:suspend CoroutineScope.() -> T) = withContext(Dispatchers.Unconfined) {
+suspend inline fun <T> runOnUn(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Unconfined) {
     return@withContext action()
 }
 
 suspend inline fun <T> runOnContext(context: CoroutineContext = EmptyCoroutineContext, crossinline action: suspend CoroutineScope.() -> T) = withContext(context) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T, R> T.onContext(context: CoroutineContext = EmptyCoroutineContext, crossinline action: T.() -> R) = withContext(context) {
     return@withContext action()
 }
 
@@ -61,7 +51,6 @@ suspend inline fun <T> CoroutineScope.unconfined(crossinline action: suspend Cor
 }
 
 
-
 inline fun AppCompatActivity.launch(crossinline action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launch {
         action()
@@ -74,13 +63,13 @@ inline fun AppCompatActivity.runOnCreated(crossinline action: suspend CoroutineS
     }
 }
 
-inline fun AppCompatActivity.runOnResumed (crossinline action: suspend CoroutineScope.() -> Unit): Job {
+inline fun AppCompatActivity.runOnResumed(crossinline action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launchWhenResumed {
         action()
     }
 }
 
-inline fun AppCompatActivity.runOnStarted (crossinline action: suspend CoroutineScope.() -> Unit): Job {
+inline fun AppCompatActivity.runOnStarted(crossinline action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launchWhenStarted {
         action()
     }
@@ -99,13 +88,13 @@ inline fun Fragment.runOnCreated(crossinline action: suspend CoroutineScope.() -
     }
 }
 
-inline fun Fragment.runOnResumed (crossinline action: suspend CoroutineScope.() -> Unit): Job {
+inline fun Fragment.runOnResumed(crossinline action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launchWhenResumed {
         action()
     }
 }
 
-inline fun Fragment.runOnStarted (crossinline action: suspend CoroutineScope.() -> Unit): Job {
+inline fun Fragment.runOnStarted(crossinline action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launchWhenStarted {
         action()
     }

@@ -22,7 +22,7 @@ class APP : Application() {
     override fun onCreate() {
         super.onCreate()
         S.init(this, true, "https://xxxx.com")
-        S.initKoin(this, allModules)
+        initKoin(this, allModules)
         DoraemonKit.disableUpload();
         DoraemonKit.install(this,"a0b7c73af7016fd6f1e94cdaecc5faa5");
     }

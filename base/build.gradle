@@ -110,7 +110,7 @@ dependencies {
 
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     //腾讯Android开发框架 https://qmuiteam.com/android/get-started/
-    api 'com.qmuiteam:qmui:2.0.0-alpha02'
+    api 'com.qmuiteam:qmui:2.0.0-alpha10'
 
     api "org.greenrobot:eventbus:$eventBus"
     api "com.google.code.gson:gson:$gosnVersion"
@@ -157,7 +157,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     api "androidx.room:room-rxjava3:$room_version"
 
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    api "androidx.paging:paging-runtime:$paging_version"
 }
 
 apply from: 'bintrayConfig.gradle'

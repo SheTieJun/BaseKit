@@ -5,10 +5,10 @@ import androidx.annotation.NonNull
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
+import com.google.gson.internal.`$Gson$Types`
 import com.google.gson.reflect.TypeToken
 import timber.log.Timber
 import java.lang.reflect.Modifier
-import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 
@@ -71,24 +71,17 @@ object GsonKit {
             Timber.e(e)
             null
         }
-
     }
 
 
-    /**
-     * 转成list
-     * 解决泛型擦除问题
-     */
-    fun <T> jsonToList2(strJson: String, cls: Class<T>): List<T>? {
+    @JvmStatic
+    fun <T> jsonToList2(@NonNull json: String, cls: Class<T>): List<T>? {
         return try {
-            val type: Type = ListParameterizedType(cls)
-            val list: List<T> = gson.fromJson(strJson, type)
-            list
+            return gson.fromJson(json, `$Gson$Types`.newParameterizedTypeWithOwner(null, List::class.java, cls))
         } catch (e: Exception) {
             Timber.e(e)
             null
         }
-
     }
 
     /**
@@ -176,18 +169,4 @@ object GsonKit {
 
     }
 
-    private class ListParameterizedType internal constructor(val type: Type) : ParameterizedType {
-
-        override fun getActualTypeArguments(): Array<Type> {
-            return arrayOf(type)
-        }
-
-        override fun getRawType(): Type {
-            return ArrayList::class.java
-        }
-
-        override fun getOwnerType(): Type? {
-            return null
-        }
-    }
 }
