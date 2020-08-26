@@ -10,6 +10,7 @@ import me.shetj.base.network.request.*
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import org.koin.java.KoinJavaComponent.get
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -42,7 +43,7 @@ open class RxHttp private constructor() {
 
     //region retrofit 相关
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
-    private val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
+    private val okHttpClientBuilder: OkHttpClient.Builder = get(OkHttpClient.Builder::class.java)
     private var mBaseUrl: String? = null
     private val apiManager: ApiService by lazy {
         getApiManager(ApiService::class.java)
@@ -144,7 +145,7 @@ open class RxHttp private constructor() {
         }
     }
 
-    //对外暴露 OkHttpClient,方便自定义
+    //对外暴露 OkHttpClient,方便自定义，主要是为看共用线程池
     private fun getOkHttpClientBuilder(): OkHttpClient.Builder {
         return getInstance().okHttpClientBuilder
     }
@@ -164,6 +165,7 @@ open class RxHttp private constructor() {
 
     //根据当前的请求参数，生成对应的OkClient
     private fun generateOkClient(baseRequest: BaseRequest<*>): OkHttpClient.Builder {
+        //使用newBuilder，可以共用线程池
         return getOkHttpClient().newBuilder().apply {
             if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
             if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)

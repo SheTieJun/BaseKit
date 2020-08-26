@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.animation.addListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +28,7 @@ import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.mvp.IView
+import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.saver.SaverDao
 import me.shetj.base.sim.SimpleCallBack
 import me.shetj.base.tools.image.ImageUtils
@@ -37,6 +37,7 @@ import me.shetj.base.view.TipPopupWindow
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
+import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
 import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
@@ -190,7 +191,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                     }.subscribe()
         }
         requestNetWork()
-        NetWorkLiveDate.getInstance().observe(this, Observer {
+        NetWorkLiveDate.getInstance().observe(this, {
             when (it?.netType) {
                 NetWorkLiveDate.NetType.NONE -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = NONE")
                 NetWorkLiveDate.NetType.PHONE -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = PHONE")
@@ -209,19 +210,19 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
     private fun netTest() {
         btn_test_net.setOnClickListener {
 
-//            mPresenter.getMusicByRxHttp(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
-//                override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
-//                    super.onSuccess(data)
-//                    Timber.tag("getMusicByRxHttp").i(data.toJson())
-//                }
-//
-//                override fun onError(e: Exception) {
-//                    super.onError(e)
-//                    Timber.e(e)
-//                }
-//            })
+            mPresenter.getMusicByRxHttp(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
+                override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
+                    super.onSuccess(data)
+                    Timber.tag("getMusicByRxHttp").i(data.toJson())
+                }
 
-            val launch = launch {
+                override fun onError(e: Exception) {
+                    super.onError(e)
+                    Timber.e(e)
+                }
+            })
+
+            launch {
 
                 main {
                     try {
@@ -249,10 +250,6 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 
                 doOnMain {
 
-                }
-
-                val info2 = musicBean1.onMain {
-                      ""
                 }
 
             }

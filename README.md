@@ -47,3 +47,6 @@ implementation 'me.shetj.sdk:base:+'
 
 #### [Android Jetpack](https://developer.android.google.cn/jetpack/)
 
+#### [square](https://square.github.io/)
+
+#### [mvnrepository](https://mvnrepository.com/)

@@ -100,7 +100,7 @@ dependencies {
     api "androidx.constraintlayout:constraintlayout:$constraintlayout"
     api 'androidx.browser:browser:1.2.0'
     api "androidx.security:security-crypto:1.1.0-alpha02" //加密的sp
-    api 'androidx.core:core-animation:1.0.0-alpha01'
+    api 'androidx.core:core-animation:1.0.0-alpha02'
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

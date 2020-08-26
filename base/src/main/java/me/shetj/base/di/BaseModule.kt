@@ -23,6 +23,10 @@ val dbModule = module() {
     single(override = true) { get<SaverDatabase>().saverDao() }
 
     single<OkHttpClient> {
+        get<OkHttpClient.Builder>().build()
+    }
+
+    single <OkHttpClient.Builder>{
         OkHttpClient.Builder().apply {
             connectTimeout(20000, TimeUnit.MILLISECONDS)
             readTimeout(20000, TimeUnit.MILLISECONDS)
@@ -32,7 +36,7 @@ val dbModule = module() {
                 put(HttpHeaders.HEAD_KEY_USER_AGENT, HttpHeaders.userAgent)
             }))
             addInterceptor(HttpLoggingInterceptor("HTTP").apply { setLevel( HttpLoggingInterceptor.Level.BODY) })
-        }.build()
+        }
     }
 
     single<Retrofit> {
@@ -40,7 +44,7 @@ val dbModule = module() {
             addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             addConverterFactory(GsonConverterFactory.create())
             client(get())
-            baseUrl(S.baseUrl?:"https://me.shetj.come")
+            baseUrl(S.baseUrl?:"https://me.shetj.com")
         }.build()
     }
 

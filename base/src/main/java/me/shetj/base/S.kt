@@ -12,6 +12,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.fragment.koin.fragmentFactory
+import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 
@@ -45,7 +46,8 @@ object S {
     @JvmOverloads
     @JvmStatic
     fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
-        TaskExecutor.getInstance().executeOnMainThread(Runnable {
+        TaskExecutor.getInstance().executeOnMainThread {
+            this.isDebug = isDebug
             Utils.init(application)
             TimberUtil.setLogAuto(isDebug)
             if (isDebug) {
@@ -54,26 +56,28 @@ object S {
                     setRxJavaErrorHandler()
                 }
             }
-            this.isDebug = isDebug
+            startKoin {
+                if (S.isDebug) {
+                    androidLogger()
+                }
+                androidContext(application)
+                androidFileProperties()
+                fragmentFactory()
+                //Kotlin 1.4.0 之后需要这样写    modules(modules + dbModule)
+                koin.loadModules(arrayOf(dbModule).toList())
+                koin.createRootScope()
+            }
             baseUrl?.let {
                 this.baseUrl = baseUrl
-                getInstance().debug(isDebug)
-                        .setBaseUrl(baseUrl)
+                getInstance().debug(S.isDebug)
+                        .setBaseUrl(S.baseUrl)
             }
-        })
+        }
 
     }
 
     @JvmStatic
-    fun initKoin(application: Application, modules: List<Module>) {
-        startKoin {
-            if (isDebug) {
-                androidLogger()
-            }
-            androidContext(application)
-            androidFileProperties()
-            fragmentFactory()
-            modules(modules + dbModule)
-        }
+    fun initKoin(modules: List<Module>) {
+        loadKoinModules(modules)
     }
 }
