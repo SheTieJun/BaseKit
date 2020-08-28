@@ -1,6 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply plugin: 'koin'
-
 buildscript {
     ext.kotlin_version = '1.4.0'
     ext.appcompat = '1.1.0'
@@ -13,13 +11,14 @@ buildscript {
     ext.gosnVersion             = "2.8.5"
     ext.glideVersion            = "4.11.0"
     ext.eventBus                = "3.2.0"
-    ext.constraintlayout        = "2.0.0-rc1"
+    ext.constraintlayout        = "2.0.1"
     ext.koin_version            = '2.1.6'
-    ext.coroutines              = "1.3.8"
+    ext.coroutines              = "1.3.9"
     ext.room_version            = "2.3.0-alpha02"
     ext.hilt_version            = '2.28-alpha'
     ext.lifecycle_version       = "2.2.0"
     ext.paging_version          = "3.0.0-alpha05"
+    ext.retrofit2               = "2.9.0"
     repositories {
         google()
         jcenter()
@@ -49,15 +48,10 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
     }
-    tasks.withType(Javadoc) {
-        options{
-            encoding "UTF-8"
-            charSet 'UTF-8'
-            links "http://docs.oracle.com/javase/7/docs/api"
-        }
-    }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+apply plugin: 'koin'
