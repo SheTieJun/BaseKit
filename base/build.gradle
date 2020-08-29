@@ -92,10 +92,10 @@ dependencies {
     api "androidx.appcompat:appcompat:$appcompat"
 //    implementation "androidx.legacy:legacy-support-v4:$androidx"
     //https://material.io/develop/android/
-    api "com.google.android.material:material:$appcompat"
-    api "androidx.recyclerview:recyclerview:$appcompat"
+    api "com.google.android.material:material:$material"
+    api "androidx.recyclerview:recyclerview:$recyclerview"
     api "androidx.cardview:cardview:$androidx"
-    api "androidx.core:core-ktx:$androidx_2"
+    api "androidx.core:core-ktx:$ktx"
     api "androidx.activity:activity-ktx:$appcompat"
     api "androidx.constraintlayout:constraintlayout:$constraintlayout"
     api 'androidx.browser:browser:1.2.0'
@@ -108,9 +108,9 @@ dependencies {
 
     api 'androidx.multidex:multidex:2.0.1'
 
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$BRV"
     //腾讯Android开发框架 https://qmuiteam.com/android/get-started/
-    api 'com.qmuiteam:qmui:2.0.0-alpha10'
+    api "com.qmuiteam:qmui:$qmuiVersiopn"
 
     api "org.greenrobot:eventbus:$eventBus"
     api "com.google.code.gson:gson:$gosnVersion"
@@ -120,8 +120,8 @@ dependencies {
 
     api 'io.reactivex.rxjava3:rxjava:3.0.4'
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    api 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
-    api 'com.jakewharton.rxbinding4:rxbinding-core:4.0.0'
+    api "com.jakewharton.rxbinding4:rxbinding:$rxbinding"
+    api "com.jakewharton.rxbinding4:rxbinding-core:$rxbinding"
     api 'io.reactivex.rxjava3:rxkotlin:3.0.0' //https://github.com/ReactiveX/RxKotlin
     //框架
     api 'com.jakewharton.timber:timber:4.7.1'
@@ -142,7 +142,6 @@ dependencies {
     //https://github.com/code-mc/material-icon-lib icon图片库
     api 'net.steamcrafted:materialiconlib:1.1.5'
 
-    api 'com.squareup.okhttp3:okhttp:4.7.2'
     api 'com.jakewharton:disklrucache:2.0.2'
     api "com.squareup.retrofit2:retrofit:$retrofit2"
     //https://github.com/square/retrofit/tree/master/retrofit-converters
