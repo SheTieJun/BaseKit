@@ -33,10 +33,10 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), Lifecycle
 
     protected var mBinding: ViewDataBinding? = null
         private set
+    private val lazyViewModel = lazy { initViewModel() }
+    protected val mViewModel by lazyViewModel
 
-    protected val mViewModel by lazy { initViewModel() }
-
-    protected abstract fun getDataBindingConfig(): DataBindingConfig?
+    protected abstract fun getDataBindingConfig(): DataBindingConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,13 +52,12 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), Lifecycle
         }
         findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
         val dataBindingConfig = getDataBindingConfig()
-        val binding = DataBindingUtil.setContentView<ViewDataBinding>(this, dataBindingConfig!!.layout)
+        val binding = DataBindingUtil.setContentView<ViewDataBinding>(this, dataBindingConfig.layout)
         binding.lifecycleOwner = this
         binding.setVariable(dataBindingConfig.vmVariableId, dataBindingConfig.stateViewModel)
         dataBindingConfig.getBindingParams().forEach { key, any ->
             binding.setVariable(key, any)
         }
-        mBinding = binding
     }
 
     /**

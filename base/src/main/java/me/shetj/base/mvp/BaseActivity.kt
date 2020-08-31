@@ -34,7 +34,8 @@ import kotlin.coroutines.CoroutineContext
 @Keep
 abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView , LifecycleObserver {
     protected val TAG = this.javaClass.simpleName
-    protected val mPresenter: T by lazy { initPresenter() }
+    private val lazyPresenter = lazy { initPresenter() }
+    protected val mPresenter: T by lazyPresenter
 
     override val rxContext: AppCompatActivity
         get() = this
@@ -63,7 +64,9 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView ,
             //如果要使用eventbus请将此方法返回true
             EventBus.getDefault().unregister(this)
         }
-        mPresenter.onDestroy()
+        if (lazyPresenter.isInitialized()) {
+            mPresenter.onDestroy()
+        }
     }
 
     /**

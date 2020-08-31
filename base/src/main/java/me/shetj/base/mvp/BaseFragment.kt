@@ -38,7 +38,8 @@ import timber.log.Timber
 @Keep
 abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, LifecycleObserver {
     protected var mActivity: Context? = null
-    protected val mPresenter: T by lazy { initPresenter() }
+    private val lazyPresenter = lazy { initPresenter() }
+    protected val mPresenter: T by lazyPresenter
 
     /**
      * 返回当前的activity
@@ -72,6 +73,10 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
         this.mActivity = null
     }
 
+    /**
+     * 抽象类不能反射
+     *
+     */
     open fun initPresenter(): T {
         return  getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
     }
@@ -124,7 +129,9 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
 
 
     override fun onDestroyView() {
-        mPresenter.onDestroy()
+        if (lazyPresenter.isInitialized()) {
+            mPresenter.onDestroy()
+        }
         super.onDestroyView()
     }
 

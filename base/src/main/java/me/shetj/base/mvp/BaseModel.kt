@@ -13,7 +13,7 @@ import androidx.annotation.Keep
  */
 
 @Keep
-abstract class BaseModel : IModel {
+open class BaseModel : IModel {
 
     override fun onDestroy() {
 

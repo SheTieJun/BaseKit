@@ -76,7 +76,7 @@ android {
             def requested = details.requested
             if (requested.group == 'com.google.code.gson') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion "$gosnVersion"
+                    details.useVersion "$gsonVersion"
                 }
             }
             if (requested.group == 'com.google.code.findbugs') {
@@ -127,7 +127,7 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
-    implementation 'com.airbnb.android:lottie:3.4.0'
+    implementation 'com.airbnb.android:lottie:3.4.1'
 
     //腾讯Android开发框架
     implementation 'com.qmuiteam:qmui:2.0.0-alpha10'

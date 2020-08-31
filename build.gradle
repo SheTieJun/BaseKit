@@ -10,7 +10,7 @@ buildscript {
     ext.minVersion              = 21
     ext.versionCode             = 10
     ext.versionName             = "1.0.0"
-    ext.gosnVersion             = "2.8.5"
+    ext.gsonVersion             = "2.8.5"
     ext.glideVersion            = "4.11.0"
     ext.eventBus                = "3.2.0"
     ext.constraintlayout        = "2.0.1"

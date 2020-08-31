@@ -61,7 +61,7 @@ android {
             def requested = details.requested
             if (requested.group == 'com.google.code.gson') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion "$gosnVersion"
+                    details.useVersion "$gsonVersion"
                 }
             }
             if (requested.group == 'com.google.code.findbugs') {
@@ -113,7 +113,7 @@ dependencies {
     api "com.qmuiteam:qmui:$qmuiVersiopn"
 
     api "org.greenrobot:eventbus:$eventBus"
-    api "com.google.code.gson:gson:$gosnVersion"
+    api "com.google.code.gson:gson:$gsonVersion"
     //图片加载
     api "com.github.bumptech.glide:glide:$glideVersion"
     api 'jp.wasabeef:glide-transformations:4.1.0'

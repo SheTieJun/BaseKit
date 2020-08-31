@@ -2,8 +2,11 @@ package shetj.me.base.mvvmtest
 
 import android.view.View
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.rx3.asFlowable
+import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.showToast
 import me.shetj.base.mvvm.BaseActivity
 import me.shetj.base.mvvm.DataBindingConfig
@@ -44,14 +47,25 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
 
         //用来测试是否时单例的viewModel
-        Timber.tag("getViewModel").i("id = ${initViewModel().toString()}")
+        Timber.tag("getViewModel").i("id = ${initViewModel()}")
+        launch {
+            listOf(1, 2, 3).asFlow().collect { Timber.i("asFlow() = $it") }
+        }
+        val channel = Channel<Int>()
+        launch {
+            // 这里可能是消耗大量 CPU 运算的异步逻辑，我们将仅仅做 5 次整数的平方并发送
+            for (x in 1..5) channel.send(x * x)
+            for (y in channel) {
+                println(channel.receive())
+            }
+        }
 
         listOf(1, 2, 3).asFlow().asFlowable().subscribe {
             Timber.i("asFlow().asFlowable() = $it")
         }
     }
 
-    override fun getDataBindingConfig(): DataBindingConfig? {
+    override fun getDataBindingConfig(): DataBindingConfig {
         return DataBindingConfig(R.layout.activity_m_v_v_m_test, BR.vm, mViewModel)
                 .apply {
                     addBindingParam(BR.click, click)

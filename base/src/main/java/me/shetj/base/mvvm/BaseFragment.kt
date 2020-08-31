@@ -40,7 +40,9 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
 
-    protected val mViewModel: VM by lazy { initViewModel() }
+    private val lazyViewModel = lazy { initViewModel() }
+
+    protected val mViewModel: VM by lazyViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,8 +63,6 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
 
     /**
      * 默认创建一个新的，
-     * 可以重写，然后使用单例
-     * 我的实现是不返回空
      */
     @NonNull
     open fun initViewModel(): VM {
