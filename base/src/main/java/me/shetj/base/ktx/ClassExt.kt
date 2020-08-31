@@ -10,7 +10,7 @@ import java.lang.reflect.Type
  */
 @Suppress("UNCHECKED_CAST")
 fun <C> getClazz(obj: Any,position: Int = 0): Class<C> {
-    return (obj.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<C>
+    return (obj.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[position] as Class<C>
 }
 
 /**

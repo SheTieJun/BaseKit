@@ -21,7 +21,7 @@ fun Date?.getWeekOfDate(aLocale:Locale  =Locale.CHINA ): String? {
  *  字符串日期格式（比如：2018-4-6)转为毫秒
  *  @param format 时间的格式，默认是按照yyyy-MM-dd HH:mm:ss来转换，如果您的格式不一样，则需要传入对应的格式
  */
-fun String.toDateMills(format: String = "yyyy-MM-dd HH:mm:ss"):Long = SimpleDateFormat(format, Locale.getDefault()).parse(this).time
+fun String.toDateMills(format: String = "yyyy-MM-dd HH:mm:ss"): Long? = SimpleDateFormat(format, Locale.getDefault()).parse(this)?.time
 
 /**
  * Long类型时间戳转为字符串的日期格式
@@ -97,12 +97,12 @@ fun getWeekString(): String? {
 /**
  * 根据当前日期获得是星期几
  */
-fun getWeek(time: String?): String? {
+fun getWeek(time: String): String? {
     var Week = ""
     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val c = Calendar.getInstance()
     try {
-        c.time = format.parse(time)
+        c.time = format.parse(time)!!
     } catch (e: ParseException) {
         e.printStackTrace()
     }
@@ -133,11 +133,11 @@ fun getWeek(time: String?): String? {
 /**
  * 根据当前日期获得是星期几
  */
-fun getDayWeek(time: String?): Int {
+fun getDayWeek(time: String): Int {
     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val c = Calendar.getInstance()
     try {
-        c.time = format.parse(time)
+        c.time = format.parse(time)!!
     } catch (e: ParseException) {
         e.printStackTrace()
     }
@@ -214,7 +214,7 @@ fun get7dateT(): List<String>? {
  * 获取今天往后一周的集合
  */
 fun get7week(): List<String?>? {
-    var week: String? = ""
+    var week: String?
     val weeksList: MutableList<String?> = ArrayList()
     val dateList = get7date()
     for (s in dateList) {

@@ -38,10 +38,10 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
     override fun onActivityCreate() {
         super.onActivityCreate()
         //LiveData 的通知更新
-        mViewModel.timeLive.observe(this, Observer<String> {
+        mViewModel.timeLive.observe(this, {
             mBinding?.setVariable(BR.time, it)
         })
-        mViewModel.timeLive.observe(this, Observer<String> {
+        mViewModel.timeLive.observe(this, {
             Timber.tag("timeLive").i(it?.toString())
         })
         mViewModel.timeLive.postValue(TimeUtil.getHMSTime())

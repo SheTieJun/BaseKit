@@ -25,7 +25,7 @@ class EnvironmentStorage private constructor() {
         @JvmOverloads
         @JvmStatic
         fun getPath(root:String = filesDir ,packagePath: String): String {
-            val path = StringBuilder(filesDir)
+            val path = StringBuilder(root)
             val f = packagePath.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             for (aF in f) {
                 val dirFile = File("$path/$aF")

@@ -80,9 +80,7 @@ fun ImageView.loadImage(obj: Any, requestOptions: RequestOptions? = null) {
 /**
  * 本地图片不使用缓存加载
  */
-@JvmOverloads
-fun ImageView.loadImageNoCache(obj: Any,placeholderDrawable: Drawable? = null,
-                               errorDrawable: Drawable? = null) {
+fun ImageView.loadImageNoCache(obj: Any) {
     Glide.with(context)
             .load(obj)
             .skipMemoryCache(true) // 不使用内存缓存

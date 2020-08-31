@@ -85,6 +85,7 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+    api project(path: ':annotation')
 
     testImplementation 'junit:junit:4.12'
     //https://developer.android.google.cn/jetpack/

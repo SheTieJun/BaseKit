@@ -337,7 +337,7 @@ class ImageUtils {
         // 通过uri获取bitmap
         fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
             var parcelFileDescriptor: ParcelFileDescriptor? = null;
-            var fileDescriptor: FileDescriptor? = null;
+            val fileDescriptor: FileDescriptor
             var bitmap: Bitmap? = null;
             try {
                 parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r");

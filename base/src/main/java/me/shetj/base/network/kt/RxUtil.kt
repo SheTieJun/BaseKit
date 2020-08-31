@@ -9,7 +9,7 @@ import me.shetj.base.network.func.HttpResponseFunc
 import me.shetj.base.network.model.ApiResult
 import timber.log.Timber
 
-internal object RxUtil {
+object RxUtil {
 
 
     fun <T> io_main(): ObservableTransformer<T, T> {

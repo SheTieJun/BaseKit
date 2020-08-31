@@ -84,6 +84,7 @@ class SPEncryptedUtils {
          */
         @JvmStatic
         fun remove(context: Context, key: String) {
+            getEditor(context)
             editor?.remove(key)
             editor?.apply()
         }
@@ -95,6 +96,7 @@ class SPEncryptedUtils {
          */
         @JvmStatic
         fun clear(context: Context) {
+            getEditor(context)
             editor?.clear()
             editor?.apply()
         }

@@ -107,6 +107,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.legacy:legacy-support-v4:$androidx"
+    kapt project(path: ':compilers')
     //https://material.io/develop/android/
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 //    def fragment_version = "1.1.0"

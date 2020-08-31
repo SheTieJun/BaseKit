@@ -22,7 +22,6 @@ class VolumeConfig(val context: Context) {
 
     private val mReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val action = intent.action
             if (intent.action.equals("android.media.VOLUME_CHANGED_ACTION")) {
                 VolumeLiveData.getInstance().postValue(getCurVolume())
             }
