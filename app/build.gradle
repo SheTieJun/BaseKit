@@ -104,6 +104,14 @@ android {
     }
 }
 
+// 优化编译速度 如果有用到kapt添加如下配置
+kapt {
+    useBuildCache = true
+    javacOptions {
+        option("-Xmaxerrs", 500)
+    }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.legacy:legacy-support-v4:$androidx"
@@ -138,17 +146,11 @@ dependencies {
 
     //图片预览 https://github.com/iielse/ImageWatcher
     implementation 'com.github.iielse:ImageWatcher:1.1.5'
-
-    debugImplementation "com.didichuxing.doraemonkit:doraemonkit:3.1.8"
-    releaseImplementation "com.didichuxing.doraemonkit:doraemonkit-no-op:3.1.8"
-
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     def work_version = "2.4.0"
     implementation "androidx.work:work-runtime-ktx:$work_version"
-
-
     //文件下载
     // core
     implementation "com.liulishuo.okdownload:okdownload:1.0.7"
@@ -158,4 +160,4 @@ dependencies {
     implementation "com.liulishuo.okdownload:okhttp:1.0.7"
 }
 
-apply from: file("dokit-config.gradle")
+//apply from: file("dokit-config.gradle")

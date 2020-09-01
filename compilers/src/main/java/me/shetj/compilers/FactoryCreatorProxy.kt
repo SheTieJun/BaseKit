@@ -9,6 +9,7 @@ import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
 import kotlin.collections.ArrayList
 
+@Suppress("DEPRECATION")
 open class FactoryCreatorProxy(
         private val elementUtils: Elements,
         private val classElement: TypeElement,
@@ -17,10 +18,16 @@ open class FactoryCreatorProxy(
 
     private fun getPageName() = elementUtils.getPackageOf(classElement).qualifiedName.toString()
     private val fileName = "${classElement.simpleName.toString()}$name"
+
+    /**
+     * 创建文件
+     */
     fun buildTo(): FileSpec {
         val funList = ArrayList<FunSpec>()
+        //得到类的所有element(方法，类型等等)
         val enclosedElements = classElement.enclosedElements
         enclosedElements.forEach { executableElement ->
+            //这些只处理方法
             if (executableElement is ExecutableElement) {
                 val methodName = executableElement.simpleName.toString()
                 executableElement.parameters
@@ -36,9 +43,8 @@ open class FactoryCreatorProxy(
 
     private fun createTypeSpec(funList: ArrayList<FunSpec>): TypeSpec {
         return TypeSpec.objectBuilder(fileName)
-                .apply {
-                    addFunction(addApiFunc(classElement.simpleName.toString()))
-                }
+                .addKdoc("这是APT自动生成的[$fileName]")
+                .addFunction(addApiFunc(classElement.simpleName.toString()))
                 .apply {
                     funList.forEach {
                         addFunction(it)
@@ -55,6 +61,9 @@ open class FactoryCreatorProxy(
                 .build()
     }
 
+    /**
+     * 添加可以修改api的方法
+     */
     private fun addApiFunc(methodName: String): FunSpec {
         return FunSpec.builder("set$methodName")
                 .addAnnotation(JvmStatic::class)

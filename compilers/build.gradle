@@ -15,7 +15,9 @@ dependencies {
     //kotlin 无效
     kapt 'com.google.auto.service:auto-service:1.0-rc7'
     implementation 'com.google.auto.service:auto-service-annotations:1.0-rc7'
-    api "com.squareup:kotlinpoet-metadata-specs:1.6.0"
+    //增量更新
+    api 'net.ltgt.gradle.incap:incap:0.3'
+    annotationProcessor 'net.ltgt.gradle.incap:incap-processor:0.3'
 }
 
 sourceCompatibility = "1.8"

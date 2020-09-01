@@ -35,6 +35,7 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         return get()
     }
 
+    @Suppress("EXPERIMENTAL_API_USAGE")
     override fun onActivityCreate() {
         super.onActivityCreate()
         //LiveData 的通知更新

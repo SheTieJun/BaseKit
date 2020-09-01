@@ -3,7 +3,6 @@ package shetj.me.base
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.didichuxing.doraemonkit.DoraemonKit
 import dagger.hilt.android.HiltAndroidApp
 import me.shetj.base.S
 import me.shetj.base.S.initKoin
@@ -23,8 +22,6 @@ class APP : Application() {
         super.onCreate()
         S.init(this, true, "https://xxxx.com")
         initKoin(allModules)
-        DoraemonKit.disableUpload();
-        DoraemonKit.install(this,"a0b7c73af7016fd6f1e94cdaecc5faa5");
     }
 
     override fun attachBaseContext(base: Context) {

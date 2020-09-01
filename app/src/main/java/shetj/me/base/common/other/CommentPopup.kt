@@ -38,7 +38,7 @@ class CommentPopup : DialogFragment() {
     private val lock = AtomicBoolean(false) //用来防止连续的点击
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(context!!, R.style.transparent_dialog_fragment_style).apply {
+        return Dialog(requireContext(), R.style.transparent_dialog_fragment_style).apply {
             window?.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         }
     }
