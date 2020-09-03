@@ -158,6 +158,8 @@ dependencies {
     implementation "com.liulishuo.okdownload:sqlite:1.0.7"
 // provide okhttp to connect to backend
     implementation "com.liulishuo.okdownload:okhttp:1.0.7"
+
+    implementation("com.google.guava:guava:29.0-android")
 }
 
 //apply from: file("dokit-config.gradle")

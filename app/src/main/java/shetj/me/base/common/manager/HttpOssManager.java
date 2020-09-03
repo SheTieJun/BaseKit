@@ -1,5 +1,14 @@
 package shetj.me.base.common.manager;
 
+import android.os.Build;
+
+
+import androidx.annotation.RequiresApi;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 /**
  * Created by shetj
  * on 2017/9/28.

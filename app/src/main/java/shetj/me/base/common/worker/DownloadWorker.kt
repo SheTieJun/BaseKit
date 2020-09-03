@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
+import kotlinx.coroutines.withContext
 import shetj.me.base.R
 
 
@@ -31,8 +32,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
         return Result.success()
     }
 
-    private fun download(inputUrl: String, outputFile: String) {
-
+    private suspend fun download(inputUrl: String, outputFile: String) {
 
     }
 
