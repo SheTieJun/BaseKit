@@ -22,7 +22,7 @@
 ```
  maven { url "https://jitpack.io" }
 ```
-
+[![](https://jitpack.io/v/SheTieJun/Base.svg)](https://jitpack.io/#SheTieJun/Base)
 ```
  implementation "com.github.SheTieJun:Base:$base_version"
 ```
