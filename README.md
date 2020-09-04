@@ -24,22 +24,12 @@
 ```
 [![](https://jitpack.io/v/SheTieJun/Base.svg)](https://jitpack.io/#SheTieJun/Base)
 ```
- implementation "com.github.SheTieJun:Base:$base_version"
+
+implementation 'com.github.SheTieJun.Base:base-compliers:+'
+implementation 'com.github.SheTieJun.Base:base-annotation:+'
+implementation 'com.github.SheTieJun.Base:base::+'
 ```
 
-or
-
-[![Download](https://api.bintray.com/packages/shetiejun/maven/base/images/download.svg)](https://bintray.com/shetiejun/maven/base/_latestVersion)
-
-```
-maven{
-        url 'https://dl.bintray.com/shetiejun/maven'
-    }
-```
-
-```
-implementation 'me.shetj.sdk:base:+'
-```
 
 #### [Google's Maven Repository ]( https://dl.google.com/dl/android/maven2/index.html)
 

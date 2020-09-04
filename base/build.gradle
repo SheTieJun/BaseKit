@@ -91,7 +91,6 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'me.shetj.aop:base-annotation:0.0.1'
-    kapt 'me.shetj.aop:base-compliers:0.0.1'
     testImplementation 'junit:junit:4.12'
     //https://developer.android.google.cn/jetpack/
     //https://maven.google.com/web/index.html

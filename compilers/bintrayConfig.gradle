@@ -1,7 +1,7 @@
 ext.bintrayConfig = [
         libName : "base-compliers",
         groupName : 'me.shetj.aop',
-        versionName : '0.0.1',
+        versionName : '0.0.2',
 
         siteUrl : 'https://github.com/SheTieJun/Base',
         gitUrl : 'https://github.com/SheTieJun/Base.git',
