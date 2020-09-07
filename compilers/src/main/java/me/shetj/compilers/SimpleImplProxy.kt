@@ -1,9 +1,6 @@
 package me.shetj.compilers
 
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
@@ -41,10 +38,21 @@ open class SimpleImplProxy(
         }
         val realName = classElement.simpleName.toString() + name
 
+
+        val typeParameters = classElement.typeParameters
+
+
         return FileSpec.builder(getPageName(), realName)
                 .addType(
                         TypeSpec.classBuilder(realName)
-                                .addKdoc("专门用来空实现接口")
+                                .apply {
+                                    if (!typeParameters.isNullOrEmpty()){
+                                        typeParameters.forEach {
+                                            addTypeVariable(TypeVariableName(it.simpleName.toString()))
+                                        }
+                                    }
+                                }
+                                .addKdoc("专门用来空实现接口,默认实现方法暂时不支持返回具体类型")
                                 .addSuperinterface(classElement.javaToKotlinType())
                                 .apply {
                                     funList.forEach {

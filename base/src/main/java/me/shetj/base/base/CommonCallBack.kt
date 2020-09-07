@@ -1,5 +1,7 @@
 package me.shetj.base.base
 
+import me.shetj.annotation.apt.SimpleImpl
+
 /**
  * **@author：** shetj<br></br>
  * **@createTime：** 2018/3/7<br></br>
@@ -8,6 +10,7 @@ package me.shetj.base.base
  * **@describe**<br></br>
  */
 
+@SimpleImpl
 interface CommonCallBack<T> {
     /**
      * 成功
