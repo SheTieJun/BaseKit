@@ -25,9 +25,11 @@
 [![](https://jitpack.io/v/SheTieJun/Base.svg)](https://jitpack.io/#SheTieJun/Base)
 ```
 
-implementation 'com.github.SheTieJun.Base:base-compliers:+'
+kapt 'com.github.SheTieJun.Base:base-compliers:+'
 implementation 'com.github.SheTieJun.Base:base-annotation:+'
-implementation 'com.github.SheTieJun.Base:base::+'
+
+
+implementation 'com.github.SheTieJun.Base:base:+'
 ```
 
 
