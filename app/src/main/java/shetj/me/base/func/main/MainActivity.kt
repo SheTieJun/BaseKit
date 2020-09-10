@@ -120,6 +120,9 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
             Timber.tag("DL").i(musicBean2.toJson())
         }
 
+        btn_email.setOnClickListener {
+            sendEmailText(addresses = "375105540@qq.com",title = "Base测试",content = "这是一个测试代码")
+        }
         tv_test_number.setOnClickListener { text ->
 
             val va = ValueAnimator.ofInt(0, 50).apply {

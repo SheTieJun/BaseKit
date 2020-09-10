@@ -2,9 +2,10 @@ package me.shetj.base.ktx
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.CATEGORY_APP_EMAIL
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
+import java.io.File
 
 
 fun Intent?.getQueryParameter(key: String): String? {
@@ -27,3 +28,26 @@ fun Context.openSetting() {
     startActivity(intent)
 }
 
+
+fun Context.sendEmailText(addresses: String = "375105540@qq.com", title: String, content: String) {
+    val intent = Intent(Intent.ACTION_SENDTO).apply {
+        data = Uri.parse("mailto:$addresses")
+        putExtra(Intent.EXTRA_EMAIL, arrayOf(addresses))
+        putExtra(Intent.EXTRA_SUBJECT, title)
+        putExtra(Intent.EXTRA_TEXT, content)
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    }
+    startActivity(Intent.createChooser(intent, title))
+}
+
+
+fun Context.sendEmailFile(addresses: String = "375105540@qq.com", title: String, file: File) {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        data = Uri.parse("mailto:$addresses")
+        putExtra(Intent.EXTRA_EMAIL, arrayOf(addresses))
+        putExtra(Intent.EXTRA_SUBJECT, title)
+        putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    }
+    startActivity(Intent.createChooser(intent, title))
+}
