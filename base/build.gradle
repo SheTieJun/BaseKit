@@ -116,7 +116,7 @@ dependencies {
 
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$BRV"
     //腾讯Android开发框架 https://qmuiteam.com/android/get-started/
-    api "com.qmuiteam:qmui:$qmuiVersiopn"
+//    api "com.qmuiteam:qmui:$qmuiVersiopn"
 
     api "org.greenrobot:eventbus:$eventBus"
     api "com.google.code.gson:gson:$gsonVersion"
@@ -156,6 +156,7 @@ dependencies {
     api "com.squareup.retrofit2:adapter-rxjava3:$retrofit2"
     //Android Jetpack
 
+    api "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
 
     api "androidx.room:room-common:$room_version"
     api "androidx.room:room-runtime:$room_version"

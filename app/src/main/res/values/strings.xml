@@ -2,8 +2,7 @@
     <string name="app_name">Base-shetj</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Hello blank fragmentHello blank fragmentHello blank fragmentHello blank fragmentHello blank fragment</string>
     <!--footer-->
     <string name="base_title">推送管理</string>
 </resources>

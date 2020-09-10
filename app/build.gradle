@@ -138,9 +138,6 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.airbnb.android:lottie:3.4.1'
 
-    //腾讯Android开发框架
-    implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
-
     implementation 'com.github.razerdp:BasePopup:2.2.1'
     implementation 'com.afollestad.material-dialogs:core:3.1.0'
 
