@@ -1,8 +1,6 @@
 package shetj.me.base
 
 import android.app.Application
-import android.content.Context
-import androidx.multidex.MultiDex
 import dagger.hilt.android.HiltAndroidApp
 import me.shetj.base.S
 import me.shetj.base.S.initKoin
@@ -24,8 +22,4 @@ class APP : Application() {
         initKoin(allModules)
     }
 
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
-        MultiDex.install(this)
-    }
 }

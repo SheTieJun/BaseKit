@@ -1,5 +1,6 @@
 package me.shetj.base.saver
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
@@ -38,5 +39,7 @@ interface SaverDao {
     @Update
     fun updateSaver(vararg saver: Saver): Completable
 
+    @Query(value = "SELECT * FROM saver order by id ")
+    fun searchSaver(): PagingSource<Int, Saver>
 
 }

@@ -92,7 +92,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'me.shetj.aop:base-annotation:0.0.1'
     kapt project(path: ':compilers')
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     //https://developer.android.google.cn/jetpack/
     //https://maven.google.com/web/index.html
     api "androidx.appcompat:appcompat:$appcompat"
@@ -112,7 +112,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    api 'androidx.multidex:multidex:2.0.1'
+//    api 'androidx.multidex:multidex:2.0.1'
 
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$BRV"
     //腾讯Android开发框架 https://qmuiteam.com/android/get-started/

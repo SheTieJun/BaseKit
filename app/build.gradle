@@ -121,7 +121,7 @@ dependencies {
 //    def fragment_version = "1.1.0"
 //    implementation "androidx.fragment:fragment:$fragment_version"
 //    implementation "androidx.fragment:fragment-ktx:$fragment_version"
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 

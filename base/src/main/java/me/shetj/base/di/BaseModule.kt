@@ -1,10 +1,16 @@
 package me.shetj.base.di
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network_coroutine.KCApiService
 import me.shetj.base.S
+import me.shetj.base.ktx.saverDB
+import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDatabase
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
@@ -26,7 +32,7 @@ val dbModule = module() {
         get<OkHttpClient.Builder>().build()
     }
 
-    single <OkHttpClient.Builder>{
+    single<OkHttpClient.Builder> {
         OkHttpClient.Builder().apply {
             connectTimeout(20000, TimeUnit.MILLISECONDS)
             readTimeout(20000, TimeUnit.MILLISECONDS)
@@ -35,7 +41,7 @@ val dbModule = module() {
                 put(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, HttpHeaders.acceptLanguage)
                 put(HttpHeaders.HEAD_KEY_USER_AGENT, HttpHeaders.userAgent)
             }))
-            addInterceptor(HttpLoggingInterceptor("HTTP").apply { setLevel( HttpLoggingInterceptor.Level.BODY) })
+            addInterceptor(HttpLoggingInterceptor("HTTP").apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
         }
     }
 
@@ -44,11 +50,30 @@ val dbModule = module() {
             addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             addConverterFactory(GsonConverterFactory.create())
             client(get())
-            baseUrl(S.baseUrl?:"https://me.shetj.com")
+            baseUrl(S.baseUrl ?: "https://me.shetj.com")
         }.build()
     }
 
     single<KCApiService> {
         get<Retrofit>(Retrofit::class.java).create(KCApiService::class.java)
+    }
+
+
+    single {
+        Pager(PagingConfig(
+                // 每页显示的数据的大小。对应 PagingSource 里 LoadParams.loadSize
+                pageSize = 10,
+
+                // 预刷新的距离，距离最后一个 item 多远时加载数据
+                prefetchDistance = 3,
+
+                // 初始化加载数量，默认为 pageSize * 3
+                initialLoadSize = 30,
+                // 一次应在内存中保存的最大数据
+                maxSize = 200
+        )
+        ) {
+            saverDB.searchSaver()
+        }
     }
 }

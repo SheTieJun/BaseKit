@@ -17,23 +17,27 @@ import androidx.core.animation.addListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.paging.Pager
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.flow.collectLatest
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.mvp.IView
 import me.shetj.base.network.callBack.SimpleNetCallBack
+import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDao
 import me.shetj.base.sim.SimpleCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import me.shetj.base.view.TipPopupWindow
+import org.koin.android.ext.android.get
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
@@ -198,6 +202,21 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                 NetWorkLiveDate.NetType.WIFI -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = WIFI")
             }
         })
+
+        val adapter = SimPageAdapter().also { adapter ->
+
+            launch {
+                get<Pager<Int, Saver>>().flow.collectLatest {
+                    main {
+                        adapter.submitData(it)
+                    }
+                }
+            }
+
+        }
+        val footer = SimPageLoadAdapter("footer")
+        val header = SimPageLoadAdapter("header")
+        recycle.adapter =  adapter.withLoadStateHeaderAndFooter(header,footer)
     }
 
     private fun imgTest() {
