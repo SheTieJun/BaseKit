@@ -24,7 +24,7 @@ buildscript {
     ext.rxbinding               = "4.0.0"
     ext.BRV                     = "3.0.4"
     ext.qmuiVersion             = "2.0.0-alpha10"
-    ext.qmuiVersion_shetj       = "3f9e892c75"
+    ext.qmuiVersion_shetj       = "79920f62d5"
     repositories {
         google()
         jcenter()
