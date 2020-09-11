@@ -418,6 +418,7 @@ class ArmsUtils private constructor() {
 
         /**
          * 全屏
+         * {@see [theme:EdgeStyle]} 填充刘海屏幕
          */
         @JvmStatic
         fun fullScreencall(activity: Activity) {
