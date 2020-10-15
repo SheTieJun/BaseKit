@@ -2,6 +2,8 @@ package me.shetj.base
 
 import android.app.Application
 import androidx.annotation.Keep
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.GlobalScope
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.di.dbModule
 import me.shetj.base.network.RxHttp.Companion.getInstance
@@ -15,6 +17,7 @@ import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import timber.log.Timber
 
 /**
  * **@packageName：** me.shetj.base<br></br>
@@ -38,6 +41,18 @@ object S {
         private set
 
     /**
+     * 专门用来做不被取消的操作
+     */
+    val applicationScope = GlobalScope
+
+    /**
+     * 处理为捕捉的异常
+     */
+    val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Timber.tag("CoroutineException").e(throwable)
+    }
+
+    /**
      * 初始化
      * @param application 初始
      * @param isDebug 是否是Debug
@@ -46,8 +61,9 @@ object S {
     @JvmOverloads
     @JvmStatic
     fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
-        TaskExecutor.getInstance().executeOnMainThread {
-            this.isDebug = isDebug
+        this.isDebug = isDebug
+        this.baseUrl = baseUrl
+        TaskExecutor.getInstance().executeOnMainThread (Runnable {
             Utils.init(application)
             TimberUtil.setLogAuto(isDebug)
             if (isDebug) {
@@ -68,11 +84,10 @@ object S {
                 koin.createRootScope()
             }
             baseUrl?.let {
-                this.baseUrl = baseUrl
                 getInstance().debug(S.isDebug)
                         .setBaseUrl(S.baseUrl)
             }
-        }
+        })
 
     }
 

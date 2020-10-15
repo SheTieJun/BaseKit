@@ -3,6 +3,9 @@ package me.shetj.base.model
 import androidx.lifecycle.MutableLiveData
 
 
+/**
+ * 手机媒体音乐变更
+ */
 class VolumeLiveData private constructor():MutableLiveData<Int>(){
 
     override fun onActive() {

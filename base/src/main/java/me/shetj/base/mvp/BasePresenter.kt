@@ -8,10 +8,7 @@ import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.*
 import me.shetj.base.ktx.getObjByClassArg
 import me.shetj.base.ktx.toMessage
 import org.greenrobot.eventbus.EventBus
@@ -32,12 +29,8 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     protected val model: T by lazy { initModel() }
 
 
-    private val job = supervisorJob()
-
-    open fun supervisorJob() = Job()
-
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
+        get() = Dispatchers.Main + SupervisorJob()
 
     internal val rxContext: AppCompatActivity
         get() = view.rxContext

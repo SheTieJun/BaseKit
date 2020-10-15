@@ -29,6 +29,11 @@ fun Context.openSetting() {
 }
 
 
+fun Context.openWifiSetting(){
+    val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+    startActivity(intent)
+}
+
 fun Context.sendEmailText(addresses: String = "375105540@qq.com", title: String, content: String) {
     val intent = Intent(Intent.ACTION_SENDTO).apply {
         data = Uri.parse("mailto:$addresses")

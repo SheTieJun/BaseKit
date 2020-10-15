@@ -24,6 +24,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
@@ -31,8 +32,11 @@ import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.mvp.IView
 import me.shetj.base.network.callBack.SimpleNetCallBack
+import me.shetj.base.network.kt.RxUtil
 import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDao
+import me.shetj.base.share.Share
+import me.shetj.base.share.Share.Companion.shareText
 import me.shetj.base.sim.SimpleCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
@@ -45,8 +49,12 @@ import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
 import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
+import shetj.me.base.view.LoadingDialog
+import shetj.me.base.view.LoadingDialogKT
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.OnClickListener {
@@ -121,7 +129,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
 
         btn_email.setOnClickListener {
-            sendEmailText(addresses = "375105540@qq.com",title = "Base测试",content = "这是一个测试代码")
+            sendEmailText(addresses = "375105540@qq.com", title = "Base测试", content = "这是一个测试代码")
         }
         tv_test_number.setOnClickListener { text ->
 
@@ -219,7 +227,28 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
         val footer = SimPageLoadAdapter("footer")
         val header = SimPageLoadAdapter("header")
-        recycle.adapter =  adapter.withLoadStateHeaderAndFooter(header,footer)
+        recycle.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
+
+        test_thread.setOnClickListener {
+            TaskExecutor.exit()
+            TaskExecutor.executeOnIO {
+                Timber.tag("TaskExecutor").i(Thread.currentThread().name)
+            }
+        }
+        test_loading.setOnClickListener {
+            //测试带携程的loading
+            LoadingDialog.showWithAction(this) {
+                "开始".logi()
+                delay(5000)
+                "结束".logi()
+            }.apply {
+                AndroidSchedulers.mainThread().scheduleDirect(
+                        {
+                            hideLoading()
+                        }, 6000, TimeUnit.MILLISECONDS
+                )
+            }
+        }
     }
 
     private fun imgTest() {

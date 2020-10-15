@@ -87,3 +87,12 @@ fun <E>  ArrayList<E>.addIfNotNull(element: E?) {
 fun Context?.delFile(fileUri:Uri){
     this?.contentResolver?.delete(fileUri, null, null);
 }
+
+/**
+ * 获取一个带名字的 Thread
+ */
+fun getTagThread(tag:String,run:Runnable):Thread{
+    val t = Thread(run)
+    t.name = tag
+    return t
+}

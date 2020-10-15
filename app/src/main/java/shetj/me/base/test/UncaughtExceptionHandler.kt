@@ -8,9 +8,9 @@ import java.io.*
 
 internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
     override fun uncaughtException(t: Thread, e: Throwable) {
-        Timber.tag("程序出现异常了").e("Thread = ${t.name}Throwable = ${e.message}".trimIndent())
+        Timber.tag("error").e("Thread = ${t.name}Throwable = ${e.message}".trimIndent())
         val stackTraceInfo = getStackTraceInfo(e)
-        Timber.tag("stackTraceInfo").e(stackTraceInfo)
+        Timber.tag("error").e(stackTraceInfo)
         saveThrowableMessage(stackTraceInfo)
     }
 
@@ -62,7 +62,7 @@ internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
                     outputStream.write(bytes, 0, len)
                 }
                 outputStream.flush()
-                Timber.tag("程序出异常了").e("写入本地文件成功：%s", file.absolutePath)
+                Timber.tag("error").e("写入本地文件成功：%s", file.absolutePath)
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             } catch (e: IOException) {

@@ -17,7 +17,7 @@ open class FactoryCreatorProxy(
 ) {
 
     private fun getPageName() = elementUtils.getPackageOf(classElement).qualifiedName.toString()
-    private val fileName = "${classElement.simpleName.toString()}$name"
+    private val fileName = "${classElement.simpleName}$name"
 
     /**
      * 创建文件

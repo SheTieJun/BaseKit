@@ -5,11 +5,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
+import android.net.*
+import android.os.Build
+import android.os.Bundle
 import android.os.Looper
+import android.provider.Settings
 import android.view.*
 import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
@@ -28,6 +28,7 @@ import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.SoftKeyBoardListener
 import java.lang.reflect.Method
+import java.util.*
 
 
 /**
@@ -41,7 +42,7 @@ fun AppCompatActivity.isRoot() {
 }
 
 @JvmOverloads
-inline fun <reified T:Activity> Context.start(isFinish: Boolean = false) {
+inline fun <reified T : Activity> Context.start(isFinish: Boolean = false) {
     ArmsUtils.startActivity(this as AppCompatActivity, T::class.java)
     if (isFinish) {
         finish()
@@ -128,11 +129,11 @@ fun Context.collapseStatusBar() {
 /**
  * 针对6.0动态请求权限问题,判断是否允许此权限
  */
-fun Context.hasPermission(vararg permissions: String,isRequest: Boolean = false): Boolean {
+fun Context.hasPermission(vararg permissions: String, isRequest: Boolean = false): Boolean {
     for (permission in permissions) {
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-            if (isRequest){
-                ActivityCompat.requestPermissions(this as Activity,permissions,100)
+            if (isRequest) {
+                ActivityCompat.requestPermissions(this as Activity, permissions, 100)
             }
             return false
         }
@@ -169,6 +170,17 @@ inline fun onBackKeyUp(keyCode: Int, @NonNull event: KeyEvent,
     return false
 }
 
+fun Activity.onBackGoHome() {
+    try {
+        val i = Intent(Intent.ACTION_MAIN)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        i.addCategory(Intent.CATEGORY_HOME)
+        startActivity(i)
+    } catch (e: Exception) {
+        onBackPressed()
+    }
+}
+
 
 inline fun Context.createSimDialog(@LayoutRes layoutId: Int,
                                    crossinline viewListener: ((view: View) -> Unit) = {},
@@ -187,7 +199,7 @@ inline fun Context.createSimDialog(@LayoutRes layoutId: Int,
 /**
  * 获取网络状态监听回调
  */
-@RequiresPermission(allOf=["android.permission.CHANGE_NETWORK_STATE"])
+@RequiresPermission(allOf = ["android.permission.CHANGE_NETWORK_STATE"])
 fun Context.requestNetWork() {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val builder = NetworkRequest.Builder()
@@ -195,7 +207,7 @@ fun Context.requestNetWork() {
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
             .build()
-    cm.requestNetwork(request, object :ConnectivityManager.NetworkCallback(){
+    cm.requestNetwork(request, object : ConnectivityManager.NetworkCallback() {
 
         override fun onLost(network: Network) {
             super.onLost(network)
@@ -221,6 +233,6 @@ fun Context.requestNetWork() {
     })
 }
 
-fun Context.getFileProvider():String{
+fun Context.getFileProvider(): String {
     return "${packageName}.FileProvider"
 }

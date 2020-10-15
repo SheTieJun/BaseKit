@@ -15,4 +15,15 @@
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowBackground">@drawable/dialog_fragment_transparent_bg</item>
     </style>
+
+
+    <style name="button_style">
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/base_btn_white_text_selector</item>
+        <item name="android:background">@drawable/base_btn_white_bg_selector</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
 </resources>

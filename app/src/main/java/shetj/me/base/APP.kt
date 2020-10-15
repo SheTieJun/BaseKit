@@ -5,6 +5,7 @@ import dagger.hilt.android.HiltAndroidApp
 import me.shetj.base.S
 import me.shetj.base.S.initKoin
 import shetj.me.base.di_kointest.allModules
+import shetj.me.base.test.UncaughtExceptionHandler
 
 /**
  * **@packageName：** com.ebu.master<br></br>
@@ -20,6 +21,7 @@ class APP : Application() {
         super.onCreate()
         S.init(this, true, "https://xxxx.com")
         initKoin(allModules)
+        UncaughtExceptionHandler()
     }
 
 }

@@ -24,9 +24,9 @@ import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import me.shetj.base.S
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
-import me.shetj.base.S
 import me.shetj.base.tools.file.EnvironmentStorage
 import java.io.File
 import java.io.IOException
@@ -507,11 +507,25 @@ class ArmsUtils private constructor() {
         }
 
         fun copyText(context: Context, text: String) {
-            val cm: ClipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val cm: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
             // 创建普通字符型ClipData
             val mClipData = ClipData.newPlainText("Label", text)
             // 将ClipData内容放到系统剪贴板里。
-            cm.setPrimaryClip(mClipData)
+            cm?.setPrimaryClip(mClipData)
+        }
+
+        /**
+         * 获取粘贴的文字
+         */
+        fun paste(context: Context): String? {
+            val manager = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+            if (manager != null) {
+                if (manager.hasPrimaryClip() && manager.primaryClip!!.itemCount > 0) {
+                    val addedText = manager.primaryClip!!.getItemAt(0).text
+                    return addedText.toString()
+                }
+            }
+            return null
         }
     }
 

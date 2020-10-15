@@ -235,6 +235,60 @@ class Share private constructor(builder: Builder) {
 
     companion object {
         private const val TAG = "Share"
+
+        @JvmOverloads
+        @JvmStatic
+        fun shareText(activity: Activity,title: String = "Share Text", content: String) {
+            Builder(activity)
+                    .setContentType(ShareContentType.TEXT)
+                    .setTextContent(content)
+                    .setTitle(title)
+                    .build()
+                    .shareBySystem()
+        }
+
+        @JvmOverloads
+        @JvmStatic
+        fun shareImage(activity: Activity,title: String = "Share Image", content: Uri) {
+            Builder(activity)
+                    .setContentType(ShareContentType.IMAGE)
+                    .setShareFileUri(content) //.setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
+                    .setTitle(title)
+                    .build()
+                    .shareBySystem()
+        }
+        @JvmOverloads
+        @JvmStatic
+        fun shareAudio(activity: Activity,title: String = "Share Audio", content: Uri) {
+            Builder(activity)
+                    .setContentType(ShareContentType.AUDIO)
+                    .setShareFileUri(content)
+                    .setTitle(title)
+                    .build()
+                    .shareBySystem()
+        }
+
+        @JvmOverloads
+        @JvmStatic
+        fun shareVideo(activity: Activity,title: String = "Share Video", content: Uri) {
+            Builder(activity)
+                    .setContentType(ShareContentType.VIDEO)
+                    .setShareFileUri(content)
+                    .setTitle(title)
+                    .build()
+                    .shareBySystem()
+        }
+
+        @JvmOverloads
+        @JvmStatic
+        fun shareFile(activity: Activity,title: String = "Share File", content: Uri) {
+            Builder(activity)
+                    .setContentType(ShareContentType.FILE)
+                    .setShareFileUri(content)
+                    .setTitle("Share File")
+                    .build()
+                    .shareBySystem()
+        }
     }
 
     init {

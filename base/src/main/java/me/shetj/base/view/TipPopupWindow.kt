@@ -94,6 +94,7 @@ class TipPopupWindow(private val context: Context) : PopupWindow(context) {
         @ColorInt
         private val NORMAL_COLOR = Color.parseColor("#CCCCCC")
 
+        @Volatile
         private var tipPopupWindow: TipPopupWindow? = null
 
         /**

@@ -34,10 +34,10 @@ fun TextView.setDrawables(@DrawableRes resId: Int,
         setBounds(0, 0, minimumWidth, minimumHeight)
     }?.let {
         when (gravity) {
-            Gravity.START -> setCompoundDrawables(it, null, null, null)
-            Gravity.TOP -> setCompoundDrawables(null, it, null, null)
-            Gravity.END -> setCompoundDrawables(null, null, it, null)
-            Gravity.BOTTOM -> setCompoundDrawables(null, null, null, it)
+            Gravity.START -> setCompoundDrawablesRelative(it, null, null, null)
+            Gravity.TOP -> setCompoundDrawablesRelative(null, it, null, null)
+            Gravity.END -> setCompoundDrawablesRelative(null, null, it, null)
+            Gravity.BOTTOM -> setCompoundDrawablesRelative(null, null, null, it)
         }
     }
 
@@ -132,6 +132,9 @@ fun <T : View> T.isRtl() = resources.configuration.layoutDirection == View.LAYOU
 
 
 //region View
+/**
+ * 不切割子view
+ */
 fun View?.disableClipOnParents() {
     if (this == null) {
         return

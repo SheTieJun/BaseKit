@@ -5,6 +5,9 @@ import me.shetj.base.tools.app.NetworkUtils
 import me.shetj.base.tools.app.Utils
 
 
+/**
+ * 网络状态变更
+ */
 class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.NetWorkInfo>() {
 
     sealed class NetType() {

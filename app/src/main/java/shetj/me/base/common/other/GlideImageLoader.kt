@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -49,30 +50,7 @@ class GlideImageLoader private constructor() : ImageLoader {
     }
 
     override fun load(simpleView: ImageView, url: String, hasProgress: Boolean) {
-        if (hasProgress) {
-            GlideApp.with(simpleView.context)
-                    .load(url)
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .into(object : CustomTarget<Drawable?>() {
-                        override fun onStart() {
-                            super.onStart()
-                            LoadingDialog.showLoading(simpleView.context as Activity)
-                        }
-
-                        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable?>?) {
-                            simpleView.setImageDrawable(resource)
-                            LoadingDialog.hideLoading()
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {
-
-
-                        }
-
-                    })
-        } else {
             load(simpleView, url)
-        }
     }
 
     /**
@@ -91,6 +69,7 @@ class GlideImageLoader private constructor() : ImageLoader {
         GlideApp.with(simpleView.context)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .downsample(DownsampleStrategy.DEFAULT)
                 .into(simpleView)
     }
 

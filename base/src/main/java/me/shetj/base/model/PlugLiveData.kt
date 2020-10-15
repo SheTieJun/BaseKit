@@ -3,6 +3,9 @@ package me.shetj.base.model
 import androidx.lifecycle.MutableLiveData
 
 
+/**
+ * 耳机状态变更
+ */
 class PlugLiveData private constructor() : MutableLiveData<Boolean>(false) {
 
     override fun onActive() {

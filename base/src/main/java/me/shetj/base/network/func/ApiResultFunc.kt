@@ -13,12 +13,17 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
- * 一、当是自定义[me.shetj.base.network.model.ApiResult]
- *   1.如果是String 不处理，默认把所有数据返回  ；
- *   2.如果不是String,返回 T,去掉code and msg  ；
- * 二、当是不是[me.shetj.base.network.model.ApiResult]
- *   1.普通的class
- *   2.自定义泛型处理
+ * 一、当是自定义[me.shetj.base.network.model.ApiResult] <BR/>
+ *
+ *   1.如果是String 不处理，默认把所有数据返回  ；<BR/>
+ *
+ *   2.如果不是String,返回 T,去掉code and msg  ；<BR/>
+ *
+ * 二、当是不是[me.shetj.base.network.model.ApiResult]<BR/>
+ *
+ *   1.普通的class<BR/>
+ *
+ *   2.自定义泛型处理<BR/>
  */
 @Suppress("UNCHECKED_CAST")
 class ApiResultFunc<T>(val type: Type) : Function<ResponseBody, ApiResult<T>> {
