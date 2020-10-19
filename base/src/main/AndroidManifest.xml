@@ -25,15 +25,6 @@
                 android:resource="@xml/base_file_path" />
         </provider>
 
-        <receiver android:name=".receiver.HeadsetBroadcastReceive">
-            <intent-filter>
-                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
-                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
-            </intent-filter>
-        </receiver>
-
     </application>
 
 </manifest>

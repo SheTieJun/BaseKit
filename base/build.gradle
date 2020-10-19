@@ -92,7 +92,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api 'me.shetj.aop:base-annotation:0.0.1'
     kapt project(path: ':compilers')
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     //https://developer.android.google.cn/jetpack/
     //https://maven.google.com/web/index.html
     api "androidx.appcompat:appcompat:$appcompat"
@@ -102,7 +102,7 @@ dependencies {
     api "androidx.recyclerview:recyclerview:$recyclerview"
     api "androidx.cardview:cardview:$androidx"
     api "androidx.core:core-ktx:$ktx"
-    api "androidx.activity:activity-ktx:$appcompat"
+    api "androidx.activity:activity-ktx:$activity_ktx"
     api "androidx.constraintlayout:constraintlayout:$constraintlayout"
     api 'androidx.browser:browser:1.2.0'
     api "androidx.security:security-crypto:1.1.0-alpha02" //加密的sp
@@ -163,7 +163,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     api "androidx.room:room-rxjava3:$room_version"
 
-    api "androidx.paging:paging-runtime:$paging_version"
+    api "androidx.paging:paging-runtime-ktx:$paging_version"
 }
 
 apply from: 'bintrayConfig.gradle'

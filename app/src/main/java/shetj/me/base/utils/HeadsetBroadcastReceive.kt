@@ -1,4 +1,4 @@
-package me.shetj.base.receiver
+package shetj.me.base.utils
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
