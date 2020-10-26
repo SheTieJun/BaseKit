@@ -35,7 +35,7 @@ class ImageUtils {
 
         private const val GET_IMAGE_BY_CAMERA = 5001
         private const val GET_IMAGE_FROM_PHONE = 5002
-        private const val GET_IMAGE_FROM_PHONE_NO_CUT = 5004
+        private const val GET_IMAGE_FROM_PHONE_NO_CUT = 5004 //不剪切
         private const val CROP_IMAGE = 5003
         private var imageUriFromCamera: Uri? = null
         private var cropImageUri: Uri? = null
@@ -77,13 +77,7 @@ class ImageUtils {
 
         @JvmStatic
         fun createImageUri(context: Context): Uri? {
-            val status: String = Environment.getExternalStorageState()
-            // 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
-            return if (status == Environment.MEDIA_MOUNTED) {
-                context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
-            } else {
-                context.contentResolver.insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, ContentValues())
-            }
+            return context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
         }
 
 
@@ -187,6 +181,7 @@ class ImageUtils {
                 cursor.close()
                 return File(path!!)
             } else {
+                return null
             }
             return null
         }
@@ -336,15 +331,15 @@ class ImageUtils {
 
         // 通过uri获取bitmap
         fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
-            var parcelFileDescriptor: ParcelFileDescriptor? = null;
+            var parcelFileDescriptor: ParcelFileDescriptor? = null
             val fileDescriptor: FileDescriptor
-            var bitmap: Bitmap? = null;
+            var bitmap: Bitmap? = null
             try {
-                parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r");
+                parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r")
                 if ((parcelFileDescriptor?.fileDescriptor) != null) {
-                    fileDescriptor = parcelFileDescriptor.fileDescriptor;
+                    fileDescriptor = parcelFileDescriptor.fileDescriptor
                     //转换uri为bitmap类型
-                    bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                    bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

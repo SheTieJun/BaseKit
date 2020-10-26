@@ -48,15 +48,15 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
 
 //region log 相关
 fun String?.logi() {
-    Timber.i(this)
+    Timber.tag("base").i(this)
 }
 
 fun String?.loge() {
-    Timber.e(this)
+    Timber.tag("base").e(this)
 }
 
 fun String?.logd() {
-    Timber.d(this)
+    Timber.tag("base").d(this)
 }
 
 //endregion

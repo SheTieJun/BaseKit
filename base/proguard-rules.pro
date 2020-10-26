@@ -23,7 +23,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
+#noinspection ShrinkerUnresolvedReference
 #---------------------------------基本指令区----------------------------------
 -optimizationpasses 5
 -dontskipnonpubliclibraryclassmembers
@@ -106,7 +106,7 @@
     public boolean *(android.webkit.WebView, java.lang.String);
 }
 -keepclassmembers class * extends android.webkit.WebViewClient {
-    public void *(android.webkit.WebView, jav.lang.String);
+    public void *(android.webkit.WebView, java.lang.String);
 }
 
 #支付宝支付
@@ -159,25 +159,10 @@
 -dontwarn com.squareup.okhttp3.**
 -keep class com.squareup.okhttp3.** { *;}
 -dontwarn okio.**
-#sharesdk
--keep class cn.sharesdk.**{*;}
--keep class com.sina.**{*;}
--keep class **.R$* {*;}
--keep class **.R{*;}
-
--keep class com.mob.**{*;}
--dontwarn com.mob.**
--dontwarn cn.sharesdk.**
--dontwarn **.R$*
-
-##百度定位
--keep class com.baidu.** {*;}
--keep class vi.com.** {*;}
--dontwarn com.baidu.**
 
 ## okhttp
 -dontwarn com.squareup.okhttp.**
--keep class com.squareup.okhttp.{*;}
+-keep class com.squareup.okhttp.** {*;}
 #retrofit
 -dontwarn retrofit.**
 -keep class retrofit.** { *; }
@@ -185,16 +170,11 @@
 -keepattributes Exceptions
 -dontwarn okio.**
 
-#recyclerview-animators
--keep class jp.wasabeef.** {*;}
--dontwarn jp.wasabeef.*
-
 #multistateview
 -keep class com.kennyc.view.** { *; }
 -dontwarn com.kennyc.view.*
 
 #glide 4.x
-#由*	chenyongta*贡献混淆代码
 #作者Github地址：https://github.com/yourtion
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
@@ -202,10 +182,6 @@
   **[] $VALUES;
   public *;
 }
-
-#jpush极光推送
--dontwarn cn.jpush.**
--keep class cn.jpush.** { *; }
 
 
 #Rxjava RxAndroid
@@ -217,14 +193,6 @@
    long consumerIndex;
 }
 
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
-
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
 ################gson###############
 -keepattributes Signature
 -keepattributes *Annotation*
@@ -233,17 +201,6 @@
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.sunloto.shandong.bean.** { *; }
 
-################androidEventBus###############
--keep class org.simple.** { *; }
--keep interface org.simple.** { *; }
--keepclassmembers class * {
-    @org.simple.eventbus.Subscriber <methods>;
-}
--keepattributes *Annotation*
-
-################autolayout###############
--keep class com.zhy.autolayout.** { *; }
--keep interface com.zhy.autolayout.** { *; }
 
 ################RxJava and RxAndroid###############
 -dontwarn org.mockito.**
@@ -290,13 +247,6 @@
 -keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
     long producerNode;
     long consumerNode;
-}
-
--keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    io.reactivex.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    io.reactivex.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
 -dontwarn io.reactivex.internal.util.unsafe.**

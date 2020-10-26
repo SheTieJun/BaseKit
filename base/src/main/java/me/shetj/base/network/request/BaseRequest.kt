@@ -2,6 +2,7 @@ package me.shetj.base.network.request
 
 import android.text.TextUtils
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -63,7 +64,7 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     }
 
     //region  public method
-    private fun build(): R {
+    fun build(): R {
         if (apiManager == null) {
             apiManager = RxHttp.getInstance().getApiManager(this)
         }
@@ -270,11 +271,9 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
      */
     open fun <T> executeCus(type: Class<T>): Observable<T> {
         return build().generateRequest()!!
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose{isSync(it)}
                 .map(ApiResultFunc<T>(type))
-                .map(HandleFuc<T>())
+                .map(HandleFuc())
                 .doOnSubscribe { disposable: Disposable -> Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed) }
                 .doFinally { Timber.i("+++doFinally+++") }
                 .onErrorResumeNext(HttpResponseFunc<T>())
@@ -285,18 +284,16 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
      * 执行，自定义数据类型
      *  @return Disposable
      */
-    open fun <T> executeCus(callback: NetCallBack<T>):Disposable {
+    open fun <T> executeCus(callback: NetCallBack<T>): Disposable {
         return build().generateRequest()!!
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose{isSync(it)}
                 .map(ApiResultFunc<T>(callback.getType()))
-                .map(HandleFuc<T>())
+                .map(HandleFuc())
                 .doOnSubscribe { disposable: Disposable -> Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed) }
                 .doFinally { Timber.i("+++doFinally+++") }
                 .onErrorResumeNext(HttpResponseFunc<T>())
                 .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
-                .subscribeWith(CallBackSubscriber<T>(callback))
+                .subscribeWith(CallBackSubscriber(callback))
 
     }
 
@@ -309,17 +306,25 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
 
         }
         return build().generateRequest()!!
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose{isSync(it)}
                 .map(ApiResultFunc<T>(callBackProxy.getType()))
-                .map(HandleFuc<T>())
+                .map(HandleFuc())
                 .doOnSubscribe { disposable: Disposable -> Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed) }
                 .doFinally { Timber.i("+++doFinally+++") }
                 .onErrorResumeNext(HttpResponseFunc<T>())
                 .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
-                .subscribeWith(CallBackSubscriber<T>(callBackProxy.callBack))
+                .subscribeWith(CallBackSubscriber(callBackProxy.callBack))
     }
 
+
+    private fun isSync(up: @NonNull Observable<ResponseBody>): @NonNull Observable<ResponseBody>? {
+        return if (isSyncRequest) {
+            up
+        } else {
+            up.subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+        }
+    }
     //endregion
 }

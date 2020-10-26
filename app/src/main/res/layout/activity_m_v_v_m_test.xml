@@ -16,6 +16,10 @@
         <variable
             name="time"
             type="String" />
+
+        <variable
+            name="url"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,12 +43,13 @@
 
         <ImageView
             android:id="@+id/image"
-            imageUrl="@{vm.url}"
+            imageUrl="@{url}"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:onClick="@{click::onClick}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <Button
             android:id="@+id/btn_change"
@@ -62,5 +67,14 @@
             android:text="@{time}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_change" />
+
+        <Button
+            android:id="@+id/btn_select_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择图片"
+            android:onClick="@{click::onClick}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

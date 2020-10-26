@@ -1,6 +1,8 @@
 package shetj.me.base.test
 
 import android.os.Environment
+import android.os.Process
+import android.os.SystemClock
 import android.text.TextUtils
 import me.shetj.base.tools.file.EnvironmentStorage.Companion.getExternalFilesDir
 import timber.log.Timber
@@ -12,6 +14,8 @@ internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
         val stackTraceInfo = getStackTraceInfo(e)
         Timber.tag("error").e(stackTraceInfo)
         saveThrowableMessage(stackTraceInfo)
+        SystemClock.sleep(1000)
+        Process.killProcess(Process.myPid())
     }
 
     /**
@@ -51,7 +55,7 @@ internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
     }
 
     private fun writeStringToFile(errorMessage: String, file: File) {
-        Thread(Runnable {
+        Thread {
             var outputStream: FileOutputStream? = null
             try {
                 val inputStream = ByteArrayInputStream(errorMessage.toByteArray())
@@ -76,6 +80,6 @@ internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
                     }
                 }
             }
-        }).start()
+        }.start()
     }
 }

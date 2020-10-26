@@ -2,7 +2,6 @@ package me.shetj.base.ktx
 
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.CATEGORY_APP_EMAIL
 import android.net.Uri
 import android.provider.Settings
 import java.io.File

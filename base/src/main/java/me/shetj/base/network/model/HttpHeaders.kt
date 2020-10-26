@@ -104,8 +104,7 @@ class HttpHeaders : Serializable {
         @SuppressLint("ConstantLocale")
         private val USER_AGENT =
                 String.format(
-                        " APPVersionName /%s SystemName/%s SystemVersion/%s Device/%s NetType/%s Language/%s DeviceName/%s SdkVersion/%d Flavor/%s APPVersion/%d",
-                        BuildConfig.VERSION_NAME,
+                        " SystemName/%s SystemVersion/%s Device/%s NetType/%s Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
                         "Android",
                         Build.VERSION.RELEASE,
                         Build.MODEL,
@@ -113,8 +112,7 @@ class HttpHeaders : Serializable {
                         Locale.getDefault().language + "_" + Locale.getDefault().country,
                         checkNameAndValue(Build.MANUFACTURER),
                         Build.VERSION.SDK_INT,
-                        BuildConfig.BUILD_TYPE,
-                        BuildConfig.VERSION_CODE)
+                        BuildConfig.BUILD_TYPE)
 
         /**
          * Accept-Language: zh-CN,zh;q=0.8

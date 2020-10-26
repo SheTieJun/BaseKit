@@ -22,7 +22,7 @@ android {
     resourcePrefix 'base_'
     defaultConfig {
         minSdkVersion rootProject.ext.minVersion
-        targetSdkVersion rootProject.ext.compileSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -61,26 +61,6 @@ android {
             }
     }
 
-    configurations.all {
-        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-            def requested = details.requested
-            if (requested.group == 'com.google.code.gson') {
-                if (!requested.name.startsWith("multidex")) {
-                    details.useVersion "$gsonVersion"
-                }
-            }
-            if (requested.group == 'com.google.code.findbugs') {
-                if (!requested.name.startsWith("multidex")) {
-                    details.useVersion '3.0.0'
-                }
-            }
-            if (requested.group == 'com.github.bumptech.glide') {
-                if (!requested.name.startsWith("multidex")) {
-                    details.useVersion "$glideVersion"
-                }
-            }
-        }
-    }
 
     lintOptions {
         abortOnError false

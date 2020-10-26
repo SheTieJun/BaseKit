@@ -2,6 +2,7 @@ package shetj.me.base.func.main
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.REVERSE
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -38,6 +39,7 @@ import me.shetj.base.saver.SaverDao
 import me.shetj.base.share.Share
 import me.shetj.base.share.Share.Companion.shareText
 import me.shetj.base.sim.SimpleCallBack
+import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import me.shetj.base.view.TipPopupWindow
@@ -47,6 +49,7 @@ import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
+import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import shetj.me.base.view.LoadingDialog
@@ -88,6 +91,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         return lifecycleScope.get { parametersOf(this) }
     }
 
+    @SuppressLint("SetTextI18n")
     public override fun initView() {
         mBtnTest = findViewById<View>(R.id.btn_test) as Button
         mBtnTest!!.setOnClickListener(this)
@@ -106,7 +110,10 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
         Timber.tag("koin").i(view2.rxContext.toString())
         Timber.tag("hilt").i(view3.rxContext.toString())
-
+        test_download.setOnClickListener {
+            DownloadWorker.startDownload(this,"https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
+                    EnvironmentStorage.getExternalFilesDir(),"wxwork_android_3.apk")
+        }
         viewpage2?.adapter = AFragmentStateAdapter(this, list)
         viewpage2?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -309,15 +316,17 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 
     private fun testExecutor() {
         for (i in 0..100) {
-            TaskExecutor.getInstance().executeOnDiskIO(Runnable {
+            TaskExecutor.getInstance().executeOnDiskIO {
                 Thread.sleep(100)
                 Timber.i("executeOnDiskIO:${Thread.currentThread().name}")
-            })
+            }
         }
         for (i in 0..9) {
-            TaskExecutor.getInstance().executeOnMainThread(Runnable {
-                Timber.i("executeOnMainThread:${Thread.currentThread().name}")
-            })
+            TaskExecutor.run {
+                getInstance().executeOnMainThread {
+                    Timber.i("executeOnMainThread:${Thread.currentThread().name}")
+                }
+            }
         }
     }
 

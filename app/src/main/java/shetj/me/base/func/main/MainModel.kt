@@ -4,6 +4,7 @@ import me.shetj.base.ktx.doOnIO
 import me.shetj.base.mvp.BaseModel
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
+import me.shetj.base.network.exception.ServerException
 import me.shetj.base.network_coroutine.KCHttp
 import shetj.me.base.bean.ResultMusic
 
@@ -20,7 +21,13 @@ class MainModel : BaseModel() {
     override fun onDestroy() {}
 
     suspend fun getMusic(): ResultMusic? = doOnIO {
-       KCHttp.get<ResultMusic>(testUrl)
+        return@doOnIO try {
+            KCHttp.get<ResultMusic>(testUrl)
+        } catch (e: ServerException) {
+            null
+        } catch (e: Exception) {
+            null
+        }
     }
 
 

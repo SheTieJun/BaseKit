@@ -1,12 +1,33 @@
 package me.shetj.base.network_coroutine
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import me.shetj.base.network.exception.ServerException
 import me.shetj.base.network.func.ApiResultFunc
 import me.shetj.base.network.kt.createJson
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.koin.java.KoinJavaComponent.get
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileOutputStream
 
+
+//region 下载状态相关
+
+typealias DOWNLOAD_ERROR = suspend (Throwable) -> Unit
+typealias DOWNLOAD_PROCESS = suspend (downloadedSize: Long, length: Long, process: Float) -> Unit
+typealias DOWNLOAD_SUCCESS = suspend (uri: File) -> Unit
+
+sealed class DownloadStatus {
+    class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) : DownloadStatus()
+    class DownloadError(val t: Throwable) : DownloadStatus()
+    class DownloadSuccess(val file: File) : DownloadStatus()
+}
+
+//endregion
 
 /**
  * 协程 Http请求
@@ -16,45 +37,81 @@ object KCHttp {
 
     val apiService: KCApiService = get(KCApiService::class.java)
 
-
-    @JvmStatic
-    suspend inline fun <reified T> get(url: String, maps: Map<String, String>? =HashMap()): T?{
-        return  apiService.get(url, maps).funToT()
+    suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap()): T? {
+        return apiService.get(url, maps).funToT()
     }
 
 
-    @JvmStatic
-    suspend inline fun <reified T> post(url: String, maps: Map<String, String>? =HashMap()): T?{
-        return  apiService.post(url, maps).funToT()
+    suspend inline fun <reified T> post(url: String, maps: Map<String, String>? = HashMap()): T? {
+        return apiService.post(url, maps).funToT()
     }
 
 
-
-    @JvmStatic
-    suspend inline fun <reified T> postJson(url: String, json: String): T?{
-        return  apiService.postJson(url, json.createJson()).funToT()
+    suspend inline fun <reified T> postJson(url: String, json: String): T? {
+        return apiService.postJson(url, json.createJson()).funToT()
     }
 
 
-    @JvmStatic
-    suspend inline fun <reified T> postBody(url: String, body: Any): T?{
-        return  apiService.postBody(url, body).funToT()
+    suspend inline fun <reified T> postBody(url: String, body: Any): T? {
+        return apiService.postBody(url, body).funToT()
     }
 
 
-    @JvmStatic
-    suspend inline fun <reified T> postBody(url: String, body: RequestBody): T?{
-        return  apiService.postBody(url, body).funToT()
+    suspend inline fun <reified T> postBody(url: String, body: RequestBody): T? {
+        return apiService.postBody(url, body).funToT()
     }
 
+    inline fun <reified T> ResponseBody.funToT(): T? {
+        return ApiResultFunc<T>(T::class.java).apply(this).let {
+            if (it.isOk) {
+                it.data
+            } else {
+                throw ServerException(it.code, it.msg)
+            }
+        }
+    }
 
-    inline fun <reified T> ResponseBody.funToT() : T?{
-       return ApiResultFunc<T>(T::class.java).apply(this).let {
-           if (it.isOk) {
-               it.data
-           } else {
-               throw ServerException(it.code, it.msg)
-           }
-       }
+    @Suppress("BlockingMethodInNonBlockingContext")
+    @JvmOverloads
+    suspend fun download(url: String, outputFile: String, error: DOWNLOAD_ERROR = {},
+                         process: DOWNLOAD_PROCESS = { _, _, _ -> },
+                         success: DOWNLOAD_SUCCESS = { }) {
+
+        val body = apiService.downloadFile(url)
+
+        flow {
+            try {
+                val contentLength = body.contentLength()
+//                val contentType = body.contentType()?.toString()
+                val ios = body.byteStream()
+                val file = File(outputFile)
+                val ops = FileOutputStream(file)
+                var currentLength = 0
+                val bufferSize = 1024 * 8
+                val buffer = ByteArray(bufferSize)
+                val bufferedInputStream = BufferedInputStream(ios, bufferSize)
+                var readLength: Int
+                while (bufferedInputStream.read(buffer, 0, bufferSize)
+                                .also { readLength = it } != -1
+                ) {
+                    ops.write(buffer, 0, readLength)
+                    currentLength += readLength
+                    emit(DownloadStatus.DownloadProcess(currentLength.toLong(), contentLength, currentLength.toFloat() / contentLength.toFloat()))
+                }
+                bufferedInputStream.close()
+                ops.close()
+                ios.close()
+                emit(DownloadStatus.DownloadSuccess(file))
+            } catch (e: Exception) {
+                emit(DownloadStatus.DownloadError(e))
+            }
+        }.flowOn(Dispatchers.IO)
+                .collect {
+                    when (it) {
+                        is DownloadStatus.DownloadError -> error(it.t)
+                        is DownloadStatus.DownloadProcess -> process(it.currentLength, it.length, it.process)
+                        is DownloadStatus.DownloadSuccess -> success(it.file)
+                    }
+                }
     }
 }

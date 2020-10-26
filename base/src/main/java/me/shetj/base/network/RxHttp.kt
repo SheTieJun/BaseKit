@@ -2,6 +2,7 @@ package me.shetj.base.network
 
 import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.https.HttpsUtils
+import me.shetj.base.network.interceptor.CacheInterceptor
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.model.HttpHeaders
@@ -105,9 +106,7 @@ open class RxHttp private constructor() {
     fun debug(isPrintException: Boolean): RxHttp {
         this.isPrintException = isPrintException
         if (isPrintException) {
-            if (isPrintException) {
-                addInterceptor(HttpLoggingInterceptor("RxHttp").apply { setLevel( HttpLoggingInterceptor.Level.BODY) })
-            }
+            addInterceptor(HttpLoggingInterceptor("RxHttp").apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
         }
         return this
     }
@@ -193,7 +192,7 @@ open class RxHttp private constructor() {
                 addInterceptor(HeadersInterceptor(it))
             }
             if (isPrintException) {
-                addInterceptor(HttpLoggingInterceptor("RxHttp").apply { setLevel( HttpLoggingInterceptor.Level.BODY) })
+                addInterceptor(HttpLoggingInterceptor("RxHttp").apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
             }
         }
     }
@@ -352,6 +351,11 @@ open class RxHttp private constructor() {
      */
     fun addInterceptor(interceptor: Interceptor?): RxHttp {
         okHttpClientBuilder.addInterceptor(checkNotNull(interceptor, { "interceptor == null" }))
+        return this
+    }
+
+    fun addNetInterceptor(interceptor: Interceptor?):RxHttp{
+        okHttpClientBuilder.addNetworkInterceptor(checkNotNull(interceptor, { "interceptor == null" }))
         return this
     }
 

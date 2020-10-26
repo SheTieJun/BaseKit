@@ -1,6 +1,8 @@
 package me.shetj.base
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.provider.Settings
 import androidx.annotation.Keep
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.GlobalScope
@@ -53,6 +55,17 @@ object S {
     }
 
     /**
+     * ANDROID_ID的生成规则为：签名+设备信息+设备用户
+     * ANDROID_ID重置规则：设备恢复出厂设置时，ANDROID_ID将被重置
+     */
+    val androidID :String
+            @SuppressLint("HardwareIds")
+            get(){
+              return Settings.Secure.getString(app.applicationContext.contentResolver, Settings.Secure.ANDROID_ID);
+            }
+
+
+    /**
      * 初始化
      * @param application 初始
      * @param isDebug 是否是Debug
@@ -63,7 +76,7 @@ object S {
     fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
         this.isDebug = isDebug
         this.baseUrl = baseUrl
-        TaskExecutor.getInstance().executeOnMainThread (Runnable {
+        TaskExecutor.getInstance().executeOnMainThread {
             Utils.init(application)
             TimberUtil.setLogAuto(isDebug)
             if (isDebug) {
@@ -87,7 +100,7 @@ object S {
                 getInstance().debug(S.isDebug)
                         .setBaseUrl(S.baseUrl)
             }
-        })
+        }
 
     }
 

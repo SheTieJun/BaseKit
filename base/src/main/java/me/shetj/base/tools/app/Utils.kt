@@ -43,7 +43,7 @@ class Utils private constructor() {
 
             }
 
-            override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle?) {
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
 
             }
 

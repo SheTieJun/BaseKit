@@ -1,15 +1,37 @@
 package me.shetj.base.tools.file
 
 import android.os.Environment
-import android.provider.DocumentsContract
 import androidx.annotation.Keep
 import me.shetj.base.tools.app.Utils
-
 import java.io.File
+
 
 /**
  * SD卡相关的辅助类
- * 1.tip 不想被轻易删掉的文件，不可以放在 cache 下面
+ *
+ * 从Android 10开始（API level 29），Android将对外部存储进行一定的限制。
+ * 默认情况下，对于外部存储，App只能通过Context.getExternalFilesDir()访问自己的特定文件目录；
+ * [Environment]
+ *<BR>
+ * * 内部存储
+ * /data/data/包名/files :
+ *context.getFilesDir().getPath()
+ *
+ * /data/data/包名/cache :
+ *context.getCacheDir().getPath()
+ *
+ * * 外部存储
+ * /sdcard/Android/data/包名/cache/dir :
+ *context.getExternalFilesDir("dir").getPath()
+ *
+ * /sdcard/Android/data/包名/cache :
+ *context.getExternalCacheDir().getPath()
+ *
+ *
+ * * TIP:
+ *  1.不想被轻易删掉的文件，不可以放在 cache 下面
+ *  <BR>
+ *
  * @author shetj
  */
 @Suppress("DEPRECATION")
@@ -24,7 +46,7 @@ class EnvironmentStorage private constructor() {
          */
         @JvmOverloads
         @JvmStatic
-        fun getPath(root:String = filesDir ,packagePath: String): String {
+        fun getPath(root: String = filesDir, packagePath: String): String {
             val path = StringBuilder(root)
             val f = packagePath.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             for (aF in f) {
@@ -91,7 +113,12 @@ class EnvironmentStorage private constructor() {
          */
         @JvmStatic
         fun getExternalFilesDir(type: String = Environment.DIRECTORY_DOWNLOADS): String {
-            return Utils.app.getExternalFilesDir(type)!!.absolutePath
+            val file: File? = Utils.app.getExternalFilesDir(type)
+            return if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() && file != null) {
+                file.absolutePath
+            } else {
+                Utils.app.filesDir.toString() + File.separator + type
+            }
         }
 
         /**

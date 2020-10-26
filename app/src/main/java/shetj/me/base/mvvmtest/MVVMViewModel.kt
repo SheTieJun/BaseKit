@@ -10,7 +10,7 @@ class MVVMViewModel : BaseViewModel() {
 
     val test: String = "这是测试文本"
 
-    val url = "https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png"
+    val  url :MutableLiveData<String> = MutableLiveData("https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png")
 
     //    val liveData:MutableLiveData<Boolean> = MutableLiveData()
     val change = ObservableField<String>().apply {

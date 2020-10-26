@@ -9,6 +9,7 @@ import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.showToast
 import me.shetj.base.mvvm.BaseActivity
 import me.shetj.base.mvvm.DataBindingConfig
+import me.shetj.base.tools.file.FileQUtils.searchFile
 import org.koin.android.ext.android.get
 import shetj.me.base.BR
 import shetj.me.base.R
@@ -18,14 +19,19 @@ import timber.log.Timber
 class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
 
     private val click = View.OnClickListener {
-        it?.id?.toString()?.showToast()
-        Timber.i(it?.id?.toString())
         when (it?.id) {
             R.id.btn_change -> {
                 //Observable双向更新
                 mViewModel.change.set("时间：${TimeUtil.getHMSTime()}")
                 //LiveData
                 mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
+            }
+            R.id.btn_select_image -> {
+                searchFile(callback = {
+                    it.let {
+                        mViewModel.url.postValue(it.toString())
+                    }
+                })
             }
         }
     }
@@ -45,7 +51,9 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
             Timber.tag("timeLive").i(it?.toString())
         })
         mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
-
+        mViewModel.url.observe(this, {
+            mBinding?.setVariable(BR.url, it)
+        })
         //用来测试是否时单例的viewModel
         Timber.tag("getViewModel").i("id = ${initViewModel()}")
         launch {

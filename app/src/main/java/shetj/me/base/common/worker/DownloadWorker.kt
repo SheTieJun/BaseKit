@@ -9,31 +9,46 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
-import kotlinx.coroutines.withContext
+import me.shetj.base.ktx.logi
+import me.shetj.base.network_coroutine.KCHttp
 import shetj.me.base.R
 
 
+/**
+ * 测试下载
+ */
 class DownloadWorker(context: Context, parameters: WorkerParameters) :
         CoroutineWorker(context, parameters) {
-
-    private val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as
-                    NotificationManager
 
     override suspend fun doWork(): Result {
         val inputUrl = inputData.getString(KEY_INPUT_URL)
                 ?: return Result.failure()
-        val outputFile = inputData.getString(KEY_OUTPUT_FILE_NAME)
+        val outputUrl = inputData.getString(KEY_OUT_PUT_URL)
+                ?: return Result.failure()
+        val filename = inputData.getString(KEY_OUTPUT_FILE_NAME)
                 ?: return Result.failure()
         // Mark the Worker as important
         val progress = "Starting Download"
         setForeground(createForegroundInfo(progress))
-        download(inputUrl, outputFile)
+        download(inputUrl, outputUrl, filename)
         return Result.success()
     }
 
-    private suspend fun download(inputUrl: String, outputFile: String) {
+    private suspend fun download(inputUrl: String, outputFile: String, fileName: String) {
+//        repeat(100){
+//            setForeground(createForegroundInfo("${it}%"))
+//            delay(500)
+//        }
+//        setForeground(createForegroundInfo("download ok"))
 
+        KCHttp.download(inputUrl, "$outputFile/$fileName", process = { _, _, process ->
+            setForeground(createForegroundInfo("${(process * 100).toInt()}%"))
+        }, success = {
+            it.absolutePath.logi()
+            setForeground(createForegroundInfo("download ok"))
+        },error = {
+            it.message.logi()
+        })
     }
 
 
@@ -54,9 +69,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
                 .setTicker(getTitle())
                 .setContentText(progress)
                 .setSmallIcon(R.mipmap.shetj_logo)
-                .setOngoing(true)
-                // Add the cancel action to the notification which can
-                // be used to cancel the worker
+                .setOngoing(true) //防止滑动删除
                 .addAction(R.drawable.picture_icon_delete, "取消", intent)
                 .build()
 
@@ -94,12 +107,14 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
 
     companion object {
         const val KEY_INPUT_URL = "KEY_INPUT_URL"
+        const val KEY_OUT_PUT_URL = "KEY_OUT_URL"
         const val KEY_OUTPUT_FILE_NAME = "KEY_OUTPUT_FILE_NAME"
 
-        fun startDownload(context: Context, inputUrl: String, outputFile: String){
+        fun startDownload(context: Context, inputUrl: String, outputFile: String, fileName: String) {
             val inputData: Data = Data.Builder().apply {
                 putString(KEY_INPUT_URL, inputUrl)
-                putString(KEY_OUTPUT_FILE_NAME, outputFile)
+                putString(KEY_OUTPUT_FILE_NAME, fileName)
+                putString(KEY_OUT_PUT_URL, outputFile)
             }.build()
             val request = OneTimeWorkRequestBuilder<DownloadWorker>().setInputData(inputData).build()
             WorkManager.getInstance(context).enqueue(request)
