@@ -1,7 +1,5 @@
 package me.shetj.base.tools.file
 
-import android.text.InputFilter
-import android.text.Spanned
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -78,7 +76,7 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun equalsIgnoreCase(a: String, b: String?): Boolean {
-            return a === b || b != null && a.length == b.length && a.regionMatches(0, b, 0, b.length, ignoreCase = true)
+            return a == b || b != null && a.length == b.length && a.regionMatches(0, b, 0, b.length, ignoreCase = true)
         }
 
         /**
@@ -202,22 +200,6 @@ class StringUtils private constructor() {
             return String(chars)
         }
 
-        val emojiFilter: InputFilter = object : InputFilter {
-            //emoji过滤器
-            internal var emoji = Pattern.compile(
-                    "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
-                    Pattern.UNICODE_CASE or Pattern.CASE_INSENSITIVE)
-
-            override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int,
-                                dend: Int): CharSequence? {
-
-                val emojiMatcher = emoji.matcher(source)
-                return if (emojiMatcher.find()) {
-                    ""
-                } else null
-            }
-        }
-
 
         /**
          * 字符串转换成十六进制字符串
@@ -336,8 +318,8 @@ class StringUtils private constructor() {
         @JvmStatic
         fun containsChinese(s: String?): Boolean {
             if (null == s || "" == s.trim { it <= ' ' }) return false
-            for (i in 0 until s.length) {
-                if (isChinese(s[i])) return true
+            for (element in s) {
+                if (isChinese(element)) return true
             }
             return false
         }

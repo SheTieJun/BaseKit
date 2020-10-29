@@ -22,31 +22,11 @@ suspend inline fun <T> doOnDef(crossinline action: suspend CoroutineScope.() -> 
 }
 
 
-suspend inline fun <T> doOnUn(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Unconfined) {
+suspend inline fun <T> doOnUnconfined(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Unconfined) {
     return@withContext action()
 }
 
 suspend inline fun <T> doOnContext(context: CoroutineContext = EmptyCoroutineContext, crossinline action: suspend CoroutineScope.() -> T) = withContext(context) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T> CoroutineScope.io(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.IO) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T> CoroutineScope.main(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Main) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T> CoroutineScope.default(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Default) {
-    return@withContext action()
-}
-
-
-suspend inline fun <T> CoroutineScope.unconfined(crossinline action: suspend CoroutineScope.() -> T) = withContext(Dispatchers.Unconfined) {
     return@withContext action()
 }
 

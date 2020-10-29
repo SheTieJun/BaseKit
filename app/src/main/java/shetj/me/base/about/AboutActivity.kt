@@ -10,6 +10,11 @@ class AboutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
         statuInScreen(true)
-
+        //logo
+        //关于
+        //版本更新
+        //github
+        //联系方式
+        //项目地址
     }
 }

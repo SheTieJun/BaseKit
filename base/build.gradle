@@ -22,7 +22,7 @@ android {
     resourcePrefix 'base_'
     defaultConfig {
         minSdkVersion rootProject.ext.minVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVer
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.rx3.asFlowable
 import me.shetj.base.ktx.launch
-import me.shetj.base.ktx.showToast
 import me.shetj.base.mvvm.BaseActivity
 import me.shetj.base.mvvm.DataBindingConfig
 import me.shetj.base.tools.file.FileQUtils.searchFile
@@ -45,10 +44,8 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         super.onActivityCreate()
         //LiveData 的通知更新
         mViewModel.timeLive.observe(this, {
-            mBinding?.setVariable(BR.time, it)
-        })
-        mViewModel.timeLive.observe(this, {
             Timber.tag("timeLive").i(it?.toString())
+            mBinding?.setVariable(BR.time, it)
         })
         mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
         mViewModel.url.observe(this, {

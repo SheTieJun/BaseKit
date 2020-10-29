@@ -6,18 +6,13 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.*
-import me.shetj.base.ktx.default
-import me.shetj.base.ktx.doOnContext
-import me.shetj.base.ktx.doOnMain
-import me.shetj.base.ktx.runOnMain
 import shetj.me.base.R
-import kotlin.coroutines.CoroutineContext
 
 /**
  * I think QMUIDialog is better but maybe use
  */
 class LoadingDialogRx {
+
     private var mLoadingDialog: Dialog? = null
 
     private val mCompositeDisposable:CompositeDisposable = CompositeDisposable()
@@ -63,9 +58,4 @@ class LoadingDialogRx {
     fun addDispose(disposable: Disposable) {
         mCompositeDisposable.add(disposable)
     }
-
-    class LoadingScope(override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Main.immediate) : CoroutineScope {
-
-    }
-
 }

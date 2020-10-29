@@ -23,7 +23,7 @@
             android:clickable="true"
             android:focusable="true">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_left"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
@@ -44,7 +44,7 @@
                 android:text="返回" />
         </RelativeLayout>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="44dp"
@@ -57,7 +57,7 @@
             android:textSize="@dimen/AppbarText"
             tools:text="title" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_right"
             android:layout_width="wrap_content"
             android:layout_height="44dp"

@@ -23,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.delay
@@ -33,12 +34,10 @@ import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.mvp.IView
 import me.shetj.base.network.callBack.SimpleNetCallBack
-import me.shetj.base.network.kt.RxUtil
 import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDao
-import me.shetj.base.share.Share
-import me.shetj.base.share.Share.Companion.shareText
 import me.shetj.base.sim.SimpleCallBack
+import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
@@ -52,12 +51,10 @@ import shetj.me.base.bean.MusicBean
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
-import shetj.me.base.view.LoadingDialog
-import shetj.me.base.view.LoadingDialogKT
+import shetj.me.base.view.SimLoadingDialog
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
+import java.util.*
 import javax.inject.Inject
-import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.OnClickListener {
@@ -93,6 +90,14 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 
     @SuppressLint("SetTextI18n")
     public override fun initView() {
+        val publishSubject = PublishSubject.create<Int>()
+        publishSubject.buffer(20)
+                .filter { it.isNotEmpty() }
+                .map (Collections::max)
+                .doOnNext {
+                    it.toString().logi()
+                }.subscribe()
+
         mBtnTest = findViewById<View>(R.id.btn_test) as Button
         mBtnTest!!.setOnClickListener(this)
         mTvTestCode = findViewById<View>(R.id.tv_test_code) as TextView
@@ -111,8 +116,8 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         Timber.tag("koin").i(view2.rxContext.toString())
         Timber.tag("hilt").i(view3.rxContext.toString())
         test_download.setOnClickListener {
-            DownloadWorker.startDownload(this,"https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
-                    EnvironmentStorage.getExternalFilesDir(),"wxwork_android_3.apk")
+            DownloadWorker.startDownload(this, "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
+                    EnvironmentStorage.getExternalFilesDir(), "wxwork_android_3.apk")
         }
         viewpage2?.adapter = AFragmentStateAdapter(this, list)
         viewpage2?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -225,7 +230,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 
             launch {
                 get<Pager<Int, Saver>>().flow.collectLatest {
-                    main {
+                    doOnMain {
                         adapter.submitData(it)
                     }
                 }
@@ -244,18 +249,19 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
         test_loading.setOnClickListener {
             //测试带携程的loading
-            LoadingDialog.showWithAction(this) {
-                "开始".logi()
-                delay(5000)
-                "结束".logi()
-            }.apply {
-                AndroidSchedulers.mainThread().scheduleDirect(
-                        {
-                            hideLoading()
-                        }, 6000, TimeUnit.MILLISECONDS
-                )
+            SimLoadingDialog().showWithAction(this) {
+                doOnIO {
+                    "开始".logi()
+                    delay(5000)
+                    "结束".logi()
+                }
+            }
+            repeat(40){
+                publishSubject.onNext(it)
             }
         }
+
+
     }
 
     private fun imgTest() {
@@ -263,6 +269,14 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 //        downloadImage(this,url ="https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png"){
 //
 //        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        launch {
+            delay(500)
+            paste(this@MainActivity).logi()
+        }
     }
 
     private fun netTest() {
@@ -282,7 +296,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 
             launch {
 
-                main {
+                doOnMain {
                     try {
                         val music = mPresenter.getMusic()
                         Timber.tag("getMusic").i(music.toJson())
@@ -305,10 +319,6 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                     }
                 }
 
-
-                doOnMain {
-
-                }
 
             }
         }

@@ -82,4 +82,10 @@
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 
+    <style name="transparent_dialog_fragment_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
 </resources>

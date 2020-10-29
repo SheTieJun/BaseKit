@@ -3,10 +3,12 @@ package me.shetj.base.tools.app
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
+import android.os.Build
 import android.os.IBinder
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.EditText
@@ -126,10 +128,14 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
          */
         @JvmStatic
         fun hideSoftKeyboard(activity: Activity) {
-            val view = activity.currentFocus
-            if (null != view) {
-                val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                activity.window.insetsController?.hide(WindowInsets.Type.ime())
+            }else{
+                val view = activity.currentFocus
+                if (null != view) {
+                    val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                }
             }
         }
 

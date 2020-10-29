@@ -1,6 +1,8 @@
 package shetj.me.base
 
 import android.app.Application
+import android.util.Log
+import android.util.Log.INFO
 import dagger.hilt.android.HiltAndroidApp
 import me.shetj.base.S
 import me.shetj.base.S.initKoin
@@ -21,7 +23,8 @@ class APP : Application() {
         super.onCreate()
         S.init(this, true, "https://xxxx.com")
         initKoin(allModules)
-        UncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler())
+        Log.isLoggable("all", INFO)
     }
 
 }

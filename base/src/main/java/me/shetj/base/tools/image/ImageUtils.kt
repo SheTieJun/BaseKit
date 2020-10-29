@@ -39,7 +39,7 @@ class ImageUtils {
         private const val CROP_IMAGE = 5003
         private var imageUriFromCamera: Uri? = null
         private var cropImageUri: Uri? = null
-        private const val imagePath = "shetj_base/image"
+        private const val imagePath = "image"
 
         /**
          * 创建一条图片地址uri,用于保存拍照后的照片
@@ -79,7 +79,6 @@ class ImageUtils {
         fun createImageUri(context: Context): Uri? {
             return context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
         }
-
 
         fun selectLocalImage(activity: Activity) {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -514,6 +513,11 @@ class ImageUtils {
                 src.recycle()
             }
             return BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+        }
+
+        @JvmOverloads
+        fun saveBitmap(context: Context, bmp: Bitmap?, bitName: String): String {
+            return MediaStore.Images.Media.insertImage(context.contentResolver, bmp, "预览图", bitName)
         }
     }
 }

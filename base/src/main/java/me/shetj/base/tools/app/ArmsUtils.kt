@@ -13,10 +13,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.Message
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.annotation.MainThread
@@ -38,6 +35,7 @@ import java.security.MessageDigest
  * ================================================
  * 一些框架常用的工具
  */
+@Suppress("DEPRECATION")
 @Keep
 class ArmsUtils private constructor() {
 
@@ -422,16 +420,22 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun fullScreencall(activity: Activity) {
-            val decorView = activity.window.decorView
-            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-            if (Build.VERSION.SDK_INT >= 21) {
-                activity.window.statusBarColor = Color.TRANSPARENT
-                activity.window.navigationBarColor = Color.TRANSPARENT
+            //STATUS_BARS, NAVIGATION_BARS, CAPTION_BAR, IME, WINDOW_DECOR,
+            //                SYSTEM_GESTURES, MANDATORY_SYSTEM_GESTURES, TAPPABLE_ELEMENT, DISPLAY_CUTOUT
+            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                activity.window.insetsController?.hide(WindowInsets.Type.systemBars())
+            }else {
+                val decorView = activity.window.decorView
+                decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+                if (Build.VERSION.SDK_INT >= 21) {
+                    activity.window.statusBarColor = Color.TRANSPARENT
+                    activity.window.navigationBarColor = Color.TRANSPARENT
+                }
             }
         }
 
@@ -516,6 +520,7 @@ class ArmsUtils private constructor() {
 
         /**
          * 获取粘贴的文字
+         * Android 10 开始需要延迟去获取
          */
         fun paste(context: Context): String? {
             val manager = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager

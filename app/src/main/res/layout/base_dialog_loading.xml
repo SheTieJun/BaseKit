@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:orientation="vertical"
+    android:background="@color/transparent"
     android:gravity="center">
 
-    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.github.ybq.android.spinkit.SpinKitView
         style="@style/SpinKitView.Circle"
         android:id="@+id/spin_kit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:SpinKit_Color="@color/colorAccent" />
+        android:layout_gravity="center" />
 
 </FrameLayout>

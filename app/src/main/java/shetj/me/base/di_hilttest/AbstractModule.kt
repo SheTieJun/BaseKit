@@ -11,12 +11,17 @@ import javax.inject.Qualifier
 
 /**
  * 抽象实
+ * Qualifier 用来标记 不同的 为同一类型提供多个绑定
  */
 
+
+
 @Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class main1
 
 @Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class main2
 
 
@@ -26,7 +31,7 @@ abstract class AbstractModule {
 
     //KtTestActivity @Inject constructor()    + @AndroidEntryPoint
     @main1
-    @Binds
+    @Binds  //抽象实例 （括号里面是具体实现）
     abstract fun getIView(iView: KtTestActivity):IView
 
 

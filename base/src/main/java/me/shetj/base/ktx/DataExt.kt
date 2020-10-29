@@ -1,7 +1,5 @@
 package me.shetj.base.ktx
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.os.Message
 import me.shetj.base.tools.app.ArmsUtils
@@ -30,6 +28,13 @@ inline fun <reified T> Bundle?.getDataOrNull(key: String): T? {
 //endregion 转化成message
 
 
+inline fun runCatch(crossinline run: () ->Unit ){
+    try {
+        run.invoke()
+    }catch (e:Exception){
+        e.printStackTrace()
+    }
+}
 
 
 /**
@@ -82,10 +87,6 @@ fun getRandomString(num: Int): String {
 
 fun <E>  ArrayList<E>.addIfNotNull(element: E?) {
     element?.let { this.add(it) }
-}
-
-fun Context?.delFile(fileUri:Uri){
-    this?.contentResolver?.delete(fileUri, null, null);
 }
 
 /**

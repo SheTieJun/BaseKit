@@ -1,5 +1,6 @@
 package me.shetj.base.tools.file
 
+import android.content.Context
 import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.activity.result.ActivityResultCallback
@@ -37,7 +38,7 @@ object FileQUtils {
     /**
      * 删除文件
      */
-    fun AppCompatActivity.delFile(uri:Uri){
+    fun Context.delFile(uri:Uri){
         DocumentsContract.deleteDocument(contentResolver, uri)
     }
 
