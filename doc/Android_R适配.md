@@ -16,3 +16,4 @@ content.setOnApplyWindowInsetsListener { view, windowInsets ->
  activity.window.insetsController?.show(WindowInsets.Type.navigationBars())
 ```
 
+### 存储分区必须兼容

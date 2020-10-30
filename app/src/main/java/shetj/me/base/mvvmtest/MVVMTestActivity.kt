@@ -1,6 +1,7 @@
 package shetj.me.base.mvvmtest
 
 import android.view.View
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect

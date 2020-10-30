@@ -2,6 +2,7 @@
 
 1. 添加依赖
 ```
+ classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     implementation "com.google.dagger:hilt-android:2.28-alpha"
     kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
 ```
@@ -74,6 +75,7 @@ annotation class main2
 ```
 
 10. Hilt 中的预定义限定符 @ActivityContext @ApplicationContext
+由于您可能需要来自应用或 Activity 的 Context 类，因此 Hilt 提供了 @ApplicationContext 和 @ActivityContext 限定符。
 ```
 class AnalyticsAdapter @Inject constructor(
     @ActivityContext private val context: Context,
