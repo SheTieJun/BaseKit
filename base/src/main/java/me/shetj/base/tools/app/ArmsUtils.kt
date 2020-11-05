@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import me.shetj.base.S
+import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.tools.file.EnvironmentStorage
@@ -74,17 +75,7 @@ class ArmsUtils private constructor() {
         @JvmStatic
         fun addScaleTouchEffect(vararg view: View) {
             for (v in view) {
-                v.setOnTouchListener { v1, event ->
-                    when (event?.action) {
-                        MotionEvent.ACTION_DOWN -> {
-                            v1?.animate()?.scaleX(0.95f)?.scaleY(0.95f)?.setDuration(120)?.start()
-                        }
-                        MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
-                            v1?.animate()?.scaleX(1f)?.scaleY(1f)?.setDuration(120)?.start()
-                        }
-                    }
-                    false
-                }
+                v.setClicksAnimate()
             }
         }
 

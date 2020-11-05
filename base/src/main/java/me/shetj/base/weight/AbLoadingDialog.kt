@@ -6,17 +6,18 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.*
+import me.shetj.base.S.handler
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
 /**
- *   must   android:configChanges="orientation|keyboardHidden|screenSize"
+ *   must  【 android:configChanges="orientation|keyboardHidden|screenSize"】
  */
 abstract class AbLoadingDialog {
 
-    class LoadingScope(override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Main.immediate) : CoroutineScope
+    class LoadingScope(override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Main.immediate + handler) : CoroutineScope
 
-    private var weakReference :WeakReference<Context> ? =null
+    private var weakReference: WeakReference<Context>? = null
     private var mLoadingDialog: Dialog? = null
     private val lazyScope = lazy { LoadingScope() }
     private val lazyComposite = lazy { CompositeDisposable() }
@@ -27,7 +28,7 @@ abstract class AbLoadingDialog {
     abstract fun createLoading(context: Context, cancelable: Boolean): Dialog?
 
     fun showLoading(context: Context, cancelable: Boolean): Dialog? {
-        initDialog(context)
+        initDialog(context,cancelable)
         mLoadingDialog?.let {
             if (!mLoadingDialog!!.isShowing) {
                 mLoadingDialog!!.show()
@@ -47,7 +48,6 @@ abstract class AbLoadingDialog {
     }
 
 
-
     fun hideLoading() {
         if (null != mLoadingDialog && mLoadingDialog!!.isShowing) {
             mLoadingDialog!!.dismiss()
@@ -55,10 +55,10 @@ abstract class AbLoadingDialog {
     }
 
 
-    private fun initDialog(context: Context) {
+    private fun initDialog(context: Context,cancelable :Boolean = true) {
         if (mLoadingDialog == null || context != weakReference?.get()) {
             weakReference = WeakReference(context)
-            mLoadingDialog = createLoading(context, true)?.apply {
+            mLoadingDialog = createLoading(context, cancelable)?.apply {
                 initSetting()
             }
         }

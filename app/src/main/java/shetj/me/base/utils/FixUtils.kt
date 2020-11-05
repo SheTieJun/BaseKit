@@ -4,8 +4,9 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.webkit.WebView
 import me.shetj.base.ktx.showToast
-import java.util.ArrayList
+import java.util.*
 
 
 /**
@@ -40,4 +41,19 @@ fun Activity.onRequestPermissionsResult2(requestCode: Int, permissions: Array<St
     b.putBoolean("jump2setting", true)
     b.putStringArray("giveAuthorizationBySelf", transformBadResults)
 
+}
+
+// 隐藏底部栏方法
+private fun WebView.hideBottom() {
+    try {
+        //定义javaScript方法
+        val javascript = ("javascript:function hideBottom() { "
+                + "document.getElementsByClassName('tvp_app_download_onpause')[0].style.display='none',"
+                + "document.getElementsByClassName('tvp_app_download_onpause').parentNode.removeChild(document.getElementsByClassName('tvp_app_download_onpause'))"
+                + "}")
+        loadUrl(javascript)
+        loadUrl("javascript:hideBottom();")
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 }

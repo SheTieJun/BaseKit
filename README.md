@@ -1,4 +1,11 @@
 # Base
+
+把简单的事情程序化
+把复杂的事情程序化
+把重复的事情程序化
+
+一切为了效率（偷懒）
+
 主要：
 1. [KTX-扩展函数](base/src/main/java/me/shetj/base/ktx)
 

@@ -28,14 +28,22 @@ inline fun <reified T> Bundle?.getDataOrNull(key: String): T? {
 //endregion 转化成message
 
 
-inline fun runCatch(crossinline run: () ->Unit ){
+inline fun runCatch(crossinline run: () -> Unit) {
     try {
         run.invoke()
-    }catch (e:Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
     }
 }
 
+/**
+ * 执行代码，并获取执行需要的时间
+ */
+inline fun runTimeMillis(crossinline run: () -> Unit): Long {
+    val time = System.currentTimeMillis()
+    run.invoke()
+    return System.currentTimeMillis() - time
+}
 
 /**
  * 把1~9 之间加0
@@ -85,14 +93,14 @@ fun getRandomString(num: Int): String {
 }
 //endregion
 
-fun <E>  ArrayList<E>.addIfNotNull(element: E?) {
+fun <E> ArrayList<E>.addIfNotNull(element: E?) {
     element?.let { this.add(it) }
 }
 
 /**
  * 获取一个带名字的 Thread
  */
-fun getTagThread(tag:String,run:Runnable):Thread{
+fun getTagThread(tag: String, run: Runnable): Thread {
     val t = Thread(run)
     t.name = tag
     return t

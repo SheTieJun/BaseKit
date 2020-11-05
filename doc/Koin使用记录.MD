@@ -76,3 +76,7 @@ val allModules = appModule + mvpModule + mvvmModule + scopeModule
             modules(allModules)
         }
 ```
+
+```
+   loadKoinModules(modules)
+```
