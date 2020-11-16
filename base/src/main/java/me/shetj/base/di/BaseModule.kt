@@ -10,6 +10,7 @@ import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network_coroutine.KCApiService
 import me.shetj.base.S
 import me.shetj.base.ktx.saverDB
+import me.shetj.base.network.ohter.OkHttpDns
 import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDatabase
 import okhttp3.OkHttpClient
@@ -41,6 +42,7 @@ val dbModule = module() {
                 put(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, HttpHeaders.acceptLanguage)
                 put(HttpHeaders.HEAD_KEY_USER_AGENT, HttpHeaders.userAgent)
             }))
+            dns(OkHttpDns.getInstance())
             addInterceptor(HttpLoggingInterceptor("HTTP").apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
         }
     }

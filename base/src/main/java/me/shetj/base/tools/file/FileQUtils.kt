@@ -15,7 +15,7 @@ object FileQUtils {
     /**
      * 搜索文档
      */
-    fun AppCompatActivity.searchFile(type:String = "image/*",callback:ActivityResultCallback<Uri?>){
+    fun AppCompatActivity.searchTypeFile(type:String = "image/*",callback:ActivityResultCallback<Uri?>){
         registerForActivityResult(ActivityResultContracts.GetContent(),callback).launch(type)
     }
 

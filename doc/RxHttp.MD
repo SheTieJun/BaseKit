@@ -32,3 +32,18 @@
 
 使用header配置缓存
  @Headers("Cache-Control: public, max-age=3600)
+
+
+###  新增可以切换不同的 Api + baseUrl  进行组合使用,解决baseURL 不一样的问题
+ ```
+  RxHttp.getInstance().getApiManager(BApi::class.java,baseUrl = "http://baidy.com"))
+ ```
+
+### 新增本地HttpDns,可以自行设置host 对应的ip
+```
+ RxHttp.getInstance().addDnsMap(HashMap<String,String>().apply{
+            put("baidy1.com","127.0.0.1")
+            put("baidy2.com","127.0.0.1")
+            put("baidy3.com","127.0.0.1")
+        })
+```

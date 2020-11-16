@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
 import me.shetj.base.R
+import me.shetj.base.S
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.tools.app.KeyboardUtil
 import org.greenrobot.eventbus.EventBus
@@ -24,6 +25,7 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能
  * 2. Model 主要包括网络数据源和本地缓存数据源
+ *  val viewModel by viewModels { SavedStateViewModelFactory(application, this) }
  * @author shetj
  */
 @Keep
@@ -77,6 +79,14 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), Lifecycle
             EventBus.getDefault().unregister(this)
         }
     }
+
+//    protected open fun <T : ViewModel> getActivityViewModel(@NonNull modelClass: Class<T>): T {
+//        return (mActivityProvider ?: ViewModelProvider(this,
+//                SavedStateViewModelFactory(S.app, this))
+//                .also {
+//                    mActivityProvider = it
+//                }).get(modelClass)
+//    }
 
     protected open fun <T : ViewModel> getActivityViewModel(@NonNull modelClass: Class<T>): T {
         if (mActivityProvider == null) {

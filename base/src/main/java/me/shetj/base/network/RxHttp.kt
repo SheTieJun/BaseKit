@@ -7,6 +7,7 @@ import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
+import me.shetj.base.network.ohter.OkHttpDns
 import me.shetj.base.network.request.*
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
@@ -18,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.HashMap
 
 open class RxHttp private constructor() {
     // region 相关的参数
@@ -45,10 +47,12 @@ open class RxHttp private constructor() {
     //region retrofit 相关
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
     private val okHttpClientBuilder: OkHttpClient.Builder = get(OkHttpClient.Builder::class.java)
-    private var mBaseUrl: String? = null
+    private var mBaseUrl: String = "https://shetj.me" //必须修改
     private val apiManager: ApiService by lazy {
         getApiManager(ApiService::class.java)
     }
+
+    private var dnsLocalMap = HashMap<String,String>()
 
     private val apiMap = WeakHashMap<String, Any>()
 
@@ -111,11 +115,22 @@ open class RxHttp private constructor() {
         return this
     }
 
+    /**
+     * 设置本地dns 解析
+     */
+    fun addDnsMap(hashMap: HashMap<String,String>){
+        dnsLocalMap.putAll(hashMap)
+    }
+
+
+    fun getDnsMap() = dnsLocalMap
+
     //region  ApiManager的获取
 
     @Suppress("UNCHECKED_CAST")
-    open fun <T> getApiManager(clazz: Class<T>): T {
-        val apiManager = apiMap[clazz.simpleName]
+    @JvmOverloads
+    open fun <T> getApiManager(clazz: Class<T>,baseUrl:String? = mBaseUrl): T {
+        val apiManager = apiMap[clazz.simpleName+baseUrl]
         return if (apiManager == null) {
             val client = getOkHttpClientBuilder().apply {
                 mCommonHeaders?.let {
@@ -124,14 +139,15 @@ open class RxHttp private constructor() {
             }.build()
             getRetrofitBuilder().apply {
                 client(client)
-                mBaseUrl?.let { this.baseUrl(it) }
+                baseUrl?.let{this.baseUrl(it)}
             }.build().create(clazz).also {
-                apiMap[clazz.simpleName] = it
+                apiMap[clazz.simpleName+baseUrl] = it
             }
         } else {
             apiManager as T
         }
     }
+
 
     fun getApiManager(baseRequest: BaseRequest<*>): ApiService {
         return if (baseRequest.isDefault) {
@@ -220,7 +236,7 @@ open class RxHttp private constructor() {
             if (!baseRequest.baseUrl.isNullOrEmpty()) {
                 this.baseUrl(baseRequest.baseUrl!!)
             } else {
-                mBaseUrl?.let {
+                mBaseUrl.let {
                     this.baseUrl(it)
                 }
             }
@@ -230,7 +246,7 @@ open class RxHttp private constructor() {
     //endregion
 
 
-    //region 全局设置BaseUrl
+    //region 全局设置BaseUrl，正常情况下请必须修改至少一次
     fun setBaseUrl(mBaseUrl: String?): RxHttp {
         checkNotNull(mBaseUrl, { "baseUrl == null" })
         this.mBaseUrl = mBaseUrl

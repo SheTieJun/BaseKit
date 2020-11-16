@@ -9,7 +9,7 @@ annotation class ShareContentType {
         /**
          * Share Text
          */
-       const val TEXT = "text/plain"
+        const val TEXT = "text/plain"
 
         /**
          * Share Image

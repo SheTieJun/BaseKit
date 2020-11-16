@@ -1,5 +1,6 @@
 package me.shetj.base.share
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
@@ -97,11 +98,11 @@ class Share private constructor(builder: Builder) {
             shareIntent.component = comp
         }
         when (contentType) {
-            ShareContentType.Companion.TEXT -> {
+            ShareContentType.TEXT -> {
                 shareIntent.putExtra(Intent.EXTRA_TEXT, contentText)
                 shareIntent.type = "text/plain"
             }
-            ShareContentType.Companion.IMAGE, ShareContentType.Companion.AUDIO, ShareContentType.Companion.VIDEO, ShareContentType.Companion.FILE -> {
+            ShareContentType.IMAGE, ShareContentType.AUDIO, ShareContentType.VIDEO, ShareContentType.FILE -> {
                 shareIntent.action = Intent.ACTION_SEND
                 shareIntent.addCategory("android.intent.category.DEFAULT")
                 shareIntent.type = contentType
@@ -143,7 +144,7 @@ class Share private constructor(builder: Builder) {
 
      open  class Builder(val activity: Activity) {
         @ShareContentType
-        var contentType: String = ShareContentType.Companion.FILE
+        var contentType: String = ShareContentType.FILE
         var title: String? = null
         var componentPackageName: String? = null
         var componentClassName: String? = null

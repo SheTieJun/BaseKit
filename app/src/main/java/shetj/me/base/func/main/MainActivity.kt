@@ -33,12 +33,16 @@ import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.mvp.IView
+import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDao
 import me.shetj.base.sim.SimpleCallBack
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.file.EnvironmentStorage
+import me.shetj.base.tools.file.FileQUtils
+import me.shetj.base.tools.file.FileQUtils.searchFile
+import me.shetj.base.tools.file.FileQUtils.searchTypeFile
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import me.shetj.base.view.TipPopupWindow
@@ -46,6 +50,8 @@ import org.koin.android.ext.android.get
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
+import shetj.me.base.api.BApi
+import shetj.me.base.api.Factory.BApiFactory
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
 import shetj.me.base.common.worker.DownloadWorker
@@ -55,6 +61,7 @@ import shetj.me.base.view.SimLoadingDialog
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 @AndroidEntryPoint
 class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.OnClickListener {
@@ -93,7 +100,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         val publishSubject = PublishSubject.create<Int>()
         publishSubject.buffer(20)
                 .filter { it.isNotEmpty() }
-                .map (Collections::max)
+                .map(Collections::max)
                 .doOnNext {
                     it.toString().logi()
                 }.subscribe()
@@ -256,12 +263,27 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                     "结束".logi()
                 }
             }
-            repeat(40){
+            repeat(40) {
                 publishSubject.onNext(it)
             }
         }
+        //设置本地dns 解析
+        RxHttp.getInstance().addDnsMap(HashMap<String,String>().apply{
+            put("baidy1.com","127.0.0.1")
+            put("baidy2.com","127.0.0.1")
+            put("baidy3.com","127.0.0.1")
+        })
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").change("jwt2", HashMap()).subscribe()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").change("jwt3", HashMap()).subscribe()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
 
-
+//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
+//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
+//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").toString().logi()
+//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
+//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
+//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").toString().logi()
     }
 
     private fun imgTest() {
@@ -312,10 +334,8 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                     try {
                         val music = mPresenter.getMusic()
                         Timber.tag("getMusic").i(music.toJson())
-                        music
                     } catch (e: Exception) {
                         Timber.i(e)
-                        null
                     }
                 }
 
@@ -395,7 +415,6 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         ImageUtils.onActivityResult(this, requestCode, resultCode, data, object : SimpleCallBack<Uri>() {
             override fun onSuccess(key: Uri) {
                 super.onSuccess(key)

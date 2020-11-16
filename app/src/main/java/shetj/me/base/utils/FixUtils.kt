@@ -43,7 +43,10 @@ fun Activity.onRequestPermissionsResult2(requestCode: Int, permissions: Array<St
 
 }
 
-// 隐藏底部栏方法
+/**
+ * 隐藏底部栏方法
+ * qq 浏览器
+ */
 private fun WebView.hideBottom() {
     try {
         //定义javaScript方法

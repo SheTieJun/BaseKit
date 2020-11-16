@@ -16,6 +16,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import me.shetj.base.S
 import me.shetj.base.ktx.getClazz
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -66,7 +67,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
      */
     @NonNull
     open fun initViewModel(): VM {
-        if (useActivityVM()){
+        if (useActivityVM()) {
             return getActivityViewModel(getClazz(this))
         }
         return getFragmentViewModel(getClazz(this))
@@ -142,6 +143,22 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
     protected abstract fun initEventAndData()
 
 
+//    protected open fun <T : ViewModel?> getFragmentViewModel(@NonNull modelClass: Class<T>): T {
+//        return (mFragmentProvider ?: ViewModelProvider(this,
+//                SavedStateViewModelFactory(S.app, this))
+//                .also {
+//                    mFragmentProvider = it
+//                }).get(modelClass)
+//    }
+//
+//    protected open fun <T : ViewModel?> getActivityViewModel(@NonNull modelClass: Class<T>): T {
+//        return (mActivityProvider ?: ViewModelProvider(this,
+//                SavedStateViewModelFactory(S.app, this))
+//                .also {
+//                    mActivityProvider = it
+//                }).get(modelClass)
+//    }
+
     protected open fun <T : ViewModel?> getFragmentViewModel(@NonNull modelClass: Class<T>): T {
         if (mFragmentProvider == null) {
             mFragmentProvider = ViewModelProvider(this)
@@ -155,7 +172,6 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
         }
         return mActivityProvider!!.get(modelClass)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
