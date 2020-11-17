@@ -1,5 +1,6 @@
 package me.shetj.base.network
 
+import me.shetj.base.BuildConfig
 import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
@@ -110,7 +111,8 @@ open class RxHttp private constructor() {
     fun debug(isPrintException: Boolean): RxHttp {
         this.isPrintException = isPrintException
         if (isPrintException) {
-            addInterceptor(HttpLoggingInterceptor("RxHttp").apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
+            addInterceptor(HttpLoggingInterceptor("RxHttp",BuildConfig.DEBUG)
+                    .apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
         }
         return this
     }

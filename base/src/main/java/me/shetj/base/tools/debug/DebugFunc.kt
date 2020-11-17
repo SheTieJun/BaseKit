@@ -25,7 +25,7 @@ class DebugFunc private constructor() {
 
     private var mContext: Context? = null
 
-    private var isOutputHttp = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_HTTP, BuildConfig.DEBUG) as Boolean }
+    var isOutputHttp = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_HTTP, BuildConfig.DEBUG) as Boolean }
             ?: false
     var isOutputLog = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_LOG, BuildConfig.DEBUG) as Boolean }
             ?: false
@@ -92,10 +92,10 @@ class DebugFunc private constructor() {
             @Throws(Exception::class)
             override fun accept(throwable: Throwable?) {
                 if (throwable == null) return
-                Timber.e("setRxJavaErrorHandler begin=================================")
                 throwable.printStackTrace()
-                outputToFile(throwable.message)
-                Timber.e("setRxJavaErrorHandler end=================================")
+                if(isOutputLog) {
+                    outputToFile(throwable.message)
+                }
             }
         })
     }

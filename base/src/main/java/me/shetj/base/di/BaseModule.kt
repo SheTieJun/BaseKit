@@ -57,7 +57,7 @@ val dbModule = module() {
     }
 
     single<KCApiService> {
-        get<Retrofit.Builder>(Retrofit::class.java).build().create(KCApiService::class.java)
+        get<Retrofit.Builder>().build().create(KCApiService::class.java)
     }
 
 

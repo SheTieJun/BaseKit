@@ -1,5 +1,6 @@
 package me.shetj.base.network.interceptor
 
+import me.shetj.base.tools.debug.DebugFunc
 import okhttp3.*
 import okhttp3.internal.http.HttpHeaders
 import okio.Buffer
@@ -30,6 +31,9 @@ class HttpLoggingInterceptor : Interceptor {
 
     fun log(message: String?) {
         Timber.tag(tag).i(message)
+        if (DebugFunc.getInstance().isOutputHttp){
+            DebugFunc.getInstance().saveHttpToFile(message)
+        }
     }
 
     constructor(tag: String) {
