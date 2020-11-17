@@ -31,7 +31,6 @@ import org.greenrobot.eventbus.ThreadMode
  */
 @Keep
 abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver {
-    protected var mActivity: Context? = null
     protected var mBinding: ViewDataBinding? = null
         private set
     private var mFragmentProvider: ViewModelProvider? = null
@@ -71,20 +70,11 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
 
     protected abstract fun getDataBindingConfig(): DataBindingConfig
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mActivity = activity
-        if (useEventBus()) {
-            EventBus.getDefault().register(this)
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }
-        this.mActivity = null
     }
 
     /**
@@ -114,8 +104,10 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
     }
 
     override fun onAttach(context: Context) {
-        this.mActivity = context
         super.onAttach(context)
+        if (useEventBus()) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     /**

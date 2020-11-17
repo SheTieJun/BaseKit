@@ -33,7 +33,6 @@ import timber.log.Timber
  */
 @Keep
 abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, LifecycleObserver {
-    protected var mActivity: Context? = null
     private val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 
@@ -42,7 +41,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
      * @return RxAppCompatActivity
      */
     override val rxContext: AppCompatActivity
-        get() = (mActivity as AppCompatActivity?)!!
+        get() = (requireActivity() as AppCompatActivity?)!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,20 +52,11 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mActivity = activity
-        if (useEventBus()) {
-            EventBus.getDefault().register(this)
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }
-        this.mActivity = null
     }
 
     /**
@@ -99,8 +89,10 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
     }
 
     override fun onAttach(context: Context) {
-        this.mActivity = context
         super.onAttach(context)
+        if (useEventBus()) {
+            EventBus.getDefault().register(this)
+        }
     }
 
     /**

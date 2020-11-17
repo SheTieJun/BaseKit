@@ -515,7 +515,6 @@ class ImageUtils {
             return BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
         }
 
-        @JvmOverloads
         fun saveBitmap(context: Context, bmp: Bitmap?, bitName: String): String {
             return MediaStore.Images.Media.insertImage(context.contentResolver, bmp, "预览图", bitName)
         }

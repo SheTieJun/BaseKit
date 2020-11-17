@@ -23,6 +23,7 @@ import me.shetj.base.R
 import timber.log.Timber
 import java.io.File
 
+@Suppress("DEPRECATION")
 object ShareFileUtil {
     private const val TAG = "Share"
 
@@ -57,7 +58,7 @@ object ShareFileUtil {
      * @return Uri
      */
     fun getFileUri(context: Context?, @ShareContentType shareContentType: String?, file: File?): Uri? {
-        var shareContentType = shareContentType
+        var shareType = shareContentType
         if (context == null) {
             Timber.tag(TAG).e("getFileUri current activity is null.")
             return null
@@ -74,10 +75,10 @@ object ShareFileUtil {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             uri = Uri.fromFile(file)
         } else {
-            if (TextUtils.isEmpty(shareContentType)) {
-                shareContentType = "*/*"
+            if (TextUtils.isEmpty(shareType)) {
+                shareType = "*/*"
             }
-            when (shareContentType) {
+            when (shareType) {
                 ShareContentType.IMAGE -> uri = getImageContentUri(context, file)
                 ShareContentType.VIDEO -> uri = getVideoContentUri(context, file)
                 ShareContentType.AUDIO -> uri = getAudioContentUri(context, file)
@@ -194,7 +195,8 @@ object ShareFileUtil {
      */
     private fun getImageContentUri(context: Context, imageFile: File): Uri? {
         val filePath = imageFile.absolutePath
-        val cursor = context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID), MediaStore.Images.Media.DATA + "=? ", arrayOf(filePath), null)
+        val cursor = context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID),
+                MediaStore.Images.Media.DATA + "=? ", arrayOf(filePath), null)
         var uri: Uri? = null
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -222,7 +224,8 @@ object ShareFileUtil {
     private fun getVideoContentUri(context: Context, videoFile: File): Uri? {
         var uri: Uri? = null
         val filePath = videoFile.absolutePath
-        val cursor = context.contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Video.Media._ID), MediaStore.Video.Media.DATA + "=? ", arrayOf(filePath), null)
+        val cursor = context.contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Video.Media._ID),
+                MediaStore.Video.Media.DATA + "=? ", arrayOf(filePath), null)
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
@@ -249,7 +252,8 @@ object ShareFileUtil {
     private fun getAudioContentUri(context: Context, audioFile: File): Uri? {
         var uri: Uri? = null
         val filePath = audioFile.absolutePath
-        val cursor = context.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Audio.Media._ID), MediaStore.Audio.Media.DATA + "=? ", arrayOf(filePath), null)
+        val cursor = context.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Audio.Media._ID),
+                MediaStore.Audio.Media.DATA + "=? ", arrayOf(filePath), null)
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))

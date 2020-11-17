@@ -4,6 +4,7 @@ package me.shetj.base.model
 /**
  * 学习源码！
  */
+@Suppress("UNCHECKED_CAST")
 @SuppressWarnings("Unchecked")
 class Result<out T> constructor(val value: Any?) {
     // discovery

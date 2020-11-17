@@ -283,7 +283,7 @@ class Share private constructor(builder: Builder) {
             Builder(activity)
                     .setContentType(ShareContentType.FILE)
                     .setShareFileUri(content)
-                    .setTitle("Share File")
+                    .setTitle(title)
                     .build()
                     .shareBySystem()
         }

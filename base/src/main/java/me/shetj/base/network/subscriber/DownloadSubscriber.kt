@@ -135,9 +135,9 @@ class DownloadSubscriber(private val path: String?, private val name: String?, v
     }
 
     private fun finallyError(e: Exception) {
-         Observable.just(ApiException(e, 100)).observeOn(AndroidSchedulers.mainThread()).subscribe({ e ->
-            callBack.onError(e)
-        }) { }
+        Observable.just(ApiException(e, 100)).observeOn(AndroidSchedulers.mainThread())
+                .doOnNext (callBack::onError)
+                .subscribe()
     }
 
     companion object {

@@ -29,6 +29,7 @@ class BarUtils private constructor() {
         throw UnsupportedOperationException("u can't instantiate me...")
     }
 
+    @Suppress("DEPRECATION")
     companion object {
 
 

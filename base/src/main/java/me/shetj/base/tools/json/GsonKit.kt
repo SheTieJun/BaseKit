@@ -47,7 +47,7 @@ object GsonKit {
     fun <T> jsonToListMaps(@NonNull gsonString: String): List<Map<String, T>>? {
         return try {
             val list: ArrayList<Map<String, T>> = ArrayList()
-            val array = JsonParser().parse(gsonString).asJsonArray
+            val array = JsonParser.parseString(gsonString).asJsonArray
             for (elem in array) {
                 list.add(gson.fromJson<Map<String, T>>(gsonString, object : TypeToken<Map<String, Any>>() {
                 }.type))
