@@ -7,7 +7,6 @@ import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import me.shetj.base.mvvm.BaseFragment
-import me.shetj.base.mvvm.BaseViewModel
 import me.shetj.base.mvvm.DataBindingConfig
 import shetj.me.base.BR
 import shetj.me.base.R

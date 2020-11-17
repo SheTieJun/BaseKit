@@ -3,6 +3,7 @@ package shetj.me.base.func.main
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.REVERSE
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,8 +14,11 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.animation.addListener
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
@@ -40,9 +44,6 @@ import me.shetj.base.saver.SaverDao
 import me.shetj.base.sim.SimpleCallBack
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.file.EnvironmentStorage
-import me.shetj.base.tools.file.FileQUtils
-import me.shetj.base.tools.file.FileQUtils.searchFile
-import me.shetj.base.tools.file.FileQUtils.searchTypeFile
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import me.shetj.base.view.TipPopupWindow
@@ -51,7 +52,6 @@ import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
 import shetj.me.base.api.BApi
-import shetj.me.base.api.Factory.BApiFactory
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
 import shetj.me.base.common.worker.DownloadWorker
@@ -177,6 +177,13 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
 
         btn_mvvm.setOnClickListener {
+            val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK) {
+
+                }
+            }
+            startForResult.launch(Intent(this,MVVMTestActivity::class.java), ActivityOptionsCompat.makeBasic())
             start<MVVMTestActivity>()
         }
 
@@ -276,7 +283,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").change("jwt2", HashMap()).subscribe()
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").change("jwt3", HashMap()).subscribe()
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe ()
 
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
@@ -284,6 +291,9 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").toString().logi()
+
+
+
     }
 
     private fun imgTest() {

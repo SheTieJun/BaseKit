@@ -1,19 +1,26 @@
-package shetj.me.base.test
+package me.shetj.base.tools.debug
 
 import android.os.Environment
 import android.os.Process
 import android.os.SystemClock
 import android.text.TextUtils
+import me.shetj.base.tools.debug.DebugFunc.Companion.logFilePath
 import me.shetj.base.tools.file.EnvironmentStorage.Companion.getExternalFilesDir
+import me.shetj.base.tools.time.DateUtils
 import timber.log.Timber
 import java.io.*
 
-internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
+/**
+ * 发现错误并输出
+ */
+class BaseUncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
     override fun uncaughtException(t: Thread, e: Throwable) {
-        Timber.tag("error").e("Thread = ${t.name}Throwable = ${e.message}".trimIndent())
+        Timber.tag("error").e("Thread = ${t.name} : Throwable = ${e.message}".trimIndent())
         val stackTraceInfo = getStackTraceInfo(e)
         Timber.tag("error").e(stackTraceInfo)
-        saveThrowableMessage(stackTraceInfo)
+        if (DebugFunc.getInstance().isOutputLog) {
+            saveThrowableMessage(stackTraceInfo)
+        }
         SystemClock.sleep(1000)
         Process.killProcess(Process.myPid())
     }
@@ -38,7 +45,7 @@ internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
         return writer.toString()
     }
 
-    private val logFilePath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "crashLog"
+
     private fun saveThrowableMessage(errorMessage: String) {
         if (TextUtils.isEmpty(errorMessage)) {
             return
@@ -59,7 +66,7 @@ internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
             var outputStream: FileOutputStream? = null
             try {
                 val inputStream = ByteArrayInputStream(errorMessage.toByteArray())
-                outputStream = FileOutputStream(File(file, System.currentTimeMillis().toString() + ".txt"))
+                outputStream = FileOutputStream(File(file, DateUtils.timeString + ".txt"))
                 var len: Int
                 val bytes = ByteArray(1024)
                 while (inputStream.read(bytes).also { len = it } != -1) {

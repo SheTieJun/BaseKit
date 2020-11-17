@@ -2,11 +2,14 @@ package me.shetj.base.tools.debug
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.CheckBox
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import me.shetj.base.R
+import me.shetj.base.ktx.showToast
 
 class SettingBottomSheetDialog(private val mContext: Context) {
+
     private val bottomSheetDialog: BottomSheetDialog?
 
     init {
@@ -27,6 +30,11 @@ class SettingBottomSheetDialog(private val mContext: Context) {
         }.setOnCheckedChangeListener { _, isChecked ->
             DebugFunc.getInstance().setIsOutputLog(isChecked)
         }
+        rootView.findViewById<Button>(R.id.btn_clean).setOnClickListener {
+            DebugFunc.getInstance().clearAll()
+            "已清除日志信息".showToast()
+            dismissBottomSheet()
+        }
         bottomSheetDialog.setContentView(rootView)
         return bottomSheetDialog
     }
@@ -38,4 +46,6 @@ class SettingBottomSheetDialog(private val mContext: Context) {
     fun dismissBottomSheet() {
         if (bottomSheetDialog != null && bottomSheetDialog.isShowing) bottomSheetDialog.dismiss()
     }
+
+
 }

@@ -2,20 +2,16 @@ package me.shetj.base.network
 
 import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.https.HttpsUtils
-import me.shetj.base.network.interceptor.CacheInterceptor
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
-import me.shetj.base.network.ohter.OkHttpDns
 import me.shetj.base.network.request.*
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.koin.java.KoinJavaComponent.get
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -23,14 +19,6 @@ import kotlin.collections.HashMap
 
 open class RxHttp private constructor() {
     // region 相关的参数
-    private val DEFAULT_MILLISECONDS = 20000 //默认的超时时间20秒
-
-    private val DEFAULT_RETRY_COUNT = 3 //默认重试次数
-
-    private val DEFAULT_RETRY_INCREASEDELAY = 0L //默认重试叠加时间
-
-    private val DEFAULT_RETRY_DELAY = 500L //默认重试延时
-
     private var mRetryCount: Int = DEFAULT_RETRY_COUNT //重试次数默认3次
 
     private var mRetryDelay: Long = DEFAULT_RETRY_DELAY //延迟xxms重试
@@ -45,7 +33,7 @@ open class RxHttp private constructor() {
     //endregion
 
     //region retrofit 相关
-    private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
+    private val retrofitBuilder: Retrofit.Builder = get(Retrofit.Builder::class.java)
     private val okHttpClientBuilder: OkHttpClient.Builder = get(OkHttpClient.Builder::class.java)
     private var mBaseUrl: String = "https://shetj.me" //必须修改
     private val apiManager: ApiService by lazy {
@@ -63,18 +51,30 @@ open class RxHttp private constructor() {
     }
 
     private fun initRetrofitSetting() {
-        retrofitBuilder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        retrofitBuilder.addConverterFactory(GsonConverterFactory.create())
+        /*
+            [BaseModule.kt]
+         */
+//        retrofitBuilder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+//        retrofitBuilder.addConverterFactory(GsonConverterFactory.create())
     }
 
     private fun initClientSetting() {
         okHttpClientBuilder.hostnameVerifier { _, _ -> true } //主机验证
-        okHttpClientBuilder.connectTimeout(DEFAULT_MILLISECONDS.toLong(), TimeUnit.MILLISECONDS)
-        okHttpClientBuilder.readTimeout(DEFAULT_MILLISECONDS.toLong(), TimeUnit.MILLISECONDS)
-        okHttpClientBuilder.writeTimeout(DEFAULT_MILLISECONDS.toLong(), TimeUnit.MILLISECONDS)
+//        okHttpClientBuilder.connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+//        okHttpClientBuilder.readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+//        okHttpClientBuilder.writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
     }
 
     companion object {
+        const val DEFAULT_MILLISECONDS = 20000L //默认的超时时间20秒
+
+        const val DEFAULT_RETRY_COUNT = 3 //默认重试次数
+
+        const val DEFAULT_RETRY_INCREASEDELAY = 0L //默认重试叠加时间
+
+        const val DEFAULT_RETRY_DELAY = 500L //默认重试延时
+
+        @Volatile
         private var rxHttp: RxHttp? = null
 
         @JvmStatic
@@ -160,7 +160,7 @@ open class RxHttp private constructor() {
         }
     }
 
-    //对外暴露 OkHttpClient,方便自定义，主要是为看共用线程池
+    //对外暴露 OkHttpClient,方便自定义，主要是为共用线程池
     private fun getOkHttpClientBuilder(): OkHttpClient.Builder {
         return getInstance().okHttpClientBuilder
     }

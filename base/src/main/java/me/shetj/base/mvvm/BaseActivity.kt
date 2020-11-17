@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
 import me.shetj.base.R
-import me.shetj.base.S
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.tools.app.KeyboardUtil
 import org.greenrobot.eventbus.EventBus

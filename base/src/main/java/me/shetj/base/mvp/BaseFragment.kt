@@ -13,13 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import me.shetj.base.S
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.toJson
-import me.shetj.base.S
 import me.shetj.base.tools.json.EmptyUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

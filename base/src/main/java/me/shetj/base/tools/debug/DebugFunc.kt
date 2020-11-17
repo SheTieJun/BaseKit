@@ -1,9 +1,11 @@
 package me.shetj.base.tools.debug
 
 import android.content.Context
+import android.os.Environment
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import me.shetj.base.BuildConfig
+import me.shetj.base.base.TaskExecutor
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_HTTP
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_LOG
 import me.shetj.base.tools.file.EnvironmentStorage
@@ -13,7 +15,6 @@ import timber.log.Timber
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
-import java.util.concurrent.Executors
 
 /**
  * debug 功能扩展 必须开启debug的情况下
@@ -22,21 +23,18 @@ import java.util.concurrent.Executors
  */
 class DebugFunc private constructor() {
 
-    val saveLogFile = EnvironmentStorage.cache + File.separatorChar + "BaseDebug.text"
-    val saveHttpFile = EnvironmentStorage.cache + File.separatorChar + "HttpDebug.text"
-
-    private val settingDialog: SettingBottomSheetDialog by lazy { SettingBottomSheetDialog(mContext!!) }
     private var mContext: Context? = null
 
     private var isOutputHttp = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_HTTP, BuildConfig.DEBUG) as Boolean }
             ?: false
-    private var isOutputLog = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_LOG, BuildConfig.DEBUG) as Boolean }
+    var isOutputLog = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_LOG, BuildConfig.DEBUG) as Boolean }
             ?: false
 
-    //用来专门记录文件的IO线程
-    private val mDiskIO = Executors.newSingleThreadExecutor() { r -> Thread(r) }
-
     companion object {
+        val saveLogFile = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separatorChar + "BaseDebug.text"
+        val saveHttpFile = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separatorChar + "HttpDebug.text"
+        val logFilePath = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "crashLog"
+
         private var mDebugFunc: DebugFunc? = null
 
         @JvmStatic
@@ -89,16 +87,6 @@ class DebugFunc private constructor() {
     }
     //endregion logSetting
 
-    fun showSettingDialog() {
-        checkNotNull(mContext, { "need initContext() first" })
-        settingDialog.showBottomSheet()
-    }
-
-    fun hideSettingDialog() {
-        checkNotNull(mContext, { "need initContext() first" })
-        settingDialog.dismissBottomSheet()
-    }
-
     fun setRxJavaErrorHandler() {
         RxJavaPlugins.setErrorHandler(object : Consumer<Throwable?> {
             @Throws(Exception::class)
@@ -113,13 +101,14 @@ class DebugFunc private constructor() {
     }
 
     fun outputToFile(info: String?, path: String? = saveLogFile) {
-        mDiskIO.execute {
-            if (info.isNullOrEmpty()) return@execute
-            if (path.isNullOrEmpty()) return@execute
+        TaskExecutor.executeOnIO {
+            if (info.isNullOrEmpty()) return@executeOnIO
+            if (path.isNullOrEmpty()) return@executeOnIO
             try {
                 val fw = BufferedWriter(FileWriter(path, true))
-                fw.write(info)
+                fw.write("$info \n\n")
                 fw.close()
+                Timber.tag("error").e("写入本地文件成功：%s", path)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -127,12 +116,9 @@ class DebugFunc private constructor() {
     }
 
     fun clearAll() {
-        delFile(saveHttpFile)
-        delFile(saveLogFile)
-    }
-
-    fun delFile(path: String? = saveLogFile) {
-        FileUtils.deleteFile(path)
+        FileUtils.deleteFile(saveHttpFile)
+        FileUtils.deleteFile(saveLogFile)
+        FileUtils.deleteDir(EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "crashLog")
     }
 
 }

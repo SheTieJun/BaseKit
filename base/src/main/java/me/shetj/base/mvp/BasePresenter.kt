@@ -8,7 +8,10 @@ import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import me.shetj.base.ktx.getObjByClassArg
 import me.shetj.base.ktx.toMessage
 import org.greenrobot.eventbus.EventBus

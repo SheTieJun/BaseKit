@@ -1,7 +1,7 @@
 package shetj.me.base.about
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import me.shetj.base.tools.app.ArmsUtils.Companion.statuInScreen
 import shetj.me.base.R
 

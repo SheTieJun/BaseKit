@@ -2,4 +2,5 @@
 <resources>
     <string name="base_log_print">特定点日志文件输出</string>
     <string name="base_http_print">HTTP日志文件输出</string>
+    <string name="base_clean_log">清空错误日志</string>
 </resources>

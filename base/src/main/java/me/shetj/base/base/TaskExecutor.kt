@@ -41,7 +41,9 @@ class TaskExecutor private constructor() {
                 // 调用 shutdownNow 取消正在执行的任务
                 mDiskIO.shutdownNow()
                 // 再次等待 60 s，如果还未结束，可以再次尝试，或则直接放弃
-                if (!mDiskIO.awaitTermination(60, TimeUnit.SECONDS)) System.err.println("线程池任务未正常执行结束")
+                if (!mDiskIO.awaitTermination(60, TimeUnit.SECONDS)){
+                    System.err.println("线程池任务未正常执行结束")
+                }
             }
         } catch (ie: InterruptedException) {
             // 重新调用 shutdownNow

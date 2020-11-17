@@ -12,19 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.lifecycleScope
 import io.reactivex.rxjava3.disposables.Disposable
-import kotlinx.coroutines.*
 import me.shetj.base.R
+import me.shetj.base.S
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.toJson
-import me.shetj.base.S
 import me.shetj.base.tools.app.KeyboardUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
 
 
 /**

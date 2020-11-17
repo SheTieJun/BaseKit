@@ -2,23 +2,23 @@ package me.shetj.base.di
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
-import me.shetj.base.network.interceptor.HeadersInterceptor
-import me.shetj.base.network.interceptor.HttpLoggingInterceptor
-import me.shetj.base.network.model.HttpHeaders
-import me.shetj.base.network_coroutine.KCApiService
 import me.shetj.base.S
 import me.shetj.base.ktx.saverDB
+import me.shetj.base.network.RxHttp.Companion.DEFAULT_MILLISECONDS
+import me.shetj.base.network.interceptor.HeadersInterceptor
+import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.ohter.OkHttpDns
-import me.shetj.base.saver.Saver
+import me.shetj.base.network_coroutine.KCApiService
 import me.shetj.base.saver.SaverDatabase
+import me.shetj.base.tools.file.EnvironmentStorage
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 val dbModule = module() {
@@ -33,31 +33,31 @@ val dbModule = module() {
         get<OkHttpClient.Builder>().build()
     }
 
-    single<OkHttpClient.Builder> {
+    single {
         OkHttpClient.Builder().apply {
-            connectTimeout(20000, TimeUnit.MILLISECONDS)
-            readTimeout(20000, TimeUnit.MILLISECONDS)
-            writeTimeout(20000, TimeUnit.MILLISECONDS)
+            connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+            readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+            writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
             addInterceptor(HeadersInterceptor(HttpHeaders().apply {
                 put(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, HttpHeaders.acceptLanguage)
                 put(HttpHeaders.HEAD_KEY_USER_AGENT, HttpHeaders.userAgent)
             }))
+            cache(Cache(File(EnvironmentStorage.getPath(packagePath = "base")),1024*1024*12))
             dns(OkHttpDns.getInstance())
-            addInterceptor(HttpLoggingInterceptor("HTTP").apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
         }
     }
 
-    single<Retrofit> {
+    single {
         Retrofit.Builder().apply {
             addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             addConverterFactory(GsonConverterFactory.create())
             client(get())
             baseUrl(S.baseUrl ?: "https://me.shetj.com")
-        }.build()
+        }
     }
 
     single<KCApiService> {
-        get<Retrofit>(Retrofit::class.java).create(KCApiService::class.java)
+        get<Retrofit.Builder>(Retrofit::class.java).build().create(KCApiService::class.java)
     }
 
 

@@ -4,12 +4,14 @@ import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_kt_test.*
 import kotlinx.coroutines.*
 import me.shetj.base.ktx.copy
 import me.shetj.base.ktx.runOnIo
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.mvp.BaseActivity
 import me.shetj.base.tools.app.ArmsUtils.Companion.statuInScreen
+import me.shetj.base.tools.debug.SettingBottomSheetDialog
 import shetj.me.base.R
 import timber.log.Timber
 import java.util.concurrent.Executors
@@ -22,11 +24,15 @@ import kotlin.system.measureTimeMillis
 class KtTestActivity @Inject constructor(): BaseActivity<MainPresenter>() {
 
     val scope = CoroutineScope(Dispatchers.Main)
+    val settingBottomSheetDialog by lazy { SettingBottomSheetDialog(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kt_test)
         statuInScreen()
+        btn_debug.setOnClickListener {
+            settingBottomSheetDialog.showBottomSheet()
+        }
     }
 
     override fun initView() {

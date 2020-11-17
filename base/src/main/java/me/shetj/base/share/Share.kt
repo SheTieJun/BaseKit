@@ -1,12 +1,9 @@
 package me.shetj.base.share
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import timber.log.Timber

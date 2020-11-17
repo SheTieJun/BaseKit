@@ -26,3 +26,6 @@ Android Q 引入了新的位置权限 ACCESS_BACKGROUND_LOCATION。
 ```
 android:requestLegacyExternalStorage="true"
 ```
+
+
+兼容过程涉及的功能：本地资源选择（图片、音频、视频等文件）
