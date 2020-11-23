@@ -12,6 +12,8 @@ import me.shetj.base.tools.file.FileQUtils.searchFile
 import org.koin.android.ext.android.get
 import shetj.me.base.BR
 import shetj.me.base.R
+import shetj.me.base.databinding.ActivityMVVMTestBinding
+import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.utils.TimeUtil
 import timber.log.Timber
 

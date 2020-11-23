@@ -7,6 +7,7 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -59,6 +60,9 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
         }
     }
 
+
+    open fun onBack(){}
+
     /**
      * 抽象类不能反射
      *
@@ -93,6 +97,11 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
+        requireActivity().onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                onBack()
+            }
+        })
     }
 
     /**

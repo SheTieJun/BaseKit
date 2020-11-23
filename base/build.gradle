@@ -1,12 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
-
 apply plugin: 'android-aspectjx'//面向切面
-
 
 apply plugin: 'com.github.dcendents.android-maven'
 

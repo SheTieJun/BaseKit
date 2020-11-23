@@ -6,6 +6,7 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.core.util.forEach
@@ -77,6 +78,9 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
         }
     }
 
+
+    open fun onBack() {}
+
     /**
      * 是否使用eventBus,默认为使用(true)，
      *
@@ -108,6 +112,11 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver 
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBack()
+            }
+        })
     }
 
     /**

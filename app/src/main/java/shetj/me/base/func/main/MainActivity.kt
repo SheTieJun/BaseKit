@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.core.animation.addListener
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
@@ -28,8 +29,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import me.shetj.base.base.TaskExecutor
@@ -55,6 +54,8 @@ import shetj.me.base.api.BApi
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
 import shetj.me.base.common.worker.DownloadWorker
+import shetj.me.base.databinding.ActivityMainBinding
+import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import shetj.me.base.view.SimLoadingDialog
@@ -65,6 +66,9 @@ import kotlin.collections.HashMap
 
 @AndroidEntryPoint
 class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.OnClickListener {
+    private lateinit var mContent: ContentMainBinding
+    private lateinit var rootView: ActivityMainBinding
+    private var toolbar: Toolbar? = null
     private var mBtnTest: Button? = null
     private var mTvTestCode: TextView? = null
     private var codeUtil: CodeUtil? = null
@@ -87,7 +91,9 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        rootView = ActivityMainBinding.inflate(layoutInflater)
+        mContent = rootView.content
+        setContentView(rootView.root)
     }
 
     // 框架默认会通过反射创建 MainPresenter ，
@@ -104,7 +110,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                 .doOnNext {
                     it.toString().logi()
                 }.subscribe()
-
+        toolbar  = findViewById<Toolbar>(R.id.toolbar)
         mBtnTest = findViewById<View>(R.id.btn_test) as Button
         mBtnTest!!.setOnClickListener(this)
         mTvTestCode = findViewById<View>(R.id.tv_test_code) as TextView
@@ -122,7 +128,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
         Timber.tag("koin").i(view2.rxContext.toString())
         Timber.tag("hilt").i(view3.rxContext.toString())
-        test_download.setOnClickListener {
+        findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(this, "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
                     EnvironmentStorage.getExternalFilesDir(), "wxwork_android_3.apk")
         }
@@ -141,16 +147,16 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
             }
         })
 
-        btn_test_tip.setOnClickListener {
-            TipPopupWindow.showTipMsg(this, view = toolbar, tipMsg = "测试一下INFO")
+        findViewById<View>(R.id.btn_test_tip).setOnClickListener {
+            TipPopupWindow.showTipMsg(this, view = toolbar!!, tipMsg = "测试一下INFO")
             Timber.tag("DL").i(musicBean1.toJson())
             Timber.tag("DL").i(musicBean2.toJson())
         }
 
-        btn_email.setOnClickListener {
+        findViewById<View>(R.id.btn_email).setOnClickListener {
             sendEmailText(addresses = "375105540@qq.com", title = "Base测试", content = "这是一个测试代码")
         }
-        tv_test_number.setOnClickListener { text ->
+        findViewById<View>(R.id.tv_test_number).setOnClickListener { text ->
 
             val va = ValueAnimator.ofInt(0, 50).apply {
                 duration = 300
@@ -159,24 +165,24 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
                     (text as TextView).text = "X${(it.animatedValue as Int)}"
                 }
                 addListener(onStart = {
-                    tv_test_number.animation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.zoom_in)?.apply {
+                    text.animation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.zoom_in)?.apply {
                         interpolator = OvershootInterpolator()
                         repeatCount = -1
                         repeatMode = REVERSE
                     }
                 }, onEnd = {
-                    tv_test_number.clearAnimation()
+                    text.clearAnimation()
                 })
             }
             va.start()
 
         }
 
-        btn_select_image.setOnClickListener {
+        findViewById<View>(R.id.btn_select_image) .setOnClickListener {
             ImageUtils.openLocalImage(this)
         }
 
-        btn_mvvm.setOnClickListener {
+         mContent.btnMvvm.setOnClickListener {
             val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -187,7 +193,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
             start<MVVMTestActivity>()
         }
 
-        btn_setting.setOnClickListener {
+        mContent.btnTest.setOnClickListener {
             openSetting()
         }
         netTest()
@@ -197,7 +203,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
 //        testExecutor()
 
-        btn_insert.setOnClickListener {
+        mContent.btnInsert.setOnClickListener {
 
             saverCreate(key = "测试key", value = "测试value").apply {
                 saverDB.insert(this)
@@ -224,14 +230,21 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
             }
         }
 
-        btn_find.setOnClickListener {
+        mContent.btnFind.setOnClickListener {
             saverDB.getAll(groupN = "base", isDel = false)
                     .subscribeOn(Schedulers.io())
                     .doOnNext {
                         Timber.i(it.toJson())
                     }.subscribe()
+
+//            Flowable.just("1")
+//                    .lift(MyOperator())
+//                    .compose(MyTransformer())
+//                    .map { it.toString() }
+//                    .subscribe()
         }
-        requestNetWork()
+
+        NetWorkLiveDate.getInstance().start(this)
         NetWorkLiveDate.getInstance().observe(this, {
             when (it?.netType) {
                 NetWorkLiveDate.NetType.NONE -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = NONE")
@@ -253,15 +266,15 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
         val footer = SimPageLoadAdapter("footer")
         val header = SimPageLoadAdapter("header")
-        recycle.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
+        rootView.content.recycle.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
 
-        test_thread.setOnClickListener {
+        rootView.content.testThread.setOnClickListener {
             TaskExecutor.exit()
             TaskExecutor.executeOnIO {
                 Timber.tag("TaskExecutor").i(Thread.currentThread().name)
             }
         }
-        test_loading.setOnClickListener {
+        rootView.content.testLoading.setOnClickListener {
             //测试带携程的loading
             SimLoadingDialog().showWithAction(this) {
                 doOnIO {
@@ -312,7 +325,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
     }
 
     private fun netTest() {
-        btn_test_net.setOnClickListener {
+        rootView.content.btnTestNet.setOnClickListener {
 
             mPresenter.getMusicByRxHttp(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
                 override fun onSuccess(data: ApiResult1<List<MusicBean>>) {

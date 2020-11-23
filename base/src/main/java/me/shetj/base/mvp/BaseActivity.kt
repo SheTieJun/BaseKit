@@ -158,4 +158,8 @@ abstract class BaseActivity<T : BasePresenter<*>> : AppCompatActivity(), IView ,
             Timber.tag(TAG).i(message.toJson())
         }
     }
+
+    override fun onNightModeChanged(mode: Int) {
+        super.onNightModeChanged(mode)
+    }
 }

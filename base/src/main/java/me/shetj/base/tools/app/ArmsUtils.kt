@@ -39,7 +39,6 @@ import java.security.MessageDigest
  * ================================================
  * 一些框架常用的工具
  */
-@Suppress("DEPRECATION")
 @Keep
 class ArmsUtils private constructor() {
 
@@ -236,7 +235,7 @@ class ArmsUtils private constructor() {
          * @return
          */
         @JvmStatic
-        fun getDrawablebyResource(context: Context, rID: Int): Drawable? {
+        fun getDrawableByResource(context: Context, rID: Int): Drawable? {
             return ContextCompat.getDrawable(context, rID)
         }
 
@@ -416,7 +415,7 @@ class ArmsUtils private constructor() {
         fun fullScreencall(activity: Activity) {
             //STATUS_BARS, NAVIGATION_BARS, CAPTION_BAR, IME, WINDOW_DECOR,
             //                SYSTEM_GESTURES, MANDATORY_SYSTEM_GESTURES, TAPPABLE_ELEMENT, DISPLAY_CUTOUT
-            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 activity.window.insetsController?.hide(WindowInsets.Type.systemBars())
             }else {
                 val decorView = activity.window.decorView

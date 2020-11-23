@@ -1,10 +1,10 @@
 package shetj.me.base.func.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_kt_test.*
 import kotlinx.coroutines.*
 import me.shetj.base.ktx.copy
 import me.shetj.base.ktx.runOnIo
@@ -30,7 +30,7 @@ class KtTestActivity @Inject constructor(): BaseActivity<MainPresenter>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kt_test)
         statuInScreen()
-        btn_debug.setOnClickListener {
+        findViewById<View>(R.id.btn_debug).setOnClickListener {
             settingBottomSheetDialog.showBottomSheet()
         }
     }

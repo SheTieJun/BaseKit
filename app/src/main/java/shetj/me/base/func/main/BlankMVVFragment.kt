@@ -86,6 +86,12 @@ class BlankMVVMkFragment() : BaseFragment<MVVMViewModel>() {
          }
     }
 
+    override fun onBack() {
+        super.onBack()
+        Timber.i("Fragment$cout onBack = onBack")
+        requireActivity().finish()
+    }
+
 //    开始onCreateView-> ON_CREATE -> onViewCreated-> ON_START -> ON_RESUME
 //    结束前现会 ON_PAUSE -> ON_STOP -> ON_DESTROY
 //    ON_RESUME -> ON_PAUSE
