@@ -15,7 +15,6 @@ import javax.inject.Qualifier
  */
 
 
-
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class main1
@@ -32,10 +31,10 @@ abstract class AbstractModule {
     //KtTestActivity @Inject constructor()    + @AndroidEntryPoint
     @main1
     @Binds  //抽象实例 （括号里面是具体实现）
-    abstract fun getIView(iView: KtTestActivity):IView
+    abstract fun getIView(iView: KtTestActivity): IView
 
 
     @main2
     @Binds
-    abstract fun getIView2(iView: MainActivity):IView
+    abstract fun getIView2(iView: MainActivity): IView
 }

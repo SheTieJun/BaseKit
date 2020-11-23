@@ -4,14 +4,13 @@ package shetj.me.base.func.main
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
-import me.shetj.base.mvp.BaseFragment
+import me.shetj.base.mvp.BaseBindingFragment
 import me.shetj.base.mvp.BasePresenter
-import shetj.me.base.R
+import shetj.me.base.databinding.FragmentBlankBinding
 import timber.log.Timber
 
 const val ARG_ITEM_COUNT = "item_count"
@@ -20,22 +19,18 @@ const val ARG_ITEM_COUNT = "item_count"
  * A simple [Fragment] subclass.
  * 测试生命周期
  */
-class BlankFragment : BaseFragment<BasePresenter<*>>() {
+class BlankFragment : BaseBindingFragment<BasePresenter<*>,FragmentBlankBinding>() {
     override fun initEventAndData() {
         Timber.i("$cout initEventAndData")
     }
 
     private var cout: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_blank, container, false)
+
+    override fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentBlankBinding {
+        return FragmentBlankBinding.inflate(layoutInflater,container,false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Timber.i("$cout onViewCreated")
-    }
 
     companion object {
         fun newInstance(itemCount: Int): BlankFragment =
@@ -93,6 +88,8 @@ class BlankFragment : BaseFragment<BasePresenter<*>>() {
         Timber.i("Fragment$cout onBack = onBack")
         requireActivity().finish()
     }
+
+
 
 //    开始onCreateView-> ON_CREATE -> onViewCreated-> ON_START -> ON_RESUME
 //    结束前现会 ON_PAUSE -> ON_STOP -> ON_DESTROY

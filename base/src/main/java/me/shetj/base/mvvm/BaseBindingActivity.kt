@@ -14,6 +14,7 @@ import androidx.core.util.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
+import androidx.viewbinding.ViewBinding
 import me.shetj.base.R
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.tools.app.KeyboardUtil
@@ -23,29 +24,28 @@ import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能
- *
  * 2. Model 主要包括网络数据源和本地缓存数据源
- *
  *  val viewModel by viewModels { SavedStateViewModelFactory(application, this) }
  *
- *  use [ViewDataBinding]
+ * use [ViewBinding]
+ *
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<VM : BaseViewModel,VDB:ViewDataBinding> : AppCompatActivity(), LifecycleObserver {
+abstract class BaseBindingActivity<VM : BaseViewModel,VB : ViewBinding> : AppCompatActivity(), LifecycleObserver {
 
     private var mActivityProvider: ViewModelProvider? = null
 
-    protected var mDataBinding: VDB? = null
-        private set
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel
 
-    protected abstract fun getDataBindingConfig(): DataBindingConfig
+    private val lazyViewBinding = lazy { initViewBinding() }
+    protected val mViewBinding: VB by lazyViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(this)
+        setContentView(mViewBinding.root)
     }
 
     @CallSuper
@@ -56,13 +56,6 @@ abstract class BaseActivity<VM : BaseViewModel,VDB:ViewDataBinding> : AppCompatA
             EventBus.getDefault().register(this)
         }
         findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
-        val dataBindingConfig = getDataBindingConfig()
-        mDataBinding = DataBindingUtil.setContentView(this, dataBindingConfig.layout)
-        mDataBinding?.lifecycleOwner = this
-        mDataBinding?.setVariable(dataBindingConfig.vmVariableId, dataBindingConfig.stateViewModel)
-        dataBindingConfig.getBindingParams().forEach { key, any ->
-            mDataBinding?.setVariable(key, any)
-        }
     }
 
     /**
@@ -74,6 +67,12 @@ abstract class BaseActivity<VM : BaseViewModel,VDB:ViewDataBinding> : AppCompatA
     open fun initViewModel(): VM {
         return getActivityViewModel(getClazz(this))
     }
+
+    /**
+     * 系统会默认生成对应的[ViewBinding]
+     */
+    @NonNull
+    abstract fun initViewBinding(): VB
 
     @CallSuper
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

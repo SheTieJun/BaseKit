@@ -7,6 +7,7 @@ import java.lang.reflect.Type
 /**
  * A<C>  -> getClazz(this) -> C
  * 获取当前类的第一个泛型
+ * tip：必须是泛型
  */
 @Suppress("UNCHECKED_CAST")
 fun <C> getClazz(obj: Any,position: Int = 0): Class<C> {

@@ -13,11 +13,10 @@ import org.koin.android.ext.android.get
 import shetj.me.base.BR
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivityMVVMTestBinding
-import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.utils.TimeUtil
 import timber.log.Timber
 
-class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
+class MVVMTestActivity : BaseActivity<MVVMViewModel,ActivityMVVMTestBinding>() {
 
     private val click = View.OnClickListener {
         when (it?.id) {
@@ -47,11 +46,11 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         //LiveData 的通知更新
         mViewModel.timeLive.observe(this, {
             Timber.tag("timeLive").i(it?.toString())
-            mBinding?.setVariable(BR.time, it)
+            mDataBinding?.setVariable(BR.time, it)
         })
         mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
         mViewModel.url.observe(this, {
-            mBinding?.setVariable(BR.url, it)
+            mDataBinding?.setVariable(BR.url, it)
         })
         //用来测试是否时单例的viewModel
         Timber.tag("getViewModel").i("id = ${initViewModel()}")

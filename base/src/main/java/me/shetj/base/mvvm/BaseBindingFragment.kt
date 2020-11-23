@@ -9,11 +9,9 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
-import androidx.core.util.forEach
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.viewbinding.ViewBinding
 import me.shetj.base.ktx.getClazz
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -31,15 +29,15 @@ import org.greenrobot.eventbus.ThreadMode
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseFragment<VM : BaseViewModel,VDB:ViewDataBinding> : Fragment(), LifecycleObserver {
-    protected var mBinding: VDB? = null
-        private set
+abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragment(), LifecycleObserver {
+
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
 
     private val lazyViewModel = lazy { initViewModel() }
-
     protected val mViewModel: VM by lazyViewModel
+
+    protected lateinit var mViewBinding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,18 +45,20 @@ abstract class BaseFragment<VM : BaseViewModel,VDB:ViewDataBinding> : Fragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val dataBindingConfig: DataBindingConfig = getDataBindingConfig()
-        mBinding = DataBindingUtil.inflate(inflater, dataBindingConfig.layout, container, false)
-        mBinding!!.lifecycleOwner = this
-        mBinding!!.setVariable(dataBindingConfig.vmVariableId, dataBindingConfig.stateViewModel)
-        dataBindingConfig.getBindingParams().forEach { key, any ->
-            mBinding!!.setVariable(key, any)
-        }
-        return mBinding!!.root
+        mViewBinding = initViewBinding(inflater,container)
+        return mViewBinding.root
     }
 
     /**
-     * 默认创建一个新的，
+     * 系统会默认生成对应的[ViewBinding]
+     */
+    @NonNull
+    abstract fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+
+    /**
+     * 默认创建一个
+     *
+     * [useActivityVM] = true 才会使用activity的[viewModel]
      */
     @NonNull
     open fun initViewModel(): VM {
@@ -67,8 +67,6 @@ abstract class BaseFragment<VM : BaseViewModel,VDB:ViewDataBinding> : Fragment()
         }
         return getFragmentViewModel(getClazz(this))
     }
-
-    protected abstract fun getDataBindingConfig(): DataBindingConfig
 
     override fun onDestroy() {
         super.onDestroy()

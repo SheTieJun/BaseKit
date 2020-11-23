@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.collectLatest
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
-import me.shetj.base.mvp.BaseActivity
+import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.mvp.IView
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
@@ -57,6 +57,7 @@ import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.di_hilttest.main1
+import shetj.me.base.di_hilttest.main2
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import shetj.me.base.view.SimLoadingDialog
 import timber.log.Timber
@@ -65,9 +66,8 @@ import javax.inject.Inject
 import kotlin.collections.HashMap
 
 @AndroidEntryPoint
-class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.OnClickListener {
+class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), View.OnClickListener {
     private lateinit var mContent: ContentMainBinding
-    private lateinit var rootView: ActivityMainBinding
     private var toolbar: Toolbar? = null
     private var mBtnTest: Button? = null
     private var mTvTestCode: TextView? = null
@@ -91,9 +91,12 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        rootView = ActivityMainBinding.inflate(layoutInflater)
-        mContent = rootView.content
-        setContentView(rootView.root)
+        mContent = mViewBinding.content
+    }
+
+
+    override fun initViewBinding(): ActivityMainBinding {
+       return ActivityMainBinding.inflate(layoutInflater)
     }
 
     // 框架默认会通过反射创建 MainPresenter ，
@@ -266,15 +269,15 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
         }
         val footer = SimPageLoadAdapter("footer")
         val header = SimPageLoadAdapter("header")
-        rootView.content.recycle.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
+        mViewBinding.content.recycle.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
 
-        rootView.content.testThread.setOnClickListener {
+        mViewBinding.content.testThread.setOnClickListener {
             TaskExecutor.exit()
             TaskExecutor.executeOnIO {
                 Timber.tag("TaskExecutor").i(Thread.currentThread().name)
             }
         }
-        rootView.content.testLoading.setOnClickListener {
+        mViewBinding.content.testLoading.setOnClickListener {
             //测试带携程的loading
             SimLoadingDialog().showWithAction(this) {
                 doOnIO {
@@ -325,7 +328,7 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
     }
 
     private fun netTest() {
-        rootView.content.btnTestNet.setOnClickListener {
+        mViewBinding.content.btnTestNet.setOnClickListener {
 
             mPresenter.getMusicByRxHttp(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
                 override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
@@ -450,4 +453,5 @@ class MainActivity @Inject constructor() : BaseActivity<MainPresenter>(), View.O
             }
         })
     }
+
 }
