@@ -49,7 +49,7 @@ object S {
     /**
      * 处理为捕捉的异常
      */
-    val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
+    val handler = CoroutineExceptionHandler { _, throwable ->
         Timber.tag("CoroutineException").e(throwable)
     }
 

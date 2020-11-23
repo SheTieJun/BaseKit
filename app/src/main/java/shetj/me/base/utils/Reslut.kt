@@ -1,4 +1,6 @@
-package me.shetj.base.model
+@file:Suppress("UNCHECKED_CAST")
+
+package shetj.me.base.utils
 
 
 /**
@@ -17,7 +19,7 @@ class Result<out T> constructor(val value: Any?) {
     val isFailure: Boolean get() = value is Failure
 
 
-    inline fun getOrNull(): T? =
+    fun getOrNull(): T? =
             when {
                 isFailure -> null
                 else -> value as T
@@ -78,7 +80,7 @@ inline fun <R> runCatching(block: () -> R): Result<R> {
 }
 
  
-inline fun <T, R> T.runCatching(block: T.() -> R):Result<R> {
+inline fun <T, R> T.runCatching(block: T.() -> R): Result<R> {
     return try {
         Result.success(block())
     } catch (e: Throwable) {
@@ -95,7 +97,7 @@ fun <T> Result<T>.getOrThrow(): T {
 }
 
  
-inline fun <R, T : R>  Result<T>.getOrElse(onFailure: (exception: Throwable) -> R): R {
+inline fun <R, T : R> Result<T>.getOrElse(onFailure: (exception: Throwable) -> R): R {
     return when (val exception = exceptionOrNull()) {
         null -> value as T
         else -> onFailure(exception)
@@ -103,13 +105,13 @@ inline fun <R, T : R>  Result<T>.getOrElse(onFailure: (exception: Throwable) -> 
 }
 
  
-inline fun <R, T : R>  Result<T>.getOrDefault(defaultValue: R): R {
+inline fun <R, T : R> Result<T>.getOrDefault(defaultValue: R): R {
     if (isFailure) return defaultValue
     return value as T
 }
 
  
-inline fun <R, T>  Result<T>.fold(
+inline fun <R, T> Result<T>.fold(
         onSuccess: (value: T) -> R,
         onFailure: (exception: Throwable) -> R
 ): R {
@@ -121,7 +123,7 @@ inline fun <R, T>  Result<T>.fold(
 
 // transformation
  
-inline fun <R, T>  Result<T>.map(transform: (value: T) -> R):  Result<R> {
+inline fun <R, T> Result<T>.map(transform: (value: T) -> R): Result<R> {
    
     return when {
         isSuccess -> Result.success(transform(value as T))
@@ -130,7 +132,7 @@ inline fun <R, T>  Result<T>.map(transform: (value: T) -> R):  Result<R> {
 }
 
  
-inline fun <R, T>  Result<T>.mapCatching(transform: (value: T) -> R):  Result<R> {
+inline fun <R, T> Result<T>.mapCatching(transform: (value: T) -> R): Result<R> {
     return when {
         isSuccess -> runCatching { transform(value as T) }
         else -> Result(value)
@@ -138,15 +140,15 @@ inline fun <R, T>  Result<T>.mapCatching(transform: (value: T) -> R):  Result<R>
 }
 
  
-inline fun <R, T : R> Result<T>.recover(transform: (exception: Throwable) -> R):  Result<R> {
+inline fun <R, T : R> Result<T>.recover(transform: (exception: Throwable) -> R): Result<R> {
    
     return when (val exception = exceptionOrNull()) {
         null -> this
-        else ->  Result.success(transform(exception))
+        else -> Result.success(transform(exception))
     }
 }
  
-inline fun <R, T : R>  Result<T>.recoverCatching(transform: (exception: Throwable) -> R):  Result<R> {
+inline fun <R, T : R> Result<T>.recoverCatching(transform: (exception: Throwable) -> R): Result<R> {
     val value = value // workaround for inline classes BE bug
     return when (val exception = exceptionOrNull()) {
         null -> this
@@ -155,13 +157,13 @@ inline fun <R, T : R>  Result<T>.recoverCatching(transform: (exception: Throwabl
 }
 
 
-inline fun <T>  Result<T>.onFailure(action: (exception: Throwable) -> Unit):  Result<T> {
+inline fun <T> Result<T>.onFailure(action: (exception: Throwable) -> Unit): Result<T> {
     exceptionOrNull()?.let { action(it) }
     return this
 }
 
 
-inline fun <T>  Result<T>.onSuccess(action: (value: T) -> Unit):  Result<T> {
+inline fun <T> Result<T>.onSuccess(action: (value: T) -> Unit): Result<T> {
     if (isSuccess) action(value as T)
     return this
 }
