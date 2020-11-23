@@ -23,12 +23,12 @@ import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import me.shetj.base.S
 import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.tools.file.EnvironmentStorage
+import me.shetj.base.tools.qmui.QMUIStatusBarHelper
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -455,12 +455,12 @@ class ArmsUtils private constructor() {
         }
 
         @JvmStatic
-        fun dip2px(dpValue: Float): Int {
+        fun dp2px(dpValue: Float): Int {
             return (dpValue * getDensity() + 0.5f).toInt()
         }
 
         @JvmStatic
-        fun px2dip(pxValue: Float): Int {
+        fun px2dp(pxValue: Float): Int {
             return (pxValue / getDensity() + 0.5f).toInt()
         }
 

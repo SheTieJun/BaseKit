@@ -25,9 +25,8 @@ import timber.log.Timber
  * **@packageName：** me.shetj.base<br></br>
  * **@author：** shetj<br></br>
  * **@createTime：** 2018/2/24<br></br>
- * **@company：**<br></br>
  * **@email：** 375105540@qq.com<br></br>
- * **@describe**<br></br>
+ * **@describe**<br>super</br>
  */
 
 @Keep
@@ -61,7 +60,7 @@ object S {
     val androidID :String
             @SuppressLint("HardwareIds")
             get(){
-              return Settings.Secure.getString(app.applicationContext.contentResolver, Settings.Secure.ANDROID_ID);
+              return Settings.Secure.getString(app.applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
             }
 
 

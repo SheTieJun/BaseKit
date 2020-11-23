@@ -186,7 +186,7 @@ fun Activity.onBackGoHome() {
 inline fun Context.createSimDialog(@LayoutRes layoutId: Int,
                                    crossinline viewListener: ((view: View) -> Unit) = {},
                                    crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
-                                       it?.setLayout(ArmsUtils.dip2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
+                                       it?.setLayout(ArmsUtils.dp2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
                                    }): AlertDialog {
     val view = LayoutInflater.from(this).inflate(layoutId, null)
     viewListener.invoke(view)

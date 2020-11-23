@@ -44,7 +44,7 @@ public class ItemDecorationOptions {
      * 分割线左间距，默认是10dp
      * <p>竖直方向才生效</p>
      */
-    public int dividerMarginLeft = ArmsUtils.dip2px(10);
+    public int dividerMarginLeft = ArmsUtils.dp2px(10);
     /**
      * 分割线右间距，默认是0
      * <p>竖直方向才生效</p>

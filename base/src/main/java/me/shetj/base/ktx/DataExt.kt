@@ -63,9 +63,9 @@ fun intToHStr(x: Int): String {
     }
 }
 
-fun Float.dp2px() = ArmsUtils.dip2px(this)
+fun Float.dp2px() = ArmsUtils.dp2px(this)
 
-fun Float.px2dp() = ArmsUtils.px2dip(this)
+fun Float.px2dp() = ArmsUtils.px2dp(this)
 
 fun Any?.isEmpty() = EmptyUtils.isEmpty(this)
 

@@ -14,7 +14,7 @@ open class BaseCustomView
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
         View(context, attrs, defStyle) {
-    protected val defaultSize = ArmsUtils.dip2px(88f)
+    protected val defaultSize = ArmsUtils.dp2px(88f)
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         Timber.i("onLayout($changed,$left,$top,$right,$bottom)")
@@ -104,7 +104,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     fun forceSpec() {
         val widthMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-        measure(widthMeasureSpec, heightMeasureSpec);
+        measure(widthMeasureSpec, heightMeasureSpec)
         Timber.i("widthMeasureSpec = $widthMeasureSpec \n heightMeasureSpec = $heightMeasureSpec")
     }
 }

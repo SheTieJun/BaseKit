@@ -132,7 +132,7 @@ dependencies {
     api "com.squareup.retrofit2:adapter-rxjava3:$retrofit2"
     //Android Jetpack
 
-    api "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
+    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
 
     api "androidx.room:room-common:$room_version"
     api "androidx.room:room-runtime:$room_version"

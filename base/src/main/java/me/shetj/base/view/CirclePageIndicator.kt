@@ -22,7 +22,7 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
     private var mActivePosition = 0
     private var mIndicatorSpacing: Int = 0
     private var mIndicatorTypeChanged = false
-    private var size = ArmsUtils.dip2px(5f)
+    private var size = ArmsUtils.dp2px(5f)
 
     private var mIndicatorType = IndicatorType.of(INDICATOR_TYPE_CIRCLE)
     private var mViewPager: ViewPager? = null

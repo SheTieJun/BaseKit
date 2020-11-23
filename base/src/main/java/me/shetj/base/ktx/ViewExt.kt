@@ -48,7 +48,7 @@ fun TextView.setDrawables(@DrawableRes resId: Int,
  */
 fun TextView.setTextAndMargin(content: String, marginStart: Float) {
     val spannableString = SpannableString(content)
-    val what = LeadingMarginSpan.Standard(ArmsUtils.dip2px(marginStart), 0)
+    val what = LeadingMarginSpan.Standard(ArmsUtils.dp2px(marginStart), 0)
     spannableString.setSpan(what, 0, spannableString.length, SpannableString.SPAN_INCLUSIVE_INCLUSIVE)
     text = spannableString
 }
