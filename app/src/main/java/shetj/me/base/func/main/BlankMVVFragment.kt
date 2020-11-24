@@ -3,13 +3,12 @@ package shetj.me.base.func.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
-import me.shetj.base.mvvm.BaseFragment
-import me.shetj.base.mvvm.DataBindingConfig
-import shetj.me.base.BR
-import shetj.me.base.R
+import me.shetj.base.mvvm.BaseBindingFragment
 import shetj.me.base.databinding.FragmentBlankMvvmBinding
 import shetj.me.base.mvvmtest.MVVMViewModel
 import timber.log.Timber
@@ -19,7 +18,7 @@ import timber.log.Timber
  * A simple [Fragment] subclass.
  * 测试生命周期
  */
-class BlankMVVMkFragment() : BaseFragment<MVVMViewModel>() {
+class BlankMVVMkFragment() : BaseBindingFragment<MVVMViewModel,FragmentBlankMvvmBinding>() {
     override fun initEventAndData() {
         Timber.i("$cout initEventAndData")
     }
@@ -82,15 +81,14 @@ class BlankMVVMkFragment() : BaseFragment<MVVMViewModel>() {
         Log.i("Fragment$cout", "initLazy7 = ON_ANY")
     }
 
-    override fun getDataBindingConfig(): DataBindingConfig {
-         return DataBindingConfig(R.layout.fragment_blank_mvvm,BR.vm,mViewModel).apply {
-         }
-    }
-
     override fun onBack() {
         super.onBack()
         Timber.i("Fragment$cout onBack = onBack")
         requireActivity().finish()
+    }
+
+    override fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentBlankMvvmBinding {
+        return FragmentBlankMvvmBinding.inflate(inflater,container,false)
     }
 
 //    开始onCreateView-> ON_CREATE -> onViewCreated-> ON_START -> ON_RESUME

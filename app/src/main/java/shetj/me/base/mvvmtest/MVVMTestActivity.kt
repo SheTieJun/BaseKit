@@ -6,17 +6,16 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.rx3.asFlowable
 import me.shetj.base.ktx.launch
-import me.shetj.base.mvvm.BaseActivity
-import me.shetj.base.mvvm.DataBindingConfig
-import me.shetj.base.tools.file.FileQUtils.searchFile
+import me.shetj.base.ktx.loadImage
+import me.shetj.base.mvvm.BaseBindingActivity
+import me.shetj.base.tools.file.FileQUtils.searchTypeFile
 import org.koin.android.ext.android.get
-import shetj.me.base.BR
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivityMVVMTestBinding
 import shetj.me.base.utils.TimeUtil
 import timber.log.Timber
 
-class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
+class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBinding>() {
 
     private val click = View.OnClickListener {
         when (it?.id) {
@@ -27,7 +26,7 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
                 mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
             }
             R.id.btn_select_image -> {
-                searchFile(callback = {
+                searchTypeFile(callback = {
                     it.let {
                         mViewModel.url.postValue(it.toString())
                     }
@@ -36,6 +35,9 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         }
     }
 
+    /**
+     * dl 这里用了单例
+     */
     override fun initViewModel(): MVVMViewModel {
         return get()
     }
@@ -43,14 +45,17 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
     @Suppress("EXPERIMENTAL_API_USAGE")
     override fun onActivityCreate() {
         super.onActivityCreate()
+        mViewBinding.btnChange.setOnClickListener(click)
+        mViewBinding.btnSelectImage.setOnClickListener(click)
         //LiveData 的通知更新
         mViewModel.timeLive.observe(this, {
             Timber.tag("timeLive").i(it?.toString())
-            mDataBinding?.setVariable(BR.time, it)
+            mViewBinding.btnChange.text = it
+
         })
         mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
         mViewModel.url.observe(this, {
-            mDataBinding?.setVariable(BR.url, it)
+           mViewBinding.image.loadImage(it)
         })
         //用来测试是否时单例的viewModel
         Timber.tag("getViewModel").i("id = ${initViewModel()}")
@@ -71,11 +76,9 @@ class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
         }
     }
 
-    override fun getDataBindingConfig(): DataBindingConfig {
-        return DataBindingConfig(R.layout.activity_m_v_v_m_test, BR.vm, mViewModel)
-                .apply {
-                    addBindingParam(BR.click, click)
-                }
+
+    override fun initViewBinding(): ActivityMVVMTestBinding {
+        return  ActivityMVVMTestBinding.inflate(layoutInflater)
     }
 
 

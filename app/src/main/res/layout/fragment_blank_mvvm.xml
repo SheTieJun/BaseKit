@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
-            <variable
-                name="vm"
-                type="me.shetj.base.mvvm.BaseViewModel" />
-
-    </data>
-
-    <FrameLayout
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/tv_msg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:text="MVVMViewModel" />
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:id="@+id/tv_msg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="MVVMViewModel" />
-
-    </FrameLayout>
-</layout>
+</FrameLayout>

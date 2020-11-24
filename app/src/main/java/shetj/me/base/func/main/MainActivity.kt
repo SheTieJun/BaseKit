@@ -196,7 +196,7 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
             start<MVVMTestActivity>()
         }
 
-        mContent.btnTest.setOnClickListener {
+        mContent.btnSetting.setOnClickListener {
             openSetting()
         }
         netTest()

@@ -10,9 +10,6 @@ import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.util.forEach
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import me.shetj.base.R

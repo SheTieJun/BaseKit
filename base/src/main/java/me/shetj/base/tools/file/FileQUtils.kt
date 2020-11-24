@@ -22,7 +22,7 @@ object FileQUtils {
     /**
      * 搜索多类型的文件
      */
-    fun AppCompatActivity.searchFile(vararg type:String  ,callback:ActivityResultCallback<Uri?>){
+    fun AppCompatActivity.searchFile(vararg type:String ,callback:ActivityResultCallback<Uri?>){
         registerForActivityResult(ActivityResultContracts.OpenDocument(),callback).launch(type)
     }
 
