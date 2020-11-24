@@ -12,7 +12,7 @@ buildscript {
     ext.targetSdkVer            = 30
     ext.minVersion              = 21
     ext.versionCode             = 10
-    ext.versionName             = "1.0.0"
+    ext.versionName             = "1.0.3"
     ext.gsonVersion             = "2.8.6"
     ext.glideVersion            = "4.11.0"
     ext.eventBus                = "3.2.0"
@@ -41,7 +41,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Add this line
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
-        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.4'//Aspect
+//        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'//Aspect
         classpath "com.alibaba:arouter-register:1.0.2"
         classpath "org.koin:koin-gradle-plugin:$koin_version"
 //        classpath 'com.didichuxing.doraemonkit:doraemonkit-plugin:3.1.8'//编辑时间加长

@@ -1,15 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'android-aspectjx'//面向切面
 
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.SheTieJun'
-
-aspectjx {
-    exclude 'androidx.*'
-}
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion

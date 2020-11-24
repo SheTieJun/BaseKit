@@ -5,6 +5,13 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+//apply plugin: 'android-aspectjx'//面向切面
+//
+//aspectjx {
+//    enabled true
+//    exclude 'androidx.*'
+//}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
@@ -160,6 +167,7 @@ dependencies {
     implementation("com.google.guava:guava:29.0-android")
 
     implementation "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
+//    implementation 'org.aspectj:aspectjrt:1.9.5'
 }
 
 //apply from: file("dokit-config.gradle")
