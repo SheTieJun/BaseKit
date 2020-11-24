@@ -16,7 +16,7 @@ import shetj.me.base.databinding.ActivityMVVMTestBinding
 import shetj.me.base.utils.TimeUtil
 import timber.log.Timber
 
-class MVVMTestActivity : BaseActivity<MVVMViewModel,ActivityMVVMTestBinding>() {
+class MVVMTestActivity : BaseActivity<MVVMViewModel>() {
 
     private val click = View.OnClickListener {
         when (it?.id) {

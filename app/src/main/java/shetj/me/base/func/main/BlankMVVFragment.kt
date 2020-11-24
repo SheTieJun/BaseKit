@@ -19,7 +19,7 @@ import timber.log.Timber
  * A simple [Fragment] subclass.
  * 测试生命周期
  */
-class BlankMVVMkFragment() : BaseFragment<MVVMViewModel,FragmentBlankMvvmBinding>() {
+class BlankMVVMkFragment() : BaseFragment<MVVMViewModel>() {
     override fun initEventAndData() {
         Timber.i("$cout initEventAndData")
     }

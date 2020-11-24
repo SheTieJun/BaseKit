@@ -31,8 +31,8 @@ import org.greenrobot.eventbus.ThreadMode
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseFragment<VM : BaseViewModel,VDB:ViewDataBinding> : Fragment(), LifecycleObserver {
-    protected var mBinding: VDB? = null
+abstract class BaseFragment<VM : BaseViewModel> : Fragment(), LifecycleObserver {
+    protected var mBinding: ViewDataBinding? = null
         private set
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
@@ -48,13 +48,14 @@ abstract class BaseFragment<VM : BaseViewModel,VDB:ViewDataBinding> : Fragment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val dataBindingConfig: DataBindingConfig = getDataBindingConfig()
-        mBinding = DataBindingUtil.inflate(inflater, dataBindingConfig.layout, container, false)
-        mBinding!!.lifecycleOwner = this
-        mBinding!!.setVariable(dataBindingConfig.vmVariableId, dataBindingConfig.stateViewModel)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, dataBindingConfig.layout, container, false)
+        binding.lifecycleOwner = this
+        binding.setVariable(dataBindingConfig.vmVariableId, dataBindingConfig.stateViewModel)
         dataBindingConfig.getBindingParams().forEach { key, any ->
-            mBinding!!.setVariable(key, any)
+            binding.setVariable(key, any)
         }
-        return mBinding!!.root
+        mBinding = binding
+        return binding.root
     }
 
     /**

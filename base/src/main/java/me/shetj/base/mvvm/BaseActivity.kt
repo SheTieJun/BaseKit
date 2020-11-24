@@ -23,20 +23,16 @@ import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能
- *
  * 2. Model 主要包括网络数据源和本地缓存数据源
- *
  *  val viewModel by viewModels { SavedStateViewModelFactory(application, this) }
- *
- *  use [ViewDataBinding]
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<VM : BaseViewModel,VDB:ViewDataBinding> : AppCompatActivity(), LifecycleObserver {
+abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity(), LifecycleObserver {
 
     private var mActivityProvider: ViewModelProvider? = null
 
-    protected var mDataBinding: VDB? = null
+    protected var mDataBinding: ViewDataBinding? = null
         private set
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel
@@ -57,12 +53,13 @@ abstract class BaseActivity<VM : BaseViewModel,VDB:ViewDataBinding> : AppCompatA
         }
         findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
         val dataBindingConfig = getDataBindingConfig()
-        mDataBinding = DataBindingUtil.setContentView(this, dataBindingConfig.layout)
-        mDataBinding?.lifecycleOwner = this
-        mDataBinding?.setVariable(dataBindingConfig.vmVariableId, dataBindingConfig.stateViewModel)
+        val binding = DataBindingUtil.setContentView<ViewDataBinding>(this, dataBindingConfig.layout)
+        binding.lifecycleOwner = this
+        binding.setVariable(dataBindingConfig.vmVariableId, dataBindingConfig.stateViewModel)
         dataBindingConfig.getBindingParams().forEach { key, any ->
-            mDataBinding?.setVariable(key, any)
+            binding.setVariable(key, any)
         }
+        mDataBinding = binding
     }
 
     /**
