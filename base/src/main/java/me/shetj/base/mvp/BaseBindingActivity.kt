@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.Message
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.Keep
@@ -30,11 +31,11 @@ import timber.log.Timber
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<T : BasePresenter<*>, VB : ViewBinding> : AppCompatActivity(), IView, LifecycleObserver {
+abstract class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : AppCompatActivity(), IView, LifecycleObserver {
     protected val TAG = this.javaClass.simpleName
 
     private val lazyPresenter = lazy { initPresenter() }
-    protected val mPresenter: T by lazyPresenter
+    protected val mPresenter: P by lazyPresenter
 
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding
@@ -78,11 +79,13 @@ abstract class BaseBindingActivity<T : BasePresenter<*>, VB : ViewBinding> : App
      * 实现思想：
      *    首先Activity<Presenter> -> Presenter.class -> Presenter的参数构造函数 -> newInstance
      */
-    open fun initPresenter(): T {
-        return getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
+    open fun initPresenter(): P {
+        return getClazz<P>(this).getConstructor(IView::class.java).newInstance(this)
     }
 
-    abstract fun initViewBinding(): VB
+    open fun initViewBinding(): VB {
+        return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
+    }
 
     /**
      * 让[EventBus] 默认主线程处理

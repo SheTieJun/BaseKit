@@ -37,6 +37,7 @@ import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.mvp.IView
 import me.shetj.base.network.RxHttp
+import me.shetj.base.network.callBack.NetCallBack
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDao
@@ -295,6 +296,9 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
             put("baidy1.com","127.0.0.1")
             put("baidy2.com","127.0.0.1")
             put("baidy3.com","127.0.0.1")
+        })
+        RxHttp.get("http://baidy1.com").executeCus(object :SimpleNetCallBack<String>(this){
+
         })
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").change("jwt2", HashMap()).subscribe()

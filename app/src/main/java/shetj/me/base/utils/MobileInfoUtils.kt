@@ -10,7 +10,6 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.annotation.Keep
-import com.afollestad.materialdialogs.MaterialDialog
 import me.shetj.base.R
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.file.SPUtils
@@ -85,24 +84,24 @@ object MobileInfoUtils {
             //一天提醒一次
             SPUtils.put(activity, "AutoStart" + shetj.me.base.utils.TimeUtil.getYMDime(), false)
             try {
-                MaterialDialog(activity).show {
-                    title(R.string.app_name)
-                    message(text = "由于安卓系统设置，为获取最新的信息推送，请手动开启自启动权限！")
-                    positiveButton(text = "立即设置") { dialog ->
-                        SPUtils.put(activity, "AutoStart", false)
-                        if (isSelf) {
-                            toSelfSetting(activity)
-                        } else {
-                            jumpStartInterface(activity as Context)
-                        }
-                        dialog.dismiss()
-                    }
-                    negativeButton(text = "暂不设置") { dialog ->
-                        dialog.dismiss()
-                        SPUtils.put(activity, "AutoStart" + AppUtils.appVersionCode, false)
-                    }
-
-                }
+//                (activity).show {
+//                    title(R.string.app_name)
+//                    message(text = "由于安卓系统设置，为获取最新的信息推送，请手动开启自启动权限！")
+//                    positiveButton(text = "立即设置") { dialog ->
+//                        SPUtils.put(activity, "AutoStart", false)
+//                        if (isSelf) {
+//                            toSelfSetting(activity)
+//                        } else {
+//                            jumpStartInterface(activity as Context)
+//                        }
+//                        dialog.dismiss()
+//                    }
+//                    negativeButton(text = "暂不设置") { dialog ->
+//                        dialog.dismiss()
+//                        SPUtils.put(activity, "AutoStart" + AppUtils.appVersionCode, false)
+//                    }
+//
+//                }
             } catch (ignored: Exception) {
             }
         }

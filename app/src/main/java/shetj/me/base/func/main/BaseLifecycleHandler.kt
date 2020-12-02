@@ -15,11 +15,11 @@ import androidx.lifecycle.OnLifecycleEvent
  */
 open class BaseLifecycleHandler : Handler, LifecycleObserver {
 
-    constructor(@NonNull owner: LifecycleOwner) {
+    constructor(@NonNull owner: LifecycleOwner): super(Looper.getMainLooper()){
         bindLifecycleOwner(owner)
     }
 
-    constructor(@NonNull owner: LifecycleOwner, callback: Callback) : super(callback) {
+    constructor(@NonNull owner: LifecycleOwner, callback: Callback) : super(Looper.getMainLooper(),callback) {
         bindLifecycleOwner(owner)
     }
 

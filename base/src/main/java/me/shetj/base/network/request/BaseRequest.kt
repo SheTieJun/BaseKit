@@ -271,11 +271,9 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
      */
     open fun <T> executeCus(type: Class<T>): Observable<T> {
         return build().generateRequest()!!
-                .compose{isSync(it)}
+                .compose(this::isSync)
                 .map(ApiResultFunc<T>(type))
                 .map(HandleFuc())
-                .doOnSubscribe { disposable: Disposable -> Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed) }
-                .doFinally { Timber.i("+++doFinally+++") }
                 .onErrorResumeNext(HttpResponseFunc<T>())
                 .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
     }
@@ -286,11 +284,9 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
      */
     open fun <T> executeCus(callback: NetCallBack<T>): Disposable {
         return build().generateRequest()!!
-                .compose{isSync(it)}
+                .compose(this::isSync)
                 .map(ApiResultFunc<T>(callback.getType()))
                 .map(HandleFuc())
-                .doOnSubscribe { disposable: Disposable -> Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed) }
-                .doFinally { Timber.i("+++doFinally+++") }
                 .onErrorResumeNext(HttpResponseFunc<T>())
                 .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
                 .subscribeWith(CallBackSubscriber(callback))
@@ -306,11 +302,9 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
 
         }
         return build().generateRequest()!!
-                .compose{isSync(it)}
+                .compose(this::isSync)
                 .map(ApiResultFunc<T>(callBackProxy.getType()))
                 .map(HandleFuc())
-                .doOnSubscribe { disposable: Disposable -> Timber.i("+++doOnSubscribe+++%s", disposable.isDisposed) }
-                .doFinally { Timber.i("+++doFinally+++") }
                 .onErrorResumeNext(HttpResponseFunc<T>())
                 .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
                 .subscribeWith(CallBackSubscriber(callBackProxy.callBack))

@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.Message
+import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.Keep
@@ -15,9 +16,11 @@ import androidx.viewbinding.ViewBinding
 import me.shetj.base.R
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.tools.app.KeyboardUtil
+import me.shetj.base.tools.app.TimberUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能
@@ -29,14 +32,24 @@ import org.greenrobot.eventbus.ThreadMode
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<VM : BaseViewModel,VB : ViewBinding> : AppCompatActivity(), LifecycleObserver {
+abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatActivity(), LifecycleObserver {
 
     private var mActivityProvider: ViewModelProvider? = null
 
-    private val lazyViewModel = lazy { initViewModel() }
+    private val lazyViewModel = lazy {
+        Timber.i("11${System.currentTimeMillis()}")
+        val initViewModel = initViewModel()
+        Timber.i("11${System.currentTimeMillis()}")
+        initViewModel
+    }
     protected val mViewModel by lazyViewModel
 
-    private val lazyViewBinding = lazy { initViewBinding() }
+    private val lazyViewBinding = lazy {
+        Timber.i("21${System.currentTimeMillis()}")
+        val initViewBinding = initViewBinding()
+        Timber.i("22${System.currentTimeMillis()}")
+        initViewBinding
+    }
     protected val mViewBinding: VB by lazyViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +81,9 @@ abstract class BaseBindingActivity<VM : BaseViewModel,VB : ViewBinding> : AppCom
     /**
      * 系统会默认生成对应的[ViewBinding]
      */
-    @NonNull
-    abstract fun initViewBinding(): VB
+    open fun initViewBinding(): VB {
+        return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
+    }
 
     @CallSuper
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

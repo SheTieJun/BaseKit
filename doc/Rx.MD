@@ -10,8 +10,8 @@ lift()是对原始Observable的事件序列的每一项做变换，
 
 自定义Plugin
 ```
- RxJavaPlugins.setOnObservableAssembly(new CustomObservableAssembly());//任意操作符都有回调
-        RxJavaPlugins.setOnObservableSubscribe(new CustomObservableSubscribe());//每次subscribe时候有回调
+RxJavaPlugins.setOnObservableAssembly(new CustomObservableAssembly());//任意操作符都有回调
+RxJavaPlugins.setOnObservableSubscribe(new CustomObservableSubscribe());//每次subscribe时候有回调
 
 ```
 

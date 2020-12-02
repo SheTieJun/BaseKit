@@ -28,12 +28,11 @@ object RxUtil {
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(HandleFuc<T>())
-                    .doFinally { Timber.i("+++doFinally+++") }
                     .onErrorResumeNext(HttpResponseFunc<T>())
         }
     }
 
-    fun <T> _main(): ObservableTransformer<ApiResult<T>, T> {
+    fun <T> _computation(): ObservableTransformer<ApiResult<T>, T> {
         return ObservableTransformer { upstream ->
             upstream.map(HandleFuc<T>())
                     .onErrorResumeNext(HttpResponseFunc<T>())

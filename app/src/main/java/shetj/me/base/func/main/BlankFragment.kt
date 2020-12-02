@@ -86,7 +86,6 @@ class BlankFragment : BaseBindingFragment<BasePresenter<*>,FragmentBlankBinding>
     override fun onBack() {
         super.onBack()
         Timber.i("Fragment$cout onBack = onBack")
-        requireActivity().finish()
     }
 
 

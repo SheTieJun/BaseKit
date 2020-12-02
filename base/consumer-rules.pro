@@ -38,7 +38,6 @@
 #继承activity,application,service,broadcastReceiver,contentprovider....不进行混淆
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Application
--keep public class * extends androidx.multidex.MultiDexApplication
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
@@ -75,7 +74,7 @@
 }
 
 ###### 保存所有文件
--keep class me.shetj.base.**{
+-keep class me.shetj.base.*{
 *;
 }
 
@@ -102,58 +101,55 @@
 
 
 #---------------------------------webview------------------------------------
--keepclassmembers class fqcn.of.javascript.interface.for.Webview {
-   public *;
-}
 -keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
     public boolean *(android.webkit.WebView, java.lang.String);
 }
 -keepclassmembers class * extends android.webkit.WebViewClient {
-    public void *(android.webkit.WebView, jav.lang.String);
+    public void *(android.webkit.WebView, java.lang.String);
 }
 
-#支付宝支付
--keep class com.alipay.android.app.IAlixPay{*;}
--keep class com.alipay.android.app.IAlixPay$Stub{*;}
--keep class com.alipay.android.app.IRemoteServiceCallback{*;}
--keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
--keep class com.alipay.sdk.app.PayTask{ public *;}
--keep class com.alipay.sdk.app.AuthTask{ public *;}
--keep public class * extends android.os.IInterface
-#微信支付
--keep class com.tencent.mm.sdk.openapi.WXMediaMessage {*;}
--keep class com.tencent.mm.sdk.openapi.** implements com.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {*;}
--keep class com.tencent.wxop.** { *; }
--dontwarn com.tencent.mm.**
--keep class com.tencent.mm.**{*;}
-
--keep class sun.misc.Unsafe { *; }
-
--keep class com.taobao.** {*;}
--keep class com.alibaba.** {*;}
--keep class com.alipay.** {*;}
--dontwarn com.taobao.**
--dontwarn com.alibaba.**
--dontwarn com.alipay.**
-
--keep class com.ut.** {*;}
--dontwarn com.ut.**
-
--keep class com.ta.** {*;}
--dontwarn com.ta.**
-
--keep class anet.**{*;}
--keep class org.android.spdy.**{*;}
--keep class org.android.agoo.**{*;}
--dontwarn anet.**
--dontwarn org.android.spdy.**
--dontwarn org.android.agoo.**
-
-
--keep class org.apache.http.**
--keep interface org.apache.http.**
--dontwarn org.apache.**
+##支付宝支付
+#-keep class com.alipay.android.app.IAlixPay{*;}
+#-keep class com.alipay.android.app.IAlixPay$Stub{*;}
+#-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
+#-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
+#-keep class com.alipay.sdk.app.PayTask{ public *;}
+#-keep class com.alipay.sdk.app.AuthTask{ public *;}
+#-keep public class * extends android.os.IInterface
+##微信支付
+#-keep class com.tencent.mm.sdk.openapi.WXMediaMessage {*;}
+#-keep class com.tencent.mm.sdk.openapi.** implements com.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {*;}
+#-keep class com.tencent.wxop.** { *; }
+#-dontwarn com.tencent.mm.**
+#-keep class com.tencent.mm.**{*;}
+#
+#-keep class sun.misc.Unsafe { *; }
+#
+#-keep class com.taobao.** {*;}
+#-keep class com.alibaba.** {*;}
+#-keep class com.alipay.** {*;}
+#-dontwarn com.taobao.**
+#-dontwarn com.alibaba.**
+#-dontwarn com.alipay.**
+#
+#-keep class com.ut.** {*;}
+#-dontwarn com.ut.**
+#
+#-keep class com.ta.** {*;}
+#-dontwarn com.ta.**
+#
+#-keep class anet.**{*;}
+#-keep class org.android.spdy.**{*;}
+#-keep class org.android.agoo.**{*;}
+#-dontwarn anet.**
+#-dontwarn org.android.spdy.**
+#-dontwarn org.android.agoo.**
+#
+#
+#-keep class org.apache.http.**
+#-keep interface org.apache.http.**
+#-dontwarn org.apache.**
 
 
 

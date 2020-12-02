@@ -21,7 +21,7 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
         when (it?.id) {
             R.id.btn_change -> {
                 //Observable双向更新
-                mViewModel.change.set("时间：${TimeUtil.getHMSTime()}")
+                mViewModel.change= "时间：${TimeUtil.getHMSTime()}"
                 //LiveData
                 mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
             }
@@ -76,10 +76,10 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
         }
     }
 
-
-    override fun initViewBinding(): ActivityMVVMTestBinding {
-        return  ActivityMVVMTestBinding.inflate(layoutInflater)
-    }
+//
+//    override fun initViewBinding(): ActivityMVVMTestBinding {
+//        return  ActivityMVVMTestBinding.inflate(layoutInflater)
+//    }
 
 
 }

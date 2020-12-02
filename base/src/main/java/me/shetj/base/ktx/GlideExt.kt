@@ -122,8 +122,3 @@ fun getRequestOptions(isCenterCrop: Boolean = true,
 }
 //endregion
 
-//region private method
-private fun checkIsImage(obj: Any): Boolean {
-    return obj is String || obj is Int
-}
-//endregion

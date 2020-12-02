@@ -6,6 +6,10 @@ import java.net.InetAddress
 
 /**
  * 本地dns 解析
+ *
+ * 实现简单，只需通过实现Dns接口即可接入HttpDns服务
+ *
+ * 通用性强，该方案在HTTPS,SN以及设置Cookie等场景均适用。规避了证书校验，域名检查等环节
  */
 class OkHttpDns( ) : Dns {
 

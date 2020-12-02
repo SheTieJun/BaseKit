@@ -31,7 +31,6 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
         viewBinding = true
     }
 
@@ -145,8 +144,8 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.airbnb.android:lottie:3.4.1'
 
-    implementation 'com.github.razerdp:BasePopup:2.2.1'
-    implementation 'com.afollestad.material-dialogs:core:3.1.0'
+//    implementation 'com.github.razerdp:BasePopup:2.2.1'
+//    implementation 'com.afollestad.material-dialogs:core:3.1.0'
 
     //图片预览 https://github.com/iielse/ImageWatcher
     implementation 'com.github.iielse:ImageWatcher:1.1.5'

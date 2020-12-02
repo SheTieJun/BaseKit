@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.SheTieJun'
@@ -71,12 +71,16 @@ dependencies {
     api "com.google.android.material:material:$material"
     api "androidx.recyclerview:recyclerview:$recyclerview"
     api "androidx.cardview:cardview:$androidx"
-    api "androidx.core:core-ktx:$ktx"
-    api "androidx.activity:activity-ktx:$activity_ktx"
     api "androidx.constraintlayout:constraintlayout:$constraintlayout"
     api 'androidx.browser:browser:1.2.0'
     api "androidx.security:security-crypto:1.1.0-alpha02" //加密的sp
     api 'androidx.core:core-animation:1.0.0-alpha02'
+    api "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout"
+
+    api 'androidx.multidex:multidex:2.0.1'
+
+    api "androidx.core:core-ktx:$ktx"
+    api "androidx.activity:activity-ktx:$activity_ktx"
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -86,7 +90,6 @@ dependencies {
 
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$BRV"
     //腾讯Android开发框架 https://qmuiteam.com/android/get-started/
-//    api "com.qmuiteam:qmui:$qmuiVersiopn"
 
     api "org.greenrobot:eventbus:$eventBus"
     api "com.google.code.gson:gson:$gsonVersion"
@@ -96,8 +99,6 @@ dependencies {
 
     api 'io.reactivex.rxjava3:rxjava:3.0.4'
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    api "com.jakewharton.rxbinding4:rxbinding:$rxbinding"
-    api "com.jakewharton.rxbinding4:rxbinding-core:$rxbinding"
     api 'io.reactivex.rxjava3:rxkotlin:3.0.0' //https://github.com/ReactiveX/RxKotlin
     //框架
     api 'com.jakewharton.timber:timber:4.7.1'
@@ -125,8 +126,6 @@ dependencies {
     //https://github.com/square/retrofit/tree/master/retrofit-adapters
     api "com.squareup.retrofit2:adapter-rxjava3:$retrofit2"
     //Android Jetpack
-
-    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
 
     api "androidx.room:room-common:$room_version"
     api "androidx.room:room-runtime:$room_version"
