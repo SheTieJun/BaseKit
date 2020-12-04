@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:orientation="vertical"
-    android:background="@color/transparent"
     android:gravity="center">
 
     <com.github.ybq.android.spinkit.SpinKitView

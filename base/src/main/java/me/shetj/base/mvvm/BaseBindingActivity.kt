@@ -36,19 +36,11 @@ abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AppCo
 
     private var mActivityProvider: ViewModelProvider? = null
 
-    private val lazyViewModel = lazy {
-        Timber.i("11${System.currentTimeMillis()}")
-        val initViewModel = initViewModel()
-        Timber.i("11${System.currentTimeMillis()}")
-        initViewModel
-    }
+    private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel
 
     private val lazyViewBinding = lazy {
-        Timber.i("21${System.currentTimeMillis()}")
-        val initViewBinding = initViewBinding()
-        Timber.i("22${System.currentTimeMillis()}")
-        initViewBinding
+        initViewBinding()
     }
     protected val mViewBinding: VB by lazyViewBinding
 

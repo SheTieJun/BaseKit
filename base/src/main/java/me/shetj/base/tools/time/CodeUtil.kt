@@ -34,11 +34,11 @@ class CodeUtil {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             second--
-                            codeTV?.text = String.format("%s秒后重发", second)
+                            codeTV?.text = String.format("%s秒后重新获取", second)
                         }, {
                             stop()
                         }, {
-                            codeTV?.text = "获取验证码"
+                            codeTV?.text = "重新获取"
                             codeTV?.isEnabled = true
                         })
         addDispose(subscribe)
