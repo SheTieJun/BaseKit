@@ -1,10 +1,9 @@
 package me.shetj.base.tip
 
-import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import me.shetj.base.R
 import me.shetj.base.weight.AbLoadingDialog
 
@@ -15,14 +14,14 @@ import me.shetj.base.weight.AbLoadingDialog
 class TipDialog : AbLoadingDialog() {
 
 
-    override fun createLoading(context: Context, cancelable: Boolean, msg: CharSequence, image: Int?): Dialog? {
+    override fun createLoading(context: Context, cancelable: Boolean, msg: CharSequence, image: Int?): AlertDialog {
         val view = LayoutInflater.from(context).inflate(R.layout.base_dialog_tip, null)
-        return Dialog(context, R.style.trans_dialog).apply {
+        return AlertDialog.Builder(context,R.style.trans_dialog).apply {
             val tvMsg = view.findViewById<TextView>(R.id.tv_msg)
             tvMsg.text = msg
-            setContentView(view, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT))
+            setView(view)
             setCancelable(cancelable)
-        }
+        }.create()
     }
 
     companion object {

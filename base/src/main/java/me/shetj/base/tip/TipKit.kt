@@ -5,20 +5,9 @@ import android.widget.Toast
 import me.shetj.base.weight.AbLoadingDialog
 
 /**
- * Project Name:LiZhiWeiKe
- * Package Name:com.util.toast
- * Created by tom on 2018/1/22 11:43 .
- *
- *
- * Copyright (c) 2016—2017 https://www.lizhiweike.com all rights reserved.
- *
- * 存在以下问题
- * https://bugly.qq.com/v2/crash-reporting/crashes/69bcd1f57e/285881?pid=1
- * https://www.cnblogs.com/newobject/p/11042500.html
- *
- * 使用[AbLoadingDialog] 替代
+ * 新的Toast 实现方式
  */
-object ToastUtil {
+object TipKit {
     /**
      * 标准类型的taost
      *
