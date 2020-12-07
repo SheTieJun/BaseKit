@@ -1,4 +1,4 @@
-package me.shetj.base.view
+package me.shetj.base.tip
 
 
 import android.content.Context
@@ -20,14 +20,6 @@ import java.util.concurrent.TimeUnit
 class TipPopupWindow(private val context: Context) : PopupWindow(context) {
     private var tvTip: TextView? = null
     private var publishSubject: PublishSubject<TipPopupWindow>? = null
-
-    enum class Tip {
-        DEFAULT,
-        INFO,
-        ERROR,
-        SUCCESS,
-        WARNING
-    }
 
     init {
         width = ViewGroup.LayoutParams.MATCH_PARENT

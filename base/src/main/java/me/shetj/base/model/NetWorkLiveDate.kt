@@ -2,7 +2,6 @@ package me.shetj.base.model
 
 import android.content.Context
 import androidx.annotation.RequiresPermission
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import me.shetj.base.ktx.requestNetWork
 import me.shetj.base.tools.app.NetworkUtils

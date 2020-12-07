@@ -1,11 +1,9 @@
 package me.shetj.base.tools.debug
 
-import android.os.Environment
 import android.os.Process
 import android.os.SystemClock
 import android.text.TextUtils
 import me.shetj.base.tools.debug.DebugFunc.Companion.logFilePath
-import me.shetj.base.tools.file.EnvironmentStorage.Companion.getExternalFilesDir
 import me.shetj.base.tools.time.DateUtils
 import timber.log.Timber
 import java.io.*

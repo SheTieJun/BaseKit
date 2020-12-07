@@ -10,7 +10,6 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.annotation.Keep
-import me.shetj.base.R
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.file.SPUtils
 import java.lang.reflect.InvocationTargetException

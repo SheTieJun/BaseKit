@@ -37,7 +37,6 @@ import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.mvp.IView
 import me.shetj.base.network.RxHttp
-import me.shetj.base.network.callBack.NetCallBack
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDao
@@ -46,7 +45,7 @@ import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
-import me.shetj.base.view.TipPopupWindow
+import me.shetj.base.tip.TipPopupWindow
 import org.koin.android.ext.android.get
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.parametersOf
@@ -58,7 +57,6 @@ import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.di_hilttest.main1
-import shetj.me.base.di_hilttest.main2
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import shetj.me.base.view.SimLoadingDialog
 import timber.log.Timber

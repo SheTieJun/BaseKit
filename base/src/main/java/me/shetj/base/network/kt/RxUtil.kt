@@ -7,7 +7,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import me.shetj.base.network.func.HandleFuc
 import me.shetj.base.network.func.HttpResponseFunc
 import me.shetj.base.network.model.ApiResult
-import timber.log.Timber
 
 object RxUtil {
 

@@ -2,12 +2,17 @@ package me.shetj.base.weight
 
 import android.app.Dialog
 import android.content.Context
+import androidx.annotation.DrawableRes
+import androidx.annotation.LongDef
+import androidx.appcompat.app.AlertDialog
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.*
 import me.shetj.base.S.handler
 import java.lang.ref.WeakReference
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -15,38 +20,40 @@ import kotlin.coroutines.CoroutineContext
  */
 abstract class AbLoadingDialog {
 
+    companion object {
+        const val LOADING_LONG = 1800L
+
+        const val LOADING_SHORT = 800L
+
+    }
+
+    @LongDef(LOADING_LONG, LOADING_SHORT)
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+    public annotation class LoadingTipsDuration
+
+
     class LoadingScope(override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Main.immediate + handler) : CoroutineScope
 
     private var weakReference: WeakReference<Context>? = null
-    private var mLoadingDialog: Dialog? = null
+    private var mLoadingDialog: AlertDialog? = null
     private val lazyScope = lazy { LoadingScope() }
     private val lazyComposite = lazy { CompositeDisposable() }
     private val mCompositeDisposable: CompositeDisposable by lazyComposite
 
     val coroutineScope: LoadingScope by lazyScope
 
-    abstract fun createLoading(context: Context, cancelable: Boolean): Dialog?
+    abstract fun createLoading(context: Context, cancelable: Boolean = false, msg: CharSequence = "加载中...", @DrawableRes image: Int? = null): AlertDialog?
 
-    fun showLoading(context: Context, cancelable: Boolean): Dialog? {
-        initDialog(context,cancelable)
+
+    fun showLoading(context: Context, cancelable: Boolean = true, msg: CharSequence = "加载中", @DrawableRes image: Int? = null): AlertDialog {
+        initDialog(context, cancelable, msg, image)
         mLoadingDialog?.let {
             if (!mLoadingDialog!!.isShowing) {
                 mLoadingDialog!!.show()
             }
         }
-        return mLoadingDialog
+        return mLoadingDialog!!
     }
-
-    fun showLoading(context: Context): Dialog? {
-        initDialog(context)
-        mLoadingDialog?.let {
-            if (!mLoadingDialog!!.isShowing) {
-                mLoadingDialog!!.show()
-            }
-        }
-        return mLoadingDialog
-    }
-
 
     fun hideLoading() {
         if (null != mLoadingDialog && mLoadingDialog!!.isShowing) {
@@ -54,11 +61,10 @@ abstract class AbLoadingDialog {
         }
     }
 
-
-    private fun initDialog(context: Context,cancelable :Boolean = true) {
+    private fun initDialog(context: Context, cancelable: Boolean = true, msg: CharSequence = "加载中", @DrawableRes image: Int? = null) {
         if (mLoadingDialog == null || context != weakReference?.get()) {
             weakReference = WeakReference(context)
-            mLoadingDialog = createLoading(context, cancelable)?.apply {
+            mLoadingDialog = createLoading(context, cancelable, msg, image)?.apply {
                 initSetting()
             }
         }
@@ -122,9 +128,28 @@ abstract class AbLoadingDialog {
      * 和RxJava 一起使用
      * 需要自行退出loading
      */
+    fun showWithRxAction(context: Context, action: (dialog: AbLoadingDialog) -> Disposable): AbLoadingDialog {
+        showLoading(context)
+        mCompositeDisposable.add(action(this))
+        return this
+    }
+
+
+    /**
+     * 和RxJava 一起使用
+     * 需要自行退出loading
+     */
     fun showWithDisposable(context: Context, disposable: Disposable): AbLoadingDialog {
         showLoading(context)
         mCompositeDisposable.add(disposable)
+        return this
+    }
+
+    fun showTip(context: Context, cancelable: Boolean, msg: CharSequence = "加载中", @DrawableRes image: Int?, @LoadingTipsDuration time: Long = LOADING_SHORT): AbLoadingDialog {
+        showLoading(context, cancelable, msg, image)
+        mCompositeDisposable.add(AndroidSchedulers.mainThread().scheduleDirect({
+            hideLoading()
+        }, time, TimeUnit.MILLISECONDS))
         return this
     }
 }

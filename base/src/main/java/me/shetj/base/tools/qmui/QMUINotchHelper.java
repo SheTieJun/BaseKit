@@ -20,16 +20,11 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Build;
-import android.util.Log;
-import android.view.Display;
 import android.view.DisplayCutout;
-import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
-import android.view.WindowManager;
 
 import java.lang.reflect.Method;
 

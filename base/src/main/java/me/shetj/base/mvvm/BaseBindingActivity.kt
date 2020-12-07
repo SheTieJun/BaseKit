@@ -16,11 +16,9 @@ import androidx.viewbinding.ViewBinding
 import me.shetj.base.R
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.tools.app.KeyboardUtil
-import me.shetj.base.tools.app.TimberUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
 
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能

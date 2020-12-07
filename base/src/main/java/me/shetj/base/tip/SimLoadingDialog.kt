@@ -1,16 +1,17 @@
-package shetj.me.base.view
+package me.shetj.base.tip
 
+import android.app.Dialog
 import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import io.reactivex.rxjava3.disposables.Disposable
+import me.shetj.base.R
 import me.shetj.base.ktx.setDrawables
 import me.shetj.base.weight.AbLoadingDialog
-import shetj.me.base.R
 
 
 /**
@@ -19,18 +20,18 @@ import shetj.me.base.R
 class SimLoadingDialog : AbLoadingDialog() {
 
 
-    override fun createLoading(context: Context, cancelable: Boolean, msg: CharSequence, image: Int?): AlertDialog {
+    override fun createLoading(context: Context, cancelable: Boolean, msg: CharSequence, image: Int?): Dialog? {
         val view = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
-        return  AlertDialog.Builder(context,R.style.trans_dialog).apply {
+        return Dialog(context, R.style.trans_dialog).apply {
             val tvMsg = view.findViewById<TextView>(R.id.tv_msg)
             tvMsg.text = msg
             image?.let {
                 tvMsg.setDrawables(it, Gravity.TOP)
                 view.findViewById<ProgressBar>(R.id.progress).isVisible = false
             }
-            setView(view)
+            setContentView(view, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT))
             setCancelable(cancelable)
-        }.create()
+        }
     }
 
     companion object {
@@ -69,7 +70,7 @@ class SimLoadingDialog : AbLoadingDialog() {
         }
 
         @JvmStatic
-        fun showNoAction(context: Context, cancelable: Boolean = true): AlertDialog? {
+        fun showNoAction(context: Context, cancelable: Boolean = true): Dialog? {
             return SimLoadingDialog().showLoading(context, cancelable)
         }
     }

@@ -106,9 +106,9 @@ abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Frag
         })
     }
 
-
-
-    open fun onBack(){}
+    open fun onBack(){
+        requireActivity().finish()
+    }
 
     /**
      * On visible.

@@ -76,7 +76,9 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
     }
 
 
-    open fun onBack() {}
+    open fun onBack() {
+        requireActivity().finish()
+    }
 
     /**
      * 是否使用eventBus,默认为使用(true)，

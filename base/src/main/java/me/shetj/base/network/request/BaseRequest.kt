@@ -24,7 +24,6 @@ import okhttp3.Interceptor
 import okhttp3.ResponseBody
 import retrofit2.CallAdapter
 import retrofit2.Converter
-import timber.log.Timber
 import java.io.InputStream
 
 @Suppress("UNCHECKED_CAST")
