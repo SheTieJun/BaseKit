@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.github.dcendegit nts.android-maven'
 
 group = 'com.github.SheTieJun'
 

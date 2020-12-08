@@ -21,12 +21,8 @@ class MainModel : BaseModel() {
     override fun onDestroy() {}
 
     suspend fun getMusic(): ResultMusic? = doOnIO {
-        return@doOnIO try {
-            KCHttp.get<ResultMusic>(testUrl)
-        } catch (e: ServerException) {
-            null
-        } catch (e: Exception) {
-            null
+        return@doOnIO KCHttp.get<ResultMusic>(testUrl){
+
         }
     }
 

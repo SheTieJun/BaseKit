@@ -4,7 +4,7 @@ import android.util.Log
 import timber.log.Timber
 import java.io.File
 
-object TimberUtil {
+object Tim {
 
     private val LOG_FILE_PATH = Utils.app.externalCacheDir?.path + File.separator + "baseLog.test"
 

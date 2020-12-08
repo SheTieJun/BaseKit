@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ServerException
 import me.shetj.base.network.func.ApiResultFunc
 import me.shetj.base.network.kt.createJson
@@ -17,13 +18,13 @@ import java.io.FileOutputStream
 
 //region 下载状态相关
 
-typealias DOWNLOAD_ERROR = suspend (Throwable) -> Unit
+typealias DOWNLOAD_ERROR = suspend (ApiException) -> Unit
 typealias DOWNLOAD_PROCESS = suspend (downloadedSize: Long, length: Long, process: Float) -> Unit
 typealias DOWNLOAD_SUCCESS = suspend (uri: File) -> Unit
 
 sealed class DownloadStatus {
     class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) : DownloadStatus()
-    class DownloadError(val t: Throwable) : DownloadStatus()
+    class DownloadError(val t: ApiException) : DownloadStatus()
     class DownloadSuccess(val file: File) : DownloadStatus()
 }
 
@@ -37,28 +38,52 @@ object KCHttp {
 
     val apiService: KCApiService = get(KCApiService::class.java)
 
-    suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap()): T? {
+    suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap(), error: DOWNLOAD_ERROR = {}): T? {
         return apiService.get(url, maps).funToT()
     }
 
 
-    suspend inline fun <reified T> post(url: String, maps: Map<String, String>? = HashMap()): T? {
-        return apiService.post(url, maps).funToT()
+    suspend inline fun <reified T> post(url: String, maps: Map<String, String>? = HashMap(), error: DOWNLOAD_ERROR = {}): T? {
+        return try {
+            apiService.post(url, maps).funToT()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            error(ApiException.handleException(e))
+            null
+        }
     }
 
 
-    suspend inline fun <reified T> postJson(url: String, json: String): T? {
-        return apiService.postJson(url, json.createJson()).funToT()
+    suspend inline fun <reified T> postJson(url: String, json: String, error: DOWNLOAD_ERROR = {}): T? {
+        return try {
+            apiService.postJson(url, json.createJson()).funToT()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            error(ApiException.handleException(e))
+            null
+        }
     }
 
 
-    suspend inline fun <reified T> postBody(url: String, body: Any): T? {
-        return apiService.postBody(url, body).funToT()
+    suspend inline fun <reified T> postBody(url: String, body: Any,error: DOWNLOAD_ERROR = {}): T? {
+        return try {
+            apiService.postBody(url, body).funToT()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            error(ApiException.handleException(e))
+            null
+        }
     }
 
 
-    suspend inline fun <reified T> postBody(url: String, body: RequestBody): T? {
-        return apiService.postBody(url, body).funToT()
+    suspend inline fun <reified T> postBody(url: String, body: RequestBody, error: DOWNLOAD_ERROR = {}): T? {
+        return try {
+            apiService.postBody(url, body).funToT()
+        } catch (e: Exception) {
+            e.printStackTrace()
+             error(ApiException.handleException(e))
+            null
+        }
     }
 
     inline fun <reified T> ResponseBody.funToT(): T? {
@@ -103,7 +128,7 @@ object KCHttp {
                 ios.close()
                 emit(DownloadStatus.DownloadSuccess(file))
             } catch (e: Exception) {
-                emit(DownloadStatus.DownloadError(e))
+                emit(DownloadStatus.DownloadError(ApiException.handleException(e)))
             }
         }.flowOn(Dispatchers.IO)
                 .collect {

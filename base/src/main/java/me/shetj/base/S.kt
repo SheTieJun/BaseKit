@@ -9,7 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.di.dbModule
 import me.shetj.base.network.RxHttp.Companion.getInstance
-import me.shetj.base.tools.app.TimberUtil
+import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.debug.DebugFunc
 import org.koin.android.ext.koin.androidContext
@@ -77,7 +77,7 @@ object S {
         this.baseUrl = baseUrl
         TaskExecutor.getInstance().executeOnMainThread {
             Utils.init(application)
-            TimberUtil.setLogAuto(isDebug)
+            Tim.setLogAuto(isDebug)
             if (isDebug) {
                 DebugFunc.getInstance().apply {
                     initContext(application)

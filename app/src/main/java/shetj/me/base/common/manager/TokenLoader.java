@@ -89,7 +89,7 @@ public class TokenLoader {
         return "";
     }
 
-    private static String getExpire(Context c) {
+    private String getExpire(Context c) {
         return (String) SPUtils.Companion.get(c, "PRE_CUSTOM_TOKEN_FAILURE_TIME", TimeUtil.getYMDHMSTime());
     }
 
