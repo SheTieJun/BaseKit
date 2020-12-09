@@ -17,7 +17,7 @@ import java.io.FileOutputStream
 
 
 //region 下载状态相关
-
+typealias HTTP_ERROR = (ApiException) -> Unit
 typealias DOWNLOAD_ERROR = suspend (ApiException) -> Unit
 typealias DOWNLOAD_PROCESS = suspend (downloadedSize: Long, length: Long, process: Float) -> Unit
 typealias DOWNLOAD_SUCCESS = suspend (uri: File) -> Unit
@@ -38,12 +38,18 @@ object KCHttp {
 
     val apiService: KCApiService = get(KCApiService::class.java)
 
-    suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap(), error: DOWNLOAD_ERROR = {}): T? {
-        return apiService.get(url, maps).funToT()
+    suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap(), error: HTTP_ERROR = {}): T? {
+        return try {
+            apiService.get(url, maps).funToT()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            error(ApiException.handleException(e))
+            null
+        }
     }
 
 
-    suspend inline fun <reified T> post(url: String, maps: Map<String, String>? = HashMap(), error: DOWNLOAD_ERROR = {}): T? {
+    suspend inline fun <reified T> post(url: String, maps: Map<String, String>? = HashMap(), error: HTTP_ERROR = {}): T? {
         return try {
             apiService.post(url, maps).funToT()
         } catch (e: Exception) {
@@ -54,7 +60,7 @@ object KCHttp {
     }
 
 
-    suspend inline fun <reified T> postJson(url: String, json: String, error: DOWNLOAD_ERROR = {}): T? {
+    suspend inline fun <reified T> postJson(url: String, json: String, error: HTTP_ERROR = {}): T? {
         return try {
             apiService.postJson(url, json.createJson()).funToT()
         } catch (e: Exception) {
@@ -65,7 +71,7 @@ object KCHttp {
     }
 
 
-    suspend inline fun <reified T> postBody(url: String, body: Any,error: DOWNLOAD_ERROR = {}): T? {
+    suspend inline fun <reified T> postBody(url: String, body: Any, error: HTTP_ERROR = {}): T? {
         return try {
             apiService.postBody(url, body).funToT()
         } catch (e: Exception) {
@@ -76,12 +82,12 @@ object KCHttp {
     }
 
 
-    suspend inline fun <reified T> postBody(url: String, body: RequestBody, error: DOWNLOAD_ERROR = {}): T? {
+    suspend inline fun <reified T> postBody(url: String, body: RequestBody, error: HTTP_ERROR = {}): T? {
         return try {
             apiService.postBody(url, body).funToT()
         } catch (e: Exception) {
             e.printStackTrace()
-             error(ApiException.handleException(e))
+            error(ApiException.handleException(e))
             null
         }
     }

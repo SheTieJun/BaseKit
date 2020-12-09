@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import com.github.ybq.android.spinkit.SpinKitView
 import com.github.ybq.android.spinkit.sprite.Sprite
 import shetj.me.base.R
 
@@ -23,7 +22,6 @@ import shetj.me.base.R
  */
 @SuppressLint("InflateParams")
 object EmptyViewUtils {
-
 
     /**
      * 空界面，加载中
@@ -42,8 +40,6 @@ object EmptyViewUtils {
     @JvmStatic
     fun getLoadingView(context: Activity, drawable: Drawable): View {
         val emptyView = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
-        val spinKitView = emptyView.findViewById<SpinKitView>(R.id.spin_kit)
-        spinKitView.setIndeterminateDrawable(drawable)
         return emptyView
     }
 
@@ -56,8 +52,6 @@ object EmptyViewUtils {
     @JvmStatic
     fun getLoadingView(context: Activity, sprite: Sprite): View {
         val emptyView = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
-        val spinKitView = emptyView.findViewById<SpinKitView>(R.id.spin_kit)
-        spinKitView.setIndeterminateDrawable(sprite)
         return emptyView
     }
 
