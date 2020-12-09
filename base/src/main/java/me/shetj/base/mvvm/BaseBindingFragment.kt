@@ -48,7 +48,6 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
         mViewBinding = initViewBinding(inflater,container)
         return mViewBinding.root
     }
-
     /**
      * 系统会默认生成对应的[ViewBinding]
      */
@@ -119,6 +118,14 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
     }
 
     /**
+     * 初始化数据和界面绑定
+     */
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    open fun viewBindData(){
+
+    }
+
+    /**
      * On visible.
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -134,6 +141,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
 
     /**
      * Init event and data.
+     * can't use [mViewBinding]
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     protected abstract fun initEventAndData()

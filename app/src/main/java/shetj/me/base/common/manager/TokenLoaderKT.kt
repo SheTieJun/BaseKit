@@ -10,6 +10,7 @@ import me.shetj.base.S.app
 import me.shetj.base.network_coroutine.KCHttp
 import me.shetj.base.tools.file.SPUtils.Companion.get
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
+import shetj.me.base.common.tag.SPKey.SAVE_TOKEN
 import shetj.me.base.utils.TimeUtil
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -40,10 +41,11 @@ class TokenLoaderKT private constructor() {
         } else {
             if (mRefreshing.compareAndSet(false, true)) {
                 return flow {
-                    KCHttp.get<String>("test/url",error = {
+                    KCHttp.get<String>("test/url", error = {
                         throw it  //把异常抛出去
                     })?.apply {
                         emit(this)
+                        TokenManager.getInstance().token = this
                         mRefreshing.set(false)
                     }
                 }.flowOn(Dispatchers.IO).also {
@@ -57,7 +59,7 @@ class TokenLoaderKT private constructor() {
 
     private val cacheToken: String?
         private get() {
-            var token = get(app.applicationContext, "PRE_CUSTOM_TOKEN", "") as String?
+            var token = get(app.applicationContext, SAVE_TOKEN, "") as String?
             if (isNotEmpty(token)) {
                 val timeDiff = TimeUtil.getTimeDiff(getExpire(app.applicationContext))
                 token = if (timeDiff > 50000) {

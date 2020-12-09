@@ -111,6 +111,14 @@ abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Frag
     }
 
     /**
+     * 初始化数据和界面绑定
+     */
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    open fun viewBindData(){
+
+    }
+
+    /**
      * On visible.
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
