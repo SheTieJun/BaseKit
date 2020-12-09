@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import me.shetj.base.S.app
 import me.shetj.base.network_coroutine.KCHttp
 import me.shetj.base.tools.file.SPUtils.Companion.get
@@ -33,14 +34,14 @@ class TokenLoaderKT private constructor() {
      * 获取通过
      * 如果过期 或者token 为空就重新去获取
      */
-    fun getToke(): Flow<String> {
-        return if (!TextUtils.isEmpty(cacheToken)) {
+   suspend fun getToke(): Flow<String> = withContext(Dispatchers.Main){
+       return@withContext  if (!TextUtils.isEmpty(cacheToken)) {
             flow {
                 emit(cacheToken!!)
-            }.flowOn(Dispatchers.IO)
+            }
         } else {
             if (mRefreshing.compareAndSet(false, true)) {
-                return flow {
+                flow {
                     KCHttp.get<String>("test/url", error = {
                         throw it  //把异常抛出去
                     })?.apply {
