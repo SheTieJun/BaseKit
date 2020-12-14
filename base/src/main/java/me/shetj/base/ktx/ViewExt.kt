@@ -1,7 +1,9 @@
 package me.shetj.base.ktx
 
 import android.content.Context
+import android.graphics.Outline
 import android.graphics.Typeface
+import android.os.Build
 import android.text.SpannableString
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -16,13 +18,27 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import me.shetj.base.R
 import me.shetj.base.constant.Constant
 import me.shetj.base.tools.app.ArmsUtils
 
 /* *收集一些扩展函数 * */
+
+/**
+ * BottomNavigationView 去掉toast
+ */
+private fun BottomNavigationView.clearToast(ids:MutableList<Int>) {
+    val bottomNavigationMenuView = getChildAt(0) as ViewGroup
+    for (i in 0 until ids.size) {
+        bottomNavigationMenuView.getChildAt(i).findViewById<View>(ids[i]).setOnLongClickListener {
+            return@setOnLongClickListener true
+        }
+    }
+}
 
 //region TextView
 /**
@@ -291,3 +307,22 @@ fun AppBarLayout.canDrag() {
 }
 //endregion AppBarLayout
 
+/**
+ * 给view 添加圆角
+ */
+fun View.clipRound(radius: Float = ArmsUtils.dp2px(10f).toFloat()) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(
+                        0,
+                        0,
+                        view.width,
+                        view.height,
+                        radius
+                )
+            }
+        }
+        clipToOutline = true
+    }
+}

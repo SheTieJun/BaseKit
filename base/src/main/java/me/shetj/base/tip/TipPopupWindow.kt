@@ -1,116 +1,92 @@
 package me.shetj.base.tip
 
-
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.subjects.PublishSubject
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.shetj.base.R
+import me.shetj.base.weight.AbLoadingDialog
 import java.util.concurrent.TimeUnit
 
 /**
  * 消息提示框
  */
-class TipPopupWindow(private val context: Context) : PopupWindow(context) {
+class TipPopupWindow(private val mContext: AppCompatActivity) : PopupWindow(mContext), LifecycleObserver {
     private var tvTip: TextView? = null
-    private var publishSubject: PublishSubject<TipPopupWindow>? = null
+    private val lazyComposite = lazy { CompositeDisposable() }
+    private val mCompositeDisposable: CompositeDisposable by lazyComposite
+    private var currentDuration = AbLoadingDialog.LOADING_SHORT
 
     init {
         width = ViewGroup.LayoutParams.MATCH_PARENT
         height = ViewGroup.LayoutParams.WRAP_CONTENT
         setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         animationStyle = R.style.tip_pop_anim_style
-        // 设置点击窗口外边窗口消失
-        isOutsideTouchable = false
+        isOutsideTouchable = false// 设置点击窗口外边窗口不消失
         isFocusable = false
-        // 加载布局
+        mContext.lifecycle.addObserver(this)
         initUI()
     }
 
     private fun initUI() {
-        val rootView = View.inflate(context, R.layout.base_popupwindow_tip, null)
-        tvTip = rootView.findViewById(R.id.tv_tip)
+        val rootView = View.inflate(mContext, R.layout.base_dialog_tip, null)
+        tvTip = rootView.findViewById(R.id.tv_msg)
         contentView = rootView
-        publishSubject = PublishSubject.create()
-        publishSubject!!
-                .debounce(1000, TimeUnit.MILLISECONDS)
-                .delay(500, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ tipPopupWindow ->
-                    tipPopupWindow?.dismiss()
-                }, { tipDismiss() })
+        setOnDismissListener {
+            if (lazyComposite.isInitialized()) {
+                mCompositeDisposable.clear()
+            }
+        }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun tipDismissStop() {
+        try {
+            dismiss()
+        } catch (ignored: Exception) {
+            //暴力解决，可能的崩溃
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun tipDismiss() {
+        try {
+            dismiss()
+        } catch (_: Exception) {
+            //暴力解决，可能的崩溃
+        }
+    }
 
     /**
      * 展示
      * @param tip
      * @param tipMsg
      */
-    fun showTip(tip: Tip, view: View, tipMsg: String) {
-        //设置背景
-        when (tip) {
-            Tip.INFO -> tvTip!!.background = ColorDrawable(INFO_COLOR)
-            Tip.ERROR -> tvTip!!.background = ColorDrawable(ERROR_COLOR)
-            Tip.DEFAULT -> tvTip!!.background = ColorDrawable(NORMAL_COLOR)
-            Tip.SUCCESS -> tvTip!!.background = ColorDrawable(SUCCESS_COLOR)
-            Tip.WARNING -> tvTip!!.background = ColorDrawable(WARNING_COLOR)
-        }
-        //设置文子
-        tvTip?.text = tipMsg
-
-        showAsDropDown(view)
-        publishSubject?.onNext(this)
+    fun showTip(tipMsg: CharSequence?, @AbLoadingDialog.LoadingTipsDuration duration: Long) {
+        tvTip!!.text = tipMsg
+        this.currentDuration = duration
+        showAtLocation(mContext.window.decorView, Gravity.CENTER, 0, 0)
+        mCompositeDisposable.add(AndroidSchedulers.mainThread().scheduleDirect({
+            tipDismiss()
+        }, duration, TimeUnit.MILLISECONDS))
     }
-
 
     companion object {
-        @ColorInt
-        private val ERROR_COLOR = Color.parseColor("#ff0000")
-
-        @ColorInt
-        private val INFO_COLOR = Color.parseColor("#1CD67C")
-
-        @ColorInt
-        private val SUCCESS_COLOR = Color.parseColor("#FFFF5A31")
-
-        @ColorInt
-        private val WARNING_COLOR = Color.parseColor("#FFBB22")
-
-        @ColorInt
-        private val NORMAL_COLOR = Color.parseColor("#CCCCCC")
-
-        @Volatile
-        private var tipPopupWindow: TipPopupWindow? = null
-
-        /**
-         * 展示信息
-         */
-        @JvmStatic
-        fun showTipMsg(context: Context, tip: Tip = Tip.INFO, view: View, tipMsg: String) {
-            if (tipPopupWindow != null && context == tipPopupWindow!!.context && tipPopupWindow!!.isShowing) {
-                tipPopupWindow!!.showTip(tip, view, tipMsg)
-            } else {
-                tipPopupWindow = TipPopupWindow(context)
-                tipPopupWindow!!.showTip(tip, view, tipMsg)
-            }
-        }
-
-        /**
-         * 在展示的[android.app.Activity.onDestroy] 中调用
-         */
-        @JvmStatic
-        fun tipDismiss() {
-            if (tipPopupWindow != null) {
-                tipPopupWindow!!.dismiss()
-                tipPopupWindow = null
-            }
+        @JvmOverloads
+        fun showTip(context: Context, tipMsg: CharSequence?, @AbLoadingDialog.LoadingTipsDuration duration: Long = AbLoadingDialog.LOADING_SHORT) {
+            TipPopupWindow(context as AppCompatActivity).showTip(tipMsg, duration)
         }
     }
+
+
 }

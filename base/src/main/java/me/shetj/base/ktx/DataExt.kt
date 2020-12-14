@@ -2,6 +2,7 @@ package me.shetj.base.ktx
 
 import android.os.Bundle
 import android.os.Message
+import androidx.annotation.IntRange
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
 import timber.log.Timber
@@ -55,7 +56,7 @@ fun Int.unitFormat(): String {
 /**
  * 16进制 255 以内
  */
-fun intToHStr(x: Int): String {
+fun intToHStr(@IntRange(from = 0,to = 255) x: Int): String {
     return if (x > 15) {
         Integer.toHexString(x)
     } else {

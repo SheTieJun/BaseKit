@@ -3,9 +3,12 @@ package shetj.me.base.common.manager
 import android.content.Context
 import android.text.TextUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.shetj.base.S.app
 import me.shetj.base.network_coroutine.KCHttp
@@ -25,6 +28,7 @@ class TokenLoaderKT private constructor() {
      */
     private val mRefreshing = AtomicBoolean(false)
     private var flowToken: Flow<String>? = null
+    private val mutex = Mutex()
 
     private object Holder {
         val instance = TokenLoaderKT()
@@ -34,26 +38,31 @@ class TokenLoaderKT private constructor() {
      * 获取通过
      * 如果过期 或者token 为空就重新去获取
      */
-   suspend fun getToke(): Flow<String> = withContext(Dispatchers.Main){
-       return@withContext  if (!TextUtils.isEmpty(cacheToken)) {
+    suspend fun getToke(): Flow<String> = withContext(Dispatchers.Main) {
+        return@withContext if (mRefreshing.compareAndSet(false, true)) {
             flow {
-                emit(cacheToken!!)
+                if (!TextUtils.isEmpty(cacheToken)) {
+                    emit(cacheToken!!)
+                } else {
+                    getTokenByHttp()?.apply {
+                        emit(this)
+                    }
+                }
+            }.flowOn(Dispatchers.IO).also {
+                flowToken = it
             }
         } else {
-            if (mRefreshing.compareAndSet(false, true)) {
-                flow {
-                    KCHttp.get<String>("test/url", error = {
-                        throw it  //把异常抛出去
-                    })?.apply {
-                        emit(this)
-                        TokenManager.getInstance().token = this
-                        mRefreshing.set(false)
-                    }
-                }.flowOn(Dispatchers.IO).also {
-                    flowToken = it
-                }
-            } else {
-                flowToken!!
+            flowToken!!
+        }
+    }
+
+    private suspend fun getTokenByHttp(): String? {
+        mutex.withLock {
+            return KCHttp.get<String>("test/url", error = {
+                throw it  //把异常抛出去
+            })?.apply {
+                TokenManager.getInstance().token = this
+                mRefreshing.set(false)
             }
         }
     }

@@ -31,6 +31,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.runBlocking
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
@@ -59,6 +60,7 @@ import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
+import shetj.me.base.utils.DataStoreUtils
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -150,7 +152,7 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
         })
 
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
-            TipPopupWindow.showTipMsg(this, view = toolbar!!, tipMsg = "测试一下INFO")
+            TipPopupWindow.showTip(this,tipMsg = "测试一下INFO")
             Timber.tag("DL").i(musicBean1.toJson())
             Timber.tag("DL").i(musicBean2.toJson())
         }
