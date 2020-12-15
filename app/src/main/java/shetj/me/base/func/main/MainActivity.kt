@@ -1,5 +1,6 @@
 package shetj.me.base.func.main
 
+import android.Manifest
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.REVERSE
 import android.annotation.SuppressLint
@@ -97,7 +98,7 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
 
 
     override fun initViewBinding(): ActivityMainBinding {
-       return ActivityMainBinding.inflate(layoutInflater)
+        return ActivityMainBinding.inflate(layoutInflater)
     }
 
     // 框架默认会通过反射创建 MainPresenter ，
@@ -114,7 +115,7 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
                 .doOnNext {
                     it.toString().logi()
                 }.subscribe()
-        toolbar  = findViewById<Toolbar>(R.id.toolbar)
+        toolbar = findViewById<Toolbar>(R.id.toolbar)
         mBtnTest = findViewById<View>(R.id.btn_test) as Button
         mBtnTest!!.setOnClickListener(this)
         mTvTestCode = findViewById<View>(R.id.tv_test_code) as TextView
@@ -152,7 +153,7 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
         })
 
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
-            TipPopupWindow.showTip(this,tipMsg = "测试一下INFO")
+            TipPopupWindow.showTip(this, tipMsg = "测试一下INFO")
             Timber.tag("DL").i(musicBean1.toJson())
             Timber.tag("DL").i(musicBean2.toJson())
         }
@@ -182,18 +183,18 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
 
         }
 
-        findViewById<View>(R.id.btn_select_image) .setOnClickListener {
+        findViewById<View>(R.id.btn_select_image).setOnClickListener {
             ImageUtils.openLocalImage(this)
         }
 
-         mContent.btnMvvm.setOnClickListener {
+        mContent.btnMvvm.setOnClickListener {
             val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
 
                 }
             }
-            startForResult.launch(Intent(this,MVVMTestActivity::class.java), ActivityOptionsCompat.makeBasic())
+            startForResult.launch(Intent(this, MVVMTestActivity::class.java), ActivityOptionsCompat.makeBasic())
             start<MVVMTestActivity>()
         }
 
@@ -248,6 +249,12 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
 //                    .subscribe()
         }
 
+        mContent.testEvent.setOnClickListener {
+            if (hasPermission(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR, isRequest = true)) {
+                mPresenter.addEvent(this)
+            }
+        }
+
         NetWorkLiveDate.getInstance().start(this)
         NetWorkLiveDate.getInstance().observe(this, {
             when (it?.netType) {
@@ -292,18 +299,18 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
             }
         }
         //设置本地dns 解析
-        RxHttp.getInstance().addDnsMap(HashMap<String,String>().apply{
-            put("baidy1.com","127.0.0.1")
-            put("baidy2.com","127.0.0.1")
-            put("baidy3.com","127.0.0.1")
+        RxHttp.getInstance().addDnsMap(HashMap<String, String>().apply {
+            put("baidy1.com", "127.0.0.1")
+            put("baidy2.com", "127.0.0.1")
+            put("baidy3.com", "127.0.0.1")
         })
-        RxHttp.get("http://baidy1.com").executeCus(object :SimpleNetCallBack<String>(this){
+        RxHttp.get("http://baidy1.com").executeCus(object : SimpleNetCallBack<String>(this) {
 
         })
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").change("jwt2", HashMap()).subscribe()
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").change("jwt3", HashMap()).subscribe()
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe ()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
 
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
@@ -311,7 +318,6 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").toString().logi()
-
 
 
     }

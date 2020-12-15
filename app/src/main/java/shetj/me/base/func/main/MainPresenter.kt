@@ -1,10 +1,13 @@
 package shetj.me.base.func.main
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.mvp.BasePresenter
 import me.shetj.base.mvp.IView
 import me.shetj.base.network.callBack.SimpleNetCallBack
+import me.shetj.base.tools.time.CalendarReminderUtils
+import me.shetj.base.tools.time.DateUtils
 import org.koin.java.KoinJavaComponent.get
 import shetj.me.base.bean.ResultMusic
 
@@ -47,5 +50,14 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
 
     fun <T> getMusicByRxHttp(simpleNetCallBack: SimpleNetCallBack<T>) {
         model.getMusicByRxHttp(simpleNetCallBack)
+    }
+
+    fun addEvent(context: Context) {
+        CalendarReminderUtils.addCalendarEvent(context,
+                title = "这是一个测试时间",
+                des = "这是测试时间描述",
+                remindTime = DateUtils.str2Calendar("2020-12-16 00:00:00")!!.timeInMillis,
+                endTime = null, previousTime = 5
+        )
     }
 }
