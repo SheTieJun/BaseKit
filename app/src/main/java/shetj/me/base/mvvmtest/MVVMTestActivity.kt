@@ -1,6 +1,10 @@
 package shetj.me.base.mvvmtest
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.view.View
+import androidx.annotation.NonNull
+import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
@@ -81,5 +85,25 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
 //        return  ActivityMVVMTestBinding.inflate(layoutInflater)
 //    }
 
+    override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        val sb = StringBuilder()
+        for (i in grantResults.indices) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                    when (permissions[i]) {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE -> sb.append("\n·  读写存储")
+                        Manifest.permission.CAMERA -> sb.append("\n·  相机")
+                        Manifest.permission.READ_PHONE_STATE -> sb.append("\n·  电话状态")
+                        Manifest.permission.RECORD_AUDIO -> sb.append("\n·  麦克风录制")
+                        Manifest.permission.WRITE_CALENDAR -> sb.append("\n·  添加日程")
+                    }
+                }
+            }
+        }
+        if (sb.isNotEmpty()){
+            //弹窗提示
+        }
+    }
 
 }

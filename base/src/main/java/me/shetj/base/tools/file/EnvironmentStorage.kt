@@ -1,7 +1,12 @@
 package me.shetj.base.tools.file
 
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Environment
+import android.provider.Settings
 import androidx.annotation.Keep
+import androidx.annotation.RequiresApi
 import me.shetj.base.tools.app.Utils
 import java.io.File
 
@@ -67,6 +72,18 @@ class EnvironmentStorage private constructor() {
         @JvmStatic
         val isSDCardEnable: Boolean
             get() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+
+
+        @RequiresApi(Build.VERSION_CODES.R)
+        fun requestFileAccess(context :Context):Boolean{
+            val isHasStoragePermission =  Environment.isExternalStorageManager()
+            if (!isHasStoragePermission){
+                val intent = Intent()
+                intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                context.startActivity(intent)
+            }
+            return isHasStoragePermission
+        }
 
         /**
          * 获取SD卡路径

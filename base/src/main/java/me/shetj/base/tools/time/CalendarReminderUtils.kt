@@ -12,6 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import me.shetj.base.ktx.hasPermission
 import java.util.*
 
+/**
+ * AndroidManifest 中 对应activity加入
+ *    <intent-filter>
+<action android:name="android.provider.calendar.action.HANDLE_CUSTOM_EVENT" />
+
+<category android:name="android.intent.category.DEFAULT" />
+
+<data android:mimeType="vnd.android.cursor.item/event" />
+</intent-filter>
+ */
 object CalendarReminderUtils {
     private const val CALENDER_URL = "content://com.android.calendar/calendars"
     private const val CALENDER_EVENT_URL = "content://com.android.calendar/events"
@@ -98,14 +108,14 @@ object CalendarReminderUtils {
      */
     fun addCalendarEvent(context: Context?, title: String?, des: String?,
                          remindTime: Long,
-                         endTime:Long?,
-                         previousTime: Long) {
+                         endTime: Long?,
+                         previousTime: Long,packageName:String ?=null,scheme:String?=null): Long {
         if (context == null) {
-            return
+            return -1
         }
         val calId = checkAndAddCalendarAccount(context) //获取日历账户的id
         if (calId < 0) { //获取账户id失败直接返回，添加日历事件失败
-            return
+            return -1
         }
 
         //添加日历事件
@@ -122,18 +132,66 @@ object CalendarReminderUtils {
         event.put(CalendarContract.Events.DTEND, end)
         event.put(CalendarContract.Events.HAS_ALARM, 1) //设置有闹钟提醒
         event.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().displayName) //这个是时区，必须有
+        event.put(CalendarContract.Events.CUSTOM_APP_PACKAGE, packageName)
+        event.put(CalendarContract.Events.CUSTOM_APP_URI, scheme)
         val newEvent = context.contentResolver.insert(Uri.parse(CALENDER_EVENT_URL), event)
                 ?: //添加日历事件失败直接返回
-                return //添加事件
+                return -1//添加事件
 
         //事件提醒的设定
         val values = ContentValues()
-        values.put(CalendarContract.Reminders.EVENT_ID, ContentUris.parseId(newEvent))
-        values.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前previousDate天有提醒
+        val eventID = ContentUris.parseId(newEvent)
+        values.put(CalendarContract.Reminders.EVENT_ID, eventID)
+        values.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前previousDate分钟有提醒
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
         val uri = context.contentResolver.insert(Uri.parse(CALENDER_REMINDER_URL), values)
                 ?: //添加事件提醒失败直接返回
-                return
+                return -1
+        return eventID
+    }
+
+    fun updateRemindEvent(context: Context, calId: Int,eventId: Long, title: String?, des: String?,
+                          remindTime: Long,
+                          endTime: Long?,
+                          previousTime: Long,packageName:String ?=null,scheme:String?=null): Boolean {
+
+        val mCalendar = Calendar.getInstance()
+        mCalendar.timeInMillis = remindTime //设置开始时间
+        val start = mCalendar.time.time
+        mCalendar.timeInMillis = start + 10 * 60 * 1000 //设置终止时间，开始时间加10分钟
+        val end = endTime?:mCalendar.time.time
+
+        return try {
+            val tz = TimeZone.getDefault()        // 获取默认时区
+            /* 更新日程 */
+            val values = ContentValues()
+            values.put(CalendarContract.Events.DTSTART, start)
+            values.put(CalendarContract.Events.DTEND, end)
+            values.put(CalendarContract.Events.TITLE, title)
+            values.put(CalendarContract.Events.DESCRIPTION, des)
+            values.put(CalendarContract.Events.CALENDAR_ID, calId)
+            values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_DEFAULT)
+            values.put(CalendarContract.Events.EVENT_LOCATION,tz.displayName)
+            values.put(CalendarContract.Events.EVENT_TIMEZONE, tz.id)
+            val updateUri = ContentUris.withAppendedId(Uri.parse(CALENDER_REMINDER_URL), eventId)
+            val rowNum = context.contentResolver.update(updateUri, values, null, null)
+            if (rowNum <= 0) {
+                /*更新event不成功，说明用户在日历中删除了提醒事件，重新添加*/
+                if (addCalendarEvent(context,title, des, remindTime, endTime, previousTime,packageName,scheme) != -1L){
+                    return true
+                }
+                return false
+            } else {
+                val reminderValues = ContentValues()
+                reminderValues.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前提醒
+                val rUri = Uri.parse(CALENDER_REMINDER_URL)
+                context.contentResolver.update(rUri, reminderValues, CalendarContract.Reminders.EVENT_ID + "= ?", arrayOf(eventId.toString()))
+                true
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 
     /**
@@ -168,4 +226,7 @@ object CalendarReminderUtils {
             eventCursor?.close()
         }
     }
+
+
+
 }

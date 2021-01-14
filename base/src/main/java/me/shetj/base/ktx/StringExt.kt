@@ -1,12 +1,16 @@
 package me.shetj.base.ktx
 
 import android.content.Context
+import android.content.res.AssetManager
 import android.graphics.Color
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.GsonKit
 import timber.log.Timber
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 
 fun String?.isPhone() = this?.let { StringUtils.isPhone(it) }
@@ -60,3 +64,26 @@ fun String?.logd() {
 }
 
 //endregion
+
+
+/**
+ * val json = getAssetsJson(context, "country.json")
+ */
+fun getAssetsJson(context: Context, fileName: String): String {
+    val stringBuilder = StringBuilder()
+    try {
+        val assetManager: AssetManager = context.assets
+        val bf = BufferedReader(
+                InputStreamReader(
+                        assetManager.open(fileName)
+                )
+        )
+        var line: String?
+        while (bf.readLine().also { line = it } != null) {
+            stringBuilder.append(line)
+        }
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+    return stringBuilder.toString()
+}

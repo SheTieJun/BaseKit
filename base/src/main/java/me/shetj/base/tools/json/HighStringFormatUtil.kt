@@ -8,6 +8,7 @@ import android.text.style.ForegroundColorSpan
 import androidx.annotation.ColorRes
 import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
+import me.shetj.base.R
 
 @Keep
 class HighStringFormatUtil(private val mContext: Context,
@@ -39,8 +40,8 @@ class HighStringFormatUtil(private val mContext: Context,
          * @param color 颜色
          */
         @JvmStatic
-        fun buildHighlightString(mContext: Context, wholeStr: String,
-                                 highlightStr: String, @ColorRes color: Int): SpannableStringBuilder {
+        fun buildLightString(mContext: Context, wholeStr: String,
+                                 highlightStr: String, @ColorRes color: Int = R.color.colorAccent): SpannableStringBuilder {
             return HighStringFormatUtil(mContext, wholeStr, highlightStr, color).fillColor()
         }
     }

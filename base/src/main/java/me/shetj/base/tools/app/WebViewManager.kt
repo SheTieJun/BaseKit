@@ -1,9 +1,11 @@
 package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
+import android.util.Base64
 import android.webkit.WebSettings
 import android.webkit.WebView
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
+import java.io.InputStream
 
 /**
  * WebView管理器，提供常用设置
@@ -51,10 +53,28 @@ class WebViewManager(private val webView: WebView) {
     }
 
 
+    fun addVideoStartListener() {
+        webView.context?.assets?.let {
+            val inputStream: InputStream = it.open("video.js")
+            val buffer = ByteArray(inputStream.available())
+            inputStream.read(buffer)
+            inputStream.close()
+
+            val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
+            webView.loadUrl("javascript:(function() {" +
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var script = document.createElement('script');" +
+                    "script.type = 'text/javascript';" +
+                    "script.innerHTML = window.atob('$encoded');" +
+                    "parent.appendChild(script)" +
+                    "})()")
+        }
+    }
+
     /**
      * 给设置localStorage 设置数据
      */
-    private fun setLocalStorage(itmes: Map<String, String>) {
+    fun setLocalStorage(itmes: Map<String, String>) {
         val jsonBuf = StringBuilder()
         for (key in itmes.keys) {
             if (isNotEmpty(itmes[key])) {
