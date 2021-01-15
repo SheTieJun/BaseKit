@@ -37,6 +37,12 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel: VM by lazyViewModel
 
+    protected val onBackPressedCallback = object :OnBackPressedCallback(true){
+        override fun handleOnBackPressed() {
+            onBack()
+        }
+    }
+
     protected lateinit var mViewBinding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +82,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
 
 
     open fun onBack() {
-        requireActivity().finish()
+
     }
 
     /**
@@ -110,11 +116,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBack()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     /**

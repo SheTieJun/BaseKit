@@ -38,6 +38,12 @@ abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Frag
     private val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 
+    protected val onBackPressedCallback = object :OnBackPressedCallback(true){
+        override fun handleOnBackPressed() {
+            onBack()
+        }
+    }
+
     protected lateinit var mViewBinding: VB
     /**
      * 返回当前的activity
@@ -99,15 +105,11 @@ abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Frag
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                onBack()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
 
     open fun onBack(){
-        requireActivity().finish()
+
     }
 
     /**

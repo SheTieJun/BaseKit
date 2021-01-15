@@ -21,6 +21,7 @@ import java.io.File
  * ** 获取APPName [getApkName] ****<br></br>
  * ** 开启下载  [install]****<br></br>
  * ** @author shetj<br></br>
+ * Tips:后面的版本有问题
  */
 class DownloadService : Service() {
     private var mReceiver: BroadcastReceiver? = null

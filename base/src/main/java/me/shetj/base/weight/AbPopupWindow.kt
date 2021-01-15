@@ -40,7 +40,7 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
     init {
         width = ViewGroup.LayoutParams.MATCH_PARENT
         height = ViewGroup.LayoutParams.WRAP_CONTENT
-        isOutsideTouchable = false// 设置点击窗口外边窗口不消失
+        isOutsideTouchable = false
         isFocusable = false
         contentView = mViewBinding.root
         mViewBinding.initUI()
@@ -55,7 +55,10 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
 
     abstract fun VB.initUI()
 
-    fun showPop(){
+    /**
+     * 可以自行修改展示位置
+     */
+    open fun showPop(){
         showAtLocation(mContext.window.decorView, Gravity.BOTTOM, 0, 0)
     }
 

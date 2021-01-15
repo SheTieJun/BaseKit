@@ -117,7 +117,8 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                 default:
                     ex.message = "网络错误,Code:"+httpException.code()+" ,err:"+httpException.getMessage();
                     break;
-            }*/ex.message = e.message!!
+            }*/
+                ex.message = e.message!!
                 ex
             } else if (e is ServerException) {
                 ex = ApiException(e, e.errCode)
@@ -158,7 +159,7 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                 ex
             } else {
                 ex = ApiException(e, ERROR.UNKNOWN)
-                ex.message = "未知错误"
+                ex.message = "未知错误:${e.message}"
                 ex
             }
         }
