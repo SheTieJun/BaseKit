@@ -19,16 +19,17 @@ const val ARG_ITEM_COUNT = "item_count"
  * A simple [Fragment] subclass.
  * 测试生命周期
  */
-class BlankFragment : BaseBindingFragment<BasePresenter<*>,FragmentBlankBinding>() {
+class BlankFragment : BaseBindingFragment<BasePresenter<*>, FragmentBlankBinding>() {
     override fun initEventAndData() {
         Timber.i("$cout initEventAndData")
     }
+
 
     private var cout: Int = 0
 
 
     override fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentBlankBinding {
-        return FragmentBlankBinding.inflate(layoutInflater,container,false)
+        return FragmentBlankBinding.inflate(layoutInflater, container, false)
     }
 
 
@@ -85,10 +86,8 @@ class BlankFragment : BaseBindingFragment<BasePresenter<*>,FragmentBlankBinding>
 
     override fun onBack() {
         super.onBack()
-        Timber.i("Fragment$cout onBack = onBack")
+        Timber.i("Fragment$cout onBack = onBack:false")
     }
-
-
 
 //    开始onCreateView-> ON_CREATE -> onViewCreated-> ON_START -> ON_RESUME
 //    结束前现会 ON_PAUSE -> ON_STOP -> ON_DESTROY

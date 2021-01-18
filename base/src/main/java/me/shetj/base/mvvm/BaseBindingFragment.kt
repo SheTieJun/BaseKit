@@ -29,17 +29,18 @@ import org.greenrobot.eventbus.ThreadMode
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragment(), LifecycleObserver {
+abstract class BaseBindingFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment(), LifecycleObserver {
 
+    protected var enabledOnBack: Boolean = false
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
 
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel: VM by lazyViewModel
 
-    protected val onBackPressedCallback = object :OnBackPressedCallback(true){
+    protected val onBackPressedCallback = object : OnBackPressedCallback(enabledOnBack) {
         override fun handleOnBackPressed() {
-            onBack()
+          onBack()
         }
     }
 
@@ -50,15 +51,20 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
         lifecycle.addObserver(this)
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mViewBinding = initViewBinding(inflater,container)
+        mViewBinding = initViewBinding(inflater, container)
         return mViewBinding.root
     }
+
     /**
      * 系统会默认生成对应的[ViewBinding]
      */
     @NonNull
-    abstract fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+    open fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
+        return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java,ViewGroup::class.java,Boolean::class.java)
+                .invoke(null, inflater,container,false) as VB
+    }
 
     /**
      * 默认创建一个
@@ -82,7 +88,6 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
 
 
     open fun onBack() {
-
     }
 
     /**
@@ -116,6 +121,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
+        onBackPressedCallback.isEnabled = enabledOnBack
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
@@ -123,7 +129,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel,VB : ViewBinding> : Fragme
      * 初始化数据和界面绑定
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    open fun viewBindData(){
+    open fun viewBindData() {
 
     }
 

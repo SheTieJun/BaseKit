@@ -22,7 +22,6 @@ class BlankMVVMkFragment() : BaseBindingFragment<MVVMViewModel,FragmentBlankMvvm
     override fun initEventAndData() {
         Timber.i("$cout initEventAndData")
     }
-
     private var cout: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,6 +47,7 @@ class BlankMVVMkFragment() : BaseBindingFragment<MVVMViewModel,FragmentBlankMvvm
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun initLazy2() {
+        enabledOnBack = false
         //不可见，
         Log.i("Fragment$cout", "initLazy2 = ON_PAUSE")
     }
@@ -71,6 +71,7 @@ class BlankMVVMkFragment() : BaseBindingFragment<MVVMViewModel,FragmentBlankMvvm
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun initLazy6() {
+        enabledOnBack = true
         //可见的时候
         Log.i("Fragment$cout", "initLazy6 = ON_RESUME")
     }
@@ -83,13 +84,9 @@ class BlankMVVMkFragment() : BaseBindingFragment<MVVMViewModel,FragmentBlankMvvm
 
     override fun onBack() {
         super.onBack()
-        Timber.i("Fragment$cout onBack = onBack")
-        requireActivity().finish()
+        Timber.i("Fragment$cout onBack = onBack:true")
     }
 
-    override fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentBlankMvvmBinding {
-        return FragmentBlankMvvmBinding.inflate(inflater,container,false)
-    }
 
 //    开始onCreateView-> ON_CREATE -> onViewCreated-> ON_START -> ON_RESUME
 //    结束前现会 ON_PAUSE -> ON_STOP -> ON_DESTROY

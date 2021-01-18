@@ -329,6 +329,11 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
 //        }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        "onBackPressed".logi()
+    }
+
     override fun onResume() {
         super.onResume()
         launch {

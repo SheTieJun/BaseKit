@@ -34,10 +34,12 @@ import java.lang.reflect.Method
  * 用来防止重新进入的时候多次展示 Splash
  * 是否是栈的底部
  */
-fun AppCompatActivity.isRoot() {
+fun AppCompatActivity.isRoot(): Boolean {
     if (!isTaskRoot) {
         finish()
+        return true
     }
+    return false
 }
 
 @JvmOverloads

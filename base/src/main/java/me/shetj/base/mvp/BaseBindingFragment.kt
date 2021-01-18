@@ -29,18 +29,32 @@ import timber.log.Timber
  * @author shetj
  * 不需要懒加载，viewPager2 执行顺序就是
  * 开始必须可见才会初始化:[onCreateView]-> [Lifecycle.Event.ON_CREATE] -> [onViewCreated]-> [Lifecycle.Event.ON_START] -> [Lifecycle.Event.ON_RESUME]
+ *
+ *
  * 结束前现会:[Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_STOP] -> [Lifecycle.Event.ON_DESTROY]
+ *
+ *
  * 不可见:   [Lifecycle.Event.ON_RESUME]  ->[Lifecycle.Event.ON_PAUSE]
+ *
+ *
  * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
 abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Fragment(), IView, LifecycleObserver {
+
+    protected var enabledOnBack: Boolean = false
+        set(value) {
+            field = value
+            onBackPressedCallback.isEnabled = value
+        }
+
+
     private val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 
-    protected val onBackPressedCallback = object :OnBackPressedCallback(true){
+    protected val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            onBack()
+             onBack()
         }
     }
 
@@ -69,8 +83,10 @@ abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Frag
         }
     }
 
-
-    abstract fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+    open fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
+        return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java,ViewGroup::class.java,Boolean::class.java)
+                .invoke(null, inflater,container,false) as VB
+    }
     /**
      * 抽象类不能反射
      *
@@ -105,11 +121,11 @@ abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Frag
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
+        onBackPressedCallback.isEnabled = enabledOnBack
         requireActivity().onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
 
-    open fun onBack(){
-
+    open fun onBack() {
     }
 
     /**
