@@ -380,6 +380,14 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
                     }
                 }
 
+                doOnIO {
+                    try {
+                        val music = mPresenter.getMusicV2()
+                        Timber.tag("getMusicV2").i(music.toJson())
+                    } catch (e: Exception) {
+                        Timber.i(e)
+                    }
+                }
 
             }
         }

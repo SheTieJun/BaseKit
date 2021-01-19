@@ -30,11 +30,22 @@ class APP : Application() {
                 .executeCus(simpleNetCallBack)
 ```
 
+
 ### [NETWORK_COROUTINE](src/main/java/me/shetj/base/network_coroutine)
 ```kotlin
      KCHttp.get<ResultMusic>(testUrl)
 ```
-
+V2
+``` kotlin
+       doOnIO {
+           val data = KCHttpV2.get<ResultMusic>(testUrl)
+           data.fold(onSuccess = {
+               data.getOrNull()
+           },onFailure = {
+               null
+           })
+       }
+```
 
 ### [Saver](src/main/java/me/shetj/base/saver)
 ```kotlin

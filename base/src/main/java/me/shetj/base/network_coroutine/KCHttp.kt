@@ -4,10 +4,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ServerException
 import me.shetj.base.network.func.ApiResultFunc
+import me.shetj.base.network.kt.ClassUtils
 import me.shetj.base.network.kt.createJson
+import me.shetj.base.tools.json.GsonKit
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.koin.java.KoinJavaComponent.get
@@ -37,6 +40,7 @@ sealed class DownloadStatus {
 object KCHttp {
 
     val apiService: KCApiService = get(KCApiService::class.java)
+
 
     suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap(), error: HTTP_ERROR = {}): T? {
         return try {

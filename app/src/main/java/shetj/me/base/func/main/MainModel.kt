@@ -1,11 +1,13 @@
 package shetj.me.base.func.main
 
+import android.util.Log
 import me.shetj.base.ktx.doOnIO
+import me.shetj.base.ktx.showToast
 import me.shetj.base.mvp.BaseModel
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.network.exception.ServerException
-import me.shetj.base.network_coroutine.KCHttp
+import me.shetj.base.network_coroutine.*
 import shetj.me.base.bean.ResultMusic
 
 /**
@@ -25,6 +27,16 @@ class MainModel : BaseModel() {
 
         }
     }
+
+    suspend fun getMusicV2(): ResultMusic?  =
+       doOnIO {
+           val data = KCHttpV2.get<ResultMusic>(testUrl)
+           data.fold(onSuccess = {
+               data.getOrNull()
+           },onFailure = {
+               null
+           })
+       }
 
 
     fun <T> getMusicByRxHttp(simpleNetCallBack: SimpleNetCallBack<T>) {

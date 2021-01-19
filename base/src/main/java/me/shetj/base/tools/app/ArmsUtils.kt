@@ -28,6 +28,7 @@ import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.tools.file.EnvironmentStorage
+import me.shetj.base.tools.qmui.QMUINotchHelper
 import me.shetj.base.tools.qmui.QMUIStatusBarHelper
 import java.io.File
 import java.io.IOException
@@ -55,18 +56,7 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun checkIsNotchScreen(activity: Activity): Boolean {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val windowInsets = activity.window.decorView.rootWindowInsets
-                if (windowInsets != null) {
-                    val displayCutout = windowInsets.displayCutout
-                    if (displayCutout != null) {
-                        val rects = displayCutout.boundingRects
-                        //通过判断是否存在rects来确定是否刘海屏手机
-                        return rects.size > 0
-                    }
-                }
-            }
-            return false
+            return  QMUINotchHelper.needFixLandscapeNotchAreaFitSystemWindow(activity.window.decorView)
         }
 
 

@@ -15,7 +15,10 @@ import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.tools.file.FileQUtils.searchTypeFile
 import org.koin.android.ext.android.get
 import shetj.me.base.R
+import shetj.me.base.bean.ResultMusic
 import shetj.me.base.databinding.ActivityMVVMTestBinding
+import shetj.me.base.test.ProxyFactory
+import shetj.me.base.test.TestProxy
 import shetj.me.base.utils.TimeUtil
 import timber.log.Timber
 
@@ -78,6 +81,7 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
         listOf(1, 2, 3).asFlow().asFlowable().subscribe {
             Timber.i("asFlow().asFlowable() = $it")
         }
+
     }
 
 //

@@ -48,6 +48,10 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
         return model.getMusic()
     }
 
+    suspend fun getMusicV2(): ResultMusic? {
+        return model.getMusicV2()
+    }
+
     fun <T> getMusicByRxHttp(simpleNetCallBack: SimpleNetCallBack<T>) {
         model.getMusicByRxHttp(simpleNetCallBack)
     }

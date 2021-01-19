@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package shetj.me.base.utils
+package me.shetj.base.network_coroutine
 
 
 /**
@@ -9,9 +9,6 @@ package shetj.me.base.utils
 @Suppress("UNCHECKED_CAST")
 @SuppressWarnings("Unchecked")
 class Result<out T> constructor(val value: Any?) {
-    // discovery
-
-    val isLoading: Boolean get() = value ==null
 
     val isSuccess: Boolean get() = value !is Failure
 
@@ -48,8 +45,6 @@ class Result<out T> constructor(val value: Any?) {
 
         fun <T> failure(exception: Throwable): Result<T> =
                 Result(createFailure(exception))
-
-        fun loading() = Result<Any>(null)
     }
 
     data class Failure(
@@ -147,7 +142,10 @@ inline fun <R, T : R> Result<T>.recover(transform: (exception: Throwable) -> R):
         else -> Result.success(transform(exception))
     }
 }
- 
+
+/**
+ * 把异常转成可以用的数据
+ */
 inline fun <R, T : R> Result<T>.recoverCatching(transform: (exception: Throwable) -> R): Result<R> {
     val value = value // workaround for inline classes BE bug
     return when (val exception = exceptionOrNull()) {
