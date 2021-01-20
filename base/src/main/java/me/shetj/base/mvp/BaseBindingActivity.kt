@@ -71,6 +71,7 @@ abstract class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : App
         if (lazyPresenter.isInitialized()) {
             mPresenter.onDestroy()
         }
+        lifecycle.removeObserver(this)
     }
 
     /**

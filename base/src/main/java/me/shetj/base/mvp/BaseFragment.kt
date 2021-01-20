@@ -55,6 +55,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
 
     override fun onDestroy() {
         super.onDestroy()
+        lifecycle.removeObserver(this)
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }

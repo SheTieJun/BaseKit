@@ -81,6 +81,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel, VB : ViewBinding> : Fragm
 
     override fun onDestroy() {
         super.onDestroy()
+        lifecycle.removeObserver(this)
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }
