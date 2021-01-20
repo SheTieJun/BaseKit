@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.*
 import me.shetj.base.ktx.logi
-import me.shetj.base.network_coroutine.KCHttp
+import me.shetj.base.network_coroutine.KCHttpV2
 import shetj.me.base.R
 
 
@@ -41,9 +41,9 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
 //        }
 //        setForeground(createForegroundInfo("download ok"))
 
-        KCHttp.download(inputUrl, "$outputFile/$fileName", process = { _, _, process ->
+        KCHttpV2.download(inputUrl, "$outputFile/$fileName", onProcess = { _, _, process ->
             setForeground(createForegroundInfo("${(process * 100).toInt()}%"))
-        }, success = {
+        }, onSuccess = {
             it.absolutePath.logi()
             setForeground(createForegroundInfo("download ok"))
         },error = {

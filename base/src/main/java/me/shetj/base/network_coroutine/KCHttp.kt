@@ -21,7 +21,7 @@ import java.io.FileOutputStream
 
 //region 下载状态相关
 typealias HTTP_ERROR = (ApiException) -> Unit
-typealias DOWNLOAD_ERROR = suspend (ApiException) -> Unit
+typealias DOWNLOAD_ERROR = suspend (Throwable) -> Unit
 typealias DOWNLOAD_PROCESS = suspend (downloadedSize: Long, length: Long, process: Float) -> Unit
 typealias DOWNLOAD_SUCCESS = suspend (uri: File) -> Unit
 
