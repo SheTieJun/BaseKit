@@ -46,7 +46,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
         }, onSuccess = {
             it.absolutePath.logi()
             setForeground(createForegroundInfo("download ok"))
-        },error = {
+        },onError = {
             it.message.logi()
         })
     }
