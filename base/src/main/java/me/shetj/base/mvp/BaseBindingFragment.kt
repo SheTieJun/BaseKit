@@ -84,6 +84,7 @@ abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Frag
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     open fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
         return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java,ViewGroup::class.java,Boolean::class.java)
                 .invoke(null, inflater,container,false) as VB

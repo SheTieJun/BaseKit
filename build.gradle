@@ -9,7 +9,7 @@ buildscript {
     ext.recyclerview            = "1.2.0-beta01"
     ext.swiperefreshlayout      = "1.2.0-alpha01"
 
-    ext.versionName             = "1.0.4"
+    ext.versionName             = "1.0.5"
     ext.gsonVersion             = "2.8.6"
     ext.glideVersion            = "4.11.0"
     ext.eventBus                = "3.2.0"

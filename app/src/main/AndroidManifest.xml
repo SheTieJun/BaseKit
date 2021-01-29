@@ -32,6 +32,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <!--                显现到桌面-->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

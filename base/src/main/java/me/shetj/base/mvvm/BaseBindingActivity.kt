@@ -55,7 +55,7 @@ abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AppCo
         if (useEventBus()) {
             EventBus.getDefault().register(this)
         }
-        findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
+        findViewById<View>(R.id.toolbar_back)?.setOnClickListener { onBackPressed() }
     }
 
     /**
@@ -69,8 +69,9 @@ abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AppCo
     }
 
     /**
-     * 系统会默认生成对应的[ViewBinding]
+     *  默认生成对应的[ViewBinding],也可以重写
      */
+    @Suppress("UNCHECKED_CAST")
     open fun initViewBinding(): VB {
         return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
     }
@@ -135,11 +136,7 @@ abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AppCo
      * 用来替换 [finish] 返回
      */
     open fun back() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            finishAfterTransition()
-        } else {
-            finish()
-        }
+        finishAfterTransition()
     }
 
 

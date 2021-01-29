@@ -60,6 +60,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel, VB : ViewBinding> : Fragm
     /**
      * 系统会默认生成对应的[ViewBinding]
      */
+    @Suppress("UNCHECKED_CAST")
     @NonNull
     open fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
         return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java,ViewGroup::class.java,Boolean::class.java)

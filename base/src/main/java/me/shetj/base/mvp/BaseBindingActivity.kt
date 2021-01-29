@@ -84,6 +84,7 @@ abstract class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : App
         return getClazz<P>(this).getConstructor(IView::class.java).newInstance(this)
     }
 
+    @Suppress("UNCHECKED_CAST")
     open fun initViewBinding(): VB {
         return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
     }

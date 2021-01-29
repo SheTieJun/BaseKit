@@ -2,6 +2,8 @@
 
 package me.shetj.base.network_coroutine
 
+import me.shetj.base.network.exception.ApiException
+
 
 /**
  * 学习源码！
@@ -80,7 +82,7 @@ inline fun <R> runCatching(block: () -> R): HttpResult<R> {
     return try {
         HttpResult.success(block())
     } catch (e: Throwable) {
-        HttpResult.failure(e)
+        HttpResult.failure(ApiException.handleException(e))
     }
 }
 
@@ -89,7 +91,7 @@ inline fun <T, R> T.runCatching(block: T.() -> R): HttpResult<R> {
     return try {
         HttpResult.success(block())
     } catch (e: Throwable) {
-        HttpResult.failure(e)
+        HttpResult.failure(ApiException.handleException(e))
     }
 }
 
@@ -110,7 +112,7 @@ inline fun <R, T : R> HttpResult<T>.getOrElse(onFailure: (exception: Throwable) 
 }
 
 
-inline fun <R, T : R> HttpResult<T>.getOrDefault(defaultValue: R): R {
+fun <R, T : R> HttpResult<T>.getOrDefault(defaultValue: R): R {
     if (isFailure) return defaultValue
     return value as T
 }

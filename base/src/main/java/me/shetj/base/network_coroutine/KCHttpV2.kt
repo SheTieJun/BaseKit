@@ -87,9 +87,7 @@ object KCHttpV2 {
                          onError: DOWNLOAD_ERROR = {},
                          onProcess: DOWNLOAD_PROCESS = { _, _, _ -> },
                          onSuccess: DOWNLOAD_SUCCESS = { }) {
-
         val body = KCHttp.apiService.downloadFile(url)
-
         flow {
             try {
                 val contentLength = body.contentLength()

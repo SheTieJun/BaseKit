@@ -144,7 +144,7 @@ object CalendarReminderUtils {
         values.put(CalendarContract.Reminders.EVENT_ID, eventID)
         values.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前previousDate分钟有提醒
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
-        val uri = context.contentResolver.insert(Uri.parse(CALENDER_REMINDER_URL), values)
+        context.contentResolver.insert(Uri.parse(CALENDER_REMINDER_URL), values)
                 ?: //添加事件提醒失败直接返回
                 return -1
         return eventID

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package me.shetj.base.tools.app
 
 import android.content.Context

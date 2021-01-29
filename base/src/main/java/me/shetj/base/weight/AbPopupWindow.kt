@@ -48,6 +48,7 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
         mContext.lifecycle.addObserver(this)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun initViewBinding(): VB {
         return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java)
             .invoke(null, mContext.layoutInflater) as VB

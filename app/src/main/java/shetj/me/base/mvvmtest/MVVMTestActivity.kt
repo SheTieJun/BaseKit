@@ -2,9 +2,13 @@ package shetj.me.base.mvvmtest
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Looper
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
@@ -21,6 +25,7 @@ import shetj.me.base.test.ProxyFactory
 import shetj.me.base.test.TestProxy
 import shetj.me.base.utils.TimeUtil
 import timber.log.Timber
+import kotlin.random.Random
 
 class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBinding>() {
 
@@ -42,6 +47,7 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
         }
     }
 
+    private val test = (0..10).random()
     /**
      * dl 这里用了单例
      */
@@ -82,12 +88,9 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
             Timber.i("asFlow().asFlowable() = $it")
         }
 
-    }
+        AnimationUtils.loadAnimation(this,R.anim.fade_ins).startOffset
 
-//
-//    override fun initViewBinding(): ActivityMVVMTestBinding {
-//        return  ActivityMVVMTestBinding.inflate(layoutInflater)
-//    }
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
