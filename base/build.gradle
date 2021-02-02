@@ -44,7 +44,7 @@ android {
     libraryVariants.all {
         variant ->
             variant.outputs.all {
-                output -> output.outputFileName = "shetj-${variant.name}-${defaultConfig.versionName}.aar"
+                output -> output.outputFileName = "base-${defaultConfig.versionName}.aar"
             }
     }
 

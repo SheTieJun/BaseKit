@@ -17,3 +17,5 @@ ext.bintrayConfig = [
         pkgUserOrg : 'shetiejun',
 ]
 apply from: '../bintray.gradle'
+
+//implementation 'me.shetj.sdk:base:1.0.6'

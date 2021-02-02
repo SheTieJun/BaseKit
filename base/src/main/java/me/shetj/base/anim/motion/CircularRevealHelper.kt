@@ -44,7 +44,6 @@ class CircularRevealHelper
                     hypot((view.height / 2).toDouble(), (view.width / 2).toDouble()).toFloat())
             anim.duration = 3000
             anim.start()
-
         }
     }
 }

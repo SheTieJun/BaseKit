@@ -1,4 +1,5 @@
 ## Base
+implementation 'me.shetj.sdk:base:1.0.6'
 
 #### 初始化
 ```

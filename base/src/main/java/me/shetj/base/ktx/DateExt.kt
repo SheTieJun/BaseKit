@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-fun Date?.getWeekOfDate(aLocale:Locale  =Locale.CHINA ): String? {
+fun Date?.getWeekOfDate(aLocale:Locale  = Locale.getDefault() ): String? {
     this?.apply {
         val weekDaysName = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
         // String[] weekDaysCode = { "0", "1", "2", "3", "4", "5", "6" };
