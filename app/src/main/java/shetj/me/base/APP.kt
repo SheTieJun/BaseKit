@@ -22,7 +22,7 @@ class APP : Application() {
     override fun onCreate() {
         super.onCreate()
         S.init(this, true, "https://xxxx.com")
-        initKoin(allModules)
+        S.initKoin(allModules)
         Thread.setDefaultUncaughtExceptionHandler(BaseUncaughtExceptionHandler())
         Log.isLoggable("all", INFO)
     }

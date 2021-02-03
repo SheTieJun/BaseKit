@@ -165,7 +165,7 @@ dependencies {
 //    implementation "com.liulishuo.okdownload:okhttp:1.0.7"
 
     implementation("com.google.guava:guava:29.0-android")
-
+    implementation("androidx.startup:startup-runtime:1.0.0")
     implementation "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
 //    implementation 'org.aspectj:aspectjrt:1.9.5'
 }

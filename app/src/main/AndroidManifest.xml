@@ -47,6 +47,16 @@
         <service
             android:name=".common.other.DownloadService"
             android:enabled="true" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="shetj.me.base.BaseInitialize"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 
 </manifest>

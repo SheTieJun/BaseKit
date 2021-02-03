@@ -5,7 +5,11 @@ import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatActivity
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 
 /**
  * 安卓Q 文件基础操作
@@ -30,7 +34,7 @@ object FileQUtils {
     /**
      * 创建文件
      */
-    fun AppCompatActivity.createFile( fileName: String,callback:ActivityResultCallback<Uri?>){
+    fun AppCompatActivity.createFile( fileName: String,callback:ActivityResultCallback<Uri>){
         registerForActivityResult(ActivityResultContracts.CreateDocument(), callback).launch(fileName)
     }
 
@@ -40,6 +44,24 @@ object FileQUtils {
      */
     fun Context.delFile(uri:Uri){
         DocumentsContract.deleteDocument(contentResolver, uri)
+    }
+
+
+    @WorkerThread
+    fun writeDataToDocument(context: Context, uri: Uri, content: String) {
+        try {
+            context.contentResolver.openFileDescriptor(uri, "w").use { parcelFileDescriptor ->
+                FileOutputStream(parcelFileDescriptor?.fileDescriptor).use { fos ->
+                    fos.write(content.toByteArray())
+                    fos.close()
+                    parcelFileDescriptor?.close()
+                }
+            }
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
 
