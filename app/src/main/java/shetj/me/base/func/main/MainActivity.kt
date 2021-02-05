@@ -101,7 +101,7 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
 
     // 框架默认会通过反射创建 MainPresenter ，
     override fun initPresenter(): MainPresenter {
-        return lifecycleScope.get { parametersOf(this) }
+        return  get { parametersOf(this) }
     }
 
     @SuppressLint("SetTextI18n")
@@ -129,8 +129,6 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
                 })
             }
         }
-        Timber.tag("koin").i(view2.rxContext.toString())
-        Timber.tag("hilt").i(view3.rxContext.toString())
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(this, "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
                     EnvironmentStorage.getExternalFilesDir(), "wxwork_android_3.apk")
@@ -193,7 +191,7 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
                 }
             }
             startForResult.launch(Intent(this, MVVMTestActivity::class.java), ActivityOptionsCompat.makeBasic())
-            start<MVVMTestActivity>()
+//            start<MVVMTestActivity>()
         }
 
         mContent.btnSetting.setOnClickListener {

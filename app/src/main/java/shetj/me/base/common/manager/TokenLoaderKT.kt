@@ -7,63 +7,61 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import me.shetj.base.S.app
+import me.shetj.base.ktx.logi
 import me.shetj.base.network_coroutine.KCHttp
+import me.shetj.base.network_coroutine.KCHttpV2
+import me.shetj.base.network_coroutine.fold
 import me.shetj.base.tools.file.SPUtils.Companion.get
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 import shetj.me.base.common.tag.SPKey.SAVE_TOKEN
 import shetj.me.base.utils.TimeUtil
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * kotlin 获取token ,防止并发
  */
 class TokenLoaderKT private constructor() {
-
     /**
      * 是否已经在去请求Token
      */
     private val mRefreshing = AtomicBoolean(false)
-    private var flowToken: Flow<String>? = null
-    private val mutex = Mutex()
+    private var count = AtomicInteger(0)
+    private val channel = Channel<String>()
 
-    private object Holder {
+    object Holder {
         val instance = TokenLoaderKT()
     }
 
-    /**
-     * 获取通过
-     * 如果过期 或者token 为空就重新去获取
-     */
-    suspend fun getToke(): Flow<String> = withContext(Dispatchers.Main) {
-        return@withContext if (mRefreshing.compareAndSet(false, true)) {
-            flow {
-                if (!TextUtils.isEmpty(cacheToken)) {
-                    emit(cacheToken!!)
-                } else {
-                    getTokenByHttp()?.apply {
-                        emit(this)
-                    }
-                }
-            }.flowOn(Dispatchers.IO).also {
-                flowToken = it
-            }
+    private val tokenFlow = flow {
+        if (!TextUtils.isEmpty(cacheToken)) {
+            emit(cacheToken!!)
         } else {
-            flowToken!!
+            if (mRefreshing.compareAndSet(false, true)) {
+                getTokenByHttp()?.apply {
+                    mRefreshing.set(false)
+                    emit(this)
+                }
+            } else {
+                count.incrementAndGet()
+                emit(channel.receive())
+            }
         }
-    }
+    }.flowOn(Dispatchers.IO)
+
+
 
     private suspend fun getTokenByHttp(): String? {
-        mutex.withLock {
-            return KCHttp.get<String>("test/url", error = {
-                throw it  //把异常抛出去
-            })?.apply {
-                TokenManager.getInstance().token = this
-                mRefreshing.set(false)
+        return KCHttp.get<String>("test/url", error = {
+        }).let {
+            val s = "这是token${System.currentTimeMillis()}"
+            TokenManager.getInstance().token = s
+            while (count.get() != 0){
+                channel.send(s)
+                count.decrementAndGet()
             }
+            s
         }
     }
 
@@ -85,6 +83,10 @@ class TokenLoaderKT private constructor() {
 
     private fun getExpire(c: Context): String? {
         return get(c, "PRE_CUSTOM_TOKEN_FAILURE_TIME", TimeUtil.getYMDHMSTime()) as String?
+    }
+
+    fun getToke(): Flow<String> {
+        return tokenFlow
     }
 
 }

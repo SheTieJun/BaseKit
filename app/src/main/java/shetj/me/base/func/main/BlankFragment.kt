@@ -20,7 +20,8 @@ const val ARG_ITEM_COUNT = "item_count"
  * 测试生命周期
  */
 class BlankFragment : BaseBindingFragment<BasePresenter<*>, FragmentBlankBinding>() {
-    override fun initEventAndData() {
+    override fun viewBindData() {
+        super.viewBindData()
         Timber.i("$cout initEventAndData")
     }
 

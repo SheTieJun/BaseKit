@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
+import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -78,4 +79,27 @@ inline fun Fragment.runOnStarted(crossinline action: suspend CoroutineScope.() -
     return lifecycleScope.launchWhenStarted {
         action()
     }
+}
+
+/**
+ * 重试机制
+ */
+suspend fun <T> retryIO(
+        times: Int = Int.MAX_VALUE,
+        initialDelay: Long = 100, // 0.1 second
+        maxDelay: Long = 1000,    // 1 second
+        factor: Double = 2.0,
+        block: suspend () -> T): T
+{
+    var currentDelay = initialDelay
+    repeat(times - 1) {
+        try {
+            return block()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        delay(currentDelay)
+        currentDelay = (currentDelay * factor).toLong().coerceAtMost(maxDelay)
+    }
+    return block()  // last attempt
 }

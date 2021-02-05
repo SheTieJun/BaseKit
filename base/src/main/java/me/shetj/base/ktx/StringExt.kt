@@ -3,6 +3,7 @@ package me.shetj.base.ktx
 import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.Color
+import android.util.Log
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.file.StringUtils
@@ -52,15 +53,15 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
 
 //region log 相关
 fun String?.logi() {
-    Timber.tag("base").i(this)
+    Log.i("base",this.toString())
 }
 
 fun String?.loge() {
-    Timber.tag("base").e(this)
+    Log.e("base",this.toString())
 }
 
 fun String?.logd() {
-    Timber.tag("base").d(this)
+    Log.e("base",this.toString())
 }
 
 //endregion

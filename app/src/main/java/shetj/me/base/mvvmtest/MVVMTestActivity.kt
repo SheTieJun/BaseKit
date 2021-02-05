@@ -15,11 +15,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.rx3.asFlowable
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.loadImage
+import me.shetj.base.ktx.logi
 import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.tools.file.FileQUtils.searchTypeFile
 import org.koin.android.ext.android.get
 import shetj.me.base.R
 import shetj.me.base.bean.ResultMusic
+import shetj.me.base.common.manager.TokenLoaderKT
+import shetj.me.base.common.manager.TokenLoaderKT.Holder.instance
+import shetj.me.base.common.manager.TokenManager
 import shetj.me.base.databinding.ActivityMVVMTestBinding
 import shetj.me.base.test.ProxyFactory
 import shetj.me.base.test.TestProxy
@@ -43,6 +47,14 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
                         mViewModel.url.postValue(it.toString())
                     }
                 })
+            }
+            R.id.testToken ->{
+                repeat(10){i ->
+                    launch {
+                        instance.getToke()
+                        TokenManager.getInstance().token = ""
+                    }
+                }
             }
         }
     }
@@ -70,6 +82,7 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
         mViewModel.url.observe(this, {
            mViewBinding.image.loadImage(it)
         })
+        mViewBinding.testToken.setOnClickListener(click)
         //用来测试是否时单例的viewModel
         Timber.tag("getViewModel").i("id = ${initViewModel()}")
         launch {

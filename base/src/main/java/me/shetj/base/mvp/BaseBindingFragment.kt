@@ -152,13 +152,6 @@ abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : Frag
     open fun onInvisible() {
     }
 
-    /**
-     * Init event and data.
-     */
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    protected abstract fun initEventAndData()
-
-
     override fun onDestroyView() {
         if (lazyPresenter.isInitialized()) {
             mPresenter.onDestroy()

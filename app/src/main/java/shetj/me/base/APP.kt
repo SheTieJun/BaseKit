@@ -21,8 +21,6 @@ import shetj.me.base.di_kointest.allModules
 class APP : Application() {
     override fun onCreate() {
         super.onCreate()
-        S.init(this, true, "https://xxxx.com")
-        S.initKoin(allModules)
         Thread.setDefaultUncaughtExceptionHandler(BaseUncaughtExceptionHandler())
         Log.isLoggable("all", INFO)
     }
