@@ -116,7 +116,7 @@ object KCHttpV2 {
         }.flowOn(Dispatchers.IO)
                 .collect {
                     it.fold(onFailure = { e ->
-                        onError(e)
+                        e?.let { it1 -> onError(it1) }
                     }, onSuccess = { file ->
                         onSuccess(file)
                     }, onLoading = { progress ->

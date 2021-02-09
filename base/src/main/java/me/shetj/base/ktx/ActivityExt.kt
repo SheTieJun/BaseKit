@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
+import androidx.viewbinding.ViewBinding
 import io.reactivex.rxjava3.schedulers.Schedulers
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.model.NetWorkLiveDate
@@ -132,7 +133,7 @@ fun Context.collapseStatusBar() {
  *  可以使用 [AppCompatActivity.registerForActivityResult] 替代
  *  registerForActivityResult(ActivityResultContracts.RequestPermission())
  */
-fun AppCompatActivity.hasPermission(vararg permissions: String, isRequest: Boolean = false,): Boolean {
+fun AppCompatActivity.hasPermission(vararg permissions: String, isRequest: Boolean = false): Boolean {
     for (permission in permissions) {
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             if (isRequest) {
@@ -195,6 +196,22 @@ inline fun Context.createSimDialog(@LayoutRes layoutId: Int,
     return AlertDialog.Builder(this)
             .setView(view)
             .show().apply {
+                setWindowSizeChange.invoke(window)
+            }
+}
+
+inline fun <reified VB : ViewBinding> Context.createSimDialog(
+        crossinline viewListener: ((mVB: VB) -> Unit) = { },
+        crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
+            it?.setLayout(ArmsUtils.dp2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
+        }
+): AlertDialog? {
+    val mVB = VB::class.java.getMethod("inflate", LayoutInflater::class.java)
+            .invoke(null, LayoutInflater.from(this)) as VB
+    viewListener.invoke(mVB)
+    return AlertDialog.Builder(this)
+            .setView(mVB.root)
+            .show()?.apply {
                 setWindowSizeChange.invoke(window)
             }
 }

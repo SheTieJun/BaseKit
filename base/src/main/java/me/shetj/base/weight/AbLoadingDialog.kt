@@ -1,10 +1,12 @@
 package me.shetj.base.weight
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.LongDef
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -48,6 +50,9 @@ abstract class AbLoadingDialog {
     fun showLoading(context: Context, cancelable: Boolean = true, msg: CharSequence = "加载中", @DrawableRes image: Int? = null): AlertDialog {
         initDialog(context, cancelable, msg, image)
         mLoadingDialog?.let {
+            if ((context as Activity).isFinishing) {
+                return mLoadingDialog!!
+            }
             if (!mLoadingDialog!!.isShowing) {
                 mLoadingDialog!!.show()
             }

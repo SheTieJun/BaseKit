@@ -130,11 +130,11 @@ inline fun <R, T> HttpResult<T>.fold(
 inline fun <R, T> HttpResult<T>.fold(
         onSuccess: (value: T) -> R,
         onLoading:(loading: HttpResult.Progress) ->R,
-        onFailure: (exception: Throwable) -> R
+        onFailure: (exception: Throwable?) -> R
 ): R {
     return when {
         isFailure -> {
-            onFailure(exceptionOrNull()!!)
+            onFailure(exceptionOrNull())
         }
         isLoading -> {
             onLoading(value as HttpResult.Progress)

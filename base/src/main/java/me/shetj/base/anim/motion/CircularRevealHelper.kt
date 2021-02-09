@@ -11,6 +11,7 @@ import kotlin.math.hypot
 
 /**
  * 测量，布局，绘制
+ * 在XML 中使用，可以设置多个view,可以通过id 执行不同的操作，或者tag
  */
 class CircularRevealHelper
 @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
