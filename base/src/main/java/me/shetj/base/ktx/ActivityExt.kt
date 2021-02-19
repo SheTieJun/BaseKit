@@ -1,5 +1,6 @@
 package me.shetj.base.ktx
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -9,6 +10,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.os.Build
 import android.os.Looper
 import android.view.*
 import android.widget.LinearLayout
@@ -133,17 +135,40 @@ fun Context.collapseStatusBar() {
  *  可以使用 [AppCompatActivity.registerForActivityResult] 替代
  *  registerForActivityResult(ActivityResultContracts.RequestPermission())
  */
-fun AppCompatActivity.hasPermission(vararg permissions: String, isRequest: Boolean = false): Boolean {
+fun AppCompatActivity.hasPermission(vararg permissions: String, isRequest: Boolean = true): Boolean {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
+    val permissionsCheck: MutableList<String> = ArrayList()
     for (permission in permissions) {
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-            if (isRequest) {
-                ActivityCompat.requestPermissions(this as Activity, permissions, 100)
-            }
-            return false
+            permissionsCheck.add(permission)
         }
     }
-    return true
+    if (permissionsCheck.isEmpty()) return true
+    if (isRequest) {
+        ActivityCompat.requestPermissions(this as Activity, permissionsCheck.toTypedArray(), 100)
+    }
+    return false
 }
+
+
+fun AppCompatActivity.onRequestPermissionsResultImpl(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray): String {
+    val sb = StringBuilder()
+    for (i in grantResults.indices) {
+        if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                when (permissions[i]) {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE -> sb.append("\n · 读写存储  ")
+                    Manifest.permission.CAMERA -> sb.append("\n · 相机  ")
+                    Manifest.permission.READ_PHONE_STATE -> sb.append("\n · 电话状态  ")
+                    Manifest.permission.RECORD_AUDIO -> sb.append("\n · 麦克风录制  ")
+                    Manifest.permission.WRITE_CALENDAR -> sb.append("\n · 添加日程  ")
+                }
+            }
+        }
+    }
+    return sb.toString()
+}
+
 
 inline fun runOnMain(crossinline run: () -> Unit = {}) {
     TaskExecutor.executeOnMain { run() }

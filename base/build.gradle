@@ -132,6 +132,9 @@ dependencies {
     api "androidx.room:room-rxjava3:$room_version"
 
     api "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06" //(key+value)
+    implementation "androidx.datastore:datastore-core:1.0.0-alpha06"
 }
 
 apply from: 'bintrayConfig.gradle'

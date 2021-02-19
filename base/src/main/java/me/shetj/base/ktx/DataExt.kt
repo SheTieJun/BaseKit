@@ -29,11 +29,12 @@ inline fun <reified T> Bundle?.getDataOrNull(key: String): T? {
 //endregion 转化成message
 
 
-inline fun runCatch(crossinline run: () -> Unit) {
-    try {
-        run.invoke()
+inline fun <T,R> T.runCatch(crossinline run: T.() -> R):R? {
+   return try {
+        run()
     } catch (e: Exception) {
         e.printStackTrace()
+       null
     }
 }
 
@@ -64,9 +65,11 @@ fun intToHStr(@IntRange(from = 0,to = 255) x: Int): String {
     }
 }
 
-fun Float.dp2px() = ArmsUtils.dp2px(this)
+val Float.dp2px
+    get()= ArmsUtils.dp2px(this)
 
-fun Float.px2dp() = ArmsUtils.px2dp(this)
+val Float.px2dp
+    get() = ArmsUtils.px2dp(this)
 
 fun Any?.isEmpty() = EmptyUtils.isEmpty(this)
 

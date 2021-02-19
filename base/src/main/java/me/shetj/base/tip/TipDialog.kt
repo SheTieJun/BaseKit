@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import me.shetj.base.R
 import me.shetj.base.weight.AbLoadingDialog
 
@@ -27,7 +28,7 @@ class TipDialog : AbLoadingDialog() {
     companion object {
         @JvmStatic
         @JvmOverloads
-        fun showTip(context: Context, msg: CharSequence = "加载中...",  @LoadingTipsDuration time: Long = LOADING_SHORT): AbLoadingDialog {
+        fun showTip(context: AppCompatActivity, msg: CharSequence = "加载中...",  @LoadingTipsDuration time: Long = LOADING_SHORT): AbLoadingDialog {
             return TipDialog().showTip(context, false, msg = msg,null,time = time)
         }
     }

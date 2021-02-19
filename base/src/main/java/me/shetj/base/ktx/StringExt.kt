@@ -3,9 +3,9 @@ package me.shetj.base.ktx
 import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.Color
-import android.util.Log
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
+import me.shetj.base.tools.debug.DebugFunc
 import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.GsonKit
 import timber.log.Timber
@@ -53,15 +53,19 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
 
 //region log 相关
 fun String?.logi() {
-    Log.i("base",this.toString())
+    Timber.tag("base").i(this.toString())
 }
 
 fun String?.loge() {
-    Log.e("base",this.toString())
+    Timber.tag("base").e(this.toString())
 }
 
 fun String?.logd() {
-    Log.e("base",this.toString())
+    Timber.tag("base").e(this.toString())
+}
+
+fun String?.logOutOut() {
+    DebugFunc.getInstance().saveLogToFile(this)
 }
 
 //endregion

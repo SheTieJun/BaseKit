@@ -1,4 +1,4 @@
-package shetj.me.base.utils
+package me.shetj.base.tools.file
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
@@ -12,9 +12,9 @@ import me.shetj.base.S
 /**
  * dataStore
  */
-class DataStoreKit {
+object DataStoreKit {
 
-    val dataStore: DataStore<Preferences> by lazy {   S.app.createDataStore(name = "settings")}
+    val dataStore: DataStore<Preferences> by lazy {   S.app.createDataStore(name = "base_dataStore")}
 
 //    private val dataStore2: DataStore<Preferences> = S.app.createDataStore(
 //            "settings",
@@ -45,6 +45,9 @@ class DataStoreKit {
                     }
                     Set::class -> {
                         it[stringSetPreferencesKey(key)] = value as Set<String>
+                    }
+                    else ->{
+                        throw IllegalArgumentException(" Can't handle 'value' ")
                     }
                 }
             }
