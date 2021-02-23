@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import me.shetj.base.ktx.requestNetWork
 import me.shetj.base.tools.app.NetworkUtils
 import me.shetj.base.tools.app.Utils
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 /**
@@ -19,6 +20,8 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
         object NONE : NetType() //初始化，或者没有网络
     }
 
+    val isStarted:AtomicBoolean = AtomicBoolean(false)
+
     override fun onActive() {
         super.onActive()
     }
@@ -29,7 +32,9 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
 
     @RequiresPermission(allOf = ["android.permission.CHANGE_NETWORK_STATE"])
     fun start(context: Context){
-        context.requestNetWork()
+        if (isStarted.compareAndSet(false,true)) {
+            context.applicationContext.requestNetWork()
+        }
     }
 
     fun onAvailable() {

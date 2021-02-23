@@ -1,12 +1,4 @@
-# Base
-
-把简单的事情程序化
-
-把复杂的事情程序化
-
-把重复的事情程序化
-
-一切为了效率（偷懒）
+## Base
 
 主要：
 1. [KTX-扩展函数](base/src/main/java/me/shetj/base/ktx)
@@ -25,22 +17,11 @@
 
 8. [DOC](doc)
 
-   
-###  集成方式2种
+9. [share](base/src/main/java/me/shetj/base/share)
 
-```
- maven { url "https://jitpack.io" }
-```
-[![](https://jitpack.io/v/SheTieJun/Base.svg)](https://jitpack.io/#SheTieJun/Base)
-```
+10. [tip](base/src/main/java/me/shetj/base/tip)
 
-kapt 'com.github.SheTieJun.Base:base-compliers:+'
-implementation 'com.github.SheTieJun.Base:base-annotation:+'
-
-
-implementation 'com.github.SheTieJun.Base:base:+'
-```
-
+### 网站
 
 #### [Google's Maven Repository ]( https://dl.google.com/dl/android/maven2/index.html)
 

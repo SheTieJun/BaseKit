@@ -9,6 +9,11 @@ class TestProxy : InvocationHandler {
 
     override fun invoke(proxy: Any, method: Method?, args: Array<out Any>?): Any? {
         println("测试：${method?.name}")
+        method?.genericReturnType
+        method?.genericParameterTypes  //获取到参数类型
+        method?.annotations //获取到所有注解
+        method?.parameterTypes
+
         return method?.invoke(this,args)
     }
 }
