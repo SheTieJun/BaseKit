@@ -14,6 +14,7 @@ android {
         versionName rootProject.ext.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+        resConfigs 'zh'
     }
 
     buildFeatures {

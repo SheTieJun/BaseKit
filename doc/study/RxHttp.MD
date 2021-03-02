@@ -47,3 +47,14 @@
             put("baidy3.com","127.0.0.1")
         })
 ```
+
+### retrofit 架构：函数解析、网络请求和数据转换
+retrofit 本质是生成者：他可以把接口生成对应的接口实例，
+然后通过okhttp 去真正的调用接口
+
+ta可以扩展的
+1.okhttp
+2.设置转换器 `addConverterFactory` :对返回的数据进行转换
+3.设置回调转换器 `addCallAdapterFactory`：会网络工作对象callworker自动转换
+
+接口实例化：动态代理技术
