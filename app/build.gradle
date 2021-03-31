@@ -118,6 +118,7 @@ kapt {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.legacy:legacy-support-v4:$androidx"
+    implementation project(path: ':annotation')
     kapt project(path: ':compilers')
     //https://material.io/develop/android/
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -168,6 +169,9 @@ dependencies {
     implementation("androidx.startup:startup-runtime:1.0.0")
     implementation "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
 //    implementation 'org.aspectj:aspectjrt:1.9.5'
+
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06" //(key+value)
+    implementation "androidx.datastore:datastore-core:1.0.0-alpha06"
 }
 
 //apply from: file("dokit-config.gradle")

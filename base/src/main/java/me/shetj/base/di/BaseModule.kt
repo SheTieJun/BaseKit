@@ -53,6 +53,7 @@ val dbModule = module() {
             addConverterFactory(GsonConverterFactory.create())
             client(get())
             baseUrl(S.baseUrl ?: "https://me.shetj.com")
+            validateEagerly(S.isDebug) //在开始的时候直接开始检测所有的方法
         }
     }
 

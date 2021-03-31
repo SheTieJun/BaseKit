@@ -63,7 +63,7 @@ abstract class AbLoadingDialog :LifecycleObserver{
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun hideLoading() {
+    open fun hideLoading() {
         if (null != mLoadingDialog && mLoadingDialog!!.isShowing) {
             mLoadingDialog!!.dismiss()
         }

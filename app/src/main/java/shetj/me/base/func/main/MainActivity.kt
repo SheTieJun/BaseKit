@@ -55,6 +55,7 @@ import shetj.me.base.R
 import shetj.me.base.api.BApi
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
+import shetj.me.base.common.other.SimpleItemDecoration
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
@@ -129,6 +130,7 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
                 })
             }
         }
+        SimpleItemDecoration
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(this, "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
                     EnvironmentStorage.getExternalFilesDir(), "wxwork_android_3.apk")

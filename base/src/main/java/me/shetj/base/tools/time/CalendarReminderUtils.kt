@@ -229,4 +229,43 @@ object CalendarReminderUtils {
 
 
 
+    /**
+     * 小于0 修改失败
+     */
+    fun deleteCalendarEvent(context: Context, id: Long): Int {
+        val deleteUri = ContentUris.withAppendedId(Uri.parse(CALENDER_EVENT_URL), id)
+        return context.contentResolver.delete(deleteUri, null, null)
+    }
+
+
+    fun updateCalendarEvent(context: Context, id: Long, title: String?, des: String?,
+                            remindTime: Long,
+                            endTime: Long?,
+                            previousTime: Long): Int {
+        val values = ContentValues().apply {
+            val calId = checkAndAddCalendarAccount(context)
+            val timezone = TimeZone.getTimeZone("Asia/Shanghai")
+            //添加日历事件
+            val mCalendar = Calendar.getInstance()
+            mCalendar.timeInMillis = remindTime //设置开始时间
+            val start = mCalendar.time.time
+            mCalendar.timeInMillis = start + 10 * 60 * 1000 //设置终止时间，开始时间加10分钟
+            val end = endTime ?: mCalendar.time.time
+            put(CalendarContract.Events.TITLE, title)
+            put(CalendarContract.Events.DESCRIPTION, des)
+            put(CalendarContract.Events.CALENDAR_ID, calId) //插入账户的id
+            put(CalendarContract.Events.DTSTART, start)
+            put(CalendarContract.Events.DTEND, end)
+            put(CalendarContract.Events.EVENT_TIMEZONE, timezone.displayName) //这个是时区，必须有
+            put(CalendarContract.Events.CUSTOM_APP_PACKAGE, context.packageName)
+            put(CalendarContract.Reminders.EVENT_ID, id)
+            put(CalendarContract.Reminders.MINUTES, previousTime) // 提前previousDate天有提醒
+            put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
+        }
+        val updateUri: Uri = ContentUris.withAppendedId(CalendarContract.Calendars.CONTENT_URI, id)
+        return context.contentResolver.update(updateUri, values, null, null)
+    }
+
+
+
 }

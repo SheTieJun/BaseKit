@@ -58,9 +58,7 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    api 'me.shetj.aop:base-annotation:0.0.1'
-    kapt project(path: ':compilers')
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     //https://developer.android.google.cn/jetpack/
     //https://maven.google.com/web/index.html
     api "androidx.appcompat:appcompat:$appcompat"
@@ -81,12 +79,10 @@ dependencies {
     api "androidx.activity:activity-ktx:$activity_ktx"
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-    api 'androidx.fragment:fragment-ktx:1.2.5'
+    api 'androidx.fragment:fragment-ktx:1.3.1'
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-
-//    api 'androidx.multidex:multidex:2.0.1'
 
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$BRV"
     //腾讯Android开发框架 https://qmuiteam.com/android/get-started/
@@ -134,8 +130,7 @@ dependencies {
 
     api "androidx.paging:paging-runtime-ktx:$paging_version"
 
-    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06" //(key+value)
-    implementation "androidx.datastore:datastore-core:1.0.0-alpha06"
+
 }
 
 apply from: 'bintrayConfig.gradle'

@@ -11,11 +11,10 @@ import kotlin.random.Random
 
 //region 转化成message
 @JvmOverloads
-inline fun Any?.toMessage(code: Int = 1, crossinline action: (Message.() -> Unit) = {}): Message {
+fun Any?.toMessage(code: Int = 1): Message {
     return Message.obtain().apply {
         what = code
         obj = this@toMessage
-        action.invoke(this)
     }
 }
 

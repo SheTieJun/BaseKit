@@ -153,9 +153,7 @@ class KtTestActivity @Inject constructor(): BaseActivity<MainPresenter>() {
             return@copy
         }
 
-        "ss".toMessage {
-            return@toMessage
-        }
+        "ss".toMessage()
         runOnIo {
             return@runOnIo
         }

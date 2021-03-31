@@ -1,6 +1,5 @@
 package me.shetj.base.base
 
-import me.shetj.annotation.apt.SimpleImpl
 
 /**
  * **@author：** shetj<br></br>
@@ -10,7 +9,6 @@ import me.shetj.annotation.apt.SimpleImpl
  * **@describe**<br></br>
  */
 
-@SimpleImpl
 interface CommonCallBack<T> {
     /**
      * 成功

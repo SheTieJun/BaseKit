@@ -5,6 +5,7 @@ import java.lang.reflect.*
 import java.util.*
 
 /**
+ * 参数化类型
  * A<C>  -> getClazz(this) -> C
  * 获取当前类的第一个泛型
  * tip：必须是泛型
