@@ -1,3 +1,4 @@
+include ':base'
 include ':annotation'
 include ':compilers'
-include ':app', ':base'
+include ':app'
