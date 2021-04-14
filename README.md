@@ -1,25 +1,25 @@
 ## Base
 
 主要：
-1. [KTX-扩展函数](base/src/main/java/me/shetj/base/ktx)
+1. [KTX-扩展函数](baseKit/src/main/java/me/shetj/base/ktx)
 
-2. [架构-MVP](base/src/main/java/me/shetj/base/mvp)
+2. [架构-MVP](baseKit/src/main/java/me/shetj/base/mvp)
 
-3. [架构-MVVM](base/src/main/java/me/shetj/base/mvvm)
+3. [架构-MVVM](baseKit/src/main/java/me/shetj/base/mvvm)
 
-4. [NetWork-RxHttp](base/src/main/java/me/shetj/base/network)
+4. [NetWork-RxHttp](baseKit/src/main/java/me/shetj/base/network)
 
-5. [工具包](base/src/main/java/me/shetj/base/tools)
+5. [工具包](baseKit/src/main/java/me/shetj/base/tools)
 
-6. [Network_Coroutine](base/src/main/java/me/shetj/base/network_coroutine)
+6. [Network_Coroutine](baseKit/src/main/java/me/shetj/base/network_coroutine)
 
-7. [MotionLayout](base/src/main/java/me/shetj/base/anim/motion)
+7. [MotionLayout](baseKit/src/main/java/me/shetj/base/anim/motion)
 
 8. [DOC](doc)
 
-9. [share](base/src/main/java/me/shetj/base/share)
+9. [share](baseKit/src/main/java/me/shetj/base/share)
 
-10. [tip](base/src/main/java/me/shetj/base/tip)
+10. [tip](baseKit/src/main/java/me/shetj/base/tip)
 
 ### 网站
 
