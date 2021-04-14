@@ -56,11 +56,11 @@ interface ApiService {
 
     @Multipart
     @POST
-    fun uploadFile(@Url url: String?, @Part("description") description: RequestBody?, @Part("files") file: MultipartBody.Part?): Observable<ResponseBody>
+    fun uploadFile(@Url url: String, @Part description:  MultipartBody.Part?, @Part  file: MultipartBody.Part?): Observable<ResponseBody>
 
     @Multipart
     @POST
-    fun uploadFiles(@Url url: String?, @PartMap maps: Map<String, RequestBody>?): Observable<ResponseBody>
+    fun uploadFiles(@Url url: String?, @PartMap maps: Map<String, @JvmSuppressWildcards RequestBody>?): Observable<ResponseBody>
 
     @Multipart
     @POST

@@ -38,10 +38,10 @@ interface KCApiService {
     //@DELETE()//delete body请求比较特殊 需要自定义
     @Headers("Content-Type: application/json", "Accept: application/json")
     @HTTP(method = "DELETE", hasBody = true)
-    suspend fun deleteJson(@Url url: String?, @Body jsonBody: RequestBody?): ResponseBody
+    suspend fun deleteJson(@Url url: String?, @Body jsonBody: RequestBody): ResponseBody
 
     @PUT
-    suspend fun put(@Url url: String?, @QueryMap maps: Map<String, String>?): ResponseBody
+    suspend fun put(@Url url: String?, @QueryMap maps: Map<String, String>): ResponseBody
 
     @PUT
     suspend fun putBody(@Url url: String?, @Body `object`: Any?): ResponseBody
@@ -55,15 +55,15 @@ interface KCApiService {
 
     @Multipart
     @POST
-    suspend fun uploadFile(@Url fileUrl: String?, @Part("description") description: RequestBody?, @Part("files") file: MultipartBody.Part?): ResponseBody
+    suspend fun uploadFile(@Url fileUrl: String?, @Part description: RequestBody?, @Part file: MultipartBody.Part?): ResponseBody
 
     @Multipart
     @POST
-    suspend fun uploadFiles(@Url url: String?, @PartMap maps: Map<String, RequestBody>?): ResponseBody
+    suspend fun uploadFiles(@Url url: String?, @PartMap maps: Map<String,@JvmSuppressWildcards RequestBody>?): ResponseBody
 
     @Multipart
     @POST
-    suspend fun uploadFiles(@Url url: String?, @Part parts: List<MultipartBody.Part>?): ResponseBody
+    suspend fun uploadFiles(@Url url: String?, @Part parts: List<MultipartBody.Part>): ResponseBody
 
     @Streaming
     @GET
