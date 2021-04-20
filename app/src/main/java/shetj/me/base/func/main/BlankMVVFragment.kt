@@ -18,7 +18,7 @@ import timber.log.Timber
  * A simple [Fragment] subclass.
  * 测试生命周期
  */
-class BlankMVVMkFragment() : BaseBindingFragment<MVVMViewModel,FragmentBlankMvvmBinding>() {
+class BlankMVVMkFragment : BaseBindingFragment<MVVMViewModel,FragmentBlankMvvmBinding>() {
     private var cout: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

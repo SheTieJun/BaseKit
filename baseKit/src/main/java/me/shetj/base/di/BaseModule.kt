@@ -4,6 +4,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import me.shetj.base.S
 import me.shetj.base.ktx.saverDB
+import me.shetj.base.mvp.BaseBindingActivity
+import me.shetj.base.mvp.BaseBindingFragment
+import me.shetj.base.mvp.BaseFragment
 import me.shetj.base.network.RxHttp.Companion.DEFAULT_MILLISECONDS
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.model.HttpHeaders

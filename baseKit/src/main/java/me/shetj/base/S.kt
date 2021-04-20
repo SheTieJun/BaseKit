@@ -15,9 +15,13 @@ import me.shetj.base.tools.debug.DebugFunc
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
+import org.koin.android.java.KoinAndroidApplication
+import org.koin.androidx.fragment.android.KoinFragmentFactory
 import org.koin.androidx.fragment.koin.fragmentFactory
+import org.koin.core.Koin
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.koin.core.module.Module
 import timber.log.Timber
 
@@ -57,11 +61,11 @@ object S {
      * ANDROID_ID的生成规则为：签名+设备信息+设备用户
      * ANDROID_ID重置规则：设备恢复出厂设置时，ANDROID_ID将被重置
      */
-    val androidID :String
-            @SuppressLint("HardwareIds")
-            get(){
-              return Settings.Secure.getString(app.applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
-            }
+    val androidID: String
+        @SuppressLint("HardwareIds")
+        get() {
+            return Settings.Secure.getString(app.applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
+        }
 
 
     /**
@@ -85,15 +89,13 @@ object S {
                 }
             }
             startKoin {
+                fragmentFactory()
                 if (S.isDebug) {
                     androidLogger()
                 }
                 androidContext(application)
                 androidFileProperties()
-                fragmentFactory()
-                //Kotlin 1.4.0 之后需要这样写    modules(modules + dbModule)
-                koin.loadModules(arrayOf(dbModule).toList())
-                koin.createRootScope()
+                modules(dbModule)
             }
             baseUrl?.let {
                 getInstance().debug(S.isDebug)

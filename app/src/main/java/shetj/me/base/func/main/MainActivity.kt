@@ -49,7 +49,7 @@ import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import org.koin.android.ext.android.get
-import org.koin.androidx.scope.lifecycleScope
+import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
 import shetj.me.base.api.BApi
@@ -67,7 +67,7 @@ import javax.inject.Inject
 import kotlin.collections.HashMap
 
 @AndroidEntryPoint
-class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), View.OnClickListener {
+class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, ActivityMainBinding>(), View.OnClickListener {
     private lateinit var mContent: ContentMainBinding
     private var toolbar: Toolbar? = null
     private var mBtnTest: Button? = null
@@ -83,12 +83,6 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
 
     @Inject
     lateinit var saverDao: SaverDao
-
-    val view2: IView = lifecycleScope.get()
-
-    @main1
-    @Inject
-    lateinit var view3: IView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,7 +124,6 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
                 })
             }
         }
-        SimpleItemDecoration
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(this, "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
                     EnvironmentStorage.getExternalFilesDir(), "wxwork_android_3.apk")
@@ -152,8 +145,6 @@ class MainActivity @Inject constructor() : BaseBindingActivity<MainPresenter, Ac
 
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
             TipPopupWindow.showTip(this, tipMsg = "测试一下INFO")
-            Timber.tag("DL").i(musicBean1.toJson())
-            Timber.tag("DL").i(musicBean2.toJson())
         }
 
         findViewById<View>(R.id.btn_email).setOnClickListener {

@@ -1,5 +1,6 @@
 package me.shetj.base.network_coroutine
 
+import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -55,7 +56,7 @@ interface KCApiService {
 
     @Multipart
     @POST
-    suspend fun uploadFile(@Url fileUrl: String?, @Part description: RequestBody?, @Part file: MultipartBody.Part?): ResponseBody
+    suspend fun uploadFile(@Url fileUrl: String?, @Part description:  MultipartBody.Part?, @Part file: MultipartBody.Part?): ResponseBody
 
     @Multipart
     @POST

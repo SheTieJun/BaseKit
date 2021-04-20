@@ -14,7 +14,7 @@ buildscript {
     ext.glideVersion            = "4.11.0"
     ext.eventBus                = "V3.2.0"
     ext.constraintlayout        = "2.0.4"
-    ext.koin_version            = '2.1.6'
+    ext.koin_version            = '3.0.1'
     ext.coroutines              = "1.4.2"
     ext.room_version            = "2.3.0-alpha03"
     ext.hilt_version            = '2.28-alpha'
@@ -46,7 +46,7 @@ buildscript {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
 //        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'//Aspect
         classpath "com.alibaba:arouter-register:1.0.2"
-        classpath "org.koin:koin-gradle-plugin:$koin_version"
+        classpath "org.koin:koin-gradle-plugin:3.0.0-alpha-4"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
@@ -54,8 +54,8 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven { url "https://jitpack.io" }
         mavenCentral()
+        maven { url "https://jitpack.io" }
         mavenLocal()
         jcenter()
         maven { url 'https://dl.bintray.com/shetiejun/maven' }

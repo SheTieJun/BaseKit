@@ -21,8 +21,6 @@ import shetj.me.base.bean.ResultMusic
  */
 class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
 
-    val view2: IView = get(IView::class.java)
-
     fun getNightModel(): Int {
         //android:forceDarkAllowed="true"
         //?android:attr/textColorPrimary 这是一种通用型文本颜色。它在浅色主题背景下接近于黑色，在深色主题背景下接近于白色。该颜色包含一个停用状态。

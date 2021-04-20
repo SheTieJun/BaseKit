@@ -102,14 +102,14 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-rx3:$coroutines"
 
-    // Koin AndroidX Scope features
-    api "org.koin:koin-androidx-scope:$koin_version"
-    // Koin AndroidX ViewModel features
-    api "org.koin:koin-androidx-viewmodel:$koin_version"
-    // Koin AndroidX Fragment features
-    api "org.koin:koin-androidx-fragment:$koin_version"
-    // Koin AndroidX Experimental features
-    api "org.koin:koin-androidx-ext:$koin_version"
+// Koin main features for Android (Scope,ViewModel ...)
+    api "io.insert-koin:koin-android:$koin_version"
+// Koin Android - experimental builder extensions
+    api "io.insert-koin:koin-android-ext:$koin_version"
+// Koin for Jetpack WorkManager
+    api "io.insert-koin:koin-androidx-workmanager:$koin_version"
+// Koin for Jetpack Compose (unstable version)
+    api "io.insert-koin:koin-androidx-compose:$koin_version"
 
     //https://github.com/code-mc/material-icon-lib icon图片库
     api 'net.steamcrafted:materialiconlib:1.1.5'

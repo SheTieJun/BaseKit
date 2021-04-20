@@ -80,3 +80,15 @@ val allModules = appModule + mvpModule + mvvmModule + scopeModule
 ```
    loadKoinModules(modules)
 ```
+
+
+```
+No Scope Definition found for qualifer 'shetj.me.base.func.main.BlankFragment'
+```
+解决方法
+```
+
+    scope<BlankFragment> {
+
+    }
+```

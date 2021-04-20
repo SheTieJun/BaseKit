@@ -4,10 +4,7 @@ import android.app.Application
 import android.util.Log
 import android.util.Log.INFO
 import dagger.hilt.android.HiltAndroidApp
-import me.shetj.base.S
-import me.shetj.base.S.initKoin
 import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
-import shetj.me.base.di_kointest.allModules
 
 /**
  * **@packageName：** com.ebu.master<br></br>

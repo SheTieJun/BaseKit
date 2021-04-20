@@ -27,14 +27,4 @@ annotation class main2
 @InstallIn(value = [ApplicationComponent::class])
 @Module
 abstract class AbstractModule {
-
-    //KtTestActivity @Inject constructor()    + @AndroidEntryPoint
-    @main1
-    @Binds  //抽象实例 （括号里面是具体实现）
-    abstract fun getIView(iView: KtTestActivity): IView
-
-
-    @main2
-    @Binds
-    abstract fun getIView2(iView: MainActivity): IView
 }
