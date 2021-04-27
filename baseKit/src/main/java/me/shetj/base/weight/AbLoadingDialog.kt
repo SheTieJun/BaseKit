@@ -15,6 +15,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.*
 import me.shetj.base.S.handler
+import me.shetj.base.base.*
 import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
@@ -22,7 +23,7 @@ import kotlin.coroutines.CoroutineContext
 /**
  *   must  【 android:configChanges="orientation|keyboardHidden|screenSize"】
  */
-abstract class AbLoadingDialog :LifecycleObserver{
+abstract class AbLoadingDialog :LifecycleObserver, KTScopeComponent {
 
     companion object {
         const val LOADING_LONG = 1800L
@@ -34,17 +35,12 @@ abstract class AbLoadingDialog :LifecycleObserver{
     @LongDef(LOADING_LONG, LOADING_SHORT)
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     public annotation class LoadingTipsDuration
-
-
-    class LoadingScope(override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Main.immediate + handler) : CoroutineScope
-
     private var weakReference: WeakReference<AppCompatActivity>? = null
     private var mLoadingDialog: AlertDialog? = null
-    private val lazyScope = lazy { LoadingScope() }
     private val lazyComposite = lazy { CompositeDisposable() }
     private val mCompositeDisposable: CompositeDisposable by lazyComposite
 
-    val coroutineScope: LoadingScope by lazyScope
+    override val ktScope: DefCoroutineScope by defScope()
 
     abstract fun createLoading(context: Context, cancelable: Boolean = false, msg: CharSequence = "加载中...", @DrawableRes image: Int? = null): AlertDialog?
 
@@ -76,6 +72,7 @@ abstract class AbLoadingDialog :LifecycleObserver{
                 initSetting()
             }
             context.lifecycle.addObserver(this)
+            ktScope.register(context.lifecycle)
         }
     }
 
@@ -90,9 +87,6 @@ abstract class AbLoadingDialog :LifecycleObserver{
     }
 
     private fun clean() {
-        if (lazyScope.isInitialized()) {
-            coroutineScope.cancel()
-        }
         if (lazyComposite.isInitialized()) {
             mCompositeDisposable.clear()
         }
@@ -105,7 +99,7 @@ abstract class AbLoadingDialog :LifecycleObserver{
      */
     inline fun showWithAction(context: AppCompatActivity, crossinline action: suspend () -> Unit): AbLoadingDialog {
         showLoading(context)
-        coroutineScope.launch {
+        ktScope.launch {
             action()
             hideLoading()
         }
@@ -156,7 +150,7 @@ abstract class AbLoadingDialog :LifecycleObserver{
 
 
     inline fun showWithTimeOutAction(context: AppCompatActivity, crossinline action: suspend () -> Unit, time: Long = LOADING_SHORT){
-        coroutineScope.launch {
+        ktScope.launch {
             withTimeout(time){
                 showLoading(context)
                 action.invoke()
