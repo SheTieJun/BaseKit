@@ -14,16 +14,14 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.*
-import me.shetj.base.S.handler
 import me.shetj.base.base.*
 import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
-import kotlin.coroutines.CoroutineContext
 
 /**
  *   must  【 android:configChanges="orientation|keyboardHidden|screenSize"】
  */
-abstract class AbLoadingDialog :LifecycleObserver, KTScopeComponent {
+abstract class AbLoadingDialog :LifecycleObserver, KtScopeComponent {
 
     companion object {
         const val LOADING_LONG = 1800L
@@ -60,6 +58,7 @@ abstract class AbLoadingDialog :LifecycleObserver, KTScopeComponent {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun hideLoading() {
+        ktScope.cancel()
         if (null != mLoadingDialog && mLoadingDialog!!.isShowing) {
             mLoadingDialog!!.dismiss()
         }

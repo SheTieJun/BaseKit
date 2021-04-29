@@ -8,13 +8,14 @@ import kotlinx.coroutines.launch
 
 /**
  * 生命周期 + 协程作业用域
- * [LifecycleOwner] + [CoroutineScope]
+ *
+ * 自身[LifecycleOwner] + 自身[CoroutineScope]
  */
 abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
 
-    override val ktScope: DefCoroutineScope by this.defLifeOwnerScope()
+    override val ktScope: DefCoroutineScope by ktScopeWithLife(lifecycle)
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
+    private val lifecycleRegistry = LifecycleRegistry(getOwner())
 
     init {
         initLifecycle()
@@ -37,6 +38,11 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
 
     override fun getLifecycle(): Lifecycle {
         return lifecycleRegistry
+    }
+
+
+    private fun getOwner():LifecycleOwner{
+        return this
     }
 
     override fun onClear() {
@@ -85,7 +91,7 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
 }
 
 
-interface LifecycleWithCopeComponent : KTScopeComponent, LifecycleOwner {
+interface LifecycleWithCopeComponent : KtScopeComponent, LifecycleOwner {
 
     /**
      * when LifecycleEvent == [Lifecycle.Event.ON_DESTROY]

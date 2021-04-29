@@ -12,10 +12,10 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import kotlinx.coroutines.cancel
-import me.shetj.base.R
+import me.shetj.base.base.DefCoroutineScope
+import me.shetj.base.base.KtScopeComponent
+import me.shetj.base.base.defScope
 import me.shetj.base.ktx.getClazz
-import me.shetj.base.weight.AbLoadingDialog
 
 /**
  * popup 弹窗
@@ -26,7 +26,7 @@ import me.shetj.base.weight.AbLoadingDialog
  * }
  */
 abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatActivity) :
-    PopupWindow(mContext), LifecycleObserver {
+    PopupWindow(mContext), LifecycleObserver , KtScopeComponent {
 
     private val lazyComposite = lazy { CompositeDisposable() }
     protected val mCompositeDisposable: CompositeDisposable by lazyComposite
@@ -34,8 +34,7 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding
 
-    private val lazyScope = lazy { AbLoadingDialog.LoadingScope() }
-    protected val coroutineScope: AbLoadingDialog.LoadingScope by lazyScope
+    override val ktScope: DefCoroutineScope by defScope()
 
     init {
         width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -44,8 +43,13 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
         isFocusable = false
         contentView = mViewBinding.root
         mViewBinding.initUI()
+        initData()
+    }
+
+    private fun initData() {
         setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         mContext.lifecycle.addObserver(this)
+        ktScope.register(mContext.lifecycle)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -69,9 +73,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
             if (lazyComposite.isInitialized()) {
                 mCompositeDisposable.clear()
             }
-            if (lazyScope.isInitialized()){
-                coroutineScope.cancel()
-            }
             dismiss()
         } catch (ignored: Exception) {
             //暴力解决，可能的崩溃
@@ -83,9 +84,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
         try {
             if (lazyComposite.isInitialized()) {
                 mCompositeDisposable.clear()
-            }
-            if (lazyScope.isInitialized()){
-                coroutineScope.cancel()
             }
             dismiss()
         } catch (_: Exception) {
