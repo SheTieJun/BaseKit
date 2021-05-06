@@ -1,6 +1,8 @@
 package me.shetj.base.model
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import me.shetj.base.tools.app.PlugConfigs
 
 
 /**
@@ -8,12 +10,28 @@ import androidx.lifecycle.MutableLiveData
  */
 class PlugLiveData private constructor() : MutableLiveData<Boolean>(false) {
 
+    private var plugConfigs:PlugConfigs ?=null
+
     override fun onActive() {
         super.onActive()
     }
 
     override fun onInactive() {
         super.onInactive()
+    }
+
+
+    fun start(context: Context){
+        PlugConfigs.getInstance(context.applicationContext).apply {
+            registerReceiver()
+        }.also {
+            plugConfigs = it
+        }
+    }
+
+    fun stop(){
+        plugConfigs?.unregisterReceiver()
+        plugConfigs = null
     }
 
 

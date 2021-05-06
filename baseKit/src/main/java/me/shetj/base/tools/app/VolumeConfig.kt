@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 /**
  * 声音音量控制
  */
-class VolumeConfig(val context: Context) {
+internal class VolumeConfig(val context: Context) {
 
     private val isRegister = AtomicBoolean(false)
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager

@@ -1,5 +1,6 @@
 package me.shetj.base.base
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -15,7 +16,7 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
 
     override val ktScope: DefCoroutineScope by ktScopeWithLife(lifecycle)
 
-    private val lifecycleRegistry = LifecycleRegistry(getOwner())
+    private val lifecycleRegistry : LifecycleRegistry by lazy { LifecycleRegistry(getOwner()) }
 
     init {
         initLifecycle()
@@ -98,10 +99,13 @@ interface LifecycleWithCopeComponent : KtScopeComponent, LifecycleOwner {
      */
     fun onClear()
 
+    @MainThread
     fun onStart()
 
+    @MainThread
     fun onResume()
 
+    @MainThread
     fun onDeStory()
 
 }

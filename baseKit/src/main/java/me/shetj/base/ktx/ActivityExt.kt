@@ -245,7 +245,7 @@ inline fun <reified VB : ViewBinding> Context.createSimDialog(
  * 获取网络状态监听回调
  */
 @RequiresPermission(allOf = ["android.permission.CHANGE_NETWORK_STATE"])
-fun Context.requestNetWork() {
+internal fun Context.requestNetWork() {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val builder = NetworkRequest.Builder()
     val request = builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)

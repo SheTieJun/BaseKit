@@ -46,7 +46,6 @@ class ProcessUtils private constructor() {
                     val packageManager = Utils.app.packageManager
                     val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
                     val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                    println(list)
                     if (list.size > 0) {
                         try {
                             val info = packageManager.getApplicationInfo(Utils.app.packageName, 0)

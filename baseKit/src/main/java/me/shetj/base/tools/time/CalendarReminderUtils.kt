@@ -109,7 +109,7 @@ object CalendarReminderUtils {
     fun addCalendarEvent(context: Context?, title: String?, des: String?,
                          remindTime: Long,
                          endTime: Long?,
-                         previousTime: Long,packageName:String ?=null,scheme:String?=null): Long {
+                         previousTime: Long, packageName: String? = null, scheme: String? = null): Long {
         if (context == null) {
             return -1
         }
@@ -123,7 +123,7 @@ object CalendarReminderUtils {
         mCalendar.timeInMillis = remindTime //设置开始时间
         val start = mCalendar.time.time
         mCalendar.timeInMillis = start + 10 * 60 * 1000 //设置终止时间，开始时间加10分钟
-        val end = endTime?:mCalendar.time.time
+        val end = endTime ?: mCalendar.time.time
         val event = ContentValues()
         event.put(CalendarContract.Events.TITLE, title)
         event.put(CalendarContract.Events.DESCRIPTION, des)
@@ -150,16 +150,16 @@ object CalendarReminderUtils {
         return eventID
     }
 
-    fun updateRemindEvent(context: Context, calId: Int,eventId: Long, title: String?, des: String?,
+    fun updateRemindEvent(context: Context, calId: Int, eventId: Long, title: String?, des: String?,
                           remindTime: Long,
                           endTime: Long?,
-                          previousTime: Long,packageName:String ?=null,scheme:String?=null): Boolean {
+                          previousTime: Long, packageName: String? = null, scheme: String? = null): Boolean {
 
         val mCalendar = Calendar.getInstance()
         mCalendar.timeInMillis = remindTime //设置开始时间
         val start = mCalendar.time.time
         mCalendar.timeInMillis = start + 10 * 60 * 1000 //设置终止时间，开始时间加10分钟
-        val end = endTime?:mCalendar.time.time
+        val end = endTime ?: mCalendar.time.time
 
         return try {
             val tz = TimeZone.getDefault()        // 获取默认时区
@@ -171,13 +171,13 @@ object CalendarReminderUtils {
             values.put(CalendarContract.Events.DESCRIPTION, des)
             values.put(CalendarContract.Events.CALENDAR_ID, calId)
             values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_DEFAULT)
-            values.put(CalendarContract.Events.EVENT_LOCATION,tz.displayName)
+            values.put(CalendarContract.Events.EVENT_LOCATION, tz.displayName)
             values.put(CalendarContract.Events.EVENT_TIMEZONE, tz.id)
             val updateUri = ContentUris.withAppendedId(Uri.parse(CALENDER_REMINDER_URL), eventId)
             val rowNum = context.contentResolver.update(updateUri, values, null, null)
             if (rowNum <= 0) {
                 /*更新event不成功，说明用户在日历中删除了提醒事件，重新添加*/
-                if (addCalendarEvent(context,title, des, remindTime, endTime, previousTime,packageName,scheme) != -1L){
+                if (addCalendarEvent(context, title, des, remindTime, endTime, previousTime, packageName, scheme) != -1L) {
                     return true
                 }
                 return false
@@ -228,7 +228,6 @@ object CalendarReminderUtils {
     }
 
 
-
     /**
      * 小于0 修改失败
      */
@@ -251,8 +250,12 @@ object CalendarReminderUtils {
             val start = mCalendar.time.time
             mCalendar.timeInMillis = start + 10 * 60 * 1000 //设置终止时间，开始时间加10分钟
             val end = endTime ?: mCalendar.time.time
-            put(CalendarContract.Events.TITLE, title)
-            put(CalendarContract.Events.DESCRIPTION, des)
+            title?.let {
+                put(CalendarContract.Events.TITLE, title)
+            }
+            des?.let {
+                put(CalendarContract.Events.DESCRIPTION, des)
+            }
             put(CalendarContract.Events.CALENDAR_ID, calId) //插入账户的id
             put(CalendarContract.Events.DTSTART, start)
             put(CalendarContract.Events.DTEND, end)
@@ -265,7 +268,6 @@ object CalendarReminderUtils {
         val updateUri: Uri = ContentUris.withAppendedId(CalendarContract.Calendars.CONTENT_URI, id)
         return context.contentResolver.update(updateUri, values, null, null)
     }
-
 
 
 }

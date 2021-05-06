@@ -20,7 +20,7 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
         object NONE : NetType() //初始化，或者没有网络
     }
 
-    val isStarted:AtomicBoolean = AtomicBoolean(false)
+    private val isStarted:AtomicBoolean = AtomicBoolean(false)
 
     override fun onActive() {
         super.onActive()

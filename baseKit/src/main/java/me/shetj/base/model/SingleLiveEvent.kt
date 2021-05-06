@@ -10,12 +10,12 @@ import java.util.concurrent.atomic.AtomicBoolean
 /**
  * 只使用一次的liveDate
  */
-class SingleLiveEvent<T> : MutableLiveData<T?>() {
+class SingleLiveEvent<T> : MutableLiveData<T>() {
 
     private val mPending: AtomicBoolean = AtomicBoolean(false)
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T?>) {
-        super.observe(owner,Observer{
+        super.observe(owner, {
             if (mPending.compareAndSet(true, false)) {
                 observer.onChanged(it)
             }

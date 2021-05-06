@@ -58,7 +58,6 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation 'junit:junit:4.13.2'
     //https://developer.android.google.cn/jetpack/
     //https://maven.google.com/web/index.html
     api "androidx.appcompat:appcompat:$appcompat"
