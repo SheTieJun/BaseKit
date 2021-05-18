@@ -36,7 +36,7 @@ open class RxHttp private constructor() {
     //region retrofit 相关
     private val retrofitBuilder: Retrofit.Builder = get(Retrofit.Builder::class.java)
     private val okHttpClientBuilder: OkHttpClient.Builder = get(OkHttpClient.Builder::class.java)
-    private var mBaseUrl: String = "https://shetj.me" //必须修改
+    private var mBaseUrl: String = "https://xxx.com" //必须修改
     private val apiManager: ApiService by lazy {
         getApiManager(ApiService::class.java)
     }
@@ -53,7 +53,7 @@ open class RxHttp private constructor() {
 
     private fun initRetrofitSetting() {
         /*
-            [BaseModule.kt]
+            [BaseModule.kt] 使用koin 注入
          */
 //        retrofitBuilder.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
 //        retrofitBuilder.addConverterFactory(GsonConverterFactory.create())

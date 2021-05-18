@@ -37,17 +37,17 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
         }
     }
 
-    fun onAvailable() {
+    internal fun onAvailable() {
         if (value?.hasNet == true) return
         postValue(value?.copy(hasNet = true))
     }
 
-    fun onLost() {
+    internal fun onLost() {
         if (value?.hasNet == false) return
         postValue(value?.copy(hasNet = false,netType = NetType.NONE))
     }
 
-    fun setNetType(netType: NetType) {
+    internal fun setNetType(netType: NetType) {
         if (value?.netType == netType) return
         postValue(value?.copy(hasNet = true,netType = netType))
     }

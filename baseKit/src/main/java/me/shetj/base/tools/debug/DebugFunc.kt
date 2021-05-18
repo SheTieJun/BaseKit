@@ -35,6 +35,7 @@ class DebugFunc private constructor() {
         val saveHttpFile = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separatorChar + "HttpDebug.text"
         val logFilePath = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "crashLog"
 
+        @Volatile
         private var mDebugFunc: DebugFunc? = null
 
         @JvmStatic

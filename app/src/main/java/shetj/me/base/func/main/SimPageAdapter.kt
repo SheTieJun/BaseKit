@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import me.shetj.base.saver.Saver
+import me.shetj.base.view.edge.EdgeViewHolder
 import shetj.me.base.R
 
 
-class SimPageAdapter : PagingDataAdapter<Saver,BaseViewHolder>(diffCallback) {
+class SimPageAdapter : PagingDataAdapter<Saver,EdgeViewHolder>(diffCallback) {
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Saver>() {
@@ -24,13 +24,13 @@ class SimPageAdapter : PagingDataAdapter<Saver,BaseViewHolder>(diffCallback) {
         }
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: EdgeViewHolder, position: Int) {
         holder.setText(R.id.title, getItem(position)?.id.toString())
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EdgeViewHolder {
        val view =  LayoutInflater.from(parent.context).inflate(R.layout.item_page, parent, false)
-       return BaseViewHolder(view)
+       return EdgeViewHolder(view)
     }
 
 }

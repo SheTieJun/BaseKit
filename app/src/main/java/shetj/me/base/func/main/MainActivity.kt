@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.Button
+import android.widget.EdgeEffect
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.paging.Pager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -36,7 +38,6 @@ import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseBindingActivity
-import me.shetj.base.mvp.IView
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.saver.Saver
@@ -48,18 +49,16 @@ import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
+import me.shetj.base.view.edge.SpringEdgeEffect
 import org.koin.android.ext.android.get
-import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.core.parameter.parametersOf
 import shetj.me.base.R
 import shetj.me.base.api.BApi
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
-import shetj.me.base.common.other.SimpleItemDecoration
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
-import shetj.me.base.di_hilttest.main1
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import timber.log.Timber
 import java.util.*
@@ -118,9 +117,9 @@ class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, Ac
         val list = arrayListOf<Fragment>().apply {
             repeat(100) {
                 add(if (it % 2 == 0) {
-                    BlankMVVMkFragment.newInstance(it)
+                    BlankMVVMkFragment()
                 } else {
-                    BlankFragment.newInstance(it)
+                    BlankFragment()
                 })
             }
         }
@@ -243,7 +242,6 @@ class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, Ac
                 mPresenter.addEvent(this)
             }
         }
-
         NetWorkLiveDate.getInstance().start(this)
         NetWorkLiveDate.getInstance().observe(this, {
             when (it?.netType) {
@@ -267,7 +265,14 @@ class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, Ac
         val footer = SimPageLoadAdapter("footer")
         val header = SimPageLoadAdapter("header")
         mViewBinding.content.recycle.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
+        mViewBinding.content.recycle.apply {
+            edgeEffectFactory = object :RecyclerView.EdgeEffectFactory(){
+                override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
+                    return SpringEdgeEffect(view, direction)
+                }
+            }
 
+        }
         mViewBinding.content.testThread.setOnClickListener {
             TaskExecutor.exit()
             TaskExecutor.executeOnIO {

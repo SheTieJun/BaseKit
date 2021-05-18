@@ -100,6 +100,22 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
         return (paint.ascent() + paint.descent()) / 2
     }
 
+    //开始绘制
+    override fun draw(canvas: Canvas?) {
+        super.draw(canvas)
+    }
+
+    //绘制前景
+    override fun onDrawForeground(canvas: Canvas?) {
+        super.onDrawForeground(canvas)
+    }
+
+    //绘制内容
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+    }
+
+
     //强行绘制得到宽高
     fun forceSpec() {
         val widthMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)

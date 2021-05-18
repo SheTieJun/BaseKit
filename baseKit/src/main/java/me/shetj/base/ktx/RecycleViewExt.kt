@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 
 /**
@@ -35,6 +36,12 @@ fun  RecyclerView?.smoothToPosition(position: Int,scroller: LinearSmoothScroller
             layoutManager?.startSmoothScroll(scroller)
         }?: this.smoothScrollToPosition(position)
 
+    }
+}
+
+inline fun <reified T:BaseViewHolder> RecyclerView.findEachViewHolder(action:T?.() ->Unit){
+    for (i in 0 until childCount) {
+        action((getChildViewHolder(getChildAt(i)) as? T))
     }
 }
 

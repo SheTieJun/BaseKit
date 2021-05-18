@@ -52,9 +52,9 @@ internal class PlugConfigs(val context: Context, var connected: Boolean = false)
 
     fun setAudioVoice(volume: Int) {
         audioManager.setStreamVolume(
-                AudioManager.STREAM_MUSIC,
-                volume,
-                0
+            AudioManager.STREAM_MUSIC,
+            volume,
+            0
         )
     }
 
@@ -72,6 +72,10 @@ internal class PlugConfigs(val context: Context, var connected: Boolean = false)
             }
         }
 
+        fun onDestroy() {
+            sInstance?.unregisterReceiver()
+            sInstance = null
+        }
     }
 
 }

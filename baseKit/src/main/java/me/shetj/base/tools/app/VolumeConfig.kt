@@ -80,6 +80,10 @@ internal class VolumeConfig(val context: Context) {
             }
         }
 
+        fun onDestroy(){
+            sInstance?.unregisterReceiver()
+            sInstance = null
+        }
     }
 
 }

@@ -65,7 +65,7 @@ class HttpResult<out T> constructor(val value: Any?) {
     data class Progress(val currentLength: Long, val length: Long, val process: Float)
 }
 
-fun createFailure(exception: Throwable): HttpResult.Failure =
+private fun createFailure(exception: Throwable): HttpResult.Failure =
         HttpResult.Failure(exception)
 
 

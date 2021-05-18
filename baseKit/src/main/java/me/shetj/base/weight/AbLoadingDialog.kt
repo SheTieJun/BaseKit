@@ -121,7 +121,7 @@ abstract class AbLoadingDialog :LifecycleObserver, KtScopeComponent {
      */
     fun showWithRxAction(context: AppCompatActivity, action: Observable<*>): AbLoadingDialog {
         showLoading(context)
-        action.doOnComplete(::hideLoading)
+        action.doFinally(::hideLoading)
         mCompositeDisposable.add(action.subscribe())
         return this
     }
@@ -155,7 +155,6 @@ abstract class AbLoadingDialog :LifecycleObserver, KtScopeComponent {
                 action.invoke()
                 hideLoading()
             }
-            hideLoading()
         }
     }
 
