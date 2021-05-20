@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.receiveAsFlow
 fun EditText.asFlow(): Flow<String> {
     return Channel<String>(capacity = Channel.UNLIMITED).also { channel ->
         addTextChangedListener(beforeTextChanged =
-        { text: CharSequence?, start: Int, count: Int, after: Int ->
+        { _: CharSequence?, _: Int, _: Int, _: Int ->
         }, afterTextChanged = {
             channel.offer(it.toString())
 
-        }, onTextChanged = { text: CharSequence?, start: Int, before: Int, count: Int ->
+        }, onTextChanged = { _: CharSequence?, _: Int, _: Int, _: Int ->
         })
     }.receiveAsFlow()
 }

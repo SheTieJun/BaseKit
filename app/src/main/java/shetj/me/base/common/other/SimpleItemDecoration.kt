@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -48,9 +49,9 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
 
     private constructor(context: Context, options: ItemDecorationOptions) {
         dividerMainPaint = Paint()
-        dividerMainPaint.color = context.resources.getColor(options.mainColorId)
+        dividerMainPaint.color = ContextCompat.getColor(context, options.mainColorId)
         dividerSecondPaint = Paint()
-        dividerSecondPaint.color = context.resources.getColor(options.secondColorId)
+        dividerSecondPaint.color = ContextCompat.getColor(context, options.secondColorId)
         orientation = options.orientation
         dividerHeight = options.dividerHeight
         dividerMarginLeft = options.dividerMarginLeft
@@ -66,15 +67,15 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
      * 允许头部 item 和内部 item 不一致
      */
     private constructor(
-            context: Context,
-            headerOptions: ItemDecorationOptions,
-            itemOptions: ItemDecorationOptions,
-            viewTypeList: ArrayList<Int>
+        context: Context,
+        headerOptions: ItemDecorationOptions,
+        itemOptions: ItemDecorationOptions,
+        viewTypeList: ArrayList<Int>
     ) {
         dividerMainPaint = Paint()
-        dividerMainPaint.color = context.resources.getColor(itemOptions.mainColorId)
+        dividerMainPaint.color = ContextCompat.getColor(context, itemOptions.mainColorId)
         dividerSecondPaint = Paint()
-        dividerSecondPaint.color = context.resources.getColor(itemOptions.secondColorId)
+        dividerSecondPaint.color = ContextCompat.getColor(context, itemOptions.secondColorId)
         orientation = itemOptions.orientation
         dividerHeight = itemOptions.dividerHeight
         dividerMarginLeft = itemOptions.dividerMarginLeft
@@ -88,11 +89,16 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
         this.headerOptions = headerOptions
     }
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         if (isProcessEmptyStatus) {
             val adapter = parent.adapter
             if (adapter is BaseQuickAdapter<*, *>) {
-                if ((adapter as BaseQuickAdapter<*,*>).data.isNullOrEmpty()) {
+                if (adapter.data.isNullOrEmpty()) {
                     // 没有数据的时候直接return
                     return
                 }
@@ -114,20 +120,20 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
         if (isProcessEmptyStatus) {
             val adapter = parent.adapter
             if (adapter is BaseQuickAdapter<*, *>) {
-                if ((adapter as BaseQuickAdapter<*,*>).data.isNullOrEmpty()) {
+                if (adapter.data.isNullOrEmpty()) {
                     // 没有数据的时候直接return
                     return
                 }
             }
         }
         if (needTop) {
-            handleNormal(c, parent, state)
+            handleNormal(c, parent)
         } else {
-            handleNormalWithoutTop(c, parent, state)
+            handleNormalWithoutTop(c, parent)
         }
     }
 
-    private fun handleNormalWithoutTop(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+    private fun handleNormalWithoutTop(c: Canvas, parent: RecyclerView) {
         if (orientation == OrientationHelper.VERTICAL) {
             // 竖直方向
             val childCount = parent.childCount
@@ -156,8 +162,20 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
                 // 主色
                 c.drawRect(left.toFloat(), top, right.toFloat(), bottom, dividerMainPaint)
                 // 次色
-                if (dividerMarginLeft > 0) c.drawRect(0f, top, left.toFloat(), bottom, dividerSecondPaint)
-                if (dividerMarginRight > 0) c.drawRect(right.toFloat(), top, childWidth.toFloat(), bottom, dividerSecondPaint)
+                if (dividerMarginLeft > 0) c.drawRect(
+                    0f,
+                    top,
+                    left.toFloat(),
+                    bottom,
+                    dividerSecondPaint
+                )
+                if (dividerMarginRight > 0) c.drawRect(
+                    right.toFloat(),
+                    top,
+                    childWidth.toFloat(),
+                    bottom,
+                    dividerSecondPaint
+                )
             }
         } else {
             // 水平方向
@@ -190,7 +208,7 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
         }
     }
 
-    private fun handleNormal(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+    private fun handleNormal(c: Canvas, parent: RecyclerView) {
         if (orientation == OrientationHelper.VERTICAL) {
             // 竖直方向
             val childCount = parent.childCount
@@ -215,8 +233,20 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
                 // 主色
                 c.drawRect(left.toFloat(), top, right.toFloat(), bottom, dividerMainPaint)
                 // 次色
-                if (dividerMarginLeft > 0) c.drawRect(0f, top, left.toFloat(), bottom, dividerSecondPaint)
-                if (dividerMarginRight > 0) c.drawRect(right.toFloat(), top, childWidth.toFloat(), bottom, dividerSecondPaint)
+                if (dividerMarginLeft > 0) c.drawRect(
+                    0f,
+                    top,
+                    left.toFloat(),
+                    bottom,
+                    dividerSecondPaint
+                )
+                if (dividerMarginRight > 0) c.drawRect(
+                    right.toFloat(),
+                    top,
+                    childWidth.toFloat(),
+                    bottom,
+                    dividerSecondPaint
+                )
             }
         } else {
             // 水平方向
@@ -253,10 +283,10 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
         }
 
         fun newInstance(
-                context: Context,
-                headerOptions: ItemDecorationOptions,
-                itemOptions: ItemDecorationOptions,
-                viewTypeList: ArrayList<Int>
+            context: Context,
+            headerOptions: ItemDecorationOptions,
+            itemOptions: ItemDecorationOptions,
+            viewTypeList: ArrayList<Int>
         ): SimpleItemDecoration {
             return SimpleItemDecoration(context, headerOptions, itemOptions, viewTypeList)
         }

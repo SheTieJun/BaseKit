@@ -67,7 +67,7 @@ class LoadingFragmentDialog : DialogFragment {
 
     inline fun showWithAction(context: AppCompatActivity, crossinline action: suspend CoroutineScope.() -> Unit) {
         showLoading(context)
-        coroutineScope?.launch {
+        coroutineScope.launch {
             action()
             dismissAllowingStateLoss()
         }

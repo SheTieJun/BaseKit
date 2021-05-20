@@ -151,7 +151,10 @@ fun AppCompatActivity.hasPermission(vararg permissions: String, isRequest: Boole
 }
 
 
-fun AppCompatActivity.onRequestPermissionsResultImpl(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray): String {
+fun AppCompatActivity.onRequestPermissionsResultImpl(
+    @NonNull permissions: Array<String>,
+    @NonNull grantResults: IntArray
+): String {
     val sb = StringBuilder()
     for (i in grantResults.indices) {
         if (grantResults[i] == PackageManager.PERMISSION_DENIED) {

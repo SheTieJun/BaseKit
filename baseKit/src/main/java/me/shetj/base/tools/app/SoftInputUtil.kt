@@ -1,110 +1,74 @@
 package me.shetj.base.tools.app
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Rect
 import android.view.View
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
 
-
 /**
- * val softInputUtil =  SoftInputUtil()
- * softInputUtil.attachSoftInput(editText2, new SoftInputUtil.ISoftInputChanged() {
- *        @Override
- *       public void onChanged(boolean isSoftInputShow, int softInputHeight, int viewOffset) {
- *           if (isSoftInputShow) {
- *           editText2.setTranslationY(et2.getTranslationY() - viewOffset)
- *            } else {
- *            editText2.setTranslationY(0);
- *            }
- *        }
- *    });
+ * 只能用来判断关闭键盘
  */
-
 class SoftInputUtil {
-    private var softInputHeight = 0
     private var softInputHeightChanged = false
-    private var isNavigationBarShow = false
-    private var navigationHeight = 0
     private var anyView: View? = null
     private var listener: ISoftInputChanged? = null
     private var isSoftInputShowing = false
+    private  var rootViewVisibleHeight = 0
+    private val rect = Rect()
 
     interface ISoftInputChanged {
-        fun onChanged(isSoftInputShow: Boolean, softInputHeight: Int, viewOffset: Int)
+        fun onChanged(isSoftInputShow: Boolean)
     }
 
-    fun attachSoftInput(anyView: View?, listener: ISoftInputChanged) {
-        if (anyView == null) return
-
-        //根View
-        val rootView: View = anyView.rootView ?: return
-        navigationHeight = getNavigationBarHeight(anyView.context)
-
-        //anyView为需要调整高度的View，理论上来说可以是任意的View
+    fun attachSoftInput(rootView:Window?,anyView: View?, listener: ISoftInputChanged?) {
+        if (anyView == null || listener == null||rootView == null) return
         this.anyView = anyView
         this.listener = listener
-        rootView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            //对于Activity来说，该高度即为屏幕高度
-            val rootHeight: Int = rootView.height
-            val rect = Rect()
-            //获取当前可见部分，默认可见部分是除了状态栏和导航栏剩下的部分
-            rootView.getWindowVisibleDisplayFrame(rect)
-            if (rootHeight - rect.bottom === navigationHeight) {
-                //如果可见部分底部与屏幕底部刚好相差导航栏的高度，则认为有导航栏
-                isNavigationBarShow = true
-            } else if (rootHeight - rect.bottom === 0) {
-                //如果可见部分底部与屏幕底部平齐，说明没有导航栏
-                isNavigationBarShow = false
+
+        rootView.decorView.viewTreeObserver.addOnGlobalLayoutListener {
+            val isSoftInputShow: Boolean
+            rootView.decorView.getWindowVisibleDisplayFrame(rect)
+            val visibleHeight: Int = rect.height()
+            if (rootViewVisibleHeight == 0) {
+                rootViewVisibleHeight = visibleHeight
+                return@addOnGlobalLayoutListener
             }
 
-            //cal softInput height
-            var isSoftInputShow = false
-            var softInputHeight = 0
-            //如果有导航栏，则要去除导航栏的高度
-            val mutableHeight = if (isNavigationBarShow) navigationHeight else 0
-            if (rootHeight - mutableHeight > rect.bottom) {
-                //除去导航栏高度后，可见区域仍然小于屏幕高度，则说明键盘弹起了
+            //根视图显示高度没有变化，可以看做软键盘显示/隐藏状态没有变化
+            if (rootViewVisibleHeight == visibleHeight) {
+                return@addOnGlobalLayoutListener
+            }
+
+            // 根视图显示高度变小超过200，可以看做软键盘显示了
+            if (rootViewVisibleHeight - visibleHeight > 200) {
                 isSoftInputShow = true
-                //键盘高度
-                softInputHeight = rootHeight - mutableHeight - rect.bottom
-                if (this@SoftInputUtil.softInputHeight !== softInputHeight) {
-                    softInputHeightChanged = true
-                    this@SoftInputUtil.softInputHeight = softInputHeight
-                } else {
-                    softInputHeightChanged = false
+                rootViewVisibleHeight = visibleHeight
+                if (isSoftInputShowing != isSoftInputShow || isSoftInputShow && softInputHeightChanged) {
+                    listener.onChanged(isSoftInputShow)
+                    isSoftInputShowing = isSoftInputShow
                 }
+                return@addOnGlobalLayoutListener
             }
 
-            //获取目标View的位置坐标
-            val location = IntArray(2)
-            anyView.getLocationOnScreen(location)
-
-            //条件1减少不必要的回调，只关心前后发生变化的
-            //条件2针对软键盘切换手写、拼音键等键盘高度发生变化
-            if (isSoftInputShowing != isSoftInputShow || isSoftInputShow && softInputHeightChanged) {
-                listener.onChanged(isSoftInputShow, softInputHeight, location[1] + anyView.height - rect.bottom)
-                isSoftInputShowing = isSoftInputShow
+            // 根视图显示高度变大超过了200，可以看做软键盘隐藏了
+            if (visibleHeight - rootViewVisibleHeight > 200) {
+                isSoftInputShow = false
+                rootViewVisibleHeight = visibleHeight
+                if (isSoftInputShowing != isSoftInputShow || isSoftInputShow && softInputHeightChanged) {
+                    listener.onChanged(isSoftInputShow)
+                    isSoftInputShowing = isSoftInputShow
+                }
+                return@addOnGlobalLayoutListener
             }
         }
     }
 
-    /**
-     * 给fragment用的，有时候fragment被关闭了,键盘也关闭了，但是没有被重新创建
-     * 需要重新重置键盘
-     */
-    fun reset() {
+    fun dismiss() {
         isSoftInputShowing = false
     }
 
     companion object {
-        //***************STATIC METHOD******************
-        fun getNavigationBarHeight(context: Context?): Int {
-            if (context == null) return 0
-            val resources: Resources = context.resources
-            val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-            return resources.getDimensionPixelSize(resourceId)
-        }
 
         fun showSoftInput(view: View?) {
             if (view == null) return

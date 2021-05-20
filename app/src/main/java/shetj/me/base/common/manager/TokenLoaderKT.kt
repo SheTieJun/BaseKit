@@ -8,10 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.shetj.base.S.app
-import me.shetj.base.ktx.logi
 import me.shetj.base.network_coroutine.KCHttp
-import me.shetj.base.network_coroutine.KCHttpV2
-import me.shetj.base.network_coroutine.fold
 import me.shetj.base.tools.file.SPUtils.Companion.get
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 import shetj.me.base.common.tag.SPKey.SAVE_TOKEN
@@ -66,7 +63,7 @@ class TokenLoaderKT private constructor() {
     }
 
     private val cacheToken: String?
-        private get() {
+        get() {
             var token = get(app.applicationContext, SAVE_TOKEN, "") as String?
             if (isNotEmpty(token)) {
                 val timeDiff = TimeUtil.getTimeDiff(getExpire(app.applicationContext))

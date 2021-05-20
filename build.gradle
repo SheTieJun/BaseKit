@@ -32,33 +32,29 @@ buildscript {
     ext.versionCode             = 10
 
     repositories {
-        google()
-        jcenter()
-        mavenCentral()
         mavenLocal()
+        google()
+        mavenCentral()
         maven { url "https://jitpack.io" }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.android.tools.build:gradle:4.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Add this line
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
 //        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'//Aspect
         classpath "com.alibaba:arouter-register:1.0.2"
-        classpath "org.koin:koin-gradle-plugin:3.0.0-alpha-4"
+        classpath "io.insert-koin:koin-gradle-plugin:3.0.2"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
 
 allprojects {
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        mavenLocal()
-        jcenter()
-        maven { url 'https://dl.bintray.com/shetiejun/maven' }
     }
 }
 

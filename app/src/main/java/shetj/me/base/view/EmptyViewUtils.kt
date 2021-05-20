@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
-import com.github.ybq.android.spinkit.sprite.Sprite
 import shetj.me.base.R
 
 
@@ -32,28 +31,6 @@ object EmptyViewUtils {
         return LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
     }
 
-    /**
-     * 空界面，加载中
-     * @param context 上下文
-     * @param drawable 图片
-     */
-    @JvmStatic
-    fun getLoadingView(context: Activity, drawable: Drawable): View {
-        val emptyView = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
-        return emptyView
-    }
-
-    /**
-     *
-     * 空界面，加载中
-     * @param context 上下文
-     * @param sprite 图片
-     */
-    @JvmStatic
-    fun getLoadingView(context: Activity, sprite: Sprite): View {
-        val emptyView = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
-        return emptyView
-    }
 
     /**
      * 空界面。空数据

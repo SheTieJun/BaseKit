@@ -1,3 +1,5 @@
+@file:Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+
 package me.shetj.base.ktx
 
 import com.google.gson.internal.`$Gson$Types`

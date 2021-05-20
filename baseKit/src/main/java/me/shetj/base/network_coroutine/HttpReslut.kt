@@ -177,7 +177,6 @@ inline fun <R, T : R> HttpResult<T>.recover(transform: (exception: Throwable) ->
  * 把异常转成可以用的数据
  */
 inline fun <R, T : R> HttpResult<T>.recoverCatching(transform: (exception: Throwable) -> R): HttpResult<R> {
-    val value = value // workaround for inline classes BE bug
     return when (val exception = exceptionOrNull()) {
         null -> this
         else -> runCatching { transform(exception) }

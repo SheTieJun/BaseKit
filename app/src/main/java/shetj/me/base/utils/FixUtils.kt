@@ -15,7 +15,7 @@ import java.util.*
  * 如果回调发现有 不再提示的，则needJump2setting=true；
  * 把刚才所有被禁止的权限都告诉用户，让用户手动打开
  */
-fun Activity.onRequestPermissionsResult2(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+fun Activity.onRequestPermissionsResult2(permissions: Array<String>, grantResults: IntArray) {
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     val badResults = ArrayList<String>()
     var needJump2setting = false
