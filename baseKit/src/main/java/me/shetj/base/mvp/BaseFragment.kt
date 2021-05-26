@@ -1,26 +1,15 @@
 package me.shetj.base.mvp
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.os.Bundle
 import android.os.Message
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import me.shetj.base.S
+import me.shetj.base.base.AbBaseFragment
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.ktx.toJson
 import me.shetj.base.tools.json.EmptyUtils
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 /**
@@ -33,8 +22,8 @@ import timber.log.Timber
  * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, LifecycleObserver {
-    private val lazyPresenter = lazy { initPresenter() }
+abstract class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
+    protected val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 
     /**
@@ -44,25 +33,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
     override val rxContext: AppCompatActivity
         get() = (requireActivity() as AppCompatActivity?)!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        lifecycle.addObserver(this)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        lifecycle.removeObserver(this)
-        if (useEventBus()) {
-            EventBus.getDefault().unregister(this)
-        }
-    }
-
-
-    open fun onBack(){}
 
     /**
      * 抽象类不能反射
@@ -71,59 +41,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
     open fun initPresenter(): T {
         return  getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
     }
-
-    /**
-     * 是否使用eventBus,默认为使用(true)，
-     *
-     * @return boolean
-     */
-    open fun useEventBus(): Boolean {
-        return true
-    }
-
-    /**
-     * 让[EventBus] 默认主线程处理
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onEvent(message: Message) {
-
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (useEventBus()) {
-            EventBus.getDefault().register(this)
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this,object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                onBack()
-            }
-        })
-    }
-
-    /**
-     * On visible.
-     */
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    open fun onVisible() {
-    }
-
-    /**
-     * On invisible.
-     */
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    open fun onInvisible() {
-    }
-
-    /**
-     * Init event and data.
-     */
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    protected abstract fun initEventAndData()
 
 
     override fun onDestroyView() {
@@ -138,9 +55,5 @@ abstract class BaseFragment<T : BasePresenter<*>> : Fragment(), IView, Lifecycle
         if (S.isDebug && EmptyUtils.isNotEmpty(message)) {
             Timber.i(message.toJson())
         }
-    }
-
-    companion object {
-        private const val STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN"
     }
 }

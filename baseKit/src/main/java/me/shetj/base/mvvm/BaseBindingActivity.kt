@@ -1,24 +1,15 @@
 package me.shetj.base.mvvm
 
 
-import android.content.pm.ActivityInfo
-import android.os.Build
 import android.os.Bundle
-import android.os.Message
 import android.view.LayoutInflater
-import android.view.View
-import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-import me.shetj.base.R
+import me.shetj.base.base.ABBaseActivity
 import me.shetj.base.ktx.getClazz
-import me.shetj.base.tools.app.KeyboardUtil
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 1. ViewModel Model和View通信的桥梁，承担业务逻辑功能
@@ -30,7 +21,7 @@ import org.greenrobot.eventbus.ThreadMode
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AppCompatActivity(), LifecycleObserver {
+abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : ABBaseActivity() {
 
     private var mActivityProvider: ViewModelProvider? = null
 
@@ -44,18 +35,15 @@ abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AppCo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(this)
         setContentView(mViewBinding.root)
     }
 
-    @CallSuper
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    open fun onActivityCreate() {
-        KeyboardUtil.init(this)
-        if (useEventBus()) {
-            EventBus.getDefault().register(this)
-        }
-        findViewById<View>(R.id.toolbar_back)?.setOnClickListener { onBackPressed() }
+    override fun initView() {
+
+    }
+
+    override fun initData() {
+
     }
 
     /**
@@ -76,73 +64,12 @@ abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AppCo
         return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
     }
 
-    @CallSuper
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    open fun onActivityDestroy() {
-        if (useEventBus()) {
-            EventBus.getDefault().unregister(this)
-        }
-    }
-
-//    protected open fun <T : ViewModel> getActivityViewModel(@NonNull modelClass: Class<T>): T {
-//        return (mActivityProvider ?: ViewModelProvider(this,
-//                SavedStateViewModelFactory(S.app, this))
-//                .also {
-//                    mActivityProvider = it
-//                }).get(modelClass)
-//    }
 
     protected open fun <T : ViewModel> getActivityViewModel(@NonNull modelClass: Class<T>): T {
         if (mActivityProvider == null) {
             mActivityProvider = ViewModelProvider(this)
         }
         return mActivityProvider!!.get(modelClass)
-    }
-
-    /**
-     * 让[EventBus] 默认主线程处理
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onEvent(message: Message) {
-
-    }
-
-    //设置横竖屏
-    open fun setOrientation(landscape: Boolean) {
-        requestedOrientation = if (landscape) {
-            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        } else {
-            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
-    }
-
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        //true - 界面加载成功的时候
-    }
-
-    /**
-     * 是否使用eventBus,默认为使用(true)，
-     *
-     * @return useEventBus
-     */
-    open fun useEventBus(): Boolean {
-        return true
-    }
-
-
-    /**
-     * 用来替换 [finish] 返回
-     */
-    open fun back() {
-        finishAfterTransition()
-    }
-
-
-    override fun onBackPressed() {
-        KeyboardUtil.hideSoftKeyboard(this)
-        super.onBackPressed()
     }
 
 }
