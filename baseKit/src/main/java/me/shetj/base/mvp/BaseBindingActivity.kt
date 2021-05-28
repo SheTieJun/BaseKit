@@ -4,7 +4,6 @@ package me.shetj.base.mvp
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.annotation.Keep
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
@@ -21,9 +20,6 @@ abstract class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : Bas
 
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding
-
-    override val rxContext: AppCompatActivity
-        get() = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -9,7 +9,8 @@ import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.Scope
 
 /**
-/**
+/**TODO 还未测试
+
  *  Koin Activity : need
  *   scope< S:BaseKoinBindingActivity > {
  *   }

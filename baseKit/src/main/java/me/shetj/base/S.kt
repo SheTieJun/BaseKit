@@ -15,10 +15,7 @@ import me.shetj.base.tools.debug.DebugFunc
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
-import org.koin.android.java.KoinAndroidApplication
-import org.koin.androidx.fragment.android.KoinFragmentFactory
 import org.koin.androidx.fragment.koin.fragmentFactory
-import org.koin.core.Koin
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
@@ -91,7 +88,7 @@ object S {
             startKoin {
                 fragmentFactory()
                 if (S.isDebug) {
-                    androidLogger()
+                    androidLogger(Level.ERROR)
                 }
                 androidContext(application)
                 androidFileProperties()

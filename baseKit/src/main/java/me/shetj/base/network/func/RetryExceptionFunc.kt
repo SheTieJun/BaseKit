@@ -35,9 +35,9 @@ class RetryExceptionFunc : Function<Observable<out Throwable>, Observable<*>> {
 
     @Throws(Exception::class)
     override fun apply(observable: Observable<out Throwable>): Observable<*> {
-        return observable.zipWith<Int, Wrapper>(Observable.range(1, count + 1),
-                BiFunction { throwable, integer -> Wrapper(throwable, integer) })
-                .flatMap(Function<Wrapper, ObservableSource<*>> { wrapper ->
+        return observable.zipWith(Observable.range(1, count + 1),
+            { throwable, integer -> Wrapper(throwable, integer) })
+                .flatMap { wrapper ->
                     if (wrapper.index > 1) Timber.i("重试次数：%s", wrapper.index)
                     var errCode = 0
                     if (wrapper.throwable is ApiException) {
@@ -45,17 +45,20 @@ class RetryExceptionFunc : Function<Observable<out Throwable>, Observable<*>> {
                         errCode = exception.code
                     }
                     if ((wrapper.throwable is ConnectException
-                                    || wrapper.throwable is SocketTimeoutException
-                                    || errCode == ApiException.ERROR.NETWORD_ERROR
-                                    || errCode == ApiException.ERROR.TIMEOUT_ERROR
-                                    || wrapper.throwable is SocketTimeoutException
-                                    || wrapper.throwable is TimeoutException)
-                            && wrapper.index < count + 1    //如果超出重试次数也抛出错误，否则默认是会进入onCompleted
+                                || wrapper.throwable is SocketTimeoutException
+                                || errCode == ApiException.ERROR.NETWORD_ERROR
+                                || errCode == ApiException.ERROR.TIMEOUT_ERROR
+                                || wrapper.throwable is SocketTimeoutException
+                                || wrapper.throwable is TimeoutException)
+                        && wrapper.index < count + 1    //如果超出重试次数也抛出错误，否则默认是会进入onCompleted
                     ) {
 
-                        Observable.timer(delay + (wrapper.index - 1) * increaseDelay, TimeUnit.MILLISECONDS)
+                        Observable.timer(
+                            delay + (wrapper.index - 1) * increaseDelay,
+                            TimeUnit.MILLISECONDS
+                        )
                     } else Observable.error<Any>(wrapper.throwable)
-                })
+                }
     }
 
     private inner class Wrapper(val throwable: Throwable, val index: Int)

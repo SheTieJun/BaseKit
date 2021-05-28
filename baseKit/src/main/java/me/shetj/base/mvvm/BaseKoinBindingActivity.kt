@@ -9,8 +9,11 @@ import org.koin.androidx.scope.activityScope
 import org.koin.core.scope.Scope
 
 /**
- *  Koin Activity : need
+ *  TODO 还未测试
+ *
+ *  Koin Activity : 需要在提前在module{
  *   scope< S:BaseKoinBindingActivity > {
+ *   }
  *   }
  */
 @Keep

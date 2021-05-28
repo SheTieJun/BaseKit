@@ -28,15 +28,7 @@ import me.shetj.base.ktx.getClazz
 @Keep
 abstract class BaseBindingFragment<T : BasePresenter<*>,VB : ViewBinding> : BaseFragment<T>() {
 
-
     protected lateinit var mViewBinding: VB
-    /**
-     * 返回当前的activity
-     * @return RxAppCompatActivity
-     */
-    override val rxContext: AppCompatActivity
-        get() = (requireActivity() as AppCompatActivity?)!!
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mViewBinding = initViewBinding(inflater,container)

@@ -36,20 +36,20 @@ object ClassUtils {
      */
     fun <T> getMethodTypes(cls: Class<T>): List<Type>? {
         val typeOri = cls.genericSuperclass
-        var needtypes: MutableList<Type>? = null
+        var needTypes: MutableList<Type>? = null
         // if Type is T
         if (typeOri is ParameterizedType) {
-            needtypes = ArrayList()
-            val parentypes = typeOri.actualTypeArguments
-            for (childtype in parentypes) {
-                needtypes.add(childtype)
-                if (childtype is ParameterizedType) {
-                    val childtypes = childtype.actualTypeArguments
-                    Collections.addAll(needtypes, *childtypes)
+            needTypes = ArrayList()
+            val parenTypes = typeOri.actualTypeArguments
+            for (childType in parenTypes) {
+                needTypes.add(childType)
+                if (childType is ParameterizedType) {
+                    val childTypes = childType.actualTypeArguments
+                    Collections.addAll(needTypes, *childTypes)
                 }
             }
         }
-        return needtypes
+        return needTypes
     }
 
     fun getClass(type: Type, i: Int): Class<*> {
@@ -140,8 +140,7 @@ object ClassUtils {
         val genType = cls.genericSuperclass //获取父类
         val params = (genType as ParameterizedType?)!!.actualTypeArguments //获取<>
         val type = params[0]//date?
-        val finalNeedType: Type
-        finalNeedType = if (params.size > 1) { //这个类似是：CacheResult<SkinTestResult> 2层
+        val finalNeedType: Type = if (params.size > 1) { //这个类似是：CacheResult<SkinTestResult> 2层
             check(type is ParameterizedType) { "没有填写泛型参数" }
             type.actualTypeArguments[0]
             //Type rawType = ((ParameterizedType) type).getRawType();
