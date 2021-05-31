@@ -34,7 +34,6 @@ abstract class ABBaseActivity: AppCompatActivity() , LifecycleObserver {
         lifecycle.addObserver(this)
     }
 
-    @CallSuper
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     open fun onActivityCreate() {
         KeyboardUtil.init(this)

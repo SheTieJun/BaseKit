@@ -22,10 +22,6 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
     fun setDisplayMessage(msg: String) {
         displayMessage = "$msg(code:$code)"
     }
-
-    /*public String getErrMessage() {
-        return message;
-    }*/
     /**
      * 约定异常
      */
