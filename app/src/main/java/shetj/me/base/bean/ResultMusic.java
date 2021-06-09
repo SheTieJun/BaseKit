@@ -21,6 +21,30 @@ import java.util.List;
 @Keep
 public class ResultMusic {
 
+
+    public void refreshAlbum(String fileAbsolutePath, boolean isVideo) {
+        MediaScannerConnection mMediaScanner = new MediaScannerConnection(mContext, new MediaScannerConnection.MediaScannerConnectionClient() {
+                @Override
+                public void onMediaScannerConnected() {
+                        if (mMediaScanner.isConnected()) {
+                                if (isVideo) {
+                                        mMediaScanner.scanFile(fileAbsolutePath, "video/mp4");
+                                } else {
+                                        mMediaScanner.scanFile(fileAbsolutePath, "image/jpeg");
+                                }
+                        }
+                }
+
+                @Override
+                public void onScanCompleted(String path, Uri uri) {
+                }
+
+        });
+        mMediaScanner.connect();
+    }
+
+
+
     public ResultMusic(String msg, int code, List<DataBean> data) {
         this.msg = msg;
         this.code = code;

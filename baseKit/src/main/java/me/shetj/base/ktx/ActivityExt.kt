@@ -6,10 +6,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
+import android.media.MediaScannerConnection
+import android.net.*
 import android.os.Build
 import android.os.Looper
 import android.view.*
@@ -26,11 +24,16 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.SoftKeyBoardListener
 import java.lang.reflect.Method
+import kotlin.coroutines.resume
 
 
 /**
@@ -283,4 +286,25 @@ internal fun Context.requestNetWork() {
 
 fun Context.getFileProvider(): String {
     return "${packageName}.FileProvider"
+}
+
+suspend fun refreshAlbum(context: Context, fileAbsolutePath: String) {
+    withTimeout(5000) {
+        context.getMediaScanner().scanFile(fileAbsolutePath, null)
+    }
+}
+
+suspend fun Context.getMediaScanner(): MediaScannerConnection = withContext(Dispatchers.IO) {
+    return@withContext suspendCancellableCoroutine {
+        var mMediaScanner: MediaScannerConnection? = null
+        mMediaScanner = MediaScannerConnection(this@getMediaScanner,
+            object : MediaScannerConnection.MediaScannerConnectionClient {
+                override fun onMediaScannerConnected() {
+                    it.resume(mMediaScanner!!)
+                }
+
+                override fun onScanCompleted(path: String?, uri: Uri?) {}
+            })
+        mMediaScanner.connect()
+    }
 }
