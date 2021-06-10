@@ -34,7 +34,7 @@ fun Int.toDateString(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDat
 /**
  * 获取当前日期几月几号
  */
-fun getDateString(): String? {
+fun getDateString(): String {
     val c = Calendar.getInstance(Locale.getDefault())
     return (c[Calendar.MONTH] + 1).toString() + "月" +  c[Calendar.DAY_OF_MONTH].toString() + "日"
 }
@@ -80,7 +80,7 @@ fun getYearAfter(i: Int): String? {
 /**
  * 获取当前是周几
  */
-fun getWeekString(): String? {
+fun getWeekString(): String {
     val c = Calendar.getInstance()
     return  when (c[Calendar.DAY_OF_WEEK].toString()) {
         "1" -> "周天"
@@ -97,7 +97,7 @@ fun getWeekString(): String? {
 /**
  * 根据当前日期获得是星期几
  */
-fun getWeek(time: String): String? {
+fun getWeek(time: String): String {
     var Week = ""
     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val c = Calendar.getInstance()
@@ -185,7 +185,7 @@ fun get7date(): List<String> {
 /**
  * 获取今天往后一周的日期（几月几号）
  */
-fun getSevenDate(): List<String>? {
+fun getSevenDate(): List<String> {
     val dates: MutableList<String> = ArrayList()
     val c = Calendar.getInstance()
     c.timeZone = TimeZone.getTimeZone("GMT+8:00")
@@ -196,7 +196,7 @@ fun getSevenDate(): List<String>? {
     return dates
 }
 
-fun get7dateT(): List<String>? {
+fun get7dateT(): List<String> {
     val dates: MutableList<String> = ArrayList()
     val c = Calendar.getInstance()
     c.timeZone = TimeZone.getTimeZone("GMT+8:00")
@@ -213,9 +213,9 @@ fun get7dateT(): List<String>? {
 /**
  * 获取今天往后一周的集合
  */
-fun get7week(): List<String?>? {
-    var week: String?
-    val weeksList: MutableList<String?> = ArrayList()
+fun get7week(): List<String> {
+    var week: String
+    val weeksList: MutableList<String> = ArrayList()
     val dateList = get7date()
     for (s in dateList) {
         week = if (s == getStringData()) {

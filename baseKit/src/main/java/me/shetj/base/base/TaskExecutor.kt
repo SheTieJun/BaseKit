@@ -1,13 +1,19 @@
 package me.shetj.base.base
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import me.shetj.base.ktx.isMainThread
+import java.lang.reflect.InvocationTargetException
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 class TaskExecutor private constructor() {
+    private val mLock = Any()
+    @Volatile
+    private var mMainHandler: Handler? = null
 
     //最大线程2，当不够时所有进入等待
     private val mDiskIO = Executors.newFixedThreadPool(2, object : ThreadFactory {
@@ -28,8 +34,16 @@ class TaskExecutor private constructor() {
     fun executeOnMainThread(runnable: Runnable) {
         if (isMainThread()) {
             runnable.run()
-        } else {
-            AndroidSchedulers.mainThread().scheduleDirect(runnable)
+        }else{
+            if (mMainHandler == null) {
+                synchronized(mLock) {
+                    if (mMainHandler == null) {
+                        mMainHandler =
+                            createAsync(Looper.getMainLooper())
+                    }
+                }
+            }
+            mMainHandler!!.post(runnable)
         }
     }
 
@@ -49,6 +63,25 @@ class TaskExecutor private constructor() {
             // 重新调用 shutdownNow
             mDiskIO.shutdownNow()
         }
+    }
+
+    private fun createAsync(looper: Looper): Handler? {
+        if (Build.VERSION.SDK_INT >= 28) {
+            return Handler.createAsync(looper)
+        }
+        try {
+            return Handler::class.java.getDeclaredConstructor(
+                Looper::class.java, Handler.Callback::class.java,
+                Boolean::class.javaPrimitiveType
+            )
+                .newInstance(looper, null, true)
+        } catch (ignored: IllegalAccessException) {
+        } catch (ignored: InstantiationException) {
+        } catch (ignored: NoSuchMethodException) {
+        } catch (e: InvocationTargetException) {
+            return Handler(looper)
+        }
+        return Handler(looper)
     }
 
     companion object {
