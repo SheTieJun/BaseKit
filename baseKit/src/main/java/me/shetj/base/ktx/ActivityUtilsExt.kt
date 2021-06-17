@@ -1,6 +1,7 @@
 package me.shetj.base.ktx
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -21,6 +22,30 @@ import androidx.fragment.app.FragmentTransaction
 fun Context.openActivity(scheme: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scheme))
     startActivity(intent)
+}
+
+/**
+ * ABCD => (D->B) = ACDB
+ * ABCBD => (D->B) = ABCDB
+ */
+fun Context.moveToFront(activity: Activity){
+    val intent: Intent = Intent(this, activity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+    }
+    startActivity(intent)
+}
+
+/**
+ * 通过包名，让APP到前台，前提是APP在后台了，所有如果代码无效，可能是因为APP判在前台
+ */
+fun ActivityManager.moveToFrontApp(packageName:String){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        this.appTasks?.first {
+            it.taskInfo.baseIntent.component?.packageName == packageName
+        }?.apply {
+            moveToFront()
+        }
+    }
 }
 
 fun Context.openActivityByPackageName(ackageName: String) {

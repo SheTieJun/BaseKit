@@ -1,4 +1,2 @@
 include ':baseKit'
-//include ':annotation'
-//include ':compilers'
 include ':app'
