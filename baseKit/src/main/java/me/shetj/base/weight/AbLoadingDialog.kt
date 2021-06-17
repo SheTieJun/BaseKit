@@ -76,7 +76,6 @@ abstract class AbLoadingDialog :LifecycleObserver, KtScopeComponent {
     }
 
     private fun Dialog.initSetting() {
-        setCanceledOnTouchOutside(false)
         setOnDismissListener {
             clean()
         }
@@ -148,7 +147,7 @@ abstract class AbLoadingDialog :LifecycleObserver, KtScopeComponent {
     }
 
 
-    inline fun showWithTimeOutAction(context: AppCompatActivity, crossinline action: suspend () -> Unit, time: Long = LOADING_SHORT){
+    inline fun showWithTimeOutAction(context: AppCompatActivity, time: Long = LOADING_SHORT,crossinline action: () -> Unit){
         ktScope.launch {
             withTimeout(time){
                 showLoading(context)

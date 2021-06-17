@@ -32,7 +32,9 @@ class SimLoadingDialog : AbLoadingDialog() {
             }
             setView(view)
             setCancelable(cancelable)
-        }.create()
+        }.create().apply {
+            setCanceledOnTouchOutside(false)
+        }
     }
 
     companion object {

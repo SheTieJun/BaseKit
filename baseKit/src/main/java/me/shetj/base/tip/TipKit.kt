@@ -2,6 +2,7 @@ package me.shetj.base.tip
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import io.reactivex.rxjava3.disposables.Disposable
 import me.shetj.base.weight.AbLoadingDialog
 
 /**
@@ -72,5 +73,21 @@ object TipKit {
             Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
             else -> AbLoadingDialog.LOADING_LONG
         })
+    }
+
+    @JvmStatic
+    fun showLoading(context: AppCompatActivity, action: suspend () -> Unit): AbLoadingDialog {
+        return SimLoadingDialog.showWithAction(context,action)
+    }
+
+
+    @JvmStatic
+    fun showRxLoading(context: AppCompatActivity, action:  () -> Disposable): AbLoadingDialog {
+        return SimLoadingDialog.showWithRxAction(context,action)
+    }
+
+    @JvmStatic
+    fun showLoadingTimeOut(context: AppCompatActivity,time: Long, action:  () -> Unit ) {
+         SimLoadingDialog().showWithTimeOutAction(context,time,action)
     }
 }

@@ -44,6 +44,8 @@ import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDao
 import me.shetj.base.sim.SimpleCallBack
 import me.shetj.base.tip.SimLoadingDialog
+import me.shetj.base.tip.Tip
+import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.file.EnvironmentStorage
@@ -144,6 +146,11 @@ class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, Ac
 
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
             TipPopupWindow.showTip(this, tipMsg = "测试一下INFO")
+            TipKit.normal(this,"这是一个toast")
+            TipKit.info(this,"这是一个toast")
+            TipKit.warn(this,"这是一个toast")
+            TipKit.success(this,"这是一个toast")
+            TipKit.error(this,"这是一个toast")
         }
 
         findViewById<View>(R.id.btn_email).setOnClickListener {
@@ -280,8 +287,7 @@ class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, Ac
             }
         }
         mViewBinding.content.testLoading.setOnClickListener {
-            //测试带携程的loading
-            SimLoadingDialog().showWithAction(this) {
+            TipKit.showLoading(this){
                 doOnIO {
                     "开始".logi()
                     delay(5000)
