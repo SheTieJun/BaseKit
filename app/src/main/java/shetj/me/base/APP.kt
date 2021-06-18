@@ -3,7 +3,6 @@ package shetj.me.base
 import android.app.Application
 import android.util.Log
 import android.util.Log.INFO
-import dagger.hilt.android.HiltAndroidApp
 import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
 
 /**
@@ -14,7 +13,6 @@ import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
  * **@email：** 375105540@qq.com<br></br>
  * **@describe**<br></br>
  */
-@HiltAndroidApp
 class APP : Application() {
     override fun onCreate() {
         super.onCreate()

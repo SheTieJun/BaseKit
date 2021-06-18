@@ -45,7 +45,6 @@ buildscript {
 //        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'//Aspect
         classpath "com.alibaba:arouter-register:1.0.2"
         classpath "io.insert-koin:koin-gradle-plugin:3.0.2"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
 

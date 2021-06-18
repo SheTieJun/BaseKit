@@ -1,23 +1,14 @@
 package me.shetj.base.base
 
+typealias OnSuccess<T> = (data:T?) -> Unit
 
-/**
- * **@author：** shetj<br></br>
- * **@createTime：** 2018/3/7<br></br>
- * **@company：**<br></br>
- * **@email：** 375105540@qq.com<br></br>
- * **@describe**<br></br>
- */
+typealias OnFail = (ex: Exception?) -> Unit
 
-interface CommonCallBack<T> {
-    /**
-     * 成功
-     * @param key 成功
-     */
-    fun onSuccess(key: T)
+class CommonCallBack<T>{
+    var onFail:OnFail?=null
+    var onSuccess:OnSuccess<T>?=null
 
-    /**
-     * 结束
-     */
-    fun onFail(ex: Exception)
+    companion object{
+        fun <T> build(block:CommonCallBack<T>.() ->Unit) =CommonCallBack<T>().apply(block)
+    }
 }

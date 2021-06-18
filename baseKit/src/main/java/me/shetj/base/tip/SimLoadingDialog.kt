@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog

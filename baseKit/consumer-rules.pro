@@ -45,6 +45,9 @@
 -keep public class * extends android.preference.Preference
 -keep public class * extends android.view.View
 -keep class androidx.* {*;}
+-keep class * extends androidx.viewbinding.ViewBinding{
+  *;
+}
 
 -keep public class * extends android.view.View{
     *** get*();
@@ -74,7 +77,7 @@
 }
 
 ###### 保存所有文件
--keep class me.shetj.base.*{
+-keep class me.shetj.base.**{
 *;
 }
 
@@ -108,48 +111,6 @@
 -keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, java.lang.String);
 }
-
-##支付宝支付
-#-keep class com.alipay.android.app.IAlixPay{*;}
-#-keep class com.alipay.android.app.IAlixPay$Stub{*;}
-#-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
-#-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
-#-keep class com.alipay.sdk.app.PayTask{ public *;}
-#-keep class com.alipay.sdk.app.AuthTask{ public *;}
-#-keep public class * extends android.os.IInterface
-##微信支付
-#-keep class com.tencent.mm.sdk.openapi.WXMediaMessage {*;}
-#-keep class com.tencent.mm.sdk.openapi.** implements com.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {*;}
-#-keep class com.tencent.wxop.** { *; }
-#-dontwarn com.tencent.mm.**
-#-keep class com.tencent.mm.**{*;}
-#
-#-keep class sun.misc.Unsafe { *; }
-#
-#-keep class com.taobao.** {*;}
-#-keep class com.alibaba.** {*;}
-#-keep class com.alipay.** {*;}
-#-dontwarn com.taobao.**
-#-dontwarn com.alibaba.**
-#-dontwarn com.alipay.**
-#
-#-keep class com.ut.** {*;}
-#-dontwarn com.ut.**
-#
-#-keep class com.ta.** {*;}
-#-dontwarn com.ta.**
-#
-#-keep class anet.**{*;}
-#-keep class org.android.spdy.**{*;}
-#-keep class org.android.agoo.**{*;}
-#-dontwarn anet.**
-#-dontwarn org.android.spdy.**
-#-dontwarn org.android.agoo.**
-#
-#
-#-keep class org.apache.http.**
-#-keep interface org.apache.http.**
-#-dontwarn org.apache.**
 
 
 

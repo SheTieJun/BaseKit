@@ -10,7 +10,7 @@ sealed class BaseState<T> {
     class PageData<T>(val isFirst: Boolean = false, val data: MutableList<T>,val finish:Boolean = false) : BaseState<T>()
 
     //结果返回
-    class EndData<T>(val data:T): BaseState<T>()
+    class ResultData<T>(val data:T): BaseState<T>()
 
     //接口正确,但是数据为空
     class EndEmpty<T> : BaseState<T>()

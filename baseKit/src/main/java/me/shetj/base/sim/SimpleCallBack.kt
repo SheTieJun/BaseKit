@@ -19,6 +19,6 @@ open class SimpleCallBack<T> : BaseCallback<T> {
     override fun onFail() {
     }
 
-    override fun onFail(ex: Exception) {
+    override fun onFail(ex: Exception?) {
     }
 }

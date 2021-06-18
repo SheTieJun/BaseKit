@@ -38,7 +38,7 @@ class GlideImageLoader private constructor() : ImageLoader {
 
 
     override fun load(simpleView: ImageView, url: String) {
-        GlideApp.with(simpleView.context)
+        Glide.with(simpleView.context)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(simpleView)
@@ -54,14 +54,14 @@ class GlideImageLoader private constructor() : ImageLoader {
      * @param url url地址
      */
     override fun loadProgressive(mSimpleView: ImageView, url: String) {
-        GlideApp.with(mSimpleView.context)
+        Glide.with(mSimpleView.context)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(mSimpleView)
     }
 
     override fun loadGif(simpleView: ImageView, url: String, isAuto: Boolean) {
-        GlideApp.with(simpleView.context)
+        Glide.with(simpleView.context)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .downsample(DownsampleStrategy.DEFAULT)

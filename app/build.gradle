@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
 }
 
 //apply plugin: 'android-aspectjx'//面向切面
@@ -46,7 +45,7 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "false"
             buildConfigField "boolean", "USE_CANARY", "false"
             debuggable false
-            minifyEnabled false
+            minifyEnabled true
             zipAlignEnabled true
             // dex突破65535的限制
             multiDexEnabled true
@@ -59,7 +58,7 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "USE_CANARY", "false"
             debuggable true
-            minifyEnabled false
+            minifyEnabled true
             //Zipalign优化
             zipAlignEnabled true
             // 移除无用的resource文件
@@ -150,15 +149,13 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
-    implementation 'com.airbnb.android:lottie:3.4.2'
+    implementation 'com.airbnb.android:lottie:3.7.0'
 
 //    implementation 'com.github.razerdp:BasePopup:2.2.1'
 //    implementation 'com.afollestad.material-dialogs:core:3.1.0'
 
     //图片预览 https://github.com/iielse/ImageWatcher
     implementation 'com.github.iielse:ImageWatcher:1.1.5'
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     def work_version = "2.4.0"
     implementation "androidx.work:work-runtime-ktx:$work_version"
@@ -173,7 +170,6 @@ dependencies {
     implementation("com.google.guava:guava:29.0-android")
     implementation("androidx.startup:startup-runtime:1.0.0")
     implementation "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
-//    implementation 'org.aspectj:aspectjrt:1.9.5'
 
     implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06" //(key+value)
     implementation "androidx.datastore:datastore-core:1.0.0-alpha06"

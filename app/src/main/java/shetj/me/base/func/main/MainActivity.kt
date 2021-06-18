@@ -28,7 +28,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.paging.Pager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -64,11 +63,9 @@ import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 import kotlin.collections.HashMap
 
-@AndroidEntryPoint
-class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, ActivityMainBinding>(), View.OnClickListener {
+class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), View.OnClickListener {
     private lateinit var mContent: ContentMainBinding
     private var toolbar: Toolbar? = null
     private var mBtnTest: Button? = null
@@ -76,14 +73,7 @@ class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, Ac
     private var codeUtil: CodeUtil? = null
     private var viewpage2: ViewPager2? = null
 
-    @Inject
-    lateinit var musicBean1: MusicBean
 
-    @Inject
-    lateinit var musicBean2: MusicBean
-
-    @Inject
-    lateinit var saverDao: SaverDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -214,18 +204,6 @@ class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, Ac
                         }
                         .subscribe {
                             Timber.i("测试koin")
-                        }
-            }
-
-            saverCreate(key = "测试Hilt", value = "测试Hilt").apply {
-                saverDao.insert(this)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError {
-                            Timber.e(it)
-                        }
-                        .subscribe {
-                            Timber.i("测试Hilt:saverDao = saved")
                         }
             }
         }
@@ -422,25 +400,6 @@ class MainActivity  @Inject constructor(): BaseBindingActivity<MainPresenter, Ac
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onActivityStart() {
-        Timber.i("onActivityStart")
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onActivityStop() {
-        Timber.i("onActivityStop")
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onActivityResume() {
-        Timber.i("onActivityResume")
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onActivityPause() {
-        Timber.i("onActivityPause")
-    }
 
     override fun onActivityCreate() {
         super.onActivityCreate()

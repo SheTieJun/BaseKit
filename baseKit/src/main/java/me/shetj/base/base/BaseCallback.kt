@@ -9,7 +9,7 @@ package me.shetj.base.base
  * **@describe**<br></br>
  */
 
-interface BaseCallback<T> : CommonCallBack<T> {
+interface BaseCallback<T> {
     /**
      * 成功
      */
@@ -18,5 +18,9 @@ interface BaseCallback<T> : CommonCallBack<T> {
     /**
      * 失败
      */
+    fun onFail(ex: Exception?)
+
+    fun onSuccess(key: T)
+
     fun onFail()
 }

@@ -25,7 +25,6 @@ android {
         release {
 //            对齐
             zipAlignEnabled true
-//            minifyEnabled true           //混淆
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
