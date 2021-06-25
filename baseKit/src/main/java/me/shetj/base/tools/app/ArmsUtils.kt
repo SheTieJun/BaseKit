@@ -13,11 +13,13 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.Message
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.annotation.AttrRes
 import androidx.annotation.Keep
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
@@ -297,6 +299,13 @@ class ArmsUtils private constructor() {
         @JvmStatic
         fun getColor(context: Context, rid: Int): Int {
             return ContextCompat.getColor(context, rid)
+        }
+
+        fun resolve(context: Context, @AttrRes attributeResId: Int): TypedValue? {
+            val typedValue = TypedValue()
+            return if (context.theme.resolveAttribute(attributeResId, typedValue, true)) {
+                typedValue
+            } else null
         }
 
         /**

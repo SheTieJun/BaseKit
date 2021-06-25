@@ -57,22 +57,24 @@ import shetj.me.base.R
 import shetj.me.base.api.BApi
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
+import shetj.me.base.common.bean.UserInfo
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import timber.log.Timber
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), View.OnClickListener {
+class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),
+    View.OnClickListener {
     private lateinit var mContent: ContentMainBinding
     private var toolbar: Toolbar? = null
     private var mBtnTest: Button? = null
     private var mTvTestCode: TextView? = null
     private var codeUtil: CodeUtil? = null
     private var viewpage2: ViewPager2? = null
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,18 +89,18 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
 
     // 框架默认会通过反射创建 MainPresenter ，
     override fun initPresenter(): MainPresenter {
-        return  get { parametersOf(this) }
+        return get { parametersOf(this) }
     }
 
     @SuppressLint("SetTextI18n")
     public override fun initView() {
         val publishSubject = PublishSubject.create<Int>()
         publishSubject.buffer(20)
-                .filter { it.isNotEmpty() }
-                .map(Collections::max)
-                .doOnNext {
-                    it.toString().logi()
-                }.subscribe()
+            .filter { it.isNotEmpty() }
+            .map(Collections::max)
+            .doOnNext {
+                it.toString().logi()
+            }.subscribe()
         toolbar = findViewById<Toolbar>(R.id.toolbar)
         mBtnTest = findViewById<View>(R.id.btn_test) as Button
         mBtnTest!!.setOnClickListener(this)
@@ -108,20 +110,30 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
         viewpage2?.orientation = ViewPager2.ORIENTATION_VERTICAL
         val list = arrayListOf<Fragment>().apply {
             repeat(100) {
-                add(if (it % 2 == 0) {
-                    BlankMVVMkFragment()
-                } else {
-                    BlankFragment()
-                })
+                add(
+                    if (it % 2 == 0) {
+                        BlankMVVMkFragment()
+                    } else {
+                        BlankFragment()
+                    }
+                )
             }
         }
         findViewById<View>(R.id.test_download).setOnClickListener {
-            DownloadWorker.startDownload(this, "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
-                    EnvironmentStorage.getExternalFilesDir(), "wxwork_android_3.apk")
+            DownloadWorker.startDownload(
+                this,
+                "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
+                EnvironmentStorage.getExternalFilesDir(),
+                "wxwork_android_3.apk"
+            )
         }
         viewpage2?.adapter = AFragmentStateAdapter(this, list)
         viewpage2?.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
             }
 
@@ -136,11 +148,11 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
 
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
             TipPopupWindow.showTip(this, tipMsg = "测试一下INFO")
-            TipKit.normal(this,"这是一个toast")
-            TipKit.info(this,"这是一个toast")
-            TipKit.warn(this,"这是一个toast")
-            TipKit.success(this,"这是一个toast")
-            TipKit.error(this,"这是一个toast")
+            TipKit.normal(this, "这是一个toast")
+            TipKit.info(this, "这是一个toast")
+            TipKit.warn(this, "这是一个toast")
+            TipKit.success(this, "这是一个toast")
+            TipKit.error(this, "这是一个toast")
         }
 
         findViewById<View>(R.id.btn_email).setOnClickListener {
@@ -155,11 +167,12 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
                     (text as TextView).text = "X${(it.animatedValue as Int)}"
                 }
                 addListener(onStart = {
-                    text.animation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.zoom_in)?.apply {
-                        interpolator = OvershootInterpolator()
-                        repeatCount = -1
-                        repeatMode = REVERSE
-                    }
+                    text.animation =
+                        AnimationUtils.loadAnimation(this@MainActivity, R.anim.zoom_in)?.apply {
+                            interpolator = OvershootInterpolator()
+                            repeatCount = -1
+                            repeatMode = REVERSE
+                        }
                 }, onEnd = {
                     text.clearAnimation()
                 })
@@ -173,13 +186,17 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
         }
 
         mContent.btnMvvm.setOnClickListener {
-            val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { result: ActivityResult ->
-                if (result.resultCode == Activity.RESULT_OK) {
+            val startForResult =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+                { result: ActivityResult ->
+                    if (result.resultCode == Activity.RESULT_OK) {
 
+                    }
                 }
-            }
-            startForResult.launch(Intent(this, MVVMTestActivity::class.java), ActivityOptionsCompat.makeBasic())
+            startForResult.launch(
+                Intent(this, MVVMTestActivity::class.java),
+                ActivityOptionsCompat.makeBasic()
+            )
 //            start<MVVMTestActivity>()
         }
 
@@ -191,29 +208,29 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
         findViewById<View>(R.id.fab).setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(mPresenter.getNightModel())
         }
-//        testExecutor()
+        testExecutor()
 
         mContent.btnInsert.setOnClickListener {
 
             saverCreate(key = "测试key", value = "测试value").apply {
                 saverDB.insert(this)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError {
-                            Timber.e(it)
-                        }
-                        .subscribe {
-                            Timber.i("测试koin")
-                        }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Timber.e(it)
+                    }
+                    .subscribe {
+                        Timber.i("测试koin")
+                    }
             }
         }
 
         mContent.btnFind.setOnClickListener {
             saverDB.getAll(groupN = "base", isDel = false)
-                    .subscribeOn(Schedulers.io())
-                    .doOnNext {
-                        Timber.i(it.toJson())
-                    }.subscribe()
+                .subscribeOn(Schedulers.io())
+                .doOnNext {
+                    Timber.i(it.toJson())
+                }.subscribe()
 
 //            Flowable.just("1")
 //                    .lift(MyOperator())
@@ -223,16 +240,24 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
         }
 
         mContent.testEvent.setOnClickListener {
-            if (hasPermission(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR, isRequest = true)) {
+            if (hasPermission(
+                    Manifest.permission.WRITE_CALENDAR,
+                    Manifest.permission.READ_CALENDAR,
+                    isRequest = true
+                )
+            ) {
                 mPresenter.addEvent(this)
             }
         }
         NetWorkLiveDate.getInstance().start(this)
         NetWorkLiveDate.getInstance().observe(this, {
             when (it?.netType) {
-                NetWorkLiveDate.NetType.NONE -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = NONE")
-                NetWorkLiveDate.NetType.PHONE -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = PHONE")
-                NetWorkLiveDate.NetType.WIFI -> Timber.tag("requestNetWork").i("hasNet = ${it.hasNet},netType = WIFI")
+                NetWorkLiveDate.NetType.NONE -> Timber.tag("requestNetWork")
+                    .i("hasNet = ${it.hasNet},netType = NONE")
+                NetWorkLiveDate.NetType.PHONE -> Timber.tag("requestNetWork")
+                    .i("hasNet = ${it.hasNet},netType = PHONE")
+                NetWorkLiveDate.NetType.WIFI -> Timber.tag("requestNetWork")
+                    .i("hasNet = ${it.hasNet},netType = WIFI")
             }
         })
 
@@ -251,7 +276,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
         val header = SimPageLoadAdapter("header")
         mViewBinding.content.recycle.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
         mViewBinding.content.recycle.apply {
-            edgeEffectFactory = object :RecyclerView.EdgeEffectFactory(){
+            edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
                 override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
                     return SpringEdgeEffect(view, direction)
                 }
@@ -265,7 +290,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
             }
         }
         mViewBinding.content.testLoading.setOnClickListener {
-            TipKit.showLoading(this){
+            TipKit.showLoading(this) {
                 doOnIO {
                     "开始".logi()
                     delay(5000)
@@ -285,10 +310,14 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
         RxHttp.get("http://baidy1.com").executeCus(object : SimpleNetCallBack<String>(this) {
 
         })
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").change("jwt2", HashMap()).subscribe()
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").change("jwt3", HashMap()).subscribe()
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com")
+            .change("jwt1", HashMap()).subscribe()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com")
+            .change("jwt2", HashMap()).subscribe()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com")
+            .change("jwt3", HashMap()).subscribe()
+        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com")
+            .change("jwt1", HashMap()).subscribe()
 
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
 //        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
@@ -307,6 +336,13 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
 //        }
     }
 
+    companion object{
+        @JvmStatic
+        fun main(args: Array<String>) {
+
+        }
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         "onBackPressed".logi()
@@ -323,7 +359,8 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
     private fun netTest() {
         mViewBinding.content.btnTestNet.setOnClickListener {
 
-            mPresenter.getMusicByRxHttp(object : SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
+            mPresenter.getMusicByRxHttp(object :
+                SimpleNetCallBack<ApiResult1<List<MusicBean>>>(this) {
                 override fun onSuccess(data: ApiResult1<List<MusicBean>>) {
                     super.onSuccess(data)
                     Timber.tag("getMusicByRxHttp").i(data.toJson())
@@ -372,19 +409,17 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
     }
 
     private fun testExecutor() {
-        for (i in 0..100) {
-            TaskExecutor.getInstance().executeOnDiskIO {
-                Thread.sleep(100)
-                Timber.i("executeOnDiskIO:${Thread.currentThread().name}")
+        val data : java.util.ArrayList<DataTest> = arrayListOf<DataTest>().apply {
+            repeat(100){
+                add(DataTest())
             }
         }
-        for (i in 0..9) {
-            TaskExecutor.run {
-                getInstance().executeOnMainThread {
-                    Timber.i("executeOnMainThread:${Thread.currentThread().name}")
-                }
-            }
-        }
+
+        val data2 = data.clone() as ArrayList<DataTest>
+
+        data.removeAt(10)
+        println(data.size)
+        println(data2.size)
     }
 
     public override fun initData() {
@@ -423,17 +458,22 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(), 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        ImageUtils.onActivityResult(this, requestCode, resultCode, data, object : SimpleCallBack<Uri>() {
-            override fun onSuccess(key: Uri) {
-                super.onSuccess(key)
-                Timber.i("url = $key")
-            }
+        ImageUtils.onActivityResult(
+            this,
+            requestCode,
+            resultCode,
+            data,
+            object : SimpleCallBack<Uri>() {
+                override fun onSuccess(key: Uri) {
+                    super.onSuccess(key)
+                    Timber.i("url = $key")
+                }
 
-            override fun onFail() {
-                super.onFail()
+                override fun onFail() {
+                    super.onFail()
 
-            }
-        })
+                }
+            })
     }
 
 }

@@ -30,6 +30,10 @@ public class ResultMusic {
         this.data = data;
     }
 
+    public static void main(String[] args) {
+
+    }
+
 
     private String msg;
     private int code;
