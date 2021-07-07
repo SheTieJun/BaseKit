@@ -84,7 +84,7 @@ inline fun Fragment.runOnStarted(crossinline action: suspend CoroutineScope.() -
 /**
  * 重试机制
  */
-suspend fun <T> retryIO(
+suspend fun <T> retryDo(
         times: Int = Int.MAX_VALUE,
         initialDelay: Long = 100, // 0.1 second
         maxDelay: Long = 1000,    // 1 second

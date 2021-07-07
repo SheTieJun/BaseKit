@@ -1,17 +1,15 @@
 package me.shetj.base.base
 
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import androidx.core.os.HandlerCompat
 import me.shetj.base.ktx.isMainThread
-import java.lang.reflect.InvocationTargetException
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 class TaskExecutor private constructor() {
-    private val mLock = Any()
     @Volatile
     private var mMainHandler: Handler? = null
 
@@ -36,10 +34,10 @@ class TaskExecutor private constructor() {
             runnable.run()
         }else{
             if (mMainHandler == null) {
-                synchronized(mLock) {
+                synchronized(TaskExecutor::class.java) {
                     if (mMainHandler == null) {
                         mMainHandler =
-                            createAsync(Looper.getMainLooper())
+                            HandlerCompat.createAsync(Looper.getMainLooper())
                     }
                 }
             }
@@ -63,25 +61,6 @@ class TaskExecutor private constructor() {
             // 重新调用 shutdownNow
             mDiskIO.shutdownNow()
         }
-    }
-
-    private fun createAsync(looper: Looper): Handler? {
-        if (Build.VERSION.SDK_INT >= 28) {
-            return Handler.createAsync(looper)
-        }
-        try {
-            return Handler::class.java.getDeclaredConstructor(
-                Looper::class.java, Handler.Callback::class.java,
-                Boolean::class.javaPrimitiveType
-            )
-                .newInstance(looper, null, true)
-        } catch (ignored: IllegalAccessException) {
-        } catch (ignored: InstantiationException) {
-        } catch (ignored: NoSuchMethodException) {
-        } catch (e: InvocationTargetException) {
-            return Handler(looper)
-        }
-        return Handler(looper)
     }
 
     companion object {

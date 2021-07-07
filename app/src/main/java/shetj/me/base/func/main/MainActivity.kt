@@ -48,6 +48,7 @@ import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.file.EnvironmentStorage
+import me.shetj.base.tools.image.ImageCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import me.shetj.base.view.edge.SpringEdgeEffect
@@ -84,7 +85,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),
 
 
     override fun initViewBinding(): ActivityMainBinding {
-        return ActivityMainBinding.inflate(layoutInflater)
+        return super.initViewBinding()
     }
 
     // 框架默认会通过反射创建 MainPresenter ，
@@ -182,7 +183,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),
         }
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
-            ImageUtils.openLocalImage(this)
+            ImageUtils.selectLocalImage(this)
         }
 
         mContent.btnMvvm.setOnClickListener {
@@ -313,35 +314,17 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com")
             .change("jwt1", HashMap()).subscribe()
         RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com")
-            .change("jwt2", HashMap()).subscribe()
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com")
-            .change("jwt3", HashMap()).subscribe()
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com")
             .change("jwt1", HashMap()).subscribe()
-
-//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
-//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
-//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").toString().logi()
-//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").toString().logi()
-//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy2.com").toString().logi()
-//        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy3.com").toString().logi()
-
-
     }
 
     private fun imgTest() {
 //        iv_test.loadImage("https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png")
-//        downloadImage(this,url ="https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png"){
-//
-//        }
-    }
-
-    companion object{
-        @JvmStatic
-        fun main(args: Array<String>) {
-
+        launch {
+            saveImage(shareCardUrl ="https://staticqc.lycheer.net/account3/static/media/levelrule.45f3b2f1.png")
         }
     }
+
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -409,17 +392,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),
     }
 
     private fun testExecutor() {
-        val data : java.util.ArrayList<DataTest> = arrayListOf<DataTest>().apply {
-            repeat(100){
-                add(DataTest())
-            }
-        }
 
-        val data2 = data.clone() as ArrayList<DataTest>
-
-        data.removeAt(10)
-        println(data.size)
-        println(data2.size)
     }
 
     public override fun initData() {
@@ -463,15 +436,17 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),
             requestCode,
             resultCode,
             data,
-            object : SimpleCallBack<Uri>() {
+            object : ImageCallBack {
                 override fun onSuccess(key: Uri) {
-                    super.onSuccess(key)
                     Timber.i("url = $key")
                 }
 
                 override fun onFail() {
-                    super.onFail()
 
+                }
+
+                override fun isNeedCut(): Boolean {
+                    return false
                 }
             })
     }

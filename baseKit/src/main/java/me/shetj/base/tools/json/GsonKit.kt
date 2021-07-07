@@ -19,8 +19,8 @@ import java.lang.reflect.Type
 object GsonKit {
     val gson: Gson by lazy {
         GsonBuilder()
-                .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
-                .serializeNulls()
+                .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.STATIC) //比如我们想排除私有字段不被序列化/反序列，默认
+                .serializeNulls()//serializeNulls支持空对象序列化
                 .create()
     }
 

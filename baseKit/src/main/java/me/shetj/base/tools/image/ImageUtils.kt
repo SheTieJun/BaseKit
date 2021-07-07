@@ -28,15 +28,26 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+
 @Keep
 class ImageUtils {
 
+
+    /**
+     * 获取图片：(兼容 Android 5-11)
+     *
+     * 1.通过相机获取 [openCameraImage]
+     *
+     * 2.通过相册获取 [openLocalImage]
+     *
+     * 3.通过文件管理器获取[selectLocalImage]
+     */
     companion object {
 
         private const val GET_IMAGE_BY_CAMERA = 5001
-        private const val GET_IMAGE_FROM_PHONE = 5002
-        private const val GET_IMAGE_FROM_PHONE_NO_CUT = 5004 //不剪切
-        private const val CROP_IMAGE = 5003
+        private const val GET_IMAGE_FROM_PHONE = GET_IMAGE_BY_CAMERA + 1
+        private const val GET_IMAGE_FROM_PHONE_NO_CUT = GET_IMAGE_FROM_PHONE + 1 //不剪切
+        private const val CROP_IMAGE = GET_IMAGE_FROM_PHONE_NO_CUT + 1
         private var imageUriFromCamera: Uri? = null
         private var cropImageUri: Uri? = null
         private const val imagePath = "image"
@@ -48,18 +59,23 @@ class ImageUtils {
          * @return 图片的uri
          */
         private fun createImagePathUri(context: Context?): Uri {
-            val file = File(createImagePath())
             if (context == null) {
-                throw NullPointerException()
+                throw NullPointerException("context is null")
             }
             return when {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
-                    createImageUri(context)!!
+                    createImageUri(context)
                 }
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
-                    getUriForFile(context.applicationContext, AppUtils.appPackageName + ".FileProvider", file)
+                    val file = File(createImagePath())
+                    getUriForFile(
+                        context.applicationContext,
+                        AppUtils.appPackageName + ".FileProvider",
+                        file
+                    )
                 }
                 else -> {
+                    val file = File(createImagePath())
                     Uri.fromFile(file)
                 }
             }
@@ -70,16 +86,26 @@ class ImageUtils {
             val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
             val time = System.currentTimeMillis()
             val imageName = timeFormatter.format(Date(time))
-            return EnvironmentStorage.getPath(root = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                    packagePath = imagePath) + "/" + imageName + ".jpg"
+            return EnvironmentStorage.getPath(
+                root = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                packagePath = imagePath
+            ) + "/" + imageName + ".jpg"
         }
 
 
         @JvmStatic
-        fun createImageUri(context: Context): Uri? {
-            return context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
+        fun createImageUri(context: Context): Uri {
+            return context.contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                ContentValues()
+            ) ?: throw NullPointerException("create createImageUri fail")
         }
 
+
+        /**
+         * 文档图片
+         */
+        @JvmStatic
         fun selectLocalImage(activity: Activity) {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 flags = (Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -91,6 +117,9 @@ class ImageUtils {
             activity.startActivityForResult(intent, GET_IMAGE_FROM_PHONE_NO_CUT)
         }
 
+        /**
+         * 通过相机进行照相
+         */
         @JvmStatic
         fun openCameraImage(activity: Activity) {
             imageUriFromCamera = createImagePathUri(activity)
@@ -99,6 +128,9 @@ class ImageUtils {
             activity.startActivityForResult(intent, GET_IMAGE_BY_CAMERA)
         }
 
+        /**
+         * 相册获取图片
+         */
         @JvmStatic
         fun openLocalImage(activity: Activity) {
             val intent = Intent(Intent.ACTION_PICK)
@@ -106,6 +138,9 @@ class ImageUtils {
             activity.startActivityForResult(intent, GET_IMAGE_FROM_PHONE)
         }
 
+        /**
+         * 进行图片1：1剪切
+         */
         @JvmStatic
         fun cropImage(activity: Activity, srcUri: Uri?) {
             cropImageUri = createImagePathUri(activity)
@@ -121,12 +156,9 @@ class ImageUtils {
             intent.putExtra("crop", "true")
             //可裁剪
             intent.putExtra("scale", true)
-            //支持缩放
             intent.putExtra("return-data", false)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, cropImageUri)
-            //输出图片格式
             intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())
-            //取消人脸识别
             intent.putExtra("noFaceDetection", true)
             activity.startActivityForResult(intent, CROP_IMAGE)
         }
@@ -147,8 +179,18 @@ class ImageUtils {
                     path = Uri.decode(path)
                     val cr = activity.contentResolver
                     val buff = StringBuffer()
-                    buff.append("(").append(MediaStore.Images.ImageColumns.DATA).append("=").append("'$path'").append(")")
-                    val cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.ImageColumns._ID, MediaStore.Images.ImageColumns.DATA), buff.toString(), null, null)
+                    buff.append("(").append(MediaStore.Images.ImageColumns.DATA).append("=")
+                        .append("'$path'").append(")")
+                    val cur = cr.query(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        arrayOf(
+                            MediaStore.Images.ImageColumns._ID,
+                            MediaStore.Images.ImageColumns.DATA
+                        ),
+                        buff.toString(),
+                        null,
+                        null
+                    )
                     var index = 0
                     var dataIdx: Int
                     cur!!.moveToFirst()
@@ -163,7 +205,6 @@ class ImageUtils {
                     if (index == 0) {
                     } else {
                         val u = Uri.parse("content://media/external/images/media/$index")
-                        println("temp uri is :$u")
                     }
                 }
                 if (path != null) {
@@ -205,20 +246,25 @@ class ImageUtils {
             textPaint.textSize = textSize.toFloat()
             // 抗锯齿
             textPaint.isAntiAlias = true
-            val staticLayout: StaticLayout
-            staticLayout = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val staticLayout: StaticLayout = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 StaticLayout.Builder
-                        .obtain(des, 0, des.length, textPaint, sourceBitmapWidth)
-                        .apply {
-                            setAlignment(Layout.Alignment.ALIGN_CENTER)
-                            setIncludePad(true)
-                        }.build()
+                    .obtain(des, 0, des.length, textPaint, sourceBitmapWidth)
+                    .apply {
+                        setAlignment(Layout.Alignment.ALIGN_CENTER)
+                        setIncludePad(true)
+                    }.build()
             } else {
-                StaticLayout(des, textPaint,
-                        sourceBitmapWidth, Layout.Alignment.ALIGN_CENTER, 1f, 1f, true)
+                StaticLayout(
+                    des, textPaint,
+                    sourceBitmapWidth, Layout.Alignment.ALIGN_CENTER, 1f, 1f, true
+                )
             }
 
-            val shareBitmap = Bitmap.createBitmap(sourceBitmapWidth, sourceBitmapHeight + staticLayout.height, config)
+            val shareBitmap = Bitmap.createBitmap(
+                sourceBitmapWidth,
+                sourceBitmapHeight + staticLayout.height,
+                config
+            )
             val canvas = Canvas(shareBitmap)
 
             canvas.drawColor(Color.WHITE)
@@ -239,7 +285,13 @@ class ImageUtils {
          * @param callBack
          */
         @JvmStatic
-        fun onActivityResult(context: Activity, requestCode: Int, resultCode: Int, data: Intent?, callBack: BaseCallback<Uri>?) {
+        fun onActivityResult(
+            context: Activity,
+            requestCode: Int,
+            resultCode: Int,
+            data: Intent?,
+            callBack: ImageCallBack?
+        ) {
             if (resultCode != Activity.RESULT_OK) {
                 callBack?.onFail()
                 return
@@ -247,11 +299,20 @@ class ImageUtils {
 
             when (requestCode) {
                 GET_IMAGE_BY_CAMERA -> if (imageUriFromCamera != null) {
-                    // 对图片进行裁剪
-                    cropImage(context, imageUriFromCamera)
+                    if (callBack?.isNeedCut() == true) {
+                        // 对图片进行裁剪
+                        cropImage(context, imageUriFromCamera)
+                    } else {
+                        callBack?.onSuccess(imageUriFromCamera!!)
+                    }
                 }
                 GET_IMAGE_FROM_PHONE -> if (data != null && data.data != null) {
-                    cropImage(context, data.data)
+                    if (callBack?.isNeedCut() == true) {
+                        // 对图片进行裁剪
+                        cropImage(context, data.data)
+                    } else {
+                        callBack?.onSuccess(data.data!!)
+                    }
                 }
                 GET_IMAGE_FROM_PHONE_NO_CUT -> {
                     callBack?.onSuccess(data!!.data!!)
@@ -362,7 +423,12 @@ class ImageUtils {
          * @return 缩放后的图片
          */
         @JvmOverloads
-        fun scale(src: Bitmap, scaleWidth: Float, scaleHeight: Float, recycle: Boolean = false): Bitmap? {
+        fun scale(
+            src: Bitmap,
+            scaleWidth: Float,
+            scaleHeight: Float,
+            recycle: Boolean = false
+        ): Bitmap? {
             if (isEmptyBitmap(src)) {
                 return null
             }
@@ -433,7 +499,12 @@ class ImageUtils {
          * @param recycle     是否回收
          * @return 缩放压缩后的图片
          */
-        fun compressByScale(src: Bitmap, scaleWidth: Float, scaleHeight: Float, recycle: Boolean): Bitmap? {
+        fun compressByScale(
+            src: Bitmap,
+            scaleWidth: Float,
+            scaleHeight: Float,
+            recycle: Boolean
+        ): Bitmap? {
             return scale(src, scaleWidth, scaleHeight, recycle)
         }
 

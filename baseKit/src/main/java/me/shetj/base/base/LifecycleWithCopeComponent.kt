@@ -8,7 +8,8 @@ import kotlinx.coroutines.launch
 
 
 /**
- * 生命周期 + 协程作业用域
+ *  自己控制的生命周期和协程 类似actvity的基类
+ *  生命周期 + 协程作业用域
  *
  * 自身[LifecycleOwner] + 自身[CoroutineScope]
  */

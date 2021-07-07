@@ -5,9 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
+import androidx.annotation.FloatRange
+import androidx.core.math.MathUtils
 import me.shetj.base.model.VolumeLiveData
 import java.util.concurrent.atomic.AtomicBoolean
-
 
 
 /**
@@ -51,19 +52,19 @@ internal class VolumeConfig(val context: Context) {
 
     fun getMaxVoice() = max
 
-    fun setAudioVoiceF(volume: Float) {
+    fun setAudioVoiceF(@FloatRange(from = 0.0, to = 1.0) volume: Float) {
         audioManager.setStreamVolume(
-                AudioManager.STREAM_MUSIC,
-                (volume * max).toInt(),
-                0
+            AudioManager.STREAM_MUSIC,
+            (MathUtils.clamp(volume, 0f, 1f) * max).toInt(),
+            0
         )
     }
 
     fun setAudioVoice(volume: Int) {
         audioManager.setStreamVolume(
-                AudioManager.STREAM_MUSIC,
-                volume,
-                0
+            AudioManager.STREAM_MUSIC,
+            MathUtils.clamp(volume, 0, max),
+            0
         )
     }
 
@@ -73,14 +74,14 @@ internal class VolumeConfig(val context: Context) {
 
         fun getInstance(context: Context): VolumeConfig {
             return sInstance ?: synchronized(VolumeConfig::class.java) {
-                return VolumeConfig(context).also {
+                return VolumeConfig(context.applicationContext).also {
                     VolumeLiveData.getInstance().postValue(it.getCurVolume())
                     sInstance = it
                 }
             }
         }
 
-        fun onDestroy(){
+        fun onDestroy() {
             sInstance?.unregisterReceiver()
             sInstance = null
         }
