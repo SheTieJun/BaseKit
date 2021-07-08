@@ -31,7 +31,6 @@ import kotlinx.coroutines.withTimeout
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
-import me.shetj.base.tools.app.SoftKeyBoardListener
 import java.lang.reflect.Method
 import kotlin.coroutines.resume
 
@@ -103,20 +102,13 @@ fun String.showToast() = ArmsUtils.makeText(this)
 /**
  * 判断是否是当前状态
  */
-fun AppCompatActivity.isAtLeast(@NonNull state: Lifecycle.State) = lifecycle.currentState.isAtLeast(state)
+fun AppCompatActivity.isAtLeast(@NonNull state: Lifecycle.State) =
+    lifecycle.currentState.isAtLeast(state)
 
 /**
  * 获取Activity的高度
  */
 fun AppCompatActivity.getHeight() = ArmsUtils.getActivityHeight(this)
-
-/**
- * 键盘监听关闭
- */
-fun AppCompatActivity.setKeyBoardListener(onSoftKeyBoardChangeListener: SoftKeyBoardListener.OnSoftKeyBoardChangeListener) {
-    val softKeyBoardListener = SoftKeyBoardListener(this)
-    softKeyBoardListener.setOnSoftKeyBoardChangeListener(onSoftKeyBoardChangeListener)
-}
 
 /**
  * 关闭手机的通知管理界面
@@ -138,11 +130,18 @@ fun Context.collapseStatusBar() {
  *  可以使用 [AppCompatActivity.registerForActivityResult] 替代
  *  registerForActivityResult(ActivityResultContracts.RequestPermission())
  */
-fun AppCompatActivity.hasPermission(vararg permissions: String, isRequest: Boolean = true): Boolean {
+fun AppCompatActivity.hasPermission(
+    vararg permissions: String,
+    isRequest: Boolean = true
+): Boolean {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
     val permissionsCheck: MutableList<String> = ArrayList()
     for (permission in permissions) {
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             permissionsCheck.add(permission)
         }
     }
@@ -193,11 +192,14 @@ fun Context.getScaledTouch() = ViewConfiguration.get(this).scaledTouchSlop
 
 
 //拦截回退按钮
-inline fun onBackKeyUp(keyCode: Int, @NonNull event: KeyEvent,
-                       crossinline onBack: () -> Boolean = { true }): Boolean {
+inline fun onBackKeyUp(
+    keyCode: Int, @NonNull event: KeyEvent,
+    crossinline onBack: () -> Boolean = { true }
+): Boolean {
     if ((keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE)
-            && event.isTracking
-            && !event.isCanceled) {
+        && event.isTracking
+        && !event.isCanceled
+    ) {
         if (onBack()) {
             return true
         }
@@ -217,34 +219,36 @@ fun Activity.onBackGoHome() {
 }
 
 
-inline fun Context.createSimDialog(@LayoutRes layoutId: Int,
-                                   crossinline viewListener: ((view: View) -> Unit) = {},
-                                   crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
-                                       it?.setLayout(ArmsUtils.dp2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
-                                   }): AlertDialog {
+inline fun Context.createSimDialog(
+    @LayoutRes layoutId: Int,
+    crossinline viewListener: ((view: View) -> Unit) = {},
+    crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
+        it?.setLayout(ArmsUtils.dp2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
+    }
+): AlertDialog {
     val view = LayoutInflater.from(this).inflate(layoutId, null)
     viewListener.invoke(view)
     return AlertDialog.Builder(this)
-            .setView(view)
-            .show().apply {
-                setWindowSizeChange.invoke(window)
-            }
+        .setView(view)
+        .show().apply {
+            setWindowSizeChange.invoke(window)
+        }
 }
 
 inline fun <reified VB : ViewBinding> Context.createSimDialog(
-        crossinline viewListener: ((mVB: VB) -> Unit) = { },
-        crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
-            it?.setLayout(ArmsUtils.dp2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
-        }
+    crossinline viewListener: ((mVB: VB) -> Unit) = { },
+    crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
+        it?.setLayout(ArmsUtils.dp2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
+    }
 ): AlertDialog? {
     val mVB = VB::class.java.getMethod("inflate", LayoutInflater::class.java)
-            .invoke(null, LayoutInflater.from(this)) as VB
+        .invoke(null, LayoutInflater.from(this)) as VB
     viewListener.invoke(mVB)
     return AlertDialog.Builder(this)
-            .setView(mVB.root)
-            .show()?.apply {
-                setWindowSizeChange.invoke(window)
-            }
+        .setView(mVB.root)
+        .show()?.apply {
+            setWindowSizeChange.invoke(window)
+        }
 }
 
 /**
@@ -255,9 +259,9 @@ internal fun Context.requestNetWork() {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val builder = NetworkRequest.Builder()
     val request = builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-            .build()
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+        .build()
     cm.requestNetwork(request, object : ConnectivityManager.NetworkCallback() {
 
         override fun onLost(network: Network) {
@@ -265,7 +269,10 @@ internal fun Context.requestNetWork() {
             NetWorkLiveDate.getInstance().onLost()
         }
 
-        override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+        override fun onCapabilitiesChanged(
+            network: Network,
+            networkCapabilities: NetworkCapabilities
+        ) {
             super.onCapabilitiesChanged(network, networkCapabilities)
             if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
                 when {
@@ -288,10 +295,22 @@ fun Context.getFileProvider(): String {
     return "${packageName}.FileProvider"
 }
 
-suspend fun refreshAlbum(context: Context, fileAbsolutePath: String) {
-    withTimeout(5000) {
-        context.getMediaScanner().scanFile(fileAbsolutePath, null)
+/**
+ * Works with file:// URIs from primary storage
+ * Not works with file:// URIs from secondary storage (such as removable storage)
+ * Not works with any content:// URI
+ */
+suspend fun refreshAlbum(context: Context, fileUri: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        //no work
+//        withTimeout(5000) {
+//            val mediaScanner = context.getMediaScanner()
+//            mediaScanner.scanFile(fileUri, "image/jpeg")
+//        }
     }
+    val intent =
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(fileUri))
+    context.sendBroadcast(intent)
 }
 
 suspend fun Context.getMediaScanner(): MediaScannerConnection = withContext(Dispatchers.IO) {

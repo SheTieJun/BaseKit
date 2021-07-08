@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.provider.CalendarContract
@@ -33,7 +34,11 @@ object CalendarReminderUtils {
 
 
     fun checkPermission(context: AppCompatActivity): Boolean {
-        return context.hasPermission(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR, isRequest = true)
+        return context.hasPermission(
+            Manifest.permission.WRITE_CALENDAR,
+            Manifest.permission.READ_CALENDAR,
+            isRequest = true
+        )
     }
 
     /**
@@ -58,7 +63,8 @@ object CalendarReminderUtils {
      * 检查是否存在现有账户，存在则返回账户id，否则返回-1
      */
     private fun checkCalendarAccount(context: Context): Int {
-        val userCursor = context.contentResolver.query(Uri.parse(CALENDER_URL), null, null, null, null)
+        val userCursor =
+            context.contentResolver.query(Uri.parse(CALENDER_URL), null, null, null, null)
         return try {
             if (userCursor == null) { //查询返回空值
                 return -1
@@ -87,29 +93,54 @@ object CalendarReminderUtils {
         value.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, CALENDARS_DISPLAY_NAME)
         value.put(CalendarContract.Calendars.VISIBLE, 1)
         value.put(CalendarContract.Calendars.CALENDAR_COLOR, Color.BLUE)
-        value.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_OWNER)
+        value.put(
+            CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL,
+            CalendarContract.Calendars.CAL_ACCESS_OWNER
+        )
         value.put(CalendarContract.Calendars.SYNC_EVENTS, 1)
         value.put(CalendarContract.Calendars.CALENDAR_TIME_ZONE, timeZone.id)
         value.put(CalendarContract.Calendars.OWNER_ACCOUNT, CALENDARS_ACCOUNT_NAME)
         value.put(CalendarContract.Calendars.CAN_ORGANIZER_RESPOND, 0)
         var calendarUri = Uri.parse(CALENDER_URL)
         calendarUri = calendarUri.buildUpon()
-                .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, CALENDARS_ACCOUNT_NAME)
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE, CALENDARS_ACCOUNT_TYPE)
-                .build()
+            .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
+            .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, CALENDARS_ACCOUNT_NAME)
+            .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE, CALENDARS_ACCOUNT_TYPE)
+            .build()
         val result = context.contentResolver.insert(calendarUri, value)
         return if (result == null) -1 else ContentUris.parseId(result)
     }
 
+
     /**
-     *
-     * @param previousTime 提前时间分钟
+     * 打开日历界面
      */
-    fun addCalendarEvent(context: Context?, title: String?, des: String?,
-                         remindTime: Long,
-                         endTime: Long?,
-                         previousTime: Long, packageName: String? = null, scheme: String? = null): Long {
+    fun Context.addCalendar(title: String?, des: String?, scheme: String?) {
+        val startMillis: Long = System.currentTimeMillis() + 60 * 1000
+        val endMillis: Long = System.currentTimeMillis() + 60 * 5
+        val tz = TimeZone.getDefault()
+        val intent = Intent(Intent.ACTION_INSERT)
+            .setData(CalendarContract.Events.CONTENT_URI)
+            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
+            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
+            .putExtra(CalendarContract.Events.TITLE, title)
+            .putExtra(CalendarContract.Events.DESCRIPTION, des)
+            .putExtra(CalendarContract.Events.EVENT_LOCATION, tz.displayName)
+            .putExtra(CalendarContract.Events.CUSTOM_APP_PACKAGE, packageName)
+            .putExtra(CalendarContract.Events.CUSTOM_APP_URI, scheme)
+        startActivity(intent)
+    }
+
+    /**
+     * @param remindTime 提醒的事件
+     * @param previousTime 提前时间分钟开始提示
+     * @param packageName 包名
+     * @param scheme 部分手机支持跳转
+     */
+    fun addCalendarEvent(
+        context: Context?, title: String?, des: String?, remindTime: Long,
+        endTime: Long?, previousTime: Long, packageName: String? = null, scheme: String? = null
+    ): Long {
         if (context == null) {
             return -1
         }
@@ -131,12 +162,15 @@ object CalendarReminderUtils {
         event.put(CalendarContract.Events.DTSTART, start)
         event.put(CalendarContract.Events.DTEND, end)
         event.put(CalendarContract.Events.HAS_ALARM, 1) //设置有闹钟提醒
-        event.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().displayName) //这个是时区，必须有
+        event.put(
+            CalendarContract.Events.EVENT_TIMEZONE,
+            TimeZone.getDefault().displayName
+        ) //这个是时区，必须有
         event.put(CalendarContract.Events.CUSTOM_APP_PACKAGE, packageName)
         event.put(CalendarContract.Events.CUSTOM_APP_URI, scheme)
         val newEvent = context.contentResolver.insert(Uri.parse(CALENDER_EVENT_URL), event)
-                ?: //添加日历事件失败直接返回
-                return -1//添加事件
+            ?: //添加日历事件失败直接返回
+            return -1//添加事件
 
         //事件提醒的设定
         val values = ContentValues()
@@ -145,15 +179,20 @@ object CalendarReminderUtils {
         values.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前previousDate分钟有提醒
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
         context.contentResolver.insert(Uri.parse(CALENDER_REMINDER_URL), values)
-                ?: //添加事件提醒失败直接返回
-                return -1
+            ?: //添加事件提醒失败直接返回
+            return -1
         return eventID
     }
 
-    fun updateRemindEvent(context: Context, calId: Int, eventId: Long, title: String?, des: String?,
-                          remindTime: Long,
-                          endTime: Long?,
-                          previousTime: Long, packageName: String? = null, scheme: String? = null): Boolean {
+    /**
+     * 更新日历优化版
+     */
+    fun updateRemindEvent(
+        context: Context, calId: Int, eventId: Long, title: String?, des: String?,
+        remindTime: Long,
+        endTime: Long?,
+        previousTime: Long, packageName: String? = null, scheme: String? = null
+    ): Boolean {
 
         val mCalendar = Calendar.getInstance()
         mCalendar.timeInMillis = remindTime //设置开始时间
@@ -177,7 +216,17 @@ object CalendarReminderUtils {
             val rowNum = context.contentResolver.update(updateUri, values, null, null)
             if (rowNum <= 0) {
                 /*更新event不成功，说明用户在日历中删除了提醒事件，重新添加*/
-                if (addCalendarEvent(context, title, des, remindTime, endTime, previousTime, packageName, scheme) != -1L) {
+                if (addCalendarEvent(
+                        context,
+                        title,
+                        des,
+                        remindTime,
+                        endTime,
+                        previousTime,
+                        packageName,
+                        scheme
+                    ) != -1L
+                ) {
                     return true
                 }
                 return false
@@ -185,7 +234,12 @@ object CalendarReminderUtils {
                 val reminderValues = ContentValues()
                 reminderValues.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前提醒
                 val rUri = Uri.parse(CALENDER_REMINDER_URL)
-                context.contentResolver.update(rUri, reminderValues, CalendarContract.Reminders.EVENT_ID + "= ?", arrayOf(eventId.toString()))
+                context.contentResolver.update(
+                    rUri,
+                    reminderValues,
+                    CalendarContract.Reminders.EVENT_ID + "= ?",
+                    arrayOf(eventId.toString())
+                )
                 true
             }
         } catch (e: Exception) {
@@ -201,7 +255,8 @@ object CalendarReminderUtils {
         if (context == null) {
             return
         }
-        val eventCursor = context.contentResolver.query(Uri.parse(CALENDER_EVENT_URL), null, null, null, null)
+        val eventCursor =
+            context.contentResolver.query(Uri.parse(CALENDER_EVENT_URL), null, null, null, null)
         try {
             if (eventCursor == null) { //查询返回空值
                 return
@@ -212,8 +267,10 @@ object CalendarReminderUtils {
                 while (!eventCursor.isAfterLast) {
                     val eventTitle = eventCursor.getString(eventCursor.getColumnIndex("title"))
                     if (!TextUtils.isEmpty(title) && title == eventTitle) {
-                        val id = eventCursor.getInt(eventCursor.getColumnIndex(CalendarContract.Calendars._ID)) //取得id
-                        val deleteUri = ContentUris.withAppendedId(Uri.parse(CALENDER_EVENT_URL), id.toLong())
+                        val id =
+                            eventCursor.getInt(eventCursor.getColumnIndex(CalendarContract.Calendars._ID)) //取得id
+                        val deleteUri =
+                            ContentUris.withAppendedId(Uri.parse(CALENDER_EVENT_URL), id.toLong())
                         val rows = context.contentResolver.delete(deleteUri, null, null)
                         if (rows == -1) { //事件删除失败
                             return
@@ -237,10 +294,12 @@ object CalendarReminderUtils {
     }
 
 
-    fun updateCalendarEvent(context: Context, id: Long, title: String?, des: String?,
-                            remindTime: Long,
-                            endTime: Long?,
-                            previousTime: Long): Int {
+    fun updateCalendarEvent(
+        context: Context, id: Long, title: String?, des: String?,
+        remindTime: Long,
+        endTime: Long?,
+        previousTime: Long
+    ): Int {
         val values = ContentValues().apply {
             val calId = checkAndAddCalendarAccount(context)
             val timezone = TimeZone.getTimeZone("Asia/Shanghai")

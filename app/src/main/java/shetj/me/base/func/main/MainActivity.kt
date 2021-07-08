@@ -187,32 +187,19 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),
         }
 
         mContent.btnMvvm.setOnClickListener {
-            val startForResult =
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-                { result: ActivityResult ->
-                    if (result.resultCode == Activity.RESULT_OK) {
-
-                    }
-                }
-            startForResult.launch(
-                Intent(this, MVVMTestActivity::class.java),
-                ActivityOptionsCompat.makeBasic()
-            )
-//            start<MVVMTestActivity>()
+            start<MVVMTestActivity>()
         }
 
         mContent.btnSetting.setOnClickListener {
             openSetting()
         }
         netTest()
-        imgTest()
         findViewById<View>(R.id.fab).setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(mPresenter.getNightModel())
         }
         testExecutor()
 
         mContent.btnInsert.setOnClickListener {
-
             saverCreate(key = "测试key", value = "测试value").apply {
                 saverDB.insert(this)
                     .subscribeOn(Schedulers.io())

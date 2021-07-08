@@ -2,34 +2,25 @@ package shetj.me.base.mvvmtest
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Looper
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.rx3.asFlowable
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.loadImage
-import me.shetj.base.ktx.logi
 import me.shetj.base.mvvm.BaseBindingActivity
-import me.shetj.base.tools.file.FileQUtils.searchTypeFile
 import org.koin.android.ext.android.get
 import shetj.me.base.R
-import shetj.me.base.bean.ResultMusic
-import shetj.me.base.common.manager.TokenLoaderKT
 import shetj.me.base.common.manager.TokenLoaderKT.Holder.instance
 import shetj.me.base.common.manager.TokenManager
 import shetj.me.base.databinding.ActivityMVVMTestBinding
-import shetj.me.base.test.ProxyFactory
-import shetj.me.base.test.TestProxy
 import shetj.me.base.utils.TimeUtil
 import timber.log.Timber
-import kotlin.random.Random
 
 class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBinding>() {
 
@@ -42,11 +33,7 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
                 mViewModel.timeLive.postValue(TimeUtil.getHMSTime())
             }
             R.id.btn_select_image -> {
-                searchTypeFile(callback = {
-                    it.let {
-                        mViewModel.url.postValue(it.toString())
-                    }
-                })
+
             }
             R.id.testToken ->{
                 repeat(10){i ->
@@ -70,8 +57,16 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
     @Suppress("EXPERIMENTAL_API_USAGE")
     override fun onActivityCreate() {
         super.onActivityCreate()
+        val registerForActivityResult =
+            registerForActivityResult(ActivityResultContracts.GetContent()){
+                    it.let {
+                        mViewModel.url.postValue(it.toString())
+                    }
+            }
         mViewBinding.btnChange.setOnClickListener(click)
-        mViewBinding.btnSelectImage.setOnClickListener(click)
+        mViewBinding.btnSelectImage.setOnClickListener{
+            registerForActivityResult.launch("image/*")
+        }
         //LiveData 的通知更新
         mViewModel.timeLive.observe(this, {
             Timber.tag("timeLive").i(it?.toString())

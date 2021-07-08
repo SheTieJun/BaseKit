@@ -11,19 +11,17 @@ import android.view.inputmethod.InputMethodManager
  */
 class SoftInputUtil {
     private var softInputHeightChanged = false
-    private var anyView: View? = null
     private var listener: ISoftInputChanged? = null
     private var isSoftInputShowing = false
-    private  var rootViewVisibleHeight = 0
+    private var rootViewVisibleHeight = 0
     private val rect = Rect()
 
     interface ISoftInputChanged {
         fun onChanged(isSoftInputShow: Boolean)
     }
 
-    fun attachSoftInput(rootView:Window?,anyView: View?, listener: ISoftInputChanged?) {
-        if (anyView == null || listener == null||rootView == null) return
-        this.anyView = anyView
+    fun attachSoftInput(rootView: Window?, listener: ISoftInputChanged?) {
+        if (listener == null || rootView == null) return
         this.listener = listener
 
         rootView.decorView.viewTreeObserver.addOnGlobalLayoutListener {
@@ -72,12 +70,18 @@ class SoftInputUtil {
 
         fun showSoftInput(view: View?) {
             if (view == null) return
-            (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(view, 0)
+            (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
+                view,
+                0
+            )
         }
 
         fun hideSoftInput(view: View?) {
             if (view == null) return
-            (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(view.windowToken, 0)
+            (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(
+                view.windowToken,
+                0
+            )
         }
     }
 }

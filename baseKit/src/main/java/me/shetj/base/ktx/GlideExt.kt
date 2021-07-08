@@ -3,7 +3,6 @@ package me.shetj.base.ktx
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -12,15 +11,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.FileUtils
 import me.shetj.base.tools.file.FileUtils.copyFile
 import java.io.File
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 //region Glide 加载
 
@@ -155,18 +150,20 @@ suspend fun saveImage(
         val cacheFile = Glide.with(context)
             .downloadOnly()
             .load(shareCardUrl).submit().get()
-        val filePath = (EnvironmentStorage.sdCardPath
+        val filePath = (EnvironmentStorage.filesDir
                 + "Image_" + System.currentTimeMillis() + ".jpg")
         val targetFile = File(filePath)
         val resultIsSuccess = copyFile(cacheFile, targetFile, FileUtils.OnReplaceListener {
             return@OnReplaceListener true
         })
         if (resultIsSuccess) {
-            refreshAlbum(context, targetFile.absolutePath)
             targetFile
         } else {
             cacheFile
+        }.also {
+            refreshAlbum(context, Uri.fromFile(it).toString())
         }.absolutePath
+
     }
 }
 
