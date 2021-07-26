@@ -2,6 +2,9 @@
 
 package me.shetj.base.network_coroutine
 
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.paging.LoadState
 import me.shetj.base.network.exception.ApiException
 
 
@@ -165,7 +168,7 @@ inline fun <R, T> HttpResult<T>.mapCatching(transform: (value: T) -> R): HttpRes
 }
 
 
-inline fun <R, T : R> HttpResult<T>.recover(transform: (exception: Throwable) -> R): HttpResult<R> {
+inline fun <R, T : R> HttpResult<T>.recover(transform: (exception: Throwable) -> R): HttpResult<R?> {
 
     return when (val exception = exceptionOrNull()) {
         null -> this
@@ -190,7 +193,37 @@ inline fun <T> HttpResult<T>.onFailure(action: (exception: Throwable) -> Unit): 
 }
 
 
-inline fun <T> HttpResult<T>.onSuccess(action: (value: T) -> Unit): HttpResult<T> {
+inline fun <T> HttpResult<T>.onSuccess(action: OnSuccess<T>): HttpResult<T> {
     if (isSuccess) action(value as T)
     return this
+}
+
+typealias OnLoading = HttpResult.Progress.() ->Unit
+
+typealias OnSuccess<T> = T.() ->Unit
+
+typealias OnFailure = Throwable?.() ->Unit
+
+class HttpResultCallBack<T>{
+    var onLoading :OnLoading ?= null
+    var onSuccess :OnSuccess<T?> ?= null
+    var onFailure :OnFailure ?= null
+}
+
+fun <T> LiveData<HttpResult<T>>.observeChange(owner: LifecycleOwner,block: HttpResultCallBack<T>.() -> Unit){
+       HttpResultCallBack<T>().apply(block).let { callBack ->
+           this.observe(owner){
+                 when {
+                   it.isFailure -> {
+                       callBack.onSuccess?.invoke(it.getOrNull())
+                   }
+                   it.isLoading -> {
+                       callBack.onLoading?.invoke(value as HttpResult.Progress)
+                   }
+                   else -> {
+                       callBack.onFailure?.invoke(it.exceptionOrNull())
+                   }
+               }
+           }
+       }
 }

@@ -4,7 +4,6 @@ import android.Manifest
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.REVERSE
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,15 +15,10 @@ import android.view.animation.OvershootInterpolator
 import android.widget.Button
 import android.widget.EdgeEffect
 import android.widget.TextView
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.animation.addListener
-import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.paging.Pager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -40,10 +34,6 @@ import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.saver.Saver
-import me.shetj.base.saver.SaverDao
-import me.shetj.base.sim.SimpleCallBack
-import me.shetj.base.tip.SimLoadingDialog
-import me.shetj.base.tip.Tip
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
@@ -58,14 +48,12 @@ import shetj.me.base.R
 import shetj.me.base.api.BApi
 import shetj.me.base.bean.ApiResult1
 import shetj.me.base.bean.MusicBean
-import shetj.me.base.common.bean.UserInfo
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.mvvmtest.MVVMTestActivity
 import timber.log.Timber
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),

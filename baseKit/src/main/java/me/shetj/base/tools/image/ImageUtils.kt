@@ -54,11 +54,12 @@ class ImageUtils {
 
         /**
          * 创建一条图片地址uri,用于保存拍照后的照片
-         *
+         * 兼容核心就是这里
          * @param context
          * @return 图片的uri
          */
-        private fun createImagePathUri(context: Context?): Uri {
+        @JvmStatic
+        fun createImagePathUri(context: Context?): Uri {
             if (context == null) {
                 throw NullPointerException("context is null")
             }
@@ -70,7 +71,7 @@ class ImageUtils {
                     val file = File(createImagePath())
                     getUriForFile(
                         context.applicationContext,
-                        AppUtils.appPackageName + ".FileProvider",
+                        context.packageName + ".FileProvider",
                         file
                     )
                 }
