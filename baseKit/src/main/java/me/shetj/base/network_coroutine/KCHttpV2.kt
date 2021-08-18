@@ -84,9 +84,9 @@ object KCHttpV2 {
     @Suppress("BlockingMethodInNonBlockingContext")
     @JvmOverloads
     suspend fun download(url: String, outputFile: String,
-                         onError: DOWNLOAD_ERROR = {},
-                         onProcess: DOWNLOAD_PROCESS = { _, _, _ -> },
-                         onSuccess: DOWNLOAD_SUCCESS = { }) {
+                         onError: download_error = {},
+                         onProcess: download_process = { _, _, _ -> },
+                         onSuccess: download_success = { }) {
         val body = apiService.downloadFile(url)
         flow {
             try {

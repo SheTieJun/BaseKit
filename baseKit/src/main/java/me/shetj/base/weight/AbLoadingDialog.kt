@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 /**
  *   must  【 android:configChanges="orientation|keyboardHidden|screenSize"】
  */
-abstract class AbLoadingDialog :LifecycleObserver, KtScopeComponent {
+abstract class AbLoadingDialog :LifecycleObserver, ABKtScopeComponent() {
 
     companion object {
         const val LOADING_LONG = 1800L
@@ -37,8 +37,6 @@ abstract class AbLoadingDialog :LifecycleObserver, KtScopeComponent {
     private var mLoadingDialog: AlertDialog? = null
     private val lazyComposite = lazy { CompositeDisposable() }
     private val mCompositeDisposable: CompositeDisposable by lazyComposite
-
-    override val ktScope: DefCoroutineScope by defScope()
 
     abstract fun createLoading(context: Context, cancelable: Boolean = false, msg: CharSequence = "加载中...", @DrawableRes image: Int? = null): AlertDialog?
 

@@ -14,6 +14,7 @@ import android.net.Uri
 import android.util.SparseArray
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.ielse.imagewatcher.ImageWatcherHelper
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -42,7 +43,7 @@ class ImageWatcherUtils(activity: Activity) {
         iwHelper = ImageWatcherHelper.with(activity) { context, uri, loadCallback ->
             Glide.with(context).load(uri)
                     //sim 加载原始大小图片
-                    .into(object : com.bumptech.glide.request.target.SimpleTarget<Drawable>() {
+                    .into(object : SimpleTarget<Drawable>() {
                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                             addDispose(Flowable.just(resource)
                                     .map {

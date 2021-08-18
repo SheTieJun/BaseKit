@@ -125,7 +125,7 @@ open class RxHttp private constructor() {
     }
 
 
-    fun getDnsMap() = dnsLocalMap
+    internal fun getDnsMap() = dnsLocalMap
 
     //region  ApiManager的获取
 
@@ -372,6 +372,9 @@ open class RxHttp private constructor() {
         return this
     }
 
+    /**
+     * 网络拦截器：因为网络原因可能执行多次
+     */
     fun addNetInterceptor(interceptor: Interceptor?):RxHttp{
         okHttpClientBuilder.addNetworkInterceptor(checkNotNull(interceptor, { "interceptor == null" }))
         return this

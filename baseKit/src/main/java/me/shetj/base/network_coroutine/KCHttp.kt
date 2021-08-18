@@ -4,13 +4,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ServerException
 import me.shetj.base.network.func.ApiResultFunc
-import me.shetj.base.network.kt.ClassUtils
 import me.shetj.base.network.kt.createJson
-import me.shetj.base.tools.json.GsonKit
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.koin.java.KoinJavaComponent.get
@@ -21,9 +18,9 @@ import java.io.FileOutputStream
 
 //region 下载状态相关
 typealias HTTP_ERROR = (ApiException) -> Unit
-typealias DOWNLOAD_ERROR = suspend (Throwable) -> Unit
-typealias DOWNLOAD_PROCESS = suspend (downloadedSize: Long, length: Long, process: Float) -> Unit
-typealias DOWNLOAD_SUCCESS = suspend (uri: File) -> Unit
+typealias download_error = suspend (Throwable) -> Unit
+typealias download_process = suspend (downloadedSize: Long, length: Long, progress: Float) -> Unit
+typealias download_success = suspend (uri: File) -> Unit
 
 sealed class DownloadStatus {
     class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) : DownloadStatus()
@@ -108,9 +105,9 @@ object KCHttp {
 
     @Suppress("BlockingMethodInNonBlockingContext")
     @JvmOverloads
-    suspend fun download(url: String, outputFile: String, error: DOWNLOAD_ERROR = {},
-                         process: DOWNLOAD_PROCESS = { _, _, _ -> },
-                         success: DOWNLOAD_SUCCESS = { }) {
+    suspend fun download(url: String, outputFile: String, error: download_error = {},
+                         process: download_process = { _, _, _ -> },
+                         success: download_success = { }) {
 
         val body = apiService.downloadFile(url)
 

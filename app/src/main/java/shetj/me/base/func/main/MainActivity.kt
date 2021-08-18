@@ -266,7 +266,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>(),
             }
         }
         mViewBinding.content.testLoading.setOnClickListener {
-            TipKit.showLoading(this) {
+            TipKit.showLoadingWithCoroutine(this) {
                 doOnIO {
                     "开始".logi()
                     delay(5000)

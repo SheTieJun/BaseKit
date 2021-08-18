@@ -117,11 +117,7 @@ abstract class ABBaseActivity: AppCompatActivity() , LifecycleObserver {
      * 用来替换 [finish] 返回
      */
     open fun back() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            finishAfterTransition()
-        } else {
-            finish()
-        }
+        finishAfterTransition()
     }
 
     override fun onBackPressed() {

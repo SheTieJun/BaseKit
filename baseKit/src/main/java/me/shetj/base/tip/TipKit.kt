@@ -76,18 +76,21 @@ object TipKit {
     }
 
     @JvmStatic
-    fun showLoading(context: AppCompatActivity, action: suspend () -> Unit): AbLoadingDialog {
+    fun showLoadingWithCoroutine(context: AppCompatActivity, action: suspend () -> Unit): AbLoadingDialog {
         return SimLoadingDialog.showWithAction(context,action)
     }
 
 
     @JvmStatic
-    fun showRxLoading(context: AppCompatActivity, action:  () -> Disposable): AbLoadingDialog {
+    fun showLoadingWithRx(context: AppCompatActivity, action:  () -> Disposable): AbLoadingDialog {
         return SimLoadingDialog.showWithRxAction(context,action)
     }
 
+    /**
+     * 超时结束的
+     */
     @JvmStatic
-    fun showLoadingTimeOut(context: AppCompatActivity,time: Long, action:  () -> Unit ) {
+    fun showLoadingWithTimeOut(context: AppCompatActivity, time: Long, action:  () -> Unit ) {
          SimLoadingDialog().showWithTimeOutAction(context,time,action)
     }
 }

@@ -12,6 +12,10 @@ interface KtScopeComponent {
     val ktScope: DefCoroutineScope
 }
 
+abstract class ABKtScopeComponent :KtScopeComponent{
+    override val ktScope: DefCoroutineScope by defScope()
+}
+
 
 fun ktScopeWithLife(lifecycle: Lifecycle) = lazy {
     LifecycleCoroutineScopeImpl(lifecycle,

@@ -1,8 +1,9 @@
 package shetj.me.base.utils
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
-import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -14,12 +15,9 @@ import me.shetj.base.S
  */
 object DataStoreKit {
 
-    val dataStore: DataStore<Preferences> by lazy {   S.app.createDataStore(name = "base_dataStore")}
+    private val Context.dataStore by preferencesDataStore("filename")
 
-//    private val dataStore2: DataStore<Preferences> = S.app.createDataStore(
-//            "settings",
-//            migrations = listOf(SharedPreferencesMigration(S.app, "sp"))
-//    )
+    val dataStore: DataStore<Preferences> by lazy { S.app.dataStore }
 
     suspend inline fun <reified T : Any> save(key: String, value: T) {
         try {
@@ -46,7 +44,7 @@ object DataStoreKit {
                     Set::class -> {
                         it[stringSetPreferencesKey(key)] = value as Set<String>
                     }
-                    else ->{
+                    else -> {
                         throw IllegalArgumentException(" Can't handle 'value' ")
                     }
                 }

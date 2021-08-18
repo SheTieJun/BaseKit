@@ -18,7 +18,7 @@ import android.widget.TextView
  */
 fun CharSequence.toSizeSpan(range: IntRange, scale: Float = 1.5f): CharSequence {
     return SpannableString(this).apply {
-        setSpan(RelativeSizeSpan(scale), range.start, range.endInclusive, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(RelativeSizeSpan(scale), range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
     }
 }
 
@@ -29,7 +29,7 @@ fun CharSequence.toSizeSpan(range: IntRange, scale: Float = 1.5f): CharSequence 
  */
 fun CharSequence.toColorSpan(range: IntRange, color: Int = Color.RED): CharSequence {
     return SpannableString(this).apply {
-        setSpan(ForegroundColorSpan(color), range.start, range.endInclusive, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(ForegroundColorSpan(color), range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
     }
 }
 
@@ -40,7 +40,7 @@ fun CharSequence.toColorSpan(range: IntRange, color: Int = Color.RED): CharSeque
  */
 fun CharSequence.toBackgroundColorSpan(range: IntRange, color: Int = Color.RED): CharSequence {
     return SpannableString(this).apply {
-        setSpan(BackgroundColorSpan(color), range.start, range.endInclusive, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(BackgroundColorSpan(color), range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
     }
 }
 
@@ -50,7 +50,7 @@ fun CharSequence.toBackgroundColorSpan(range: IntRange, color: Int = Color.RED):
  */
 fun CharSequence.toStrikeThrougthSpan(range: IntRange): CharSequence {
     return SpannableString(this).apply {
-        setSpan(StrikethroughSpan(), range.start, range.endInclusive, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(StrikethroughSpan(), range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
     }
 }
 
@@ -79,7 +79,7 @@ fun CharSequence.toClickSpan(range: IntRange, color: Int = Color.RED, isUnderlin
  */
 fun CharSequence.toStyleSpan(style: Int = Typeface.BOLD, range: IntRange): CharSequence {
     return SpannableString(this).apply {
-        setSpan(StyleSpan(style), range.start, range.endInclusive, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(StyleSpan(style), range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
     }
 }
 

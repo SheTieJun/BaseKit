@@ -133,8 +133,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06" //(key+value)
-    implementation "androidx.datastore:datastore-core:1.0.0-alpha06"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha08" //(key+value)
+    implementation "androidx.datastore:datastore-core:1.0.0-alpha08"
 //    implementation "androidx.datastore:datastore-rxjava3:1.0.0-alpha06"
 //(Proto DataStore，它允许您存储类型化的对象（由协议缓冲区提供支持）)
 
@@ -171,8 +171,7 @@ dependencies {
     implementation("androidx.startup:startup-runtime:1.0.0")
     implementation "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
 
-    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha06" //(key+value)
-    implementation "androidx.datastore:datastore-core:1.0.0-alpha06"
+//    debugImplementation 'com.glance.guolindev:glance:1.0.0' //debug 情况下查看数据库
 }
 
 //apply from: file("dokit-config.gradle")
