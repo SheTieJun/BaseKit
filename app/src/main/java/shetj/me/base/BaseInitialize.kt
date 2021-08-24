@@ -1,20 +1,28 @@
 package shetj.me.base
 
-import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
 import me.shetj.base.S
+import me.shetj.base.init.CommonInitialize
+import me.shetj.base.network.RxHttp
+import me.shetj.base.tools.app.Tim
+import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
 import shetj.me.base.di_kointest.allModules
 
 
+/**
+ * 用start_up 代替application
+ */
 class BaseInitialize:Initializer<Unit> {
 
     override fun create(context: Context) {
-        S.init(context.applicationContext as Application, BuildConfig.DEBUG, "https://xxxx.com")
+        Thread.setDefaultUncaughtExceptionHandler(BaseUncaughtExceptionHandler())
         S.initKoin(allModules)
+        Tim.setLogAuto(BuildConfig.LOG_DEBUG)
+        RxHttp.getInstance().setBaseUrl("https:me.shetj.com")
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {
-        return  mutableListOf()
+        return  mutableListOf(CommonInitialize::class.java)
     }
 }

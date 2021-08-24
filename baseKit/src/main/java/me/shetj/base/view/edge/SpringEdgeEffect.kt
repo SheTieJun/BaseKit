@@ -32,7 +32,7 @@ class SpringEdgeEffect(private val recyclerView: RecyclerView, private val direc
         findEachViewHolder<EdgeViewHolder> {
             this?.let {
                 this.itemView.translationY += translationYDelta
-                animY?.cancel()
+                animY.cancel()
             }
         }
     }

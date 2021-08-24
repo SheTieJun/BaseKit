@@ -127,4 +127,6 @@ dependencies {
 
     api "androidx.paging:paging-runtime-ktx:$paging_version"
 
+    api 'androidx.startup:startup-runtime:1.1.0'
+
 }
