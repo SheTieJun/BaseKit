@@ -66,34 +66,27 @@ class BarUtils private constructor() {
 
         @JvmOverloads
         fun immersive(window: Window, color: Int, @FloatRange(from = 0.0, to = 1.0) alpha: Float = 1f) {
-            if (Build.VERSION.SDK_INT >= 21) {
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.statusBarColor = mixtureColor(color, alpha)
-
-                var systemUiVisibility = window.decorView.systemUiVisibility
-                systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                window.decorView.systemUiVisibility = systemUiVisibility
-            } else if (Build.VERSION.SDK_INT >= 19) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                setTranslucentView(window.decorView as ViewGroup, color, alpha)
-            } else if (Build.VERSION.SDK_INT >= MIN_API && Build.VERSION.SDK_INT > 16) {
-                var systemUiVisibility = window.decorView.systemUiVisibility
-                systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                window.decorView.systemUiVisibility = systemUiVisibility
-            }
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = mixtureColor(color, alpha)
+            var systemUiVisibility = window.decorView.systemUiVisibility
+            systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            window.decorView.systemUiVisibility = systemUiVisibility
         }
 
         @JvmStatic
         fun darkMode(activity: Activity, dark: Boolean) {
-            if (isFlyme4Later) {
-                darkModeForFlyme4(activity.window, dark)
-            } else if (isMIUI6Later) {
-                darkModeForMIUI6(activity.window, dark)
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                darkModeForM(activity.window, dark)
+            when {
+                isFlyme4Later -> {
+                    darkModeForFlyme4(activity.window, dark)
+                }
+                isMIUI6Later -> {
+                    darkModeForMIUI6(activity.window, dark)
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                    darkModeForM(activity.window, dark)
+                }
             }
         }
 
@@ -124,7 +117,7 @@ class BarUtils private constructor() {
                     darkModeForM(window, true)
                     immersive(window, color, alpha)
                 }
-                Build.VERSION.SDK_INT >= 19 -> {
+                Build.VERSION.SDK_INT > 19 -> {
                     window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                     setTranslucentView(window.decorView as ViewGroup, color, alpha)
                 }

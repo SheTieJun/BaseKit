@@ -11,6 +11,7 @@ import android.net.*
 import android.os.Build
 import android.os.Looper
 import android.view.*
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
@@ -23,11 +24,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
@@ -117,8 +116,7 @@ fun Context.collapseStatusBar() {
     try {
         @SuppressLint("WrongConstant")
         val statusBarManager = getSystemService("statusbar")
-        val collapse: Method
-        collapse = statusBarManager.javaClass.getMethod("collapsePanels")
+        val collapse: Method = statusBarManager.javaClass.getMethod("collapsePanels")
         collapse.invoke(statusBarManager)
     } catch (localException: Exception) {
         localException.printStackTrace()
@@ -180,7 +178,7 @@ inline fun runOnMain(crossinline run: () -> Unit = {}) {
 }
 
 inline fun runOnIo(crossinline run: () -> Unit = { }) {
-    Schedulers.io().scheduleDirect { run() }
+    TaskExecutor.executeOnIO { run() }
 }
 
 fun isMainThread(): Boolean {
@@ -293,6 +291,11 @@ internal fun Context.requestNetWork() {
 
 fun Context.getFileProvider(): String {
     return "${packageName}.FileProvider"
+}
+
+fun Activity.getWindowContent(): FrameLayout? {
+    val rootView = window.decorView.rootView
+    return rootView.findViewById(android.R.id.content)
 }
 
 /**

@@ -1,4 +1,4 @@
-package me.shetj.base.view
+package me.shetj.base.view.floatview
 
 import android.content.*
 import android.util.AttributeSet
@@ -10,8 +10,8 @@ import me.shetj.base.tools.app.FloatKit.checkFloatPermission
 import me.shetj.base.tools.app.FloatKit.getWinManager
 
 abstract class BaseFloatView : FrameLayout {
-    private var windowParams: WindowManager.LayoutParams ?=null
-    private var winManager: WindowManager?=null
+    protected lateinit var windowParams: WindowManager.LayoutParams
+    protected lateinit var winManager: WindowManager
 
     /**
      * 获取悬浮窗中的视频播放view
@@ -41,23 +41,34 @@ abstract class BaseFloatView : FrameLayout {
     }
 
 
-
-
     /**
      * 初始化view
      */
     abstract fun initView(context: Context)
 
-    fun addToWindowManager(){
-        if (context.checkFloatPermission()){
-            winManager = context.getWinManager()
-            windowParams = FloatKit.getWindowParams()
-            winManager!!.addView(this,windowParams)
+    open fun addToWindowManager(layout: ViewRect.() -> Unit) {
+        if (context.checkFloatPermission()) {
+            if (!this::winManager.isInitialized) {
+                winManager = context.getWinManager()
+                val rect = ViewRect(0, 0, 0, 0).apply(layout)
+                windowParams = FloatKit.getWindowParams().apply{
+                    x = rect.x
+                    y = rect.y
+                    width = rect.width
+                    height = rect.height
+                }
+            }
         }
+        if (this.parent != null) {
+            (parent as ViewGroup).removeView(this)
+        }
+        winManager.addView(this, windowParams)
     }
 
-    fun removeToWindowManager(){
-        winManager?.removeView(this)
+    open fun removeFormWindowManager() {
+        if (this::winManager.isInitialized) {
+            winManager.removeView(this)
+        }
     }
 
 
@@ -69,8 +80,6 @@ abstract class BaseFloatView : FrameLayout {
             MotionEvent.ACTION_DOWN -> {
                 mXInView = event.x
                 mYInView = event.y
-                mXDownInScreen = event.rawX
-                mYDownInScreen = event.rawY - mStatusBarHeight
                 mXInScreen = event.rawX
                 mYInScreen = event.rawY - mStatusBarHeight
             }
@@ -79,7 +88,9 @@ abstract class BaseFloatView : FrameLayout {
                 mYInScreen = event.rawY - mStatusBarHeight
                 updateViewPosition()
             }
-            MotionEvent.ACTION_UP -> if (mXDownInScreen == mXInScreen && mYDownInScreen == mYInScreen) { //手指没有滑动视为点击，回到窗口模式
+            MotionEvent.ACTION_UP -> if (mXDownInScreen == mXInScreen
+                && mYDownInScreen == mYInScreen
+            ) { //手指没有滑动视为点击，回到窗口模式
                 performClick()
             }
             else -> {
@@ -103,10 +114,12 @@ abstract class BaseFloatView : FrameLayout {
         }
 
     private fun updateViewPosition() {
-        val x = (mXInScreen - mXInView).toInt()
-        val y = (mYInScreen - mYInView).toInt()
-        windowParams?.x = x
-        windowParams?.y = y
-        winManager?.updateViewLayout(this,windowParams)
+        if (this::winManager.isInitialized) {
+            val x = (mXInScreen - mXInView).toInt()
+            val y = (mYInScreen - mYInView).toInt()
+            windowParams.x = x
+            windowParams.y = y
+            winManager.updateViewLayout(this, windowParams)
+        }
     }
 }

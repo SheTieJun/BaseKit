@@ -12,6 +12,7 @@ import androidx.work.*
 import me.shetj.base.ktx.logi
 import me.shetj.base.network_coroutine.KCHttpV2
 import shetj.me.base.R
+import java.util.*
 
 
 /**
@@ -43,6 +44,10 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
 
         KCHttpV2.download(inputUrl, "$outputFile/$fileName", onProcess = { _, _, process ->
             setForeground(createForegroundInfo("${(process * 100).toInt()}%"))
+            setProgress(Data.Builder().let {
+                it.putInt("progress", (process * 100).toInt())
+                it.build()
+            })
         }, onSuccess = {
             it.absolutePath.logi()
             setForeground(createForegroundInfo("download ok"))
@@ -110,7 +115,23 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
         const val KEY_OUT_PUT_URL = "KEY_OUT_URL"
         const val KEY_OUTPUT_FILE_NAME = "KEY_OUTPUT_FILE_NAME"
 
-        fun startDownload(context: Context, inputUrl: String, outputFile: String, fileName: String) {
+        /***
+         * WorkManager.getInstance(applicationContext)
+         *       .getWorkInfoByIdLiveData(checkDisk.id)
+         *       .observe(this, object : Observer<WorkInfo> {
+         *            override fun onChanged(t: WorkInfo?) {
+         *              // 任务执行完毕之后，会在这里获取到返回的结果
+         *              if(t?.state == WorkInfo.State.RUNNING) {
+         *                  Log.d("TEST", "Work progress --- ${t.progress.getInt("progress", 0)}")
+         *              } else if(t?.state == WorkInfo.State.SUCCEEDED){
+         *                  Toast.makeText(this@MainActivity, "Check disk success", Toast.LENGTH_LONG).show()
+         *              } else if(t?.state == WorkInfo.State.FAILED){
+         *                  Toast.makeText(this@MainActivity, "Check disk failed", Toast.LENGTH_LONG).show()
+         *              }
+         *          }
+         *})
+         */
+        fun startDownload(context: Context, inputUrl: String, outputFile: String, fileName: String): UUID {
             val inputData: Data = Data.Builder().apply {
                 putString(KEY_INPUT_URL, inputUrl)
                 putString(KEY_OUTPUT_FILE_NAME, fileName)
@@ -118,6 +139,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
             }.build()
             val request = OneTimeWorkRequestBuilder<DownloadWorker>().setInputData(inputData).build()
             WorkManager.getInstance(context).enqueue(request)
+            return request.id
         }
     }
 }

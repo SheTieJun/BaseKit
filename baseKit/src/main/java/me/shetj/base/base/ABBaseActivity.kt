@@ -95,12 +95,12 @@ abstract class ABBaseActivity: AppCompatActivity() , LifecycleObserver {
     }
 
     /**
-     * 是否使用eventBus,默认为使用(true)，
+     * 是否使用eventBus,默认为使用(false)，
      *
      * @return useEventBus
      */
     open fun useEventBus(): Boolean {
-        return true
+        return false
     }
 
     /**

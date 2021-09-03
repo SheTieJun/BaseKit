@@ -12,6 +12,9 @@ import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.fragment.app.FragmentActivity
 import timber.log.Timber
 
 
@@ -37,13 +40,19 @@ object FloatKit {
         return mWindowParams
     }
 
-    fun Context.checkFloatPermission(): Boolean {
+    fun Context.checkFloatPermission(needGet: Boolean = false): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // 6.0动态申请悬浮窗权限
             if (!Settings.canDrawOverlays(this)) {
-                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
-                intent.data = Uri.parse("package:$packageName")
-                startActivity(intent)
+                if (needGet) {
+                    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+                    intent.data = Uri.parse("package:$packageName")
+                    if (this is FragmentActivity) {
+                        startActivityForResult(intent, 0)
+                    } else {
+                        startActivity(intent)
+                    }
+                }
                 return false
             }
         } else {

@@ -2,7 +2,9 @@ package me.shetj.base.ktx
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
@@ -31,6 +33,11 @@ suspend inline fun <T> doOnContext(context: CoroutineContext = EmptyCoroutineCon
     return@withContext action()
 }
 
+inline fun ViewModel.launch(crossinline action: suspend CoroutineScope.() -> Unit): Job {
+    return viewModelScope.launch {
+        action()
+    }
+}
 
 inline fun AppCompatActivity.launch(crossinline action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launch {

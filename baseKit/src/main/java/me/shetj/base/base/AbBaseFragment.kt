@@ -77,7 +77,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
      * @return boolean
      */
     open fun useEventBus(): Boolean {
-        return true
+        return false
     }
 
     /**

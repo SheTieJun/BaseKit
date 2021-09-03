@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 import me.shetj.base.ktx.copy
 import me.shetj.base.ktx.runOnIo
@@ -42,7 +43,6 @@ class KtTestActivity : BaseActivity<MainPresenter>() {
             delay(1000)
 
         }
-
 
 
 

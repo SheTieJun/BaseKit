@@ -151,7 +151,7 @@ open class RxHttp private constructor() {
     }
 
 
-    fun getApiManager(baseRequest: BaseRequest<*>): ApiService {
+    internal fun getApiManager(baseRequest: BaseRequest<*>): ApiService {
         return if (baseRequest.isDefault) {
             getDeApiManager() //默认尽量是常用的
         } else {
