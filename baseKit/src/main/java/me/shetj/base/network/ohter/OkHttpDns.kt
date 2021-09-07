@@ -11,7 +11,7 @@ import java.net.InetAddress
  *
  * 通用性强，该方案在HTTPS,SN以及设置Cookie等场景均适用。规避了证书校验，域名检查等环节
  */
-class OkHttpDns( ) : Dns {
+class OkHttpDns : Dns {
 
     companion object {
 

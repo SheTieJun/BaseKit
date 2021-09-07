@@ -14,6 +14,7 @@ import me.shetj.base.network.ohter.OkHttpDns
 import me.shetj.base.network_coroutine.KCApiService
 import me.shetj.base.saver.SaverDatabase
 import me.shetj.base.tools.file.EnvironmentStorage
+import me.shetj.base.tools.json.GsonKit
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
@@ -53,7 +54,7 @@ val dbModule = module() {
     single {
         Retrofit.Builder().apply {
             addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            addConverterFactory(GsonConverterFactory.create())
+            addConverterFactory(GsonConverterFactory.create(GsonKit.gson))
             client(get())
             baseUrl(S.baseUrl ?: "https://me.shetj.com")
             validateEagerly(S.isDebug) //在开始的时候直接开始检测所有的方法

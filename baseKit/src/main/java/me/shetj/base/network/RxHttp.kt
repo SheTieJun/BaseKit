@@ -163,12 +163,12 @@ open class RxHttp private constructor() {
     }
 
     //对外暴露 OkHttpClient,方便自定义，主要是为共用线程池
-    private fun getOkHttpClientBuilder(): OkHttpClient.Builder {
+    fun getOkHttpClientBuilder(): OkHttpClient.Builder {
         return getInstance().okHttpClientBuilder
     }
 
     //对外暴露 Retrofit,方便自定义
-    private fun getRetrofitBuilder(): Retrofit.Builder {
+    fun getRetrofitBuilder(): Retrofit.Builder {
         return getInstance().retrofitBuilder
     }
 
@@ -186,6 +186,7 @@ open class RxHttp private constructor() {
         return getOkHttpClient().newBuilder().apply {
             if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
             if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)
+            if (baseRequest.connectTimeout > 0) connectTimeout(baseRequest.connectTimeout, TimeUnit.MILLISECONDS)
             if (baseRequest.sslParams != null) {
                 //SSL/TLS证书
                 sslSocketFactory(baseRequest.sslParams!!.sSLSocketFactory,

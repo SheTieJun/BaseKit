@@ -38,9 +38,6 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     var adapterFactories: MutableList<CallAdapter.Factory> = ArrayList()
     var headers: HttpHeaders = HttpHeaders() //添加的header
     var isDefault = true //使用默认的ApiManager
-    var sign = false //是否需要签名
-    var timeStamp = false //是否需要追加时间戳
-    var accessToken = false //是否需要追加token
     var sslParams: HttpsUtils.SSLParams? = null
 
     protected var httpUrl: HttpUrl? = null
@@ -189,21 +186,6 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
 
     open fun removeAllParams(): R {
         params.clear()
-        return this as R
-    }
-
-    open fun sign(sign: Boolean): R {
-        this.sign = sign
-        return this as R
-    }
-
-    open fun timeStamp(timeStamp: Boolean): R {
-        this.timeStamp = timeStamp
-        return this as R
-    }
-
-    open fun accessToken(accessToken: Boolean): R {
-        this.accessToken = accessToken
         return this as R
     }
 

@@ -17,8 +17,6 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.annotation.Keep
 import androidx.core.content.FileProvider.getUriForFile
-import me.shetj.base.base.BaseCallback
-import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.file.EnvironmentStorage
 import java.io.ByteArrayOutputStream
 import java.io.File

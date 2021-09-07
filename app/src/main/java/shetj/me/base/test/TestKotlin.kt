@@ -1,6 +1,7 @@
 package shetj.me.base.test
 
 import androidx.lifecycle.liveData
+import kotlinx.coroutines.flow.*
 
 
 class TestKotlin {
@@ -14,6 +15,8 @@ class TestKotlin {
 
 
             }
+
+            val uiState: StateFlow<Int> = MutableStateFlow(0)
         }
     }
 }

@@ -6,7 +6,9 @@ import me.shetj.base.S
 import kotlin.coroutines.CoroutineContext
 
 /**
- *
+ * class: KtScopeComponent{
+ *      override val ktScope: DefCoroutineScope by defScope()
+ * }
  */
 interface KtScopeComponent {
     val ktScope: DefCoroutineScope
@@ -139,8 +141,4 @@ fun LifecycleOwner.defLifeOwnerScope() = lazy {
             .also {
                 it.register(lifecycle)
             }
-}
-
-fun lifeOwnerScope(owner: LifecycleOwner) = lazy {
-    owner.defLifeOwnerScope()
 }

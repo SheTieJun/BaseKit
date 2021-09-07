@@ -1,14 +1,17 @@
+@file:JvmName("BaseCallBackKt")
+
 package me.shetj.base.base
 
 typealias OnSuccess<T> = (data:T?) -> Unit
 
 typealias OnFail = (ex: Exception?) -> Unit
 
-class CommonCallBack<T>{
+class SCallBack<T>{
+
     var onFail:OnFail?=null
     var onSuccess:OnSuccess<T>?=null
 
     companion object{
-        fun <T> build(block:CommonCallBack<T>.() ->Unit) =CommonCallBack<T>().apply(block)
+        fun <T> build(block:SCallBack<T>.() ->Unit) =SCallBack<T>().apply(block)
     }
 }

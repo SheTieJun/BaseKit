@@ -31,10 +31,10 @@ import me.shetj.base.tools.app.ArmsUtils
 /**
  * BottomNavigationView 去掉toast
  */
-private fun BottomNavigationView.clearToast(ids:MutableList<Int>) {
+fun BottomNavigationView.clearToast(ids:MutableList<Int>) {
     val bottomNavigationMenuView = getChildAt(0) as ViewGroup
     for (i in 0 until ids.size) {
-        bottomNavigationMenuView.getChildAt(i).findViewById<View>(ids[i]).setOnLongClickListener {
+        bottomNavigationMenuView.getChildAt(i).findViewById<View>(ids[i])?.setOnLongClickListener {
             return@setOnLongClickListener true
         }
     }
