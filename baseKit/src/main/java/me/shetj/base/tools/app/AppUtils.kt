@@ -329,13 +329,13 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return null
             }
-            try {
+            return try {
                 val pm = Utils.app.packageManager
                 val pi = pm.getPackageInfo(packageName, 0)
-                return pi?.applicationInfo?.loadIcon(pm)
+                pi?.applicationInfo?.loadIcon(pm)
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return null
+                null
             }
 
         }
@@ -360,13 +360,13 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return null
             }
-            try {
+            return try {
                 val pm = Utils.app.packageManager
                 val pi = pm.getPackageInfo(packageName, 0)
-                return pi?.applicationInfo?.sourceDir
+                pi?.applicationInfo?.sourceDir
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return null
+                null
             }
 
         }
@@ -391,13 +391,13 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return null
             }
-            try {
+            return try {
                 val pm = Utils.app.packageManager
                 val pi = pm.getPackageInfo(packageName, 0)
-                return pi?.versionName
+                pi?.versionName
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return null
+                null
             }
 
         }
@@ -422,13 +422,13 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return -1
             }
-            try {
+            return try {
                 val pm = Utils.app.packageManager
                 val pi = pm.getPackageInfo(packageName, 0)
-                return pi?.versionCode ?: -1
+                pi?.versionCode ?: -1
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return -1
+                -1
             }
 
         }
@@ -515,15 +515,15 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return null
             }
-            try {
+            return try {
                 val pm = Utils.app.packageManager
 
                 @SuppressLint("PackageManagerGetSignatures")
                 val pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-                return pi?.signatures
+                pi?.signatures
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return null
+                null
             }
 
         }
@@ -585,13 +585,13 @@ class AppUtils private constructor() {
          */
         @JvmStatic
         fun getAppInfo(packageName: String): AppInfo? {
-            try {
+            return try {
                 val pm = Utils.app.packageManager
                 val pi = pm.getPackageInfo(packageName, 0)
-                return getBean(pm, pi)
+                getBean(pm, pi)
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
-                return null
+                null
             }
 
         }

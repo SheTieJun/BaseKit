@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager
 @Keep
 class ScrollableViewPager : ViewPager {
 
-    public var isScrollable = true
+    var isScrollable = true
 
     /** 触摸时按下的点  */
     private var downP = PointF()

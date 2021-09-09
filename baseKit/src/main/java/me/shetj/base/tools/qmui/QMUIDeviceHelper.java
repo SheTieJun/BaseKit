@@ -184,7 +184,7 @@ public class QMUIDeviceHelper {
      * https://dev.mi.com/doc/?p=254
      */
     public static boolean isXiaomi() {
-        return Build.MANUFACTURER.toLowerCase().equals("xiaomi");
+        return Build.MANUFACTURER.equalsIgnoreCase("xiaomi");
     }
 
     public static boolean isVivo() {

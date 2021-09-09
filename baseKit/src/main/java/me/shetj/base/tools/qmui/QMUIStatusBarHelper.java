@@ -132,7 +132,6 @@ public class QMUIStatusBarHelper {
 
     /**
      * 如果原本存在某一个flag， 就将它迁移到 out
-     * @return
      */
     public static int retainSystemUiFlag(Window window, int out, int type) {
         int now = window.getDecorView().getSystemUiVisibility();
@@ -397,11 +396,9 @@ public class QMUIStatusBarHelper {
         if (fieldName != null) {
             try {
                 Field field = View.class.getField(fieldName);
-                if (field != null) {
-                    Class<?> type = field.getType();
-                    if (type == int.class) {
-                        sTransparentValue = field.getInt(null);
-                    }
+                Class<?> type = field.getType();
+                if (type == int.class) {
+                    sTransparentValue = field.getInt(null);
                 }
             } catch (Exception ignored) {
             }
@@ -446,7 +443,7 @@ public class QMUIStatusBarHelper {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        if (field != null && obj != null) {
+        if (field != null) {
             try {
                 int id = Integer.parseInt(field.get(obj).toString());
                 sStatusBarHeight = context.getResources().getDimensionPixelSize(id);

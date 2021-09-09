@@ -43,7 +43,7 @@ class SettingBottomSheetDialog(private val mContext: Context) {
         if (bottomSheetDialog != null && !bottomSheetDialog.isShowing) bottomSheetDialog.show()
     }
 
-    fun dismissBottomSheet() {
+    private fun dismissBottomSheet() {
         if (bottomSheetDialog != null && bottomSheetDialog.isShowing) bottomSheetDialog.dismiss()
     }
 

@@ -26,7 +26,7 @@ class FragmentUtils private constructor() {
         throw UnsupportedOperationException("u can't instantiate me...")
     }
 
-    private class Args(internal var id: Int, internal var isHide: Boolean, internal var isAddStack: Boolean)
+    private class Args(var id: Int, var isHide: Boolean, var isAddStack: Boolean)
 
     class FragmentNode(internal var fragment: Fragment, internal var next: List<FragmentNode>?) {
 
@@ -44,17 +44,17 @@ class FragmentUtils private constructor() {
 
     companion object {
 
-        private val TYPE_ADD_FRAGMENT = 0x01
-        private val TYPE_SHOW_FRAGMENT = 0x01 shl 1
-        private val TYPE_HIDE_FRAGMENT = 0x01 shl 2
-        private val TYPE_SHOW_HIDE_FRAGMENT = 0x01 shl 3
-        private val TYPE_REPLACE_FRAGMENT = 0x01 shl 4
-        private val TYPE_REMOVE_FRAGMENT = 0x01 shl 5
-        private val TYPE_REMOVE_TO_FRAGMENT = 0x01 shl 6
+        private const val TYPE_ADD_FRAGMENT = 0x01
+        private const val TYPE_SHOW_FRAGMENT = 0x01 shl 1
+        private const val TYPE_HIDE_FRAGMENT = 0x01 shl 2
+        private const val TYPE_SHOW_HIDE_FRAGMENT = 0x01 shl 3
+        private const val TYPE_REPLACE_FRAGMENT = 0x01 shl 4
+        private const val TYPE_REMOVE_FRAGMENT = 0x01 shl 5
+        private const val TYPE_REMOVE_TO_FRAGMENT = 0x01 shl 6
 
-        private val ARGS_ID = "args_id"
-        private val ARGS_IS_HIDE = "args_is_hide"
-        private val ARGS_IS_ADD_STACK = "args_is_add_stack"
+        private const val ARGS_ID = "args_id"
+        private const val ARGS_IS_HIDE = "args_is_hide"
+        private const val ARGS_IS_ADD_STACK = "args_is_add_stack"
 
         /**
          * Add fragment.

@@ -184,7 +184,7 @@
         app:layout_constraintTop_toBottomOf="@id/test_loading" />
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <shetj.me.base.view.FixRecyclerView
         android:id="@+id/recycle"
         android:layout_width="50dp"
         android:layout_height="0dp"

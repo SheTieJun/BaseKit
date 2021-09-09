@@ -29,13 +29,6 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
                 onClear()
             }
         })
-        if (lifecycle is LifecycleRegistry) {
-            (lifecycle as LifecycleRegistry).apply {
-                if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)){
-                    currentState = Lifecycle.State.CREATED
-                }
-            }
-        }
     }
 
     override fun getLifecycle(): Lifecycle {
@@ -51,11 +44,21 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
 
     }
 
+    override fun onCreate() {
+        if (lifecycle is LifecycleRegistry) {
+            (lifecycle as LifecycleRegistry).apply {
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)){
+                    currentState = Lifecycle.State.CREATED
+                }
+            }
+        }
+    }
+
     override fun onStart() {
         if (lifecycle is LifecycleRegistry) {
             (lifecycle as LifecycleRegistry).apply {
                 if (lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)){
-                    currentState = Lifecycle.State.STARTED
+                    handleLifecycleEvent(Lifecycle.Event.ON_START) //更新状态，并且通知观察者
                 }
             }
         }
@@ -65,7 +68,7 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
         if (lifecycle is LifecycleRegistry) {
             (lifecycle as LifecycleRegistry).apply {
                 if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)){
-                    currentState = Lifecycle.State.RESUMED
+                    handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
                 }
             }
         }
@@ -75,7 +78,7 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
     override fun onDeStory() {
         if (lifecycle is LifecycleRegistry) {
             (lifecycle as LifecycleRegistry).apply {
-                currentState = Lifecycle.State.DESTROYED
+                handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
             }
         }
     }
@@ -95,9 +98,13 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
 
 interface LifecycleWithCopeComponent : KtScopeComponent, LifecycleOwner {
 
+    @MainThread
+    fun onCreate()
+
     /**
      * when LifecycleEvent == [Lifecycle.Event.ON_DESTROY]
      */
+    @MainThread
     fun onClear()
 
     @MainThread

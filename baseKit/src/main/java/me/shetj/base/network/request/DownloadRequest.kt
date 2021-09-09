@@ -42,7 +42,7 @@ class DownloadRequest(url: String) : BaseRequest<DownloadRequest>(url) {
                 .subscribeWith(DownloadSubscriber(savePath, saveName, callback)) as Disposable
     }
 
-    override fun generateRequest(): Observable<ResponseBody>? {
+    override fun generateRequest(): Observable<ResponseBody> {
         return apiManager!!.downloadFile(url)
     }
 }

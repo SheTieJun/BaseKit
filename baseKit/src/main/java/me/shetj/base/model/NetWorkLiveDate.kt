@@ -69,6 +69,5 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
     }
 
     data class NetWorkInfo(var hasNet: Boolean = NetworkUtils.isAvailable(Utils.app),
-                           var netType: NetType = NetType.NONE) {
-    }
+                           var netType: NetType = NetType.NONE)
 }

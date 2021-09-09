@@ -55,9 +55,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : ABBaseActivity(), IView  {
     }
 
     override fun updateView(message: Message) {
-        if (S.isDebug) {
-            Timber.tag(TAG).i(message.toJson())
-        }
     }
 
 }

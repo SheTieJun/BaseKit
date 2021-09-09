@@ -29,7 +29,7 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
 
     private var mUserDefinedPageChangeListener: ViewPager.OnPageChangeListener? = null
 
-    enum class IndicatorType(public val type: Int) {
+    enum class IndicatorType(val type: Int) {
         CIRCLE(INDICATOR_TYPE_CIRCLE),
         FRACTION(INDICATOR_TYPE_FRACTION),
         UNKNOWN(-1);
@@ -38,10 +38,10 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
         companion object {
 
             fun of(value: Int): IndicatorType {
-                when (value) {
-                    INDICATOR_TYPE_CIRCLE -> return CIRCLE
-                    INDICATOR_TYPE_FRACTION -> return FRACTION
-                    else -> return UNKNOWN
+                return when (value) {
+                    INDICATOR_TYPE_CIRCLE -> CIRCLE
+                    INDICATOR_TYPE_FRACTION -> FRACTION
+                    else -> UNKNOWN
                 }
             }
         }
@@ -177,9 +177,9 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     companion object {
-        val INDICATOR_TYPE_CIRCLE = 0
-        val INDICATOR_TYPE_FRACTION = 1
+        const val INDICATOR_TYPE_CIRCLE = 0
+        const val INDICATOR_TYPE_FRACTION = 1
 
-        val DEFAULT_INDICATOR_SPACING = 5
+        const val DEFAULT_INDICATOR_SPACING = 5
     }
 }  

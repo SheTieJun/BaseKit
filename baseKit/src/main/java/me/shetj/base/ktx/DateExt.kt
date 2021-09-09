@@ -50,7 +50,7 @@ fun getStringData(): String {
 /**
  * 获取当前年
  */
-fun getStringYear(): String? {
+fun getStringYear(): String {
     val c = Calendar.getInstance(Locale.getDefault())
     return c[Calendar.YEAR].toString()
 }
@@ -58,7 +58,7 @@ fun getStringYear(): String? {
 /**
  * 获取一个月前的日期
  */
-fun getMonthAfter(i: Int): String? {
+fun getMonthAfter(i: Int): String {
     val calendar = Calendar.getInstance()
     calendar.time = Date()
     calendar.add(Calendar.MONTH, i)
@@ -70,7 +70,7 @@ fun getMonthAfter(i: Int): String? {
  *
  * @return
  */
-fun getYearAfter(i: Int): String? {
+fun getYearAfter(i: Int): String {
     val calendar = Calendar.getInstance()
     calendar.time = Date()
     calendar.add(Calendar.MONTH, i)
@@ -98,7 +98,7 @@ fun getWeekString(): String {
  * 根据当前日期获得是星期几
  */
 fun getWeek(time: String): String {
-    var Week = ""
+    var week = ""
     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val c = Calendar.getInstance()
     try {
@@ -107,27 +107,27 @@ fun getWeek(time: String): String {
         e.printStackTrace()
     }
     if (c[Calendar.DAY_OF_WEEK] == Calendar.SUNDAY) {
-        Week += "周日"
+        week += "周日"
     }
     if (c[Calendar.DAY_OF_WEEK] == Calendar.MONDAY) {
-        Week += "周一"
+        week += "周一"
     }
     if (c[Calendar.DAY_OF_WEEK] == Calendar.TUESDAY) {
-        Week += "周二"
+        week += "周二"
     }
     if (c[Calendar.DAY_OF_WEEK] == Calendar.WEDNESDAY) {
-        Week += "周三"
+        week += "周三"
     }
     if (c[Calendar.DAY_OF_WEEK] == Calendar.THURSDAY) {
-        Week += "周四"
+        week += "周四"
     }
     if (c[Calendar.DAY_OF_WEEK] == Calendar.FRIDAY) {
-        Week += "周五"
+        week += "周五"
     }
     if (c[Calendar.DAY_OF_WEEK] == Calendar.SATURDAY) {
-        Week += "周六"
+        week += "周六"
     }
-    return Week
+    return week
 }
 
 /**
@@ -234,7 +234,7 @@ fun getDate(): Int {
     return c[Calendar.DAY_OF_MONTH]
 }
 
-fun get7dateAndToday(): List<String>? {
+fun get7dateAndToday(): List<String> {
     val dates: MutableList<String> = ArrayList()
     val c = Calendar.getInstance()
     c.timeZone = TimeZone.getTimeZone("GMT+8:00")

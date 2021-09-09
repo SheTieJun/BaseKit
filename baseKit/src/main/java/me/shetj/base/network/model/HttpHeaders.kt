@@ -71,7 +71,7 @@ class HttpHeaders : Serializable {
 
     companion object {
         const val FORMAT_HTTP_DATA = "EEE, dd MMM y HH:mm:ss 'GMT'"
-        val GMT_TIME_ZONE = TimeZone.getTimeZone("GMT")
+        private val GMT_TIME_ZONE: TimeZone = TimeZone.getTimeZone("GMT")
         const val HEAD_KEY_RESPONSE_CODE = "ResponseCode"
         const val HEAD_KEY_RESPONSE_MESSAGE = "ResponseMessage"
         const val HEAD_KEY_ACCEPT = "Accept"

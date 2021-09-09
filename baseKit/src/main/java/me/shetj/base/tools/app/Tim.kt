@@ -9,7 +9,7 @@ object Tim {
     private val LOG_FILE_PATH = Utils.app.externalCacheDir?.path + File.separator + "baseLog.test"
 
     /**
-     * 设置log自动在debug打开，在release关闭，可以在[Application]的onCreate中设置
+     * 设置log自动在debug打开，在release关闭
      * @param isDebug
      */
     fun setLogAuto(isDebug: Boolean) {

@@ -8,8 +8,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consume
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.rx3.asFlowable
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.loadImage
@@ -87,10 +90,12 @@ class MVVMTestActivity : BaseBindingActivity<MVVMViewModel,ActivityMVVMTestBindi
         launch {
             // 这里可能是消耗大量 CPU 运算的异步逻辑，我们将仅仅做 5 次整数的平方并发送
             for (x in 1..5) channel.send(x * x)
+
             for (y in channel) {
                 println(channel.receive())
             }
         }
+        channel.receiveAsFlow()
 
         listOf(1, 2, 3).asFlow().asFlowable().subscribe {
             Timber.i("asFlow().asFlowable() = $it")

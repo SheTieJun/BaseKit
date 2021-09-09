@@ -33,13 +33,13 @@ class BarUtils private constructor() {
     companion object {
 
 
-        var DEFAULT_COLOR = 0
+        private var DEFAULT_COLOR = 0
 
         /**
          * Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? 0.2f : 0.3f;
          */
-        var DEFAULT_ALPHA = 0f
-        val MIN_API = 19
+        private var DEFAULT_ALPHA = 0f
+        private const val MIN_API = 19
 
         /**
          * 沉侵
@@ -154,10 +154,10 @@ class BarUtils private constructor() {
                     meizuFlags.isAccessible = true
                     val bit = darkFlag.getInt(null)
                     var value = meizuFlags.getInt(e)
-                    if (dark) {
-                        value = value or bit
+                    value = if (dark) {
+                        value or bit
                     } else {
-                        value = value and bit.inv()
+                        value and bit.inv()
                     }
 
                     meizuFlags.setInt(e, value)
@@ -181,7 +181,7 @@ class BarUtils private constructor() {
         fun darkModeForMIUI6(window: Window, darkmode: Boolean): Boolean {
             val clazz = window.javaClass
             return try {
-                var darkModeFlag: Int
+                val darkModeFlag: Int
                 val layoutParams = Class.forName("android.view.MiuiWindowManager\$LayoutParams")
                 val field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE")
                 darkModeFlag = field.getInt(layoutParams)

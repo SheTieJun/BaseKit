@@ -8,7 +8,7 @@ import okhttp3.ResponseBody
 
 class DeleteRequest(url: String) : BaseBodyRequest<DeleteRequest>(url) {
 
-    override fun generateRequest(): Observable<ResponseBody>? {
+    override fun generateRequest(): Observable<ResponseBody> {
         return when {
             this.request != null -> { //自定义的请求体
                 apiManager!!.deleteBody(url, this.request)

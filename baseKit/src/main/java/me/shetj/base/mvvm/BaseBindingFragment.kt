@@ -55,7 +55,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel, VB : ViewBinding> : AbBas
     /**
      * 默认创建一个
      *
-     * [useActivityVM] = true 才会使用activity的[viewModel]
+     * [useActivityVM] = true 才会使用activity的[ViewModel]
      */
     @NonNull
     open fun initViewModel(): VM {

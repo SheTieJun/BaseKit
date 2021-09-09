@@ -124,16 +124,19 @@ object ShareFileUtil {
             } else if (isMediaDocument(uri)) {
                 val docId = DocumentsContract.getDocumentId(uri)
                 val split = docId.split(":").toTypedArray()
-                val type = split[0]
-                val contentUri: Uri
-                contentUri = if ("image" == type) {
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                } else if ("video" == type) {
-                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                } else if ("audio" == type) {
-                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                } else {
-                    MediaStore.Files.getContentUri("external")
+                val contentUri: Uri = when (split[0]) {
+                    "image" -> {
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    }
+                    "video" -> {
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                    }
+                    "audio" -> {
+                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                    }
+                    else -> {
+                        MediaStore.Files.getContentUri("external")
+                    }
                 }
                 val selection = "_id=?"
                 val selectionArgs = arrayOf(split[1])

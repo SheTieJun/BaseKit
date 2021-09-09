@@ -44,7 +44,7 @@ abstract class BaseFloatView : FrameLayout {
     /**
      * 初始化view
      */
-    abstract fun initView(context: Context)
+   abstract fun initView(context: Context)
 
     open fun addToWindowManager(layout: ViewRect.() -> Unit) {
         if (context.checkFloatPermission()) {

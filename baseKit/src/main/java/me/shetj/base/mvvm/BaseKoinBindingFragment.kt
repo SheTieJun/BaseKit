@@ -1,7 +1,6 @@
 package me.shetj.base.mvvm
 
 import androidx.annotation.Keep
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.viewbinding.ViewBinding
 import org.koin.android.scope.AndroidScopeComponent

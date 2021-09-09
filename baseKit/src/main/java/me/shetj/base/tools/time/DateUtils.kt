@@ -82,8 +82,8 @@ object DateUtils {
 
     var ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
-    var calendar: Calendar? = null
-    private val FORMAT = "yyyy-MM-dd HH:mm:ss"
+    private var calendar: Calendar? = null
+    private const val FORMAT = "yyyy-MM-dd HH:mm:ss"
 
     @JvmStatic
     val curDateStr: String
@@ -392,7 +392,7 @@ object DateUtils {
     /**
      * 按用户格式字符串距离今天的天数
      *
-     * @param date 日期字符串
+     * @param strDate 日期字符串
      * @param format 日期格式
      * @return  按用户格式字符串距离今天的天数 -1等于字符错误
      */

@@ -104,7 +104,7 @@ object KCHttpV2 {
                 ) {
                     ops.write(buffer, 0, readLength)
                     currentLength += readLength
-                    emit(HttpResult.progress<File>(currentLength.toLong(), contentLength, currentLength.toFloat() / contentLength.toFloat()))
+                    emit(HttpResult.progress(currentLength.toLong(), contentLength, currentLength.toFloat() / contentLength.toFloat()))
                 }
                 bufferedInputStream.close()
                 ops.close()

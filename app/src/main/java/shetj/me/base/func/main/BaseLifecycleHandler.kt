@@ -36,6 +36,8 @@ open class BaseLifecycleHandler : Handler, LifecycleObserver {
      */
     private fun bindLifecycleOwner(owner: LifecycleOwner?) {
         owner?.lifecycle?.addObserver(this)
+
+
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

@@ -481,12 +481,7 @@ public final class FileUtils {
      * @return {@code true}: 删除成功<br>{@code false}: 删除失败
      */
     public static boolean deleteAllInDir(final File dir) {
-        return deleteFilesInDirWithFilter(dir, new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return true;
-            }
-        });
+        return deleteFilesInDirWithFilter(dir, pathname -> true);
     }
 
     /**
@@ -506,12 +501,7 @@ public final class FileUtils {
      * @return {@code true}: 删除成功<br>{@code false}: 删除失败
      */
     public static boolean deleteFilesInDir(final File dir) {
-        return deleteFilesInDirWithFilter(dir, new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isFile();
-            }
-        });
+        return deleteFilesInDirWithFilter(dir, pathname -> pathname.isFile());
     }
 
     /**
@@ -595,12 +585,7 @@ public final class FileUtils {
      * @return 文件链表
      */
     public static List<File> listFilesInDir(final File dir, final boolean isRecursive) {
-        return listFilesInDirWithFilter(dir, new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return true;
-            }
-        }, isRecursive);
+        return listFilesInDirWithFilter(dir, pathname -> true, isRecursive);
     }
 
     /**

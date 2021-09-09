@@ -84,7 +84,7 @@ class HttpParams : Serializable {
 
     fun put(key: String?, fileWrapper: FileWrapper<*>?) {
         if (key != null && fileWrapper != null) {
-            put<Any>(key, fileWrapper.file as Any, fileWrapper.fileName, fileWrapper.contentType, fileWrapper.responseCallBack)
+            put(key, fileWrapper.file as Any, fileWrapper.fileName, fileWrapper.contentType, fileWrapper.responseCallBack)
         }
     }
 

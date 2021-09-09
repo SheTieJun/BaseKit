@@ -4,9 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import me.shetj.base.S
 import me.shetj.base.ktx.saverDB
-import me.shetj.base.mvp.BaseBindingActivity
-import me.shetj.base.mvp.BaseBindingFragment
-import me.shetj.base.mvp.BaseFragment
 import me.shetj.base.network.RxHttp.Companion.DEFAULT_MILLISECONDS
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.model.HttpHeaders
@@ -25,13 +22,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-val dbModule = module() {
+val dbModule = module {
 
     single { SaverDatabase.getInstance(androidApplication()) }
 
     //try to override existing definition. 覆盖其他实例
     //(override = true) -> FIX:Please use override option or check for definition '[Single:'me.shetj.base.saver.SaverDao']'
-    single(override = true) { get<SaverDatabase>().saverDao() }
+    single(createdAtStart = true) { get<SaverDatabase>().saverDao() }
 
     single<OkHttpClient> {
         get<OkHttpClient.Builder>().build()

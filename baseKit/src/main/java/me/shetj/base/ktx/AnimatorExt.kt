@@ -17,7 +17,7 @@ fun View?.rotation(duration:Long): ObjectAnimator? {
 }
 
 
-fun getColorAnim(colorFrom :Int,colorTo:Int): ValueAnimator? {
+fun getColorAnim(colorFrom :Int,colorTo:Int): ValueAnimator {
     return ValueAnimator.ofArgb(colorFrom,colorTo)
 }
 

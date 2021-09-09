@@ -124,7 +124,7 @@ class Share private constructor(builder: Builder) {
             Timber.tag(TAG).e( "Share content type is empty.")
             return false
         }
-        if (ShareContentType.Companion.TEXT == contentType) {
+        if (ShareContentType.TEXT == contentType) {
             if (TextUtils.isEmpty(contentText)) {
                 Timber.tag(TAG).e( "Share text context is empty.")
                 return false

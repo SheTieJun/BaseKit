@@ -108,8 +108,8 @@ class StringUtils private constructor() {
          * @return 首字母大写字符串
          */
         @JvmStatic
-        fun upperFirstLetter(s: String): String? {
-            return if (isEmpty(s) || !Character.isLowerCase(s[0])) s else (s[0].toInt() - 32).toChar().toString() + s.substring(1)
+        fun upperFirstLetter(s: String): String {
+            return if (isEmpty(s) || !Character.isLowerCase(s[0])) s else (s[0].code - 32).toChar().toString() + s.substring(1)
         }
 
         /**
@@ -119,10 +119,10 @@ class StringUtils private constructor() {
          * @return 首字母小写字符串
          */
         @JvmStatic
-        fun lowerFirstLetter(s: String): String? {
+        fun lowerFirstLetter(s: String): String {
             return if (isEmpty(s) || !Character.isUpperCase(s[0])) {
                 s
-            } else (s[0].toInt() + 32).toChar().toString() + s.substring(1)
+            } else (s[0].code + 32).toChar().toString() + s.substring(1)
         }
 
         /**
@@ -153,7 +153,7 @@ class StringUtils private constructor() {
          * @return 半角字符串
          */
         @JvmStatic
-        fun toDBC(s: String): String? {
+        fun toDBC(s: String): String {
             if (isEmpty(s)) {
                 return s
             }
@@ -161,12 +161,16 @@ class StringUtils private constructor() {
             var i = 0
             val len = chars.size
             while (i < len) {
-                if (chars[i].toInt() == 12288) {
-                    chars[i] = ' '
-                } else if (chars[i].toInt() in 65281..65374) {
-                    chars[i] = (chars[i].toInt() - 65248).toChar()
-                } else {
-                    chars[i] = chars[i]
+                when (chars[i].code) {
+                    12288 -> {
+                        chars[i] = ' '
+                    }
+                    in 65281..65374 -> {
+                        chars[i] = (chars[i].code - 65248).toChar()
+                    }
+                    else -> {
+                        chars[i] = chars[i]
+                    }
                 }
                 i++
             }
@@ -180,7 +184,7 @@ class StringUtils private constructor() {
          * @return 全角字符串
          */
         @JvmStatic
-        fun toSBC(s: String): String? {
+        fun toSBC(s: String): String {
             if (isEmpty(s)) {
                 return s
             }
@@ -188,12 +192,16 @@ class StringUtils private constructor() {
             var i = 0
             val len = chars.size
             while (i < len) {
-                if (chars[i] == ' ') {
-                    chars[i] = 12288.toChar()
-                } else if (chars[i].toInt() in 33..126) {
-                    chars[i] = (chars[i].toInt() + 65248).toChar()
-                } else {
-                    chars[i] = chars[i]
+                when {
+                    chars[i] == ' ' -> {
+                        chars[i] = 12288.toChar()
+                    }
+                    chars[i].code in 33..126 -> {
+                        chars[i] = (chars[i].code + 65248).toChar()
+                    }
+                    else -> {
+                        chars[i] = chars[i]
+                    }
                 }
                 i++
             }
@@ -231,22 +239,23 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun jsonFormat(bodyString: String): String {
-            var message: String
-            try {
-                if (bodyString.startsWith("{")) {
-                    val jsonObject = JSONObject(bodyString)
-                    message = jsonObject.toString(4)
-                } else if (bodyString.startsWith("[")) {
-                    val jsonArray = JSONArray(bodyString)
-                    message = jsonArray.toString(4)
-                } else {
-                    message = bodyString
+            return try {
+                when {
+                    bodyString.startsWith("{") -> {
+                        val jsonObject = JSONObject(bodyString)
+                        jsonObject.toString(4)
+                    }
+                    bodyString.startsWith("[") -> {
+                        val jsonArray = JSONArray(bodyString)
+                        jsonArray.toString(4)
+                    }
+                    else -> {
+                        bodyString
+                    }
                 }
             } catch (e: JSONException) {
-                message = bodyString
+                bodyString
             }
-
-            return message
         }
 
         @JvmStatic
@@ -298,15 +307,15 @@ class StringUtils private constructor() {
          * @return
          */
         private fun isEmojiCharacter(codePoint: Char): Boolean {
-            return (codePoint.toInt() == 0x0 || codePoint.toInt() == 0x9 || codePoint.toInt() == 0xA || codePoint.toInt() == 0xD
-                    || codePoint.toInt() in 0x20..0xD7FF
-                    || codePoint.toInt() in 0xE000..0xFFFD
-                    || codePoint.toInt() in 0x10000..0x10FFFF)
+            return (codePoint.code == 0x0 || codePoint.code == 0x9 || codePoint.code == 0xA || codePoint.code == 0xD
+                    || codePoint.code in 0x20..0xD7FF
+                    || codePoint.code in 0xE000..0xFFFD
+                    || codePoint.code in 0x10000..0x10FFFF)
         }
 
         @JvmStatic
         fun isChinese(a: Char): Boolean {
-            val v = a.toInt()
+            val v = a.code
             return v in 19968..171941
         }
 

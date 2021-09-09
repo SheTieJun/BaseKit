@@ -12,7 +12,11 @@ class TaskExecutor private constructor() {
     private var mMainHandler: Handler? = null
 
     //最大线程2，当不够时所有进入等待
-    private val mDiskIO = Executors.newFixedThreadPool(2, object : ThreadFactory {
+    private val mDiskIO =  ThreadPoolExecutor(
+        2, 2,
+        0L, TimeUnit.MILLISECONDS,
+        SynchronousQueue(),
+        object : ThreadFactory {
         private val THREAD_NAME_STEM = "base_thread_%d"
         private val mThreadId = AtomicInteger(0)
         override fun newThread(r: Runnable): Thread {

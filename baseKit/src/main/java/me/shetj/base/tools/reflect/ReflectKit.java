@@ -8,13 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import me.shetj.base.tools.json.EmptyUtils;
 
 /**
  * 反射工具类，提供一些Java基本的反射功能
  */
-public class ReflectUtils {
+@SuppressWarnings("unused")
+public class ReflectKit {
     public static final Class<?>[] EMPTY_PARAM_TYPES = new Class<?>[0];
     public static final Object[] EMPTY_PARAMS = new Object[0];
 
@@ -27,7 +29,7 @@ public class ReflectUtils {
      * @param fieldName           要获取的字段的名字
      * @param isFindDeclaredField 是否查找Declared字段
      * @param isUpwardFind        是否向上去其父类中寻找
-     * @return
+     * @return 属性
      */
     public static Field getField(Class<?> sourceClass, String fieldName, boolean isFindDeclaredField, boolean isUpwardFind) {
         Field field = null;
@@ -53,7 +55,7 @@ public class ReflectUtils {
      *
      * @param sourceClass 指定的类
      * @param fieldName   要获取的字段的名字
-     * @return
+     * @return 属性
      */
     public static Field getField(Class<?> sourceClass, String fieldName) {
         return getField(sourceClass, fieldName, true, true);
@@ -70,15 +72,15 @@ public class ReflectUtils {
      * @return 给定类的所有字段
      */
     public static List<Field> getFields(Class<?> sourceClass, boolean isGetDeclaredField, boolean isGetParentField, boolean isGetAllParentField, boolean isDESCGet) {
-        List<Field> fieldList = new ArrayList<Field>();
+        List<Field> fieldList = new ArrayList<>();
         //如果需要从父类中获取
         if (isGetParentField) {
             //获取当前类的所有父类
-            List<Class<?>> classList = null;
+            List<Class<?>> classList;
             if (isGetAllParentField) {
                 classList = getSuperClasss(sourceClass, true);
             } else {
-                classList = new ArrayList<Class<?>>(2);
+                classList = new ArrayList<>(2);
                 classList.add(sourceClass);
                 Class<?> superClass = sourceClass.getSuperclass();
                 if (superClass != null) {
@@ -181,7 +183,7 @@ public class ReflectUtils {
      * @param sourceClass          指定的类
      * @param methodName           方法名
      * @param methodParameterTypes 方法参数类型
-     * @return
+     * @return 方法
      */
     public static Method getMethod(Class<?> sourceClass, String methodName, Class<?>... methodParameterTypes) {
         return getMethod(sourceClass, true, true, methodName, methodParameterTypes);
@@ -192,7 +194,7 @@ public class ReflectUtils {
      *
      * @param sourceClass 指定的类
      * @param methodName  方法名
-     * @return
+     * @return 方法
      */
     public static Method getMethod(Class<?> sourceClass, String methodName) {
         return getMethod(sourceClass, methodName, EMPTY_PARAM_TYPES);
@@ -208,7 +210,7 @@ public class ReflectUtils {
      * @return 给定类的所有方法
      */
     public static List<Method> getMethods(Class<?> clas, boolean isGetDeclaredMethod, boolean isFromSuperClassGet, boolean isDESCGet) {
-        List<Method> methodList = new ArrayList<Method>();
+        List<Method> methodList = new ArrayList<>();
         //如果需要从父类中获取
         if (isFromSuperClassGet) {
             //获取当前类的所有父类
@@ -254,10 +256,10 @@ public class ReflectUtils {
     /**
      * 调用不带参数的方法
      *
-     * @param method
-     * @param object
-     * @return
-     * @throws Exception
+     * @param method 方法
+     * @param object 对象
+     * @return 返回值
+     * @throws Exception 异常
      */
     public static Object invokeMethod(Method method, Object object) throws
             Exception {
@@ -304,7 +306,7 @@ public class ReflectUtils {
      * @return 给定的类中所有的构造函数
      */
     public static List<Constructor<?>> getConstructors(Class<?> sourceClass, boolean isFindDeclaredConstructor, boolean isFromSuperClassGet, boolean isDESCGet) {
-        List<Constructor<?>> constructorList = new ArrayList<Constructor<?>>();
+        List<Constructor<?>> constructorList = new ArrayList<>();
         //如果需要从父类中获取
         if (isFromSuperClassGet) {
             //获取当前类的所有父类
@@ -337,7 +339,7 @@ public class ReflectUtils {
      * @return 给定的类所有的父类
      */
     public static List<Class<?>> getSuperClasss(Class<?> sourceClass, boolean isAddCurrentClass) {
-        List<Class<?>> classList = new ArrayList<Class<?>>();
+        List<Class<?>> classList = new ArrayList<>();
         Class<?> classs;
         if (isAddCurrentClass) {
             classs = sourceClass;
@@ -369,7 +371,7 @@ public class ReflectUtils {
     public static <T> T getObjectByFieldName(Object object, String fieldName, Class<T> clas) {
         if (object != null && EmptyUtils.Companion.isNotEmpty(fieldName) && clas != null) {
             try {
-                Field field = ReflectUtils.getField(object.getClass(), fieldName, true, true);
+                Field field = ReflectKit.getField(object.getClass(), fieldName, true, true);
                 if (field != null) {
                     field.setAccessible(true);
                     return (T) field.get(object);
@@ -388,25 +390,25 @@ public class ReflectUtils {
     /**
      * 判断给定字段是否是type类型的数组
      *
-     * @param field
-     * @param type
-     * @return
+     * @param field 属性
+     * @param type class
+     * @return true 表示是的
      */
-    public static final boolean isArrayByType(Field field, Class<?> type) {
+    public static boolean isArrayByType(Field field, Class<?> type) {
         Class<?> fieldType = field.getType();
-        return fieldType.isArray() && type.isAssignableFrom(fieldType.getComponentType());
+        return fieldType.isArray() && type.isAssignableFrom(Objects.requireNonNull(fieldType.getComponentType()));
     }
 
     /**
      * 判断给定字段是否是type类型的collectionType集合，例如collectionType=List.class，type=Date.class就是要判断给定字段是否是Date类型的List
      *
-     * @param field
-     * @param collectionType
-     * @param type
-     * @return
+     * @param field 属性
+     * @param collectionType 集合type
+     * @param type 集合中的type
+     * @return  true 表示是的
      */
     @SuppressWarnings("rawtypes")
-    public static final boolean isCollectionByType(Field field, Class<? extends Collection> collectionType, Class<?> type) {
+    public static boolean isCollectionByType(Field field, Class<? extends Collection> collectionType, Class<?> type) {
         Class<?> fieldType = field.getType();
         if (collectionType.isAssignableFrom(fieldType)) {
             Class<?>

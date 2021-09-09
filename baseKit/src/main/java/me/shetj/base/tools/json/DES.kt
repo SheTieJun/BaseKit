@@ -78,7 +78,7 @@ class DES {
         var retByte: ByteArray?
 
         // Create SecretKey object
-        var dks: DESKeySpec?
+        val dks: DESKeySpec?
         try {
             dks = DESKeySpec(KEY)
             val keyFactory = SecretKeyFactory.getInstance(ALGORITHM)
@@ -111,13 +111,13 @@ class DES {
         private val KEY = "6;9Ku7;:84VG*B68".toByteArray()
 
         /** 算法  */
-        private val ALGORITHM = "DES"
+        private const val ALGORITHM = "DES"
 
         /** IV  */
         private val IV = "sHjrydLq".toByteArray()
 
         /** TRANSFORMATION  */
-        private val TRANSFORMATION = "DES/CBC/PKCS5Padding"
+        private const val TRANSFORMATION = "DES/CBC/PKCS5Padding"
     }
 
 }

@@ -62,8 +62,7 @@ class HttpLoggingInterceptor : Interceptor {
 
         //执行请求，计算请求时间
         val startNs = System.nanoTime()
-        val response: Response
-        response = try {
+        val response: Response = try {
             chain.proceed(request)
         } catch (e: Exception) {
             log("<-- HTTP FAILED: $e")
@@ -179,7 +178,7 @@ class HttpLoggingInterceptor : Interceptor {
                 return true
             }
             var subtype = mediaType.subtype()
-            subtype = subtype.toLowerCase()
+            subtype = subtype.lowercase()
             if (subtype.contains("x-www-form-urlencoded") ||
                     subtype.contains("json") ||
                     subtype.contains("xml") ||

@@ -68,11 +68,7 @@ public class HttpsUtils {
             sslParams.sSLSocketFactory = sslContext.getSocketFactory();
             sslParams.trustManager = trustManager;
             return sslParams;
-        } catch (NoSuchAlgorithmException e) {
-            throw new AssertionError(e);
-        } catch (KeyManagementException e) {
-            throw new AssertionError(e);
-        } catch (KeyStoreException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             throw new AssertionError(e);
         }
     }
@@ -97,11 +93,7 @@ public class HttpsUtils {
             trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(keyStore);
             return trustManagerFactory.getTrustManagers();
-        } catch (NoSuchAlgorithmException e) {
-            Timber.e(e);
-        } catch (CertificateException e) {
-            Timber.e(e);
-        } catch (KeyStoreException e) {
+        } catch (NoSuchAlgorithmException | CertificateException | KeyStoreException e) {
             Timber.e(e);
         } catch (Exception e) {
             Timber.e(e);
@@ -117,15 +109,7 @@ public class HttpsUtils {
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyManagerFactory.init(clientKeyStore, password.toCharArray());
             return keyManagerFactory.getKeyManagers();
-        } catch (KeyStoreException e) {
-            Timber.e(e);
-        } catch (NoSuchAlgorithmException e) {
-            Timber.e(e);
-        } catch (UnrecoverableKeyException e) {
-            Timber.e(e);
-        } catch (CertificateException e) {
-            Timber.e(e);
-        } catch (IOException e) {
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException | IOException e) {
             Timber.e(e);
         } catch (Exception e) {
             Timber.e(e);
@@ -144,11 +128,11 @@ public class HttpsUtils {
 
     private static class UnSafeTrustManager implements X509TrustManager {
         @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        public void checkClientTrusted(X509Certificate[] chain, String authType) {
         }
 
         @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        public void checkServerTrusted(X509Certificate[] chain, String authType) {
         }
 
         @Override

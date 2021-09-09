@@ -65,19 +65,17 @@ object CalendarReminderUtils {
     private fun checkCalendarAccount(context: Context): Int {
         val userCursor =
             context.contentResolver.query(Uri.parse(CALENDER_URL), null, null, null, null)
-        return try {
-            if (userCursor == null) { //查询返回空值
+        return userCursor.use { cursor ->
+            if (cursor == null) { //查询返回空值
                 return -1
             }
-            val count = userCursor.count
+            val count = cursor.count
             if (count > 0) { //存在现有账户，取第一个账户的id返回
-                userCursor.moveToFirst()
-                userCursor.getInt(userCursor.getColumnIndex(CalendarContract.Calendars._ID))
+                cursor.moveToFirst()
+                cursor.getInt(cursor.getColumnIndex(CalendarContract.Calendars._ID))
             } else {
                 -1
             }
-        } finally {
-            userCursor?.close()
         }
     }
 
@@ -257,18 +255,18 @@ object CalendarReminderUtils {
         }
         val eventCursor =
             context.contentResolver.query(Uri.parse(CALENDER_EVENT_URL), null, null, null, null)
-        try {
-            if (eventCursor == null) { //查询返回空值
+        eventCursor.use { cursor ->
+            if (cursor == null) { //查询返回空值
                 return
             }
-            if (eventCursor.count > 0) {
+            if (cursor.count > 0) {
                 //遍历所有事件，找到title跟需要查询的title一样的项
-                eventCursor.moveToFirst()
-                while (!eventCursor.isAfterLast) {
-                    val eventTitle = eventCursor.getString(eventCursor.getColumnIndex("title"))
+                cursor.moveToFirst()
+                while (!cursor.isAfterLast) {
+                    val eventTitle = cursor.getString(cursor.getColumnIndex("title"))
                     if (!TextUtils.isEmpty(title) && title == eventTitle) {
                         val id =
-                            eventCursor.getInt(eventCursor.getColumnIndex(CalendarContract.Calendars._ID)) //取得id
+                            cursor.getInt(cursor.getColumnIndex(CalendarContract.Calendars._ID)) //取得id
                         val deleteUri =
                             ContentUris.withAppendedId(Uri.parse(CALENDER_EVENT_URL), id.toLong())
                         val rows = context.contentResolver.delete(deleteUri, null, null)
@@ -276,11 +274,9 @@ object CalendarReminderUtils {
                             return
                         }
                     }
-                    eventCursor.moveToNext()
+                    cursor.moveToNext()
                 }
             }
-        } finally {
-            eventCursor?.close()
         }
     }
 

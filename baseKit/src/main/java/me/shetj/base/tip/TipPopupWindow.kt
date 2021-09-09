@@ -69,8 +69,7 @@ class TipPopupWindow(private val mContext: AppCompatActivity) : PopupWindow(mCon
 
     /**
      * 展示
-     * @param tip
-     * @param tipMsg
+     * @param tipMsg 消息能让
      */
     fun showTip(tipMsg: CharSequence?, @AbLoadingDialog.LoadingTipsDuration duration: Long) {
         tvTip!!.text = tipMsg

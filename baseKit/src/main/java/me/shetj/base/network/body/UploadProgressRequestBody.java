@@ -17,6 +17,8 @@
 package me.shetj.base.network.body;
 
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 
 import me.shetj.base.network.callBack.ProgressResponseCallBack;
@@ -69,7 +71,7 @@ public class UploadProgressRequestBody extends RequestBody {
     }
 
     @Override
-    public void writeTo(BufferedSink sink) throws IOException {
+    public void writeTo(@NonNull BufferedSink sink) throws IOException {
         BufferedSink bufferedSink;
 
         countingSink = new CountingSink(sink);
@@ -91,7 +93,7 @@ public class UploadProgressRequestBody extends RequestBody {
         }
 
         @Override
-        public void write(Buffer source, long byteCount) throws IOException {
+        public void write(@NonNull Buffer source, long byteCount) throws IOException {
             super.write(source, byteCount);
             if (contentLength <= 0) contentLength = contentLength(); //获得contentLength的值，后续不再调用
             //增加当前写入的字节数

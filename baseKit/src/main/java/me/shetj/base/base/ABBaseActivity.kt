@@ -2,7 +2,6 @@ package me.shetj.base.base
 
 
 import android.content.pm.ActivityInfo
-import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.view.View
@@ -26,7 +25,6 @@ import org.greenrobot.eventbus.ThreadMode
  */
 @Keep
 abstract class ABBaseActivity: AppCompatActivity() , LifecycleObserver {
-    protected val TAG = this.javaClass.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

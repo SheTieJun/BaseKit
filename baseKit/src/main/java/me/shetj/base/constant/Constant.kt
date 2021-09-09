@@ -11,9 +11,9 @@ interface Constant {
 
 
     companion object {
-        val KEY_IS_OUTPUT_HTTP = "key_is_output_http";
-        val KEY_IS_OUTPUT_LOG = "key_is_output_log";
+        const val KEY_IS_OUTPUT_HTTP = "key_is_output_http";
+        const val KEY_IS_OUTPUT_LOG = "key_is_output_log";
 
-        val KEY_SETTING_INFO = "key_setting_info";
+        const val KEY_SETTING_INFO = "key_setting_info";
     }
 }

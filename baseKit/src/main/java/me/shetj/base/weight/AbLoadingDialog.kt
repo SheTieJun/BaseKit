@@ -32,7 +32,7 @@ abstract class AbLoadingDialog :LifecycleObserver, ABKtScopeComponent() {
 
     @LongDef(LOADING_LONG, LOADING_SHORT)
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    public annotation class LoadingTipsDuration
+    annotation class LoadingTipsDuration
     private var weakReference: WeakReference<AppCompatActivity>? = null
     private var mLoadingDialog: AlertDialog? = null
     private val lazyComposite = lazy { CompositeDisposable() }

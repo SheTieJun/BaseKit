@@ -35,7 +35,7 @@ public class ConstUtils {
         GB
     }
 
-    /******************** 时间相关常量 ********************/
+    /******************* 时间相关常量 ********************/
     /**
      * 秒与毫秒的倍数
      */
@@ -61,7 +61,7 @@ public class ConstUtils {
         DAY
     }
 
-    /******************** 正则相关常量 ********************/
+    /******************* 正则相关常量 ********************/
     /**
      * 正则：手机号（简单）
      */
@@ -112,7 +112,7 @@ public class ConstUtils {
      */
     public static final String REGEX_IP = "((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)";
 
-    /************** 以下摘自http://tool.oschina.net/regex **************/
+    /************* 以下摘自http://tool.oschina.net/regex **************/
     /**
      * 正则：双字节字符(包括汉字在内)
      */
@@ -158,5 +158,5 @@ public class ConstUtils {
      */
     public static final String REGEX_NEGATIVE_FLOAT = "^-[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*$";
 
-    /************** If u want more please visit http://toutiao.com/i6231678548520731137/ **************/
+    /************* If u want more please visit http://toutiao.com/i6231678548520731137/ **************/
 }

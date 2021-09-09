@@ -256,7 +256,7 @@ open class RxHttp private constructor() {
         return this
     }
 
-    fun getBaseUrl(): String? {
+    fun getBaseUrl(): String {
         return getInstance().mBaseUrl
     }
     //endregion 全局设置BaseUrl
@@ -332,7 +332,7 @@ open class RxHttp private constructor() {
     /**
      * 超时重试延迟时间
      */
-    fun setRetryDelay(retryDelay: Long): RxHttp? {
+    fun setRetryDelay(retryDelay: Long): RxHttp {
         require(retryDelay >= 0) { "retryDelay must > 0" }
         mRetryDelay = retryDelay
         return this

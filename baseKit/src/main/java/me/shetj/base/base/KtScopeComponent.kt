@@ -27,10 +27,6 @@ fun ktScopeWithLife(lifecycle: Lifecycle) = lazy {
             }
 }
 
-fun Lifecycle.ktLifeScope() = lazy {
-     ktScopeWithLife(this)
-}
-
 /**
  * 可以通过[DefCoroutineScope.register] 进行绑定生命收起，也可以不判定
  */

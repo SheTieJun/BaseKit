@@ -12,7 +12,7 @@ import java.util.*
  * [ParameterizedType] 泛型List<T>
  * [TypeVariable]
  * [GenericArrayType] 泛型数组
- * [WildcardType] type 的子类
+ * [java.lang.reflect.WildcardType] type 的子类
  */
 object ClassUtils {
 
@@ -95,8 +95,7 @@ object ClassUtils {
     }
 
     fun getGenericClass(parameterizedType: ParameterizedType, i: Int): Class<*> {
-        val genericClass = parameterizedType.actualTypeArguments[i]
-        return when (genericClass) {
+        return when (val genericClass = parameterizedType.actualTypeArguments[i]) {
             is ParameterizedType -> { // 处理多级泛型
                 genericClass.rawType as Class<*>
             }

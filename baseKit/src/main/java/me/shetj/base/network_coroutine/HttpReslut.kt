@@ -4,7 +4,6 @@ package me.shetj.base.network_coroutine
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.paging.LoadState
 import me.shetj.base.network.exception.ApiException
 
 

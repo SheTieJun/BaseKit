@@ -77,9 +77,8 @@ object FileQUtils {
     fun getFileByUri(activity: Activity, uri: Uri): File? {
         var path: String? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-           return uriToFileQ(activity, uri)
-        }else if ("file" == uri.scheme) {
-
+            return uriToFileQ(activity, uri)
+        } else if ("file" == uri.scheme) {
             path = uri.encodedPath
             if (path != null) {
                 path = Uri.decode(path)
@@ -108,13 +107,12 @@ object FileQUtils {
                     cur.moveToNext()
                 }
                 cur.close()
-                if (index == 0) {
-                } else {
+                if (index != 0) {
                     val u = Uri.parse("content://media/external/images/media/$index")
+                    if (path != null) {
+                        return File(path)
+                    }
                 }
-            }
-            if (path != null) {
-                return File(path)
             }
         } else if ("content" == uri.scheme) {
             // 4.2.2以后

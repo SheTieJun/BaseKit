@@ -162,69 +162,6 @@ class ImageUtils {
             activity.startActivityForResult(intent, CROP_IMAGE)
         }
 
-
-        /**
-         * 把uri转成file
-         *
-         * @param activity
-         * @param uri
-         * @return
-         */
-        fun getFileByUri(activity: Activity, uri: Uri): File? {
-            var path: String? = null
-            if ("file" == uri.scheme) {
-                path = uri.encodedPath
-                if (path != null) {
-                    path = Uri.decode(path)
-                    val cr = activity.contentResolver
-                    val buff = StringBuffer()
-                    buff.append("(").append(MediaStore.Images.ImageColumns.DATA).append("=")
-                        .append("'$path'").append(")")
-                    val cur = cr.query(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        arrayOf(
-                            MediaStore.Images.ImageColumns._ID,
-                            MediaStore.Images.ImageColumns.DATA
-                        ),
-                        buff.toString(),
-                        null,
-                        null
-                    )
-                    var index = 0
-                    var dataIdx: Int
-                    cur!!.moveToFirst()
-                    while (!cur.isAfterLast) {
-                        index = cur.getColumnIndex(MediaStore.Images.ImageColumns._ID)
-                        index = cur.getInt(index)
-                        dataIdx = cur.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-                        path = cur.getString(dataIdx)
-                        cur.moveToNext()
-                    }
-                    cur.close()
-                    if (index == 0) {
-                    } else {
-                        val u = Uri.parse("content://media/external/images/media/$index")
-                    }
-                }
-                if (path != null) {
-                    return File(path)
-                }
-            } else if ("content" == uri.scheme) {
-                // 4.2.2以后
-                val proj = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor = activity.contentResolver.query(uri, proj, null, null, null)
-                if (cursor!!.moveToFirst()) {
-                    val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                    path = cursor.getString(columnIndex)
-                }
-                cursor.close()
-                return File(path!!)
-            } else {
-                return null
-            }
-            return null
-        }
-
         /**
          * get图片添加文字
          * @param imageBitmap 图片

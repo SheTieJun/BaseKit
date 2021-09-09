@@ -9,7 +9,7 @@ import okhttp3.ResponseBody
 class PutRequest(url: String) : BaseBodyRequest<PutRequest>(url) {
 
 
-    override fun generateRequest(): Observable<ResponseBody>? {
+    override fun generateRequest(): Observable<ResponseBody> {
         return when {
             this.request != null -> { //自定义的请求体
                 apiManager!!.putBody(url, this.request)

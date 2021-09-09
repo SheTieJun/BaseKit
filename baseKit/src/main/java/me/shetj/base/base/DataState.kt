@@ -5,7 +5,7 @@ package me.shetj.base.base
 /**
  * 配合liveData对数据处理
  */
-sealed class DataState<T>()
+sealed class DataState<T>
 
 //正在请求接口数据
 object Loading : DataState<Any>()

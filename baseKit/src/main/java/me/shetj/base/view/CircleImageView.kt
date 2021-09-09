@@ -88,16 +88,13 @@ open class CircleImageView : AppCompatImageView {
     /**
      * Set a color to be drawn behind the circle-shaped drawable. Note that
      * this has no effect if the drawable is opaque or no drawable is set.
-     *
-     * @param fillColor The color to be drawn behind the drawable
-     *
      */
     var fillColor: Int
         @Deprecated("Use {@link #getCircleBackgroundColor()} instead.")
         get() = circleBackgroundColor
         @Deprecated("Use {@link #setCircleBackgroundColor(int)} instead.")
-        set(@ColorInt fillColor) {
-            circleBackgroundColor = fillColor
+        set(@ColorInt color) {
+            circleBackgroundColor = color
         }
 
     var borderWidth: Int
@@ -164,11 +161,11 @@ open class CircleImageView : AppCompatImageView {
         }
     }
 
-    override fun getScaleType(): ImageView.ScaleType {
+    override fun getScaleType(): ScaleType {
         return SCALE_TYPE
     }
 
-    override fun setScaleType(scaleType: ImageView.ScaleType) {
+    override fun setScaleType(scaleType: ScaleType) {
         require(scaleType == SCALE_TYPE) { String.format("ScaleType %s not supported.", scaleType) }
     }
 
@@ -296,10 +293,10 @@ open class CircleImageView : AppCompatImageView {
     }
 
     private fun initializeBitmap() {
-        if (isDisableCircularTransformation) {
-            mBitmap = null
+        mBitmap = if (isDisableCircularTransformation) {
+            null
         } else {
-            mBitmap = getBitmapFromDrawable(drawable)
+            getBitmapFromDrawable(drawable)
         }
         setup()
     }
@@ -399,12 +396,12 @@ open class CircleImageView : AppCompatImageView {
         private val SCALE_TYPE = ScaleType.CENTER_CROP
 
         private val BITMAP_CONFIG = Bitmap.Config.ARGB_8888
-        private val COLORDRAWABLE_DIMENSION = 2
+        private const val COLORDRAWABLE_DIMENSION = 2
 
-        private val DEFAULT_BORDER_WIDTH = 0
-        private val DEFAULT_BORDER_COLOR = Color.BLACK
-        private val DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.TRANSPARENT
-        private val DEFAULT_BORDER_OVERLAY = false
+        private const val DEFAULT_BORDER_WIDTH = 0
+        private const val DEFAULT_BORDER_COLOR = Color.BLACK
+        private const val DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.TRANSPARENT
+        private const val DEFAULT_BORDER_OVERLAY = false
     }
 
 }

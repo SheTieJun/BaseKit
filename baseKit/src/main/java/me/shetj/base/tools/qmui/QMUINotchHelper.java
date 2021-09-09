@@ -42,15 +42,12 @@ public class QMUINotchHelper {
         boolean ret = false;
         try {
             ClassLoader cl = context.getClassLoader();
-            Class ftFeature = cl.loadClass("android.util.FtFeature");
+            Class<?> ftFeature = cl.loadClass("android.util.FtFeature");
             Method[] methods = ftFeature.getDeclaredMethods();
-            if (methods != null) {
-                for (int i = 0; i < methods.length; i++) {
-                    Method method = methods[i];
-                    if (method.getName().equalsIgnoreCase("isFeatureSupport")) {
-                        ret = (boolean) method.invoke(ftFeature, NOTCH_IN_SCREEN_VOIO);
-                        break;
-                    }
+            for (Method method : methods) {
+                if (method.getName().equalsIgnoreCase("isFeatureSupport")) {
+                    ret = (boolean) method.invoke(ftFeature, NOTCH_IN_SCREEN_VOIO);
+                    break;
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -66,7 +63,7 @@ public class QMUINotchHelper {
         boolean hasNotch = false;
         try {
             ClassLoader cl = context.getClassLoader();
-            Class HwNotchSizeUtil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil");
+            Class<?> HwNotchSizeUtil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil");
             Method get = HwNotchSizeUtil.getMethod("hasNotchInScreen");
             hasNotch = (boolean) get.invoke(HwNotchSizeUtil);
         } catch (ClassNotFoundException e) {
@@ -87,7 +84,7 @@ public class QMUINotchHelper {
     @SuppressLint("PrivateApi")
     public static boolean hasNotchInXiaomi(Context context) {
         try {
-            Class spClass = Class.forName("android.os.SystemProperties");
+            Class<?> spClass = Class.forName("android.os.SystemProperties");
             Method getMethod = spClass.getDeclaredMethod("getInt", String.class, int.class);
             getMethod.setAccessible(true);
             int hasNotch = (int) getMethod.invoke(null, MIUI_NOTCH, 0);
@@ -135,7 +132,6 @@ public class QMUINotchHelper {
 
     /**
      *
-     * @param view
      * @return false indicates the failure to get the result
      */
     @TargetApi(28)

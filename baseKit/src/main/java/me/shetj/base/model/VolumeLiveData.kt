@@ -2,7 +2,6 @@ package me.shetj.base.model
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import me.shetj.base.tools.app.PlugConfigs
 import me.shetj.base.tools.app.VolumeConfig
 
 
