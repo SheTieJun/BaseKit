@@ -4,6 +4,7 @@ package shetj.me.base.common.other
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -15,14 +16,16 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.BarUtils
 import me.shetj.base.tools.app.KeyboardUtil
+import me.shetj.base.tools.app.SoftInputUtil
 import shetj.me.base.R
 import java.util.concurrent.atomic.AtomicBoolean
 
 
-class CommentPopup : DialogFragment() {
+class CommentPopup : BottomSheetDialogFragment() {
 
     private var root: View? = null
     private val handler = Handler(Handler.Callback {
@@ -36,6 +39,8 @@ class CommentPopup : DialogFragment() {
     private var editContent: EditText? = null
     private var tvSend: View? = null
     private val lock = AtomicBoolean(false) //用来防止连续的点击
+    private val softInputUtil by lazy { SoftInputUtil() }
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return Dialog(requireContext(), R.style.transparent_dialog_fragment_style).apply {
@@ -90,6 +95,7 @@ class CommentPopup : DialogFragment() {
     }
 
     fun show(manager: FragmentManager) {
+        manager.executePendingTransactions()
         show(manager, "commentPopup")
     }
 

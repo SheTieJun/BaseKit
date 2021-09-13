@@ -1,22 +1,16 @@
 package shetj.me.base.test
 
-import androidx.lifecycle.liveData
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 
 
 class TestKotlin {
-    companion object{
+    companion object {
         @JvmStatic
-        fun main(args: Array<String>) {
-
-
-            liveData<Int> {
+        fun main(args: Array<String>) = runBlocking {
 
 
 
-            }
-
-            val uiState: StateFlow<Int> = MutableStateFlow(0)
         }
     }
+
 }

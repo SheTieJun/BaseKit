@@ -92,7 +92,7 @@ class ProxyFactory {
         //动态代理本质是静态代理是一样的，本质还是会有具体类进行实现
 
         inline fun <reified T> getProxy(tag: T?): T {
-            val clazz = T::class.java
+            var clazz = T::class.java
             val proxy = TestProxy(tag)
             return Proxy.newProxyInstance(clazz.classLoader, arrayOf(clazz), proxy) as T
         }
