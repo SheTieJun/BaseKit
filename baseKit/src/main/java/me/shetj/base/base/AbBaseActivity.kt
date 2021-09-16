@@ -24,7 +24,7 @@ import org.greenrobot.eventbus.ThreadMode
  * @author shetj
  */
 @Keep
-abstract class ABBaseActivity: AppCompatActivity() , LifecycleObserver {
+abstract class AbBaseActivity: AppCompatActivity() , LifecycleObserver {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -73,7 +73,7 @@ object S {
      */
     @JvmOverloads
     @JvmStatic
-    fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
+    internal fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
         this.isDebug = isDebug
         this.baseUrl = baseUrl
         TaskExecutor.getInstance().executeOnMainThread {

@@ -2,7 +2,8 @@ package me.shetj.base.mvvm
 
 
 import androidx.annotation.Keep
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityScope
@@ -17,7 +18,7 @@ import org.koin.core.scope.Scope
  *   }
  */
 @Keep
-abstract class BaseKoinBindingActivity<VM : BaseViewModel, VB : ViewBinding> : BaseBindingActivity<VM, VB>(), LifecycleObserver, AndroidScopeComponent {
+abstract class BaseKoinBindingActivity<VM : ViewModel, VB : ViewBinding> : BaseBindingActivity<VM, VB>(), LifecycleObserver, AndroidScopeComponent {
 
     override val scope: Scope by activityScope()
 

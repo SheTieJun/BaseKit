@@ -5,11 +5,8 @@ import android.os.Message
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.Disposable
-import me.shetj.base.S
-import me.shetj.base.base.ABBaseActivity
+import me.shetj.base.base.AbBaseActivity
 import me.shetj.base.ktx.getClazz
-import me.shetj.base.ktx.toJson
-import timber.log.Timber
 
 
 /**
@@ -17,7 +14,7 @@ import timber.log.Timber
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<T : BasePresenter<*>> : ABBaseActivity(), IView  {
+abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView  {
     protected val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 

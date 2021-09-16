@@ -1,11 +1,10 @@
-package me.shetj.base.mvp
+package me.shetj.base.base
 
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.annotation.Keep
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.LifecycleObserver
 import androidx.viewbinding.ViewBinding
 import me.shetj.base.ktx.getClazz
 
@@ -15,7 +14,7 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : BaseActivity<P>() {
+abstract class AbBindingBaseActivity<VB:ViewBinding>: AbBaseActivity() , LifecycleObserver {
 
 
     private val lazyViewBinding = lazy { initViewBinding() }

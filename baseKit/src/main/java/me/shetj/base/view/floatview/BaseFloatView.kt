@@ -9,6 +9,9 @@ import me.shetj.base.tools.app.FloatKit
 import me.shetj.base.tools.app.FloatKit.checkFloatPermission
 import me.shetj.base.tools.app.FloatKit.getWinManager
 
+/**
+ * 悬浮view的基类，只保留基础操作，可以继承实现更多
+ */
 abstract class BaseFloatView : FrameLayout {
     protected lateinit var windowParams: WindowManager.LayoutParams
     protected lateinit var winManager: WindowManager
@@ -60,18 +63,51 @@ abstract class BaseFloatView : FrameLayout {
             }
         }
         if (this.parent != null) {
-            (parent as ViewGroup).removeView(this)
+            (parent as? ViewGroup)?.removeView(this)?: kotlin.run {
+                if (this::winManager.isInitialized) {
+                    winManager.removeView(this)
+                }
+            }
         }
-        winManager.addView(this, windowParams)
+        if (this::winManager.isInitialized) {
+            winManager.addView(this, windowParams)
+        }
     }
 
-    open fun removeFormWindowManager() {
+    open fun removeForWindowManager() {
         if (this::winManager.isInitialized) {
             winManager.removeView(this)
         }
     }
 
-
+    /**
+     * 给当前界面设置的view设置点击事件，不点击的时候，会滑动
+     */
+    fun View.setViewClickInFloat(onClickListener: OnClickListener?=null){
+        setOnClickListener(onClickListener)
+        var oldX = 0f
+        var oldY = 0f
+        setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    oldX = event.rawX
+                    oldY = event.rawY
+                    onTouchEvent(event)
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    onTouchEvent(event)
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (oldX == event.rawX && oldY == event.rawY){
+                        this.performClick()
+                    }
+                }
+                else -> {
+                }
+            }
+            return@setOnTouchListener true
+        }
+    }
     /**
      * 重写触摸事件监听，实现悬浮窗随手指移动
      */

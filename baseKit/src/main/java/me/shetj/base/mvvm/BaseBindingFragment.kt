@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.EventBus
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseBindingFragment<VM : BaseViewModel, VB : ViewBinding> : AbBaseFragment() {
+abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFragment() {
 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
@@ -43,7 +43,7 @@ abstract class BaseBindingFragment<VM : BaseViewModel, VB : ViewBinding> : AbBas
     }
 
     /**
-     * 系统会默认生成对应的[ViewBinding]
+     * 会默认获取到对应的[ViewBinding]
      */
     @Suppress("UNCHECKED_CAST")
     @NonNull
@@ -79,16 +79,16 @@ abstract class BaseBindingFragment<VM : BaseViewModel, VB : ViewBinding> : AbBas
     open fun useActivityVM() = false
 
 
-    protected open fun <T : ViewModel?> getFragmentViewModel(@NonNull modelClass: Class<T>): T {
+    protected open fun getFragmentViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mFragmentProvider == null) {
             mFragmentProvider = ViewModelProvider(this)
         }
         return mFragmentProvider!!.get(modelClass)
     }
 
-    protected open fun <T : ViewModel?> getActivityViewModel(@NonNull modelClass: Class<T>): T {
+    protected open fun getActivityViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mActivityProvider == null) {
-            mActivityProvider = ViewModelProvider(requireActivity())
+            mActivityProvider = ViewModelProvider(this)
         }
         return mActivityProvider!!.get(modelClass)
     }

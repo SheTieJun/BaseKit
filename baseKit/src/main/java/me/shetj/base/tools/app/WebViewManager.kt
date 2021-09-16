@@ -2,6 +2,7 @@ package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
 import android.util.Base64
+import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
@@ -16,6 +17,18 @@ class WebViewManager(private val webView: WebView) {
 
     init {
         webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
+        webSettings.javaScriptEnabled = true
+        webSettings.domStorageEnabled = true
+        webSettings.setAppCacheMaxSize(1024 * 1024 * 8)
+        val appCachePath: String = webView.context.cacheDir.absolutePath
+        webSettings.setAppCachePath(appCachePath)
+        webSettings.allowFileAccess = true
+        webSettings.setAppCacheEnabled(true)
+        webSettings.loadWithOverviewMode = true //设置加载进来的页面自适应手机屏幕
+        webSettings.useWideViewPort = true
+        webSettings.builtInZoomControls = false //设置页面可缩放,必须把缩放按钮禁掉,不然无法取消
+        webSettings.displayZoomControls = false
+        webSettings.setSupportZoom(true)
     }
 
     /**
@@ -87,6 +100,19 @@ class WebViewManager(private val webView: WebView) {
         if (isNotEmpty(info)) {
             webView.evaluateJavascript(info, null)
         }
+    }
+
+
+    /**
+     * 设置cookie
+     */
+    fun setCookie(map:MutableMap<String,String>){
+        val cookieManager: CookieManager = CookieManager.getInstance()
+        cookieManager.setAcceptCookie(true)
+        map.onEach { entry ->
+            cookieManager.setCookie(entry.key, entry.value)
+        }
+        cookieManager.flush()
     }
 
     /**

@@ -40,15 +40,17 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
     }
 
 
-    fun getBehavior(): BottomSheetBehavior<FrameLayout>? {
+    open fun getBehavior(): BottomSheetBehavior<FrameLayout>? {
         if (dialog is BottomSheetDialog) {
            return (dialog as BottomSheetDialog?)?.behavior
         }
         return null
     }
 
-
-    fun expand(){
+    /**
+     * 展开到全屏
+     */
+    fun expandScreen(){
         getBehavior()?.state = BottomSheetBehavior.STATE_EXPANDED
         getBehavior()?.peekHeight = ArmsUtils.getScreenHeight()
     }
@@ -105,9 +107,6 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 
     companion object {
         private const val STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN"
