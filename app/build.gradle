@@ -24,20 +24,18 @@ android {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64', 'x86'
         }
     }
-    compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
-    }
 
     buildFeatures {
         viewBinding = true
     }
 
     kotlinOptions {
-        // Cannot inline bytecode built with JVM target 1.8 into bytecode
-        // that is being built with JVM target 1.6.
-        // Please specify proper '-jvm-target' option
-        jvmTarget = "1.8"
+        jvmTarget = "11"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     buildTypes {
