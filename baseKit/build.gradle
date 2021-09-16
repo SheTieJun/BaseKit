@@ -123,3 +123,5 @@ dependencies {
     api 'androidx.startup:startup-runtime:1.1.0'
 
 }
+
+apply from : "uploadLocal.gradle"
