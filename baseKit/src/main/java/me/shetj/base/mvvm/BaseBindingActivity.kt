@@ -21,16 +21,14 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AbBaseActivity() {
+abstract class BaseBindingActivity<VM : ViewModel, VB : ViewBinding> : AbBaseActivity() {
 
     private var mActivityProvider: ViewModelProvider? = null
 
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel
 
-    private val lazyViewBinding = lazy {
-        initViewBinding()
-    }
+    private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,11 +59,12 @@ abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AbBas
      */
     @Suppress("UNCHECKED_CAST")
     open fun initViewBinding(): VB {
-        return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
+        return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java)
+            .invoke(null, layoutInflater) as VB
     }
 
 
-    protected open fun <T : ViewModel> getActivityViewModel(@NonNull modelClass: Class<T>): T {
+    protected open fun getActivityViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mActivityProvider == null) {
             mActivityProvider = ViewModelProvider(this)
         }
