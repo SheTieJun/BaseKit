@@ -8,12 +8,6 @@ afterEvaluate {
                 artifactId = 'BaseKit'
                 version = '1.0.0'
             }
-            developers {
-                developer {
-                    name = "Jun"
-                    email = "tiejunshe@gamil.com"
-                }
-            }
         }
     }
 }
