@@ -50,8 +50,7 @@ public class QMUIStatusBarHelper {
     public static float sVirtualDensity = -1;
     public static float sVirtualDensityDpi = -1;
     private static int sStatusBarHeight = -1;
-    private static @StatusBarType
-    int mStatusBarType = STATUSBAR_TYPE_DEFAULT;
+    private static int mStatusBarType = STATUSBAR_TYPE_DEFAULT;
     private static Integer sTransparentValue;
 
     public static void translucent(Activity activity) {
@@ -212,7 +211,7 @@ public class QMUIStatusBarHelper {
      * @param activity 需要被处理的 Activity
      * @param type     StatusBar 类型，对应不同的系统
      */
-    private static boolean setStatusBarLightMode(Activity activity, @StatusBarType int type) {
+    private static boolean setStatusBarLightMode(Activity activity, int type) {
         if (type == STATUSBAR_TYPE_MIUI) {
             return MIUISetStatusBarLightMode(activity.getWindow(), true);
         } else if (type == STATUSBAR_TYPE_FLYME) {
@@ -464,11 +463,6 @@ public class QMUIStatusBarHelper {
                 }
             }
         }
-    }
-
-    @IntDef({STATUSBAR_TYPE_DEFAULT, STATUSBAR_TYPE_MIUI, STATUSBAR_TYPE_FLYME, STATUSBAR_TYPE_ANDROID6})
-    @Retention(RetentionPolicy.SOURCE)
-    private @interface StatusBarType {
     }
 
 }
