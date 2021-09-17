@@ -2,7 +2,7 @@ package me.shetj.base.mvvm
 
 
 import android.os.Bundle
-import androidx.activity.viewModels
+import android.view.LayoutInflater
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModel
@@ -21,15 +21,21 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<VM : ViewModel, VB : ViewBinding> : AbBaseActivity() {
+abstract class BaseBindingActivity<VM : BaseViewModel, VB : ViewBinding> : AbBaseActivity() {
 
     private var mActivityProvider: ViewModelProvider? = null
 
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel
 
+    private val lazyViewBinding = lazy {
+        initViewBinding()
+    }
+    protected val mViewBinding: VB by lazyViewBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(mViewBinding.root)
     }
 
     override fun initView() {
@@ -50,8 +56,16 @@ abstract class BaseBindingActivity<VM : ViewModel, VB : ViewBinding> : AbBaseAct
         return getActivityViewModel(getClazz(this))
     }
 
+    /**
+     *  默认生成对应的[ViewBinding],也可以重写
+     */
+    @Suppress("UNCHECKED_CAST")
+    open fun initViewBinding(): VB {
+        return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
+    }
 
-    protected open fun getActivityViewModel(@NonNull modelClass: Class<VM>): VM {
+
+    protected open fun <T : ViewModel> getActivityViewModel(@NonNull modelClass: Class<T>): T {
         if (mActivityProvider == null) {
             mActivityProvider = ViewModelProvider(this)
         }
