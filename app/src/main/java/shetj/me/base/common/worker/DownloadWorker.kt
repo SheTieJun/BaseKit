@@ -115,8 +115,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
         const val KEY_OUT_PUT_URL = "KEY_OUT_URL"
         const val KEY_OUTPUT_FILE_NAME = "KEY_OUTPUT_FILE_NAME"
 
-        /***
-         * WorkManager.getInstance(applicationContext)
+        /*** WorkManager.getInstance(applicationContext)
          *       .getWorkInfoByIdLiveData(checkDisk.id)
          *       .observe(this, object : Observer<WorkInfo> {
          *            override fun onChanged(t: WorkInfo?) {

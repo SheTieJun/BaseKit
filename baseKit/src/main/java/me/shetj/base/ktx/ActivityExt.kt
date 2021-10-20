@@ -27,6 +27,7 @@ import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
@@ -306,10 +307,10 @@ fun Activity.getWindowContent(): FrameLayout? {
 suspend fun refreshAlbum(context: Context, fileUri: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         //no work
-//        withTimeout(5000) {
-//            val mediaScanner = context.getMediaScanner()
-//            mediaScanner.scanFile(fileUri, "image/jpeg")
-//        }
+        withTimeout(5000) {
+            val mediaScanner = context.getMediaScanner()
+            mediaScanner.scanFile(fileUri, "image/jpeg")
+        }
     }
     val intent =
         Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(fileUri))
@@ -325,7 +326,9 @@ suspend fun Context.getMediaScanner(): MediaScannerConnection = withContext(Disp
                     it.resume(mMediaScanner!!)
                 }
 
-                override fun onScanCompleted(path: String?, uri: Uri?) {}
+                override fun onScanCompleted(path: String?, uri: Uri?) {
+                    it.cancel()
+                }
             })
         mMediaScanner.connect()
     }

@@ -30,7 +30,7 @@ interface ApiService {
 
     //@DELETE()//delete body请求比较特殊 需要自定义
     @HTTP(method = "DELETE", hasBody = true)
-    fun deleteBody(@Url url: String?, @Body `object`: Any?): Observable<ResponseBody>
+    fun deleteBody(@Url url: String?, @Body obj: Any?): Observable<ResponseBody>
 
     //@DELETE()//delete body请求比较特殊 需要自定义
     @HTTP(method = "DELETE", hasBody = true)

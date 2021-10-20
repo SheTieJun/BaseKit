@@ -81,7 +81,7 @@ object MobileInfoUtils {
     fun jumpStartInterface(activity: Activity, isSelf: Boolean) {
         if (isOpenAuto(activity)) {
             //一天提醒一次
-            SPUtils.put(activity, "AutoStart" + shetj.me.base.utils.TimeUtil.getYMDime(), false)
+            SPUtils.put(activity, "AutoStart" + TimeUtil.getYMDime(), false)
             try {
 //                (activity).show {
 //                    title(R.string.app_name)
@@ -120,7 +120,7 @@ object MobileInfoUtils {
         return (SPUtils.get(activity, "AutoStart", true) as Boolean &&
                 //根据版本来，这个版本不提醒
                 SPUtils.get(activity, "AutoStart" + AppUtils.appVersionCode, true) as Boolean
-                && SPUtils.get(activity, "AutoStart" + shetj.me.base.utils.TimeUtil.getYMDime(), true) as Boolean)
+                && SPUtils.get(activity, "AutoStart" + TimeUtil.getYMDime(), true) as Boolean)
     }
 
 
@@ -162,11 +162,7 @@ object MobileInfoUtils {
                 }
 
             }
-            return if (mSetStopAutoStart == null || mgetStopAutoStart == null) {
-                false
-            } else {
-                true
-            }
+            return !(mSetStopAutoStart == null || mgetStopAutoStart == null)
         }
     }
 

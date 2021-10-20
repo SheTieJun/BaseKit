@@ -33,5 +33,3 @@
 
 #### [mvnrepository](https://mvnrepository.com/)
 
-java.lang.IllegalArgumentException: Wrong state class, expecting View State but received class androidx.recyclerview.widget.RecyclerView$SavedState instead. This usually happens when two views of different type have the same id in the same hierarchy. This view's id is id/0x1. Make sure other views do not use the same id.
-

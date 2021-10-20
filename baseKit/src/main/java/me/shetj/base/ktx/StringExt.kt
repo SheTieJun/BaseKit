@@ -3,6 +3,8 @@ package me.shetj.base.ktx
 import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.Color
+import android.text.Spanned
+import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.debug.DebugFunc
@@ -14,9 +16,9 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 
-fun String?.isPhone() = this?.let { StringUtils.isPhone(it) }
+fun String?.isPhone() = this?.let { StringUtils.isPhone(it) }?:false
 
-fun String?.isIdCard() = this?.let { StringUtils.isIdCard(it) }
+fun String?.isIdCard() = this?.let { StringUtils.isIdCard(it) }?:false
 
 val String?.md5 :String?
    get() = this?.let { ArmsUtils.encodeToMD5(it) }
@@ -31,6 +33,15 @@ val String?.toColor: Int?
     }
 
 //region Json相关
+
+
+fun highString(description: String, highStrings: List<String>?): Spanned {
+    var replaceString = description
+    highStrings?.forEach { highString ->
+        replaceString = replaceString.replace(highString, "<font color=\"#FFBB22\">$highString</font>")
+    }
+    return HtmlCompat.fromHtml(replaceString, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
 
 fun Any?.toJson() = this?.let { GsonKit.objectToJson(this) }
 

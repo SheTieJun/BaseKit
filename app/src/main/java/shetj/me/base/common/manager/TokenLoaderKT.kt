@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.shetj.base.S.app
-import me.shetj.base.network_coroutine.KCHttp
+import me.shetj.base.network_coroutine.KCHttpV2
 import me.shetj.base.tools.file.SPUtils.Companion.get
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 import shetj.me.base.common.tag.SPKey.SAVE_TOKEN
@@ -50,8 +50,7 @@ class TokenLoaderKT private constructor() {
 
 
     private suspend fun getTokenByHttp(): String? {
-        return KCHttp.get<String>("test/url", error = {
-        }).let {
+        return KCHttpV2.get<String>("test/url").getOrNull()?.let {
             val s = "这是token${System.currentTimeMillis()}"
             TokenManager.getInstance().token = s
             while (count.get() != 0){

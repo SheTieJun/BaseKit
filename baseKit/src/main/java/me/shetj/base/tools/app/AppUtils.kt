@@ -12,9 +12,13 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.graphics.drawable.Drawable
+import android.os.Process
 import androidx.annotation.Keep
 import me.shetj.base.tools.file.FileUtils
+import java.io.BufferedReader
 import java.io.File
+import java.io.FileReader
+import java.lang.Exception
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -690,8 +694,19 @@ class AppUtils private constructor() {
             }
             return true
         }
+
+
+        fun getCurrentProcessNameByFile(context: Context): String? {
+            return try {
+                val file = File("/proc/" + Process.myPid() + "/cmdline")
+                val mBufferedReader = BufferedReader(FileReader(file))
+                val processName = mBufferedReader.readLine().trim { it <= ' ' }
+                mBufferedReader.close()
+                processName
+            } catch (e: Exception) {
+                e.printStackTrace()
+                context.packageName
+            }
+        }
     }
 }
-/**
- * 获取App具体设置
- */

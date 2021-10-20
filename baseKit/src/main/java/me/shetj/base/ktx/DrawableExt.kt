@@ -7,10 +7,8 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.shape.MaterialShapeDrawable
 
 
-/**
- *
- * 获取背景颜色,also [com.google.android.material.shape.MaterialShapeUtils]
- *  [androidx.core.graphics.ColorUtils]
+/*** 获取背景颜色,also [com.google.android.material.shape.MaterialShapeUtils]
+ * * [androidx.core.graphics.ColorUtils]
  */
 fun Context.getMaterialShapeDrawable(
     @ColorRes colorInt: Int,

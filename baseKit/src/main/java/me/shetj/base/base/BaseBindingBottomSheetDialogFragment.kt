@@ -50,7 +50,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
     /**
      * 展开到全屏
      */
-    fun expandScreen(){
+    open fun expandScreen(){
         getBehavior()?.state = BottomSheetBehavior.STATE_EXPANDED
         getBehavior()?.peekHeight = ArmsUtils.getScreenHeight()
     }
@@ -66,10 +66,6 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         if (useEventBus()) {
             EventBus.getDefault().unregister(this)
         }
-    }
-
-    fun VB.setUp(action: VB.() -> Unit) {
-        action.invoke(this)
     }
 
     /**
@@ -114,6 +110,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     fun safetyShow(fragmentManager: FragmentManager, tag: String) {
         runCatching {
+            //防止动画没有结束，fragment又被点击了，然后导致的崩溃
             fragmentManager.executePendingTransactions()
             show(fragmentManager, tag)
         }

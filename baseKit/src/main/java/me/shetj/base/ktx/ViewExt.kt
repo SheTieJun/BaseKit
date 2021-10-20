@@ -108,7 +108,9 @@ fun <T : View> ViewGroup.inflate(
 @JvmOverloads
 fun SwipeRefreshLayout.setSwipeRefresh(
         @ColorRes color: Int = R.color.colorAccent,
-        listener: SwipeRefreshLayout.OnRefreshListener? = null) {
+        listener: SwipeRefreshLayout.OnRefreshListener? = null,
+        offset:Int = 0) {
+    this.setProgressViewOffset(false, offset, progressViewEndOffset +offset)
     this.setColorSchemeResources(color)
     this.setOnRefreshListener(listener)
 }
@@ -189,8 +191,8 @@ fun EditText.hidePassword(){
 fun View?.setClicksAnimate() {
     this?.setOnTouchListener { _, event ->
         when (event.action) {
-            MotionEvent.ACTION_DOWN -> animate().scaleX(0.8f).scaleY(0.8f).setDuration(500).start()
-            MotionEvent.ACTION_UP -> animate().scaleX(1f).scaleY(1f).setDuration(500).start()
+            MotionEvent.ACTION_DOWN -> animate().scaleX(0.8f).scaleY(0.8f).setDuration(100).start()
+            MotionEvent.ACTION_UP -> animate().scaleX(1f).scaleY(1f).setDuration(100).start()
         }
         false
     }

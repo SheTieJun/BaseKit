@@ -2,6 +2,7 @@ package shetj.me.base.common.other
 
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -28,13 +29,16 @@ import java.util.concurrent.atomic.AtomicBoolean
 class CommentPopup : BottomSheetDialogFragment() {
 
     private var root: View? = null
-    private val handler = Handler(Handler.Callback {
+    private val handler = Handler(Looper.getMainLooper()) {
         editContent?.let { it1 -> KeyboardUtil.requestFocusEdit(it1) }
         root?.apply {
-            layoutParams = FrameLayout.LayoutParams(ArmsUtils.getScreenWidth(), ArmsUtils.getScreenHeight() - BarUtils.getStatusBarHeight(context))
+            layoutParams = FrameLayout.LayoutParams(
+                ArmsUtils.getScreenWidth(),
+                ArmsUtils.getScreenHeight() - BarUtils.getStatusBarHeight(context)
+            )
         }
         false
-    })
+    }
 
     private var editContent: EditText? = null
     private var tvSend: View? = null
@@ -42,13 +46,11 @@ class CommentPopup : BottomSheetDialogFragment() {
     private val softInputUtil by lazy { SoftInputUtil() }
 
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(requireContext(), R.style.transparent_dialog_fragment_style).apply {
-            window?.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val rootView = inflater.inflate(R.layout.popupwindow_comment, null)
 
         editContent = rootView.findViewById(R.id.edit_content)
@@ -63,29 +65,26 @@ class CommentPopup : BottomSheetDialogFragment() {
         })
         tvSend = rootView.findViewById<View>(R.id.tv_send)?.apply {
             setOnClickListener {
-                        KeyboardUtil.hideSoftInputMethod(editContent)
-                        dismissAllowingStateLoss()
+                KeyboardUtil.hideSoftInputMethod(editContent)
+                dismissAllowingStateLoss()
             }
         }
 
-        root = rootView.findViewById<View>(R.id.root)
-        root?.apply {
-            layoutParams = FrameLayout.LayoutParams(ArmsUtils.getScreenWidth(), ArmsUtils.getScreenHeight() - BarUtils.getStatusBarHeight(context))
-        }?.setOnClickListener {
-            KeyboardUtil.hideSoftInputMethod(editContent)
-            dismissAllowingStateLoss()
+        root = rootView.findViewById<View>(R.id.root).apply {
+            setOnClickListener {
+                KeyboardUtil.hideSoftInputMethod(editContent)
+                dismissAllowingStateLoss()
+            }
         }
 
-        rootView.findViewById<View>(R.id.linearLayout_root)?.apply {
-            addOnLayoutChangeListener { _, _, top, _, _, _, _, _, _ ->
-                val location = IntArray(2)
-                this.getLocationOnScreen(location)
-                if (location[1] != 0 && location[1] <= top) {
-                    KeyboardUtil.hideSoftInputMethod(editContent)
+        softInputUtil.attachSoftInput(dialog?.window, object : SoftInputUtil.ISoftInputChanged {
+            override fun onChanged(isSoftInputShow: Boolean) {
+                if (!isSoftInputShow) {
                     dismissAllowingStateLoss()
                 }
             }
-        }
+        })
+
         dialog?.setOnShowListener {
             editContent?.let {
                 handler.sendEmptyMessageDelayed(0, 100)
@@ -97,6 +96,11 @@ class CommentPopup : BottomSheetDialogFragment() {
     fun show(manager: FragmentManager) {
         manager.executePendingTransactions()
         show(manager, "commentPopup")
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        softInputUtil.dismiss()
     }
 
     companion object {

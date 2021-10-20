@@ -5,7 +5,20 @@ package me.shetj.base.network_coroutine
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import me.shetj.base.network.exception.ApiException
+import java.io.File
 
+
+//region 下载状态相关
+typealias OnError = (ApiException) -> Unit
+typealias download_error = suspend (Throwable) -> Unit
+typealias download_process = suspend (downloadedSize: Long, length: Long, progress: Float) -> Unit
+typealias download_success = suspend (uri: File) -> Unit
+
+sealed class DownloadStatus {
+    class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) : DownloadStatus()
+    class DownloadError(val t: ApiException) : DownloadStatus()
+    class DownloadSuccess(val file: File) : DownloadStatus()
+}
 
 /**
  * 学习源码！

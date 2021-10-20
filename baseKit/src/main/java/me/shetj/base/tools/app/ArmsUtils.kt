@@ -249,8 +249,8 @@ class ArmsUtils private constructor() {
          * @param
          */
         @JvmStatic
-        fun startActivity(activity: Activity, intent: Intent) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        fun startActivity(activity: Activity, intent: Intent,userTransition:Boolean = false) {
+            if (userTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
                 activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
             } else {
                 activity.startActivity(intent)

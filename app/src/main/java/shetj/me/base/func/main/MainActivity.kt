@@ -131,10 +131,8 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  
             }
         }
         mViewBinding.content.testLoading.setOnClickListener {
-            TipKit.showLoadingWithCoroutine(this) {
-                doOnIO {
+            TipKit.loading(this) {
                     netTest()
-                }
             }
         }
 
@@ -173,7 +171,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  
     }
 
     protected suspend fun netTest() {
-        val music = mPresenter.getMusic()
+        val music = mPresenter.getMusicV2()
         Timber.tag("getMusic").i(music.toJson())
     }
 

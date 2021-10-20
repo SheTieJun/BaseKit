@@ -7,11 +7,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-/**
- *  自己控制的生命周期和协程 类似actvity的基类
+/*** 自己控制的生命周期和协程 类似actvity的基类
  *  生命周期 + 协程作业用域
  *
- * 自身[LifecycleOwner] + 自身[CoroutineScope]
+ * * 自身[LifecycleOwner] + 自身[CoroutineScope]
  */
 abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
 
@@ -48,7 +47,7 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
         if (lifecycle is LifecycleRegistry) {
             (lifecycle as LifecycleRegistry).apply {
                 if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)){
-                    currentState = Lifecycle.State.CREATED
+                    handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
                 }
             }
         }

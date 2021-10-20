@@ -59,7 +59,9 @@ object DataStoreKit {
     }
 
     suspend inline fun <reified T : Any> get(key: Preferences.Key<T>): T? {
-        return dataStore.data.map { it[key] }.first()
+        return kotlin.runCatching {
+            dataStore.data.map { it[key] }.first()
+        }.getOrNull()
     }
 
 }

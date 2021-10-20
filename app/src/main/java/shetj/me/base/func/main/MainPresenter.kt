@@ -42,9 +42,6 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
         return AppCompatDelegate.MODE_NIGHT_YES
     }
 
-    suspend fun getMusic(): ResultMusic? {
-        return model.getMusic()
-    }
 
     suspend fun getMusicV2(): ResultMusic? {
         return model.getMusicV2()

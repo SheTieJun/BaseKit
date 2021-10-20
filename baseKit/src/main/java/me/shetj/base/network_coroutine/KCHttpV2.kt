@@ -25,11 +25,7 @@ object KCHttpV2 {
     suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap()): HttpResult<T> {
         return runCatching<T> {
             val data = apiService.get(url, maps).string()
-            if (T::class.java != String::class.java) {
-                data.toBean()!!
-            } else {
-                data as T
-            }
+            funTo(data)
         }
     }
 
@@ -37,47 +33,31 @@ object KCHttpV2 {
     suspend inline fun <reified T> post(url: String, maps: Map<String, String>? = HashMap()): HttpResult<T> {
         return runCatching<T> {
             val data = apiService.post(url, maps).string()
-            if (T::class.java != String::class.java) {
-                data.toBean()!!
-            } else {
-                data as T
-            }
+            funTo(data)
         }
     }
 
 
     suspend inline fun <reified T> postJson(url: String, json: String): HttpResult<T> {
         return runCatching<T> {
-            val data = apiService.postJson(url, json.createJson()).toString()
-            if (T::class.java != String::class.java) {
-                data.toBean()!!
-            } else {
-                data as T
-            }
+            val data = apiService.postJson(url, json.createJson()).string()
+            funTo(data)
         }
     }
 
 
     suspend inline fun <reified T> postBody(url: String, body: Any): HttpResult<T> {
         return runCatching<T> {
-            val data = apiService.postBody(url, body).toString()
-            if (T::class.java != String::class.java) {
-                data.toBean()!!
-            } else {
-                data as T
-            }
+            val data = apiService.postBody(url, body).string()
+            funTo(data)
         }
     }
 
 
     suspend inline fun <reified T> postBody(url: String, body: RequestBody): HttpResult<T> {
         return runCatching<T> {
-            val data = apiService.postBody(url, body).toString()
-            if (T::class.java != String::class.java) {
-                data.toBean()!!
-            } else {
-                data as T
-            }
+            val data = apiService.postBody(url, body).string()
+            funTo(data)
         }
     }
 
@@ -87,8 +67,8 @@ object KCHttpV2 {
                          onError: download_error = {},
                          onProcess: download_process = { _, _, _ -> },
                          onSuccess: download_success = { }) {
-        val body = apiService.downloadFile(url)
         flow {
+            val body = apiService.downloadFile(url)
             try {
                 val contentLength = body.contentLength()
                 val ios = body.byteStream()
@@ -125,4 +105,9 @@ object KCHttpV2 {
                 }
     }
 
+    inline fun <reified T> funTo(data: String) = if (T::class.java != String::class.java) {
+        data.toBean()!!
+    } else {
+        data as T
+    }
 }

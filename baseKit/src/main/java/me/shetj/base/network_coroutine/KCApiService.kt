@@ -27,11 +27,9 @@ interface KCApiService {
     @GET
     suspend fun get(@Url url: String?, @QueryMap maps: Map<String, String>?): ResponseBody
 
-    //@DELETE()//delete body请求比较特殊 需要自定义
     @HTTP(method = "DELETE", hasBody = true)
     suspend fun deleteBody(@Url url: String?, @Body `object`: Any?): ResponseBody
 
-    //@DELETE()//delete body请求比较特殊 需要自定义
     @HTTP(method = "DELETE", hasBody = true)
     suspend fun deleteBody(@Url url: String?, @Body body: RequestBody?): ResponseBody
 

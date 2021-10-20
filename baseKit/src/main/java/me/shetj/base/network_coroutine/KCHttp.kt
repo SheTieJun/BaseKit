@@ -16,134 +16,66 @@ import java.io.File
 import java.io.FileOutputStream
 
 
-//region 下载状态相关
-typealias HTTP_ERROR = (ApiException) -> Unit
-typealias download_error = suspend (Throwable) -> Unit
-typealias download_process = suspend (downloadedSize: Long, length: Long, progress: Float) -> Unit
-typealias download_success = suspend (uri: File) -> Unit
-
-sealed class DownloadStatus {
-    class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) : DownloadStatus()
-    class DownloadError(val t: ApiException) : DownloadStatus()
-    class DownloadSuccess(val file: File) : DownloadStatus()
-}
-
 //endregion
 
 /**
  * 协程 Http请求
  * 感觉可能用的不错，所以就只写这几个方法了
  */
+@Deprecated("use KCHttpV2 instead of", replaceWith = ReplaceWith("KCHttpV2"))
 object KCHttp {
 
-    val apiService: KCApiService = get(KCApiService::class.java)
+    suspend inline fun <reified T> get(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+        error: OnError = {}
+    ): T? {
+        return KCHttpV2.get<T>(url, maps).onFailure {
+            error.invoke(ApiException.handleException(it))
+        }.getOrNull()
+    }
 
-
-    suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap(), error: HTTP_ERROR = {}): T? {
-        return try {
-            apiService.get(url, maps).funToT()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            error(ApiException.handleException(e))
-            null
-        }
+    suspend inline fun <reified T> post(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+        error: OnError = {}
+    ): T? {
+        return KCHttpV2.post<T>(url, maps).onFailure {
+            error.invoke(ApiException.handleException(it))
+        }.getOrNull()
     }
 
 
-    suspend inline fun <reified T> post(url: String, maps: Map<String, String>? = HashMap(), error: HTTP_ERROR = {}): T? {
-        return try {
-            apiService.post(url, maps).funToT()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            error(ApiException.handleException(e))
-            null
-        }
+    suspend inline fun <reified T> postJson(url: String, json: String, error: OnError = {}): T? {
+        return KCHttpV2.postJson<T>(url, json).onFailure {
+            error.invoke(ApiException.handleException(it))
+        }.getOrNull()
     }
 
 
-    suspend inline fun <reified T> postJson(url: String, json: String, error: HTTP_ERROR = {}): T? {
-        return try {
-            apiService.postJson(url, json.createJson()).funToT()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            error(ApiException.handleException(e))
-            null
-        }
+    suspend inline fun <reified T> postBody(url: String, body: Any, error: OnError = {}): T? {
+        return KCHttpV2.postBody<T>(url, body).onFailure {
+            error.invoke(ApiException.handleException(it))
+        }.getOrNull()
     }
 
 
-    suspend inline fun <reified T> postBody(url: String, body: Any, error: HTTP_ERROR = {}): T? {
-        return try {
-            apiService.postBody(url, body).funToT()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            error(ApiException.handleException(e))
-            null
-        }
+    suspend inline fun <reified T> postBody(
+        url: String,
+        body: RequestBody,
+        error: OnError = {}
+    ): T? {
+        return KCHttpV2.postBody<T>(url, body).onFailure {
+            error.invoke(ApiException.handleException(it))
+        }.getOrNull()
     }
 
-
-    suspend inline fun <reified T> postBody(url: String, body: RequestBody, error: HTTP_ERROR = {}): T? {
-        return try {
-            apiService.postBody(url, body).funToT()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            error(ApiException.handleException(e))
-            null
-        }
-    }
-
-    inline fun <reified T> ResponseBody.funToT(): T? {
-        return ApiResultFunc<T>(T::class.java).apply(this).let {
-            if (it.isOk) {
-                it.data
-            } else {
-                throw ServerException(it.code, it.msg)
-            }
-        }
-    }
-
-    @Suppress("BlockingMethodInNonBlockingContext")
     @JvmOverloads
-    suspend fun download(url: String, outputFile: String, error: download_error = {},
-                         process: download_process = { _, _, _ -> },
-                         success: download_success = { }) {
-
-        val body = apiService.downloadFile(url)
-
-        flow {
-            try {
-                val contentLength = body.contentLength()
-//                val contentType = body.contentType()?.toString()
-                val ios = body.byteStream()
-                val file = File(outputFile)
-                val ops = FileOutputStream(file)
-                var currentLength = 0
-                val bufferSize = 1024 * 8
-                val buffer = ByteArray(bufferSize)
-                val bufferedInputStream = BufferedInputStream(ios, bufferSize)
-                var readLength: Int
-                while (bufferedInputStream.read(buffer, 0, bufferSize)
-                                .also { readLength = it } != -1
-                ) {
-                    ops.write(buffer, 0, readLength)
-                    currentLength += readLength
-                    emit(DownloadStatus.DownloadProcess(currentLength.toLong(), contentLength, currentLength.toFloat() / contentLength.toFloat()))
-                }
-                bufferedInputStream.close()
-                ops.close()
-                ios.close()
-                emit(DownloadStatus.DownloadSuccess(file))
-            } catch (e: Exception) {
-                emit(DownloadStatus.DownloadError(ApiException.handleException(e)))
-            }
-        }.flowOn(Dispatchers.IO)
-                .collect {
-                    when (it) {
-                        is DownloadStatus.DownloadError -> error(it.t)
-                        is DownloadStatus.DownloadProcess -> process(it.currentLength, it.length, it.process)
-                        is DownloadStatus.DownloadSuccess -> success(it.file)
-                    }
-                }
+    suspend fun download(
+        url: String, outputFile: String, error: download_error = {},
+        process: download_process = { _, _, _ -> },
+        success: download_success = { }
+    ) {
+        KCHttpV2.download(url, outputFile, error, process, success)
     }
 }
