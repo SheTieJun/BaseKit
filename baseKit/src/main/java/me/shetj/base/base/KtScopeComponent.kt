@@ -14,29 +14,26 @@ interface KtScopeComponent {
     val ktScope: DefCoroutineScope
 }
 
-abstract class ABKtScopeComponent :KtScopeComponent{
+abstract class ABKtScopeComponent : KtScopeComponent {
     override val ktScope: DefCoroutineScope by defScope()
 }
 
 
 fun ktScopeWithLife(lifecycle: Lifecycle) = lazy {
-    LifecycleCoroutineScopeImpl(lifecycle,
-            SupervisorJob() + Dispatchers.Main.immediate + S.handler)
-            .also {
-                it.register(lifecycle)
-            }
+    LifecycleCoroutineScopeImpl(lifecycle, coroutineContext())
+        .also {
+            it.register(lifecycle)
+        }
 }
 
 /**
  * 可以通过[DefCoroutineScope.register] 进行绑定生命收起，也可以不判定
  */
-fun defScope() = lazy {
-    CoroutineScopeImpl(SupervisorJob() + Dispatchers.Main.immediate + S.handler)
-}
+fun defScope() = lazy { CoroutineScopeImpl(coroutineContext()) }
 
 
 class CoroutineScopeImpl(
-        override val coroutineContext: CoroutineContext
+    override val coroutineContext: CoroutineContext
 ) : DefCoroutineScope(), LifecycleEventObserver {
 
     override fun register(lifecycle: Lifecycle) {
@@ -62,8 +59,8 @@ class CoroutineScopeImpl(
 
 
 class LifecycleCoroutineScopeImpl(
-        val lifecycle: Lifecycle,
-        override val coroutineContext: CoroutineContext
+    val lifecycle: Lifecycle,
+    override val coroutineContext: CoroutineContext
 ) : DefCoroutineScope(), LifecycleEventObserver {
 
     init {
@@ -91,8 +88,6 @@ class LifecycleCoroutineScopeImpl(
 }
 
 
-
-
 interface LifecycleKtScopeComponent {
     val lifeKtScope: LifecycleCoroutineScope
 }
@@ -106,7 +101,8 @@ abstract class DefCoroutineScope : CoroutineScope {
 /**
  * 结合外部的LifecycleOwner 使用
  */
-open class LifecycleCoroutineScope(override val coroutineContext: CoroutineContext) : CoroutineScope, LifecycleEventObserver {
+open class LifecycleCoroutineScope(override val coroutineContext: CoroutineContext) :
+    CoroutineScope, LifecycleEventObserver {
 
     open fun register(lifecycle: Lifecycle) {
         launch(Dispatchers.Main.immediate) {
@@ -133,8 +129,10 @@ open class LifecycleCoroutineScope(override val coroutineContext: CoroutineConte
  * who use this need implements [LifecycleOwner]
  */
 fun LifecycleOwner.defLifeOwnerScope() = lazy {
-    LifecycleCoroutineScope(SupervisorJob() + Dispatchers.Main.immediate + S.handler)
-            .also {
-                it.register(lifecycle)
-            }
+    LifecycleCoroutineScope(coroutineContext())
+        .also {
+            it.register(lifecycle)
+        }
 }
+
+private fun coroutineContext() = SupervisorJob() + Dispatchers.Main.immediate + S.handler

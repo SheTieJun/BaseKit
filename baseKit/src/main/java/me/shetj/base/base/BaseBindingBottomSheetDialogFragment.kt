@@ -42,7 +42,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     open fun getBehavior(): BottomSheetBehavior<FrameLayout>? {
         if (dialog is BottomSheetDialog) {
-           return (dialog as BottomSheetDialog?)?.behavior
+           return (dialog as BottomSheetDialog).behavior
         }
         return null
     }

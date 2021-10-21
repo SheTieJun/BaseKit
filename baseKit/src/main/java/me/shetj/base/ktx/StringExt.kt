@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.Color
 import android.text.Spanned
+import android.util.Log
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import me.shetj.base.tools.app.ArmsUtils
@@ -64,7 +65,7 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
 
 //region log 相关
 fun String?.logi() {
-    Timber.tag("base").i(this.toString())
+    Log.i("base",this.toString())
 }
 
 fun String?.loge() {

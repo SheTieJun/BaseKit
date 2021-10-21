@@ -4,7 +4,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import me.shetj.base.ktx.toBean
+import me.shetj.base.network.cache.CacheOption
+import me.shetj.base.network.cache.KCCache
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.kt.createJson
 import okhttp3.RequestBody
@@ -22,51 +25,122 @@ object KCHttpV2 {
 
     val apiService: KCApiService = get(KCApiService::class.java)
 
-    suspend inline fun <reified T> get(url: String, maps: Map<String, String>? = HashMap()): HttpResult<T> {
+    val kcCache: KCCache by lazy { KCCache() }
+
+    @JvmOverloads
+    suspend inline fun <reified T> get(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+        noinline cacheOption: (CacheOption.() -> Unit)? = null
+    ): HttpResult<T> {
         return runCatching<T> {
-            val data = apiService.get(url, maps).string()
+            val data = getDataFromApiOrCache(cacheOption) {
+                apiService.get(url, maps).string()
+            }
+            funTo(data)
+        }
+    }
+
+    suspend fun saveCache(cache: CacheOption?, data: String) {
+        if (!cache?.cacheKey.isNullOrBlank()) {
+            withContext(Dispatchers.IO) {
+                kcCache.save(cache?.cacheKey, data)
+            }
+        }
+    }
+
+    @JvmOverloads
+    suspend inline fun <reified T> post(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+        noinline cacheOption: (CacheOption.() -> Unit)? = null
+    ): HttpResult<T> {
+        return runCatching<T> {
+            val data = getDataFromApiOrCache(cacheOption) {
+                apiService.post(url, maps).string()
+            }
             funTo(data)
         }
     }
 
 
-    suspend inline fun <reified T> post(url: String, maps: Map<String, String>? = HashMap()): HttpResult<T> {
+    suspend inline fun <reified T> postJson(
+        url: String,
+        json: String,
+        noinline cacheOption: (CacheOption.() -> Unit)? = null
+    ): HttpResult<T> {
         return runCatching<T> {
-            val data = apiService.post(url, maps).string()
+            val data = getDataFromApiOrCache(cacheOption) {
+                apiService.postJson(url, json.createJson()).string()
+            }
             funTo(data)
         }
     }
 
 
-    suspend inline fun <reified T> postJson(url: String, json: String): HttpResult<T> {
+    suspend inline fun <reified T> postBody(
+        url: String,
+        body: Any,
+        noinline cacheOption: (CacheOption.() -> Unit)? = null
+    ): HttpResult<T> {
         return runCatching<T> {
-            val data = apiService.postJson(url, json.createJson()).string()
+            val data = getDataFromApiOrCache(cacheOption) {
+                apiService.postBody(url, body).string()
+            }
             funTo(data)
         }
     }
 
 
-    suspend inline fun <reified T> postBody(url: String, body: Any): HttpResult<T> {
+    suspend inline fun <reified T> postBody(
+        url: String,
+        body: RequestBody,
+        noinline cacheOption: (CacheOption.() -> Unit)? = null
+    ): HttpResult<T> {
         return runCatching<T> {
-            val data = apiService.postBody(url, body).string()
+            val data = getDataFromApiOrCache(cacheOption) {
+                apiService.postBody(url, body).string()
+            }
             funTo(data)
         }
     }
 
-
-    suspend inline fun <reified T> postBody(url: String, body: RequestBody): HttpResult<T> {
-        return runCatching<T> {
-            val data = apiService.postBody(url, body).string()
-            funTo(data)
+    suspend inline fun getDataFromApiOrCache(
+        noinline cacheOption: (CacheOption.() -> Unit)?,
+        crossinline goApi: suspend () -> String
+    ): String {
+        val cache = cacheOption?.let { CacheOption().apply(cacheOption) }
+        return when {
+            cache?.cacheKey.isNullOrEmpty() -> {
+                goApi().also {
+                    saveCache(cache, it)
+                }
+            }
+            kcCache.containsKey(cache!!.cacheKey!!) -> {
+                withContext(Dispatchers.IO) {
+                    kcCache.load(cache.cacheKey, cache.cacheTime)
+                } ?: kotlin.run {
+                    goApi().also {
+                        saveCache(cache, it)
+                    }
+                }
+            }
+            else -> {
+                goApi().also {
+                    saveCache(cache, it)
+                }
+            }
         }
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
     @JvmOverloads
-    suspend fun download(url: String, outputFile: String,
-                         onError: download_error = {},
-                         onProcess: download_process = { _, _, _ -> },
-                         onSuccess: download_success = { }) {
+    suspend fun download(
+        url: String, outputFile: String,
+        onError: download_error = {},
+        onProcess: download_process = { _, _, _ -> },
+        onSuccess: download_success = { }
+    ) {
         flow {
             val body = apiService.downloadFile(url)
             try {
@@ -80,11 +154,17 @@ object KCHttpV2 {
                 val bufferedInputStream = BufferedInputStream(ios, bufferSize)
                 var readLength: Int
                 while (bufferedInputStream.read(buffer, 0, bufferSize)
-                                .also { readLength = it } != -1
+                        .also { readLength = it } != -1
                 ) {
                     ops.write(buffer, 0, readLength)
                     currentLength += readLength
-                    emit(HttpResult.progress(currentLength.toLong(), contentLength, currentLength.toFloat() / contentLength.toFloat()))
+                    emit(
+                        HttpResult.progress(
+                            currentLength.toLong(),
+                            contentLength,
+                            currentLength.toFloat() / contentLength.toFloat()
+                        )
+                    )
                 }
                 bufferedInputStream.close()
                 ops.close()
@@ -94,15 +174,15 @@ object KCHttpV2 {
                 emit(HttpResult.failure<File>(ApiException.handleException(e)))
             }
         }.flowOn(Dispatchers.IO)
-                .collect {
-                    it.fold(onFailure = { e ->
-                        e?.let { it1 -> onError(it1) }
-                    }, onSuccess = { file ->
-                        onSuccess(file)
-                    }, onLoading = { progress ->
-                        onProcess(progress.currentLength, progress.length, progress.process)
-                    })
-                }
+            .collect {
+                it.fold(onFailure = { e ->
+                    e?.let { it1 -> onError(it1) }
+                }, onSuccess = { file ->
+                    onSuccess(file)
+                }, onLoading = { progress ->
+                    onProcess(progress.currentLength, progress.length, progress.process)
+                })
+            }
     }
 
     inline fun <reified T> funTo(data: String) = if (T::class.java != String::class.java) {

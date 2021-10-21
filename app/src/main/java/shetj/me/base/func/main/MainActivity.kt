@@ -170,7 +170,8 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  
         }
     }
 
-    protected suspend fun netTest() {
+    suspend fun netTest() {
+       "netTest".logi()
         val music = mPresenter.getMusicV2()
         Timber.tag("getMusic").i(music.toJson())
     }

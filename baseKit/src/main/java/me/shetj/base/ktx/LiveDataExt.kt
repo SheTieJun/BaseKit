@@ -55,7 +55,7 @@ fun <T> LiveData<T>.throttleFirst(duration: Long = 1000L) = MediatorLiveData<T>(
 
 fun <T> LiveData<T>.throttleLatest(duration: Long = 1000L) = MediatorLiveData<T>().also { mld ->
 
-    val isFirst = AtomicBoolean(true)
+    val isLatest = AtomicBoolean(true)
     val source = this
     val handler =  HandlerCompat.createAsync(Looper.getMainLooper())
     val isUpdate = AtomicBoolean(true)
@@ -67,7 +67,7 @@ fun <T> LiveData<T>.throttleLatest(duration: Long = 1000L) = MediatorLiveData<T>
     }
 
     mld.addSource(source) {
-        if (isFirst.compareAndSet(true,false)){
+        if (isLatest.compareAndSet(true,false)){
             mld.value = source.value
         }
         if (isUpdate.compareAndSet(true,false)) {
