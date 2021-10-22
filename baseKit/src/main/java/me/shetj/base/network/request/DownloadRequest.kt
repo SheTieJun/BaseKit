@@ -34,7 +34,7 @@ class DownloadRequest(url: String) : BaseRequest<DownloadRequest>(url) {
 
 
     override fun <T> execute(callback: NetCallBack<T>): Disposable {
-        return build().generateRequest()!!.compose { upstream ->
+        return build().generateRequest().compose { upstream ->
                 upstream!!.subscribeOn(Schedulers.io())
                         .unsubscribeOn(Schedulers.io())
                         .observeOn(Schedulers.computation())

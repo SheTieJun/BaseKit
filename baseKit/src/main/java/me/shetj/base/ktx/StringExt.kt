@@ -65,15 +65,20 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
 
 //region log 相关
 fun String?.logi() {
-    Log.i("base",this.toString())
+    Timber.tag("base").i(this.toString())
 }
 
 fun String?.loge() {
     Timber.tag("base").e(this.toString())
 }
 
-fun String?.logd() {
-    Timber.tag("base").e(this.toString())
+fun Throwable.loge(tag:String = "base"){
+    Timber.tag(tag).e(this)
+}
+
+
+fun String?.logd(tag:String = "base") {
+    Timber.tag(tag).d(this.toString())
 }
 
 fun String?.logOutOut() {

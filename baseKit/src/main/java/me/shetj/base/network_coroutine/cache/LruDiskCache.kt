@@ -1,4 +1,4 @@
-package me.shetj.base.network.cache
+package me.shetj.base.network_coroutine.cache
 
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException

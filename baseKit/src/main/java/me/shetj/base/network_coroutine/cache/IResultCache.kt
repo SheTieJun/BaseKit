@@ -1,6 +1,4 @@
-package me.shetj.base.network.cache
-
-import java.lang.reflect.Type
+package me.shetj.base.network_coroutine.cache
 
 /**
  * @author stj
@@ -24,12 +22,12 @@ abstract class IResultCache {
     /**
      * 读取缓存
      */
-    abstract fun  doLoad( key: String): String?
+    abstract fun doLoad(key: String): String?
 
     /**
      * 保存
      */
-    abstract fun   doSave(key: String, value: String): Boolean
+    abstract fun doSave(key: String, value: String): Boolean
 
     /**
      * 删除缓存
@@ -39,6 +37,6 @@ abstract class IResultCache {
     /**
      * 清空缓存
      */
-    abstract fun doClear():Boolean
+    abstract fun doClear(): Boolean
 
 }

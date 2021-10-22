@@ -15,6 +15,7 @@ import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
+import me.shetj.base.network.model.ApiResult
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
@@ -132,11 +133,12 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  
         }
         mViewBinding.content.testLoading.setOnClickListener {
             TipKit.loading(this) {
-                    netTest()
+                netTest()
             }
         }
 
         mViewBinding.content.btnTestNet.setOnClickListener {
+            RxHttp.getInstance().debug(true)
             mPresenter.getMusicByRxHttp(object :
                 SimpleNetCallBack<List<MusicBean>>(this) {
                 override fun onSuccess(data:List<MusicBean>) {
@@ -150,12 +152,6 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  
                 }
             })
         }
-
-        //设置本地dns 解析
-        RxHttp.getInstance().addDnsMap(HashMap<String, String>().apply {
-            put("baidy1.com", "127.0.0.1")
-        })
-        RxHttp.getInstance().getApiManager(BApi::class.java, baseUrl = "http://baidy1.com").change("jwt1", HashMap()).subscribe()
     }
 
     override fun onBackPressed() {
@@ -171,7 +167,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  
     }
 
     suspend fun netTest() {
-       "netTest".logi()
+        RxHttp.getInstance().debug(false)
         val music = mPresenter.getMusicV2()
         Timber.tag("getMusic").i(music.toJson())
     }

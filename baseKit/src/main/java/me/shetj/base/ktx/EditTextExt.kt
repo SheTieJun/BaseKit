@@ -5,6 +5,8 @@ import androidx.core.widget.addTextChangedListener
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 
 
 fun EditText.asFlow(): Flow<String> {

@@ -30,6 +30,7 @@ class HttpLoggingInterceptor : Interceptor {
     }
 
     fun log(message: String?) {
+        if (!isLogEnable) return
         Timber.tag(tag).i(message)
         if (DebugFunc.getInstance().isOutputHttp){
             DebugFunc.getInstance().saveHttpToFile(message)
@@ -47,6 +48,11 @@ class HttpLoggingInterceptor : Interceptor {
 
     fun setLevel(level: Level): HttpLoggingInterceptor {
         this.level = level
+        return this
+    }
+
+    fun setLogEnable(logEnable:Boolean): HttpLoggingInterceptor {
+        this.isLogEnable = logEnable
         return this
     }
 

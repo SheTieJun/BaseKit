@@ -18,8 +18,7 @@ class BaseInitialize:Initializer<Unit> {
     override fun create(context: Context) {
         Thread.setDefaultUncaughtExceptionHandler(BaseUncaughtExceptionHandler())
         S.initKoin(allModules)
-        Tim.setLogAuto(BuildConfig.LOG_DEBUG)
-        RxHttp.getInstance().setBaseUrl("https://me.shetj.com")
+        RxHttp.getInstance().setBaseUrl("https://me.shetj.com").debug(true)
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {

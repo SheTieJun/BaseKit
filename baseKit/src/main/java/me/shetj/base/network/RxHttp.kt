@@ -1,6 +1,5 @@
 package me.shetj.base.network
 
-import me.shetj.base.BuildConfig
 import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
@@ -8,6 +7,7 @@ import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
 import me.shetj.base.network.request.*
+import me.shetj.base.network_coroutine.HttpKit
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -110,10 +110,7 @@ open class RxHttp private constructor() {
 
     fun debug(isPrintException: Boolean): RxHttp {
         this.isPrintException = isPrintException
-        if (isPrintException) {
-            addInterceptor(HttpLoggingInterceptor("RxHttp",BuildConfig.DEBUG)
-                    .apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
-        }
+        HttpKit.debugHttp(isPrintException)
         return this
     }
 
@@ -134,12 +131,12 @@ open class RxHttp private constructor() {
     open fun <T> getApiManager(clazz: Class<T>,baseUrl:String? = mBaseUrl): T {
         val apiManager = apiMap[clazz.simpleName+baseUrl]
         return if (apiManager == null) {
-            val client = getOkHttpClientBuilder().apply {
+            val client = HttpKit.getOkHttpClientBuilder().apply {
                 mCommonHeaders?.let {
                     addInterceptor(HeadersInterceptor(it))
                 }
             }.build()
-            getRetrofitBuilder().apply {
+            HttpKit.getRetrofitBuilder().apply {
                 client(client)
                 baseUrl?.let{this.baseUrl(it)}
             }.build().create(clazz).also {
@@ -162,20 +159,6 @@ open class RxHttp private constructor() {
         }
     }
 
-    //对外暴露 OkHttpClient,方便自定义，主要是为共用线程池
-    fun getOkHttpClientBuilder(): OkHttpClient.Builder {
-        return getInstance().okHttpClientBuilder
-    }
-
-    //对外暴露 Retrofit,方便自定义
-    fun getRetrofitBuilder(): Retrofit.Builder {
-        return getInstance().retrofitBuilder
-    }
-
-    private fun getOkHttpClient(): OkHttpClient {
-        return getInstance().okHttpClientBuilder.build()
-    }
-
     private fun getDeApiManager(): ApiService {
         return apiManager
     }
@@ -183,7 +166,7 @@ open class RxHttp private constructor() {
     //根据当前的请求参数，生成对应的OkClient
     private fun generateOkClient(baseRequest: BaseRequest<*>): OkHttpClient.Builder {
         //使用newBuilder，可以共用线程池
-        return getOkHttpClient().newBuilder().apply {
+        return HttpKit.getOkHttpClient().newBuilder().apply {
             if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
             if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)
             if (baseRequest.connectTimeout > 0) connectTimeout(baseRequest.connectTimeout, TimeUnit.MILLISECONDS)
@@ -211,7 +194,7 @@ open class RxHttp private constructor() {
                 addInterceptor(HeadersInterceptor(it))
             }
             if (isPrintException) {
-                addInterceptor(HttpLoggingInterceptor("RxHttp").apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
+                addInterceptor(HttpLoggingInterceptor("RxHttp",isPrintException).apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
             }
         }
     }
@@ -221,7 +204,7 @@ open class RxHttp private constructor() {
         return Retrofit.Builder().apply {
             //添加转换器
             if (baseRequest.converterFactories.isEmpty()) {
-                getRetrofitBuilder().converterFactories()
+                HttpKit.getRetrofitBuilder().converterFactories()
             } else {
                 baseRequest.converterFactories
             }.forEach {
@@ -229,7 +212,7 @@ open class RxHttp private constructor() {
             }
             //添加callAdapter
             if (baseRequest.adapterFactories.isEmpty()) {
-                getRetrofitBuilder().callAdapterFactories()
+                HttpKit.getRetrofitBuilder().callAdapterFactories()
             } else {
                 baseRequest.adapterFactories
             }.forEach {

@@ -5,11 +5,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import me.shetj.base.ktx.logd
 import me.shetj.base.ktx.toBean
-import me.shetj.base.network.cache.CacheOption
-import me.shetj.base.network.cache.KCCache
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.kt.createJson
+import me.shetj.base.network_coroutine.cache.CacheMode
+import me.shetj.base.network_coroutine.cache.CacheOption
+import me.shetj.base.network_coroutine.cache.KCCache
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
 import java.io.BufferedInputStream
@@ -34,17 +36,8 @@ object KCHttpV2 {
         noinline cacheOption: (CacheOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            val data = getDataFromApiOrCache(cacheOption) {
+            getDataFromApiOrCache(cacheOption) {
                 apiService.get(url, maps).string()
-            }
-            funTo(data)
-        }
-    }
-
-    suspend fun saveCache(cache: CacheOption?, data: String) {
-        if (!cache?.cacheKey.isNullOrBlank()) {
-            withContext(Dispatchers.IO) {
-                kcCache.save(cache?.cacheKey, data)
             }
         }
     }
@@ -56,10 +49,9 @@ object KCHttpV2 {
         noinline cacheOption: (CacheOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            val data = getDataFromApiOrCache(cacheOption) {
+            getDataFromApiOrCache(cacheOption) {
                 apiService.post(url, maps).string()
             }
-            funTo(data)
         }
     }
 
@@ -70,10 +62,9 @@ object KCHttpV2 {
         noinline cacheOption: (CacheOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            val data = getDataFromApiOrCache(cacheOption) {
+            getDataFromApiOrCache(cacheOption) {
                 apiService.postJson(url, json.createJson()).string()
             }
-            funTo(data)
         }
     }
 
@@ -84,10 +75,9 @@ object KCHttpV2 {
         noinline cacheOption: (CacheOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            val data = getDataFromApiOrCache(cacheOption) {
+            getDataFromApiOrCache(cacheOption) {
                 apiService.postBody(url, body).string()
             }
-            funTo(data)
         }
     }
 
@@ -98,31 +88,75 @@ object KCHttpV2 {
         noinline cacheOption: (CacheOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            val data = getDataFromApiOrCache(cacheOption) {
+            getDataFromApiOrCache(cacheOption) {
                 apiService.postBody(url, body).string()
             }
-            funTo(data)
         }
     }
 
-    suspend inline fun getDataFromApiOrCache(
+    suspend inline fun <reified T> getDataFromApiOrCache(
         noinline cacheOption: (CacheOption.() -> Unit)?,
         crossinline goApi: suspend () -> String
-    ): String {
+    ): T {
         val cache = cacheOption?.let { CacheOption().apply(cacheOption) }
         return when {
-            cache?.cacheKey.isNullOrEmpty() -> {
-                goApi().also {
-                    saveCache(cache, it)
+            cache?.cacheMode == CacheMode.DEFAULT -> {
+                //不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
+                goApi()
+            }
+            cache?.cacheMode == CacheMode.FIRST_NET -> {
+                //先请求网络，请求网络失败后再加载缓存
+                try {
+                    goApi()
+                } catch (e: Exception) {
+                    withContext(Dispatchers.IO) {
+                        kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
+                            "use cache key = ${cache.cacheKey} \n,value = $it ".logd()
+                        }
+                    } ?: throw e
                 }
             }
-            kcCache.containsKey(cache!!.cacheKey!!) -> {
+            cache?.cacheMode == CacheMode.FIRST_CACHE -> {
+                // 先加载缓存，缓存没有再去请求网络
                 withContext(Dispatchers.IO) {
                     kcCache.load(cache.cacheKey, cache.cacheTime)
+                        ?.also {
+                            "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
+                        }
                 } ?: kotlin.run {
                     goApi().also {
                         saveCache(cache, it)
                     }
+                }
+            }
+            cache?.cacheMode == CacheMode.ONLY_NET -> {
+                //仅加载网络，但数据依然会被缓存
+                goApi().also {
+                    saveCache(cache, it)
+                }
+            }
+            cache?.cacheMode == CacheMode.ONLY_CACHE -> {
+                //只读取缓存
+                withContext(Dispatchers.IO) {
+                    kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
+                        "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
+                    }
+                } ?: throw NullPointerException("cacheKey = '${cache.cacheKey}' no cache")
+            }
+            cache?.cacheMode == CacheMode.CACHE_NET_DISTINCT -> {
+                /* 先使用缓存，不管是否存在，仍然请求网络，会先把缓存回调给你，
+                 * 络请求回来发现数据是一样的就不会再返回，否则再返回
+                 */
+                val cacheInfo = withContext(Dispatchers.IO) {
+                    kcCache.load(cache.cacheKey, cache.cacheTime)
+                }
+                val apiInfo = goApi().also {
+                    saveCache(cache, it)
+                }
+                if (cacheInfo == apiInfo) {
+                    apiInfo
+                } else {
+                    throw error("数据是一样,无需修改")
                 }
             }
             else -> {
@@ -130,7 +164,7 @@ object KCHttpV2 {
                     saveCache(cache, it)
                 }
             }
-        }
+        }.funTo()
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
@@ -185,9 +219,17 @@ object KCHttpV2 {
             }
     }
 
-    inline fun <reified T> funTo(data: String) = if (T::class.java != String::class.java) {
-        data.toBean()!!
+    suspend fun saveCache(cache: CacheOption?, data: String) {
+        if (!cache?.cacheKey.isNullOrBlank()) {
+            withContext(Dispatchers.IO) {
+                kcCache.save(cache?.cacheKey, data)
+            }
+        }
+    }
+
+    inline fun <reified T> String.funTo() = if (T::class.java != String::class.java) {
+        this.toBean()!!
     } else {
-        data as T
+        this as T
     }
 }

@@ -4,6 +4,7 @@ import android.text.TextUtils
 import io.reactivex.rxjava3.functions.Function
 import me.shetj.base.network.kt.ClassUtils
 import me.shetj.base.network.model.ApiResult
+import me.shetj.base.tools.json.GsonKit.gson
 import me.shetj.base.tools.json.GsonKit.jsonToBean
 import okhttp3.ResponseBody
 import org.json.JSONException
@@ -70,7 +71,7 @@ class ApiResultFunc<T>(val type: Type) : Function<ResponseBody, ApiResult<T>> {
                 try {
                     val json = responseBody.string()
                     apiResult.code = 0
-                    val bean: T? = jsonToBean<T>(json, type)
+                    val bean: T? = gson.fromJson<T>(json,type)
                     apiResult.data = bean
                 } catch (e: JSONException) {
                     e.printStackTrace()
@@ -90,7 +91,8 @@ class ApiResultFunc<T>(val type: Type) : Function<ResponseBody, ApiResult<T>> {
                 //默认是成成功了，如果解析异常就是表示获取失败
                 apiResult.code = 0
                 if (clazz != String::class.java) {
-                    val bean: T? = jsonToBean<T>(json, type)
+                    //
+                    val bean: T? = gson.fromJson<T>(json,type)
                     apiResult.data = bean
                 } else if (clazz == String::class.java) {
                     apiResult.data = json as T

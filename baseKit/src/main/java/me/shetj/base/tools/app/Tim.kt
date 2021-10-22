@@ -13,6 +13,7 @@ object Tim {
      * @param isDebug
      */
     fun setLogAuto(isDebug: Boolean) {
+        Timber.uprootAll()
         //打印关，同时gradle中的release的debuggable要设置为false
         if (isDebug) {
             Timber.plant(Timber.DebugTree())
