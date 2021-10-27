@@ -6,9 +6,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
@@ -16,6 +19,7 @@ import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.network.model.ApiResult
+import me.shetj.base.network_coroutine.KCHttpV2
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
@@ -33,7 +37,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
-class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  {
+class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     private lateinit var mContent: ContentMainBinding
     private var codeUtil: CodeUtil? = null
 
@@ -47,9 +51,9 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  
 
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
-                this,
+                this@MainActivity,
                 "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
-                EnvironmentStorage.getExternalFilesDir(),
+                this@MainActivity.cacheDir.path,
                 "wxwork_android_3.apk"
             )
         }
@@ -141,7 +145,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>()  
             RxHttp.getInstance().debug(true)
             mPresenter.getMusicByRxHttp(object :
                 SimpleNetCallBack<List<MusicBean>>(this) {
-                override fun onSuccess(data:List<MusicBean>) {
+                override fun onSuccess(data: List<MusicBean>) {
                     super.onSuccess(data)
                     Timber.tag("getMusicByRxHttp").i(data.toJson())
                 }

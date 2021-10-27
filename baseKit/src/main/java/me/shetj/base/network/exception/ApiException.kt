@@ -80,6 +80,12 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
          * 空指针错误
          */
         const val NULLPOINTER_EXCEPTION = UNKNOWNHOST_ERROR + 1
+
+
+        /**
+         * 正确错误
+         */
+        const val OK_CACHE_EXCEPTION = NULLPOINTER_EXCEPTION + 1
     }
 
     companion object {
@@ -119,6 +125,10 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
             } else if (e is ServerException) {
                 ex = ApiException(e, e.errCode)
                 ex.message = e.message!!
+                ex
+            }else if (e is CacheException) {
+                ex = ApiException(e, ERROR.OK_CACHE_EXCEPTION)
+                ex.message = "缓存处理异常："+e.message!!
                 ex
             } else if (e is JsonParseException
                     || e is JSONException

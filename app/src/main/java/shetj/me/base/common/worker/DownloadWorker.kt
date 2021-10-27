@@ -28,40 +28,26 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
                 ?: return Result.failure()
         val filename = inputData.getString(KEY_OUTPUT_FILE_NAME)
                 ?: return Result.failure()
-        // Mark the Worker as important
         val progress = "Starting Download"
         setForeground(createForegroundInfo(progress))
         download(inputUrl, outputUrl, filename)
         return Result.success()
     }
 
-    private suspend fun download(inputUrl: String, outputFile: String, fileName: String) {
-//        repeat(100){
-//            setForeground(createForegroundInfo("${it}%"))
-//            delay(500)
-//        }
-//        setForeground(createForegroundInfo("download ok"))
-
-        KCHttpV2.download(inputUrl, "$outputFile/$fileName", onProcess = { _, _, process ->
+    private suspend fun download(downloadUrl: String, outputFile: String, fileName: String) {
+        KCHttpV2.download(downloadUrl, "$outputFile/$fileName", onProcess = { _, _, process ->
             setForeground(createForegroundInfo("${(process * 100).toInt()}%"))
             setProgress(Data.Builder().let {
                 it.putInt("progress", (process * 100).toInt())
                 it.build()
             })
         }, onSuccess = {
-            it.absolutePath.logi()
             setForeground(createForegroundInfo("download ok"))
         },onError = {
-            it.message.logi()
+            it?.printStackTrace()
         })
     }
-
-
-    // Creates an instance of ForegroundInfo which can be used to update the
-    // ongoing notification.
     private fun createForegroundInfo(progress: String): ForegroundInfo {
-
-        //cancel
         val intent = WorkManager.getInstance(applicationContext)
                 .createCancelPendingIntent(id)
 
@@ -130,9 +116,9 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
          *          }
          *})
          */
-        fun startDownload(context: Context, inputUrl: String, outputFile: String, fileName: String): UUID {
+        fun startDownload(context: Context, downloadUrl: String, outputFile: String, fileName: String): UUID {
             val inputData: Data = Data.Builder().apply {
-                putString(KEY_INPUT_URL, inputUrl)
+                putString(KEY_INPUT_URL, downloadUrl)
                 putString(KEY_OUTPUT_FILE_NAME, fileName)
                 putString(KEY_OUT_PUT_URL, outputFile)
             }.build()

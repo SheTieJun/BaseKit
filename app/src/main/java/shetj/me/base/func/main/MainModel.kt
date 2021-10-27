@@ -10,12 +10,12 @@ import shetj.me.base.bean.ResultMusic
 import timber.log.Timber
 
 /**
- * **@packageName：** shetj.me.base.fun<br></br>
- * **@author：** shetj<br></br>
- * **@createTime：** 2018/10/29 0029<br></br>
- * **@company：**<br></br>
- * **@email：** 375105540@qq.com<br></br>
- * **@describe**<br></br>
+ * * @packageName：** shetj.me.base.fun<br></br>
+ * * @author：** shetj<br></br>
+ * * @createTime：** 2018/10/29 0029<br></br>
+ * * @company：**<br></br>
+ * * @email：** 375105540@qq.com<br></br>
+ * * @describe**<br></br>
  */
 class MainModel : BaseModel() {
     private val testUrl =
@@ -27,7 +27,7 @@ class MainModel : BaseModel() {
             this.cacheTime = 10
 //            this.cacheMode = CacheMode.FIRST_CACHE
 //            this.cacheMode = CacheMode.ONLY_CACHE
-            this.cacheMode = CacheMode.ONLY_NET
+            this.cacheMode = CacheMode.CACHE_NET_DISTINCT
         }).onFailure {
         Timber.e(it)
     }.getOrNull()

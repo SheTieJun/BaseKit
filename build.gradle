@@ -43,7 +43,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Add this line
 //        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'//Aspect
-        classpath "com.alibaba:arouter-register:1.0.2"
+//        classpath "com.alibaba:arouter-register:1.0.2"
         classpath "io.insert-koin:koin-gradle-plugin:3.0.2"
     }
 }
@@ -62,4 +62,4 @@ task clean(type: Delete) {
 }
 
 apply plugin: 'koin'
-apply plugin: 'com.alibaba.arouter'
+//apply plugin: 'com.alibaba.arouter'

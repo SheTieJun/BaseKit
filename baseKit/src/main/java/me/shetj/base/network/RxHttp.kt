@@ -194,7 +194,7 @@ open class RxHttp private constructor() {
                 addInterceptor(HeadersInterceptor(it))
             }
             if (isPrintException) {
-                addInterceptor(HttpLoggingInterceptor("RxHttp",isPrintException).apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
+                debug(isPrintException)
             }
         }
     }

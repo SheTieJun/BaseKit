@@ -1,25 +1,8 @@
-## Base
+## BaseKit
 
-主要：
-1. [KTX-扩展函数](baseKit/src/main/java/me/shetj/base/ktx)
+simplify yourself
 
-2. [架构-MVP](baseKit/src/main/java/me/shetj/base/mvp)
-
-3. [架构-MVVM](baseKit/src/main/java/me/shetj/base/mvvm)
-
-4. [NetWork-RxHttp](baseKit/src/main/java/me/shetj/base/network)
-
-5. [工具包](baseKit/src/main/java/me/shetj/base/tools)
-
-6. [Network_Coroutine](baseKit/src/main/java/me/shetj/base/network_coroutine)
-
-7. [MotionLayout](baseKit/src/main/java/me/shetj/base/anim/motion)
-
-8. [DOC](doc)
-
-9. [share](baseKit/src/main/java/me/shetj/base/share)
-
-10. [tip](baseKit/src/main/java/me/shetj/base/tip)
+为简化自己写代码，MVP +MVVM+ Koin + RxJava3 + retrofit2+coroutines..
 
 ### 网站
 
@@ -33,3 +16,7 @@
 
 #### [mvnrepository](https://mvnrepository.com/)
 
+
+### 文章
+#### [Flow 和 LiveData 之操作符：throttleFirst、 throttleLast 、throttleLatest、debounce](https://blog.csdn.net/StjunF/article/details/120872772)
+#### [Kotlin协程+Retrofit下载文件并实现进度监听](https://blog.csdn.net/StjunF/article/details/120909119)

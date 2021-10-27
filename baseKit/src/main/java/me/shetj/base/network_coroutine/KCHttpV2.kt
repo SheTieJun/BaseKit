@@ -8,6 +8,8 @@ import kotlinx.coroutines.withContext
 import me.shetj.base.ktx.logd
 import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
+import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
+import me.shetj.base.network.exception.CacheException
 import me.shetj.base.network.kt.createJson
 import me.shetj.base.network_coroutine.cache.CacheMode
 import me.shetj.base.network_coroutine.cache.CacheOption
@@ -55,7 +57,7 @@ object KCHttpV2 {
         }
     }
 
-
+    @JvmOverloads
     suspend inline fun <reified T> postJson(
         url: String,
         json: String,
@@ -68,7 +70,7 @@ object KCHttpV2 {
         }
     }
 
-
+    @JvmOverloads
     suspend inline fun <reified T> postBody(
         url: String,
         body: Any,
@@ -81,7 +83,7 @@ object KCHttpV2 {
         }
     }
 
-
+    @JvmOverloads
     suspend inline fun <reified T> postBody(
         url: String,
         body: RequestBody,
@@ -96,24 +98,25 @@ object KCHttpV2 {
 
     suspend inline fun <reified T> getDataFromApiOrCache(
         noinline cacheOption: (CacheOption.() -> Unit)?,
-        crossinline goApi: suspend () -> String
+        crossinline formNetworkValue: suspend () -> String
     ): T {
         val cache = cacheOption?.let { CacheOption().apply(cacheOption) }
         return when {
             cache?.cacheMode == CacheMode.DEFAULT -> {
+
                 //不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
-                goApi()
+                formNetworkValue()
             }
             cache?.cacheMode == CacheMode.FIRST_NET -> {
                 //先请求网络，请求网络失败后再加载缓存
                 try {
-                    goApi()
+                    formNetworkValue()
                 } catch (e: Exception) {
                     withContext(Dispatchers.IO) {
                         kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
                             "use cache key = ${cache.cacheKey} \n,value = $it ".logd()
                         }
-                    } ?: throw e
+                    } ?: throw ApiException.handleException(e)
                 }
             }
             cache?.cacheMode == CacheMode.FIRST_CACHE -> {
@@ -124,14 +127,14 @@ object KCHttpV2 {
                             "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
                         }
                 } ?: kotlin.run {
-                    goApi().also {
+                    formNetworkValue().also {
                         saveCache(cache, it)
                     }
                 }
             }
             cache?.cacheMode == CacheMode.ONLY_NET -> {
                 //仅加载网络，但数据依然会被缓存
-                goApi().also {
+                formNetworkValue().also {
                     saveCache(cache, it)
                 }
             }
@@ -141,7 +144,7 @@ object KCHttpV2 {
                     kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
                         "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
                     }
-                } ?: throw NullPointerException("cacheKey = '${cache.cacheKey}' no cache")
+                } ?: throw CacheException(OK_CACHE_EXCEPTION,"cacheKey = '${cache.cacheKey}' no cache")
             }
             cache?.cacheMode == CacheMode.CACHE_NET_DISTINCT -> {
                 /* 先使用缓存，不管是否存在，仍然请求网络，会先把缓存回调给你，
@@ -150,17 +153,17 @@ object KCHttpV2 {
                 val cacheInfo = withContext(Dispatchers.IO) {
                     kcCache.load(cache.cacheKey, cache.cacheTime)
                 }
-                val apiInfo = goApi().also {
-                    saveCache(cache, it)
-                }
-                if (cacheInfo == apiInfo) {
+                val apiInfo = formNetworkValue()
+
+                if (cacheInfo != apiInfo) {
+                    saveCache(cache, apiInfo)
                     apiInfo
                 } else {
-                    throw error("数据是一样,无需修改")
+                    throw CacheException(OK_CACHE_EXCEPTION,"the same data,so not update")
                 }
             }
             else -> {
-                goApi().also {
+                formNetworkValue().also {
                     saveCache(cache, it)
                 }
             }
@@ -176,21 +179,21 @@ object KCHttpV2 {
         onSuccess: download_success = { }
     ) {
         flow {
-            val body = apiService.downloadFile(url)
             try {
+                val body = apiService.downloadFile(url)
                 val contentLength = body.contentLength()
-                val ios = body.byteStream()
+                val inputStream = body.byteStream()
                 val file = File(outputFile)
-                val ops = FileOutputStream(file)
+                val outputStream = FileOutputStream(file)
                 var currentLength = 0
                 val bufferSize = 1024 * 8
                 val buffer = ByteArray(bufferSize)
-                val bufferedInputStream = BufferedInputStream(ios, bufferSize)
+                val bufferedInputStream = BufferedInputStream(inputStream, bufferSize)
                 var readLength: Int
                 while (bufferedInputStream.read(buffer, 0, bufferSize)
                         .also { readLength = it } != -1
                 ) {
-                    ops.write(buffer, 0, readLength)
+                    outputStream.write(buffer, 0, readLength)
                     currentLength += readLength
                     emit(
                         HttpResult.progress(
@@ -201,8 +204,8 @@ object KCHttpV2 {
                     )
                 }
                 bufferedInputStream.close()
-                ops.close()
-                ios.close()
+                outputStream.close()
+                inputStream.close()
                 emit(HttpResult.success(file))
             } catch (e: Exception) {
                 emit(HttpResult.failure<File>(ApiException.handleException(e)))

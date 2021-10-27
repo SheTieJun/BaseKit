@@ -35,11 +35,10 @@ val String?.toColor: Int?
 
 //region Json相关
 
-
-fun highString(description: String, highStrings: List<String>?): Spanned {
+fun highString(description: String, highStrings: List<String>?,color:String="#FFBB22"): Spanned {
     var replaceString = description
     highStrings?.forEach { highString ->
-        replaceString = replaceString.replace(highString, "<font color=\"#FFBB22\">$highString</font>")
+        replaceString = replaceString.replace(highString, "<font color=\"$color\">$highString</font>")
     }
     return HtmlCompat.fromHtml(replaceString, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }
