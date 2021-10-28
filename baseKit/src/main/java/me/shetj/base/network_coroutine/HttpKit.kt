@@ -14,12 +14,12 @@ import retrofit2.Retrofit
 object HttpKit {
 
     fun getOkHttpClientBuilder(): OkHttpClient.Builder {
-        return KoinJavaComponent.get(OkHttpClient::class.java)
+        return KoinJavaComponent.get(OkHttpClient.Builder::class.java)
     }
 
     //对外暴露 Retrofit,方便自定义
     fun getRetrofitBuilder(): Retrofit.Builder {
-        return KoinJavaComponent.get(OkHttpClient::class.java)
+        return KoinJavaComponent.get(Retrofit.Builder::class.java)
     }
 
     fun getOkHttpClient(): OkHttpClient {

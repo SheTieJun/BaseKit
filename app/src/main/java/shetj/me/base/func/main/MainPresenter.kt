@@ -2,10 +2,12 @@ package shetj.me.base.func.main
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.MutableLiveData
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.mvp.BasePresenter
 import me.shetj.base.mvp.IView
 import me.shetj.base.network.callBack.SimpleNetCallBack
+import me.shetj.base.network_coroutine.HttpResult
 import me.shetj.base.tools.time.CalendarReminderUtils
 import me.shetj.base.tools.time.DateUtils
 import org.koin.java.KoinJavaComponent.get
@@ -20,6 +22,7 @@ import shetj.me.base.bean.ResultMusic
  * **@describe**<br></br>
  */
 class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
+    val liveDate = MutableLiveData<HttpResult<ResultMusic>>()
 
     fun getNightModel(): Int {
         //android:forceDarkAllowed="true"
@@ -43,8 +46,8 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
     }
 
 
-    suspend fun getMusicV2(): ResultMusic? {
-        return model.getMusicV2()
+    suspend fun getMusicV2()  {
+        liveDate.postValue(model.getMusicV2())
     }
 
     fun <T> getMusicByRxHttp(simpleNetCallBack: SimpleNetCallBack<T>) {

@@ -1,18 +1,17 @@
 package me.shetj.base.network_coroutine
 
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import me.shetj.base.ktx.logd
 import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
+import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
 import me.shetj.base.network.exception.CacheException
 import me.shetj.base.network.kt.createJson
 import me.shetj.base.network_coroutine.cache.CacheMode
-import me.shetj.base.network_coroutine.cache.CacheOption
 import me.shetj.base.network_coroutine.cache.KCCache
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
@@ -35,11 +34,15 @@ object KCHttpV2 {
     suspend inline fun <reified T> get(
         url: String,
         maps: Map<String, String>? = HashMap(),
-        noinline cacheOption: (CacheOption.() -> Unit)? = null
+        noinline option: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            getDataFromApiOrCache(cacheOption) {
-                apiService.get(url, maps).string()
+            withContext(Dispatchers.IO) {
+                getDataFromApiOrCache(option) { timeout, repeatNum ->
+                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
+                        apiService.get(url, maps).string()
+                    }
+                }
             }
         }
     }
@@ -48,11 +51,15 @@ object KCHttpV2 {
     suspend inline fun <reified T> post(
         url: String,
         maps: Map<String, String>? = HashMap(),
-        noinline cacheOption: (CacheOption.() -> Unit)? = null
+        noinline option: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            getDataFromApiOrCache(cacheOption) {
-                apiService.post(url, maps).string()
+            withContext(Dispatchers.IO) {
+                getDataFromApiOrCache(option) { timeout, repeatNum ->
+                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
+                        apiService.post(url, maps).string()
+                    }
+                }
             }
         }
     }
@@ -61,11 +68,15 @@ object KCHttpV2 {
     suspend inline fun <reified T> postJson(
         url: String,
         json: String,
-        noinline cacheOption: (CacheOption.() -> Unit)? = null
+        noinline option: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            getDataFromApiOrCache(cacheOption) {
-                apiService.postJson(url, json.createJson()).string()
+            withContext(Dispatchers.IO) {
+                getDataFromApiOrCache(option) { timeout, repeatNum ->
+                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
+                        apiService.postJson(url, json.createJson()).string()
+                    }
+                }
             }
         }
     }
@@ -74,11 +85,15 @@ object KCHttpV2 {
     suspend inline fun <reified T> postBody(
         url: String,
         body: Any,
-        noinline cacheOption: (CacheOption.() -> Unit)? = null
+        noinline option: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            getDataFromApiOrCache(cacheOption) {
-                apiService.postBody(url, body).string()
+            withContext(Dispatchers.IO) {
+                getDataFromApiOrCache(option) { timeout, repeatNum ->
+                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
+                        apiService.postBody(url, body).string()
+                    }
+                }
             }
         }
     }
@@ -87,30 +102,37 @@ object KCHttpV2 {
     suspend inline fun <reified T> postBody(
         url: String,
         body: RequestBody,
-        noinline cacheOption: (CacheOption.() -> Unit)? = null
+        noinline cacheOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            getDataFromApiOrCache(cacheOption) {
-                apiService.postBody(url, body).string()
+            withContext(Dispatchers.IO) {
+                getDataFromApiOrCache(cacheOption) { timeout, repeatNum ->
+                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
+                        apiService.postBody(url, body).string()
+                    }
+                }
             }
         }
     }
 
     suspend inline fun <reified T> getDataFromApiOrCache(
-        noinline cacheOption: (CacheOption.() -> Unit)?,
-        crossinline formNetworkValue: suspend () -> String
+        noinline cacheOption: (RequestOption.() -> Unit)?,
+        crossinline formNetworkValue: suspend (timeout: Long, repeatNum: Int) -> String
     ): T {
-        val cache = cacheOption?.let { CacheOption().apply(cacheOption) }
-        return when {
-            cache?.cacheMode == CacheMode.DEFAULT -> {
+        val cache = cacheOption?.let { RequestOption().apply(cacheOption) }
+        val timeout = cache?.timeout ?: -1
+        val repeatNum = cache?.repeatNum ?: 1
+
+        return when (cache?.cacheMode) {
+            CacheMode.DEFAULT -> {
 
                 //不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
-                formNetworkValue()
+                formNetworkValue(timeout, repeatNum)
             }
-            cache?.cacheMode == CacheMode.FIRST_NET -> {
+            CacheMode.FIRST_NET -> {
                 //先请求网络，请求网络失败后再加载缓存
                 try {
-                    formNetworkValue()
+                    formNetworkValue(timeout, repeatNum)
                 } catch (e: Exception) {
                     withContext(Dispatchers.IO) {
                         kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
@@ -119,7 +141,7 @@ object KCHttpV2 {
                     } ?: throw ApiException.handleException(e)
                 }
             }
-            cache?.cacheMode == CacheMode.FIRST_CACHE -> {
+            CacheMode.FIRST_CACHE -> {
                 // 先加载缓存，缓存没有再去请求网络
                 withContext(Dispatchers.IO) {
                     kcCache.load(cache.cacheKey, cache.cacheTime)
@@ -127,43 +149,46 @@ object KCHttpV2 {
                             "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
                         }
                 } ?: kotlin.run {
-                    formNetworkValue().also {
+                    formNetworkValue(timeout, repeatNum).also {
                         saveCache(cache, it)
                     }
                 }
             }
-            cache?.cacheMode == CacheMode.ONLY_NET -> {
+            CacheMode.ONLY_NET -> {
                 //仅加载网络，但数据依然会被缓存
-                formNetworkValue().also {
+                formNetworkValue(timeout, repeatNum).also {
                     saveCache(cache, it)
                 }
             }
-            cache?.cacheMode == CacheMode.ONLY_CACHE -> {
+            CacheMode.ONLY_CACHE -> {
                 //只读取缓存
                 withContext(Dispatchers.IO) {
                     kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
                         "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
                     }
-                } ?: throw CacheException(OK_CACHE_EXCEPTION,"cacheKey = '${cache.cacheKey}' no cache")
+                } ?: throw CacheException(
+                    OK_CACHE_EXCEPTION,
+                    "cacheKey = '${cache.cacheKey}' no cache"
+                )
             }
-            cache?.cacheMode == CacheMode.CACHE_NET_DISTINCT -> {
+            CacheMode.CACHE_NET_DISTINCT -> {
                 /* 先使用缓存，不管是否存在，仍然请求网络，会先把缓存回调给你，
-                 * 络请求回来发现数据是一样的就不会再返回，否则再返回
-                 */
+                     * 络请求回来发现数据是一样的就不会再返回，否则再返回
+                     */
                 val cacheInfo = withContext(Dispatchers.IO) {
                     kcCache.load(cache.cacheKey, cache.cacheTime)
                 }
-                val apiInfo = formNetworkValue()
+                val apiInfo = formNetworkValue(timeout, repeatNum)
 
                 if (cacheInfo != apiInfo) {
                     saveCache(cache, apiInfo)
                     apiInfo
                 } else {
-                    throw CacheException(OK_CACHE_EXCEPTION,"the same data,so not update")
+                    throw CacheException(OK_CACHE_EXCEPTION, "the same data,so not update")
                 }
             }
             else -> {
-                formNetworkValue().also {
+                formNetworkValue(timeout, repeatNum).also {
                     saveCache(cache, it)
                 }
             }
@@ -222,7 +247,7 @@ object KCHttpV2 {
             }
     }
 
-    suspend fun saveCache(cache: CacheOption?, data: String) {
+    suspend fun saveCache(cache: RequestOption?, data: String) {
         if (!cache?.cacheKey.isNullOrBlank()) {
             withContext(Dispatchers.IO) {
                 kcCache.save(cache?.cacheKey, data)
@@ -234,5 +259,54 @@ object KCHttpV2 {
         this.toBean()!!
     } else {
         this as T
+    }
+
+    /**
+     * 重试逻辑
+     */
+    suspend fun retryRequest(
+        repeatNum: Int = 3,
+        initialDelay: Long = 1000,
+        timeout: Long = 10000,
+        factor: Double = 2.0,
+        block: suspend () -> String
+    ): String {
+        if (repeatNum <= 0) return block()
+        var currentDelay = initialDelay
+        repeat(repeatNum - 1) {
+            try {
+                return requestWithTimeout(timeout, block)
+            } catch (e: Exception) {
+                delay(currentDelay)
+                currentDelay = (currentDelay * factor).toLong().coerceAtMost(timeout)
+            }
+        }
+        try {
+            return requestWithTimeout(timeout, block)
+        } catch (e: Exception) {
+            if (e is TimeoutCancellationException) {
+                throw ApiException(e, TIMEOUT_ERROR).apply {
+                    this.setDisplayMessage(" Timeout Cancel, Timeout $timeout, maybe has more time ")
+                }
+            } else {
+                throw ApiException.handleException(e)
+            }
+        }
+    }
+
+    /**
+     * 自定义超时处理
+     */
+    private suspend fun requestWithTimeout(
+        timeout: Long,
+        block: suspend () -> String
+    ): String {
+        return if (timeout <= 0L) {
+            block()
+        } else {
+            withTimeout(timeout) {
+                block()
+            }
+        }
     }
 }

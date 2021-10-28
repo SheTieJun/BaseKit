@@ -22,6 +22,7 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
     fun setDisplayMessage(msg: String) {
         displayMessage = "$msg(code:$code)"
     }
+
     /**
      * 约定异常
      */
@@ -126,16 +127,17 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                 ex = ApiException(e, e.errCode)
                 ex.message = e.message!!
                 ex
-            }else if (e is CacheException) {
+            } else if (e is CacheException) {
                 ex = ApiException(e, ERROR.OK_CACHE_EXCEPTION)
-                ex.message = "缓存处理异常："+e.message!!
+                ex.message = "缓存处理异常：" + e.message!!
                 ex
             } else if (e is JsonParseException
-                    || e is JSONException
-                    || e is JsonSyntaxException
-                    || e is JsonSerializer<*>
-                    || e is NotSerializableException
-                    || e is ParseException) {
+                || e is JSONException
+                || e is JsonSyntaxException
+                || e is JsonSerializer<*>
+                || e is NotSerializableException
+                || e is ParseException
+            ) {
                 ex = ApiException(e, ERROR.PARSE_ERROR)
                 ex.message = "解析错误"
                 ex
@@ -163,6 +165,8 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                 ex = ApiException(e, ERROR.NULLPOINTER_EXCEPTION)
                 ex.message = "NullPointerException"
                 ex
+            } else if (e is ApiException) {
+                return e
             } else {
                 ex = ApiException(e, ERROR.UNKNOWN)
                 ex.message = "未知错误:${e.message}"

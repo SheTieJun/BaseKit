@@ -10,11 +10,11 @@ import me.shetj.base.ktx.getClazz
 
 
 /**
- * 基础类  view 层
+ * 基础类  view 层,只有binding
  * @author shetj
  */
 @Keep
-abstract class AbBindingBaseActivity<VB:ViewBinding>: AbBaseActivity() , LifecycleObserver {
+abstract class AbBindingActivity<VB:ViewBinding>: AbBaseActivity() , LifecycleObserver {
 
 
     private val lazyViewBinding = lazy { initViewBinding() }
@@ -27,7 +27,7 @@ abstract class AbBindingBaseActivity<VB:ViewBinding>: AbBaseActivity() , Lifecyc
 
     @Suppress("UNCHECKED_CAST")
     open fun initViewBinding(): VB {
-        return getClazz<VB>(this, 1).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
+        return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
     }
 
 

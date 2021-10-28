@@ -19,7 +19,9 @@ import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.network.model.ApiResult
+import me.shetj.base.network_coroutine.HttpKit
 import me.shetj.base.network_coroutine.KCHttpV2
+import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
@@ -142,7 +144,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
         }
 
         mViewBinding.content.btnTestNet.setOnClickListener {
-            RxHttp.getInstance().debug(true)
+            HttpKit.debugHttp(true)
             mPresenter.getMusicByRxHttp(object :
                 SimpleNetCallBack<List<MusicBean>>(this) {
                 override fun onSuccess(data: List<MusicBean>) {
@@ -155,6 +157,14 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
                     Timber.e(e)
                 }
             })
+        }
+        mPresenter.liveDate.observeChange(this){
+            onSuccess = {
+                Timber.tag("getMusic").i(this.toJson())
+            }
+            onFailure = {
+                Timber.tag("getMusic").e(this)
+            }
         }
     }
 
@@ -171,9 +181,8 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     }
 
     suspend fun netTest() {
-        RxHttp.getInstance().debug(false)
-        val music = mPresenter.getMusicV2()
-        Timber.tag("getMusic").i(music.toJson())
+//        HttpKit.debugHttp(false)
+        mPresenter.getMusicV2()
     }
 
     public override fun initData() {

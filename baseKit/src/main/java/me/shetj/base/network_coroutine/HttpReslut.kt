@@ -226,7 +226,7 @@ fun <T> LiveData<HttpResult<T>>.observeChange(owner: LifecycleOwner,block: HttpR
        HttpResultCallBack<T>().apply(block).let { callBack ->
            this.observe(owner){
                  when {
-                   it.isFailure -> {
+                   it.isSuccess -> {
                        callBack.onSuccess?.invoke(it.getOrNull())
                    }
                    it.isLoading -> {
