@@ -9,7 +9,6 @@ import timber.log.Timber
 import java.util.*
 import kotlin.random.Random
 
-//region 转化成message
 @JvmOverloads
 fun Any?.toMessage(code: Int = 1): Message {
     return Message.obtain().apply {
@@ -25,17 +24,6 @@ inline fun <reified T> Bundle?.getDataOrNull(key: String): T? {
     return this?.getSerializable(key) as? T
 }
 
-//endregion 转化成message
-
-
-inline fun <T,R> T.runCatch(crossinline run: T.() -> R):R? {
-   return try {
-        run()
-    } catch (e: Exception) {
-        e.printStackTrace()
-       null
-    }
-}
 
 /**
  * 执行代码，并获取执行需要的时间
@@ -56,7 +44,7 @@ fun Int.unitFormat(): String {
 /**
  * 16进制 255 以内
  */
-fun intToHStr(@IntRange(from = 0,to = 255) x: Int): String {
+fun intToHStr(@IntRange(from = 0, to = 255) x: Int): String {
     return if (x > 15) {
         Integer.toHexString(x)
     } else {
@@ -65,7 +53,7 @@ fun intToHStr(@IntRange(from = 0,to = 255) x: Int): String {
 }
 
 val Float.dp2px
-    get()= ArmsUtils.dp2px(this)
+    get() = ArmsUtils.dp2px(this)
 
 val Float.px2dp
     get() = ArmsUtils.px2dp(this)

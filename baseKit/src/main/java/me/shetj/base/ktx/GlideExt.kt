@@ -136,11 +136,6 @@ fun AppCompatActivity.saveImage(shareCardUrl: String) {
     }
 }
 
-/**
- * @author chunsheng
- * @date 2021/6/4
- * 保存分销邀请卡
- */
 suspend fun saveImage(
     context: Context,
     shareCardUrl: String,

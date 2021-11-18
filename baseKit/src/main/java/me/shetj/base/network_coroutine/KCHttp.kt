@@ -1,27 +1,11 @@
 package me.shetj.base.network_coroutine
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import me.shetj.base.network.exception.ApiException
-import me.shetj.base.network.exception.ServerException
-import me.shetj.base.network.func.ApiResultFunc
-import me.shetj.base.network.kt.createJson
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import org.koin.java.KoinJavaComponent.get
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.FileOutputStream
 
 
 //endregion
 
-/**
- * 协程 Http请求
- * 感觉可能用的不错，所以就只写这几个方法了
- */
 @Deprecated("use KCHttpV2 instead of", replaceWith = ReplaceWith("KCHttpV2"))
 object KCHttp {
 

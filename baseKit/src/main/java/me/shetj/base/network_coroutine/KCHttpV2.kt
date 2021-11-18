@@ -22,7 +22,7 @@ import java.io.FileOutputStream
 
 /**
  * 协程 Http请求
- * 感觉可能用的不错，所以就只写这几个方法了
+ * 感觉可能用的不多，所以就只写这几个方法了
  */
 object KCHttpV2 {
 

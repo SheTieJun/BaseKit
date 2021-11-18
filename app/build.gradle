@@ -147,6 +147,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation project(':baseKit')
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
+    //使用AS 自带得就可以了
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-2'
 //    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
 //    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
@@ -177,6 +179,8 @@ dependencies {
     implementation "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
 
 //    debugImplementation 'com.glance.guolindev:glance:1.0.0' //debug 情况下查看数据库
+
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
 }
 
 //apply from: file("dokit-config.gradle")

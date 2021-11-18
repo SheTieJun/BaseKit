@@ -44,7 +44,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
         }, onSuccess = {
             setForeground(createForegroundInfo("download ok"))
         },onError = {
-            it?.printStackTrace()
+            it.message.logi()
         })
     }
     private fun createForegroundInfo(progress: String): ForegroundInfo {

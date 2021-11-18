@@ -4,6 +4,7 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
+                groupId "com.github.SheTieJun"
                 from components.release
                 artifactId = 'BaseKit'
                 version = '1.0.0'

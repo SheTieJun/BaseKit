@@ -6,47 +6,49 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.lifecycleScope
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.*
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseBindingActivity
-import me.shetj.base.network.RxHttp
 import me.shetj.base.network.callBack.SimpleNetCallBack
-import me.shetj.base.network.model.ApiResult
 import me.shetj.base.network_coroutine.HttpKit
-import me.shetj.base.network_coroutine.KCHttpV2
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
-import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.image.ImageCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
-import shetj.me.base.api.BApi
 import shetj.me.base.bean.MusicBean
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import timber.log.Timber
 import java.util.*
-import kotlin.collections.HashMap
 
 class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     private lateinit var mContent: ContentMainBinding
     private var codeUtil: CodeUtil? = null
-
+    private var isKeep = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().also {
+            it.setKeepVisibleCondition{
+                return@setKeepVisibleCondition isKeep
+            }
+        }
+        launch {
+            delay(3000)
+            isKeep = false
+        }
         mContent = mViewBinding.content
+
     }
 
     public override fun initView() {
