@@ -1,9 +1,6 @@
 package me.shetj.base.di
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import me.shetj.base.S
-import me.shetj.base.ktx.saverDB
 import me.shetj.base.network.RxHttp.Companion.DEFAULT_MILLISECONDS
 import me.shetj.base.network_coroutine.cache.LruDiskCache
 import me.shetj.base.network.https.HttpsUtils
@@ -86,21 +83,4 @@ val dbModule = module {
     }
 
 
-    single {
-        Pager(PagingConfig(
-                // 每页显示的数据的大小。对应 PagingSource 里 LoadParams.loadSize
-                pageSize = 10,
-
-                // 预刷新的距离，距离最后一个 item 多远时加载数据
-                prefetchDistance = 3,
-
-                // 初始化加载数量，默认为 pageSize * 3
-                initialLoadSize = 30,
-                // 一次应在内存中保存的最大数据
-                maxSize = 200
-        )
-        ) {
-            saverDB.searchSaver()
-        }
-    }
 }

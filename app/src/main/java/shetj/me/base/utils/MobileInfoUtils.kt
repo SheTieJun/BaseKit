@@ -43,7 +43,7 @@ object MobileInfoUtils {
             Log.e("HLQ_Struggle", "******************当前手机型号为：$mobileType")
             var componentName: ComponentName? = null
             val brand = android.os.Build.BRAND
-            when (brand.toLowerCase()) {
+            when (brand.lowercase()) {
                 "samsung" -> componentName = ComponentName("com.samsung.android.sm",
                         "com.samsung.android.sm.app.dashboard.SmartManagerDashBoardActivity")
                 "huawei" -> componentName = ComponentName("com.huawei.systemmanager",

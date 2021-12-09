@@ -327,7 +327,7 @@ suspend fun Context.getMediaScanner(): MediaScannerConnection = withContext(Disp
                 }
 
                 override fun onScanCompleted(path: String?, uri: Uri?) {
-                    it.cancel()
+
                 }
             })
         mMediaScanner.connect()

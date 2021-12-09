@@ -87,7 +87,7 @@ abstract class BaseFloatView : FrameLayout {
         setOnClickListener(onClickListener)
         var oldX = 0f
         var oldY = 0f
-        setOnTouchListener { v, event ->
+        setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     oldX = event.rawX

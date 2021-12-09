@@ -1,10 +1,8 @@
 package me.shetj.base.tools.app
 
-import android.content.Context
 import android.graphics.Rect
-import android.view.View
 import android.view.Window
-import android.view.inputmethod.InputMethodManager
+import androidx.core.view.ViewCompat
 
 /**
  * 只能用来判断关闭键盘
@@ -64,24 +62,5 @@ class SoftInputUtil {
 
     fun dismiss() {
         isSoftInputShowing = false
-    }
-
-    companion object {
-
-        fun showSoftInput(view: View?) {
-            if (view == null) return
-            (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.showSoftInput(
-                view,
-                0
-            )
-        }
-
-        fun hideSoftInput(view: View?) {
-            if (view == null) return
-            (view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(
-                view.windowToken,
-                0
-            )
-        }
     }
 }

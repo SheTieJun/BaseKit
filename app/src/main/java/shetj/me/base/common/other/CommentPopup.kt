@@ -1,11 +1,8 @@
 package shetj.me.base.common.other
 
 
-import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -13,36 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import me.shetj.base.tools.app.ArmsUtils
-import me.shetj.base.tools.app.BarUtils
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.SoftInputUtil
 import shetj.me.base.R
-import java.util.concurrent.atomic.AtomicBoolean
 
 
 class CommentPopup : BottomSheetDialogFragment() {
 
     private var root: View? = null
-    private val handler = Handler(Looper.getMainLooper()) {
-        editContent?.let { it1 -> KeyboardUtil.requestFocusEdit(it1) }
-        root?.apply {
-            layoutParams = FrameLayout.LayoutParams(
-                ArmsUtils.getScreenWidth(),
-                ArmsUtils.getScreenHeight() - BarUtils.getStatusBarHeight(context)
-            )
-        }
-        false
-    }
 
     private var editContent: EditText? = null
     private var tvSend: View? = null
-    private val lock = AtomicBoolean(false) //用来防止连续的点击
     private val softInputUtil by lazy { SoftInputUtil() }
 
 
@@ -65,14 +45,14 @@ class CommentPopup : BottomSheetDialogFragment() {
         })
         tvSend = rootView.findViewById<View>(R.id.tv_send)?.apply {
             setOnClickListener {
-                KeyboardUtil.hideSoftInputMethod(editContent)
+                KeyboardUtil.hideSoftKeyboard(requireActivity())
                 dismissAllowingStateLoss()
             }
         }
 
         root = rootView.findViewById<View>(R.id.root).apply {
             setOnClickListener {
-                KeyboardUtil.hideSoftInputMethod(editContent)
+                KeyboardUtil.hideSoftKeyboard(requireActivity())
                 dismissAllowingStateLoss()
             }
         }
@@ -86,9 +66,9 @@ class CommentPopup : BottomSheetDialogFragment() {
         })
 
         dialog?.setOnShowListener {
-            editContent?.let {
-                handler.sendEmptyMessageDelayed(0, 100)
-            }
+            editContent?.postDelayed( {
+                KeyboardUtil.focusEditShowKeyBoard(editContent!!)
+            },50)
         }
         return rootView
     }
@@ -105,9 +85,7 @@ class CommentPopup : BottomSheetDialogFragment() {
 
     companion object {
         fun newInstance(): CommentPopup {
-            return CommentPopup().apply {
-                isCancelable = false
-            }
+            return CommentPopup()
         }
     }
 }

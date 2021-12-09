@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.delay
@@ -19,12 +18,16 @@ import me.shetj.base.network_coroutine.HttpKit
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
+import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
+import me.shetj.base.tools.app.KeyboardUtil
+import me.shetj.base.tools.app.KeyboardUtil.Companion.showSoftKeyboard
 import me.shetj.base.tools.image.ImageCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
 import shetj.me.base.bean.MusicBean
+import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
@@ -38,20 +41,13 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen().also {
-            it.setKeepVisibleCondition{
-                return@setKeepVisibleCondition isKeep
-            }
-        }
-        launch {
-            delay(3000)
-            isKeep = false
-        }
+        KeyboardUtil.init(this)
         mContent = mViewBinding.content
-
     }
 
     public override fun initView() {
+
+        ArmsUtils.statuInScreen2(this,true)
 
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
@@ -88,6 +84,12 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
         findViewById<View>(R.id.fab).setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(mPresenter.getNightModel())
         }
+
+        //btn_test_keybord
+        mContent.btnTestKeybord.setOnClickListener {
+            CommentPopup.newInstance().show(supportFragmentManager)
+        }
+
 
         mContent.btnInsert.setOnClickListener {
             saverCreate(key = "测试key", value = "测试value").apply {
@@ -130,6 +132,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
                     .i("hasNet = ${it.hasNet},netType = PHONE")
                 NetWorkLiveDate.NetType.WIFI -> Timber.tag("requestNetWork")
                     .i("hasNet = ${it.hasNet},netType = WIFI")
+                else -> {}
             }
         })
 
@@ -183,7 +186,6 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     }
 
     suspend fun netTest() {
-//        HttpKit.debugHttp(false)
         mPresenter.getMusicV2()
     }
 

@@ -179,8 +179,7 @@ dependencies {
     implementation "com.github.SheTieJun.QMUI_Android:qmui:$qmuiVersion_shetj"
 
 //    debugImplementation 'com.glance.guolindev:glance:1.0.0' //debug 情况下查看数据库
-
-    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+//    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
 }
 
 //apply from: file("dokit-config.gradle")

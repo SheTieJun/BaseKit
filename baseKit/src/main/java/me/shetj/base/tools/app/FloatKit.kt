@@ -55,6 +55,7 @@ object FloatKit {
             }
         } else {
             if (!checkOp(this, OP_SYSTEM_ALERT_WINDOW)) {
+                Timber.e("need add permission")
                 return false
             }
         }

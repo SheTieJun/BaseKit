@@ -1,11 +1,19 @@
 package shetj.me.base.test
 
+import androidx.core.text.buildSpannedString
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import me.shetj.base.base.UIState
+import me.shetj.base.ktx.isTrue
+import me.shetj.base.ktx.renderType
+import kotlin.reflect.typeOf
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 
 class TestKotlin {
@@ -34,6 +42,10 @@ class TestKotlin {
 
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
+            liveDataA.addSource(liveDataB1) {
+                liveDataA.postValue(liveDataB1.isTrue()|| liveDataB2.isTrue() )
+            }
+
 
             //
             _uiState.shareIn(
@@ -47,6 +59,45 @@ class TestKotlin {
             _testStatus.resetReplayCache()//清空前面的值 ,供您在不想重放已向数据流发送的最新信息
 
 
+        }
+
+        /**
+        *@[测试]
+        */
+        fun testBuild(){
+
+            //1.6.0
+            buildList<String> {
+
+            }
+
+            buildMap<String,String> {
+
+            }
+
+            buildSet<String> {
+
+            }
+            //end 1.6.0
+
+            buildString {
+
+            }
+
+            buildSpannedString {
+
+            }
+
+            5000.toDuration(DurationUnit.SECONDS).toDouble(DurationUnit.HOURS)
+
+
+        }
+
+
+        @ExperimentalStdlibApi
+        fun typeofTest(){
+           val string =  renderType<String>()
+            print(string)
         }
     }
 

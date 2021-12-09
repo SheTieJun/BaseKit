@@ -3,18 +3,19 @@ package me.shetj.base.tools.app
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
-import android.os.Build
-import android.os.IBinder
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.Keep
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 
 @Keep
@@ -64,11 +65,14 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
         }
     }
 
-    private fun dispatchTouchEvent(mActivity: Activity, ev: MotionEvent): Boolean {
+    private fun dispatchTouchEvent(activity: Activity, ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
-            val v = mActivity.currentFocus
+            val v = activity.currentFocus
             if (null != v && isShouldHideInput(v, ev)) {
-                hideSoftInput(mActivity, v.windowToken)
+                hideSoftKeyboard(activity)
+            }
+            if (null == v){
+                hideSoftKeyboard(activity)
             }
         }
         return false
@@ -86,17 +90,6 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
             return !rect.contains(event.x.toInt(), event.y.toInt())
         }
         return true
-    }
-
-    /**
-     * @param mActivity
-     * @param token
-     */
-    private fun hideSoftInput(mActivity: Activity, token: IBinder?) {
-        if (token != null) {
-            val im = mActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS)
-        }
     }
 
     companion object {
@@ -128,19 +121,23 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
          */
         @JvmStatic
         fun hideSoftKeyboard(activity: Activity) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                activity.window.insetsController?.hide(WindowInsets.Type.ime())
-            }else{
-                val view = activity.currentFocus
-                if (null != view) {
-                    val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputMethodManager.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-                }
-            }
+            activity.window.hideSoftKeyboard()
         }
 
         @JvmStatic
-        fun requestFocusEdit(editText: EditText) {
+        fun showSoftKeyboard(activity: Activity) {
+            activity.window.showSoftKeyboard()
+        }
+
+        /**
+         * ViewCompat.setOnApplyWindowInsetsListener(bottomButton) { view, insets ->
+         *      val sysWindow = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime())
+         *      view.translationY = -sysWindow.bottom.toFloat()
+         *      insets
+         * }
+         */
+        @JvmStatic
+        fun focusEditShowKeyBoard(editText: EditText) {
             editText.isEnabled = true
             editText.isFocusable = true
             editText.isFocusableInTouchMode = true
@@ -152,21 +149,34 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
 
 
         @JvmStatic
-        fun hideSoftInputMethod(editText: EditText?) {
-            editText?.apply {
-                val inputManager  =  editText.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputManager.hideSoftInputFromWindow(editText.applicationWindowToken, 0)
-                editText.clearFocus()
+        fun isShowSoftKeyBoard(activity: Activity, isShow: Boolean = true) {
+            if (isShow) {
+                showSoftKeyboard(activity)
+            } else {
+                hideSoftKeyboard(activity)
             }
+        }
+
+
+        @JvmStatic
+        fun Window.showSoftKeyboard() {
+            ViewCompat.getWindowInsetsController(decorView)
+                ?.show(WindowInsetsCompat.Type.ime())
+        }
+
+        @JvmStatic
+        fun Window.hideSoftKeyboard() {
+            ViewCompat.getWindowInsetsController(decorView)
+                ?.hide(WindowInsetsCompat.Type.ime())
         }
 
         /**
          * 隐藏和显示切换
          */
         @JvmStatic
-        fun changeKeyBoard(activity: Activity){
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        fun isVisibleKeyBoard(window: Window): Boolean? {
+            val insets = ViewCompat.getRootWindowInsets(window.decorView)
+            return insets?.isVisible(WindowInsetsCompat.Type.ime())
         }
     }
 }

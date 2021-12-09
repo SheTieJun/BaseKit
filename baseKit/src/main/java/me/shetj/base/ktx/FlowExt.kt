@@ -44,11 +44,11 @@ internal fun <T> Flow<T>.throttleLatestImpl(periodMillis: Long): Flow<T> {
                 timer?.scheduleAtFixedRate(
                     object : TimerTask() {
                         override fun run() {
-                            val value = lastValue
+                            val valueN = lastValue
                             lastValue = null
-                            if (value != null) {
+                            if (valueN != null) {
                                 launch {
-                                    send(value as T)
+                                    send(valueN as T)
                                 }
                             } else {
                                 timer?.cancel()

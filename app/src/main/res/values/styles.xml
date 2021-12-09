@@ -27,16 +27,16 @@
     </style>
 
 
-    <style name="Theme.AppSplashScreen" parent="Theme.SplashScreen.IconBackground">
-<!--        设置背景颜色-->
-        <item name="windowSplashScreenBackground">@color/purple_200</item>
-<!--        设置显示在屏幕中间的图标， 如果是通过-->
-<!--        AnimationDrawable 和 AnimatedVectorDrawable 创建的对象，可呈现动画效果，则会在页面显示的时候，播放动画-->
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+<!--    <style name="Theme.AppSplashScreen" parent="Theme.SplashScreen.IconBackground">-->
+<!--&lt;!&ndash;        设置背景颜色&ndash;&gt;-->
+<!--        <item name="windowSplashScreenBackground">@color/purple_200</item>-->
+<!--&lt;!&ndash;        设置显示在屏幕中间的图标， 如果是通过&ndash;&gt;-->
+<!--&lt;!&ndash;        AnimationDrawable 和 AnimatedVectorDrawable 创建的对象，可呈现动画效果，则会在页面显示的时候，播放动画&ndash;&gt;-->
+<!--        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>-->
 
-<!--        设置显示动画不可见时，使用 APP 的默认主题-->
-        <item name="postSplashScreenTheme">@style/Theme.AppTheme</item>
-    </style>
+<!--&lt;!&ndash;        设置显示动画不可见时，使用 APP 的默认主题&ndash;&gt;-->
+<!--        <item name="postSplashScreenTheme">@style/Theme.AppTheme</item>-->
+<!--    </style>-->
 
 
     <style name="Theme.AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">

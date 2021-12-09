@@ -14,7 +14,7 @@ fun EditText.asFlow(): Flow<String> {
         addTextChangedListener(beforeTextChanged =
         { _: CharSequence?, _: Int, _: Int, _: Int ->
         }, afterTextChanged = {
-            channel.offer(it.toString())
+            channel.trySend(it.toString())
 
         }, onTextChanged = { _: CharSequence?, _: Int, _: Int, _: Int ->
         })

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import me.shetj.base.R
+import java.lang.reflect.Field
 
 
 /**
@@ -25,6 +27,20 @@ fun Context.getSmoothScroller(speedTime:Float = 150f): LinearSmoothScroller {
                 speedTime / displayMetrics.densityDpi
             } ?: super.calculateSpeedPerPixel(displayMetrics)
         }
+    }
+}
+
+fun ViewPager2.fixId(){
+    try {
+        val cls = Class.forName("androidx.viewpager2.widget.ViewPager2")
+        val field: Field = cls.getDeclaredField("mRecyclerView")
+        field.isAccessible = true
+        val recyclerView = field.get(this) as RecyclerView
+        recyclerView.id = R.id.viewpager2_rv
+    } catch (e: ClassNotFoundException) {
+        e.printStackTrace()
+    }catch (e: NoSuchFieldException) {
+        e.printStackTrace()
     }
 }
 

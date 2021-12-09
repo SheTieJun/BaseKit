@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.provider.Settings
 import androidx.annotation.Keep
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.base.defScope
 import me.shetj.base.di.dbModule
 import me.shetj.base.network.RxHttp.Companion.getInstance
 import me.shetj.base.tools.app.Tim
@@ -43,10 +43,7 @@ object S {
     var isDebug = true
         private set
 
-    /**
-     * 专门用来做不被取消的操作
-     */
-    val applicationScope = GlobalScope
+
 
     /**
      * 处理为捕捉的异常
@@ -54,6 +51,12 @@ object S {
     val handler = CoroutineExceptionHandler { _, throwable ->
         Timber.tag("CoroutineException").e(throwable)
     }
+
+    /**
+     * 专门用来做不被取消的操作
+     */
+    @DelicateCoroutinesApi
+    val applicationScope = GlobalScope.coroutineContext + SupervisorJob() + handler
 
     /**
      * ANDROID_ID的生成规则为：签名+设备信息+设备用户

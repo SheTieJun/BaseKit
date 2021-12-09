@@ -9,9 +9,7 @@ import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import me.shetj.base.R
 import me.shetj.base.tools.app.KeyboardUtil
 import org.greenrobot.eventbus.EventBus
@@ -24,7 +22,7 @@ import org.greenrobot.eventbus.ThreadMode
  * @author shetj
  */
 @Keep
-abstract class AbBaseActivity: AppCompatActivity() , LifecycleObserver {
+abstract class AbBaseActivity: AppCompatActivity() , LifecycleEventObserver {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +30,18 @@ abstract class AbBaseActivity: AppCompatActivity() , LifecycleObserver {
         lifecycle.addObserver(this)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+         when(event){
+             Lifecycle.Event.ON_CREATE ->{
+                 onActivityCreate()
+             }
+             Lifecycle.Event.ON_DESTROY->{
+                 onActivityDestroy()
+             }
+         }
+    }
+
     open fun onActivityCreate() {
-        KeyboardUtil.init(this)
         if (useEventBus()) {
             //注册到事件主线
             EventBus.getDefault().register(this)
@@ -44,8 +51,6 @@ abstract class AbBaseActivity: AppCompatActivity() , LifecycleObserver {
         initData()
     }
 
-    @CallSuper
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun onActivityDestroy() {
         if (useEventBus()) {
             //如果要使用eventbus请将此方法返回true
@@ -119,7 +124,6 @@ abstract class AbBaseActivity: AppCompatActivity() , LifecycleObserver {
     }
 
     override fun onBackPressed() {
-        KeyboardUtil.hideSoftKeyboard(this)
         super.onBackPressed()
     }
 

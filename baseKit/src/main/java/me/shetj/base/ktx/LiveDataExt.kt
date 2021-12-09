@@ -98,3 +98,4 @@ fun <T> LiveData<T>.debounce(duration: Long = 1000L) = MediatorLiveData<T>().als
 }
 
 
+fun LiveData<Boolean>.isTrue() = value == true

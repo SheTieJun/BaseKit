@@ -14,21 +14,20 @@ import android.os.Build
 import android.os.Environment
 import android.os.Message
 import android.util.TypedValue
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowInsets
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
-import androidx.annotation.AttrRes
-import androidx.annotation.Keep
-import androidx.annotation.MainThread
-import androidx.annotation.NonNull
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import me.shetj.base.S
 import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
+import me.shetj.base.tools.app.ArmsUtils.Companion.statuInScreen
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.qmui.QMUINotchHelper
 import me.shetj.base.tools.qmui.QMUIStatusBarHelper
@@ -58,7 +57,7 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun checkIsNotchScreen(activity: Activity): Boolean {
-            return  QMUINotchHelper.needFixLandscapeNotchAreaFitSystemWindow(activity.window.decorView)
+            return QMUINotchHelper.needFixLandscapeNotchAreaFitSystemWindow(activity.window.decorView)
         }
 
 
@@ -109,7 +108,13 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun getDimens(context: Context, dimenName: String): Float {
-            return getResources(context).getDimension(getResources(context).getIdentifier(dimenName, "dimen", context.packageName))
+            return getResources(context).getDimension(
+                getResources(context).getIdentifier(
+                    dimenName,
+                    "dimen",
+                    context.packageName
+                )
+            )
         }
 
         /**
@@ -129,7 +134,10 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun getString(context: Context, strName: String): String {
-            return getString(context, getResources(context).getIdentifier(strName, "string", context.packageName))
+            return getString(
+                context,
+                getResources(context).getIdentifier(strName, "string", context.packageName)
+            )
         }
 
         /**
@@ -249,9 +257,12 @@ class ArmsUtils private constructor() {
          * @param
          */
         @JvmStatic
-        fun startActivity(activity: Activity, intent: Intent,userTransition:Boolean = false) {
-            if (userTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-                activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+        fun startActivity(activity: Activity, intent: Intent, userTransition: Boolean = false) {
+            if (userTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                activity.startActivity(
+                    intent,
+                    ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
+                )
             } else {
                 activity.startActivity(intent)
             }
@@ -334,7 +345,8 @@ class ArmsUtils private constructor() {
             var hash = ByteArray(0)
             try {
                 hash = MessageDigest.getInstance("MD5").digest(
-                        string.toByteArray(charset("UTF-8")))
+                    string.toByteArray(charset("UTF-8"))
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -350,41 +362,7 @@ class ArmsUtils private constructor() {
         }
 
         /**
-         * 设置透明状态栏与导航栏
-         *
-         * @param navi true不设置导航栏|false设置导航栏
-         */
-        @JvmStatic
-        fun setStatusBar(activity: Activity, navi: Boolean) {
-            //api>21,全透明状态栏和导航栏;api>19,半透明状态栏和导航栏
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val window = activity.window
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                window.statusBarColor = Color.TRANSPARENT
-                if (navi) {
-                    //状态栏不会被隐藏但activity布局会扩展到状态栏所在位置
-                    window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION//导航栏不会被隐藏但activity布局会扩展到导航栏所在位置
-
-                            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_FULLSCREEN)
-                    window.navigationBarColor = Color.TRANSPARENT
-                } else {
-                    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                }
-
-            } else {
-                if (navi) {
-                    //半透明导航栏
-                    activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-                }
-                //半透明状态栏
-                activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            }
-        }
-
-
-        /**
-         * 全屏,并且沉侵式状态栏
+         * 全屏,并且
          * @param activity
          * @param isBlack 是否是黑色的字体和icon
          */
@@ -394,16 +372,26 @@ class ArmsUtils private constructor() {
             activity.statuInScreen(isBlack)
         }
 
+        /**
+         * 沉侵式状态栏
+         */
         @JvmStatic
         @JvmOverloads
         fun Activity.statuInScreen(isBlack: Boolean = false) {
-            // 沉浸式状态栏
-            QMUIStatusBarHelper.translucent(this)
-            if (isBlack) {
-                QMUIStatusBarHelper.setStatusBarLightMode(this)
-            } else {
-                QMUIStatusBarHelper.setStatusBarDarkMode(this)
+            //关键代码
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            //修改颜色
+            updateSystemUIColor()
+            ViewCompat.getWindowInsetsController(window.decorView)?.let { controller ->
+                controller.isAppearanceLightStatusBars = isBlack
+                controller.isAppearanceLightNavigationBars = isBlack
             }
+        }
+
+
+        @Deprecated("已经弃用，使用新的API", replaceWith = ReplaceWith("hideSystemUI(activity)"))
+        fun fullScreencall(activity: Activity) {
+            activity.hideSystemUI()
         }
 
         /**
@@ -411,29 +399,39 @@ class ArmsUtils private constructor() {
          * {@see [theme:EdgeStyle]} 填充刘海屏幕
          */
         @JvmStatic
-        fun fullScreencall(activity: Activity) {
-            //STATUS_BARS, NAVIGATION_BARS, CAPTION_BAR, IME, WINDOW_DECOR,
-            //                SYSTEM_GESTURES, MANDATORY_SYSTEM_GESTURES, TAPPABLE_ELEMENT, DISPLAY_CUTOUT
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                activity.window.insetsController?.hide(WindowInsets.Type.systemBars())
-            }else {
-                val decorView = activity.window.decorView
-                decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-                if (Build.VERSION.SDK_INT >= 21) {
-                    activity.window.statusBarColor = Color.TRANSPARENT
-                    activity.window.navigationBarColor = Color.TRANSPARENT
-                }
+        fun Activity.hideSystemUI() {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            ViewCompat.getWindowInsetsController(window.decorView)?.let { controller ->
+                controller.hide(WindowInsetsCompat.Type.systemBars())
+                controller.systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         }
 
+        /**
+         * 修改状态栏、底部的导航栏的颜色
+         */
+        fun Activity.updateSystemUIColor(@ColorInt color: Int = Color.TRANSPARENT){
+            window.statusBarColor = color
+            window.navigationBarColor = color
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                window.navigationBarDividerColor = color
+            }
+        }
+
+        /**
+         * 展示系统UI:状态栏和导航栏
+         */
+        fun Activity.showSystemUI() {
+            WindowCompat.setDecorFitsSystemWindows(window, true)
+            ViewCompat.getWindowInsetsController(window.decorView)?.show(WindowInsetsCompat.Type.systemBars())
+        }
+
         @JvmStatic
-        fun setSwipeRefresh(mSwipeRefreshLayout: SwipeRefreshLayout,
-                            them2Color: Int, listener: SwipeRefreshLayout.OnRefreshListener) {
+        fun setSwipeRefresh(
+            mSwipeRefreshLayout: SwipeRefreshLayout,
+            them2Color: Int, listener: SwipeRefreshLayout.OnRefreshListener
+        ) {
             mSwipeRefreshLayout.setSwipeRefresh(them2Color, listener)
         }
 
@@ -503,7 +501,8 @@ class ArmsUtils private constructor() {
         }
 
         fun copyText(context: Context, text: String) {
-            val cm: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+            val cm: ClipboardManager? =
+                context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
             // 创建普通字符型ClipData
             val mClipData = ClipData.newPlainText("Label", text)
             // 将ClipData内容放到系统剪贴板里。

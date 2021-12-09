@@ -15,9 +15,10 @@ typealias download_process = suspend (downloadedSize: Long, length: Long, progre
 typealias download_success = suspend (uri: File) -> Unit
 
 sealed class DownloadStatus {
-    class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) : DownloadStatus()
-    class DownloadError(val t: ApiException) : DownloadStatus()
-    class DownloadSuccess(val file: File) : DownloadStatus()
+    data class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) :
+        DownloadStatus()
+    data class DownloadError(val t: ApiException) : DownloadStatus()
+    data class DownloadSuccess(val file: File) : DownloadStatus()
 }
 
 /**
@@ -32,45 +33,45 @@ class HttpResult<out T> constructor(val value: Any?) {
 
     val isFailure: Boolean get() = value is Failure
 
-    val isLoading : Boolean get() = value is Progress
+    val isLoading: Boolean get() = value is Progress
 
     fun getOrNull(): T? =
-            when {
-                isFailure -> null
-                else -> value as T
-            }
+        when {
+            isFailure -> null
+            else -> value as T
+        }
 
 
     fun exceptionOrNull(): Throwable? =
-            when (value) {
-                is Failure -> value.exception
-                else -> null
-            }
+        when (value) {
+            is Failure -> value.exception
+            else -> null
+        }
 
 
     override fun toString(): String =
-            when (value) {
-                is Failure -> "Failure(${value.exception.message})"
-                else -> "Success($value)"
-            }
+        when (value) {
+            is Failure -> "Failure(${value.exception.message})"
+            else -> "Success($value)"
+        }
 
     // companion with constructors
 
 
     companion object {
         fun <T> success(value: T): HttpResult<T> =
-                HttpResult(value)
+            HttpResult(value)
 
         fun <T> failure(exception: Throwable): HttpResult<T> =
-                HttpResult(createFailure(exception))
+            HttpResult(createFailure(exception))
 
-        fun <T> progress(currentLength: Long, length: Long, process: Float):HttpResult<T> =
-                HttpResult(createLoading(currentLength, length, process))
+        fun <T> progress(currentLength: Long, length: Long, process: Float): HttpResult<T> =
+            HttpResult(createLoading(currentLength, length, process))
 
     }
 
     data class Failure(
-            val exception: Throwable
+        val exception: Throwable
     ) {
         override fun equals(other: Any?): Boolean = other is Failure && exception == other.exception
         override fun hashCode(): Int = exception.hashCode()
@@ -81,11 +82,11 @@ class HttpResult<out T> constructor(val value: Any?) {
 }
 
 private fun createFailure(exception: Throwable): HttpResult.Failure =
-        HttpResult.Failure(exception)
+    HttpResult.Failure(exception)
 
 
 private fun createLoading(currentLength: Long, length: Long, process: Float) =
-        HttpResult.Progress(currentLength, length, process)
+    HttpResult.Progress(currentLength, length, process)
 
 
 fun HttpResult<*>.throwOnFailure() {
@@ -133,8 +134,8 @@ fun <R, T : R> HttpResult<T>.getOrDefault(defaultValue: R): R {
 }
 
 inline fun <R, T> HttpResult<T>.fold(
-        onSuccess: (value: T) -> R,
-        onFailure: (exception: Throwable) -> R
+    onSuccess: (value: T) -> R,
+    onFailure: (exception: Throwable) -> R
 ): R {
     return when (val exception = exceptionOrNull()) {
         null -> onSuccess(value as T)
@@ -143,9 +144,9 @@ inline fun <R, T> HttpResult<T>.fold(
 }
 
 inline fun <R, T> HttpResult<T>.fold(
-        onSuccess: (value: T) -> R,
-        onLoading:(loading: HttpResult.Progress) ->R,
-        onFailure: (exception: Throwable?) -> R
+    onSuccess: (value: T) -> R,
+    onLoading: (loading: HttpResult.Progress) -> R,
+    onFailure: (exception: Throwable?) -> R
 ): R {
     return when {
         isFailure -> {
@@ -210,32 +211,35 @@ inline fun <T> HttpResult<T>.onSuccess(action: OnSuccess<T>): HttpResult<T> {
     return this
 }
 
-typealias OnLoading = HttpResult.Progress.() ->Unit
+typealias OnLoading = HttpResult.Progress.() -> Unit
 
-typealias OnSuccess<T> = T.() ->Unit
+typealias OnSuccess<T> = T.() -> Unit
 
-typealias OnFailure = Throwable?.() ->Unit
+typealias OnFailure = Throwable?.() -> Unit
 
-class HttpResultCallBack<T>{
-    var onLoading :OnLoading ?= null
-    var onSuccess :OnSuccess<T?> ?= null
-    var onFailure :OnFailure ?= null
+class HttpResultCallBack<T> {
+    var onLoading: OnLoading? = null
+    var onSuccess: OnSuccess<T?>? = null
+    var onFailure: OnFailure? = null
 }
 
-fun <T> LiveData<HttpResult<T>>.observeChange(owner: LifecycleOwner,block: HttpResultCallBack<T>.() -> Unit){
-       HttpResultCallBack<T>().apply(block).let { callBack ->
-           this.observe(owner){
-                 when {
-                   it.isSuccess -> {
-                       callBack.onSuccess?.invoke(it.getOrNull())
-                   }
-                   it.isLoading -> {
-                       callBack.onLoading?.invoke(value as HttpResult.Progress)
-                   }
-                   else -> {
-                       callBack.onFailure?.invoke(it.exceptionOrNull())
-                   }
-               }
-           }
-       }
+fun <T> LiveData<HttpResult<T>>.observeChange(
+    owner: LifecycleOwner,
+    block: HttpResultCallBack<T>.() -> Unit
+) {
+    HttpResultCallBack<T>().apply(block).let { callBack ->
+        this.observe(owner) {
+            when {
+                it.isSuccess -> {
+                    callBack.onSuccess?.invoke(it.getOrNull())
+                }
+                it.isLoading -> {
+                    callBack.onLoading?.invoke(value as HttpResult.Progress)
+                }
+                else -> {
+                    callBack.onFailure?.invoke(it.exceptionOrNull())
+                }
+            }
+        }
+    }
 }
