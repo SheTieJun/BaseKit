@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package me.shetj.base.ktx
 
 import android.content.Context
@@ -19,7 +44,7 @@ import java.lang.reflect.Field
  * 滚动
  * speedTime 越小 速度越快
  */
-fun Context.getSmoothScroller(speedTime:Float = 150f): LinearSmoothScroller {
+fun Context.getSmoothScroller(speedTime: Float = 150f): LinearSmoothScroller {
     return object : LinearSmoothScroller(this) {
         // 返回：滑过1px时经历的时间(ms)。
         override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics?): Float {
@@ -30,7 +55,7 @@ fun Context.getSmoothScroller(speedTime:Float = 150f): LinearSmoothScroller {
     }
 }
 
-fun ViewPager2.fixId(){
+fun ViewPager2.fixId() {
     try {
         val cls = Class.forName("androidx.viewpager2.widget.ViewPager2")
         val field: Field = cls.getDeclaredField("mRecyclerView")
@@ -39,23 +64,26 @@ fun ViewPager2.fixId(){
         recyclerView.id = R.id.viewpager2_rv
     } catch (e: ClassNotFoundException) {
         e.printStackTrace()
-    }catch (e: NoSuchFieldException) {
+    } catch (e: NoSuchFieldException) {
         e.printStackTrace()
     }
 }
 
 
-fun  RecyclerView?.smoothToPosition(position: Int,scroller: LinearSmoothScroller?= this?.context?.getSmoothScroller()){
+fun RecyclerView?.smoothToPosition(
+    position: Int,
+    scroller: LinearSmoothScroller? = this?.context?.getSmoothScroller()
+) {
     this?.let {
         scroller?.let {
             it.targetPosition = position
             layoutManager?.startSmoothScroll(scroller)
-        }?: this.smoothScrollToPosition(position)
+        } ?: this.smoothScrollToPosition(position)
 
     }
 }
 
-inline fun <reified T:BaseViewHolder> RecyclerView.findEachViewHolder(action:T?.() ->Unit){
+inline fun <reified T : BaseViewHolder> RecyclerView.findEachViewHolder(action: T?.() -> Unit) {
     for (i in 0 until childCount) {
         action((getChildViewHolder(getChildAt(i)) as? T))
     }
@@ -66,21 +94,27 @@ inline fun <reified T:BaseViewHolder> RecyclerView.findEachViewHolder(action:T?.
  * 仅适用 [LinearLayoutManager]
  */
 fun RecyclerView?.isCompleteVisibleScreen(position: Int): Boolean {
-    if (this == null || this.adapter == null || this.layoutManager == null || this.layoutManager !is LinearLayoutManager) {
+    if (this == null || this.adapter == null || this.layoutManager == null ||
+        this.layoutManager !is LinearLayoutManager
+    ) {
         return false
     }
     var finalPos = position
     if (this.adapter is BaseQuickAdapter<*, *>) {
         finalPos += (adapter as BaseQuickAdapter<*, *>).headerLayoutCount
     }
-    val firstCompleteVisibleItemPosition: Int = (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-    val lastCompleteVisibleItemPosition: Int = (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+    val firstCompleteVisibleItemPosition: Int =
+        (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+    val lastCompleteVisibleItemPosition: Int =
+        (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
     return finalPos in firstCompleteVisibleItemPosition..lastCompleteVisibleItemPosition
 }
 
 
 fun RecyclerView?.isCompleteVisibleShow(position: Int): Int {
-    if (this == null || this.adapter == null || this.layoutManager == null || this.layoutManager !is LinearLayoutManager) {
+    if (this == null || this.adapter == null || this.layoutManager == null
+        || this.layoutManager !is LinearLayoutManager
+    ) {
         return position
     }
     var finalPos = position
@@ -88,9 +122,9 @@ fun RecyclerView?.isCompleteVisibleShow(position: Int): Int {
         finalPos += (adapter as BaseQuickAdapter<*, *>).headerLayoutCount
     }
     val firstCompleteVisibleItemPosition: Int =
-            (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+        (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     val lastCompleteVisibleItemPosition: Int =
-            (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+        (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
     val mCount = (lastCompleteVisibleItemPosition - firstCompleteVisibleItemPosition) / 2
     if (finalPos < firstCompleteVisibleItemPosition) {
         return finalPos - 1
@@ -107,7 +141,7 @@ fun RecyclerView?.isCompleteVisibleShow(position: Int): Int {
 /**
  * viewPager2是必须通过代码设置
  */
-fun ViewPager2.overNever(){
+fun ViewPager2.overNever() {
     val child: View = getChildAt(0)
     if (child is RecyclerView) {
         child.setOverScrollMode(View.OVER_SCROLL_NEVER)

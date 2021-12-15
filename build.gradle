@@ -13,9 +13,7 @@ buildscript {
     ext.gsonVersion             = "2.8.6"
     ext.glideVersion            = "4.11.0"
     ext.eventBus                = "V3.2.0"
-    ext.constraintlayout        = "2.0.4"
     ext.koin_version            = '3.1.2'
-    ext.coroutines              = "1.5.2"
     ext.room_version            = "2.3.0"
     ext.lifecycle_version       = "2.3.1"
     ext.paging_version          = "3.0.0-alpha10"
@@ -38,12 +36,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath 'com.android.tools.build:gradle:7.0.3'K
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Add this line
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+plugins {
+    id 'com.diffplug.spotless' version '6.0.0'
 }

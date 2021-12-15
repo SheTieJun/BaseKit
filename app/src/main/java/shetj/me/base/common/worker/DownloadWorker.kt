@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package shetj.me.base.common.worker
 
 import android.app.NotificationChannel
@@ -8,26 +33,31 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.work.*
+import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.ForegroundInfo
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
 import me.shetj.base.ktx.logi
 import me.shetj.base.network_coroutine.KCHttpV2
 import shetj.me.base.R
-import java.util.*
+import java.util.UUID
 
 
 /**
  * 测试下载
  */
 class DownloadWorker(context: Context, parameters: WorkerParameters) :
-        CoroutineWorker(context, parameters) {
+    CoroutineWorker(context, parameters) {
 
     override suspend fun doWork(): Result {
         val inputUrl = inputData.getString(KEY_INPUT_URL)
-                ?: return Result.failure()
+            ?: return Result.failure()
         val outputUrl = inputData.getString(KEY_OUT_PUT_URL)
-                ?: return Result.failure()
+            ?: return Result.failure()
         val filename = inputData.getString(KEY_OUTPUT_FILE_NAME)
-                ?: return Result.failure()
+            ?: return Result.failure()
         val progress = "Starting Download"
         setForeground(createForegroundInfo(progress))
         download(inputUrl, outputUrl, filename)
@@ -35,34 +65,36 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
     }
 
     private suspend fun download(downloadUrl: String, outputFile: String, fileName: String) {
-        KCHttpV2.download(downloadUrl, "$outputFile/$fileName", onProcess = { _, _, process ->
-            setForeground(createForegroundInfo("${(process * 100).toInt()}%"))
-            setProgress(Data.Builder().let {
-                it.putInt("progress", (process * 100).toInt())
-                it.build()
+        KCHttpV2.download(downloadUrl, "$outputFile/$fileName",
+            onProcess = { _, _, process ->
+                setForeground(createForegroundInfo("${(process * 100).toInt()}%"))
+                setProgress(Data.Builder().let {
+                    it.putInt("progress", (process * 100).toInt())
+                    it.build()
+                })
+            }, onSuccess = {
+                setForeground(createForegroundInfo("download ok"))
+            }, onError = {
+                it.message.logi()
             })
-        }, onSuccess = {
-            setForeground(createForegroundInfo("download ok"))
-        },onError = {
-            it.message.logi()
-        })
     }
+
     private fun createForegroundInfo(progress: String): ForegroundInfo {
         val intent = WorkManager.getInstance(applicationContext)
-                .createCancelPendingIntent(id)
+            .createCancelPendingIntent(id)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel()
         }
 
         val notification = NotificationCompat.Builder(applicationContext, getChannelID())
-                .setContentTitle(getTitle())
-                .setTicker(getTitle())
-                .setContentText(progress)
-                .setSmallIcon(R.mipmap.shetj_logo)
-                .setOngoing(true) //防止滑动删除
-                .addAction(R.drawable.picture_icon_delete, "取消", intent)
-                .build()
+            .setContentTitle(getTitle())
+            .setTicker(getTitle())
+            .setContentText(progress)
+            .setSmallIcon(R.mipmap.shetj_logo)
+            .setOngoing(true) //防止滑动删除
+            .addAction(R.drawable.picture_icon_delete, "取消", intent)
+            .build()
 
         return ForegroundInfo("下载文件".hashCode(), notification)
     }
@@ -70,8 +102,9 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannel() {
         if (NotificationManagerCompat.from(applicationContext).getNotificationChannel(
-                        getChannelID()
-                ) == null) {
+                getChannelID()
+            ) == null
+        ) {
             val name = "文件下载"
             val description = "文件下载"
             val importance = NotificationManager.IMPORTANCE_LOW
@@ -80,7 +113,8 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
             mChannel.enableLights(true)
             mChannel.lightColor = Color.RED
             mChannel.enableVibration(true)
-            return NotificationManagerCompat.from(applicationContext).createNotificationChannel(mChannel)
+            return NotificationManagerCompat.from(applicationContext)
+                .createNotificationChannel(mChannel)
         }
     }
 
@@ -116,13 +150,19 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
          *          }
          *})
          */
-        fun startDownload(context: Context, downloadUrl: String, outputFile: String, fileName: String): UUID {
+        fun startDownload(
+            context: Context,
+            downloadUrl: String,
+            outputFile: String,
+            fileName: String
+        ): UUID {
             val inputData: Data = Data.Builder().apply {
                 putString(KEY_INPUT_URL, downloadUrl)
                 putString(KEY_OUTPUT_FILE_NAME, fileName)
                 putString(KEY_OUT_PUT_URL, outputFile)
             }.build()
-            val request = OneTimeWorkRequestBuilder<DownloadWorker>().setInputData(inputData).build()
+            val request =
+                OneTimeWorkRequestBuilder<DownloadWorker>().setInputData(inputData).build()
             WorkManager.getInstance(context).enqueue(request)
             return request.id
         }

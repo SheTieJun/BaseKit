@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package me.shetj.base.tools.app
 
 import android.app.Activity
@@ -18,6 +43,12 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * @author shetj
+ * * update 2021年12月10日:
+ *     * 点击空白区间会关闭键盘，同时会去掉获取焦点的editText
+ *     * 当没有焦点view的时候，点击空白也会关闭键盘
+ */
 @Keep
 class KeyboardUtil private constructor(activity: Activity, private var content: ViewGroup?) {
 
@@ -68,10 +99,8 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
     private fun dispatchTouchEvent(activity: Activity, ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val v = activity.currentFocus
-            if (null != v && isShouldHideInput(v, ev)) {
-                hideSoftKeyboard(activity)
-            }
-            if (null == v){
+            if (null == v ||(isShouldHideInput(v, ev))) {
+                v?.clearFocus()
                 hideSoftKeyboard(activity)
             }
         }
@@ -86,8 +115,8 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
     private fun isShouldHideInput(v: View, event: MotionEvent): Boolean {
         if (v is EditText) {
             val rect = Rect()
-            v.getHitRect(rect)
-            return !rect.contains(event.x.toInt(), event.y.toInt())
+            v.getGlobalVisibleRect(rect)
+            return !rect.contains(event.rawX.toInt(), event.rawY.toInt())
         }
         return true
     }
@@ -171,7 +200,7 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
         }
 
         /**
-         * 隐藏和显示切换
+         * 判断键盘是否建
          */
         @JvmStatic
         fun isVisibleKeyBoard(window: Window): Boolean? {

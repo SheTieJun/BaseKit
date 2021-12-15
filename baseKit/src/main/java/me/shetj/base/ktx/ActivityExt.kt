@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package me.shetj.base.ktx
 
 import android.Manifest
@@ -7,10 +32,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
-import android.net.*
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.net.Uri
 import android.os.Build
 import android.os.Looper
-import android.view.*
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewConfiguration
+import android.view.Window
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
@@ -31,6 +66,7 @@ import kotlinx.coroutines.withTimeout
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
+import java.io.File
 import java.lang.reflect.Method
 import kotlin.coroutines.resume
 
@@ -261,32 +297,31 @@ internal fun Context.requestNetWork() {
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
         .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .build()
-    cm.requestNetwork(request, object : ConnectivityManager.NetworkCallback() {
 
+
+
+    cm.requestNetwork(request, object : ConnectivityManager.NetworkCallback() {
         override fun onLost(network: Network) {
             super.onLost(network)
             NetWorkLiveDate.getInstance().onLost()
         }
-
-        override fun onCapabilitiesChanged(
-            network: Network,
-            networkCapabilities: NetworkCapabilities
-        ) {
-            super.onCapabilitiesChanged(network, networkCapabilities)
-            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-                when {
-                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.WIFI)
-                    }
-                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.PHONE)
-                    }
-                    else -> {
-                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
-                    }
-                }
-            }
-        }
+//        override fun onCapabilitiesChanged (network: Network, networkCapabilities: NetworkCapabilities) {
+//            super.onCapabilitiesChanged(network, networkCapabilities)
+//            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+//
+//                when {
+//                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+//                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.WIFI)
+//                    }
+//                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+//                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.PHONE)
+//                    }
+//                    else -> {
+//                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
+//                    }
+//                }
+//            }
+//        }
     })
 }
 
@@ -311,10 +346,13 @@ suspend fun refreshAlbum(context: Context, fileUri: String) {
             val mediaScanner = context.getMediaScanner()
             mediaScanner.scanFile(fileUri, "image/jpeg")
         }
+    }else{
+        val file = File(fileUri)
+        MediaScannerConnection.scanFile(
+            context, arrayOf(file.toString()),
+            null, null
+        )
     }
-    val intent =
-        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(fileUri))
-    context.sendBroadcast(intent)
 }
 
 suspend fun Context.getMediaScanner(): MediaScannerConnection = withContext(Dispatchers.IO) {

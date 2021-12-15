@@ -1,7 +1,38 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package me.shetj.base.network.interceptor
 
 import me.shetj.base.tools.debug.DebugFunc
-import okhttp3.*
+import okhttp3.Connection
+import okhttp3.Interceptor
+import okhttp3.MediaType
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.ResponseBody
 import okhttp3.internal.http.HttpHeaders
 import okio.Buffer
 import timber.log.Timber
@@ -32,7 +63,7 @@ class HttpLoggingInterceptor : Interceptor {
     fun log(message: String?) {
         if (!isLogEnable) return
         Timber.tag(tag).i(message)
-        if (DebugFunc.getInstance().isOutputHttp){
+        if (DebugFunc.getInstance().isOutputHttp) {
             DebugFunc.getInstance().saveHttpToFile(message)
         }
     }
@@ -51,7 +82,7 @@ class HttpLoggingInterceptor : Interceptor {
         return this
     }
 
-    fun setLogEnable(logEnable:Boolean): HttpLoggingInterceptor {
+    fun setLogEnable(logEnable: Boolean): HttpLoggingInterceptor {
         this.isLogEnable = logEnable
         return this
     }
@@ -89,7 +120,11 @@ class HttpLoggingInterceptor : Interceptor {
         val hasRequestBody = requestBody != null
         val protocol = if (connection != null) connection.protocol() else Protocol.HTTP_1_1
         try {
-            val requestStartMessage = "--> " + request.method() + ' ' + URLDecoder.decode(request.url().url().toString(), UTF8.name()) + ' ' + protocol
+            val requestStartMessage = "--> " + request.method() +
+                    ' ' + URLDecoder.decode(
+                request.url().url().toString(),
+                UTF8.name()
+            ) + ' ' + protocol
             log(requestStartMessage)
             if (logHeaders) {
                 val headers = request.headers()
@@ -123,7 +158,11 @@ class HttpLoggingInterceptor : Interceptor {
         val logBody = level == Level.BODY
         val logHeaders = level == Level.BODY || level == Level.HEADERS
         try {
-            log("<-- " + clone.code() + ' ' + clone.message() + ' ' + URLDecoder.decode(clone.request().url().url().toString(), UTF8.name()) + " (" + tookMs + "ms）")
+            log(
+                "<-- " + clone.code() + ' ' + clone.message() + ' ' + URLDecoder.decode(
+                    clone.request().url().url().toString(), UTF8.name()
+                ) + " (" + tookMs + "ms）"
+            )
             if (logHeaders) {
 //                log(" ");
 //                Headers headers = clone.headers();
@@ -186,9 +225,10 @@ class HttpLoggingInterceptor : Interceptor {
             var subtype = mediaType.subtype()
             subtype = subtype.lowercase()
             if (subtype.contains("x-www-form-urlencoded") ||
-                    subtype.contains("json") ||
-                    subtype.contains("xml") ||
-                    subtype.contains("html")) //
+                subtype.contains("json") ||
+                subtype.contains("xml") ||
+                subtype.contains("html")
+            ) //
                 return true
             return false
         }

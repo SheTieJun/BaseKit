@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package me.shetj.base.ktx
 
 import android.content.Context
@@ -8,7 +33,13 @@ import android.text.SpannableString
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.LeadingMarginSpan
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewOutlineProvider
+import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
@@ -18,7 +49,6 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,7 +61,7 @@ import me.shetj.base.tools.app.ArmsUtils
 /**
  * BottomNavigationView 去掉toast
  */
-fun BottomNavigationView.clearToast(ids:MutableList<Int>) {
+fun BottomNavigationView.clearToast(ids: MutableList<Int>) {
     val bottomNavigationMenuView = getChildAt(0) as ViewGroup
     for (i in 0 until ids.size) {
         bottomNavigationMenuView.getChildAt(i).findViewById<View>(ids[i])?.setOnLongClickListener {
@@ -44,8 +74,10 @@ fun BottomNavigationView.clearToast(ids:MutableList<Int>) {
 /**
  * 设置textView 的 Drawable
  */
-fun TextView.setDrawables(@DrawableRes resId: Int,
-                                  @Constant.GravityType gravity: Int = Gravity.TOP) {
+fun TextView.setDrawables(
+    @DrawableRes resId: Int,
+    @Constant.GravityType gravity: Int = Gravity.TOP
+) {
     ContextCompat.getDrawable(context, resId)?.apply {
         setBounds(0, 0, minimumWidth, minimumHeight)
     }?.let {
@@ -65,7 +97,12 @@ fun TextView.setDrawables(@DrawableRes resId: Int,
 fun TextView.setTextAndMargin(content: String, marginStart: Float) {
     val spannableString = SpannableString(content)
     val what = LeadingMarginSpan.Standard(ArmsUtils.dp2px(marginStart), 0)
-    spannableString.setSpan(what, 0, spannableString.length, SpannableString.SPAN_INCLUSIVE_INCLUSIVE)
+    spannableString.setSpan(
+        what,
+        0,
+        spannableString.length,
+        SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+    )
     text = spannableString
 }
 
@@ -89,15 +126,15 @@ fun TextView.setBold(isBold: Boolean) {
 //region ViewGroup
 @Suppress("UNCHECKED_CAST")
 fun <R : View> ViewGroup.inflate(
-        ctxt: Context = context,
-        @LayoutRes res: Int
+    ctxt: Context = context,
+    @LayoutRes res: Int
 ) = LayoutInflater.from(ctxt).inflate(res, this, false) as R
 
 @Suppress("UNCHECKED_CAST")
 @JvmOverloads
 fun <T : View> ViewGroup.inflate(
-        @LayoutRes res: Int,
-        root: ViewGroup? = this
+    @LayoutRes res: Int,
+    root: ViewGroup? = this
 ) = LayoutInflater.from(context).inflate(res, root, false) as T
 
 //endregion ViewGroup
@@ -107,10 +144,11 @@ fun <T : View> ViewGroup.inflate(
 @Suppress("UNCHECKED_CAST")
 @JvmOverloads
 fun SwipeRefreshLayout.setSwipeRefresh(
-        @ColorRes color: Int = R.color.colorAccent,
-        listener: SwipeRefreshLayout.OnRefreshListener? = null,
-        offset:Int = 0) {
-    this.setProgressViewOffset(false, offset, progressViewEndOffset +offset)
+    @ColorRes color: Int = R.color.colorAccent,
+    listener: SwipeRefreshLayout.OnRefreshListener? = null,
+    offset: Int = 0
+) {
+    this.setProgressViewOffset(false, offset, progressViewEndOffset + offset)
     this.setColorSchemeResources(color)
     this.setOnRefreshListener(listener)
 }
@@ -119,16 +157,16 @@ fun SwipeRefreshLayout.setSwipeRefresh(
 
 @JvmOverloads
 fun <T : View> T?.updatePadding(
-        left: Int = this?.paddingLeft ?: 0,
-        top: Int = this?.paddingTop ?: 0,
-        right: Int = this?.paddingRight ?: 0,
-        bottom: Int = this?.paddingBottom ?: 0
+    left: Int = this?.paddingLeft ?: 0,
+    top: Int = this?.paddingTop ?: 0,
+    right: Int = this?.paddingRight ?: 0,
+    bottom: Int = this?.paddingBottom ?: 0
 ) {
     if (this != null &&
-            left == this.paddingLeft &&
-            top == this.paddingTop &&
-            right == this.paddingRight &&
-            bottom == this.paddingBottom
+        left == this.paddingLeft &&
+        top == this.paddingTop &&
+        right == this.paddingRight &&
+        bottom == this.paddingBottom
     ) {
         return
     }
@@ -136,14 +174,14 @@ fun <T : View> T?.updatePadding(
 }
 
 inline fun <T : View> T?.waitForLayout(crossinline f: T.() -> Unit) =
-        this?.viewTreeObserver.apply {
-            this?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    removeOnGlobalLayoutListener(this)
-                    this@waitForLayout?.f()
-                }
-            })
-        }
+    this?.viewTreeObserver.apply {
+        this?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                removeOnGlobalLayoutListener(this)
+                this@waitForLayout?.f()
+            }
+        })
+    }
 
 fun <T : View> T.isRtl() = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 //endregion 泛型
@@ -172,7 +210,7 @@ fun View?.disableClipOnParents() {
 /**
  * 显示密码文本
  */
-fun EditText.showPassword(){
+fun EditText.showPassword() {
     transformationMethod = HideReturnsTransformationMethod.getInstance()
     setSelection(text.length)
 }
@@ -180,7 +218,7 @@ fun EditText.showPassword(){
 /**
  * 隐藏密码文本
  */
-fun EditText.hidePassword(){
+fun EditText.hidePassword() {
     transformationMethod = PasswordTransformationMethod.getInstance()
     setSelection(text.length)
 }
@@ -285,7 +323,8 @@ fun EditText?.requestFocusEdit() {
         isFocusable = true
         isFocusableInTouchMode = true
         requestFocus()
-        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         setSelection(text.length)
         inputManager.showSoftInput(this, 0)
     }
@@ -317,11 +356,11 @@ fun View.clipRound(radius: Float = ArmsUtils.dp2px(10f).toFloat()) {
         outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
                 outline.setRoundRect(
-                        0,
-                        0,
-                        view.width,
-                        view.height,
-                        radius
+                    0,
+                    0,
+                    view.width,
+                    view.height,
+                    radius
                 )
             }
         }

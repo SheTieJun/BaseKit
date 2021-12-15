@@ -1,10 +1,39 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 @file:Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 
 package me.shetj.base.ktx
 
 import com.google.gson.internal.`$Gson$Types`
-import java.lang.reflect.*
-import java.util.*
+import java.lang.reflect.GenericArrayType
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
+import java.lang.reflect.TypeVariable
+import java.lang.reflect.WildcardType
+import java.util.Objects
 
 /**
  * 参数化类型
@@ -14,7 +43,8 @@ import java.util.*
  */
 @Suppress("UNCHECKED_CAST")
 fun <C> getClazz(obj: Any,position: Int = 0): Class<C> {
-    return (obj.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[position] as Class<C>
+    return (obj.javaClass.genericSuperclass as ParameterizedType)
+        .actualTypeArguments[position] as Class<C>
 }
 
 /**
@@ -24,7 +54,7 @@ fun <T> getObjByClassArg(obj: Any,position:Int = 0):T{
     return  getClazz<T>(obj,position).newInstance()
 }
 
-fun getParameterizedType(type: Type,typeArguments:Type): ParameterizedType? {
+fun getParameterizedType(type: Type, typeArguments:Type): ParameterizedType? {
     // Type type = com.google.gson.internal.$Gson$Types.newParameterizedTypeWithOwner(null, ArrayList.class, clazz); = ArrayList<clazz>
     return `$Gson$Types`.newParameterizedTypeWithOwner(null, type, typeArguments)
 }

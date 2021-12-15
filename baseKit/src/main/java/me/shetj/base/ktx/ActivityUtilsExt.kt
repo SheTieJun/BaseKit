@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package me.shetj.base.ktx
 
 import android.app.Activity
@@ -28,7 +53,7 @@ fun Context.openActivity(scheme: String) {
  * ABCD => (D->B) = ACDB
  * ABCBD => (D->B) = ABCDB
  */
-fun Context.moveToFront(activity: Activity){
+fun Context.moveToFront(activity: Activity) {
     val intent: Intent = Intent(this, activity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
     }
@@ -38,7 +63,7 @@ fun Context.moveToFront(activity: Activity){
 /**
  * 通过包名，让APP到前台，前提是APP在后台了，所有如果代码无效，可能是因为APP判在前台
  */
-fun ActivityManager.moveToFrontApp(packageName:String){
+fun ActivityManager.moveToFrontApp(packageName: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         this.appTasks?.first {
             it.taskInfo.baseIntent.component?.packageName == packageName
@@ -111,20 +136,25 @@ fun Fragment.setBackgroundResource(@DrawableRes resId: Int) {
 /**
  * 当你需要当前界面中的某个元素和新界面中的元素有关时，你可以使用这个动画。效果很赞~！
  */
-fun Activity.getActivityOptions(sharedCardView: View, TRANSITION_NAME_CARD: String): ActivityOptionsCompat {
+fun Activity.getActivityOptions(
+    sharedCardView: View,
+    transition_name_card: String
+): ActivityOptionsCompat {
     return ActivityOptionsCompat
-            .makeSceneTransitionAnimation(this, sharedCardView, TRANSITION_NAME_CARD)
+        .makeSceneTransitionAnimation(this, sharedCardView, transition_name_card)
 }
 
 /**
  * 让新的Activity从一个小的范围扩大到全屏
  */
 fun Activity.getActivityOptions(view: View): ActivityOptionsCompat {
-    return ActivityOptionsCompat.makeScaleUpAnimation(view,
-            //The View that the new activity is animating from
-            view.width / 2, view.height / 2,
-            //拉伸开始的坐标
-            0, 0)
+    return ActivityOptionsCompat.makeScaleUpAnimation(
+        view,
+        //The View that the new activity is animating from
+        view.width / 2, view.height / 2,
+        //拉伸开始的坐标
+        0, 0
+    )
 }
 
 /**

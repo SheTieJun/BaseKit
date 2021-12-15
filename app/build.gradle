@@ -183,3 +183,4 @@ dependencies {
 }
 
 //apply from: file("dokit-config.gradle")
+//apply from: "../spotless.gradle"

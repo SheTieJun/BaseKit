@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="BaseKit" pattern="src[BaseKit.baseKit]:me.shetj.base..*" />
+</component>

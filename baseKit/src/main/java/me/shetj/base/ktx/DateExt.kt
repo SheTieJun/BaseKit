@@ -1,11 +1,40 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package me.shetj.base.ktx
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.Calendar
+import java.util.TimeZone
+import kotlin.collections.ArrayList
 
 
-fun Date?.getWeekOfDate(aLocale:Locale  = Locale.getDefault() ): String? {
+fun Date?.getWeekOfDate(aLocale: Locale = Locale.getDefault()): String? {
     this?.apply {
         val weekDaysName = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
         // String[] weekDaysCode = { "0", "1", "2", "3", "4", "5", "6" };
@@ -21,22 +50,25 @@ fun Date?.getWeekOfDate(aLocale:Locale  = Locale.getDefault() ): String? {
  *  字符串日期格式（比如：2018-4-6)转为毫秒
  *  @param format 时间的格式，默认是按照yyyy-MM-dd HH:mm:ss来转换，如果您的格式不一样，则需要传入对应的格式
  */
-fun String.toDateMills(format: String = "yyyy-MM-dd HH:mm:ss"): Long? = SimpleDateFormat(format, Locale.getDefault()).parse(this)?.time
+fun String.toDateMills(format: String = "yyyy-MM-dd HH:mm:ss"): Long? =
+    SimpleDateFormat(format, Locale.getDefault()).parse(this)?.time
 
 /**
  * Long类型时间戳转为字符串的日期格式
  * @param format 时间的格式，默认是按照yyyy-MM-dd HH:mm:ss来转换，如果您的格式不一样，则需要传入对应的格式
  */
-fun Long.toDateString(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDateFormat(format, Locale.getDefault()).format(Date(this))
+fun Long.toDateString(format: String = "yyyy-MM-dd HH:mm:ss"): String =
+    SimpleDateFormat(format, Locale.getDefault()).format(Date(this))
 
-fun Int.toDateString(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDateFormat(format, Locale.getDefault()).format(Date(this.toLong()))
+fun Int.toDateString(format: String = "yyyy-MM-dd HH:mm:ss"): String =
+    SimpleDateFormat(format, Locale.getDefault()).format(Date(this.toLong()))
 
 /**
  * 获取当前日期几月几号
  */
 fun getDateString(): String {
     val c = Calendar.getInstance(Locale.getDefault())
-    return (c[Calendar.MONTH] + 1).toString() + "月" +  c[Calendar.DAY_OF_MONTH].toString() + "日"
+    return (c[Calendar.MONTH] + 1).toString() + "月" + c[Calendar.DAY_OF_MONTH].toString() + "日"
 }
 
 /**
@@ -44,7 +76,8 @@ fun getDateString(): String {
  */
 fun getStringData(): String {
     val c = Calendar.getInstance(Locale.getDefault())
-    return c[Calendar.YEAR].toString() + "-" + (c[Calendar.MONTH] + 1).toString() + "-" + c[Calendar.DAY_OF_MONTH].toString()
+    return c[Calendar.YEAR].toString() + "-" + (c[Calendar.MONTH] + 1).toString() +
+            "-" + c[Calendar.DAY_OF_MONTH].toString()
 }
 
 /**
@@ -82,7 +115,7 @@ fun getYearAfter(i: Int): String {
  */
 fun getWeekString(): String {
     val c = Calendar.getInstance()
-    return  when (c[Calendar.DAY_OF_WEEK].toString()) {
+    return when (c[Calendar.DAY_OF_WEEK].toString()) {
         "1" -> "周天"
         "2" -> "周一"
         "3" -> "周二"
@@ -190,7 +223,9 @@ fun getSevenDate(): List<String> {
     val c = Calendar.getInstance()
     c.timeZone = TimeZone.getTimeZone("GMT+8:00")
     for (i in 0..6) {
-        val date: String = (c[Calendar.MONTH] + 1).toString() + "月" + (c[Calendar.DAY_OF_MONTH] + i).toString() + "日"
+        val date: String =
+            (c[Calendar.MONTH] + 1).toString() + "月" +
+                    (c[Calendar.DAY_OF_MONTH] + i).toString() + "日"
         dates.add(date)
     }
     return dates
@@ -204,7 +239,7 @@ fun get7dateT(): List<String> {
         // 获取当前月份
         c.add(Calendar.DAY_OF_MONTH, 1)
         // 获取当前日份的日期号码
-        val date: String =c[Calendar.DAY_OF_MONTH].toString()
+        val date: String = c[Calendar.DAY_OF_MONTH].toString()
         dates.add(date)
     }
     return dates

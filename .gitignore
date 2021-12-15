@@ -8,7 +8,6 @@
 # Built application files
 *.apk
 # Android Studio project files
-.idea
 build
 
 
@@ -36,3 +35,19 @@ gen/
 # Keystore files
 #*.jks
 base/lint.xml
+/.idea/codeStyles/
+/.idea/.name
+/.idea/compiler.xml
+/.idea/encodings.xml
+/.idea/gradle.xml
+/.idea/jarRepositories.xml
+/.idea/markdown-navigator.xml
+/.idea/markdown-navigator-enh.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+/.idea/caches/
+/.idea/codeStyles/
+/.idea/dictionaries/
+/.idea/inspectionProfiles/
+/.idea/libraries/

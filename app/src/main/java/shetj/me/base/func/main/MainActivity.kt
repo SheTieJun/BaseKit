@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
 package shetj.me.base.func.main
 
 import android.Manifest
@@ -10,7 +35,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.delay
 import me.shetj.base.base.TaskExecutor
-import me.shetj.base.ktx.*
+import me.shetj.base.ktx.hasPermission
+import me.shetj.base.ktx.launch
+import me.shetj.base.ktx.logi
+import me.shetj.base.ktx.openSetting
+import me.shetj.base.ktx.saverCreate
+import me.shetj.base.ktx.saverDB
+import me.shetj.base.ktx.sendEmailText
+import me.shetj.base.ktx.toJson
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.network.callBack.SimpleNetCallBack
@@ -21,7 +53,6 @@ import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.app.KeyboardUtil
-import me.shetj.base.tools.app.KeyboardUtil.Companion.showSoftKeyboard
 import me.shetj.base.tools.image.ImageCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
@@ -32,7 +63,6 @@ import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import timber.log.Timber
-import java.util.*
 
 class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     private lateinit var mContent: ContentMainBinding
@@ -47,7 +77,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
 
     public override fun initView() {
 
-        ArmsUtils.statuInScreen2(this,true)
+        ArmsUtils.setAppearance(this,true)
 
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
