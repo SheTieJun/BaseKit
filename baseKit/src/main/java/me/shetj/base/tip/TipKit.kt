@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tip
 
 import android.widget.Toast
@@ -41,12 +39,20 @@ object TipKit {
      */
     @JvmOverloads
     @JvmStatic
-    fun normal(context: AppCompatActivity, message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-        TipDialog.showTip(context, message, when (duration) {
-            Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
-            else -> AbLoadingDialog.LOADING_LONG
-        })
+    fun normal(
+        context: AppCompatActivity,
+        message: CharSequence,
+        duration: Int = Toast.LENGTH_SHORT
+    ) {
+        TipDialog.showTip(
+            context, message,
+            when (duration) {
+                Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
+                else -> AbLoadingDialog.LOADING_LONG
+            }
+        )
     }
+
     /**
      * 信息类型的taost
      *
@@ -54,12 +60,20 @@ object TipKit {
      */
     @JvmOverloads
     @JvmStatic
-    fun info(context: AppCompatActivity, message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-        TipDialog.showTip(context, message, when (duration) {
-            Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
-            else -> AbLoadingDialog.LOADING_LONG
-        })
+    fun info(
+        context: AppCompatActivity,
+        message: CharSequence,
+        duration: Int = Toast.LENGTH_SHORT
+    ) {
+        TipDialog.showTip(
+            context, message,
+            when (duration) {
+                Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
+                else -> AbLoadingDialog.LOADING_LONG
+            }
+        )
     }
+
     /**
      * 成功类型的taost
      *
@@ -67,12 +81,20 @@ object TipKit {
      */
     @JvmOverloads
     @JvmStatic
-    fun success(context: AppCompatActivity, message: CharSequence, duration: Int = Toast.LENGTH_SHORT) {
-        SimLoadingDialog.showTip(context, message,Tip.SUCCESS, when (duration) {
-            Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
-            else -> AbLoadingDialog.LOADING_LONG
-        })
+    fun success(
+        context: AppCompatActivity,
+        message: CharSequence,
+        duration: Int = Toast.LENGTH_SHORT
+    ) {
+        SimLoadingDialog.showTip(
+            context, message, Tip.SUCCESS,
+            when (duration) {
+                Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
+                else -> AbLoadingDialog.LOADING_LONG
+            }
+        )
     }
+
     /**
      * 错误类型的toast
      *
@@ -80,12 +102,20 @@ object TipKit {
      */
     @JvmOverloads
     @JvmStatic
-    fun error(context: AppCompatActivity, message: CharSequence, duration: Int = Toast.LENGTH_LONG) {
-        SimLoadingDialog.showTip(context, message,Tip.ERROR, when (duration) {
-            Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
-            else -> AbLoadingDialog.LOADING_LONG
-        })
+    fun error(
+        context: AppCompatActivity,
+        message: CharSequence,
+        duration: Int = Toast.LENGTH_LONG
+    ) {
+        SimLoadingDialog.showTip(
+            context, message, Tip.ERROR,
+            when (duration) {
+                Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
+                else -> AbLoadingDialog.LOADING_LONG
+            }
+        )
     }
+
     /**
      * 警告类型的toast
      *
@@ -94,28 +124,30 @@ object TipKit {
     @JvmOverloads
     @JvmStatic
     fun warn(context: AppCompatActivity, message: CharSequence, duration: Int = Toast.LENGTH_LONG) {
-        SimLoadingDialog.showTip(context, message,Tip.WARNING, when (duration) {
-            Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
-            else -> AbLoadingDialog.LOADING_LONG
-        })
+        SimLoadingDialog.showTip(
+            context, message, Tip.WARNING,
+            when (duration) {
+                Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
+                else -> AbLoadingDialog.LOADING_LONG
+            }
+        )
     }
 
     @JvmStatic
     fun loading(context: AppCompatActivity, action: suspend () -> Unit): AbLoadingDialog {
-        return SimLoadingDialog.showWithAction(context,action)
+        return SimLoadingDialog.showWithAction(context, action)
     }
 
-
     @JvmStatic
-    fun loadingRx(context: AppCompatActivity, action:  () -> Disposable): AbLoadingDialog {
-        return SimLoadingDialog.showWithRxAction(context,action)
+    fun loadingRx(context: AppCompatActivity, action: () -> Disposable): AbLoadingDialog {
+        return SimLoadingDialog.showWithRxAction(context, action)
     }
 
     /**
      * 超时结束的
      */
     @JvmStatic
-    fun loading(context: AppCompatActivity, time: Long, action:  () -> Unit ) {
-         SimLoadingDialog().showWithTimeOutAction(context,time,action)
+    fun loading(context: AppCompatActivity, time: Long, action: () -> Unit) {
+        SimLoadingDialog().showWithTimeOutAction(context, time, action)
     }
 }

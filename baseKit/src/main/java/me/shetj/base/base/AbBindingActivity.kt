@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.base
-
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,14 +30,12 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.viewbinding.ViewBinding
 import me.shetj.base.ktx.getClazz
 
-
 /**
  * 基础类  view 层,只有binding
  * @author shetj
  */
 @Keep
 abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), LifecycleObserver {
-
 
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding
@@ -55,6 +50,4 @@ abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), Lifecycle
         return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java)
             .invoke(null, layoutInflater) as VB
     }
-
-
 }

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.file
 
 import android.content.Context
@@ -52,8 +50,10 @@ class SPUtils {
         @JvmStatic
         fun put(context: Context, key: String, `object`: Any) {
 
-            val sp = context.getSharedPreferences(FILE_NAME,
-                    Context.MODE_PRIVATE)
+            val sp = context.getSharedPreferences(
+                FILE_NAME,
+                Context.MODE_PRIVATE
+            )
             val editor = sp.edit()
             when (`object`) {
                 is String -> editor.putString(key, `object`)
@@ -76,8 +76,10 @@ class SPUtils {
          */
         @JvmStatic
         fun get(context: Context, key: String, defaultObject: Any): Any? {
-            val sp = context.getSharedPreferences(FILE_NAME,
-                    Context.MODE_PRIVATE)
+            val sp = context.getSharedPreferences(
+                FILE_NAME,
+                Context.MODE_PRIVATE
+            )
             return when (defaultObject) {
                 is String -> sp.getString(key, defaultObject)
                 is Int -> sp.getInt(key, defaultObject)
@@ -96,8 +98,10 @@ class SPUtils {
          */
         @JvmStatic
         fun remove(context: Context, key: String) {
-            val sp = context.getSharedPreferences(FILE_NAME,
-                    Context.MODE_PRIVATE)
+            val sp = context.getSharedPreferences(
+                FILE_NAME,
+                Context.MODE_PRIVATE
+            )
             val editor = sp.edit()
             editor.remove(key)
             editor.apply()
@@ -110,8 +114,10 @@ class SPUtils {
          */
         @JvmStatic
         fun clear(context: Context) {
-            val sp = context.getSharedPreferences(FILE_NAME,
-                    Context.MODE_PRIVATE)
+            val sp = context.getSharedPreferences(
+                FILE_NAME,
+                Context.MODE_PRIVATE
+            )
             val editor = sp.edit()
             editor.clear()
             editor.apply()
@@ -126,8 +132,10 @@ class SPUtils {
          */
         @JvmStatic
         fun contains(context: Context, key: String): Boolean {
-            val sp = context.getSharedPreferences(FILE_NAME,
-                    Context.MODE_PRIVATE)
+            val sp = context.getSharedPreferences(
+                FILE_NAME,
+                Context.MODE_PRIVATE
+            )
             return sp.contains(key)
         }
 
@@ -139,10 +147,11 @@ class SPUtils {
          */
         @JvmStatic
         fun getAll(context: Context): Map<String, *> {
-            val sp = context.getSharedPreferences(FILE_NAME,
-                    Context.MODE_PRIVATE)
+            val sp = context.getSharedPreferences(
+                FILE_NAME,
+                Context.MODE_PRIVATE
+            )
             return sp.all
         }
     }
-
 }

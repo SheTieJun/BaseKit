@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.exception
 
 class CacheException(val errCode: Int, override val message: String?) : RuntimeException(message)

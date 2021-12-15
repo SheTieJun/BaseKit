@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.model
 
 import java.io.Serializable
@@ -43,8 +41,8 @@ class CacheResult<T> : Serializable {
 
     override fun toString(): String {
         return "CacheResult{" +
-                "isCache=" + isCache +
-                ", data=" + data +
-                '}'
+            "isCache=" + isCache +
+            ", data=" + data +
+            '}'
     }
 }

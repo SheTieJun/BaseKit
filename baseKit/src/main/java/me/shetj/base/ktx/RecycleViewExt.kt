@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.content.Context
@@ -34,9 +32,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import me.shetj.base.R
 import java.lang.reflect.Field
-
+import me.shetj.base.R
 
 /**
  * startSmoothScroll(smoothScroller)
@@ -69,7 +66,6 @@ fun ViewPager2.fixId() {
     }
 }
 
-
 fun RecyclerView?.smoothToPosition(
     position: Int,
     scroller: LinearSmoothScroller? = this?.context?.getSmoothScroller()
@@ -79,7 +75,6 @@ fun RecyclerView?.smoothToPosition(
             it.targetPosition = position
             layoutManager?.startSmoothScroll(scroller)
         } ?: this.smoothScrollToPosition(position)
-
     }
 }
 
@@ -110,10 +105,9 @@ fun RecyclerView?.isCompleteVisibleScreen(position: Int): Boolean {
     return finalPos in firstCompleteVisibleItemPosition..lastCompleteVisibleItemPosition
 }
 
-
 fun RecyclerView?.isCompleteVisibleShow(position: Int): Int {
-    if (this == null || this.adapter == null || this.layoutManager == null
-        || this.layoutManager !is LinearLayoutManager
+    if (this == null || this.adapter == null || this.layoutManager == null ||
+        this.layoutManager !is LinearLayoutManager
     ) {
         return position
     }

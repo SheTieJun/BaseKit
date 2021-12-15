@@ -21,16 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.base
 
 import android.content.Context
 import android.os.Bundle
 import android.os.Message
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
@@ -52,7 +47,7 @@ import org.greenrobot.eventbus.ThreadMode
  *
  * 不可见:   [Lifecycle.Event.ON_RESUME]  ->[Lifecycle.Event.ON_PAUSE]
  *
- * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
+ * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
 abstract class AbBaseFragment : Fragment(), LifecycleObserver {
@@ -61,7 +56,6 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
             field = value
             onBackPressedCallback.isEnabled = value
         }
-
 
     protected val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -92,8 +86,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
         }
     }
 
-
-    open fun onBack(){}
+    open fun onBack() {}
 
     /**
      * 是否使用eventBus,默认为使用(true)，
@@ -109,7 +102,6 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onEvent(message: Message) {
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -130,7 +122,6 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     open fun viewBindData() {
-
     }
 
     /**
@@ -151,10 +142,8 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
      * Init event and data.
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    protected  fun initEventAndData(){
-
+    protected fun initEventAndData() {
     }
-
 
     companion object {
         private const val STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN"

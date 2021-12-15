@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.anim.motion
 
 import android.content.Context
@@ -31,7 +29,9 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.viewpager.widget.ViewPager
 
 class ViewpagerHeader @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : MotionLayout(context, attrs, defStyleAttr), ViewPager.OnPageChangeListener {
 
     override fun onPageScrollStateChanged(state: Int) {

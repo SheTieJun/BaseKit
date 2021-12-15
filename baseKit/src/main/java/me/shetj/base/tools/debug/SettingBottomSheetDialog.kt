@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.debug
 
 import android.content.Context
@@ -71,6 +69,4 @@ class SettingBottomSheetDialog(private val mContext: Context) {
     private fun dismissBottomSheet() {
         if (bottomSheetDialog != null && bottomSheetDialog.isShowing) bottomSheetDialog.dismiss()
     }
-
-
 }

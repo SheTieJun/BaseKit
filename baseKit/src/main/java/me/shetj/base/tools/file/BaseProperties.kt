@@ -21,15 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.file
 
-import me.shetj.base.S
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.util.*
-
+import java.util.Properties
+import me.shetj.base.S
 
 /**
  * 获取assent属性

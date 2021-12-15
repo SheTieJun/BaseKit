@@ -21,20 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.base
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import me.shetj.base.S
-import kotlin.coroutines.CoroutineContext
 
 /**
  * class: KtScopeComponent{
@@ -49,7 +47,6 @@ abstract class ABKtScopeComponent : KtScopeComponent {
     override val ktScope: DefCoroutineScope by defScope()
 }
 
-
 fun ktScopeWithLife(lifecycle: Lifecycle) = lazy {
     LifecycleCoroutineScopeImpl(lifecycle, coroutineContext())
         .also {
@@ -61,7 +58,6 @@ fun ktScopeWithLife(lifecycle: Lifecycle) = lazy {
  * 可以通过[DefCoroutineScope.register] 进行绑定生命收起，也可以不判定
  */
 fun defScope() = lazy { CoroutineScopeImpl(coroutineContext()) }
-
 
 class CoroutineScopeImpl(
     override val coroutineContext: CoroutineContext
@@ -87,7 +83,6 @@ class CoroutineScopeImpl(
         }
     }
 }
-
 
 class LifecycleCoroutineScopeImpl(
     val lifecycle: Lifecycle,
@@ -118,16 +113,13 @@ class LifecycleCoroutineScopeImpl(
     }
 }
 
-
 interface LifecycleKtScopeComponent {
     val lifeKtScope: LifecycleCoroutineScope
 }
 
-
 abstract class DefCoroutineScope : CoroutineScope {
     abstract fun register(lifecycle: Lifecycle)
 }
-
 
 /**
  * 结合外部的LifecycleOwner 使用

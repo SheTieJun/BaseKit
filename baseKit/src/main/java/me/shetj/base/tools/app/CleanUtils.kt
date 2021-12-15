@@ -21,12 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.os.Environment
-
 import java.io.File
 
 class CleanUtils private constructor() {
@@ -109,7 +106,8 @@ class CleanUtils private constructor() {
          */
         @JvmStatic
         fun cleanExternalCache(): Boolean {
-            return Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() && deleteFilesInDir(Utils.app.externalCacheDir)
+            return Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() &&
+                deleteFilesInDir(Utils.app.externalCacheDir)
         }
 
         /**

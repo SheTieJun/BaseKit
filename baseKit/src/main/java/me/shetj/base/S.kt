@@ -21,17 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.provider.Settings
 import androidx.annotation.Keep
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.SupervisorJob
 import me.shetj.base.base.TaskExecutor
-import me.shetj.base.base.defScope
 import me.shetj.base.di.dbModule
 import me.shetj.base.network.RxHttp.Companion.getInstance
 import me.shetj.base.tools.app.Tim
@@ -46,7 +46,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.module.Module
 import timber.log.Timber
-import java.util.*
 
 /**
  * **@packageName：** me.shetj.base<br></br>
@@ -68,8 +67,6 @@ object S {
     var isDebug = true
         private set
 
-
-
     /**
      * 处理为捕捉的异常
      */
@@ -90,9 +87,11 @@ object S {
     val androidID: String
         @SuppressLint("HardwareIds")
         get() {
-            return Settings.Secure.getString(app.applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
+            return Settings.Secure.getString(
+                app.applicationContext.contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
         }
-
 
     /**
      * 初始化
@@ -125,10 +124,9 @@ object S {
             }
             baseUrl?.let {
                 getInstance().debug(S.isDebug)
-                        .setBaseUrl(S.baseUrl)
+                    .setBaseUrl(S.baseUrl)
             }
         }
-
     }
 
     @JvmStatic

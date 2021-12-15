@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tip
 
 import android.app.Dialog
@@ -39,15 +37,19 @@ import me.shetj.base.R
 import me.shetj.base.ktx.setDrawables
 import me.shetj.base.weight.AbLoadingDialog
 
-
 /**
  * android:configChanges="orientation|keyboardHidden|screenSize"
  */
 class SimLoadingDialog : AbLoadingDialog() {
 
-    override fun createLoading(context: Context, cancelable: Boolean, msg: CharSequence, image: Int?): AlertDialog {
+    override fun createLoading(
+        context: Context,
+        cancelable: Boolean,
+        msg: CharSequence,
+        image: Int?
+    ): AlertDialog {
         val view = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
-        return  AlertDialog.Builder(context,R.style.trans_dialog).apply {
+        return AlertDialog.Builder(context, R.style.trans_dialog).apply {
             val tvMsg = view.findViewById<TextView>(R.id.tv_msg)
             tvMsg.text = msg
             image?.let {
@@ -65,8 +67,13 @@ class SimLoadingDialog : AbLoadingDialog() {
 
         @JvmStatic
         @JvmOverloads
-        fun showTip(context: AppCompatActivity, msg: CharSequence = "加载中...", tip: Tip = Tip.INFO, @LoadingTipsDuration time: Long = LOADING_SHORT): AbLoadingDialog {
-            val image = when(tip){
+        fun showTip(
+            context: AppCompatActivity,
+            msg: CharSequence = "加载中...",
+            tip: Tip = Tip.INFO,
+            @LoadingTipsDuration time: Long = LOADING_SHORT
+        ): AbLoadingDialog {
+            val image = when (tip) {
                 Tip.SUCCESS -> R.drawable.icon_tip_success
                 Tip.DEFAULT -> R.drawable.icon_tip_success
                 Tip.WARNING -> R.drawable.icon_tip_warn
@@ -75,24 +82,34 @@ class SimLoadingDialog : AbLoadingDialog() {
             }
             return SimLoadingDialog().showTip(context, false, msg, image, time)
         }
+
         /**
          * 和协程一起使用
          */
-        inline fun showWithAction(context: AppCompatActivity, crossinline action: suspend () -> Unit): AbLoadingDialog {
+        inline fun showWithAction(
+            context: AppCompatActivity,
+            crossinline action: suspend () -> Unit
+        ): AbLoadingDialog {
             return SimLoadingDialog().showWithAction(context, action)
         }
 
         /**
          * 和RxJava 一起使用
          */
-        fun showWithRxAction(context: AppCompatActivity, action: () -> Disposable): AbLoadingDialog {
+        fun showWithRxAction(
+            context: AppCompatActivity,
+            action: () -> Disposable
+        ): AbLoadingDialog {
             return SimLoadingDialog().showWithRxAction(context, action)
         }
 
         /**
          * 和RxJava 一起使用
          */
-        fun showWithDisposable(context: AppCompatActivity, disposable: Disposable): AbLoadingDialog {
+        fun showWithDisposable(
+            context: AppCompatActivity,
+            disposable: Disposable
+        ): AbLoadingDialog {
             return SimLoadingDialog().showWithDisposable(context, disposable)
         }
 
@@ -101,6 +118,4 @@ class SimLoadingDialog : AbLoadingDialog() {
             return SimLoadingDialog().showLoading(context, cancelable)
         }
     }
-
-
 }

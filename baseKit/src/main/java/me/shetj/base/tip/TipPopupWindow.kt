@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tip
 
 import android.content.Context
@@ -34,19 +32,21 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.Lifecycle.Event
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import java.util.concurrent.TimeUnit
 import me.shetj.base.R
 import me.shetj.base.weight.AbLoadingDialog
-import java.util.concurrent.TimeUnit
 
 /**
  * 消息提示框
  */
-class TipPopupWindow(private val mContext: AppCompatActivity) : PopupWindow(mContext), LifecycleObserver {
+class TipPopupWindow(private val mContext: AppCompatActivity) :
+    PopupWindow(mContext),
+    LifecycleEventObserver {
     private var tvTip: TextView? = null
     private val lazyComposite = lazy { CompositeDisposable() }
     private val mCompositeDisposable: CompositeDisposable by lazyComposite
@@ -57,7 +57,7 @@ class TipPopupWindow(private val mContext: AppCompatActivity) : PopupWindow(mCon
         height = ViewGroup.LayoutParams.WRAP_CONTENT
         setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         animationStyle = R.style.tip_pop_anim_style
-        isOutsideTouchable = false// 设置点击窗口外边窗口不消失
+        isOutsideTouchable = false // 设置点击窗口外边窗口不消失
         isFocusable = false
         mContext.lifecycle.addObserver(this)
         initUI()
@@ -74,21 +74,19 @@ class TipPopupWindow(private val mContext: AppCompatActivity) : PopupWindow(mCon
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun tipDismissStop() {
         try {
             dismiss()
         } catch (ignored: Exception) {
-            //暴力解决，可能的崩溃
+            // 暴力解决，可能的崩溃
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun tipDismiss() {
         try {
             dismiss()
         } catch (_: Exception) {
-            //暴力解决，可能的崩溃
+            // 暴力解决，可能的崩溃
         }
     }
 
@@ -100,17 +98,32 @@ class TipPopupWindow(private val mContext: AppCompatActivity) : PopupWindow(mCon
         tvTip!!.text = tipMsg
         this.currentDuration = duration
         showAtLocation(mContext.window.decorView, Gravity.CENTER, 0, 0)
-        mCompositeDisposable.add(AndroidSchedulers.mainThread().scheduleDirect({
-            tipDismiss()
-        }, duration, TimeUnit.MILLISECONDS))
+        mCompositeDisposable.add(
+            AndroidSchedulers.mainThread().scheduleDirect({
+                tipDismiss()
+            }, duration, TimeUnit.MILLISECONDS)
+        )
     }
 
     companion object {
         @JvmOverloads
-        fun showTip(context: Context, tipMsg: CharSequence?, @AbLoadingDialog.LoadingTipsDuration duration: Long = AbLoadingDialog.LOADING_SHORT) {
+        fun showTip(
+            context: Context,
+            tipMsg: CharSequence?,
+            @AbLoadingDialog.LoadingTipsDuration duration: Long = AbLoadingDialog.LOADING_SHORT
+        ) {
             TipPopupWindow(context as AppCompatActivity).showTip(tipMsg, duration)
         }
     }
 
-
+    override fun onStateChanged(source: LifecycleOwner, event: Event) {
+        when (event) {
+            Event.ON_STOP -> {
+                tipDismissStop()
+            }
+            Event.ON_DESTROY -> {
+                tipDismiss()
+            }
+        }
+    }
 }

@@ -21,18 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.Calendar
 import java.util.TimeZone
 import kotlin.collections.ArrayList
-
 
 fun Date?.getWeekOfDate(aLocale: Locale = Locale.getDefault()): String? {
     this?.apply {
@@ -77,7 +74,7 @@ fun getDateString(): String {
 fun getStringData(): String {
     val c = Calendar.getInstance(Locale.getDefault())
     return c[Calendar.YEAR].toString() + "-" + (c[Calendar.MONTH] + 1).toString() +
-            "-" + c[Calendar.DAY_OF_MONTH].toString()
+        "-" + c[Calendar.DAY_OF_MONTH].toString()
 }
 
 /**
@@ -225,7 +222,7 @@ fun getSevenDate(): List<String> {
     for (i in 0..6) {
         val date: String =
             (c[Calendar.MONTH] + 1).toString() + "月" +
-                    (c[Calendar.DAY_OF_MONTH] + i).toString() + "日"
+                (c[Calendar.DAY_OF_MONTH] + i).toString() + "日"
         dates.add(date)
     }
     return dates

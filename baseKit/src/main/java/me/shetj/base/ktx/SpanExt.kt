@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.graphics.Color
@@ -39,7 +37,6 @@ import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.TextView
-
 
 /**
  * 将一段文字中指定range的文字改变大小
@@ -180,23 +177,27 @@ fun TextView.appendStrikeThrougthSpan(str: String = ""): TextView {
 }
 
 fun TextView.clickSpan(
-    str: String = "", range: IntRange,
+    str: String = "",
+    range: IntRange,
     color: Int = Color.RED,
-    isUnderlineText: Boolean = false, clickAction: () -> Unit
+    isUnderlineText: Boolean = false,
+    clickAction: () -> Unit
 ): TextView {
     movementMethod = LinkMovementMethod.getInstance()
-    highlightColor = Color.TRANSPARENT  // remove click bg color
+    highlightColor = Color.TRANSPARENT // remove click bg color
     text =
         (if (str.isEmpty()) text else str).toClickSpan(range, color, isUnderlineText, clickAction)
     return this
 }
 
 fun TextView.appendClickSpan(
-    str: String = "", color: Int = Color.RED,
-    isUnderlineText: Boolean = false, clickAction: () -> Unit
+    str: String = "",
+    color: Int = Color.RED,
+    isUnderlineText: Boolean = false,
+    clickAction: () -> Unit
 ): TextView {
     movementMethod = LinkMovementMethod.getInstance()
-    highlightColor = Color.TRANSPARENT  // remove click bg color
+    highlightColor = Color.TRANSPARENT // remove click bg color
     append(str.toClickSpan(0..str.length, color, isUnderlineText, clickAction))
     return this
 }

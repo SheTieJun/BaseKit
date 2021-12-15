@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.anim.motion
 
 import android.content.Context
@@ -35,8 +33,8 @@ class TouchFrameLayout : FrameLayout, NestedScrollingParent2 {
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) {
-    }
+        super(context, attrs, defStyleAttr) {
+        }
 
     val motionLayout: NestedScrollingParent2
         get() = parent as NestedScrollingParent2
@@ -54,8 +52,12 @@ class TouchFrameLayout : FrameLayout, NestedScrollingParent2 {
     }
 
     override fun onNestedScroll(
-        target: View, dxConsumed: Int, dyConsumed: Int,
-        dxUnconsumed: Int, dyUnconsumed: Int, type: Int
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        type: Int
     ) {
         motionLayout.onNestedScroll(
             target, dxConsumed, dyConsumed, dxUnconsumed,

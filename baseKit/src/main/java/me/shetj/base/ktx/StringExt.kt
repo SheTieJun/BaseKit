@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.content.Context
@@ -31,15 +29,14 @@ import android.graphics.Color
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.debug.DebugFunc
 import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.GsonKit
 import timber.log.Timber
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-
 
 fun String?.isPhone() = this?.let { StringUtils.isPhone(it) } ?: false
 
@@ -84,7 +81,7 @@ fun String?.toMap() = this?.let { GsonKit.jsonToStringMap(it) }
 
 @JvmOverloads
 fun String?.copy(context: Context, action: (() -> Unit) = {}) {
-    //获取剪贴板管理器：
+    // 获取剪贴板管理器：
     this?.let {
         ArmsUtils.copyText(context, it)
         action.invoke()
@@ -104,7 +101,6 @@ fun Throwable.loge(tag: String = "base") {
     Timber.tag(tag).e(this)
 }
 
-
 fun String?.logd(tag: String = "base") {
     Timber.tag(tag).d(this.toString())
 }
@@ -117,7 +113,6 @@ fun String?.logOutOut() {
 }
 
 //endregion
-
 
 /**
  * val json = getAssetsJson(context, "country.json")

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.content.BroadcastReceiver
@@ -32,9 +30,8 @@ import android.content.IntentFilter
 import android.media.AudioManager
 import androidx.annotation.FloatRange
 import androidx.core.math.MathUtils
-import me.shetj.base.model.VolumeLiveData
 import java.util.concurrent.atomic.AtomicBoolean
-
+import me.shetj.base.model.VolumeLiveData
 
 /**
  * 声音音量控制
@@ -44,7 +41,6 @@ internal class VolumeConfig(val context: Context) {
     private val isRegister = AtomicBoolean(false)
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private val max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-
 
     private val mReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -69,7 +65,7 @@ internal class VolumeConfig(val context: Context) {
     }
 
     fun unregisterReceiver() {
-        //回到最初的声音
+        // 回到最初的声音
         if (isRegister.compareAndSet(true, false)) {
             context.unregisterReceiver(mReceiver)
         }
@@ -111,5 +107,4 @@ internal class VolumeConfig(val context: Context) {
             sInstance = null
         }
     }
-
 }

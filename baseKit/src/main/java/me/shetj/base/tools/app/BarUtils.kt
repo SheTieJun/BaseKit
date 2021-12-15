@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
@@ -38,8 +36,8 @@ import android.view.WindowManager
 import androidx.annotation.FloatRange
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
-import timber.log.Timber
 import java.util.regex.Pattern
+import timber.log.Timber
 
 /**
  * <pre>
@@ -49,14 +47,12 @@ import java.util.regex.Pattern
 @Keep
 class BarUtils private constructor() {
 
-
     init {
         throw UnsupportedOperationException("u can't instantiate me...")
     }
 
     @Suppress("DEPRECATION")
     companion object {
-
 
         private var DEFAULT_COLOR = 0
 
@@ -75,7 +71,11 @@ class BarUtils private constructor() {
         }
 
         @JvmStatic
-        fun immersive(activity: Activity, color: Int, @FloatRange(from = 0.0, to = 1.0) alpha: Float) {
+        fun immersive(
+            activity: Activity,
+            color: Int,
+            @FloatRange(from = 0.0, to = 1.0) alpha: Float
+        ) {
             immersive(activity.window, color, alpha)
         }
 
@@ -90,7 +90,11 @@ class BarUtils private constructor() {
         }
 
         @JvmOverloads
-        fun immersive(window: Window, color: Int, @FloatRange(from = 0.0, to = 1.0) alpha: Float = 1f) {
+        fun immersive(
+            window: Window,
+            color: Int,
+            @FloatRange(from = 0.0, to = 1.0) alpha: Float = 1f
+        ) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = mixtureColor(color, alpha)
@@ -122,7 +126,11 @@ class BarUtils private constructor() {
         }
 
         @JvmStatic
-        fun darkMode(activity: Activity, color: Int, @FloatRange(from = 0.0, to = 1.0) alpha: Float) {
+        fun darkMode(
+            activity: Activity,
+            color: Int,
+            @FloatRange(from = 0.0, to = 1.0) alpha: Float
+        ) {
             darkMode(activity.window, color, alpha)
         }
 
@@ -148,7 +156,6 @@ class BarUtils private constructor() {
                 }
                 else -> immersive(window, color, alpha)
             }
-
         }
 
         /** android 6.0设置字体颜色  */
@@ -173,8 +180,12 @@ class BarUtils private constructor() {
             if (window != null) {
                 try {
                     val e = window.attributes
-                    val darkFlag = WindowManager.LayoutParams::class.java.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON")
-                    val meizuFlags = WindowManager.LayoutParams::class.java.getDeclaredField("meizuFlags")
+                    val darkFlag =
+                        WindowManager.LayoutParams::class.java
+                            .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON")
+                    val meizuFlags =
+                        WindowManager.LayoutParams::class.java
+                            .getDeclaredField("meizuFlags")
                     darkFlag.isAccessible = true
                     meizuFlags.isAccessible = true
                     val bit = darkFlag.getInt(null)
@@ -191,7 +202,6 @@ class BarUtils private constructor() {
                 } catch (var8: Exception) {
                     Timber.e("StatusBar: darkIcon: failed")
                 }
-
             }
 
             return result
@@ -210,23 +220,28 @@ class BarUtils private constructor() {
                 val layoutParams = Class.forName("android.view.MiuiWindowManager\$LayoutParams")
                 val field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE")
                 darkModeFlag = field.getInt(layoutParams)
-                val extraFlagField = clazz.getMethod("setExtraFlags", Int::class.javaPrimitiveType, Int::class.javaPrimitiveType)
+                val extraFlagField = clazz.getMethod(
+                    "setExtraFlags",
+                    Int::class.javaPrimitiveType,
+                    Int::class.javaPrimitiveType
+                )
                 extraFlagField.invoke(window, if (darkmode) darkModeFlag else 0, darkModeFlag)
                 true
             } catch (e: Exception) {
                 e.printStackTrace()
                 false
             }
-
         }
 
         internal var pattern = Pattern.compile("Flyme OS [4|5]", Pattern.CASE_INSENSITIVE)
 
         /** 判断是否Flyme4以上  */
         private val isFlyme4Later: Boolean
-            get() = (Build.FINGERPRINT.contains("Flyme_OS_4")
-                    || Build.VERSION.INCREMENTAL.contains("Flyme_OS_4")
-                    || pattern.matcher(Build.DISPLAY).find())
+            get() = (
+                Build.FINGERPRINT.contains("Flyme_OS_4") ||
+                    Build.VERSION.INCREMENTAL.contains("Flyme_OS_4") ||
+                    pattern.matcher(Build.DISPLAY).find()
+                )
 
         /** 判断是否为MIUI6以上  */
         private val isMIUI6Later: Boolean
@@ -242,15 +257,16 @@ class BarUtils private constructor() {
                 } catch (e: Exception) {
                     false
                 }
-
             }
 
         /** 增加View的paddingTop,增加的值为状态栏高度  */
         @JvmStatic
         fun setPadding(context: Context, view: View) {
             if (Build.VERSION.SDK_INT >= MIN_API) {
-                view.setPadding(view.paddingLeft, view.paddingTop + getStatusBarHeight(context),
-                        view.paddingRight, view.paddingBottom)
+                view.setPadding(
+                    view.paddingLeft, view.paddingTop + getStatusBarHeight(context),
+                    view.paddingRight, view.paddingBottom
+                )
             }
         }
 
@@ -260,11 +276,13 @@ class BarUtils private constructor() {
             if (Build.VERSION.SDK_INT >= MIN_API) {
                 val lp = view.layoutParams
                 if (lp != null && lp.height > 0) {
-                    //增高
+                    // 增高
                     lp.height += getStatusBarHeight(context)
                 }
-                view.setPadding(view.paddingLeft, view.paddingTop + getStatusBarHeight(context),
-                        view.paddingRight, view.paddingBottom)
+                view.setPadding(
+                    view.paddingLeft, view.paddingTop + getStatusBarHeight(context),
+                    view.paddingRight, view.paddingBottom
+                )
             }
         }
 
@@ -273,10 +291,12 @@ class BarUtils private constructor() {
         fun setHeightAndPadding(context: Context, view: View) {
             if (Build.VERSION.SDK_INT >= MIN_API) {
                 val lp = view.layoutParams
-                //增高
+                // 增高
                 lp.height += getStatusBarHeight(context)
-                view.setPadding(view.paddingLeft, view.paddingTop + getStatusBarHeight(context),
-                        view.paddingRight, view.paddingBottom)
+                view.setPadding(
+                    view.paddingLeft, view.paddingTop + getStatusBarHeight(context),
+                    view.paddingRight, view.paddingBottom
+                )
             }
         }
 
@@ -286,7 +306,7 @@ class BarUtils private constructor() {
             if (Build.VERSION.SDK_INT >= MIN_API) {
                 val lp = view.layoutParams
                 if (lp is ViewGroup.MarginLayoutParams) {
-                    //增高
+                    // 增高
                     lp.topMargin += getStatusBarHeight(context)
                 }
                 view.layoutParams = lp
@@ -297,7 +317,11 @@ class BarUtils private constructor() {
          * 创建假的透明栏
          */
         @JvmStatic
-        fun setTranslucentView(container: ViewGroup, color: Int, @FloatRange(from = 0.0, to = 1.0) alpha: Float) {
+        fun setTranslucentView(
+            container: ViewGroup,
+            color: Int,
+            @FloatRange(from = 0.0, to = 1.0) alpha: Float
+        ) {
             if (Build.VERSION.SDK_INT >= 19) {
                 val mixtureColor = mixtureColor(color, alpha)
                 var translucentView: View? = container.findViewById(android.R.id.custom)
@@ -305,7 +329,8 @@ class BarUtils private constructor() {
                     translucentView = View(container.context)
                     translucentView.id = android.R.id.custom
                     val lp = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(container.context))
+                        ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(container.context)
+                    )
                     container.addView(translucentView, lp)
                 }
                 translucentView?.setBackgroundColor(mixtureColor)
@@ -322,15 +347,19 @@ class BarUtils private constructor() {
         @JvmStatic
         fun getStatusBarHeight(context: Context): Int {
             var result = 24
-            val resId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+            val resId = context.resources.getIdentifier(
+                "status_bar_height",
+                "dimen", "android"
+            )
             result = if (resId > 0) {
                 context.resources.getDimensionPixelSize(resId)
             } else {
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        result.toFloat(), Resources.getSystem().displayMetrics).toInt()
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    result.toFloat(), Resources.getSystem().displayMetrics
+                ).toInt()
             }
             return result
         }
     }
-
 }

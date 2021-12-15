@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvp
 
 import androidx.annotation.Keep
@@ -42,5 +40,4 @@ interface IPresenter {
      * Activity#onDestroy() 调用[IPresenter.onDestroy]
      */
     fun onDestroy()
-
 }

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.json
 
 import android.util.Base64
@@ -90,7 +88,6 @@ class DES {
         }
 
         return null
-
     }
 
     /**
@@ -127,7 +124,6 @@ class DES {
         }
 
         return null
-
     }
 
     companion object {
@@ -144,5 +140,4 @@ class DES {
         /** TRANSFORMATION  */
         private const val TRANSFORMATION = "DES/CBC/PKCS5Padding"
     }
-
 }

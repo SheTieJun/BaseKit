@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.base
 
 import android.content.Context
@@ -64,10 +62,9 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         return mViewBinding.root
     }
 
-
     open fun getBehavior(): BottomSheetBehavior<FrameLayout>? {
         if (dialog is BottomSheetDialog) {
-           return (dialog as BottomSheetDialog).behavior
+            return (dialog as BottomSheetDialog).behavior
         }
         return null
     }
@@ -75,7 +72,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
     /**
      * 展开到全屏
      */
-    open fun expandScreen(){
+    open fun expandScreen() {
         getBehavior()?.state = BottomSheetBehavior.STATE_EXPANDED
         getBehavior()?.peekHeight = ArmsUtils.getScreenHeight()
     }
@@ -107,7 +104,6 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onEvent(message: Message) {
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -125,9 +121,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
      * 初始化数据和界面绑定
      */
     open fun viewBindData() {
-
     }
-
 
     companion object {
         private const val STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN"
@@ -135,7 +129,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     fun safetyShow(fragmentManager: FragmentManager, tag: String) {
         runCatching {
-            //防止动画没有结束，fragment又被点击了，然后导致的崩溃
+            // 防止动画没有结束，fragment又被点击了，然后导致的崩溃
             fragmentManager.executePendingTransactions()
             show(fragmentManager, tag)
         }

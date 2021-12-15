@@ -21,15 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.saver
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-
 
 @Database(entities = [Saver::class], version = 1, exportSchema = false)
 abstract class SaverDatabase : RoomDatabase() {
@@ -53,5 +50,4 @@ abstract class SaverDatabase : RoomDatabase() {
             Room.databaseBuilder(context.applicationContext, SaverDatabase::class.java, "saver")
                 .build()
     }
-
 }

@@ -21,14 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.debug
 
 import android.content.Context
 import android.os.Environment
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
 import me.shetj.base.BuildConfig
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_HTTP
@@ -37,9 +38,6 @@ import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.FileUtils
 import me.shetj.base.tools.file.SPUtils
 import timber.log.Timber
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
 
 /**
  * debug 功能扩展 必须开启debug的情况下
@@ -51,14 +49,20 @@ class DebugFunc private constructor() {
     private var mContext: Context? = null
 
     var isOutputHttp = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_HTTP, BuildConfig.DEBUG) as Boolean }
-            ?: false
+        ?: false
     var isOutputLog = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_LOG, BuildConfig.DEBUG) as Boolean }
-            ?: false
+        ?: false
 
     companion object {
-        val saveLogFile = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separatorChar + "BaseDebug.text"
-        val saveHttpFile = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separatorChar + "HttpDebug.text"
-        val logFilePath = EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "crashLog"
+        val saveLogFile =
+            EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
+                File.separatorChar + "BaseDebug.text"
+        val saveHttpFile =
+            EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
+                File.separatorChar + "HttpDebug.text"
+        val logFilePath =
+            EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
+                File.separator + "crashLog"
 
         @Volatile
         private var mDebugFunc: DebugFunc? = null
@@ -119,7 +123,7 @@ class DebugFunc private constructor() {
             override fun accept(throwable: Throwable?) {
                 if (throwable == null) return
                 throwable.printStackTrace()
-                if(isOutputLog) {
+                if (isOutputLog) {
                     outputToFile(throwable.message)
                 }
             }
@@ -144,7 +148,9 @@ class DebugFunc private constructor() {
     fun clearAll() {
         FileUtils.deleteFile(saveHttpFile)
         FileUtils.deleteFile(saveLogFile)
-        FileUtils.deleteDir(EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "crashLog")
+        FileUtils.deleteDir(
+            EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
+                File.separator + "crashLog"
+        )
     }
-
 }

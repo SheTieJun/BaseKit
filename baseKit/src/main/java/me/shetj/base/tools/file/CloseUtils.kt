@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.file
 
 import java.io.Closeable
@@ -58,7 +56,6 @@ class CloseUtils private constructor() {
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
-
                 }
             }
         }
@@ -76,7 +73,6 @@ class CloseUtils private constructor() {
                         closeable.close()
                     } catch (ignored: IOException) {
                     }
-
                 }
             }
         }

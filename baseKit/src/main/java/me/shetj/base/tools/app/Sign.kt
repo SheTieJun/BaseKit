@@ -21,14 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.security.MessageDigest
-import java.util.*
+import java.util.TreeMap
 
 /**
  * 签名算法
@@ -42,7 +40,6 @@ import java.util.*
  * 在拼接好的字符串末尾追加上与服务器约定的应用secret参数值； 上述字符串的MD5值即为签名的值。
  */
 object Sign {
-
 
     /**
      * 签名生成算法
@@ -86,5 +83,4 @@ object Sign {
         }
         return sign.toString()
     }
-
 }

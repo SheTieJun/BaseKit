@@ -21,21 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.model
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import me.shetj.base.tools.app.PlugConfigs
 
-
 /**
  * 耳机状态变更
  */
 class PlugLiveData private constructor() : MutableLiveData<Boolean>(false) {
 
-    private var plugConfigs:PlugConfigs ?=null
+    private var plugConfigs: PlugConfigs ? = null
 
     override fun onActive() {
         super.onActive()
@@ -45,8 +42,7 @@ class PlugLiveData private constructor() : MutableLiveData<Boolean>(false) {
         super.onInactive()
     }
 
-
-    fun start(context: Context){
+    fun start(context: Context) {
         PlugConfigs.getInstance(context.applicationContext).apply {
             registerReceiver()
         }.also {
@@ -54,11 +50,10 @@ class PlugLiveData private constructor() : MutableLiveData<Boolean>(false) {
         }
     }
 
-    fun stop(){
+    fun stop() {
         plugConfigs?.unregisterReceiver()
         plugConfigs = null
     }
-
 
     internal fun connect() {
         postValue(true)

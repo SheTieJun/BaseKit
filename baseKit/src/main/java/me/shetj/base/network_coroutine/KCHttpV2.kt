@@ -21,14 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network_coroutine
 
-import kotlinx.coroutines.*
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileOutputStream
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import me.shetj.base.ktx.logd
 import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
@@ -40,10 +45,6 @@ import me.shetj.base.network_coroutine.cache.CacheMode
 import me.shetj.base.network_coroutine.cache.KCCache
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.FileOutputStream
-
 
 /**
  * 协程 Http请求
@@ -151,11 +152,11 @@ object KCHttpV2 {
         return when (cache?.cacheMode) {
             CacheMode.DEFAULT -> {
 
-                //不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
+                // 不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
                 formNetworkValue(timeout, repeatNum)
             }
             CacheMode.FIRST_NET -> {
-                //先请求网络，请求网络失败后再加载缓存
+                // 先请求网络，请求网络失败后再加载缓存
                 try {
                     formNetworkValue(timeout, repeatNum)
                 } catch (e: Exception) {
@@ -180,13 +181,13 @@ object KCHttpV2 {
                 }
             }
             CacheMode.ONLY_NET -> {
-                //仅加载网络，但数据依然会被缓存
+                // 仅加载网络，但数据依然会被缓存
                 formNetworkValue(timeout, repeatNum).also {
                     saveCache(cache, it)
                 }
             }
             CacheMode.ONLY_CACHE -> {
-                //只读取缓存
+                // 只读取缓存
                 withContext(Dispatchers.IO) {
                     kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
                         "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
@@ -223,7 +224,8 @@ object KCHttpV2 {
     @Suppress("BlockingMethodInNonBlockingContext")
     @JvmOverloads
     suspend fun download(
-        url: String, outputFile: String,
+        url: String,
+        outputFile: String,
         onError: download_error = {},
         onProcess: download_process = { _, _, _ -> },
         onSuccess: download_success = { }
@@ -241,7 +243,7 @@ object KCHttpV2 {
                 val bufferedInputStream = BufferedInputStream(inputStream, bufferSize)
                 var readLength: Int
                 while (bufferedInputStream.read(buffer, 0, bufferSize)
-                        .also { readLength = it } != -1
+                    .also { readLength = it } != -1
                 ) {
                     outputStream.write(buffer, 0, readLength)
                     currentLength += readLength
@@ -308,14 +310,12 @@ object KCHttpV2 {
         }
         try {
             return requestWithTimeout(timeout, block)
-        } catch (e: Exception) {
-            if (e is TimeoutCancellationException) {
-                throw ApiException(e, TIMEOUT_ERROR).apply {
-                    this.setDisplayMessage(" Timeout Cancel, Timeout $timeout, maybe has more time ")
-                }
-            } else {
-                throw ApiException.handleException(e)
+        } catch (e: TimeoutCancellationException) {
+            throw ApiException(e, TIMEOUT_ERROR).apply {
+                this.setDisplayMessage(" Timeout Cancel, Timeout $timeout, maybe has more time ")
             }
+        } catch (e: Exception) {
+            throw ApiException.handleException(e)
         }
     }
 

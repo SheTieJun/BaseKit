@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.os.Build
@@ -34,7 +32,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import timber.log.Timber
-import java.util.*
 
 /**
  * <pre>
@@ -56,12 +53,13 @@ class FragmentUtils private constructor() {
     class FragmentNode(internal var fragment: Fragment, internal var next: List<FragmentNode>?) {
 
         override fun toString(): String {
-            return (fragment.javaClass.simpleName
-                    + "->"
-                    + if (next == null || next!!.isEmpty()) "no child" else next!!.toString())
+            return (
+                fragment.javaClass.simpleName +
+                    "->" +
+                    if (next == null || next!!.isEmpty()) "no child" else next!!.toString()
+                )
         }
     }
-
 
     interface OnBackClickListener {
         fun onBackClick(): Boolean
@@ -91,11 +89,13 @@ class FragmentUtils private constructor() {
          * @param isAddStack  True to add fragment in stack, false otherwise.
          */
         @JvmOverloads
-        fun add(fm: FragmentManager,
-                add: Fragment,
-                @IdRes containerId: Int,
-                isHide: Boolean = false,
-                isAddStack: Boolean = false) {
+        fun add(
+            fm: FragmentManager,
+            add: Fragment,
+            @IdRes containerId: Int,
+            isHide: Boolean = false,
+            isAddStack: Boolean = false
+        ) {
             putArgs(add, Args(containerId, isHide, isAddStack))
             operateNoAnim(fm, TYPE_ADD_FRAGMENT, null, add)
         }
@@ -111,11 +111,13 @@ class FragmentUtils private constructor() {
          * @param exitAnim    An animation or animator resource ID used for the exit animation on the
          * view of the fragment being removed or detached.
          */
-        fun add(fm: FragmentManager,
-                add: Fragment,
-                @IdRes containerId: Int,
-                @AnimRes enterAnim: Int,
-                @AnimRes exitAnim: Int) {
+        fun add(
+            fm: FragmentManager,
+            add: Fragment,
+            @IdRes containerId: Int,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int
+        ) {
             add(fm, add, containerId, false, enterAnim, exitAnim, 0, 0)
         }
 
@@ -136,13 +138,15 @@ class FragmentUtils private constructor() {
          * view of the fragment being removed or detached caused by
          * popBackStack() or similar methods.
          */
-        fun add(fm: FragmentManager,
-                add: Fragment,
-                @IdRes containerId: Int,
-                @AnimRes enterAnim: Int,
-                @AnimRes exitAnim: Int,
-                @AnimRes popEnterAnim: Int,
-                @AnimRes popExitAnim: Int) {
+        fun add(
+            fm: FragmentManager,
+            add: Fragment,
+            @IdRes containerId: Int,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int,
+            @AnimRes popEnterAnim: Int,
+            @AnimRes popExitAnim: Int
+        ) {
             add(fm, add, containerId, false, enterAnim, exitAnim, popEnterAnim, popExitAnim)
         }
 
@@ -165,14 +169,16 @@ class FragmentUtils private constructor() {
          * popBackStack() or similar methods.
          */
         @JvmOverloads
-        fun add(fm: FragmentManager,
-                add: Fragment,
-                @IdRes containerId: Int,
-                isAddStack: Boolean,
-                @AnimRes enterAnim: Int,
-                @AnimRes exitAnim: Int,
-                @AnimRes popEnterAnim: Int = 0,
-                @AnimRes popExitAnim: Int = 0) {
+        fun add(
+            fm: FragmentManager,
+            add: Fragment,
+            @IdRes containerId: Int,
+            isAddStack: Boolean,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int,
+            @AnimRes popEnterAnim: Int = 0,
+            @AnimRes popExitAnim: Int = 0
+        ) {
             val ft = fm.beginTransaction()
             putArgs(add, Args(containerId, false, isAddStack))
             addAnim(ft, enterAnim, exitAnim, popEnterAnim, popExitAnim)
@@ -188,10 +194,12 @@ class FragmentUtils private constructor() {
          * @param sharedElements A View in a disappearing Fragment to match with a View in an
          * appearing Fragment.
          */
-        fun add(fm: FragmentManager,
-                add: Fragment,
-                @IdRes containerId: Int,
-                vararg sharedElements: View) {
+        fun add(
+            fm: FragmentManager,
+            add: Fragment,
+            @IdRes containerId: Int,
+            vararg sharedElements: View
+        ) {
             add(fm, add, containerId, false, *sharedElements)
         }
 
@@ -205,11 +213,13 @@ class FragmentUtils private constructor() {
          * @param sharedElements A View in a disappearing Fragment to match with a View in an
          * appearing Fragment.
          */
-        fun add(fm: FragmentManager,
-                add: Fragment,
-                @IdRes containerId: Int,
-                isAddStack: Boolean,
-                vararg sharedElements: View) {
+        fun add(
+            fm: FragmentManager,
+            add: Fragment,
+            @IdRes containerId: Int,
+            isAddStack: Boolean,
+            vararg sharedElements: View
+        ) {
             val ft = fm.beginTransaction()
             putArgs(add, Args(containerId, false, isAddStack))
             addSharedElement(ft, *sharedElements)
@@ -224,10 +234,12 @@ class FragmentUtils private constructor() {
          * @param containerId The id of container.
          * @param showIndex   The index of fragment will be shown.
          */
-        fun add(fm: FragmentManager,
-                adds: List<Fragment>,
-                @IdRes containerId: Int,
-                showIndex: Int) {
+        fun add(
+            fm: FragmentManager,
+            adds: List<Fragment>,
+            @IdRes containerId: Int,
+            showIndex: Int
+        ) {
             add(fm, adds.toTypedArray(), containerId, showIndex)
         }
 
@@ -239,10 +251,12 @@ class FragmentUtils private constructor() {
          * @param containerId The id of container.
          * @param showIndex   The index of fragment will be shown.
          */
-        fun add(fm: FragmentManager,
-                adds: Array<Fragment>,
-                @IdRes containerId: Int,
-                showIndex: Int) {
+        fun add(
+            fm: FragmentManager,
+            adds: Array<Fragment>,
+            @IdRes containerId: Int,
+            showIndex: Int
+        ) {
             var i = 0
             val len = adds.size
             while (i < len) {
@@ -272,9 +286,10 @@ class FragmentUtils private constructor() {
             for (show in fragments) {
                 putArgs(show, false)
             }
-            operateNoAnim(fm,
-                    TYPE_SHOW_FRAGMENT, null,
-                    *fragments.toTypedArray()
+            operateNoAnim(
+                fm,
+                TYPE_SHOW_FRAGMENT, null,
+                *fragments.toTypedArray()
             )
         }
 
@@ -298,9 +313,10 @@ class FragmentUtils private constructor() {
             for (hide in fragments) {
                 putArgs(hide, true)
             }
-            operateNoAnim(fm,
-                    TYPE_HIDE_FRAGMENT, null,
-                    *fragments.toTypedArray()
+            operateNoAnim(
+                fm,
+                TYPE_HIDE_FRAGMENT, null,
+                *fragments.toTypedArray()
             )
         }
 
@@ -324,8 +340,10 @@ class FragmentUtils private constructor() {
             for (fragment in hide) {
                 putArgs(fragment, fragment !== show)
             }
-            operateNoAnim(show.fragmentManager!!, TYPE_SHOW_HIDE_FRAGMENT, show,
-                    *hide.toTypedArray())
+            operateNoAnim(
+                show.fragmentManager!!, TYPE_SHOW_HIDE_FRAGMENT, show,
+                *hide.toTypedArray()
+            )
         }
 
         /**
@@ -357,8 +375,10 @@ class FragmentUtils private constructor() {
          * @param show The fragment will be show.
          * @param hide The fragment will be hide.
          */
-        fun showHide(show: Fragment,
-                     hide: Fragment) {
+        fun showHide(
+            show: Fragment,
+            hide: Fragment
+        ) {
             putArgs(show, false)
             putArgs(hide, true)
             operateNoAnim(show.fragmentManager!!, TYPE_SHOW_HIDE_FRAGMENT, show, hide)
@@ -372,9 +392,11 @@ class FragmentUtils private constructor() {
          * @param isAddStack   True to add fragment in stack, false otherwise.
          */
         @JvmOverloads
-        fun replace(srcFragment: Fragment,
-                    destFragment: Fragment,
-                    isAddStack: Boolean = false) {
+        fun replace(
+            srcFragment: Fragment,
+            destFragment: Fragment,
+            isAddStack: Boolean = false
+        ) {
             val args = getArgs(srcFragment)
             replace(srcFragment.fragmentManager!!, destFragment, args.id, isAddStack)
         }
@@ -389,10 +411,12 @@ class FragmentUtils private constructor() {
          * @param exitAnim     An animation or animator resource ID used for the exit animation on the
          * view of the fragment being removed or detached.
          */
-        fun replace(srcFragment: Fragment,
-                    destFragment: Fragment,
-                    @AnimRes enterAnim: Int,
-                    @AnimRes exitAnim: Int) {
+        fun replace(
+            srcFragment: Fragment,
+            destFragment: Fragment,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int
+        ) {
             replace(srcFragment, destFragment, false, enterAnim, exitAnim, 0, 0)
         }
 
@@ -412,13 +436,18 @@ class FragmentUtils private constructor() {
          * view of the fragment being removed or detached caused by
          * popBackStack() or similar methods.
          */
-        fun replace(srcFragment: Fragment,
-                    destFragment: Fragment,
-                    @AnimRes enterAnim: Int,
-                    @AnimRes exitAnim: Int,
-                    @AnimRes popEnterAnim: Int,
-                    @AnimRes popExitAnim: Int) {
-            replace(srcFragment, destFragment, false, enterAnim, exitAnim, popEnterAnim, popExitAnim)
+        fun replace(
+            srcFragment: Fragment,
+            destFragment: Fragment,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int,
+            @AnimRes popEnterAnim: Int,
+            @AnimRes popExitAnim: Int
+        ) {
+            replace(
+                srcFragment, destFragment, false,
+                enterAnim, exitAnim, popEnterAnim, popExitAnim
+            )
         }
 
         /**
@@ -439,16 +468,20 @@ class FragmentUtils private constructor() {
          * popBackStack() or similar methods.
          */
         @JvmOverloads
-        fun replace(srcFragment: Fragment,
-                    destFragment: Fragment,
-                    isAddStack: Boolean,
-                    @AnimRes enterAnim: Int,
-                    @AnimRes exitAnim: Int,
-                    @AnimRes popEnterAnim: Int = 0,
-                    @AnimRes popExitAnim: Int = 0) {
+        fun replace(
+            srcFragment: Fragment,
+            destFragment: Fragment,
+            isAddStack: Boolean,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int,
+            @AnimRes popEnterAnim: Int = 0,
+            @AnimRes popExitAnim: Int = 0
+        ) {
             val args = getArgs(srcFragment)
-            replace(srcFragment.fragmentManager!!, destFragment, args.id, isAddStack,
-                    enterAnim, exitAnim, popEnterAnim, popExitAnim)
+            replace(
+                srcFragment.fragmentManager!!, destFragment, args.id, isAddStack,
+                enterAnim, exitAnim, popEnterAnim, popExitAnim
+            )
         }
 
         /**
@@ -459,9 +492,11 @@ class FragmentUtils private constructor() {
          * @param sharedElements A View in a disappearing Fragment to match with a View in an
          * appearing Fragment.
          */
-        fun replace(srcFragment: Fragment,
-                    destFragment: Fragment,
-                    vararg sharedElements: View) {
+        fun replace(
+            srcFragment: Fragment,
+            destFragment: Fragment,
+            vararg sharedElements: View
+        ) {
             replace(srcFragment, destFragment, false, *sharedElements)
         }
 
@@ -474,16 +509,19 @@ class FragmentUtils private constructor() {
          * @param sharedElements A View in a disappearing Fragment to match with a View in an
          * appearing Fragment.
          */
-        fun replace(srcFragment: Fragment,
-                    destFragment: Fragment,
-                    isAddStack: Boolean,
-                    vararg sharedElements: View) {
+        fun replace(
+            srcFragment: Fragment,
+            destFragment: Fragment,
+            isAddStack: Boolean,
+            vararg sharedElements: View
+        ) {
             val args = getArgs(srcFragment)
-            replace(srcFragment.fragmentManager!!,
-                    destFragment,
-                    args.id,
-                    isAddStack,
-                    *sharedElements
+            replace(
+                srcFragment.fragmentManager!!,
+                destFragment,
+                args.id,
+                isAddStack,
+                *sharedElements
             )
         }
 
@@ -496,10 +534,12 @@ class FragmentUtils private constructor() {
          * @param isAddStack  True to add fragment in stack, false otherwise.
          */
         @JvmOverloads
-        fun replace(fm: FragmentManager,
-                    fragment: Fragment,
-                    @IdRes containerId: Int,
-                    isAddStack: Boolean = false) {
+        fun replace(
+            fm: FragmentManager,
+            fragment: Fragment,
+            @IdRes containerId: Int,
+            isAddStack: Boolean = false
+        ) {
             val ft = fm.beginTransaction()
             putArgs(fragment, Args(containerId, false, isAddStack))
             operate(TYPE_REPLACE_FRAGMENT, fm, ft, null, fragment)
@@ -516,11 +556,13 @@ class FragmentUtils private constructor() {
          * @param exitAnim    An animation or animator resource ID used for the exit animation on the
          * view of the fragment being removed or detached.
          */
-        fun replace(fm: FragmentManager,
-                    fragment: Fragment,
-                    @IdRes containerId: Int,
-                    @AnimRes enterAnim: Int,
-                    @AnimRes exitAnim: Int) {
+        fun replace(
+            fm: FragmentManager,
+            fragment: Fragment,
+            @IdRes containerId: Int,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int
+        ) {
             replace(fm, fragment, containerId, false, enterAnim, exitAnim, 0, 0)
         }
 
@@ -541,14 +583,19 @@ class FragmentUtils private constructor() {
          * view of the fragment being removed or detached caused by
          * popBackStack() or similar methods.
          */
-        fun replace(fm: FragmentManager,
-                    fragment: Fragment,
-                    @IdRes containerId: Int,
-                    @AnimRes enterAnim: Int,
-                    @AnimRes exitAnim: Int,
-                    @AnimRes popEnterAnim: Int,
-                    @AnimRes popExitAnim: Int) {
-            replace(fm, fragment, containerId, false, enterAnim, exitAnim, popEnterAnim, popExitAnim)
+        fun replace(
+            fm: FragmentManager,
+            fragment: Fragment,
+            @IdRes containerId: Int,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int,
+            @AnimRes popEnterAnim: Int,
+            @AnimRes popExitAnim: Int
+        ) {
+            replace(
+                fm, fragment, containerId, false,
+                enterAnim, exitAnim, popEnterAnim, popExitAnim
+            )
         }
 
         /**
@@ -570,14 +617,16 @@ class FragmentUtils private constructor() {
          * popBackStack() or similar methods.
          */
         @JvmOverloads
-        fun replace(fm: FragmentManager,
-                    fragment: Fragment,
-                    @IdRes containerId: Int,
-                    isAddStack: Boolean,
-                    @AnimRes enterAnim: Int,
-                    @AnimRes exitAnim: Int,
-                    @AnimRes popEnterAnim: Int = 0,
-                    @AnimRes popExitAnim: Int = 0) {
+        fun replace(
+            fm: FragmentManager,
+            fragment: Fragment,
+            @IdRes containerId: Int,
+            isAddStack: Boolean,
+            @AnimRes enterAnim: Int,
+            @AnimRes exitAnim: Int,
+            @AnimRes popEnterAnim: Int = 0,
+            @AnimRes popExitAnim: Int = 0
+        ) {
             val ft = fm.beginTransaction()
             putArgs(fragment, Args(containerId, false, isAddStack))
             addAnim(ft, enterAnim, exitAnim, popEnterAnim, popExitAnim)
@@ -593,10 +642,12 @@ class FragmentUtils private constructor() {
          * @param sharedElements A View in a disappearing Fragment to match with a View in an
          * appearing Fragment.
          */
-        fun replace(fm: FragmentManager,
-                    fragment: Fragment,
-                    @IdRes containerId: Int,
-                    vararg sharedElements: View) {
+        fun replace(
+            fm: FragmentManager,
+            fragment: Fragment,
+            @IdRes containerId: Int,
+            vararg sharedElements: View
+        ) {
             replace(fm, fragment, containerId, false, *sharedElements)
         }
 
@@ -610,11 +661,13 @@ class FragmentUtils private constructor() {
          * @param sharedElements A View in a disappearing Fragment to match with a View in an
          * appearing Fragment.
          */
-        fun replace(fm: FragmentManager,
-                    fragment: Fragment,
-                    @IdRes containerId: Int,
-                    isAddStack: Boolean,
-                    vararg sharedElements: View) {
+        fun replace(
+            fm: FragmentManager,
+            fragment: Fragment,
+            @IdRes containerId: Int,
+            isAddStack: Boolean,
+            vararg sharedElements: View
+        ) {
             val ft = fm.beginTransaction()
             putArgs(fragment, Args(containerId, false, isAddStack))
             addSharedElement(ft, *sharedElements)
@@ -628,8 +681,10 @@ class FragmentUtils private constructor() {
          * @param isImmediate True to pop immediately, false otherwise.
          */
         @JvmOverloads
-        fun pop(fm: FragmentManager,
-                isImmediate: Boolean = true) {
+        fun pop(
+            fm: FragmentManager,
+            isImmediate: Boolean = true
+        ) {
             if (isImmediate) {
                 fm.popBackStackImmediate()
             } else {
@@ -646,16 +701,22 @@ class FragmentUtils private constructor() {
          * @param isImmediate   True to pop immediately, false otherwise.
          */
         @JvmOverloads
-        fun popTo(fm: FragmentManager,
-                  popClz: Class<out Fragment>,
-                  isIncludeSelf: Boolean,
-                  isImmediate: Boolean = true) {
+        fun popTo(
+            fm: FragmentManager,
+            popClz: Class<out Fragment>,
+            isIncludeSelf: Boolean,
+            isImmediate: Boolean = true
+        ) {
             if (isImmediate) {
-                fm.popBackStackImmediate(popClz.name,
-                        if (isIncludeSelf) FragmentManager.POP_BACK_STACK_INCLUSIVE else 0)
+                fm.popBackStackImmediate(
+                    popClz.name,
+                    if (isIncludeSelf) FragmentManager.POP_BACK_STACK_INCLUSIVE else 0
+                )
             } else {
-                fm.popBackStack(popClz.name,
-                        if (isIncludeSelf) FragmentManager.POP_BACK_STACK_INCLUSIVE else 0)
+                fm.popBackStack(
+                    popClz.name,
+                    if (isIncludeSelf) FragmentManager.POP_BACK_STACK_INCLUSIVE else 0
+                )
             }
         }
 
@@ -691,8 +752,10 @@ class FragmentUtils private constructor() {
          * @param isIncludeSelf True to include the fragment, false otherwise.
          */
         fun removeTo(removeTo: Fragment, isIncludeSelf: Boolean) {
-            operateNoAnim(removeTo.fragmentManager!!, TYPE_REMOVE_TO_FRAGMENT,
-                    if (isIncludeSelf) removeTo else null, removeTo)
+            operateNoAnim(
+                removeTo.fragmentManager!!, TYPE_REMOVE_TO_FRAGMENT,
+                if (isIncludeSelf) removeTo else null, removeTo
+            )
         }
 
         /**
@@ -702,9 +765,10 @@ class FragmentUtils private constructor() {
          */
         fun removeAll(fm: FragmentManager) {
             val fragments = getFragments(fm)
-            operateNoAnim(fm,
-                    TYPE_REMOVE_FRAGMENT, null,
-                    *fragments.toTypedArray()
+            operateNoAnim(
+                fm,
+                TYPE_REMOVE_FRAGMENT, null,
+                *fragments.toTypedArray()
             )
         }
 
@@ -730,24 +794,30 @@ class FragmentUtils private constructor() {
 
         private fun getArgs(fragment: Fragment): Args {
             val bundle = fragment.arguments
-            return Args(bundle!!.getInt(ARGS_ID, fragment.id),
-                    bundle.getBoolean(ARGS_IS_HIDE),
-                    bundle.getBoolean(ARGS_IS_ADD_STACK))
+            return Args(
+                bundle!!.getInt(ARGS_ID, fragment.id),
+                bundle.getBoolean(ARGS_IS_HIDE),
+                bundle.getBoolean(ARGS_IS_ADD_STACK)
+            )
         }
 
-        private fun operateNoAnim(fm: FragmentManager,
-                                  type: Int,
-                                  src: Fragment?,
-                                  vararg dest: Fragment) {
+        private fun operateNoAnim(
+            fm: FragmentManager,
+            type: Int,
+            src: Fragment?,
+            vararg dest: Fragment
+        ) {
             val ft = fm.beginTransaction()
             operate(type, fm, ft, src, *dest)
         }
 
-        private fun operate(type: Int,
-                            fm: FragmentManager,
-                            ft: FragmentTransaction,
-                            src: Fragment?,
-                            vararg dest: Fragment) {
+        private fun operate(
+            type: Int,
+            fm: FragmentManager,
+            ft: FragmentTransaction,
+            src: Fragment?,
+            vararg dest: Fragment
+        ) {
             if (src != null && src.isRemoving) {
                 Timber.e("%s is isRemoving", src.javaClass.name)
                 return
@@ -803,16 +873,20 @@ class FragmentUtils private constructor() {
             ft.commitAllowingStateLoss()
         }
 
-        private fun addAnim(ft: FragmentTransaction,
-                            enter: Int,
-                            exit: Int,
-                            popEnter: Int,
-                            popExit: Int) {
+        private fun addAnim(
+            ft: FragmentTransaction,
+            enter: Int,
+            exit: Int,
+            popEnter: Int,
+            popExit: Int
+        ) {
             ft.setCustomAnimations(enter, exit, popEnter, popExit)
         }
 
-        private fun addSharedElement(ft: FragmentTransaction,
-                                     vararg views: View) {
+        private fun addSharedElement(
+            ft: FragmentTransaction,
+            vararg views: View
+        ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 for (view in views) {
                     ft.addSharedElement(view, view.transitionName)
@@ -840,8 +914,10 @@ class FragmentUtils private constructor() {
             return getTopIsInStack(fm, true)
         }
 
-        private fun getTopIsInStack(fm: FragmentManager,
-                                    isInStack: Boolean): Fragment? {
+        private fun getTopIsInStack(
+            fm: FragmentManager,
+            isInStack: Boolean
+        ): Fragment? {
             val fragments = getFragments(fm)
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
@@ -876,8 +952,10 @@ class FragmentUtils private constructor() {
             return getTopShowIsInStack(fm, true)
         }
 
-        private fun getTopShowIsInStack(fm: FragmentManager,
-                                        isInStack: Boolean): Fragment? {
+        private fun getTopShowIsInStack(
+            fm: FragmentManager,
+            isInStack: Boolean
+        ): Fragment? {
             val fragments = getFragments(fm)
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
@@ -932,14 +1010,22 @@ class FragmentUtils private constructor() {
             return getAllFragments(fm, ArrayList())
         }
 
-        private fun getAllFragments(fm: FragmentManager,
-                                    result: MutableList<FragmentNode>): List<FragmentNode> {
+        private fun getAllFragments(
+            fm: FragmentManager,
+            result: MutableList<FragmentNode>
+        ): List<FragmentNode> {
             val fragments = getFragments(fm)
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
-                result.add(FragmentNode(fragment,
-                        getAllFragments(fragment.childFragmentManager,
-                                ArrayList())))
+                result.add(
+                    FragmentNode(
+                        fragment,
+                        getAllFragments(
+                            fragment.childFragmentManager,
+                            ArrayList()
+                        )
+                    )
+                )
             }
             return result
         }
@@ -954,15 +1040,23 @@ class FragmentUtils private constructor() {
             return getAllFragmentsInStack(fm, ArrayList())
         }
 
-        private fun getAllFragmentsInStack(fm: FragmentManager,
-                                           result: MutableList<FragmentNode>): List<FragmentNode> {
+        private fun getAllFragmentsInStack(
+            fm: FragmentManager,
+            result: MutableList<FragmentNode>
+        ): List<FragmentNode> {
             val fragments = getFragments(fm)
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
                 if (fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
-                    result.add(FragmentNode(fragment,
-                            getAllFragmentsInStack(fragment.childFragmentManager,
-                                    ArrayList())))
+                    result.add(
+                        FragmentNode(
+                            fragment,
+                            getAllFragmentsInStack(
+                                fragment.childFragmentManager,
+                                ArrayList()
+                            )
+                        )
+                    )
                 }
             }
             return result
@@ -975,8 +1069,10 @@ class FragmentUtils private constructor() {
          * @param findClz The class of fragment will be found.
          * @return the fragment matches class
          */
-        fun findFragment(fm: FragmentManager,
-                         findClz: Class<out Fragment>): Fragment? {
+        fun findFragment(
+            fm: FragmentManager,
+            findClz: Class<out Fragment>
+        ): Fragment? {
             return fm.findFragmentByTag(findClz.name)
         }
 
@@ -987,11 +1083,13 @@ class FragmentUtils private constructor() {
          * @return `true`: the fragment consumes the back press<br></br>`false`: otherwise
          */
         fun dispatchBackPress(fragment: Fragment): Boolean {
-            return (fragment.isResumed
-                    && fragment.isVisible
-                    && fragment.userVisibleHint
-                    && fragment is OnBackClickListener
-                    && (fragment as OnBackClickListener).onBackClick())
+            return (
+                fragment.isResumed &&
+                    fragment.isVisible &&
+                    fragment.userVisibleHint &&
+                    fragment is OnBackClickListener &&
+                    (fragment as OnBackClickListener).onBackClick()
+                )
         }
 
         /**
@@ -1005,17 +1103,17 @@ class FragmentUtils private constructor() {
             if (fragments.isEmpty()) return false
             for (i in fragments.indices.reversed()) {
                 val fragment = fragments[i]
-                if (fragment.isResumed
-                        && fragment.isVisible
-                        && fragment.userVisibleHint
-                        && fragment is OnBackClickListener
-                        && (fragment as OnBackClickListener).onBackClick()) {
+                if (fragment.isResumed &&
+                    fragment.isVisible &&
+                    fragment.userVisibleHint &&
+                    fragment is OnBackClickListener &&
+                    (fragment as OnBackClickListener).onBackClick()
+                ) {
                     return true
                 }
             }
             return false
         }
-
 
         /**
          * Return the simple name of fragment.

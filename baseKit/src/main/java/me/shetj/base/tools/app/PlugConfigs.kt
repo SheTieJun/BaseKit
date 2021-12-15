@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.content.BroadcastReceiver
@@ -30,8 +28,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
-import me.shetj.base.model.PlugLiveData
 import java.util.concurrent.atomic.AtomicBoolean
+import me.shetj.base.model.PlugLiveData
 
 /**
  * 用来判断是否连接上了耳机
@@ -102,5 +100,4 @@ internal class PlugConfigs(val context: Context, var connected: Boolean = false)
             sInstance = null
         }
     }
-
 }

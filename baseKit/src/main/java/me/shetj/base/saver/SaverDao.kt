@@ -21,14 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.saver
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-
 
 @Dao
 interface SaverDao {
@@ -62,5 +63,4 @@ interface SaverDao {
 
     @Update
     fun updateSaver(vararg saver: Saver): Completable
-
 }

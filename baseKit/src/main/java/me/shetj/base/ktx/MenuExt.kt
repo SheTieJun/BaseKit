@@ -21,15 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.view.Menu
 import androidx.core.view.forEach
 
-
-fun Menu?.setVisible(isVisible: Boolean){
+fun Menu?.setVisible(isVisible: Boolean) {
     this?.forEach {
         it.isVisible = isVisible
     }

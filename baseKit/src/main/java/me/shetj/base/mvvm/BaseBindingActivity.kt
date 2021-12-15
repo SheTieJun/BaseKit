@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvvm
-
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -61,11 +58,9 @@ abstract class BaseBindingActivity<VM : ViewModel, VB : ViewBinding> : AbBaseAct
     }
 
     override fun initView() {
-
     }
 
     override fun initData() {
-
     }
 
     /**
@@ -87,12 +82,10 @@ abstract class BaseBindingActivity<VM : ViewModel, VB : ViewBinding> : AbBaseAct
             .invoke(null, layoutInflater) as VB
     }
 
-
     protected open fun getActivityViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mAcProvider == null) {
             mAcProvider = ViewModelProvider(this)
         }
         return mAcProvider!![modelClass]
     }
-
 }

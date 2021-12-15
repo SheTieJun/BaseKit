@@ -21,9 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.request
-
 
 class PostRequest(url: String) : BaseBodyRequest<PostRequest>(url)

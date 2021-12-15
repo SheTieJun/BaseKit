@@ -21,38 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network
 
+import java.io.InputStream
+import java.util.WeakHashMap
+import java.util.concurrent.TimeUnit
+import kotlin.collections.HashMap
 import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
-import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.model.HttpParams
-import me.shetj.base.network.request.*
+import me.shetj.base.network.request.BaseRequest
+import me.shetj.base.network.request.DeleteRequest
+import me.shetj.base.network.request.GetRequest
+import me.shetj.base.network.request.PostRequest
+import me.shetj.base.network.request.PutRequest
 import me.shetj.base.network_coroutine.HttpKit
 import okhttp3.ConnectionPool
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.koin.java.KoinJavaComponent.get
 import retrofit2.Retrofit
-import java.io.InputStream
-import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.collections.HashMap
 
 open class RxHttp private constructor() {
     // region 相关的参数
-    private var mRetryCount: Int = DEFAULT_RETRY_COUNT //重试次数默认3次
+    private var mRetryCount: Int = DEFAULT_RETRY_COUNT // 重试次数默认3次
 
-    private var mRetryDelay: Long = DEFAULT_RETRY_DELAY //延迟xxms重试
+    private var mRetryDelay: Long = DEFAULT_RETRY_DELAY // 延迟xxms重试
 
-    private var mRetryIncreaseDelay: Long = DEFAULT_RETRY_INCREASEDELAY //叠加延迟
+    private var mRetryIncreaseDelay: Long = DEFAULT_RETRY_INCREASEDELAY // 叠加延迟
 
-    private var mCommonHeaders: HttpHeaders? = null //全局公共请求头
-    private var mCommonParams: HttpParams? = null //全局公共请求参数
+    private var mCommonHeaders: HttpHeaders? = null // 全局公共请求头
+    private var mCommonParams: HttpParams? = null // 全局公共请求参数
 
     private var isPrintException: Boolean = false
 
@@ -61,12 +62,12 @@ open class RxHttp private constructor() {
     //region retrofit 相关
     private val retrofitBuilder: Retrofit.Builder = get(Retrofit.Builder::class.java)
     private val okHttpClientBuilder: OkHttpClient.Builder = get(OkHttpClient.Builder::class.java)
-    private var mBaseUrl: String = "https://xxx.com" //必须修改
+    private var mBaseUrl: String = "https://xxx.com" // 必须修改
     private val apiManager: ApiService by lazy {
         getApiManager(ApiService::class.java)
     }
 
-    private var dnsLocalMap = HashMap<String,String>()
+    private var dnsLocalMap = HashMap<String, String>()
 
     private val apiMap = WeakHashMap<String, Any>()
 
@@ -85,20 +86,20 @@ open class RxHttp private constructor() {
     }
 
     private fun initClientSetting() {
-        okHttpClientBuilder.hostnameVerifier { _, _ -> true } //主机验证
+        okHttpClientBuilder.hostnameVerifier { _, _ -> true } // 主机验证
 //        okHttpClientBuilder.connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
 //        okHttpClientBuilder.readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
 //        okHttpClientBuilder.writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
     }
 
     companion object {
-        const val DEFAULT_MILLISECONDS = 20000L //默认的超时时间20秒
+        const val DEFAULT_MILLISECONDS = 20000L // 默认的超时时间20秒
 
-        const val DEFAULT_RETRY_COUNT = 3 //默认重试次数
+        const val DEFAULT_RETRY_COUNT = 3 // 默认重试次数
 
-        const val DEFAULT_RETRY_INCREASEDELAY = 0L //默认重试叠加时间
+        const val DEFAULT_RETRY_INCREASEDELAY = 0L // 默认重试叠加时间
 
-        const val DEFAULT_RETRY_DELAY = 500L //默认重试延时
+        const val DEFAULT_RETRY_DELAY = 500L // 默认重试延时
 
         @Volatile
         private var rxHttp: RxHttp? = null
@@ -142,10 +143,9 @@ open class RxHttp private constructor() {
     /**
      * 设置本地dns 解析
      */
-    fun addDnsMap(hashMap: HashMap<String,String>){
+    fun addDnsMap(hashMap: HashMap<String, String>) {
         dnsLocalMap.putAll(hashMap)
     }
-
 
     internal fun getDnsMap() = dnsLocalMap
 
@@ -153,8 +153,8 @@ open class RxHttp private constructor() {
 
     @Suppress("UNCHECKED_CAST")
     @JvmOverloads
-    open fun <T> getApiManager(clazz: Class<T>,baseUrl:String? = mBaseUrl): T {
-        val apiManager = apiMap[clazz.simpleName+baseUrl]
+    open fun <T> getApiManager(clazz: Class<T>, baseUrl: String? = mBaseUrl): T {
+        val apiManager = apiMap[clazz.simpleName + baseUrl]
         return if (apiManager == null) {
             val client = HttpKit.getOkHttpClientBuilder().apply {
                 mCommonHeaders?.let {
@@ -163,24 +163,24 @@ open class RxHttp private constructor() {
             }.build()
             HttpKit.getRetrofitBuilder().apply {
                 client(client)
-                baseUrl?.let{this.baseUrl(it)}
+                baseUrl?.let { this.baseUrl(it) }
             }.build().create(clazz).also {
-                apiMap[clazz.simpleName+baseUrl] = it
+                apiMap[clazz.simpleName + baseUrl] = it
             }
         } else {
             apiManager as T
         }
     }
 
-
     internal fun getApiManager(baseRequest: BaseRequest<*>): ApiService {
         return if (baseRequest.isDefault) {
-            getDeApiManager() //默认尽量是常用的
+            getDeApiManager() // 默认尽量是常用的
         } else {
-            //直接生成新的
+            // 直接生成新的
             val okHttpClientBuilder: OkHttpClient.Builder = generateOkClient(baseRequest)
             val retrofitBuilder: Retrofit.Builder = generateRetrofit(baseRequest)
-            return retrofitBuilder.client(okHttpClientBuilder.build()).build().create(ApiService::class.java)
+            return retrofitBuilder.client(okHttpClientBuilder.build()).build()
+                .create(ApiService::class.java)
         }
     }
 
@@ -188,30 +188,41 @@ open class RxHttp private constructor() {
         return apiManager
     }
 
-    //根据当前的请求参数，生成对应的OkClient
+    // 根据当前的请求参数，生成对应的OkClient
     private fun generateOkClient(baseRequest: BaseRequest<*>): OkHttpClient.Builder {
-        //使用newBuilder，可以共用线程池
+        // 使用newBuilder，可以共用线程池
         return HttpKit.getOkHttpClient().newBuilder().apply {
-            if (baseRequest.readTimeOut > 0) readTimeout(baseRequest.readTimeOut, TimeUnit.MILLISECONDS)
-            if (baseRequest.writeTimeOut > 0) writeTimeout(baseRequest.writeTimeOut, TimeUnit.MILLISECONDS)
-            if (baseRequest.connectTimeout > 0) connectTimeout(baseRequest.connectTimeout, TimeUnit.MILLISECONDS)
+            if (baseRequest.readTimeOut > 0) readTimeout(
+                baseRequest.readTimeOut,
+                TimeUnit.MILLISECONDS
+            )
+            if (baseRequest.writeTimeOut > 0) writeTimeout(
+                baseRequest.writeTimeOut,
+                TimeUnit.MILLISECONDS
+            )
+            if (baseRequest.connectTimeout > 0) connectTimeout(
+                baseRequest.connectTimeout,
+                TimeUnit.MILLISECONDS
+            )
             if (baseRequest.sslParams != null) {
-                //SSL/TLS证书
-                sslSocketFactory(baseRequest.sslParams!!.sSLSocketFactory,
-                        baseRequest.sslParams!!.trustManager)
+                // SSL/TLS证书
+                sslSocketFactory(
+                    baseRequest.sslParams!!.sSLSocketFactory,
+                    baseRequest.sslParams!!.trustManager
+                )
             }
 
-            //处理拦截器
+            // 处理拦截器
             baseRequest.interceptors.forEach {
                 addInterceptor(it)
             }
-            //处理netInterceptor
+            // 处理netInterceptor
             baseRequest.networkInterceptors.forEach {
                 addNetworkInterceptor(it)
             }
         }.apply {
-            //处理共同的
-            //处理header
+            // 处理共同的
+            // 处理header
             if (!baseRequest.headers.isEmpty) {
                 addInterceptor(HeadersInterceptor(baseRequest.headers))
             }
@@ -224,10 +235,9 @@ open class RxHttp private constructor() {
         }
     }
 
-
     private fun generateRetrofit(baseRequest: BaseRequest<*>): Retrofit.Builder {
         return Retrofit.Builder().apply {
-            //添加转换器
+            // 添加转换器
             if (baseRequest.converterFactories.isEmpty()) {
                 HttpKit.getRetrofitBuilder().converterFactories()
             } else {
@@ -235,7 +245,7 @@ open class RxHttp private constructor() {
             }.forEach {
                 addConverterFactory(it)
             }
-            //添加callAdapter
+            // 添加callAdapter
             if (baseRequest.adapterFactories.isEmpty()) {
                 HttpKit.getRetrofitBuilder().callAdapterFactories()
             } else {
@@ -255,7 +265,6 @@ open class RxHttp private constructor() {
     }
 
     //endregion
-
 
     //region 全局设置BaseUrl，正常情况下请必须修改至少一次
     fun setBaseUrl(mBaseUrl: String?): RxHttp {
@@ -288,7 +297,6 @@ open class RxHttp private constructor() {
         return this
     }
 
-
     /**超时重试次数*/
     fun setRetryCount(retryCount: Int): RxHttp {
         require(retryCount >= 0) { "retryCount must > 0" }
@@ -302,7 +310,6 @@ open class RxHttp private constructor() {
     fun getRetryCount(): Int {
         return getInstance().mRetryCount
     }
-
 
     /**
      * 添加全局公共请求参数
@@ -335,7 +342,6 @@ open class RxHttp private constructor() {
         mCommonHeaders?.put(commonHeaders)
         return this
     }
-
 
     /**
      * 超时重试延迟时间
@@ -371,7 +377,6 @@ open class RxHttp private constructor() {
 
     //endregion
 
-
     //region other
     /**
      * 添加全局拦截器
@@ -384,8 +389,13 @@ open class RxHttp private constructor() {
     /**
      * 网络拦截器：因为网络原因可能执行多次
      */
-    fun addNetInterceptor(interceptor: Interceptor?):RxHttp{
-        okHttpClientBuilder.addNetworkInterceptor(checkNotNull(interceptor, { "interceptor == null" }))
+    fun addNetInterceptor(interceptor: Interceptor?): RxHttp {
+        okHttpClientBuilder.addNetworkInterceptor(
+            checkNotNull(
+                interceptor,
+                { "interceptor == null" }
+            )
+        )
         return this
     }
 
@@ -393,16 +403,21 @@ open class RxHttp private constructor() {
      * 全局设置请求的连接池
      */
     fun setOkconnectionPool(connectionPool: ConnectionPool?): RxHttp {
-        okHttpClientBuilder.connectionPool(checkNotNull(connectionPool, { "setOkconnectionPool  not null" }))
+        okHttpClientBuilder.connectionPool(
+            checkNotNull(
+                connectionPool,
+                { "setOkconnectionPool  not null" }
+            )
+        )
         return this
     }
-
 
     /**
      * https的全局自签名证书
      */
     open fun setCertificates(vararg certificates: InputStream?): RxHttp? {
-        val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, certificates)
+        val sslParams: HttpsUtils.SSLParams =
+            HttpsUtils.getSslSocketFactory(null, null, certificates)
         okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
         return this
     }
@@ -410,8 +425,13 @@ open class RxHttp private constructor() {
     /**
      * https双向认证证书
      */
-    open fun setCertificates(bksFile: InputStream?, password: String?, vararg certificates: InputStream?): RxHttp? {
-        val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(bksFile, password, certificates)
+    open fun setCertificates(
+        bksFile: InputStream?,
+        password: String?,
+        vararg certificates: InputStream?
+    ): RxHttp? {
+        val sslParams: HttpsUtils.SSLParams =
+            HttpsUtils.getSslSocketFactory(bksFile, password, certificates)
         okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
         return this
     }
@@ -425,6 +445,4 @@ open class RxHttp private constructor() {
     }
 
     //endregion
-
-
 }

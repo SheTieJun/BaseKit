@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.os
 
 import java.io.BufferedReader
@@ -39,7 +37,7 @@ object CommandUtils {
         var pro: Process? = null
         var input: BufferedReader? = null
         val runTime = Runtime.getRuntime()
-                ?: throw NullPointerException("reinforce task failed,Runtime is null")
+            ?: throw NullPointerException("reinforce task failed,Runtime is null")
         try {
             pro = runTime.exec(command)
             input = BufferedReader(InputStreamReader(pro.inputStream))

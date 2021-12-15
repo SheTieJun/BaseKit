@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network_coroutine.cache
 
 /**
@@ -32,7 +30,6 @@ package me.shetj.base.network_coroutine.cache
  *  结果缓存
  */
 abstract class IResultCache {
-
 
     /**
      *是否包含
@@ -63,5 +60,4 @@ abstract class IResultCache {
      * 清空缓存
      */
     abstract fun doClear(): Boolean
-
 }

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 @file:Suppress("DEPRECATION")
 
 package me.shetj.base.tools.image
@@ -31,7 +29,16 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -42,19 +49,17 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.annotation.Keep
 import androidx.core.content.FileProvider.getUriForFile
-import me.shetj.base.tools.file.EnvironmentStorage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileDescriptor
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
-
-
+import java.util.Date
+import java.util.Locale
+import me.shetj.base.tools.file.EnvironmentStorage
 
 @Keep
 class ImageUtils {
-
 
     /**
      * 获取图片：(兼容 Android 5-11)
@@ -69,7 +74,7 @@ class ImageUtils {
 
         private const val GET_IMAGE_BY_CAMERA = 5001
         private const val GET_IMAGE_FROM_PHONE = GET_IMAGE_BY_CAMERA + 1
-        private const val GET_IMAGE_FROM_PHONE_NO_CUT = GET_IMAGE_FROM_PHONE + 1 //不剪切
+        private const val GET_IMAGE_FROM_PHONE_NO_CUT = GET_IMAGE_FROM_PHONE + 1 // 不剪切
         private const val CROP_IMAGE = GET_IMAGE_FROM_PHONE_NO_CUT + 1
         private var imageUriFromCamera: Uri? = null
         private var cropImageUri: Uri? = null
@@ -116,7 +121,6 @@ class ImageUtils {
             ) + "/" + imageName + ".jpg"
         }
 
-
         @JvmStatic
         fun createImageUri(context: Context): Uri {
             return context.contentResolver.insert(
@@ -125,16 +129,17 @@ class ImageUtils {
             ) ?: throw NullPointerException("create createImageUri fail")
         }
 
-
         /**
          * 文档图片
          */
         @JvmStatic
         fun selectLocalImage(activity: Activity) {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                flags = (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                flags = (
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
                         or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                        or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                    )
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "image/*"
             }
@@ -174,11 +179,11 @@ class ImageUtils {
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             }
             intent.setDataAndType(srcUri, "image/*")
-            //裁剪图片的宽高比例
+            // 裁剪图片的宽高比例
             intent.putExtra("aspectX", 1)
             intent.putExtra("aspectY", 1)
             intent.putExtra("crop", "true")
-            //可裁剪
+            // 可裁剪
             intent.putExtra("scale", true)
             intent.putExtra("return-data", false)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, cropImageUri)
@@ -237,7 +242,6 @@ class ImageUtils {
             return shareBitmap
         }
 
-
         /**
          * 在 [Activity] onActivityResult 下使用
          * @param context
@@ -286,7 +290,6 @@ class ImageUtils {
                 else -> callBack?.onFail()
             }
         }
-
 
         /**
          * 获取圆形图片
@@ -359,7 +362,7 @@ class ImageUtils {
                 parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "r")
                 if ((parcelFileDescriptor?.fileDescriptor) != null) {
                     fileDescriptor = parcelFileDescriptor.fileDescriptor
-                    //转换uri为bitmap类型
+                    // 转换uri为bitmap类型
                     bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
                 }
             } catch (e: Exception) {
@@ -368,7 +371,6 @@ class ImageUtils {
                 try {
                     parcelFileDescriptor?.close()
                 } catch (e: IOException) {
-
                 }
             }
             return bitmap

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.os.Looper
@@ -43,18 +41,17 @@ fun <T> LiveData<T>.throttleLast(duration: Long = 1000L) = MediatorLiveData<T>()
     val isUpdate = AtomicBoolean(true)
 
     val runnable = Runnable {
-        if (isUpdate.compareAndSet(false,true)){
+        if (isUpdate.compareAndSet(false, true)) {
             mld.value = source.value
         }
     }
 
     mld.addSource(source) {
-        if (isUpdate.compareAndSet(true,false)) {
+        if (isUpdate.compareAndSet(true, false)) {
             handler.postDelayed(runnable, duration)
         }
     }
 }
-
 
 /*** @Author stj
  * * @Date 2021/10/8-18:38
@@ -71,7 +68,7 @@ fun <T> LiveData<T>.throttleFirst(duration: Long = 1000L) = MediatorLiveData<T>(
     }
 
     mld.addSource(source) {
-        if (isUpdate.compareAndSet(true,false)){
+        if (isUpdate.compareAndSet(true, false)) {
             mld.value = source.value
             handler.postDelayed(runnable, duration)
         }
@@ -82,25 +79,24 @@ fun <T> LiveData<T>.throttleLatest(duration: Long = 1000L) = MediatorLiveData<T>
 
     val isLatest = AtomicBoolean(true)
     val source = this
-    val handler =  HandlerCompat.createAsync(Looper.getMainLooper())
+    val handler = HandlerCompat.createAsync(Looper.getMainLooper())
     val isUpdate = AtomicBoolean(true)
 
     val runnable = Runnable {
-        if (isUpdate.compareAndSet(false,true)){
+        if (isUpdate.compareAndSet(false, true)) {
             mld.value = source.value
         }
     }
 
     mld.addSource(source) {
-        if (isLatest.compareAndSet(true,false)){
+        if (isLatest.compareAndSet(true, false)) {
             mld.value = source.value
         }
-        if (isUpdate.compareAndSet(true,false)) {
+        if (isUpdate.compareAndSet(true, false)) {
             handler.postDelayed(runnable, duration)
         }
     }
 }
-
 
 /**  debounce
  * @Author stj
@@ -121,6 +117,5 @@ fun <T> LiveData<T>.debounce(duration: Long = 1000L) = MediatorLiveData<T>().als
         handler.postDelayed(runnable, duration)
     }
 }
-
 
 fun LiveData<Boolean>.isTrue() = value == true

@@ -21,15 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.interceptor
 
+import java.io.IOException
 import me.shetj.base.network.model.HttpHeaders
 import okhttp3.Interceptor
 import okhttp3.Response
 import timber.log.Timber
-import java.io.IOException
 
 class HeadersInterceptor(private val headers: HttpHeaders) : Interceptor {
 
@@ -46,5 +44,4 @@ class HeadersInterceptor(private val headers: HttpHeaders) : Interceptor {
         }
         return chain.proceed(builder.build())
     }
-
 }

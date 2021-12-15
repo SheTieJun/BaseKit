@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.content.Context
@@ -34,12 +32,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.FileUtils
 import me.shetj.base.tools.file.FileUtils.copyFile
-import java.io.File
 
 //region Glide 加载
 
@@ -148,7 +146,6 @@ fun getRequestOptions(
 }
 //endregion
 
-
 fun AppCompatActivity.saveImage(shareCardUrl: String) {
     launch {
         val saveShareCard = saveImage(this@saveImage, shareCardUrl)
@@ -169,12 +166,17 @@ suspend fun saveImage(
         val cacheFile = Glide.with(context)
             .downloadOnly()
             .load(shareCardUrl).submit().get()
-        val filePath = (EnvironmentStorage.filesDir
-                + "Image_" + System.currentTimeMillis() + ".jpg")
+        val filePath = (
+            EnvironmentStorage.filesDir +
+                "Image_" + System.currentTimeMillis() + ".jpg"
+            )
         val targetFile = File(filePath)
-        val resultIsSuccess = copyFile(cacheFile, targetFile, FileUtils.OnReplaceListener {
-            return@OnReplaceListener true
-        })
+        val resultIsSuccess = copyFile(
+            cacheFile, targetFile,
+            FileUtils.OnReplaceListener {
+                return@OnReplaceListener true
+            }
+        )
         if (resultIsSuccess) {
             targetFile
         } else {
@@ -182,8 +184,5 @@ suspend fun saveImage(
         }.also {
             refreshAlbum(context, Uri.fromFile(it).toString())
         }.absolutePath
-
     }
 }
-
-

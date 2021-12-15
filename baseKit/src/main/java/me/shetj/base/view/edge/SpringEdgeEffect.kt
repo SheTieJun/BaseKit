@@ -21,15 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.view.edge
 
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.EdgeEffectFactory.*
+import androidx.recyclerview.widget.RecyclerView.EdgeEffectFactory.DIRECTION_BOTTOM
+import androidx.recyclerview.widget.RecyclerView.EdgeEffectFactory.DIRECTION_RIGHT
+import androidx.recyclerview.widget.RecyclerView.EdgeEffectFactory.DIRECTION_TOP
 import me.shetj.base.ktx.dp2px
 import me.shetj.base.ktx.findEachViewHolder
-
 
 class SpringEdgeEffect(private val recyclerView: RecyclerView, private val direction: Int) :
     AbEdgeEffect(recyclerView.context) {
@@ -45,11 +44,10 @@ class SpringEdgeEffect(private val recyclerView: RecyclerView, private val direc
 
     override fun onPull(deltaDistance: Float, displacement: Float) {
         super.onPull(deltaDistance, displacement)
-        if (direction == DIRECTION_BOTTOM||direction == DIRECTION_TOP) {
+        if (direction == DIRECTION_BOTTOM || direction == DIRECTION_TOP) {
             recyclerView.addTranY(deltaDistance)
         }
     }
-
 
     private fun RecyclerView.addTranY(deltaDistance: Float) {
         val translationYDelta =
@@ -72,17 +70,16 @@ class SpringEdgeEffect(private val recyclerView: RecyclerView, private val direc
         }
     }
 
-
     override fun onRelease() {
         super.onRelease()
-        if (direction == DIRECTION_BOTTOM||direction == DIRECTION_TOP) {
+        if (direction == DIRECTION_BOTTOM || direction == DIRECTION_TOP) {
             recyclerView.addEdgeAnim(20f.dp2px)
         }
     }
 
     override fun onAbsorb(velocity: Int) {
         super.onAbsorb(velocity)
-        if (direction == DIRECTION_BOTTOM||direction == DIRECTION_TOP) {
+        if (direction == DIRECTION_BOTTOM || direction == DIRECTION_TOP) {
             recyclerView.addEdgeAnim(velocity)
         }
     }

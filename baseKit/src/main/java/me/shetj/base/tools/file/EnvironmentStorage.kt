@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.file
 
 import android.content.Context
@@ -32,9 +30,8 @@ import android.os.Environment
 import android.provider.Settings
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
-import me.shetj.base.tools.app.Utils
 import java.io.File
-
+import me.shetj.base.tools.app.Utils
 
 /**
  * SD卡相关的辅助类
@@ -98,11 +95,10 @@ class EnvironmentStorage private constructor() {
         val isSDCardEnable: Boolean
             get() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
 
-
         @RequiresApi(Build.VERSION_CODES.R)
-        fun requestFileAccess(context :Context):Boolean{
-            val isHasStoragePermission =  Environment.isExternalStorageManager()
-            if (!isHasStoragePermission){
+        fun requestFileAccess(context: Context): Boolean {
+            val isHasStoragePermission = Environment.isExternalStorageManager()
+            if (!isHasStoragePermission) {
                 val intent = Intent()
                 intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
                 context.startActivity(intent)
@@ -113,7 +109,7 @@ class EnvironmentStorage private constructor() {
         /**
          * 获取SD卡路径
          *
-         * @return  mnt/sdcard/
+         * @return mnt/sdcard/
          */
         @JvmStatic
         val sdCardPath: String
@@ -123,7 +119,6 @@ class EnvironmentStorage private constructor() {
                 throw RuntimeException("sdcard is unmounted")
             }
 
-
         /**
          * 获取系统存储路径
          * /system
@@ -132,14 +127,12 @@ class EnvironmentStorage private constructor() {
         val rootDirectoryPath: String
             get() = Environment.getRootDirectory().absolutePath
 
-
         /**
          * data/data/< package name >/files/
          */
         @JvmStatic
         val filesDir: String
             get() = Utils.app.filesDir.absolutePath
-
 
         /**
          * mnt/sdcard/Android/data/< package name >/files/type
@@ -171,7 +164,6 @@ class EnvironmentStorage private constructor() {
         val cache: String
             get() = Utils.app.cacheDir.absolutePath
 
-
         @JvmStatic
         val downloadCache: String
             get() = if (Utils.app.externalCacheDir == null) {
@@ -180,6 +172,4 @@ class EnvironmentStorage private constructor() {
                 Utils.app.externalCacheDir!!.absolutePath
             }
     }
-
-
 }

@@ -21,13 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.ohter
 
+import java.net.InetAddress
 import me.shetj.base.network.RxHttp
 import okhttp3.Dns
-import java.net.InetAddress
 
 /**
  * 本地dns 解析
@@ -43,7 +41,7 @@ class OkHttpDns : Dns {
         @Volatile
         private var sInstance: OkHttpDns? = null
 
-        fun getInstance( ): OkHttpDns {
+        fun getInstance(): OkHttpDns {
             return sInstance ?: synchronized(OkHttpDns::class.java) {
                 return OkHttpDns().also {
                     sInstance = it

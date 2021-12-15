@@ -21,25 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.subscriber
 
 import android.content.Context
 import io.reactivex.rxjava3.observers.DisposableObserver
+import java.lang.ref.WeakReference
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.tools.app.NetworkUtils.isAvailable
 import timber.log.Timber
-import java.lang.ref.WeakReference
 
-//继承DisposableObserver 允许被取消
+// 继承DisposableObserver 允许被取消
 abstract class BaseSubscriber<T> : DisposableObserver<T> {
     private var contextWeakReference: WeakReference<Context?>? = null
 
     constructor()
 
     override fun onStart() {
-        if (contextWeakReference != null && contextWeakReference!!.get() != null && !isAvailable(contextWeakReference!!.get()!!)) {
+        if (contextWeakReference != null && contextWeakReference!!.get() != null &&
+            !isAvailable(contextWeakReference!!.get()!!)
+        ) {
             onComplete()
         }
     }

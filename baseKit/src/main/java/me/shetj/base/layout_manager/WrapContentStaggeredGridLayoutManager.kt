@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.layout_manager
 
 import android.content.Context
@@ -33,7 +31,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 class WrapContentStaggeredGridLayoutManager : StaggeredGridLayoutManager {
     constructor(
         context: Context?,
-        attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes) {
     }
 

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.Manifest
@@ -59,6 +57,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
+import java.io.File
+import java.lang.reflect.Method
+import kotlin.coroutines.resume
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -66,10 +67,6 @@ import kotlinx.coroutines.withTimeout
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
-import java.io.File
-import java.lang.reflect.Method
-import kotlin.coroutines.resume
-
 
 /**
  * 用来防止重新进入的时候多次展示 Splash
@@ -187,7 +184,6 @@ fun AppCompatActivity.hasPermission(
     return false
 }
 
-
 fun AppCompatActivity.onRequestPermissionsResultImpl(
     @NonNull permissions: Array<String>,
     @NonNull grantResults: IntArray
@@ -209,7 +205,6 @@ fun AppCompatActivity.onRequestPermissionsResultImpl(
     return sb.toString()
 }
 
-
 inline fun runOnMain(crossinline run: () -> Unit = {}) {
     TaskExecutor.executeOnMain { run() }
 }
@@ -222,18 +217,18 @@ fun isMainThread(): Boolean {
     return Looper.getMainLooper().thread === Thread.currentThread()
 }
 
-//用户滑动最小距离
+// 用户滑动最小距离
 fun Context.getScaledTouch() = ViewConfiguration.get(this).scaledTouchSlop
 
-
-//拦截回退按钮
+// 拦截回退按钮
 inline fun onBackKeyUp(
-    keyCode: Int, @NonNull event: KeyEvent,
+    keyCode: Int,
+    @NonNull event: KeyEvent,
     crossinline onBack: () -> Boolean = { true }
 ): Boolean {
-    if ((keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE)
-        && event.isTracking
-        && !event.isCanceled
+    if ((keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE) &&
+        event.isTracking &&
+        !event.isCanceled
     ) {
         if (onBack()) {
             return true
@@ -252,7 +247,6 @@ fun Activity.onBackGoHome() {
         onBackPressed()
     }
 }
-
 
 inline fun Context.createSimDialog(
     @LayoutRes layoutId: Int,
@@ -298,13 +292,13 @@ internal fun Context.requestNetWork() {
         .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .build()
 
-
-
-    cm.requestNetwork(request, object : ConnectivityManager.NetworkCallback() {
-        override fun onLost(network: Network) {
-            super.onLost(network)
-            NetWorkLiveDate.getInstance().onLost()
-        }
+    cm.requestNetwork(
+        request,
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                NetWorkLiveDate.getInstance().onLost()
+            }
 //        override fun onCapabilitiesChanged (network: Network, networkCapabilities: NetworkCapabilities) {
 //            super.onCapabilitiesChanged(network, networkCapabilities)
 //            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
@@ -322,11 +316,12 @@ internal fun Context.requestNetWork() {
 //                }
 //            }
 //        }
-    })
+        }
+    )
 }
 
 fun Context.getFileProvider(): String {
-    return "${packageName}.FileProvider"
+    return "$packageName.FileProvider"
 }
 
 fun Activity.getWindowContent(): FrameLayout? {
@@ -341,12 +336,12 @@ fun Activity.getWindowContent(): FrameLayout? {
  */
 suspend fun refreshAlbum(context: Context, fileUri: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        //no work
+        // no work
         withTimeout(5000) {
             val mediaScanner = context.getMediaScanner()
             mediaScanner.scanFile(fileUri, "image/jpeg")
         }
-    }else{
+    } else {
         val file = File(fileUri)
         MediaScannerConnection.scanFile(
             context, arrayOf(file.toString()),
@@ -358,16 +353,17 @@ suspend fun refreshAlbum(context: Context, fileUri: String) {
 suspend fun Context.getMediaScanner(): MediaScannerConnection = withContext(Dispatchers.IO) {
     return@withContext suspendCancellableCoroutine {
         var mMediaScanner: MediaScannerConnection? = null
-        mMediaScanner = MediaScannerConnection(this@getMediaScanner,
+        mMediaScanner = MediaScannerConnection(
+            this@getMediaScanner,
             object : MediaScannerConnection.MediaScannerConnectionClient {
                 override fun onMediaScannerConnected() {
                     it.resume(mMediaScanner!!)
                 }
 
                 override fun onScanCompleted(path: String?, uri: Uri?) {
-
                 }
-            })
+            }
+        )
         mMediaScanner.connect()
     }
 }

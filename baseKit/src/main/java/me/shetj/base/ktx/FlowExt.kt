@@ -21,24 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
+import java.util.Timer
+import java.util.TimerTask
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
-import java.util.Timer
-import java.util.TimerTask
-
 
 fun <T> Flow<T>.throttleFirst(duration: Long = 1000L) = this.throttleFirstImpl(duration)
-
 
 fun <T> Flow<T>.throttleLast(duration: Long = 1000L) = this.sample(duration)
 
@@ -54,9 +50,6 @@ internal fun <T> Flow<T>.throttleFirstImpl(periodMillis: Long): Flow<T> {
         }
     }
 }
-
-
-
 
 @ExperimentalCoroutinesApi
 fun <T> Flow<T>.throttleLatest(duration: Long = 1000L) = this.throttleLatestImpl(duration)

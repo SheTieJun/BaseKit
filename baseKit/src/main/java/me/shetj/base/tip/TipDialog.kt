@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tip
 
 import android.content.Context
@@ -33,16 +31,14 @@ import androidx.appcompat.app.AppCompatActivity
 import me.shetj.base.R
 import me.shetj.base.weight.AbLoadingDialog
 
-
 /**
  * 如果可以：android:configChanges="orientation|keyboardHidden|screenSize"
  */
 class TipDialog : AbLoadingDialog() {
 
-
     override fun createLoading(context: Context, cancelable: Boolean, msg: CharSequence, image: Int?): AlertDialog {
         val view = LayoutInflater.from(context).inflate(R.layout.base_dialog_tip, null)
-        return AlertDialog.Builder(context,R.style.trans_dialog).apply {
+        return AlertDialog.Builder(context, R.style.trans_dialog).apply {
             val tvMsg = view.findViewById<TextView>(R.id.tv_msg)
             tvMsg.text = msg
             setView(view)
@@ -53,9 +49,12 @@ class TipDialog : AbLoadingDialog() {
     companion object {
         @JvmStatic
         @JvmOverloads
-        fun showTip(context: AppCompatActivity, msg: CharSequence = "加载中...",  @LoadingTipsDuration time: Long = LOADING_SHORT): AbLoadingDialog {
-            return TipDialog().showTip(context, false, msg = msg,null,time = time)
+        fun showTip(
+            context: AppCompatActivity,
+            msg: CharSequence = "加载中...",
+            @LoadingTipsDuration time: Long = LOADING_SHORT
+        ): AbLoadingDialog {
+            return TipDialog().showTip(context, false, msg = msg, null, time = time)
         }
     }
-
 }

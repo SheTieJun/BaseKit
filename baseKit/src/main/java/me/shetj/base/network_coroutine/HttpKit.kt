@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network_coroutine
 
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
@@ -42,7 +40,7 @@ object HttpKit {
         return KoinJavaComponent.get(OkHttpClient.Builder::class.java)
     }
 
-    //对外暴露 Retrofit,方便自定义
+    // 对外暴露 Retrofit,方便自定义
     fun getRetrofitBuilder(): Retrofit.Builder {
         return KoinJavaComponent.get(Retrofit.Builder::class.java)
     }

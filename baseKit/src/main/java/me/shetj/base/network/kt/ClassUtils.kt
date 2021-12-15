@@ -21,17 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.kt
 
-import okhttp3.RequestBody
 import java.lang.reflect.GenericArrayType
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.lang.reflect.TypeVariable
 import java.util.Collections
 import kotlin.collections.ArrayList
+import okhttp3.RequestBody
 
 /**
  * [Type] 父类
@@ -42,14 +40,13 @@ import kotlin.collections.ArrayList
  */
 object ClassUtils {
 
-
     /**
      * find the type by interfaces
      *
      * @param cls
      * @param <R>
      * @return
-    </R> */
+     </R> */
     fun <R> findNeedType(cls: Class<R>): Type {
         val typeList = getMethodTypes(cls)
         return if (typeList == null || typeList.isEmpty()) {
@@ -159,17 +156,17 @@ object ClassUtils {
      *
      * @param <T>
      * @return
-    </T> */
+     </T> */
     fun <T> findNeedClass(cls: Class<T>): Type {
-        //以下代码是通过泛型解析实际参数,泛型必须传
-        val genType = cls.genericSuperclass //获取父类
-        val params = (genType as ParameterizedType?)!!.actualTypeArguments //获取<>
-        val type = params[0]//date?
-        val finalNeedType: Type = if (params.size > 1) { //这个类似是：CacheResult<SkinTestResult> 2层
+        // 以下代码是通过泛型解析实际参数,泛型必须传
+        val genType = cls.genericSuperclass // 获取父类
+        val params = (genType as ParameterizedType?)!!.actualTypeArguments // 获取<>
+        val type = params[0] // date?
+        val finalNeedType: Type = if (params.size > 1) { // 这个类似是：CacheResult<SkinTestResult> 2层
             check(type is ParameterizedType) { "没有填写泛型参数" }
             type.actualTypeArguments[0]
-            //Type rawType = ((ParameterizedType) type).getRawType();
-        } else { //这个类似是:SkinTestResult  1层
+            // Type rawType = ((ParameterizedType) type).getRawType();
+        } else { // 这个类似是:SkinTestResult  1层
             type
         }
         return finalNeedType
@@ -179,7 +176,7 @@ object ClassUtils {
      * 普通类反射获取泛型方式，获取最顶层的类型
      */
     fun <T> findRawType(cls: Class<T>): Type {
-        val genType = cls.genericSuperclass //getGenericSuperclass() 获得该类带有泛型的父类
+        val genType = cls.genericSuperclass // getGenericSuperclass() 获得该类带有泛型的父类
         return getGenericType(genType as ParameterizedType?, 0)
     }
 }

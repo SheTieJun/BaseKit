@@ -21,13 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.share
 
 import androidx.annotation.StringDef
 
-@StringDef(ShareContentType.TEXT, ShareContentType.IMAGE, ShareContentType.AUDIO, ShareContentType.VIDEO, ShareContentType.FILE)
+@StringDef(
+    ShareContentType.TEXT,
+    ShareContentType.IMAGE,
+    ShareContentType.AUDIO,
+    ShareContentType.VIDEO,
+    ShareContentType.FILE
+)
 @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
 annotation class ShareContentType {
     companion object {

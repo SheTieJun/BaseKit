@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvp
 
-class EmptyPresenter(view:IView):BasePresenter<BaseModel>(view)
+class EmptyPresenter(view: IView) : BasePresenter<BaseModel>(view)

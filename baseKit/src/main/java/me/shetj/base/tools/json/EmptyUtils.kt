@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.json
 
 import android.text.TextUtils
@@ -31,8 +29,8 @@ import android.util.SparseBooleanArray
 import android.util.SparseIntArray
 import android.util.SparseLongArray
 import androidx.annotation.Keep
-import me.shetj.base.tools.app.ArmsUtils
 import java.lang.reflect.Array
+import me.shetj.base.tools.app.ArmsUtils
 
 @Keep
 class EmptyUtils private constructor() {
@@ -97,6 +95,5 @@ class EmptyUtils private constructor() {
             }
             return false
         }
-
     }
 }

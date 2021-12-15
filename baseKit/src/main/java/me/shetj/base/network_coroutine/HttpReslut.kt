@@ -21,17 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 @file:Suppress("UNCHECKED_CAST")
 
 package me.shetj.base.network_coroutine
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import me.shetj.base.network.exception.ApiException
 import java.io.File
-
+import me.shetj.base.network.exception.ApiException
 
 //region 下载状态相关
 typealias OnError = (ApiException) -> Unit
@@ -42,6 +39,7 @@ typealias download_success = suspend (uri: File) -> Unit
 sealed class DownloadStatus {
     data class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) :
         DownloadStatus()
+
     data class DownloadError(val t: ApiException) : DownloadStatus()
     data class DownloadSuccess(val file: File) : DownloadStatus()
 }
@@ -55,7 +53,6 @@ class HttpResult<out T> constructor(val value: Any?) {
 
     val isSuccess: Boolean get() = value !is Failure && value !is Progress
 
-
     val isFailure: Boolean get() = value is Failure
 
     val isLoading: Boolean get() = value is Progress
@@ -66,13 +63,11 @@ class HttpResult<out T> constructor(val value: Any?) {
             else -> value as T
         }
 
-
     fun exceptionOrNull(): Throwable? =
         when (value) {
             is Failure -> value.exception
             else -> null
         }
-
 
     override fun toString(): String =
         when (value) {
@@ -81,7 +76,6 @@ class HttpResult<out T> constructor(val value: Any?) {
         }
 
     // companion with constructors
-
 
     companion object {
         fun <T> success(value: T): HttpResult<T> =
@@ -92,7 +86,6 @@ class HttpResult<out T> constructor(val value: Any?) {
 
         fun <T> progress(currentLength: Long, length: Long, process: Float): HttpResult<T> =
             HttpResult(createLoading(currentLength, length, process))
-
     }
 
     data class Failure(
@@ -109,15 +102,12 @@ class HttpResult<out T> constructor(val value: Any?) {
 private fun createFailure(exception: Throwable): HttpResult.Failure =
     HttpResult.Failure(exception)
 
-
 private fun createLoading(currentLength: Long, length: Long, process: Float) =
     HttpResult.Progress(currentLength, length, process)
-
 
 fun HttpResult<*>.throwOnFailure() {
     if (value is HttpResult.Failure) throw value.exception
 }
-
 
 inline fun <R> runCatching(block: () -> R): HttpResult<R> {
     return try {
@@ -126,7 +116,6 @@ inline fun <R> runCatching(block: () -> R): HttpResult<R> {
         HttpResult.failure(ApiException.handleException(e))
     }
 }
-
 
 inline fun <T, R> T.runCatching(block: T.() -> R): HttpResult<R> {
     return try {
@@ -138,12 +127,10 @@ inline fun <T, R> T.runCatching(block: T.() -> R): HttpResult<R> {
 
 // -- extensions ---
 
-
 fun <T> HttpResult<T>.getOrThrow(): T {
     throwOnFailure()
     return value as T
 }
-
 
 inline fun <R, T : R> HttpResult<T>.getOrElse(onFailure: (exception: Throwable) -> R): R {
     return when (val exception = exceptionOrNull()) {
@@ -151,7 +138,6 @@ inline fun <R, T : R> HttpResult<T>.getOrElse(onFailure: (exception: Throwable) 
         else -> onFailure(exception)
     }
 }
-
 
 fun <R, T : R> HttpResult<T>.getOrDefault(defaultValue: R): R {
     if (isFailure) return defaultValue
@@ -184,7 +170,6 @@ inline fun <R, T> HttpResult<T>.fold(
             onSuccess(value as T)
         }
     }
-
 }
 
 // transformation
@@ -197,7 +182,6 @@ inline fun <R, T> HttpResult<T>.map(transform: (value: T) -> R): HttpResult<R> {
     }
 }
 
-
 inline fun <R, T> HttpResult<T>.mapCatching(transform: (value: T) -> R): HttpResult<R> {
     return when {
         isSuccess -> runCatching { transform(value as T) }
@@ -205,8 +189,9 @@ inline fun <R, T> HttpResult<T>.mapCatching(transform: (value: T) -> R): HttpRes
     }
 }
 
-
-inline fun <R, T : R> HttpResult<T>.recover(transform: (exception: Throwable) -> R): HttpResult<R?> {
+inline fun <R, T : R> HttpResult<T>.recover(
+    transform: (exception: Throwable) -> R
+): HttpResult<R?> {
 
     return when (val exception = exceptionOrNull()) {
         null -> this
@@ -217,19 +202,19 @@ inline fun <R, T : R> HttpResult<T>.recover(transform: (exception: Throwable) ->
 /**
  * 把异常转成可以用的数据
  */
-inline fun <R, T : R> HttpResult<T>.recoverCatching(transform: (exception: Throwable) -> R): HttpResult<R> {
+inline fun <R, T : R> HttpResult<T>.recoverCatching(
+    transform: (exception: Throwable) -> R
+): HttpResult<R> {
     return when (val exception = exceptionOrNull()) {
         null -> this
         else -> runCatching { transform(exception) }
     }
 }
 
-
 inline fun <T> HttpResult<T>.onFailure(action: (exception: Throwable) -> Unit): HttpResult<T> {
     exceptionOrNull()?.let { action(it) }
     return this
 }
-
 
 inline fun <T> HttpResult<T>.onSuccess(action: OnSuccess<T>): HttpResult<T> {
     if (isSuccess) action(value as T)

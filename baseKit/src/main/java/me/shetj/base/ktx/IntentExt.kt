@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.content.Context
@@ -31,12 +29,10 @@ import android.net.Uri
 import android.provider.Settings
 import java.io.File
 
-
 fun Intent?.getQueryParameter(key: String): String? {
     val uri = this?.data
     return uri?.getQueryParameter(key)
 }
-
 
 fun Context.openMarket() {
     val uri: Uri = Uri.parse("market://details?id=$packageName")
@@ -52,8 +48,7 @@ fun Context.openSetting() {
     startActivity(intent)
 }
 
-
-fun Context.openWifiSetting(){
+fun Context.openWifiSetting() {
     val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
     startActivity(intent)
 }
@@ -68,7 +63,6 @@ fun Context.sendEmailText(addresses: String = "375105540@qq.com", title: String,
     }
     startActivity(Intent.createChooser(intent, title))
 }
-
 
 fun Context.sendEmailFile(addresses: String = "375105540@qq.com", title: String, file: File) {
     val intent = Intent(Intent.ACTION_SEND).apply {

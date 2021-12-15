@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 @file:Suppress("DEPRECATION")
 
 package me.shetj.base.tools.app
@@ -80,7 +78,7 @@ object NetworkUtils {
      */
     private fun getActiveNetworkInfo(context: Context): NetworkInfo? {
         val cm = context
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetworkInfo
     }
 
@@ -123,7 +121,7 @@ object NetworkUtils {
      */
     fun isWifiConnected(context: Context): Boolean {
         val cm = context
-                .getSystemService(Context.CONNECTIVITY_SERVICE)
+            .getSystemService(Context.CONNECTIVITY_SERVICE)
         return cm?.let { it as ConnectivityManager }?.activeNetworkInfo?.type == ConnectivityManager.TYPE_WIFI
     }
 
@@ -135,7 +133,7 @@ object NetworkUtils {
      */
     fun getNetworkOperatorName(context: Context): String? {
         val tm = context
-                .getSystemService(Context.TELEPHONY_SERVICE)
+            .getSystemService(Context.TELEPHONY_SERVICE)
         return tm?.let { it as TelephonyManager }?.networkOperatorName
     }
 
@@ -150,7 +148,7 @@ object NetworkUtils {
      */
     fun getPhoneType(context: Context): Int {
         val tm = context
-                .getSystemService(Context.TELEPHONY_SERVICE)
+            .getSystemService(Context.TELEPHONY_SERVICE)
         return tm?.let { it as TelephonyManager }?.phoneType ?: -1
     }
 
@@ -190,9 +188,10 @@ object NetworkUtils {
                         TelephonyManager.NETWORK_TYPE_NR -> NETWORK_5G
                         else -> {
                             val subtypeName = info.subtypeName
-                            if (subtypeName.equals("TD-SCDMA", ignoreCase = true)
-                                || subtypeName.equals("WCDMA", ignoreCase = true)
-                                || subtypeName.equals("CDMA2000", ignoreCase = true)) {
+                            if (subtypeName.equals("TD-SCDMA", ignoreCase = true) ||
+                                subtypeName.equals("WCDMA", ignoreCase = true) ||
+                                subtypeName.equals("CDMA2000", ignoreCase = true)
+                            ) {
                                 NETWORK_3G
                             } else {
                                 NETWORK_UNKNOWN

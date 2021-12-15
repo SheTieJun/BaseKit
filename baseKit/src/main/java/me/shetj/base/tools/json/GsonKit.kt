@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.json
 
 import androidx.annotation.Keep
@@ -36,11 +34,10 @@ import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
-import timber.log.Timber
 import java.io.IOException
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
-
+import timber.log.Timber
 
 /**
  * @author shetj
@@ -53,40 +50,46 @@ object GsonKit {
                 Modifier.TRANSIENT,
                 Modifier.STATIC
             )
-            .registerTypeAdapter(Int::class.java, object : TypeAdapter<Int?>() {
-                @Throws(IOException::class)
-                override fun write(out: JsonWriter, value: Int?) {
-                    out.value(value.toString())
-                }
+            .registerTypeAdapter(
+                Int::class.java,
+                object : TypeAdapter<Int?>() {
+                    @Throws(IOException::class)
+                    override fun write(out: JsonWriter, value: Int?) {
+                        out.value(value.toString())
+                    }
 
-                @Throws(IOException::class)
-                override fun read(`in`: JsonReader): Int? {
-                    if (`in`.peek() == JsonToken.NULL) {
-                        `in`.nextNull()
-                        return null
-                    }
-                    return try {
-                        Integer.valueOf(`in`.nextString())
-                    } catch (e: NumberFormatException) {
-                        0
+                    @Throws(IOException::class)
+                    override fun read(`in`: JsonReader): Int? {
+                        if (`in`.peek() == JsonToken.NULL) {
+                            `in`.nextNull()
+                            return null
+                        }
+                        return try {
+                            Integer.valueOf(`in`.nextString())
+                        } catch (e: NumberFormatException) {
+                            0
+                        }
                     }
                 }
-            }).registerTypeAdapter(Float::class.java, object : TypeAdapter<Float>() {
-                @Throws(IOException::class)
-                override fun write(out: JsonWriter, value: Float?) {
-                    out.value(value.toString())
-                }
+            ).registerTypeAdapter(
+                Float::class.java,
+                object : TypeAdapter<Float>() {
+                    @Throws(IOException::class)
+                    override fun write(out: JsonWriter, value: Float?) {
+                        out.value(value.toString())
+                    }
 
-                @Throws(IOException::class)
-                override fun read(`in`: JsonReader): Float {
-                    return try {
-                        java.lang.Float.valueOf(`in`.nextString())
-                    } catch (e: NumberFormatException) {
-                        0f
+                    @Throws(IOException::class)
+                    override fun read(`in`: JsonReader): Float {
+                        return try {
+                            java.lang.Float.valueOf(`in`.nextString())
+                        } catch (e: NumberFormatException) {
+                            0f
+                        }
                     }
                 }
-            })//比如我们想排除私有字段不被序列化/反序列，默认
-            .serializeNulls()//serializeNulls支持空对象序列化
+            ) // 比如我们想排除私有字段不被序列化/反序列，默认
+            .serializeNulls() // serializeNulls支持空对象序列化
             .create()
     }
 
@@ -133,7 +136,6 @@ object GsonKit {
         }.getOrNull()
     }
 
-
     @JvmStatic
     fun <T> jsonToList2(@NonNull json: String, cls: Class<T>): List<T>? {
         return runCatching<List<T>> {
@@ -152,12 +154,14 @@ object GsonKit {
     @JvmStatic
     fun jsonToMap(@NonNull gsonString: String): Map<String, Any>? {
         return runCatching<Map<String, Any>> {
-            gson.fromJson(gsonString, object : TypeToken<Map<String, Any>>() {
-            }.type)
+            gson.fromJson(
+                gsonString,
+                object : TypeToken<Map<String, Any>>() {
+                }.type
+            )
         }.onFailure {
             Timber.e(it)
         }.getOrNull()
-
     }
 
     /**
@@ -205,11 +209,13 @@ object GsonKit {
     @JvmStatic
     fun getJsonValue(@NonNull jsonStr: String, key: String): Any? {
         return kotlin.runCatching {
-            gson.fromJson<Map<String, Any>>(jsonStr, object : TypeToken<Map<String, Any>>() {
-            }.type)?.let { it[key] }
+            gson.fromJson<Map<String, Any>>(
+                jsonStr,
+                object : TypeToken<Map<String, Any>>() {
+                }.type
+            )?.let { it[key] }
         }.onFailure {
             Timber.e(it)
         }.getOrNull()
     }
-
 }

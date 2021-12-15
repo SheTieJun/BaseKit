@@ -21,14 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.file
 
+import java.util.regex.Pattern
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.regex.Pattern
 
 /**
  * <pre>
@@ -101,7 +99,13 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun equalsIgnoreCase(a: String, b: String?): Boolean {
-            return a == b || b != null && a.length == b.length && a.regionMatches(0, b, 0, b.length, ignoreCase = true)
+            return a == b || b != null && a.length == b.length && a.regionMatches(
+                0,
+                b,
+                0,
+                b.length,
+                ignoreCase = true
+            )
         }
 
         /**
@@ -134,7 +138,8 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun upperFirstLetter(s: String): String {
-            return if (isEmpty(s) || !Character.isLowerCase(s[0])) s else (s[0].code - 32).toChar().toString() + s.substring(1)
+            return if (isEmpty(s) || !Character.isLowerCase(s[0])) s else (s[0].code - 32).toChar()
+                .toString() + s.substring(1)
         }
 
         /**
@@ -233,7 +238,6 @@ class StringUtils private constructor() {
             return String(chars)
         }
 
-
         /**
          * 字符串转换成十六进制字符串
          *
@@ -255,7 +259,6 @@ class StringUtils private constructor() {
             }
             return sb.toString().trim { it <= ' ' }
         }
-
 
         /**
          * json 格式化
@@ -286,7 +289,7 @@ class StringUtils private constructor() {
         @JvmStatic
         fun isMobileNO(mobiles: String): Boolean {
             val p = Pattern
-                    .compile("^[1][0-9][0-9]{9}$")
+                .compile("^[1][0-9][0-9]{9}$")
             val m = p.matcher(mobiles)
             return m.matches()
         }
@@ -298,7 +301,6 @@ class StringUtils private constructor() {
             return m.matches()
         }
 
-
         /**
          * 验证身份证号是否符合规则
          * @param text 身份证号
@@ -309,22 +311,22 @@ class StringUtils private constructor() {
             val regx = "[0-9]{17}x"
             val reg1 = "[0-9]{15}"
             val regex = "[0-9]{18}"
-            return text.matches(regx.toRegex()) || text.matches(reg1.toRegex()) || text.matches(regex.toRegex())
+            return text.matches(regx.toRegex()) ||
+                text.matches(reg1.toRegex()) || text.matches(regex.toRegex())
         }
 
         /** * 检测是否有emoji表情 * @param source * @return  */
         @JvmStatic
-        fun containsEmoji(source: String): Boolean {                          //两种方法限制emoji
+        fun containsEmoji(source: String): Boolean { // 两种方法限制emoji
             val len = source.length
             for (i in 0 until len) {
                 val codePoint = source[i]
-                if (!isEmojiCharacter(codePoint)) { //如果不能匹配,则该字符是Emoji表情
+                if (!isEmojiCharacter(codePoint)) { // 如果不能匹配,则该字符是Emoji表情
                     return true
                 }
             }
             return false
         }
-
 
         /**
          * 判断是否是Emoji
@@ -332,10 +334,13 @@ class StringUtils private constructor() {
          * @return
          */
         private fun isEmojiCharacter(codePoint: Char): Boolean {
-            return (codePoint.code == 0x0 || codePoint.code == 0x9 || codePoint.code == 0xA || codePoint.code == 0xD
-                    || codePoint.code in 0x20..0xD7FF
-                    || codePoint.code in 0xE000..0xFFFD
-                    || codePoint.code in 0x10000..0x10FFFF)
+            return (
+                codePoint.code == 0x0 || codePoint.code == 0x9 ||
+                    codePoint.code == 0xA || codePoint.code == 0xD ||
+                    codePoint.code in 0x20..0xD7FF ||
+                    codePoint.code in 0xE000..0xFFFD ||
+                    codePoint.code in 0x10000..0x10FFFF
+                )
         }
 
         @JvmStatic

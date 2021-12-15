@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.content.Context
@@ -88,7 +86,6 @@ fun TextView.setDrawables(
             Gravity.BOTTOM -> setCompoundDrawablesRelative(null, null, null, it)
         }
     }
-
 }
 
 /**
@@ -121,7 +118,6 @@ fun TextView.setBold(isBold: Boolean) {
     }
 }
 //endregion TextView
-
 
 //region ViewGroup
 @Suppress("UNCHECKED_CAST")
@@ -186,7 +182,6 @@ inline fun <T : View> T?.waitForLayout(crossinline f: T.() -> Unit) =
 fun <T : View> T.isRtl() = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 //endregion 泛型
 
-
 //region View
 /**
  * 不切割子view
@@ -205,7 +200,6 @@ fun View?.disableClipOnParents() {
         (parent as View).disableClipOnParents()
     }
 }
-
 
 /**
  * 显示密码文本

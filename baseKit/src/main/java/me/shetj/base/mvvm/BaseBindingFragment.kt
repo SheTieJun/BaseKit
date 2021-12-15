@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvvm
 
 import android.os.Bundle
@@ -48,7 +46,7 @@ import org.greenrobot.eventbus.EventBus
  *
  * 不可见:   [Lifecycle.Event.ON_RESUME]  ->[Lifecycle.Event.ON_PAUSE]
  *
- * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
+ * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  *
  * if stop -> 到可见，需要start
  */
@@ -111,7 +109,6 @@ abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFra
      */
     open fun useActivityVM() = false
 
-
     protected open fun getFragmentViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mFragmentProvider == null) {
             mFragmentProvider = ViewModelProvider(this)
@@ -125,5 +122,4 @@ abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFra
         }
         return mActivityProvider!!.get(modelClass)
     }
-
 }

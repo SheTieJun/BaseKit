@@ -21,13 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.util.Log
-import timber.log.Timber
 import java.io.File
+import timber.log.Timber
 
 object Tim {
 
@@ -39,10 +37,10 @@ object Tim {
      */
     fun setLogAuto(isDebug: Boolean) {
         Timber.uprootAll()
-        //打印关，同时gradle中的release的debuggable要设置为false
+        // 打印关，同时gradle中的release的debuggable要设置为false
         if (isDebug) {
             Timber.plant(Timber.DebugTree())
-        } else {//release版本
+        } else { // release版本
             Timber.plant(CrashReportingTree())
         }
     }
@@ -54,15 +52,15 @@ object Tim {
      * 注意，如果读取存储需要权限申请的话，需要先获得权限，才能调用
      */
     fun setLogAutoEx(isDebug: Boolean) {
-        if (isDebug) {//debug版本
+        if (isDebug) { // debug版本
             Timber.plant(Timber.DebugTree())
-        } else {//release版本
+        } else { // release版本
             val logFile = File(LOG_FILE_PATH)
             if (logFile.exists()) {
-                //打印开
+                // 打印开
                 Timber.plant(Timber.DebugTree())
             } else {
-                //打印关，同时gradle中的release的debuggable要设置为false
+                // 打印关，同时gradle中的release的debuggable要设置为false
                 Timber.plant(CrashReportingTree())
             }
         }
@@ -82,7 +80,6 @@ object Tim {
                         // FakeCrashLibrary.logWarning(t);
                     }
                     else -> {
-
                     }
                 }
             }

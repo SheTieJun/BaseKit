@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.file
 
 import android.content.Context
@@ -98,7 +96,7 @@ class SPEncryptedUtils {
         @JvmStatic
         fun getSet(context: Context, key: String): Set<String>? {
             val sp = getSharePreference(context)
-            return sp.getStringSet(key,null)
+            return sp.getStringSet(key, null)
         }
 
         /**
@@ -136,11 +134,12 @@ class SPEncryptedUtils {
 
         private fun getSharePreference(context: Context): SharedPreferences {
             val masterKey = MasterKey.Builder(context).build()
-            return EncryptedSharedPreferences.create(context,
-                    "shared_preferences_encrypted",
-                    masterKey,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            return EncryptedSharedPreferences.create(
+                context,
+                "shared_preferences_encrypted",
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
         }
 
@@ -169,5 +168,4 @@ class SPEncryptedUtils {
             return sp.all
         }
     }
-
 }

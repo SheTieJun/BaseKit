@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.interceptor
 
 import me.shetj.base.tools.app.NetworkUtils
@@ -30,7 +28,6 @@ import me.shetj.base.tools.app.Utils
 import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.Response
-
 
 /**
  * "public"	所有内容都将被缓存(客户端和代理服务器都可缓存)<BR/>
@@ -47,7 +44,7 @@ import okhttp3.Response
 
 同时设置max-stale和max-age，缓存失效的时间按最长的算。(这个其实不用纠结) <BR/>
  */
-class CacheInterceptor :Interceptor{
+class CacheInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val request = chain.request()
@@ -56,19 +53,19 @@ class CacheInterceptor :Interceptor{
 
         val availableNet = NetworkUtils.isAvailable(Utils.app)
 
-        if (availableNet && cacheControl.isNotEmpty()){
+        if (availableNet && cacheControl.isNotEmpty()) {
             request.newBuilder()
-                    .cacheControl(CacheControl.FORCE_CACHE)
-                    .build()
+                .cacheControl(CacheControl.FORCE_CACHE)
+                .build()
         }
 
-        if (cacheControl.isEmpty() || "no-store" == cacheControl){
+        if (cacheControl.isEmpty() || "no-store" == cacheControl) {
             cacheControl = "no-store"
-        }else if (availableNet){
+        } else if (availableNet) {
             cacheControl = "public,max-age=0"
         }
         val response = chain.proceed(request)
-        return response.newBuilder().header("cache-Control",cacheControl)
-                .removeHeader("Pragma").build()
-     }
+        return response.newBuilder().header("cache-Control", cacheControl)
+            .removeHeader("Pragma").build()
+    }
 }

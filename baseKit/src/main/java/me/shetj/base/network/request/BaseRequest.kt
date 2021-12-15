@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.request
 
 import android.text.TextUtils
@@ -31,6 +29,7 @@ import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.io.InputStream
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network.api.ApiService
 import me.shetj.base.network.callBack.NetCallBack
@@ -49,31 +48,29 @@ import okhttp3.Interceptor
 import okhttp3.ResponseBody
 import retrofit2.CallAdapter
 import retrofit2.Converter
-import java.io.InputStream
 
 @Suppress("UNCHECKED_CAST")
 abstract class BaseRequest<R : BaseRequest<R>>() {
     var baseUrl: String? = null
-    var readTimeOut: Long = 0 //读超时
-    var writeTimeOut: Long = 0 //写超时
-    var connectTimeout: Long = 0//链接超时
-    val networkInterceptors: MutableList<Interceptor> = ArrayList() //添加网络拦截器
-    val interceptors: MutableList<Interceptor> = ArrayList() //自定义拦截器，对数据处理
+    var readTimeOut: Long = 0 // 读超时
+    var writeTimeOut: Long = 0 // 写超时
+    var connectTimeout: Long = 0 // 链接超时
+    val networkInterceptors: MutableList<Interceptor> = ArrayList() // 添加网络拦截器
+    val interceptors: MutableList<Interceptor> = ArrayList() // 自定义拦截器，对数据处理
     var converterFactories: MutableList<Converter.Factory> = ArrayList()
     var adapterFactories: MutableList<CallAdapter.Factory> = ArrayList()
-    var headers: HttpHeaders = HttpHeaders() //添加的header
-    var isDefault = true //使用默认的ApiManager
+    var headers: HttpHeaders = HttpHeaders() // 添加的header
+    var isDefault = true // 使用默认的ApiManager
     var sslParams: HttpsUtils.SSLParams? = null
 
     protected var httpUrl: HttpUrl? = null
-    protected var url: String? = null //请求url
-    protected var retryCount = 0//重试次数默认3次
-    protected var retryDelay = 0L //延迟xxms重试
-    protected var retryIncreaseDelay = 0L//叠加延迟
-    protected var isSyncRequest = false //是否是同步请求
-    protected var params: HttpParams = HttpParams() //添加的param
-    protected var apiManager: ApiService? = null //通用的的api接口
-
+    protected var url: String? = null // 请求url
+    protected var retryCount = 0 // 重试次数默认3次
+    protected var retryDelay = 0L // 延迟xxms重试
+    protected var retryIncreaseDelay = 0L // 叠加延迟
+    protected var isSyncRequest = false // 是否是同步请求
+    protected var params: HttpParams = HttpParams() // 添加的param
+    protected var apiManager: ApiService? = null // 通用的的api接口
 
     constructor(url: String, isDefault: Boolean) : this(url) {
         this.isDefault = isDefault
@@ -92,7 +89,6 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
         return this as R
     }
 
-
     open fun readTimeOut(readTimeOut: Long): R {
         this.readTimeOut = readTimeOut
         return this as R
@@ -107,7 +103,6 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
         this.connectTimeout = connectTimeout
         return this as R
     }
-
 
     open fun retryCount(retryCount: Int): R {
         require(retryCount >= 0) { "retryCount must > 0" }
@@ -136,7 +131,6 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
         networkInterceptors.add(checkNotNull(interceptor, { "interceptor == null" }))
         return this as R
     }
-
 
     /**
      * 设置Converter.Factory,默认GsonConverterFactory.create()
@@ -230,7 +224,11 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
     /**
      * https双向认证证书
      */
-    open fun certificates(bksFile: InputStream?, password: String?, vararg certificates: InputStream?): R {
+    open fun certificates(
+        bksFile: InputStream?,
+        password: String?,
+        vararg certificates: InputStream?
+    ): R {
         sslParams = HttpsUtils.getSslSocketFactory(bksFile, password, certificates)
         return this as R
     }
@@ -245,31 +243,38 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
         initSetting(rxHttp)
     }
 
-    //一些默认配置
+    // 一些默认配置
     private fun initSetting(config: RxHttp) {
         baseUrl = config.getBaseUrl()
         if (!TextUtils.isEmpty(baseUrl)) {
             httpUrl = HttpUrl.parse(baseUrl!!)
         }
-        if (baseUrl == null && url != null && (url!!.startsWith("http://") || url!!.startsWith("https://"))) {
+        if (baseUrl == null && url != null && (
+            url!!.startsWith("http://") ||
+                url!!.startsWith("https://")
+            )
+        ) {
             httpUrl = HttpUrl.parse(url!!)
             baseUrl = httpUrl!!.url().protocol + "://" + httpUrl!!.url().host + "/"
         }
 
-        retryCount = config.getRetryCount() //超时重试次数
-        retryDelay = config.getRetryDelay() //超时重试延时
-        retryIncreaseDelay = config.getRetryIncreaseDelay() //超时重试叠加延时
-        val acceptLanguage: String? = HttpHeaders.acceptLanguage   //默认添加 Accept-Language
-        if (!TextUtils.isEmpty(acceptLanguage)) headers.put(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, acceptLanguage)
-        val userAgent: String? = HttpHeaders.userAgent //默认添加 User-Agent
+        retryCount = config.getRetryCount() // 超时重试次数
+        retryDelay = config.getRetryDelay() // 超时重试延时
+        retryIncreaseDelay = config.getRetryIncreaseDelay() // 超时重试叠加延时
+        val acceptLanguage: String? = HttpHeaders.acceptLanguage // 默认添加 Accept-Language
+        if (!TextUtils.isEmpty(acceptLanguage)) headers.put(
+            HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE,
+            acceptLanguage
+        )
+        val userAgent: String? = HttpHeaders.userAgent // 默认添加 User-Agent
         if (!TextUtils.isEmpty(userAgent)) headers.put(HttpHeaders.HEAD_KEY_USER_AGENT, userAgent)
-        //添加公共请求参数
+        // 添加公共请求参数
         if (config.getCommonParams() != null) params.put(config.getCommonParams())
         if (config.getCommonHeaders() != null) headers.put(config.getCommonHeaders())
     }
     //endregion
 
-    ////region 请求执行
+    // //region 请求执行
 
     /**
      * 执行，自定义数据类型
@@ -277,11 +282,11 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
      */
     open fun <T> executeCus(type: Class<T>): Observable<T> {
         return build().generateRequest()!!
-                .compose(this::isSync)
-                .map(ApiResultFunc<T>(type))
-                .map(HandleFuc())
-                .onErrorResumeNext(HttpResponseFunc<T>())
-                .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
+            .compose(this::isSync)
+            .map(ApiResultFunc<T>(type))
+            .map(HandleFuc())
+            .onErrorResumeNext(HttpResponseFunc<T>())
+            .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
     }
 
     /**
@@ -290,40 +295,37 @@ abstract class BaseRequest<R : BaseRequest<R>>() {
      */
     open fun <T> executeCus(callback: NetCallBack<T>): Disposable {
         return build().generateRequest()!!
-                .compose(this::isSync)
-                .map(ApiResultFunc<T>(callback.getType()))
-                .map(HandleFuc())
-                .onErrorResumeNext(HttpResponseFunc<T>())
-                .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
-                .subscribeWith(CallBackSubscriber(callback))
-
+            .compose(this::isSync)
+            .map(ApiResultFunc<T>(callback.getType()))
+            .map(HandleFuc())
+            .onErrorResumeNext(HttpResponseFunc<T>())
+            .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
+            .subscribeWith(CallBackSubscriber(callback))
     }
 
     /**
      * ApiResult<T> 类型的扩张类型
      */
     open fun <T> execute(callback: NetCallBack<T>): Disposable {
-        //T -> ApiResult<T>
+        // T -> ApiResult<T>
         val callBackProxy = object : NetCallBackProxy<ApiResult<T>, T>(callback) {
-
         }
         return build().generateRequest()!!
-                .compose(this::isSync)
-                .map(ApiResultFunc<T>(callBackProxy.getType()))
-                .map(HandleFuc())
-                .onErrorResumeNext(HttpResponseFunc<T>())
-                .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
-                .subscribeWith(CallBackSubscriber(callBackProxy.callBack))
+            .compose(this::isSync)
+            .map(ApiResultFunc<T>(callBackProxy.getType()))
+            .map(HandleFuc())
+            .onErrorResumeNext(HttpResponseFunc<T>())
+            .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
+            .subscribeWith(CallBackSubscriber(callBackProxy.callBack))
     }
-
 
     private fun isSync(up: @NonNull Observable<ResponseBody>): @NonNull Observable<ResponseBody>? {
         return if (isSyncRequest) {
             up
         } else {
             up.subscribeOn(Schedulers.io())
-                    .unsubscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
         }
     }
     //endregion

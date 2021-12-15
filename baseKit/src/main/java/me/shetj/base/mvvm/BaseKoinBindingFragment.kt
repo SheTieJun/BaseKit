@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvvm
 
 import androidx.annotation.Keep
@@ -46,5 +44,4 @@ abstract class BaseKoinBindingFragment<VM : ViewModel, VB : ViewBinding> :
     BaseBindingFragment<VM, VB>(), LifecycleObserver, AndroidScopeComponent {
 
     override val scope: Scope by fragmentScope()
-
 }

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.base
 
 import androidx.annotation.MainThread
@@ -31,7 +29,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import kotlinx.coroutines.CoroutineScope
-
 
 /*** 自己控制的生命周期和协程 类似actvity的基类
  *  生命周期 + 协程作业用域
@@ -42,37 +39,37 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
 
     override val ktScope: DefCoroutineScope by ktScopeWithLife(lifecycle)
 
-    private val lifecycleRegistry : LifecycleRegistry by lazy { LifecycleRegistry(getOwner()) }
+    private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(getOwner()) }
 
     init {
         initLifecycle()
     }
 
     private fun initLifecycle() {
-        lifecycle.addObserver(LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_DESTROY) {
-                onClear()
+        lifecycle.addObserver(
+            LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_DESTROY) {
+                    onClear()
+                }
             }
-        })
+        )
     }
 
     override fun getLifecycle(): Lifecycle {
         return lifecycleRegistry
     }
 
-
     private fun getOwner(): LifecycleOwner {
         return this
     }
 
     override fun onClear() {
-
     }
 
     override fun onCreate() {
         if (lifecycle is LifecycleRegistry) {
             (lifecycle as LifecycleRegistry).apply {
-                if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)){
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)) {
                     handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
                 }
             }
@@ -82,23 +79,22 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
     override fun onStart() {
         if (lifecycle is LifecycleRegistry) {
             (lifecycle as LifecycleRegistry).apply {
-                if (lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)){
-                    handleLifecycleEvent(Lifecycle.Event.ON_START) //更新状态，并且通知观察者
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
+                    handleLifecycleEvent(Lifecycle.Event.ON_START) // 更新状态，并且通知观察者
                 }
             }
         }
     }
 
-    override  fun onResume(){
+    override fun onResume() {
         if (lifecycle is LifecycleRegistry) {
             (lifecycle as LifecycleRegistry).apply {
-                if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)){
+                if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                     handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
                 }
             }
         }
     }
-
 
     override fun onDeStory() {
         if (lifecycle is LifecycleRegistry) {
@@ -107,10 +103,7 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
             }
         }
     }
-
-
 }
-
 
 interface LifecycleWithCopeComponent : KtScopeComponent, LifecycleOwner {
 
@@ -131,5 +124,4 @@ interface LifecycleWithCopeComponent : KtScopeComponent, LifecycleOwner {
 
     @MainThread
     fun onDeStory()
-
 }

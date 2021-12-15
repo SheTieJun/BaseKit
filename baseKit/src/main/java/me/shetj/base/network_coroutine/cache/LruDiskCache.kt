@@ -21,39 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network_coroutine.cache
 
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException
+import java.io.File
+import java.io.IOException
+import java.nio.charset.Charset
 import me.shetj.base.ktx.md5
 import me.shetj.base.tools.file.CloseUtils
 import okhttp3.internal.cache.DiskLruCache
 import okhttp3.internal.io.FileSystem
 import okio.Okio
 import timber.log.Timber
-import java.io.File
-import java.io.IOException
-import java.nio.charset.Charset
-import java.util.*
 
 /**
  * Source对应InputStream， Sink对应OutputStream
  */
-class LruDiskCache constructor (diskDir: File?, appVersion: Int, diskMaxSize: Long) : IResultCache() {
+class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Long) :
+    IResultCache() {
 
     private val charset: Charset = Charset.forName("UTF-8")
 
     private var mDiskLruCache: DiskLruCache? = null
 
-    override fun doLoad( key: String): String? {
+    override fun doLoad(key: String): String? {
         if (mDiskLruCache == null) {
             return null
         }
         try {
             val edit = mDiskLruCache?.edit(key.md5) ?: return null
-            val source = Okio.buffer(edit.newSource(0) )
+            val source = Okio.buffer(edit.newSource(0))
             var value: String? = null
             if (source != null) {
                 try {
@@ -81,7 +79,7 @@ class LruDiskCache constructor (diskDir: File?, appVersion: Int, diskMaxSize: Lo
         return null
     }
 
-    override fun  doSave(key: String, value: String): Boolean {
+    override fun doSave(key: String, value: String): Boolean {
         if (mDiskLruCache == null) {
             return false
         }
@@ -153,10 +151,10 @@ class LruDiskCache constructor (diskDir: File?, appVersion: Int, diskMaxSize: Lo
         if (mDiskLruCache == null) {
             return false
         }
-        if (existTime > -1) { //-1表示永久性存储 不用进行过期校验
-            //为什么这么写，请了解DiskLruCache，看它的源码
+        if (existTime > -1) { // -1表示永久性存储 不用进行过期校验
+            // 为什么这么写，请了解DiskLruCache，看它的源码
             val file = File(mDiskLruCache!!.directory, "${key.md5}.0")
-            if (isCacheDataFailure(file, existTime)) { //没有获取到缓存,或者缓存已经过期!
+            if (isCacheDataFailure(file, existTime)) { // 没有获取到缓存,或者缓存已经过期!
                 return true
             }
         }
@@ -176,7 +174,8 @@ class LruDiskCache constructor (diskDir: File?, appVersion: Int, diskMaxSize: Lo
 
     init {
         try {
-            mDiskLruCache = DiskLruCache.create(FileSystem.SYSTEM,diskDir, appVersion, 1, diskMaxSize)
+            mDiskLruCache =
+                DiskLruCache.create(FileSystem.SYSTEM, diskDir, appVersion, 1, diskMaxSize)
         } catch (e: IOException) {
             e.printStackTrace()
         }

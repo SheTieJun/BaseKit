@@ -21,17 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.debug
 
 import android.os.Process
 import android.os.SystemClock
 import android.text.TextUtils
+import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.io.Writer
 import me.shetj.base.tools.debug.DebugFunc.Companion.logFilePath
 import me.shetj.base.tools.time.DateUtils
 import timber.log.Timber
-import java.io.*
 
 /**
  * 发现错误并输出
@@ -67,7 +72,6 @@ class BaseUncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
         }
         return writer.toString()
     }
-
 
     private fun saveThrowableMessage(errorMessage: String) {
         if (TextUtils.isEmpty(errorMessage)) {

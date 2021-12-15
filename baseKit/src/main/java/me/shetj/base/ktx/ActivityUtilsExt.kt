@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.app.Activity
@@ -96,7 +94,6 @@ fun FragmentManager.replaceFragment(fragment: Fragment, frameId: Int) {
     transaction.commit()
 }
 
-
 fun Fragment.show(supportFragmentManager: FragmentManager, @IdRes rootLayoutId: Int) {
     val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
     val fragment = supportFragmentManager.findFragmentByTag(this::class.java.simpleName)
@@ -150,9 +147,9 @@ fun Activity.getActivityOptions(
 fun Activity.getActivityOptions(view: View): ActivityOptionsCompat {
     return ActivityOptionsCompat.makeScaleUpAnimation(
         view,
-        //The View that the new activity is animating from
+        // The View that the new activity is animating from
         view.width / 2, view.height / 2,
-        //拉伸开始的坐标
+        // 拉伸开始的坐标
         0, 0
     )
 }
@@ -170,7 +167,6 @@ fun Activity.startNewActivity(options: ActivityOptionsCompat, activityClass: Cla
     ActivityCompat.startActivity(this, intent, options.toBundle())
 }
 
-
 /**
  * @param slideTransition  = explode(),slide()(),fade
  * @param shareTransition  share view 的transition  一般为changeBound
@@ -187,5 +183,3 @@ fun Context.getIdByName(className: String, resName: String): Int {
     val packageName = packageName
     return applicationContext.resources.getIdentifier(resName, className, packageName)
 }
-
-

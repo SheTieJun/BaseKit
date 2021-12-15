@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.init
 
 import android.app.Application
@@ -31,21 +29,18 @@ import androidx.annotation.Keep
 import androidx.startup.Initializer
 import me.shetj.base.BuildConfig
 import me.shetj.base.S
-import me.shetj.base.ktx.requestNetWork
-import me.shetj.base.model.NetWorkLiveDate
-
 
 /**
  * 初始化PhotoLife
  */
 @Keep
-class CommonInitialize:Initializer<Unit> {
+class CommonInitialize : Initializer<Unit> {
 
     override fun create(context: Context) {
         S.init(context.applicationContext as Application, BuildConfig.DEBUG)
     }
 
     override fun dependencies(): MutableList<Class<out Initializer<*>>> {
-        return  mutableListOf()
+        return mutableListOf()
     }
 }

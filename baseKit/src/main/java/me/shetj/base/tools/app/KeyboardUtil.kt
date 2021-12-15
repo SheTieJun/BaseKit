@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.app.Activity
@@ -39,7 +37,6 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.Keep
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 
@@ -99,7 +96,7 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
     private fun dispatchTouchEvent(activity: Activity, ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val v = activity.currentFocus
-            if (null == v ||(isShouldHideInput(v, ev))) {
+            if (null == v || (isShouldHideInput(v, ev))) {
                 v?.clearFocus()
                 hideSoftKeyboard(activity)
             }
@@ -176,7 +173,6 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
             inputManager.showSoftInput(editText, 0)
         }
 
-
         @JvmStatic
         fun isShowSoftKeyBoard(activity: Activity, isShow: Boolean = true) {
             if (isShow) {
@@ -185,7 +181,6 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
                 hideSoftKeyboard(activity)
             }
         }
-
 
         @JvmStatic
         fun Window.showSoftKeyboard() {

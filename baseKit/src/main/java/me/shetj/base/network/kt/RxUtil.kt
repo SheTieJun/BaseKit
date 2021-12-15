@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.kt
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -35,31 +33,30 @@ import me.shetj.base.network.model.ApiResult
 
 object RxUtil {
 
-
     fun <T> io_main(): ObservableTransformer<T, T> {
         return ObservableTransformer { upstream: Observable<T> ->
             upstream
-                    .subscribeOn(Schedulers.io())
-                    .unsubscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
         }
     }
 
     fun <T> _io_main(): ObservableTransformer<ApiResult<T>, T> {
         return ObservableTransformer { upstream ->
             upstream
-                    .subscribeOn(Schedulers.io())
-                    .unsubscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map(HandleFuc())
-                    .onErrorResumeNext(HttpResponseFunc<T>())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(HandleFuc())
+                .onErrorResumeNext(HttpResponseFunc<T>())
         }
     }
 
     fun <T> _computation(): ObservableTransformer<ApiResult<T>, T> {
         return ObservableTransformer { upstream ->
             upstream.map(HandleFuc())
-                    .onErrorResumeNext(HttpResponseFunc<T>())
+                .onErrorResumeNext(HttpResponseFunc<T>())
         }
     }
 }

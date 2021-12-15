@@ -29,9 +29,9 @@ import android.text.TextUtils
 import java.io.Serializable
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.TimeZone
-import java.util.Locale
 import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 import kotlin.collections.LinkedHashMap
 import me.shetj.base.ktx.toJson
 import me.shetj.base.tools.app.ArmsUtils.Companion.getString
@@ -130,7 +130,7 @@ class HttpHeaders : Serializable {
         private val USER_AGENT =
             String.format(
                 " SystemName/%s SystemVersion/%s Device/%s NetType/%s " +
-                        "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
+                    "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
                 "Android",
                 Build.VERSION.RELEASE,
                 Build.MODEL,

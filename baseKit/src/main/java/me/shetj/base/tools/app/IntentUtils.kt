@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.content.ComponentName
@@ -33,8 +31,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.annotation.Keep
 import androidx.core.content.FileProvider
-import me.shetj.base.tools.file.FileUtils
 import java.io.File
+import me.shetj.base.tools.file.FileUtils
 
 @Keep
 class IntentUtils private constructor() {
@@ -251,7 +249,6 @@ class IntentUtils private constructor() {
             return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
-
         /**
          * 获取拍照的意图
          *
@@ -265,5 +262,4 @@ class IntentUtils private constructor() {
             return intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
         }
     }
-
 }

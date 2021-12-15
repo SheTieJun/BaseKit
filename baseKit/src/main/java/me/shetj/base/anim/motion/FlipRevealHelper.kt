@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.anim.motion
 
 import android.animation.ObjectAnimator
@@ -36,9 +34,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
  * 翻转
  */
 class FlipRevealHelper @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : MotionHelper(context, attrs, defStyleAttr) {
-
 
     override fun updatePostLayout(container: ConstraintLayout?) {
         super.updatePostLayout(container)

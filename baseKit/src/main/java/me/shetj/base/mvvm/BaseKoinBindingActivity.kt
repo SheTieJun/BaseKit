@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvvm
-
 
 import androidx.annotation.Keep
 import androidx.lifecycle.LifecycleObserver
@@ -47,5 +44,4 @@ abstract class BaseKoinBindingActivity<VM : ViewModel, VB : ViewBinding> :
     BaseBindingActivity<VM, VB>(), LifecycleObserver, AndroidScopeComponent {
 
     override val scope: Scope by activityScope()
-
 }

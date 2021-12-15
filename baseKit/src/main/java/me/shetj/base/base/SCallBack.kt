@@ -21,22 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 @file:JvmName("BaseCallBackKt")
 
 package me.shetj.base.base
 
-typealias OnSuccess<T> = (data:T?) -> Unit
+typealias OnSuccess<T> = (data: T?) -> Unit
 
 typealias OnFail = (ex: Exception?) -> Unit
 
-class SCallBack<T>{
+class SCallBack<T> {
 
-    var onFail:OnFail?=null
-    var onSuccess:OnSuccess<T>?=null
+    var onFail: OnFail? = null
+    var onSuccess: OnSuccess<T>? = null
 
-    companion object{
-        fun <T> build(block:SCallBack<T>.() ->Unit) =SCallBack<T>().apply(block)
+    companion object {
+        fun <T> build(block: SCallBack<T>.() -> Unit) = SCallBack<T>().apply(block)
     }
 }

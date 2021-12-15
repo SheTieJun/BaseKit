@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.app.Activity
@@ -42,24 +40,27 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.*
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.Keep
+import androidx.annotation.MainThread
+import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.security.MessageDigest
 import me.shetj.base.S
 import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.qmui.QMUINotchHelper
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
-import java.security.MessageDigest
-
 
 /**
  * ================================================
@@ -81,9 +82,8 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         fun checkIsNotchScreen(activity: Activity): Boolean {
-            return QMUINotchHelper.needFixLandscapeNotchAreaFitSystemWindow(activity.window.decorView)
+            return QMUINotchHelper.needFixLandscapeNotchFitSystemWindow(activity.window.decorView)
         }
-
 
         /**
          * 为 View 添加点击态
@@ -176,7 +176,7 @@ class ArmsUtils private constructor() {
             var j = 0
             while (j < 9) {
                 val c = m[(Math.random() * 62).toInt()]
-                //随机数之间没有重复的
+                // 随机数之间没有重复的
                 if (linkNo.contains(c.toString())) {
                     j--
                     j++
@@ -195,7 +195,7 @@ class ArmsUtils private constructor() {
          * @param viewName
          * @param <T>
          * @return
-        </T> */
+         </T> */
         @JvmStatic
         fun <T : View> findViewByName(context: Context, view: View, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
@@ -209,7 +209,7 @@ class ArmsUtils private constructor() {
          * @param viewName
          * @param <T>
          * @return
-        </T> */
+         </T> */
         @JvmStatic
         fun <T : View> findViewByName(context: Context, activity: Activity, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
@@ -327,7 +327,6 @@ class ArmsUtils private constructor() {
             return getResources(context).displayMetrics.heightPixels
         }
 
-
         /**
          * 获得颜色
          */
@@ -355,7 +354,6 @@ class ArmsUtils private constructor() {
                 parent.removeView(view)
             }
         }
-
 
         /**
          * MD5
@@ -402,23 +400,24 @@ class ArmsUtils private constructor() {
         @JvmStatic
         @JvmOverloads
         fun Activity.statuInScreen(isBlack: Boolean = false) {
-            //关键代码
+            // 关键代码
             WindowCompat.setDecorFitsSystemWindows(window, false)
-            //修改颜色
+            // 修改颜色
             updateSystemUIColor()
-            setAppearance(this,isBlack)
+            setAppearance(this, isBlack)
         }
 
-
-        fun setAppearance(activity: Activity,isBlack: Boolean,@ColorInt color: Int = Color.TRANSPARENT){
+        fun setAppearance(
+            activity: Activity,
+            isBlack: Boolean,
+            @ColorInt color: Int = Color.TRANSPARENT
+        ) {
             activity.updateSystemUIColor(color)
             ViewCompat.getWindowInsetsController(activity.window.decorView)?.let { controller ->
                 controller.isAppearanceLightStatusBars = isBlack
                 controller.isAppearanceLightNavigationBars = isBlack
             }
         }
-
-
 
         @Deprecated("已经弃用，使用新的API", replaceWith = ReplaceWith("hideSystemUI(activity)"))
         @JvmStatic
@@ -443,7 +442,7 @@ class ArmsUtils private constructor() {
         /**
          * 修改状态栏、底部的导航栏的颜色
          */
-        fun Activity.updateSystemUIColor(@ColorInt color: Int = Color.TRANSPARENT){
+        fun Activity.updateSystemUIColor(@ColorInt color: Int = Color.TRANSPARENT) {
             window.statusBarColor = color
             window.navigationBarColor = color
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -456,17 +455,18 @@ class ArmsUtils private constructor() {
          */
         fun Activity.showSystemUI() {
             WindowCompat.setDecorFitsSystemWindows(window, true)
-            ViewCompat.getWindowInsetsController(window.decorView)?.show(WindowInsetsCompat.Type.systemBars())
+            ViewCompat.getWindowInsetsController(window.decorView)
+                ?.show(WindowInsetsCompat.Type.systemBars())
         }
 
         @JvmStatic
         fun setSwipeRefresh(
             mSwipeRefreshLayout: SwipeRefreshLayout,
-            them2Color: Int, listener: SwipeRefreshLayout.OnRefreshListener
+            them2Color: Int,
+            listener: SwipeRefreshLayout.OnRefreshListener
         ) {
             mSwipeRefreshLayout.setSwipeRefresh(them2Color, listener)
         }
-
 
         @Throws(IOException::class)
         @JvmStatic
@@ -556,6 +556,4 @@ class ArmsUtils private constructor() {
             return null
         }
     }
-
-
 }

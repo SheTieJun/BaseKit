@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.app.ActivityManager
@@ -75,16 +73,31 @@ class ProcessUtils private constructor() {
                         try {
                             val info = packageManager.getApplicationInfo(Utils.app.packageName, 0)
                             val aom = Utils.app.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-                            if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, info.uid, info.packageName) != AppOpsManager.MODE_ALLOWED) {
+                            if (aom.checkOpNoThrow(
+                                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                                    info.uid,
+                                    info.packageName
+                                ) != AppOpsManager.MODE_ALLOWED
+                            ) {
                                 Utils.app.startActivity(intent)
                             }
-                            if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, info.uid, info.packageName) != AppOpsManager.MODE_ALLOWED) {
+                            if (aom.checkOpNoThrow(
+                                    AppOpsManager.OPSTR_GET_USAGE_STATS,
+                                    info.uid,
+                                    info.packageName
+                                ) != AppOpsManager.MODE_ALLOWED
+                            ) {
                                 return null
                             }
-                            val usageStatsManager = Utils.app.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+                            val usageStatsManager =
+                                Utils.app.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
                             val endTime = System.currentTimeMillis()
                             val beginTime = endTime - 86400000 * 7
-                            val usageStatses = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, beginTime, endTime)
+                            val usageStatses = usageStatsManager.queryUsageStats(
+                                UsageStatsManager.INTERVAL_BEST,
+                                beginTime,
+                                endTime
+                            )
                             if (usageStatses == null || usageStatses.isEmpty()) {
                                 return null
                             }
@@ -98,15 +111,11 @@ class ProcessUtils private constructor() {
                         } catch (e: PackageManager.NameNotFoundException) {
                             e.printStackTrace()
                         }
-
                     } else {
                         Timber.d("getForegroundProcessName() called : 无\"有权查看使用权限的应用\"选项")
                     }
                 }
                 return null
             }
-
-
-
     }
 }

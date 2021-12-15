@@ -21,14 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.time
 
 import android.annotation.SuppressLint
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 /**
  * 日期工具类
@@ -66,7 +65,7 @@ object DateUtils {
      */
     /**
      * 获得默认的 date pattern
-     * @return  默认的格式
+     * @return 默认的格式
      */
     var datePattern = "yyyy-MM-dd HH:mm:ss"
 
@@ -116,11 +115,10 @@ object DateUtils {
             val c = Calendar.getInstance()
             c.time = Date()
             return c.get(Calendar.YEAR).toString() + "-" + (c.get(Calendar.MONTH) + 1) + "-" +
-                    c.get(Calendar.DAY_OF_MONTH) + "-" +
-                    c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) +
-                    ":" + c.get(Calendar.SECOND)
+                c.get(Calendar.DAY_OF_MONTH) + "-" +
+                c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) +
+                ":" + c.get(Calendar.SECOND)
         }
-
 
     /**
      * 获取时间戳
@@ -132,7 +130,6 @@ object DateUtils {
             val df = SimpleDateFormat(FORMAT_FULL)
             val calendar = Calendar.getInstance()
             return df.format(calendar.time)
-
         }
 
     @JvmStatic
@@ -177,7 +174,7 @@ object DateUtils {
 
     @JvmStatic
     @JvmOverloads
-    fun date2Str(d: Date?, format: String? = null): String? {// yyyy-MM-dd HH:mm:ss
+    fun date2Str(d: Date?, format: String? = null): String? { // yyyy-MM-dd HH:mm:ss
         var formatClone = format
         if (d == null) {
             return null
@@ -189,45 +186,38 @@ object DateUtils {
         return sdf.format(d)
     }
 
-
     /**
      * 获得当前日期的字符串格式
      * @param format    格式化的类型
-     * @return  返回格式化之后的事件
+     * @return 返回格式化之后的事件
      */
     @JvmStatic
     fun getCurDateStr(format: String): String? {
         val c = Calendar.getInstance()
         return date2Str(c, format)
-
     }
-
 
     /**
      *
      * @param time 当前的时间
-     * @return  格式到秒
+     * @return 格式到秒
      */
     @JvmStatic
     fun getMillon(time: Long): String {
 
         return SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(time)
-
     }
-
 
     /**
      *
      * @param time  当前的时间
-     * @return  当前的天
+     * @return 当前的天
      */
     @JvmStatic
     fun getDay(time: Long): String {
 
         return SimpleDateFormat("yyyy-MM-dd").format(time)
-
     }
-
 
     /**
      *
@@ -237,15 +227,13 @@ object DateUtils {
     @JvmStatic
     fun getSMillon(time: Long): String {
         return SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(time)
-
     }
-
 
     /**
      * 在日期上增加数个整月
      * @param date 日期
      * @param n 要增加的月数
-     * @return   增加数个整月
+     * @return 增加数个整月
      */
     @JvmStatic
     @JvmOverloads
@@ -254,15 +242,13 @@ object DateUtils {
         cal.time = date
         cal.add(Calendar.MONTH, n)
         return cal.time
-
     }
-
 
     /**
      * 在日期上增加天数
      * @param date 日期
      * @param n 要增加的天数
-     * @return   增加之后的天数
+     * @return 增加之后的天数
      */
     @JvmStatic
     @JvmOverloads
@@ -271,16 +257,14 @@ object DateUtils {
         cal.time = date
         cal.add(Calendar.DATE, n)
         return cal.time
-
     }
-
 
     /**
      * 获取距现在某一小时的时刻
      *
      * @param format 格式化时间的格式
      * @param h 距现在的小时 例如：h=-1为上一个小时，h=1为下一个小时
-     * @return  获取距现在某一小时的时刻
+     * @return 获取距现在某一小时的时刻
      */
     @JvmStatic
     fun getNextHour(format: String, h: Int): String {
@@ -288,9 +272,7 @@ object DateUtils {
         val date = Date()
         date.time = date.time + h * 60 * 60 * 1000
         return sdf.format(date)
-
     }
-
 
     /**
      * 功能描述：返回月
@@ -305,7 +287,6 @@ object DateUtils {
         return calendar!!.get(Calendar.MONTH) + 1
     }
 
-
     /**
      * 功能描述：返回日
      *
@@ -318,7 +299,6 @@ object DateUtils {
         calendar!!.time = date
         return calendar!!.get(Calendar.DAY_OF_MONTH)
     }
-
 
     /**
      * 功能描述：返回小
@@ -333,7 +313,6 @@ object DateUtils {
         return calendar!!.get(Calendar.HOUR_OF_DAY)
     }
 
-
     /**
      * 功能描述：返回分
      *
@@ -346,7 +325,6 @@ object DateUtils {
         calendar!!.time = date
         return calendar!!.get(Calendar.MINUTE)
     }
-
 
     /**
      * 返回秒钟
@@ -362,7 +340,6 @@ object DateUtils {
         return calendar!!.get(Calendar.SECOND)
     }
 
-
     /**
      * 功能描述：返回毫
      *
@@ -375,7 +352,6 @@ object DateUtils {
         calendar!!.time = date
         return calendar!!.timeInMillis
     }
-
 
     /**
      * 按默认格式的字符串距离今天的天数
@@ -390,16 +366,14 @@ object DateUtils {
         c.time = parse(dateString) ?: return -1
         val t1 = c.time.time
         return (t / 1000 - t1 / 1000).toInt() / 3600 / 24
-
     }
-
 
     /**
      * 使用用户格式提取字符串日期
      *
      * @param strDate 日期字符串
      * @param pattern 日期格式
-     * @return  提取字符串日期
+     * @return 提取字符串日期
      */
     @JvmOverloads
     fun parse(strDate: String, pattern: String = datePattern): Date? {
@@ -410,16 +384,14 @@ object DateUtils {
             e.printStackTrace()
             null
         }
-
     }
-
 
     /**
      * 按用户格式字符串距离今天的天数
      *
      * @param strDate 日期字符串
      * @param format 日期格式
-     * @return  按用户格式字符串距离今天的天数 -1等于字符错误
+     * @return 按用户格式字符串距离今天的天数 -1等于字符错误
      */
     @JvmStatic
     fun countDays(strDate: String, format: String): Int {
@@ -428,6 +400,5 @@ object DateUtils {
         c.time = parse(strDate, format) ?: return -1
         val t1 = c.time.time
         return (t / 1000 - t1 / 1000).toInt() / 3600 / 24
-
     }
 }

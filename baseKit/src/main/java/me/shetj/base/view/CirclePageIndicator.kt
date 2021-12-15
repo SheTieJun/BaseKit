@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.view
 
 import android.content.Context
@@ -37,12 +35,15 @@ import androidx.viewpager.widget.ViewPager
 import me.shetj.base.R
 import me.shetj.base.tools.app.ArmsUtils
 
-
 /**
  * 指示器
  * @author shetj
  */
-class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr), ViewPager.OnPageChangeListener {
+class CirclePageIndicator @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr), ViewPager.OnPageChangeListener {
 
     private var mActivePosition = 0
     private var mIndicatorSpacing: Int = 0
@@ -59,7 +60,6 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
         FRACTION(INDICATOR_TYPE_FRACTION),
         UNKNOWN(-1);
 
-
         companion object {
 
             fun of(value: Int): IndicatorType {
@@ -75,14 +75,17 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
     init {
 
         val a = context.theme.obtainStyledAttributes(
-                attrs, R.styleable.CirclePageIndicator, 0, 0)
+            attrs, R.styleable.CirclePageIndicator, 0, 0
+        )
         try {
             mIndicatorSpacing = a.getDimensionPixelSize(
-                    R.styleable.CirclePageIndicator_indicator_spacing,
-                    DEFAULT_INDICATOR_SPACING)
+                R.styleable.CirclePageIndicator_indicator_spacing,
+                DEFAULT_INDICATOR_SPACING
+            )
             val indicatorTypeValue = a.getInt(
-                    R.styleable.CirclePageIndicator_indicator_type,
-                    mIndicatorType.type)
+                R.styleable.CirclePageIndicator_indicator_type,
+                mIndicatorType.type
+            )
             mIndicatorType = IndicatorType.of(indicatorTypeValue)
         } finally {
             a.recycle()
@@ -95,7 +98,8 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
         orientation = HORIZONTAL
         if (layoutParams !is FrameLayout.LayoutParams) {
             val params = FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+            )
             params.gravity = Gravity.BOTTOM or Gravity.START
             layoutParams = params
         }
@@ -155,9 +159,9 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
             mIndicatorTypeChanged = false
             if (mIndicatorType == IndicatorType.CIRCLE) {
                 (getChildAt(mActivePosition) as ImageView)
-                        .setImageResource(R.drawable.circle_indicator_stroke)
+                    .setImageResource(R.drawable.circle_indicator_stroke)
                 (getChildAt(position) as ImageView)
-                        .setImageResource(R.drawable.circle_indicator_solid)
+                    .setImageResource(R.drawable.circle_indicator_solid)
             } else if (mIndicatorType == IndicatorType.FRACTION) {
                 val textView = getChildAt(0) as TextView
 
@@ -183,8 +187,10 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
         if (mUserDefinedPageChangeListener != null) {
-            mUserDefinedPageChangeListener!!.onPageScrolled(position, positionOffset,
-                    positionOffsetPixels)
+            mUserDefinedPageChangeListener!!.onPageScrolled(
+                position, positionOffset,
+                positionOffsetPixels
+            )
         }
     }
 
@@ -207,4 +213,4 @@ class CirclePageIndicator @JvmOverloads constructor(context: Context, attrs: Att
 
         const val DEFAULT_INDICATOR_SPACING = 5
     }
-}  
+}

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 @file:Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 
 package me.shetj.base.ktx
@@ -42,7 +40,7 @@ import java.util.Objects
  * tip：必须是泛型
  */
 @Suppress("UNCHECKED_CAST")
-fun <C> getClazz(obj: Any,position: Int = 0): Class<C> {
+fun <C> getClazz(obj: Any, position: Int = 0): Class<C> {
     return (obj.javaClass.genericSuperclass as ParameterizedType)
         .actualTypeArguments[position] as Class<C>
 }
@@ -50,16 +48,14 @@ fun <C> getClazz(obj: Any,position: Int = 0): Class<C> {
 /**
  * 通过class<T>、T的无参数的构造函数，创建对象T
  */
-fun <T> getObjByClassArg(obj: Any,position:Int = 0):T{
-    return  getClazz<T>(obj,position).newInstance()
+fun <T> getObjByClassArg(obj: Any, position: Int = 0): T {
+    return getClazz<T>(obj, position).newInstance()
 }
 
-fun getParameterizedType(type: Type, typeArguments:Type): ParameterizedType? {
+fun getParameterizedType(type: Type, typeArguments: Type): ParameterizedType? {
     // Type type = com.google.gson.internal.$Gson$Types.newParameterizedTypeWithOwner(null, ArrayList.class, clazz); = ArrayList<clazz>
     return `$Gson$Types`.newParameterizedTypeWithOwner(null, type, typeArguments)
 }
-
-
 
 fun getRawType(type: Type): Class<*>? {
     Objects.requireNonNull(type, "type == null")
@@ -88,10 +84,10 @@ fun getRawType(type: Type): Class<*>? {
         return getRawType(type.upperBounds[0])
     }
     throw IllegalArgumentException(
-            "Expected a Class, ParameterizedType, or "
-                    + "GenericArrayType, but <"
-                    + type
-                    + "> is of type "
-                    + type.javaClass.name
+        "Expected a Class, ParameterizedType, or " +
+            "GenericArrayType, but <" +
+            type +
+            "> is of type " +
+            type.javaClass.name
     )
 }

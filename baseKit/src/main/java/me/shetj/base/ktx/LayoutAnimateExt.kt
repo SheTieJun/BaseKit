@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.animation.LayoutTransition
@@ -65,16 +63,36 @@ inline fun ViewGroup?.addLayoutChangeAnim(crossinline updateAnimator: LayoutTran
 /**
  * 添加开始和结束监听
  */
-fun LayoutTransition?.addTransitionListener(startTransition: (transition: LayoutTransition?, container: ViewGroup?,
-                                                    view: View?, transitionType: Int) -> Unit = { _: LayoutTransition?, _: ViewGroup?, _: View?, _: Int -> },
-                                            endTransition: (transition: LayoutTransition?, container: ViewGroup?,
-                                                  view: View?, transitionType: Int) -> Unit = { _: LayoutTransition?, _: ViewGroup?, _: View?, _: Int -> }) {
+fun LayoutTransition?.addTransitionListener(
+    startTransition: (
+        transition: LayoutTransition?,
+        container: ViewGroup?,
+        view: View?,
+        transitionType: Int
+    ) -> Unit = { _: LayoutTransition?, _: ViewGroup?, _: View?, _: Int -> },
+    endTransition: (
+        transition: LayoutTransition?,
+        container: ViewGroup?,
+        view: View?,
+        transitionType: Int
+    ) -> Unit = { _: LayoutTransition?, _: ViewGroup?, _: View?, _: Int -> }
+) {
     this?.addTransitionListener(object : LayoutTransition.TransitionListener {
-        override fun startTransition(transition: LayoutTransition?, container: ViewGroup?, view: View?, transitionType: Int) {
+        override fun startTransition(
+            transition: LayoutTransition?,
+            container: ViewGroup?,
+            view: View?,
+            transitionType: Int
+        ) {
             startTransition.invoke(transition, container, view, transitionType)
         }
 
-        override fun endTransition(transition: LayoutTransition?, container: ViewGroup?, view: View?, transitionType: Int) {
+        override fun endTransition(
+            transition: LayoutTransition?,
+            container: ViewGroup?,
+            view: View?,
+            transitionType: Int
+        ) {
             endTransition.invoke(transition, container, view, transitionType)
         }
     })
@@ -83,9 +101,12 @@ fun LayoutTransition?.addTransitionListener(startTransition: (transition: Layout
 /**
  * 更新子view的是带上transition动画
  */
-inline fun ViewGroup?.updateLayoutWithTransition(transition: Transition?=null,crossinline update:(ViewGroup) ->Unit){
+inline fun ViewGroup?.updateLayoutWithTransition(
+    transition: Transition? = null,
+    crossinline update: (ViewGroup) -> Unit
+) {
     this?.apply {
-        TransitionManager.beginDelayedTransition(this,transition)
+        TransitionManager.beginDelayedTransition(this, transition)
         update.invoke(this)
     }
 }

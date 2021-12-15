@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.base
-
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -41,13 +38,12 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-
 /**
  * 基础类  view 层
  * @author shetj
  */
 @Keep
-abstract class AbBaseActivity: AppCompatActivity() , LifecycleEventObserver {
+abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,19 +52,19 @@ abstract class AbBaseActivity: AppCompatActivity() , LifecycleEventObserver {
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-         when(event){
-             Lifecycle.Event.ON_CREATE ->{
-                 onActivityCreate()
-             }
-             Lifecycle.Event.ON_DESTROY->{
-                 onActivityDestroy()
-             }
-         }
+        when (event) {
+            Lifecycle.Event.ON_CREATE -> {
+                onActivityCreate()
+            }
+            Lifecycle.Event.ON_DESTROY -> {
+                onActivityDestroy()
+            }
+        }
     }
 
     open fun onActivityCreate() {
         if (useEventBus()) {
-            //注册到事件主线
+            // 注册到事件主线
             EventBus.getDefault().register(this)
         }
         findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
@@ -78,7 +74,7 @@ abstract class AbBaseActivity: AppCompatActivity() , LifecycleEventObserver {
 
     open fun onActivityDestroy() {
         if (useEventBus()) {
-            //如果要使用eventbus请将此方法返回true
+            // 如果要使用eventbus请将此方法返回true
             EventBus.getDefault().unregister(this)
         }
     }
@@ -88,7 +84,6 @@ abstract class AbBaseActivity: AppCompatActivity() , LifecycleEventObserver {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onEvent(message: Message) {
-
     }
 
     open fun setTitle(title: String) {
@@ -97,7 +92,7 @@ abstract class AbBaseActivity: AppCompatActivity() , LifecycleEventObserver {
         }
     }
 
-    //设置横竖屏
+    // 设置横竖屏
     open fun setOrientation(landscape: Boolean) {
         requestedOrientation = if (landscape) {
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -116,10 +111,9 @@ abstract class AbBaseActivity: AppCompatActivity() , LifecycleEventObserver {
      */
     protected abstract fun initData()
 
-
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        //true - 界面加载成功的时候
+        // true - 界面加载成功的时候
     }
 
     /**

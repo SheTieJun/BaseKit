@@ -21,12 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.image
 
 import android.net.Uri
-
 
 interface ImageCallBack {
 
@@ -34,12 +31,11 @@ interface ImageCallBack {
 
     fun onFail()
 
-    //是否需要剪切
-    fun isNeedCut():Boolean
+    // 是否需要剪切
+    fun isNeedCut(): Boolean
 }
 
-
-open class ImageCallBackImpl:ImageCallBack{
+open class ImageCallBackImpl : ImageCallBack {
     override fun onSuccess(key: Uri) {
     }
 

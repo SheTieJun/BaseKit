@@ -21,21 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.exception
 
 import android.net.ParseException
-import com.google.gson.JsonParseException
 import com.google.gson.JsonSerializer
-import com.google.gson.JsonSyntaxException
-import org.json.JSONException
-import retrofit2.HttpException
-import java.io.NotSerializableException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
+import retrofit2.HttpException
 
 @Suppress("DEPRECATION")
 class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
@@ -107,7 +101,6 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
          */
         const val NULLPOINTER_EXCEPTION = UNKNOWNHOST_ERROR + 1
 
-
         /**
          * 正确错误
          */
@@ -115,7 +108,7 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
     }
 
     companion object {
-        //对应HTTP的状态码
+        // 对应HTTP的状态码
         private const val BADREQUEST = 400
         private const val UNAUTHORIZED = 401
         private const val FORBIDDEN = 403
@@ -156,12 +149,12 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                 ex = ApiException(e, ERROR.OK_CACHE_EXCEPTION)
                 ex.message = "缓存处理异常：" + e.message!!
                 ex
-            } else if (e is JsonParseException
-                || e is JSONException
-                || e is JsonSyntaxException
-                || e is JsonSerializer<*>
-                || e is NotSerializableException
-                || e is ParseException
+            } else if (e is JsonParseException ||
+                e is JSONException ||
+                e is JsonSyntaxException ||
+                e is JsonSerializer<*> ||
+                e is NotSerializableException ||
+                e is ParseException
             ) {
                 ex = ApiException(e, ERROR.PARSE_ERROR)
                 ex.message = "解析错误"

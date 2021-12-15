@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.file
 
 import android.app.Activity
@@ -69,14 +67,12 @@ object FileQUtils {
 //        registerForActivityResult(ActivityResultContracts.CreateDocument(), callback).launch(fileName)
 //    }
 
-
     /**
      * 删除文件
      */
     fun Context.delFile(uri: Uri) {
         DocumentsContract.deleteDocument(contentResolver, uri)
     }
-
 
     @WorkerThread
     fun writeDataToDocument(context: Context, uri: Uri, content: String) {
@@ -94,7 +90,6 @@ object FileQUtils {
             e.printStackTrace()
         }
     }
-
 
     /**
      * 兼容Q
@@ -157,17 +152,16 @@ object FileQUtils {
         return null
     }
 
-
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun uriToFileQ(context: Context, uri: Uri): File? =
         if (uri.scheme == ContentResolver.SCHEME_FILE)
             File(requireNotNull(uri.path))
         else if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
-            //把文件保存到沙盒
+            // 把文件保存到沙盒
             val contentResolver = context.contentResolver
             val displayName = "${System.currentTimeMillis()}${Random.nextInt(0, 9999)}.${
-                MimeTypeMap.getSingleton()
-                    .getExtensionFromMimeType(contentResolver.getType(uri))
+            MimeTypeMap.getSingleton()
+                .getExtensionFromMimeType(contentResolver.getType(uri))
             }"
             val ios = contentResolver.openInputStream(uri)
             if (ios != null) {
@@ -180,5 +174,4 @@ object FileQUtils {
                     }
             } else null
         } else null
-
 }

@@ -21,36 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.callBack
 
 import com.google.gson.internal.`$Gson$Types`
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import me.shetj.base.network.kt.ClassUtils
 import me.shetj.base.network.model.ApiResult
 import me.shetj.base.network.model.CacheResult
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
-//使用代理的方式，把R 默认转换成 ApiResult<R> 来接收数据
+// 使用代理的方式，把R 默认转换成 ApiResult<R> 来接收数据
 abstract class NetCallBackProxy<T : ApiResult<R>, R>(private var mCallBack: NetCallBack<R>) :
     IType<T> {
     val callBack: NetCallBack<R>
         get() = mCallBack
 
-    override fun getType(): Type { //CallBack代理方式，获取需要解析的Type
+    override fun getType(): Type { // CallBack代理方式，获取需要解析的Type
 
-        val rawCallType: Type = mCallBack.getRawType() //如果用户的信息是返回List需单独处理
+        val rawCallType: Type = mCallBack.getRawType() // 如果用户的信息是返回List需单独处理
         val typeArguments: Type =
-            if (MutableList::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0))
-                || MutableMap::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0))
+            if (MutableList::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0)) ||
+                MutableMap::class.java.isAssignableFrom(ClassUtils.getClass(rawCallType, 0))
             ) {
                 mCallBack.getType()
             } else if (CacheResult::class.java.isAssignableFrom(
                     ClassUtils.getClass(
-                        rawCallType,
-                        0
-                    )
+                            rawCallType,
+                            0
+                        )
                 )
             ) {
                 val type = mCallBack.getType()
@@ -72,5 +70,4 @@ abstract class NetCallBackProxy<T : ApiResult<R>, R>(private var mCallBack: NetC
         // Type type = com.google.gson.internal.$Gson$Types.newParameterizedTypeWithOwner(null, ArrayList.class, clazz); = ArrayList<clazz>
         return `$Gson$Types`.newParameterizedTypeWithOwner(null, rawType, typeArguments)
     }
-
 }

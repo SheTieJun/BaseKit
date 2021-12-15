@@ -21,17 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.model
 
-import me.shetj.base.network.callBack.ProgressResponseCallBack
-import okhttp3.MediaType
 import java.io.File
 import java.io.InputStream
 import java.io.Serializable
 import java.net.URLConnection
-import java.util.*
+import me.shetj.base.network.callBack.ProgressResponseCallBack
+import okhttp3.MediaType
 
 class HttpParams : Serializable {
     /**
@@ -60,7 +57,8 @@ class HttpParams : Serializable {
 
     fun put(params: HttpParams?) {
         if (params != null) {
-            if (params.urlParamsMap != null && params.urlParamsMap!!.isNotEmpty()) urlParamsMap!!.putAll(params.urlParamsMap!!)
+            if (params.urlParamsMap != null && params.urlParamsMap!!.isNotEmpty())
+                urlParamsMap!!.putAll(params.urlParamsMap!!)
             if (params.fileParamsMap != null && params.fileParamsMap!!.isNotEmpty()) {
                 fileParamsMap!!.putAll(params.fileParamsMap!!)
             }
@@ -80,25 +78,52 @@ class HttpParams : Serializable {
         put(key, file, file!!.name, responseCallBack)
     }
 
-    fun <T : File?> put(key: String?, file: T, fileName: String, responseCallBack: ProgressResponseCallBack?) {
+    fun <T : File?> put(
+        key: String?,
+        file: T,
+        fileName: String,
+        responseCallBack: ProgressResponseCallBack?
+    ) {
         put(key, file, fileName, guessMimeType(fileName), responseCallBack)
     }
 
-    fun <T : InputStream?> put(key: String?, file: T, fileName: String, responseCallBack: ProgressResponseCallBack?) {
+    fun <T : InputStream?> put(
+        key: String?,
+        file: T,
+        fileName: String,
+        responseCallBack: ProgressResponseCallBack?
+    ) {
         put(key, file, fileName, guessMimeType(fileName), responseCallBack)
     }
 
-    fun put(key: String?, bytes: ByteArray, fileName: String, responseCallBack: ProgressResponseCallBack?) {
+    fun put(
+        key: String?,
+        bytes: ByteArray,
+        fileName: String,
+        responseCallBack: ProgressResponseCallBack?
+    ) {
         put(key, bytes, fileName, guessMimeType(fileName), responseCallBack)
     }
 
     fun put(key: String?, fileWrapper: FileWrapper<*>?) {
         if (key != null && fileWrapper != null) {
-            put(key, fileWrapper.file as Any, fileWrapper.fileName, fileWrapper.contentType, fileWrapper.responseCallBack)
+            put(
+                key,
+                fileWrapper.file as Any,
+                fileWrapper.fileName,
+                fileWrapper.contentType,
+                fileWrapper.responseCallBack
+            )
         }
     }
 
-    fun <T> put(key: String?, countent: T, fileName: String, contentType: MediaType?, responseCallBack: ProgressResponseCallBack?) {
+    fun <T> put(
+        key: String?,
+        countent: T,
+        fileName: String,
+        contentType: MediaType?,
+        responseCallBack: ProgressResponseCallBack?
+    ) {
         if (key != null) {
             var fileWrappers = fileParamsMap!![key]
             if (fileWrappers == null) {
@@ -109,7 +134,11 @@ class HttpParams : Serializable {
         }
     }
 
-    fun <T : File?> putFileParams(key: String?, files: List<T>?, responseCallBack: ProgressResponseCallBack?) {
+    fun <T : File?> putFileParams(
+        key: String?,
+        files: List<T>?,
+        responseCallBack: ProgressResponseCallBack?
+    ) {
         if (key != null && files != null && files.isNotEmpty()) {
             for (file in files) {
                 put<File>(key, file!!, responseCallBack)
@@ -146,7 +175,7 @@ class HttpParams : Serializable {
     private fun guessMimeType(path: String): MediaType? {
         var pathClone = path
         val fileNameMap = URLConnection.getFileNameMap()
-        pathClone = pathClone.replace("#", "") //解决文件名中含有#号异常的问题
+        pathClone = pathClone.replace("#", "") // 解决文件名中含有#号异常的问题
         var contentType = fileNameMap.getContentTypeFor(pathClone)
         if (contentType == null) {
             contentType = "application/octet-stream"
@@ -157,12 +186,17 @@ class HttpParams : Serializable {
     /**
      * 文件类型的包装类
      */
-    class FileWrapper<T>(//可以是
-            var file: T, var fileName: String, var contentType: MediaType?, responseCallBack: ProgressResponseCallBack?) {
+    class FileWrapper<T>( // 可以是
+        var file: T,
+        var fileName: String,
+        var contentType: MediaType?,
+        responseCallBack: ProgressResponseCallBack?
+    ) {
         var fileSize: Long = 0
         var responseCallBack: ProgressResponseCallBack?
         override fun toString(): String {
-            return "FileWrapper{countent=$file, fileName='$fileName, contentType=$contentType, fileSize=$fileSize}"
+            return "FileWrapper{countent=$file, fileName='$fileName, " +
+                "contentType=$contentType, fileSize=$fileSize}"
         }
 
         init {

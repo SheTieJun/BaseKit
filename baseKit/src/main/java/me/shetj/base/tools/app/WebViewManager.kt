@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
@@ -30,8 +28,8 @@ import android.util.Base64
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
-import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 import java.io.InputStream
+import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 
 /**
  * WebView管理器，提供常用设置
@@ -49,9 +47,9 @@ class WebViewManager(private val webView: WebView) {
         webSettings.setAppCachePath(appCachePath)
         webSettings.allowFileAccess = true
         webSettings.setAppCacheEnabled(true)
-        webSettings.loadWithOverviewMode = true //设置加载进来的页面自适应手机屏幕
+        webSettings.loadWithOverviewMode = true // 设置加载进来的页面自适应手机屏幕
         webSettings.useWideViewPort = true
-        webSettings.builtInZoomControls = false //设置页面可缩放,必须把缩放按钮禁掉,不然无法取消
+        webSettings.builtInZoomControls = false // 设置页面可缩放,必须把缩放按钮禁掉,不然无法取消
         webSettings.displayZoomControls = false
         webSettings.setSupportZoom(true)
     }
@@ -60,15 +58,17 @@ class WebViewManager(private val webView: WebView) {
      * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放
      */
     fun imgReset() {
-        webView.loadUrl("javascript:(function(){" +
+        webView.loadUrl(
+            "javascript:(function(){" +
                 "var objs = document.getElementsByTagName('img'); " +
                 "for(var i=0;i<objs.length;i++)  " +
-                "{"
-                + "var img = objs[i];   " +
+                "{" +
+                "var img = objs[i];   " +
                 "    img.style.maxWidth = '100%';" +
                 "    img.style.height = 'auto';  " +
                 "}" +
-                "})()")
+                "})()"
+        )
     }
 
     /**
@@ -78,18 +78,19 @@ class WebViewManager(private val webView: WebView) {
      * 函数的功能是在图片点击的时候调用本地java接口并传递url过去
      */
     fun addImageClickListner() {
-        webView.loadUrl("javascript:(function(){" +
+        webView.loadUrl(
+            "javascript:(function(){" +
                 "var objs = document.getElementsByTagName(\"img\"); " +
                 "for(var i=0;i<objs.length;i++)  " +
-                "{"
-                + "    objs[i].onclick=function()  " +
-                "    {  "
-                + "        window.imagelistner.openImage(this.src);  " +
+                "{" +
+                "    objs[i].onclick=function()  " +
+                "    {  " +
+                "        window.imagelistner.openImage(this.src);  " +
                 "    }  " +
                 "}" +
-                "})()")
+                "})()"
+        )
     }
-
 
     fun addVideoStartListener() {
         webView.context?.assets?.let {
@@ -99,13 +100,15 @@ class WebViewManager(private val webView: WebView) {
             inputStream.close()
 
             val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
-            webView.loadUrl("javascript:(function() {" +
+            webView.loadUrl(
+                "javascript:(function() {" +
                     "var parent = document.getElementsByTagName('head').item(0);" +
                     "var script = document.createElement('script');" +
                     "script.type = 'text/javascript';" +
                     "script.innerHTML = window.atob('$encoded');" +
                     "parent.appendChild(script)" +
-                    "})()")
+                    "})()"
+            )
         }
     }
 
@@ -117,8 +120,8 @@ class WebViewManager(private val webView: WebView) {
         for (key in itmes.keys) {
             if (isNotEmpty(itmes[key])) {
                 jsonBuf.append("localStorage.setItem('key', '")
-                        .append(itmes[key])
-                        .append("');")
+                    .append(itmes[key])
+                    .append("');")
             }
         }
         val info = jsonBuf.toString()
@@ -127,11 +130,10 @@ class WebViewManager(private val webView: WebView) {
         }
     }
 
-
     /**
      * 设置cookie
      */
-    fun setCookie(map:MutableMap<String,String>){
+    fun setCookie(map: MutableMap<String, String>) {
         val cookieManager: CookieManager = CookieManager.getInstance()
         cookieManager.setAcceptCookie(true)
         map.onEach { entry ->

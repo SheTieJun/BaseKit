@@ -21,15 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.content.Context
 import android.content.res.Resources
 import android.transition.Transition
 import android.transition.TransitionInflater
-
 
 /**
  * 通过资源id 获取Transition

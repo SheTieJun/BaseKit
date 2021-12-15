@@ -21,13 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.graphics.Rect
 import android.view.Window
-import androidx.core.view.ViewCompat
 
 /**
  * 只能用来判断关闭键盘
@@ -56,7 +53,7 @@ class SoftInputUtil {
                 return@addOnGlobalLayoutListener
             }
 
-            //根视图显示高度没有变化，可以看做软键盘显示/隐藏状态没有变化
+            // 根视图显示高度没有变化，可以看做软键盘显示/隐藏状态没有变化
             if (rootViewVisibleHeight == visibleHeight) {
                 return@addOnGlobalLayoutListener
             }

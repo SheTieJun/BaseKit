@@ -21,16 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network_coroutine.cache
 
-import org.koin.java.KoinJavaComponent
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.concurrent.locks.ReentrantReadWriteLock
-
-
-
+import org.koin.java.KoinJavaComponent
 
 /**
  * @author stj
@@ -44,7 +39,7 @@ class KCCache {
     private val diskCache: LruDiskCache = KoinJavaComponent.get(LruDiskCache::class.java)
 
     companion object {
-        const val CACHE_NEVER_EXPIRE: Long = -1 //永久不过期
+        const val CACHE_NEVER_EXPIRE: Long = -1 // 永久不过期
     }
 
     /**
@@ -54,21 +49,21 @@ class KCCache {
      * @param existTime 缓存时间
      */
     fun load(key: String?, existTime: Long): String? {
-        //1.先检查key
+        // 1.先检查key
         requireNotNull(key, { "key == null" })
 
-        //2.判断key是否存在,key不存在去读缓存没意义
+        // 2.判断key是否存在,key不存在去读缓存没意义
         if (!containsKey(key)) {
             return null
         }
 
-        //3.判断是否过期，过期自动清理
+        // 3.判断是否过期，过期自动清理
         if (diskCache.isExpiry(key, existTime)) {
             remove(key)
             return null
         }
 
-        //4.开始真正的读取缓存
+        // 4.开始真正的读取缓存
         mLock.readLock().lock()
         return try {
             // 读取缓存
@@ -86,15 +81,15 @@ class KCCache {
      * @return
      */
     fun save(key: String?, value: String?): Boolean {
-        //1.先检查key
+        // 1.先检查key
         requireNotNull(key, { "key == null" })
 
-        //2.如果要保存的值为空,则删除
+        // 2.如果要保存的值为空,则删除
         if (value == null) {
             return remove(key)
         }
 
-        //3.写入缓存
+        // 3.写入缓存
         val status: Boolean
         mLock.writeLock().lock()
         try {

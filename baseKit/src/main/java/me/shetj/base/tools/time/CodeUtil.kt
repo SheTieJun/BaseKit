@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.time
 
 import android.widget.TextView
@@ -51,7 +49,7 @@ class CodeUtil : ABKtScopeComponent {
         }
     }
 
-    fun register(lifecycle: Lifecycle){
+    fun register(lifecycle: Lifecycle) {
         ktScope.register(lifecycle)
     }
 
@@ -68,7 +66,6 @@ class CodeUtil : ABKtScopeComponent {
         }
     }
 
-
     fun stop() {
         codeTV?.post {
             codeTV?.text = "获取验证码"
@@ -76,6 +73,4 @@ class CodeUtil : ABKtScopeComponent {
         }
         job?.cancel()
     }
-
 }
-

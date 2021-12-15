@@ -21,14 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.request
 
 import me.shetj.base.network.RxHttp
 
-
-//自定义apiService
+// 自定义apiService
 class CustomRequest<S>() {
     fun create(clazz: Class<S>): S {
         return RxHttp.getInstance().getApiManager(clazz)

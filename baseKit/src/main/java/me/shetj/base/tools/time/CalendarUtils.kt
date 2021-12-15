@@ -21,13 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.time
 
 import androidx.annotation.Keep
-import java.util.*
-
+import java.util.Calendar
 
 /**
  *    <uses-permission android:name="android.permission.READ_CALENDAR" />
@@ -45,11 +42,11 @@ object CalendarUtils {
         var month1 = month - 1
         month1 -= 1
         return when (month1) {
-            Calendar.JANUARY, Calendar.MARCH, Calendar.MAY, Calendar.JULY, Calendar.AUGUST, Calendar.OCTOBER, Calendar.DECEMBER -> 31
+            Calendar.JANUARY, Calendar.MARCH, Calendar.MAY, Calendar.JULY,
+            Calendar.AUGUST, Calendar.OCTOBER, Calendar.DECEMBER -> 31
             Calendar.APRIL, Calendar.JUNE, Calendar.SEPTEMBER, Calendar.NOVEMBER -> 30
             Calendar.FEBRUARY -> if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) 29 else 28
             else -> throw IllegalArgumentException("Invalid Month")
         }
     }
-
 }

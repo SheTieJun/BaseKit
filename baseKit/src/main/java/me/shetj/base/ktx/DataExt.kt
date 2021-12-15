@@ -21,17 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.os.Bundle
 import android.os.Message
 import androidx.annotation.IntRange
+import kotlin.random.Random
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
 import timber.log.Timber
-import kotlin.random.Random
 
 @JvmOverloads
 fun Any?.toMessage(code: Int = 1): Message {
@@ -47,7 +45,6 @@ fun Any?.toMessage(code: Int = 1): Message {
 inline fun <reified T> Bundle?.getDataOrNull(key: String): T? {
     return this?.getSerializable(key) as? T
 }
-
 
 /**
  * 执行代码，并获取执行需要的时间
@@ -97,7 +94,7 @@ fun getRandomString(num: Int): String {
     var j = 0
     while (j < num) {
         val c = m[Random.nextInt(62)]
-        //随机数之间没有重复的
+        // 随机数之间没有重复的
         if (linkNo.contains(c.toString())) {
             continue
         }

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.anim.motion
 
 import android.content.Context
@@ -33,31 +31,17 @@ import androidx.constraintlayout.motion.widget.MotionHelper
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlin.math.hypot
 
-
-/**
- * 测量，布局，绘制
- * 在XML 中使用，可以设置多个view,可以通过id 执行不同的操作，或者tag
- */
 class CircularRevealHelper
-@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-        MotionHelper(context, attrs, defStyleAttr) {
+@JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
+    MotionHelper(context, attrs, defStyleAttr) {
 
-    //updatePostLayout会在 onLayout 之后调用，在这里做动画就可以。
-//    override fun updatePostLayout(container: ConstraintLayout?) {
-//        super.updatePostLayout(container)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            val views = getViews(container)
-//            for (view in views) {
-//                val anim = ViewAnimationUtils.createCircularReveal(view, view.width / 2,
-//                        view.height / 2, 0f,
-//                        hypot((view.height / 2).toDouble(), (view.width / 2).toDouble()).toFloat())
-//                anim.duration = 3000
-//                anim.start()
-//            }
-//        }
-//    }
-
-    //onLayout 之前
+    /**
+     *     onLayout 之前
+     */
     override fun updatePreLayout(container: ConstraintLayout?) {
         super.updatePreLayout(container)
     }
@@ -65,9 +49,11 @@ class CircularRevealHelper
     override fun setProgress(view: View?, progress: Float) {
         super.setProgress(view, progress)
         view?.let {
-            val anim = ViewAnimationUtils.createCircularReveal(view, view.width / 2,
-                    view.height / 2, 0f,
-                    hypot((view.height / 2).toDouble(), (view.width / 2).toDouble()).toFloat())
+            val anim = ViewAnimationUtils.createCircularReveal(
+                view, view.width / 2,
+                view.height / 2, 0f,
+                hypot((view.height / 2).toDouble(), (view.width / 2).toDouble()).toFloat()
+            )
             anim.duration = 3000
             anim.start()
         }

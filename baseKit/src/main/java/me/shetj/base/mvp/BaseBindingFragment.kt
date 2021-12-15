@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvp
 
 import android.os.Bundle
@@ -46,7 +44,7 @@ import me.shetj.base.ktx.getClazz
  * 不可见:   [Lifecycle.Event.ON_RESUME]  ->[Lifecycle.Event.ON_PAUSE]
  *
  *
- * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
+ * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
 abstract class BaseBindingFragment<T : BasePresenter<*>, VB : ViewBinding> : BaseFragment<T>() {
@@ -61,7 +59,6 @@ abstract class BaseBindingFragment<T : BasePresenter<*>, VB : ViewBinding> : Bas
         mViewBinding = initViewBinding(inflater, container)
         return mViewBinding.root
     }
-
 
     @Suppress("UNCHECKED_CAST")
     open fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {

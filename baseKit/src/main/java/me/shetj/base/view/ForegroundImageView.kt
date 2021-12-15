@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.view
 
 import android.content.Context
@@ -33,7 +31,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import me.shetj.base.R
 
-class ForegroundImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : AppCompatImageView(context, attrs) {
+class ForegroundImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    AppCompatImageView(context, attrs) {
     private var foregroundDraw: Drawable? = null
 
     /**

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.share
 
 import android.app.Activity
@@ -87,7 +85,7 @@ class Share private constructor(builder: Builder) {
         if (checkShareParam()) {
             var shareIntent = createShareIntent()
             if (shareIntent == null) {
-                Timber.tag(TAG).e(  "shareBySystem cancel.")
+                Timber.tag(TAG).e("shareBySystem cancel.")
                 return
             }
             if (title == null) {
@@ -104,7 +102,7 @@ class Share private constructor(builder: Builder) {
                         activity.startActivity(shareIntent)
                     }
                 } catch (e: Exception) {
-                    Timber.tag(TAG).e( Log.getStackTraceString(e))
+                    Timber.tag(TAG).e(Log.getStackTraceString(e))
                 }
             }
         }
@@ -124,7 +122,8 @@ class Share private constructor(builder: Builder) {
                 shareIntent.putExtra(Intent.EXTRA_TEXT, contentText)
                 shareIntent.type = "text/plain"
             }
-            ShareContentType.IMAGE, ShareContentType.AUDIO, ShareContentType.VIDEO, ShareContentType.FILE -> {
+            ShareContentType.IMAGE, ShareContentType.AUDIO,
+            ShareContentType.VIDEO, ShareContentType.FILE -> {
                 shareIntent.action = Intent.ACTION_SEND
                 shareIntent.addCategory("android.intent.category.DEFAULT")
                 shareIntent.type = contentType
@@ -133,7 +132,7 @@ class Share private constructor(builder: Builder) {
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             else -> {
-                Timber.tag(TAG).e( "$contentType is not support share type.")
+                Timber.tag(TAG).e("$contentType is not support share type.")
                 shareIntent = null
             }
         }
@@ -142,29 +141,28 @@ class Share private constructor(builder: Builder) {
 
     private fun checkShareParam(): Boolean {
         if (activity == null) {
-            Timber.tag(TAG).e( "activity is null.")
+            Timber.tag(TAG).e("activity is null.")
             return false
         }
         if (TextUtils.isEmpty(contentType)) {
-            Timber.tag(TAG).e( "Share content type is empty.")
+            Timber.tag(TAG).e("Share content type is empty.")
             return false
         }
         if (ShareContentType.TEXT == contentType) {
             if (TextUtils.isEmpty(contentText)) {
-                Timber.tag(TAG).e( "Share text context is empty.")
+                Timber.tag(TAG).e("Share text context is empty.")
                 return false
             }
         } else {
             if (shareFileUri == null) {
-                Timber.tag(TAG).e( "Share file path is null.")
+                Timber.tag(TAG).e("Share file path is null.")
                 return false
             }
         }
         return true
     }
 
-
-     open  class Builder(val activity: Activity) {
+    open class Builder(val activity: Activity) {
         @ShareContentType
         var contentType: String = ShareContentType.FILE
         var title: String? = null
@@ -221,7 +219,10 @@ class Share private constructor(builder: Builder) {
          * @param componentClassName componentPackageName
          * @return Builder
          */
-        fun setShareToComponent(componentPackageName: String?, componentClassName: String?): Builder {
+        fun setShareToComponent(
+            componentPackageName: String?,
+            componentClassName: String?
+        ): Builder {
             this.componentPackageName = componentPackageName
             this.componentClassName = componentClassName
             return this
@@ -261,56 +262,57 @@ class Share private constructor(builder: Builder) {
 
         @JvmOverloads
         @JvmStatic
-        fun shareText(activity: Activity,title: String = "Share Text", content: String) {
+        fun shareText(activity: Activity, title: String = "Share Text", content: String) {
             Builder(activity)
-                    .setContentType(ShareContentType.TEXT)
-                    .setTextContent(content)
-                    .setTitle(title)
-                    .build()
-                    .shareBySystem()
+                .setContentType(ShareContentType.TEXT)
+                .setTextContent(content)
+                .setTitle(title)
+                .build()
+                .shareBySystem()
         }
 
         @JvmOverloads
         @JvmStatic
-        fun shareImage(activity: Activity,title: String = "Share Image", content: Uri) {
+        fun shareImage(activity: Activity, title: String = "Share Image", content: Uri) {
             Builder(activity)
-                    .setContentType(ShareContentType.IMAGE)
-                    .setShareFileUri(content) //.setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
-                    .setTitle(title)
-                    .build()
-                    .shareBySystem()
-        }
-        @JvmOverloads
-        @JvmStatic
-        fun shareAudio(activity: Activity,title: String = "Share Audio", content: Uri) {
-            Builder(activity)
-                    .setContentType(ShareContentType.AUDIO)
-                    .setShareFileUri(content)
-                    .setTitle(title)
-                    .build()
-                    .shareBySystem()
+                .setContentType(ShareContentType.IMAGE)
+                .setShareFileUri(content) // .setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
+                .setTitle(title)
+                .build()
+                .shareBySystem()
         }
 
         @JvmOverloads
         @JvmStatic
-        fun shareVideo(activity: Activity,title: String = "Share Video", content: Uri) {
+        fun shareAudio(activity: Activity, title: String = "Share Audio", content: Uri) {
             Builder(activity)
-                    .setContentType(ShareContentType.VIDEO)
-                    .setShareFileUri(content)
-                    .setTitle(title)
-                    .build()
-                    .shareBySystem()
+                .setContentType(ShareContentType.AUDIO)
+                .setShareFileUri(content)
+                .setTitle(title)
+                .build()
+                .shareBySystem()
         }
 
         @JvmOverloads
         @JvmStatic
-        fun shareFile(activity: Activity,title: String = "Share File", content: Uri) {
+        fun shareVideo(activity: Activity, title: String = "Share Video", content: Uri) {
             Builder(activity)
-                    .setContentType(ShareContentType.FILE)
-                    .setShareFileUri(content)
-                    .setTitle(title)
-                    .build()
-                    .shareBySystem()
+                .setContentType(ShareContentType.VIDEO)
+                .setShareFileUri(content)
+                .setTitle(title)
+                .build()
+                .shareBySystem()
+        }
+
+        @JvmOverloads
+        @JvmStatic
+        fun shareFile(activity: Activity, title: String = "Share File", content: Uri) {
+            Builder(activity)
+                .setContentType(ShareContentType.FILE)
+                .setShareFileUri(content)
+                .setTitle(title)
+                .build()
+                .shareBySystem()
         }
     }
 

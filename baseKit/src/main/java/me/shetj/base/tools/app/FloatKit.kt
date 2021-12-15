@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
@@ -40,7 +38,6 @@ import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import timber.log.Timber
 
-
 object FloatKit {
 
     private const val OP_SYSTEM_ALERT_WINDOW = 24 // 支持TYPE_TOAST悬浮窗
@@ -56,8 +53,10 @@ object FloatKit {
         } else {
             mWindowParams.type = WindowManager.LayoutParams.TYPE_PHONE
         }
-        mWindowParams.flags = (WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
+        mWindowParams.flags = (
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            )
         mWindowParams.format = PixelFormat.TRANSLUCENT
         mWindowParams.gravity = Gravity.START or Gravity.TOP
         return mWindowParams

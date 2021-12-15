@@ -21,19 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvp
-
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.annotation.Keep
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
 import me.shetj.base.ktx.getClazz
-
 
 /**
  * 基础类  view 层
@@ -41,7 +35,6 @@ import me.shetj.base.ktx.getClazz
  */
 @Keep
 abstract class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : BaseActivity<P>() {
-
 
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding
@@ -58,6 +51,4 @@ abstract class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : Bas
             LayoutInflater::class.java
         ).invoke(null, layoutInflater) as VB
     }
-
-
 }

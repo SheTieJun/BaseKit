@@ -21,13 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.view.floatview
 
-import android.content.*
+import android.content.Context
 import android.util.AttributeSet
-import android.view.*
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 import me.shetj.base.tools.app.BarUtils
 import me.shetj.base.tools.app.FloatKit
@@ -45,12 +46,12 @@ abstract class BaseFloatView : FrameLayout {
      * 获取悬浮窗中的视频播放view
      */
     private var mStatusBarHeight = statusBarHeight // 系统状态栏的高度
-    private var mXDownInScreen = 0f// 按下事件距离屏幕左边界的距离
+    private var mXDownInScreen = 0f // 按下事件距离屏幕左边界的距离
     private var mYDownInScreen = 0f // 按下事件距离屏幕上边界的距离
-    private var mXInScreen = 0f// 滑动事件距离屏幕左边界的距离
+    private var mXInScreen = 0f // 滑动事件距离屏幕左边界的距离
     private var mYInScreen = 0f // 滑动事件距离屏幕上边界的距离
-    private var mXInView = 0f// 滑动事件距离自身左边界的距离
-    private var mYInView = 0f// 滑动事件距离自身上边界的距离
+    private var mXInView = 0f // 滑动事件距离自身左边界的距离
+    private var mYInView = 0f // 滑动事件距离自身上边界的距离
 
     constructor(context: Context) : super(context) {
         initView(context)
@@ -68,18 +69,17 @@ abstract class BaseFloatView : FrameLayout {
         initView(context)
     }
 
-
     /**
      * 初始化view
      */
-   abstract fun initView(context: Context)
+    abstract fun initView(context: Context)
 
     open fun addToWindowManager(layout: ViewRect.() -> Unit) {
         if (context.checkFloatPermission()) {
             if (!this::winManager.isInitialized) {
                 winManager = context.getWinManager()
                 val rect = ViewRect(0, 0, 0, 0).apply(layout)
-                windowParams = FloatKit.getWindowParams().apply{
+                windowParams = FloatKit.getWindowParams().apply {
                     x = rect.x
                     y = rect.y
                     width = rect.width
@@ -88,7 +88,7 @@ abstract class BaseFloatView : FrameLayout {
             }
         }
         if (this.parent != null) {
-            (parent as? ViewGroup)?.removeView(this)?: kotlin.run {
+            (parent as? ViewGroup)?.removeView(this) ?: kotlin.run {
                 if (this::winManager.isInitialized) {
                     winManager.removeView(this)
                 }
@@ -108,7 +108,7 @@ abstract class BaseFloatView : FrameLayout {
     /**
      * 给当前界面设置的view设置点击事件，不点击的时候，会滑动
      */
-    fun View.setViewClickInFloat(onClickListener: OnClickListener?=null){
+    fun View.setViewClickInFloat(onClickListener: OnClickListener? = null) {
         setOnClickListener(onClickListener)
         var oldX = 0f
         var oldY = 0f
@@ -123,7 +123,7 @@ abstract class BaseFloatView : FrameLayout {
                     onTouchEvent(event)
                 }
                 MotionEvent.ACTION_UP -> {
-                    if (oldX == event.rawX && oldY == event.rawY){
+                    if (oldX == event.rawX && oldY == event.rawY) {
                         this.performClick()
                     }
                 }
@@ -149,9 +149,9 @@ abstract class BaseFloatView : FrameLayout {
                 mYInScreen = event.rawY - mStatusBarHeight
                 updateViewPosition()
             }
-            MotionEvent.ACTION_UP -> if (mXDownInScreen == mXInScreen
-                && mYDownInScreen == mYInScreen
-            ) { //手指没有滑动视为点击，回到窗口模式
+            MotionEvent.ACTION_UP -> if (mXDownInScreen == mXInScreen &&
+                mYDownInScreen == mYInScreen
+            ) { // 手指没有滑动视为点击，回到窗口模式
                 performClick()
             }
             else -> {
@@ -159,7 +159,6 @@ abstract class BaseFloatView : FrameLayout {
         }
         return true
     }
-
 
     /**
      * 获取系统状态栏高度

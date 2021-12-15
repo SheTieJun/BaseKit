@@ -21,9 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.view.floatview
-
 
 class ViewRect internal constructor(var x: Int, var y: Int, var width: Int, var height: Int)

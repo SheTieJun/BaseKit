@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 @file:Suppress("DEPRECATION")
 
 package me.shetj.base.tools.app
@@ -39,13 +37,11 @@ import android.content.pm.Signature
 import android.graphics.drawable.Drawable
 import android.os.Process
 import androidx.annotation.Keep
-import me.shetj.base.tools.file.FileUtils
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
-import java.lang.Exception
-import java.util.*
 import kotlin.system.exitProcess
+import me.shetj.base.tools.file.FileUtils
 
 @Keep
 class AppUtils private constructor() {
@@ -55,9 +51,6 @@ class AppUtils private constructor() {
 
     /**
      * 封装App信息的Bean类
-     */
-    class AppInfo
-    /**
      * @param name        名称
      * @param icon        图标
      * @param packageName 包名
@@ -66,8 +59,15 @@ class AppUtils private constructor() {
      * @param versionCode 版本码
      * @param isSystem    是否系统应用
      */
-    (packageName: String, name: String, icon: Drawable, packagePath: String,
-     versionName: String, versionCode: Int, isSystem: Boolean) {
+    class AppInfo(
+        packageName: String,
+        name: String,
+        icon: Drawable,
+        packagePath: String,
+        versionName: String,
+        versionCode: Int,
+        isSystem: Boolean
+    ) {
 
         var name: String? = null
         var icon: Drawable? = null
@@ -89,11 +89,11 @@ class AppUtils private constructor() {
 
         override fun toString(): String {
             return "pkg name: " + packageName +
-                    "\napp name: " + name +
-                    "\napp path: " + packagePath +
-                    "\napp v name: " + versionName +
-                    "\napp v code: " + versionCode +
-                    "\nis system: " + isSystem
+                "\napp name: " + name +
+                "\napp path: " + packagePath +
+                "\napp v name: " + versionName +
+                "\napp v code: " + versionCode +
+                "\nis system: " + isSystem
         }
     }
 
@@ -106,19 +106,17 @@ class AppUtils private constructor() {
                 // 判断系统/非系统应用
                 if (packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0)
                 // 非系统应用
-                {
-                    if (packageInfo.packageName.contains(name)) {
-                        val myAppInfo = AppInfos()
-                        myAppInfo.bundleID = packageInfo.packageName
-                        myAppInfo.version = packageInfo.versionName
-                        myAppInfos.add(myAppInfo)
+                    {
+                        if (packageInfo.packageName.contains(name)) {
+                            val myAppInfo = AppInfos()
+                            myAppInfo.bundleID = packageInfo.packageName
+                            myAppInfo.version = packageInfo.versionName
+                            myAppInfos.add(myAppInfo)
+                        }
                     }
-                }
             }
             return myAppInfos
-
         }
-
 
         /**
          * 判断App是否安装
@@ -210,9 +208,11 @@ class AppUtils private constructor() {
             if (!FileUtils.isFileExists(file)) {
                 return
             }
-            activity.startActivityForResult(IntentUtils.getInstallAppIntent(file, authority), requestCode)
+            activity.startActivityForResult(
+                IntentUtils.getInstallAppIntent(file, authority),
+                requestCode
+            )
         }
-
 
         /**
          * 卸载App
@@ -239,9 +239,11 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return
             }
-            activity.startActivityForResult(IntentUtils.getUninstallAppIntent(packageName), requestCode)
+            activity.startActivityForResult(
+                IntentUtils.getUninstallAppIntent(packageName),
+                requestCode
+            )
         }
-
 
         /**
          * 打开App
@@ -268,7 +270,10 @@ class AppUtils private constructor() {
             if (isSpace(packageName)) {
                 return
             }
-            activity.startActivityForResult(IntentUtils.getLaunchAppIntent(packageName), requestCode)
+            activity.startActivityForResult(
+                IntentUtils.getLaunchAppIntent(packageName),
+                requestCode
+            )
         }
 
         /**
@@ -335,7 +340,6 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 null
             }
-
         }
 
         /**
@@ -366,7 +370,6 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 null
             }
-
         }
 
         /**
@@ -397,7 +400,6 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 null
             }
-
         }
 
         /**
@@ -428,7 +430,6 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 null
             }
-
         }
 
         /**
@@ -459,7 +460,6 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 -1
             }
-
         }
 
         /**
@@ -490,7 +490,6 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 false
             }
-
         }
 
         /**
@@ -521,7 +520,6 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 false
             }
-
         }
 
         /**
@@ -554,9 +552,7 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 null
             }
-
         }
-
 
         /**
          * 判断App是否处于前台
@@ -566,13 +562,16 @@ class AppUtils private constructor() {
         @JvmStatic
         val isAppForeground: Boolean
             get() {
-                val manager = Utils.app.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                val manager =
+                    Utils.app.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
                 val info = manager.runningAppProcesses
                 if (info == null || info.size == 0) {
                     return false
                 }
                 for (aInfo in info) {
-                    if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    if (aInfo.importance ==
+                        ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                    ) {
                         return aInfo.processName == Utils.app.packageName
                     }
                 }
@@ -622,7 +621,6 @@ class AppUtils private constructor() {
                 e.printStackTrace()
                 null
             }
-
         }
 
         /**
@@ -719,7 +717,6 @@ class AppUtils private constructor() {
             }
             return true
         }
-
 
         fun getCurrentProcessNameByFile(context: Context): String? {
             return try {

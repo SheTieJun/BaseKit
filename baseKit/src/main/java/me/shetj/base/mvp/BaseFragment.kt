@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvp
 
 import android.annotation.SuppressLint
@@ -44,7 +42,7 @@ import timber.log.Timber
  * 开始必须可见才会初始化:[onCreateView]-> [Lifecycle.Event.ON_CREATE] -> [onViewCreated]-> [Lifecycle.Event.ON_START] -> [Lifecycle.Event.ON_RESUME]
  * 结束前现会:[Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_STOP] -> [Lifecycle.Event.ON_DESTROY]
  * 不可见:   [Lifecycle.Event.ON_RESUME]  ->[Lifecycle.Event.ON_PAUSE]
- * 可见:     [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
+ * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
 abstract class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
@@ -58,15 +56,13 @@ abstract class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
     override val rxContext: AppCompatActivity
         get() = (requireActivity() as AppCompatActivity?)!!
 
-
     /**
      * 抽象类不能反射
      *
      */
     open fun initPresenter(): T {
-        return  getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
+        return getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
     }
-
 
     override fun onDestroyView() {
         if (lazyPresenter.isInitialized()) {

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
@@ -30,7 +28,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.LinkedList
 
 class Utils private constructor() {
 
@@ -61,15 +59,12 @@ class Utils private constructor() {
             }
 
             override fun onActivityPaused(activity: Activity) {
-
             }
 
             override fun onActivityStopped(activity: Activity) {
-
             }
 
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-
             }
 
             override fun onActivityDestroyed(activity: Activity) {

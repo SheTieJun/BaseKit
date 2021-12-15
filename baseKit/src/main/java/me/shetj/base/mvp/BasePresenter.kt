@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvp
-
 
 import android.content.Intent
 import android.os.Message
@@ -33,6 +30,7 @@ import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -43,7 +41,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
 
 /**
  *
@@ -55,7 +52,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
 
     private var mCompositeDisposable: CompositeDisposable? = null
     protected val model: T by lazy { initModel() }
-
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + SupervisorJob()
@@ -84,7 +80,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     open fun onEvent(message: Message) {
-
     }
 
     /**
@@ -136,5 +131,3 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         view.updateView(msg.toMessage(code))
     }
 }
-
-

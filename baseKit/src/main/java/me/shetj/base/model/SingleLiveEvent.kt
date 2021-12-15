@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.model
 
 import androidx.annotation.MainThread
@@ -47,7 +45,6 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         })
     }
 
-
     override fun postValue(value: T?) {
         super.postValue(value)
     }
@@ -66,4 +63,3 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         value = null
     }
 }
-

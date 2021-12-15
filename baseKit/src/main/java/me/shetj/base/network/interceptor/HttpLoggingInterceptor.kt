@@ -21,10 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.interceptor
 
+import java.io.IOException
+import java.net.URLDecoder
+import java.nio.charset.Charset
+import java.util.concurrent.TimeUnit
 import me.shetj.base.tools.debug.DebugFunc
 import okhttp3.Connection
 import okhttp3.Interceptor
@@ -36,10 +38,6 @@ import okhttp3.ResponseBody
 import okhttp3.internal.http.HttpHeaders
 import okio.Buffer
 import timber.log.Timber
-import java.io.IOException
-import java.net.URLDecoder
-import java.nio.charset.Charset
-import java.util.concurrent.TimeUnit
 
 /**
  *
@@ -54,9 +52,9 @@ class HttpLoggingInterceptor : Interceptor {
     private var isLogEnable = false
 
     enum class Level {
-        NONE,  //不打印log
-        BASIC,  //只打印 请求首行 和 响应首行
-        HEADERS,  //打印请求和响应的所有 Header
+        NONE, // 不打印log
+        BASIC, // 只打印 请求首行 和 响应首行
+        HEADERS, // 打印请求和响应的所有 Header
         BODY
     }
 
@@ -94,10 +92,10 @@ class HttpLoggingInterceptor : Interceptor {
             return chain.proceed(request)
         }
 
-        //请求日志拦截
+        // 请求日志拦截
         logForRequest(request, chain.connection())
 
-        //执行请求，计算请求时间
+        // 执行请求，计算请求时间
         val startNs = System.nanoTime()
         val response: Response = try {
             chain.proceed(request)
@@ -107,7 +105,7 @@ class HttpLoggingInterceptor : Interceptor {
         }
         val tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs)
 
-        //响应日志拦截
+        // 响应日志拦截
         return logForResponse(response, tookMs)
     }
 
@@ -121,7 +119,7 @@ class HttpLoggingInterceptor : Interceptor {
         val protocol = if (connection != null) connection.protocol() else Protocol.HTTP_1_1
         try {
             val requestStartMessage = "--> " + request.method() +
-                    ' ' + URLDecoder.decode(
+                ' ' + URLDecoder.decode(
                 request.url().url().toString(),
                 UTF8.name()
             ) + ' ' + protocol
@@ -134,7 +132,7 @@ class HttpLoggingInterceptor : Interceptor {
                     log("\t" + headers.name(i) + ": " + headers.value(i))
                     i++
                 }
-                //log(" ");
+                // log(" ");
                 if (logBody && hasRequestBody) {
                     if (isPlaintext(requestBody!!.contentType())) {
                         bodyToString(request)

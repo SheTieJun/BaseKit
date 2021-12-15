@@ -21,18 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.model
 
 import android.content.Context
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.MutableLiveData
+import java.util.concurrent.atomic.AtomicBoolean
 import me.shetj.base.ktx.requestNetWork
 import me.shetj.base.tools.app.NetworkUtils
 import me.shetj.base.tools.app.Utils
-import java.util.concurrent.atomic.AtomicBoolean
-
 
 /**
  * 网络状态变更
@@ -42,10 +39,10 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
     sealed class NetType() {
         object WIFI : NetType()
         object PHONE : NetType()
-        object NONE : NetType() //初始化，或者没有网络
+        object NONE : NetType() // 初始化，或者没有网络
     }
 
-    private val isStarted:AtomicBoolean = AtomicBoolean(false)
+    private val isStarted: AtomicBoolean = AtomicBoolean(false)
 
     override fun onActive() {
         super.onActive()
@@ -56,8 +53,8 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
     }
 
     @RequiresPermission(allOf = ["android.permission.CHANGE_NETWORK_STATE"])
-    fun start(context: Context){
-        if (isStarted.compareAndSet(false,true)) {
+    fun start(context: Context) {
+        if (isStarted.compareAndSet(false, true)) {
             context.applicationContext.requestNetWork()
         }
     }
@@ -69,12 +66,12 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
 
     internal fun onLost() {
         if (value?.hasNet == false) return
-        postValue(value?.copy(hasNet = false,netType = NetType.NONE))
+        postValue(value?.copy(hasNet = false, netType = NetType.NONE))
     }
 
     internal fun setNetType(netType: NetType) {
         if (value?.netType == netType) return
-        postValue(value?.copy(hasNet = true,netType = netType))
+        postValue(value?.copy(hasNet = true, netType = netType))
     }
 
     companion object {
@@ -90,9 +87,10 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
                 }
             }
         }
-
     }
 
-    data class NetWorkInfo(var hasNet: Boolean = NetworkUtils.isAvailable(Utils.app),
-                           var netType: NetType = NetType.NONE)
+    data class NetWorkInfo(
+        var hasNet: Boolean = NetworkUtils.isAvailable(Utils.app),
+        var netType: NetType = NetType.NONE
+    )
 }

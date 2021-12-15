@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import android.content.Context
@@ -30,7 +28,6 @@ import android.content.res.ColorStateList
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.shape.MaterialShapeDrawable
-
 
 /*** 获取背景颜色,also [com.google.android.material.shape.MaterialShapeUtils]
  * * [androidx.core.graphics.ColorUtils]

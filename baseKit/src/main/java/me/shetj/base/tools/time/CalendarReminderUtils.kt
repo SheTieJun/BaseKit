@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.time
 
 import android.Manifest
@@ -35,8 +33,9 @@ import android.net.Uri
 import android.provider.CalendarContract
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
+import java.util.Calendar
+import java.util.TimeZone
 import me.shetj.base.ktx.hasPermission
-import java.util.*
 
 /**
  * AndroidManifest 中 对应activity加入
@@ -56,7 +55,6 @@ object CalendarReminderUtils {
     private const val CALENDARS_ACCOUNT_NAME = "375105540@qq.com"
     private const val CALENDARS_ACCOUNT_TYPE = "com.android.shetj"
     private const val CALENDARS_DISPLAY_NAME = "shetj"
-
 
     fun checkPermission(context: AppCompatActivity): Boolean {
         return context.hasPermission(
@@ -91,11 +89,11 @@ object CalendarReminderUtils {
         val userCursor =
             context.contentResolver.query(Uri.parse(CALENDER_URL), null, null, null, null)
         return userCursor.use { cursor ->
-            if (cursor == null) { //查询返回空值
+            if (cursor == null) { // 查询返回空值
                 return -1
             }
             val count = cursor.count
-            if (count > 0) { //存在现有账户，取第一个账户的id返回
+            if (count > 0) { // 存在现有账户，取第一个账户的id返回
                 cursor.moveToFirst()
                 cursor.getInt(cursor.getColumnIndex(CalendarContract.Calendars._ID))
             } else {
@@ -134,7 +132,6 @@ object CalendarReminderUtils {
         return if (result == null) -1 else ContentUris.parseId(result)
     }
 
-
     /**
      * 打开日历界面
      */
@@ -161,48 +158,54 @@ object CalendarReminderUtils {
      * @param scheme 部分手机支持跳转
      */
     fun addCalendarEvent(
-        context: Context?, title: String?, des: String?, remindTime: Long,
-        endTime: Long?, previousTime: Long, packageName: String? = null, scheme: String? = null
+        context: Context?,
+        title: String?,
+        des: String?,
+        remindTime: Long,
+        endTime: Long?,
+        previousTime: Long,
+        packageName: String? = null,
+        scheme: String? = null
     ): Long {
         if (context == null) {
             return -1
         }
-        val calId = checkAndAddCalendarAccount(context) //获取日历账户的id
-        if (calId < 0) { //获取账户id失败直接返回，添加日历事件失败
+        val calId = checkAndAddCalendarAccount(context) // 获取日历账户的id
+        if (calId < 0) { // 获取账户id失败直接返回，添加日历事件失败
             return -1
         }
 
-        //添加日历事件
+        // 添加日历事件
         val mCalendar = Calendar.getInstance()
-        mCalendar.timeInMillis = remindTime //设置开始时间
+        mCalendar.timeInMillis = remindTime // 设置开始时间
         val start = mCalendar.time.time
-        mCalendar.timeInMillis = start + 10 * 60 * 1000 //设置终止时间，开始时间加10分钟
+        mCalendar.timeInMillis = start + 10 * 60 * 1000 // 设置终止时间，开始时间加10分钟
         val end = endTime ?: mCalendar.time.time
         val event = ContentValues()
         event.put(CalendarContract.Events.TITLE, title)
         event.put(CalendarContract.Events.DESCRIPTION, des)
-        event.put(CalendarContract.Events.CALENDAR_ID, calId) //插入账户的id
+        event.put(CalendarContract.Events.CALENDAR_ID, calId) // 插入账户的id
         event.put(CalendarContract.Events.DTSTART, start)
         event.put(CalendarContract.Events.DTEND, end)
-        event.put(CalendarContract.Events.HAS_ALARM, 1) //设置有闹钟提醒
+        event.put(CalendarContract.Events.HAS_ALARM, 1) // 设置有闹钟提醒
         event.put(
             CalendarContract.Events.EVENT_TIMEZONE,
             TimeZone.getDefault().displayName
-        ) //这个是时区，必须有
+        ) // 这个是时区，必须有
         event.put(CalendarContract.Events.CUSTOM_APP_PACKAGE, packageName)
         event.put(CalendarContract.Events.CUSTOM_APP_URI, scheme)
         val newEvent = context.contentResolver.insert(Uri.parse(CALENDER_EVENT_URL), event)
-            ?: //添加日历事件失败直接返回
-            return -1//添加事件
+            ?: // 添加日历事件失败直接返回
+            return -1 // 添加事件
 
-        //事件提醒的设定
+        // 事件提醒的设定
         val values = ContentValues()
         val eventID = ContentUris.parseId(newEvent)
         values.put(CalendarContract.Reminders.EVENT_ID, eventID)
         values.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前previousDate分钟有提醒
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
         context.contentResolver.insert(Uri.parse(CALENDER_REMINDER_URL), values)
-            ?: //添加事件提醒失败直接返回
+            ?: // 添加事件提醒失败直接返回
             return -1
         return eventID
     }
@@ -211,20 +214,26 @@ object CalendarReminderUtils {
      * 更新日历优化版
      */
     fun updateRemindEvent(
-        context: Context, calId: Int, eventId: Long, title: String?, des: String?,
+        context: Context,
+        calId: Int,
+        eventId: Long,
+        title: String?,
+        des: String?,
         remindTime: Long,
         endTime: Long?,
-        previousTime: Long, packageName: String? = null, scheme: String? = null
+        previousTime: Long,
+        packageName: String? = null,
+        scheme: String? = null
     ): Boolean {
 
         val mCalendar = Calendar.getInstance()
-        mCalendar.timeInMillis = remindTime //设置开始时间
+        mCalendar.timeInMillis = remindTime // 设置开始时间
         val start = mCalendar.time.time
-        mCalendar.timeInMillis = start + 10 * 60 * 1000 //设置终止时间，开始时间加10分钟
+        mCalendar.timeInMillis = start + 10 * 60 * 1000 // 设置终止时间，开始时间加10分钟
         val end = endTime ?: mCalendar.time.time
 
         return try {
-            val tz = TimeZone.getDefault()        // 获取默认时区
+            val tz = TimeZone.getDefault() // 获取默认时区
             /* 更新日程 */
             val values = ContentValues()
             values.put(CalendarContract.Events.DTSTART, start)
@@ -281,21 +290,21 @@ object CalendarReminderUtils {
         val eventCursor =
             context.contentResolver.query(Uri.parse(CALENDER_EVENT_URL), null, null, null, null)
         eventCursor.use { cursor ->
-            if (cursor == null) { //查询返回空值
+            if (cursor == null) { // 查询返回空值
                 return
             }
             if (cursor.count > 0) {
-                //遍历所有事件，找到title跟需要查询的title一样的项
+                // 遍历所有事件，找到title跟需要查询的title一样的项
                 cursor.moveToFirst()
                 while (!cursor.isAfterLast) {
                     val eventTitle = cursor.getString(cursor.getColumnIndex("title"))
                     if (!TextUtils.isEmpty(title) && title == eventTitle) {
                         val id =
-                            cursor.getInt(cursor.getColumnIndex(CalendarContract.Calendars._ID)) //取得id
+                            cursor.getInt(cursor.getColumnIndex(CalendarContract.Calendars._ID)) // 取得id
                         val deleteUri =
                             ContentUris.withAppendedId(Uri.parse(CALENDER_EVENT_URL), id.toLong())
                         val rows = context.contentResolver.delete(deleteUri, null, null)
-                        if (rows == -1) { //事件删除失败
+                        if (rows == -1) { // 事件删除失败
                             return
                         }
                     }
@@ -305,7 +314,6 @@ object CalendarReminderUtils {
         }
     }
 
-
     /**
      * 小于0 修改失败
      */
@@ -314,9 +322,11 @@ object CalendarReminderUtils {
         return context.contentResolver.delete(deleteUri, null, null)
     }
 
-
     fun updateCalendarEvent(
-        context: Context, id: Long, title: String?, des: String?,
+        context: Context,
+        id: Long,
+        title: String?,
+        des: String?,
         remindTime: Long,
         endTime: Long?,
         previousTime: Long
@@ -324,11 +334,11 @@ object CalendarReminderUtils {
         val values = ContentValues().apply {
             val calId = checkAndAddCalendarAccount(context)
             val timezone = TimeZone.getTimeZone("Asia/Shanghai")
-            //添加日历事件
+            // 添加日历事件
             val mCalendar = Calendar.getInstance()
-            mCalendar.timeInMillis = remindTime //设置开始时间
+            mCalendar.timeInMillis = remindTime // 设置开始时间
             val start = mCalendar.time.time
-            mCalendar.timeInMillis = start + 10 * 60 * 1000 //设置终止时间，开始时间加10分钟
+            mCalendar.timeInMillis = start + 10 * 60 * 1000 // 设置终止时间，开始时间加10分钟
             val end = endTime ?: mCalendar.time.time
             title?.let {
                 put(CalendarContract.Events.TITLE, title)
@@ -336,10 +346,10 @@ object CalendarReminderUtils {
             des?.let {
                 put(CalendarContract.Events.DESCRIPTION, des)
             }
-            put(CalendarContract.Events.CALENDAR_ID, calId) //插入账户的id
+            put(CalendarContract.Events.CALENDAR_ID, calId) // 插入账户的id
             put(CalendarContract.Events.DTSTART, start)
             put(CalendarContract.Events.DTEND, end)
-            put(CalendarContract.Events.EVENT_TIMEZONE, timezone.displayName) //这个是时区，必须有
+            put(CalendarContract.Events.EVENT_TIMEZONE, timezone.displayName) // 这个是时区，必须有
             put(CalendarContract.Events.CUSTOM_APP_PACKAGE, context.packageName)
             put(CalendarContract.Reminders.EVENT_ID, id)
             put(CalendarContract.Reminders.MINUTES, previousTime) // 提前previousDate天有提醒
@@ -348,6 +358,4 @@ object CalendarReminderUtils {
         val updateUri: Uri = ContentUris.withAppendedId(CalendarContract.Calendars.CONTENT_URI, id)
         return context.contentResolver.update(updateUri, values, null, null)
     }
-
-
 }

@@ -21,28 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.base
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 abstract class BaseKTAdapter<T, K : BaseViewHolder>
-@JvmOverloads constructor(owner: LifecycleOwner, @LayoutRes layoutResId: Int,
-                          data: MutableList<T>? = null)
-    : BaseQuickAdapter<T, K>(layoutResId, data),LifecycleKtScopeComponent {
+@JvmOverloads constructor(
+    owner: LifecycleOwner,
+    @LayoutRes layoutResId: Int,
+    data: MutableList<T>? = null
+) :
+    BaseQuickAdapter<T, K>(layoutResId, data), LifecycleKtScopeComponent {
 
     override val lifeKtScope: LifecycleCoroutineScope by owner.defLifeOwnerScope()
-
 
     protected fun getString(@StringRes resId: Int): String {
         return context.getString(resId)
@@ -72,5 +72,4 @@ abstract class BaseKTAdapter<T, K : BaseViewHolder>
     protected fun getDimensionPixelSize(@DimenRes id: Int): Int {
         return context.resources.getDimensionPixelSize(id)
     }
-
 }

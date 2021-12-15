@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.layout_manager
 
 import android.content.Context
@@ -34,7 +32,8 @@ class WrapContentLinearLayoutManager : LinearLayoutManager {
     constructor(context: Context?) : super(context)
     constructor(
         context: Context?,
-        orientation: Int, reverseLayout: Boolean
+        orientation: Int,
+        reverseLayout: Boolean
     ) : super(context, orientation, reverseLayout)
 
     constructor(

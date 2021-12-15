@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.api
 
 import io.reactivex.rxjava3.core.Observable
@@ -67,15 +65,15 @@ interface ApiService {
     @GET
     fun get(@Url url: String?, @QueryMap maps: Map<String, String>?): Observable<ResponseBody>
 
-    //@DELETE()//delete body请求比较特殊 需要自定义
+    // @DELETE()//delete body请求比较特殊 需要自定义
     @HTTP(method = "DELETE", hasBody = true)
     fun deleteBody(@Url url: String?, @Body obj: Any?): Observable<ResponseBody>
 
-    //@DELETE()//delete body请求比较特殊 需要自定义
+    // @DELETE()//delete body请求比较特殊 需要自定义
     @HTTP(method = "DELETE", hasBody = true)
     fun deleteBody(@Url url: String?, @Body body: RequestBody?): Observable<ResponseBody>
 
-    //@DELETE()//delete body请求比较特殊 需要自定义
+    // @DELETE()//delete body请求比较特殊 需要自定义
     @Headers("Content-Type: application/json", "Accept: application/json")
     @HTTP(method = "DELETE", hasBody = true)
     fun deleteJson(@Url url: String?, @Body jsonBody: RequestBody?): Observable<ResponseBody>
@@ -96,7 +94,8 @@ interface ApiService {
     @Multipart
     @POST
     fun uploadFile(
-        @Url url: String, @Part description: MultipartBody.Part?,
+        @Url url: String,
+        @Part description: MultipartBody.Part?,
         @Part file: MultipartBody.Part?
     ): Observable<ResponseBody>
 

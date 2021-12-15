@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.share
 
 import android.Manifest
@@ -44,9 +42,9 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import java.io.File
 import me.shetj.base.R
 import timber.log.Timber
-import java.io.File
 
 @Suppress("DEPRECATION")
 object ShareFileUtil {
@@ -59,21 +57,30 @@ object ShareFileUtil {
         intent.type = "*/*"
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         try {
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.base_select_file)), FILE_SELECT_CODE)
+            startActivityForResult(
+                Intent.createChooser(
+                    intent,
+                    getString(R.string.base_select_file)
+                ),
+                FILE_SELECT_CODE
+            )
             overridePendingTransition(0, 0)
         } catch (ex: Exception) {
             // Potentially direct the user to the Market with OnProgressChangeListener Dialog
-            Toast.makeText(this, getString(R.string.base_please_install_file_manager), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                getString(R.string.base_please_install_file_manager),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) : Uri? {
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Uri? {
         if (requestCode == FILE_SELECT_CODE && resultCode == Activity.RESULT_OK) {
-           return  data.data
+            return data.data
         }
         return null
     }
-
 
     /**
      * Get file uri
@@ -82,7 +89,11 @@ object ShareFileUtil {
      * @param file file
      * @return Uri
      */
-    fun getFileUri(context: Context?, @ShareContentType shareContentType: String?, file: File?): Uri? {
+    fun getFileUri(
+        context: Context?,
+        @ShareContentType shareContentType: String?,
+        file: File?
+    ): Uri? {
         var shareType = shareContentType
         if (context == null) {
             Timber.tag(TAG).e("getFileUri current activity is null.")
@@ -92,7 +103,11 @@ object ShareFileUtil {
             Timber.tag(TAG).e("getFileUri file is null or not exists.")
             return null
         }
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             Timber.tag(TAG).e("getFileUri miss WRITE_EXTERNAL_STORAGE permission.")
             return null
         }
@@ -144,7 +159,8 @@ object ShareFileUtil {
             } else if (isDownloadsDocument(uri)) {
                 val id = DocumentsContract.getDocumentId(uri)
                 val contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), id.toLong())
+                    Uri.parse("content://downloads/public_downloads"), id.toLong()
+                )
                 return getDataColumn(context, contentUri, null, null)
             } else if (isMediaDocument(uri)) {
                 val docId = DocumentsContract.getDocumentId(uri)
@@ -182,10 +198,11 @@ object ShareFileUtil {
     private fun forceGetFileUri(shareFile: File): Uri {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
-                @SuppressLint("PrivateApi") val rMethod = StrictMode::class.java.getDeclaredMethod("disableDeathOnFileUriExposure")
+                @SuppressLint("PrivateApi") val rMethod =
+                    StrictMode::class.java.getDeclaredMethod("disableDeathOnFileUriExposure")
                 rMethod.invoke(null)
             } catch (e: Exception) {
-                Timber.tag(TAG).e( Log.getStackTraceString(e))
+                Timber.tag(TAG).e(Log.getStackTraceString(e))
             }
         }
         return Uri.parse("file://" + shareFile.absolutePath)
@@ -202,8 +219,10 @@ object ShareFileUtil {
         val filePath = file.absolutePath
         val projection = arrayOf(MediaStore.Files.FileColumns._ID)
         var uri: Uri? = null
-        val cursor = context.contentResolver.query(MediaStore.Files.getContentUri(volumeName), projection,
-                MediaStore.Images.Media.DATA + "=? ", arrayOf(filePath), null)
+        val cursor = context.contentResolver.query(
+            MediaStore.Files.getContentUri(volumeName), projection,
+            MediaStore.Images.Media.DATA + "=? ", arrayOf(filePath), null
+        )
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 val id = cursor.getInt(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID))
@@ -223,8 +242,10 @@ object ShareFileUtil {
      */
     private fun getImageContentUri(context: Context, imageFile: File): Uri? {
         val filePath = imageFile.absolutePath
-        val cursor = context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID),
-                MediaStore.Images.Media.DATA + "=? ", arrayOf(filePath), null)
+        val cursor = context.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID),
+            MediaStore.Images.Media.DATA + "=? ", arrayOf(filePath), null
+        )
         var uri: Uri? = null
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -237,7 +258,8 @@ object ShareFileUtil {
         if (uri == null) {
             val values = ContentValues()
             values.put(MediaStore.Images.Media.DATA, filePath)
-            uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            uri =
+                context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         }
         return uri
     }
@@ -252,8 +274,10 @@ object ShareFileUtil {
     private fun getVideoContentUri(context: Context, videoFile: File): Uri? {
         var uri: Uri? = null
         val filePath = videoFile.absolutePath
-        val cursor = context.contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Video.Media._ID),
-                MediaStore.Video.Media.DATA + "=? ", arrayOf(filePath), null)
+        val cursor = context.contentResolver.query(
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Video.Media._ID),
+            MediaStore.Video.Media.DATA + "=? ", arrayOf(filePath), null
+        )
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
@@ -265,7 +289,8 @@ object ShareFileUtil {
         if (uri == null) {
             val values = ContentValues()
             values.put(MediaStore.Video.Media.DATA, filePath)
-            uri = context.contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values)
+            uri =
+                context.contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values)
         }
         return uri
     }
@@ -280,8 +305,10 @@ object ShareFileUtil {
     private fun getAudioContentUri(context: Context, audioFile: File): Uri? {
         var uri: Uri? = null
         val filePath = audioFile.absolutePath
-        val cursor = context.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Audio.Media._ID),
-                MediaStore.Audio.Media.DATA + "=? ", arrayOf(filePath), null)
+        val cursor = context.contentResolver.query(
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Audio.Media._ID),
+            MediaStore.Audio.Media.DATA + "=? ", arrayOf(filePath), null
+        )
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 val id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID))
@@ -293,7 +320,8 @@ object ShareFileUtil {
         if (uri == null) {
             val values = ContentValues()
             values.put(MediaStore.Audio.Media.DATA, filePath)
-            uri = context.contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)
+            uri =
+                context.contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)
         }
         return uri
     }
@@ -336,13 +364,19 @@ object ShareFileUtil {
      * (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
-    private fun getDataColumn(context: Context, uri: Uri, selection: String?,
-                              selectionArgs: Array<String>?): String? {
+    private fun getDataColumn(
+        context: Context,
+        uri: Uri,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): String? {
         var cursor: Cursor? = null
         val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
         try {
-            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs,
-                    null)
+            cursor = context.contentResolver.query(
+                uri, projection, selection, selectionArgs,
+                null
+            )
             if (cursor != null && cursor.moveToFirst()) {
                 return cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA))
             }

@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.base
 
 import android.content.Context
@@ -59,5 +57,4 @@ interface BaseImageLoader {
      * @param url
      */
     fun preLoad(context: Context, url: String)
-
 }

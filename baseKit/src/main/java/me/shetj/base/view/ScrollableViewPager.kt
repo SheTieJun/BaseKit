@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.view
 
 import android.content.Context
@@ -66,45 +64,43 @@ class ScrollableViewPager : ViewPager {
         } else {
             super.onInterceptTouchEvent(arg0)
         }
-
     }
-    //	OnSingleTouchListener onSingleTouchListener;
+    // 	OnSingleTouchListener onSingleTouchListener;
 
     override fun onTouchEvent(arg0: MotionEvent): Boolean {
         if (isScrollable) {
             if (childCount <= 1) {
                 return super.onTouchEvent(arg0)
             }
-            //每次进行onTouch事件都记录当前的按下的坐标
+            // 每次进行onTouch事件都记录当前的按下的坐标
             curP.x = arg0.x
             curP.y = arg0.y
             if (arg0.action == MotionEvent.ACTION_DOWN) {
-                //记录按下时候的坐标
-                //切记不可用 downP = curP ，这样在改变curP的时候，downP也会改变
+                // 记录按下时候的坐标
+                // 切记不可用 downP = curP ，这样在改变curP的时候，downP也会改变
                 downP.x = arg0.x
                 downP.y = arg0.y
-                //此句代码是为了通知他的父ViewPager现在进行的是本控件的操作，不要对我的操作进行干扰
+                // 此句代码是为了通知他的父ViewPager现在进行的是本控件的操作，不要对我的操作进行干扰
                 parent.requestDisallowInterceptTouchEvent(true)
             }
             if (arg0.action == MotionEvent.ACTION_MOVE) {
-                //此句代码是为了通知他的父ViewPager现在进行的是本控件的操作，不要对我的操作进行干扰
+                // 此句代码是为了通知他的父ViewPager现在进行的是本控件的操作，不要对我的操作进行干扰
                 parent.requestDisallowInterceptTouchEvent(true)
             }
 
             if (arg0.action == MotionEvent.ACTION_UP || arg0.action == MotionEvent.ACTION_CANCEL) {
-                //在up时判断是否按下和松手的坐标为一个点
-                //如果是一个点，将执行点击事件，这是我自己写的点击事件，而不是onclick
+                // 在up时判断是否按下和松手的坐标为一个点
+                // 如果是一个点，将执行点击事件，这是我自己写的点击事件，而不是onclick
                 parent.requestDisallowInterceptTouchEvent(false)
                 if (downP.x == curP.x && downP.y == curP.y) {
                     return true
                 }
             }
             super.onTouchEvent(arg0)
-            //注意这句不能 return super.onTouchEvent(arg0); 否则触发parent滑动
+            // 注意这句不能 return super.onTouchEvent(arg0); 否则触发parent滑动
             return true
         } else {
             return false
         }
-
     }
 }

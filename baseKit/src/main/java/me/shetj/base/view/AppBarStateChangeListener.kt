@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.view
 
 import com.google.android.material.appbar.AppBarLayout
@@ -72,4 +70,3 @@ abstract class AppBarStateChangeListener : AppBarLayout.OnOffsetChangedListener 
      */
     abstract fun onStateChanged(appBarLayout: AppBarLayout, state: State)
 }
-

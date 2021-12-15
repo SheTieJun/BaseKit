@@ -168,7 +168,7 @@ public class QMUINotchHelper {
      * fitSystemWindows 对小米、vivo挖孔屏横屏挖孔区域无效
      * @return boolean
      */
-    public static boolean needFixLandscapeNotchAreaFitSystemWindow(View view){
+    public static boolean needFixLandscapeNotchFitSystemWindow(View view){
        return (QMUIDeviceHelper.isXiaomi() || QMUIDeviceHelper.isVivo()) && QMUINotchHelper.hasNotch(view);
     }
 

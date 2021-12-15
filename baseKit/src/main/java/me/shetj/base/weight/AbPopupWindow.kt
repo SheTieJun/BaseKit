@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.weight
 
 import android.graphics.Color
@@ -51,7 +49,7 @@ import me.shetj.base.ktx.getClazz
  * }
  */
 abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatActivity) :
-    PopupWindow(mContext), LifecycleObserver , KtScopeComponent {
+    PopupWindow(mContext), LifecycleObserver, KtScopeComponent {
 
     private val lazyComposite = lazy { CompositeDisposable() }
     protected val mCompositeDisposable: CompositeDisposable by lazyComposite
@@ -88,7 +86,7 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
     /**
      * 可以自行修改展示位置
      */
-    open fun showPop(){
+    open fun showPop() {
         showAtLocation(mContext.window.decorView, Gravity.BOTTOM, 0, 0)
     }
 
@@ -100,7 +98,7 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
             }
             dismiss()
         } catch (ignored: Exception) {
-            //暴力解决，可能的崩溃
+            // 暴力解决，可能的崩溃
         }
     }
 
@@ -112,7 +110,7 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
             }
             dismiss()
         } catch (_: Exception) {
-            //暴力解决，可能的崩溃
+            // 暴力解决，可能的崩溃
         }
     }
 }

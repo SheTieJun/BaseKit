@@ -21,14 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.kt
 
+import java.io.File
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import java.io.File
-
 
 fun String.toRequestBody(): RequestBody {
     return toRequestBody("application/json;charset=utf-8")

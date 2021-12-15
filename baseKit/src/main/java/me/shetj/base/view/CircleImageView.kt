@@ -21,12 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.view
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapShader
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.Matrix
+import android.graphics.Outline
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.RectF
+import android.graphics.Shader
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -35,16 +43,14 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewOutlineProvider
-import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
+import kotlin.math.min
 import me.shetj.base.R
 import me.shetj.base.tools.app.ArmsUtils
-import kotlin.math.min
-
 
 /**
  * 圆形头像
@@ -160,11 +166,15 @@ open class CircleImageView : AppCompatImageView {
 
         // Look for deprecated civ_fill_color if civ_circle_background_color is not set
         if (a.hasValue(R.styleable.CircleImageView_civ_circle_background_color)) {
-            mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_circle_background_color,
-                    DEFAULT_CIRCLE_BACKGROUND_COLOR)
+            mCircleBackgroundColor = a.getColor(
+                R.styleable.CircleImageView_civ_circle_background_color,
+                DEFAULT_CIRCLE_BACKGROUND_COLOR
+            )
         } else if (a.hasValue(R.styleable.CircleImageView_civ_fill_color)) {
-            mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_fill_color,
-                    DEFAULT_CIRCLE_BACKGROUND_COLOR)
+            mCircleBackgroundColor = a.getColor(
+                R.styleable.CircleImageView_civ_fill_color,
+                DEFAULT_CIRCLE_BACKGROUND_COLOR
+            )
         }
 
         a.recycle()
@@ -231,7 +241,6 @@ open class CircleImageView : AppCompatImageView {
         super.setPaddingRelative(start, top, end, bottom)
         setup()
     }
-
 
     fun setBorderColorResource(@ColorRes borderColorRes: Int) {
         borderColor = ArmsUtils.getColor(context, borderColorRes)
@@ -314,7 +323,6 @@ open class CircleImageView : AppCompatImageView {
             e.printStackTrace()
             null
         }
-
     }
 
     private fun initializeBitmap() {
@@ -413,7 +421,6 @@ open class CircleImageView : AppCompatImageView {
             mBorderRect.roundOut(bounds)
             outline.setRoundRect(bounds, bounds.width() / 2.0f)
         }
-
     }
 
     companion object {
@@ -428,5 +435,4 @@ open class CircleImageView : AppCompatImageView {
         private const val DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.TRANSPARENT
         private const val DEFAULT_BORDER_OVERLAY = false
     }
-
 }

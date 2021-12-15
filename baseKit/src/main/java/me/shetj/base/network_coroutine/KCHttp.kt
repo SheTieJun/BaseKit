@@ -21,13 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network_coroutine
 
 import me.shetj.base.network.exception.ApiException
 import okhttp3.RequestBody
-
 
 //endregion
 
@@ -54,20 +51,17 @@ object KCHttp {
         }.getOrNull()
     }
 
-
     suspend inline fun <reified T> postJson(url: String, json: String, error: OnError = {}): T? {
         return KCHttpV2.postJson<T>(url, json).onFailure {
             error.invoke(ApiException.handleException(it))
         }.getOrNull()
     }
 
-
     suspend inline fun <reified T> postBody(url: String, body: Any, error: OnError = {}): T? {
         return KCHttpV2.postBody<T>(url, body).onFailure {
             error.invoke(ApiException.handleException(it))
         }.getOrNull()
     }
-
 
     suspend inline fun <reified T> postBody(
         url: String,
@@ -81,7 +75,9 @@ object KCHttp {
 
     @JvmOverloads
     suspend fun download(
-        url: String, outputFile: String, error: download_error = {},
+        url: String,
+        outputFile: String,
+        error: download_error = {},
         process: download_process = { _, _, _ -> },
         success: download_success = { }
     ) {

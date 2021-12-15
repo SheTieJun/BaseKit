@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import androidx.appcompat.app.AppCompatActivity
@@ -30,16 +28,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import java.io.IOException
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
-
 
 suspend inline fun <T> doOnIO(crossinline action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.IO) {
@@ -51,12 +48,10 @@ suspend inline fun <T> doOnMain(crossinline action: suspend CoroutineScope.() ->
         return@withContext action()
     }
 
-
 suspend inline fun <T> doOnDef(crossinline action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.Default) {
         return@withContext action()
     }
-
 
 suspend inline fun <T> doOnUnconfined(crossinline action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.Unconfined) {
@@ -81,8 +76,6 @@ inline fun AppCompatActivity.launch(crossinline action: suspend CoroutineScope.(
         action()
     }
 }
-
-
 
 inline fun Fragment.launch(crossinline action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launch {
@@ -114,7 +107,7 @@ inline fun Fragment.runOnStarted(crossinline action: suspend CoroutineScope.() -
 suspend fun <T> retryDo(
     times: Int = Int.MAX_VALUE,
     initialDelay: Long = 100, // 0.1 second
-    maxDelay: Long = 1000,    // 1 second
+    maxDelay: Long = 1000, // 1 second
     factor: Double = 2.0,
     block: suspend () -> T
 ): T {
@@ -128,5 +121,5 @@ suspend fun <T> retryDo(
         delay(currentDelay)
         currentDelay = (currentDelay * factor).toLong().coerceAtMost(maxDelay)
     }
-    return block()  // last attempt
+    return block() // last attempt
 }

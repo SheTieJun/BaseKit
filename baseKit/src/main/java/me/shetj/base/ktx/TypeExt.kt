@@ -21,12 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import kotlin.reflect.typeOf
-
 
 @ExperimentalStdlibApi
 inline fun <reified T> renderType(): String {

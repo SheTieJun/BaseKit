@@ -21,14 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.mvp
 
 import android.os.Message
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-
 
 /**
  *
@@ -49,5 +46,4 @@ interface IView {
      * @param message 接收到的信息
      */
     fun updateView(message: Message)
-
 }

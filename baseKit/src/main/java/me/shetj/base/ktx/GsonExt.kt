@@ -21,14 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.ktx
 
 import com.google.gson.internal.`$Gson$Types`
 import java.lang.reflect.Type
-
-
 
 /**
  * list<type>
@@ -58,7 +54,6 @@ fun map(type: Type?, type2: Type?): Type {
     return `$Gson$Types`.newParameterizedTypeWithOwner(null, MutableMap::class.java, type, type2)
 }
 
-
 /**
  * ownerType.rawType<typeArguments>
  */
@@ -79,7 +74,6 @@ fun array(type: Type?): Type {
 fun subtypeOf(type: Type?): Type {
     return `$Gson$Types`.subtypeOf(type)
 }
-
 
 /**
  * type的父类

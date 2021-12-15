@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.tools.json
 
 import android.content.Context
@@ -42,9 +40,10 @@ import me.shetj.base.R
  */
 @Keep
 class HighStringFormatUtil(
-        private val wholeStr: String,
-        private val highlightStr: String,
-        @ColorInt private val color: Int) {
+    private val wholeStr: String,
+    private val highlightStr: String,
+    @ColorInt private val color: Int
+) {
     private var start = 0
     private var end = 0
 
@@ -69,14 +68,25 @@ class HighStringFormatUtil(
          * @param color 颜色
          */
         @JvmStatic
-        fun buildLightString(context: Context, wholeStr: String,
-                             highlightStr: String, @ColorRes color: Int = R.color.colorAccent): SpannableStringBuilder {
-            return HighStringFormatUtil(wholeStr, highlightStr, ContextCompat.getColor(context, color)).fillColor()
+        fun buildLightString(
+            context: Context,
+            wholeStr: String,
+            highlightStr: String,
+            @ColorRes color: Int = R.color.colorAccent
+        ): SpannableStringBuilder {
+            return HighStringFormatUtil(
+                wholeStr, highlightStr,
+                ContextCompat.getColor(context, color)
+            ).fillColor()
         }
 
         @JvmStatic
-        fun buildLightString(wholeStr: String, highlightStr: String, @ColorInt color: Int = Color.YELLOW): SpannableStringBuilder {
+        fun buildLightString(
+            wholeStr: String,
+            highlightStr: String,
+            @ColorInt color: Int = Color.YELLOW
+        ): SpannableStringBuilder {
             return HighStringFormatUtil(wholeStr, highlightStr, color).fillColor()
         }
     }
-}  
+}

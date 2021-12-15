@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.request
 
 import io.reactivex.rxjava3.core.Observable
@@ -56,15 +54,14 @@ class DownloadRequest(url: String) : BaseRequest<DownloadRequest>(url) {
         return this
     }
 
-
-
     override fun <T> execute(callback: NetCallBack<T>): Disposable {
         return build().generateRequest().compose { upstream ->
-                upstream.subscribeOn(Schedulers.io())
-                        .unsubscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.computation())
-        }.onErrorResumeNext(HttpResponseFunc()).retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
-                .subscribeWith(DownloadSubscriber(savePath, saveName, callback)) as Disposable
+            upstream.subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+        }.onErrorResumeNext(HttpResponseFunc())
+            .retryWhen(RetryExceptionFunc(retryCount, retryDelay, retryIncreaseDelay))
+            .subscribeWith(DownloadSubscriber(savePath, saveName, callback)) as Disposable
     }
 
     override fun generateRequest(): Observable<ResponseBody> {

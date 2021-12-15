@@ -21,8 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.network.model
 
 class ApiResult<T> {
@@ -35,10 +33,10 @@ class ApiResult<T> {
 
     override fun toString(): String {
         return "ApiResult{" +
-                "code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
-                '}'
+            "code='" + code + '\'' +
+            ", msg='" + msg + '\'' +
+            ", data=" + data +
+            '}'
     }
 }
 

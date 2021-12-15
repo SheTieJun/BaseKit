@@ -21,14 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
 package me.shetj.base.model
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import me.shetj.base.tools.app.VolumeConfig
-
 
 /**
  * 手机媒体音乐变更
@@ -57,7 +54,6 @@ class VolumeLiveData private constructor() : MutableLiveData<Int>() {
         volumeConfig?.unregisterReceiver()
         volumeConfig = null
     }
-
 
     companion object {
 
