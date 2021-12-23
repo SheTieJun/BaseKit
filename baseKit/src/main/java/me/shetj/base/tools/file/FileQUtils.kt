@@ -158,11 +158,21 @@ object FileQUtils {
             File(requireNotNull(uri.path))
         else if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
             // 把文件保存到沙盒
+            val start = uri.path?.lastIndexOf(".") ?: -1
+            //把文件保存到沙盒
             val contentResolver = context.contentResolver
-            val displayName = "${System.currentTimeMillis()}${Random.nextInt(0, 9999)}.${
-            MimeTypeMap.getSingleton()
-                .getExtensionFromMimeType(contentResolver.getType(uri))
-            }"
+            val displayName = if (start > 0) {
+                //因为存在部分文件的扩展名称获取错误，所以先用文件原有的扩展名称，在使用
+                "${System.currentTimeMillis()}${Random.nextInt(0, 9999)}.${
+                    uri.path?.substring(start+1) ?: MimeTypeMap.getSingleton()
+                        .getExtensionFromMimeType(contentResolver.getType(uri))
+                }"
+            } else {
+                "${System.currentTimeMillis()}${Random.nextInt(0, 9999)}.${
+                    MimeTypeMap.getSingleton()
+                        .getExtensionFromMimeType(contentResolver.getType(uri))
+                }"
+            }
             val ios = contentResolver.openInputStream(uri)
             if (ios != null) {
                 File("${context.cacheDir.absolutePath}/$displayName")

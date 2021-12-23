@@ -40,7 +40,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import me.shetj.base.ktx.logi
-import me.shetj.base.network_coroutine.KCHttpV2
+import me.shetj.base.network_coroutine.KCHttpV3
 import shetj.me.base.R
 import java.util.UUID
 
@@ -65,7 +65,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
     }
 
     private suspend fun download(downloadUrl: String, outputFile: String, fileName: String) {
-        KCHttpV2.download(downloadUrl, "$outputFile/$fileName",
+        KCHttpV3.download(downloadUrl, "$outputFile/$fileName",
             onProcess = { _, _, process ->
                 setForeground(createForegroundInfo("${(process * 100).toInt()}%"))
                 setProgress(Data.Builder().let {

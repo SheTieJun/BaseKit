@@ -4,17 +4,22 @@ spotless {
         target '**/*.kt'
         targetExclude("$buildDir/**/*.kt")
         targetExclude('bin/**/*.kt')
-        ktlint().userData(['android': 'true', 'color': 'true',
+        ktlint().userData(['android'        : 'true', 'color': 'true',
                            'max_line_length': '120', 'reporter': 'checkstyle'])
+
         licenseHeaderFile rootProject.file('spotless/copyright.kt')
     }
     kotlinGradle {
         target '*.gradle.kts' // default target for kotlinGradle
         ktlint()
     }
-}
+    java {
+        target 'src/*/java/**/*.java'
 
-//script:
-// — “./gradlew spotlessCheck”
-// — “./gradlew :library:clean :library:build :library:connectedCheck -PdisablePreDex — stacktrace”
-// — “./gradlew :app:clean :app:build :app:connectedCheck -PdisablePreDex — stacktrace”
+        removeUnusedImports()
+
+        googleJavaFormat() // has its own section below
+
+        licenseHeaderFile rootProject.file('spotless/copyright.kt')
+    }
+}

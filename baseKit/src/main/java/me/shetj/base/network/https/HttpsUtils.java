@@ -1,21 +1,27 @@
 /*
- * Copyright (C) 2017 zhouyou(478319399@qq.com)
+ * MIT License
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2019 SheTieJun
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
-
 package me.shetj.base.network.https;
-
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +33,6 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -35,140 +40,145 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
-
 import timber.log.Timber;
 
-
 /**
- * <p>描述：Https相关的工具类</p>
- * 作者： zhouyou<br>
+ * 描述：Https相关的工具类 作者： zhouyou<br>
  * 日期： 2017/5/15 16:55 <br>
  * 版本： v1.0<br>
  */
 public class HttpsUtils {
 
-    public static class SSLParams {
-        public SSLSocketFactory sSLSocketFactory;
-        public X509TrustManager trustManager;
-    }
+  public static class SSLParams {
+    public SSLSocketFactory sSLSocketFactory;
+    public X509TrustManager trustManager;
+  }
 
-    public static SSLParams getSslSocketFactory(InputStream bksFile, String password, InputStream[] certificates) {
-        SSLParams sslParams = new SSLParams();
+  public static SSLParams getSslSocketFactory(
+      InputStream bksFile, String password, InputStream[] certificates) {
+    SSLParams sslParams = new SSLParams();
+    try {
+      KeyManager[] keyManagers = prepareKeyManager(bksFile, password);
+      TrustManager[] trustManagers = prepareTrustManager(certificates);
+      SSLContext sslContext = SSLContext.getInstance("TLS");
+      X509TrustManager trustManager;
+      if (trustManagers != null) {
+        trustManager = new MyTrustManager(chooseTrustManager(trustManagers));
+      } else {
+        trustManager = new UnSafeTrustManager();
+      }
+      sslContext.init(keyManagers, new TrustManager[] {trustManager}, null);
+      sslParams.sSLSocketFactory = sslContext.getSocketFactory();
+      sslParams.trustManager = trustManager;
+      return sslParams;
+    } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  private static TrustManager[] prepareTrustManager(InputStream... certificates) {
+    if (certificates == null || certificates.length <= 0) return null;
+    try {
+      CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+      KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+      keyStore.load(null);
+      int index = 0;
+      for (InputStream certificate : certificates) {
+        String certificateAlias = Integer.toString(index++);
+        keyStore.setCertificateEntry(
+            certificateAlias, certificateFactory.generateCertificate(certificate));
         try {
-            KeyManager[] keyManagers = prepareKeyManager(bksFile, password);
-            TrustManager[] trustManagers = prepareTrustManager(certificates);
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            X509TrustManager trustManager;
-            if (trustManagers != null) {
-                trustManager = new MyTrustManager(chooseTrustManager(trustManagers));
-            } else {
-                trustManager = new UnSafeTrustManager();
-            }
-            sslContext.init(keyManagers, new TrustManager[]{trustManager}, null);
-            sslParams.sSLSocketFactory = sslContext.getSocketFactory();
-            sslParams.trustManager = trustManager;
-            return sslParams;
-        } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
-            throw new AssertionError(e);
+          if (certificate != null) certificate.close();
+        } catch (IOException e) {
+          Timber.e(e);
         }
+      }
+      TrustManagerFactory trustManagerFactory;
+      trustManagerFactory =
+          TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+      trustManagerFactory.init(keyStore);
+      return trustManagerFactory.getTrustManagers();
+    } catch (NoSuchAlgorithmException | CertificateException | KeyStoreException e) {
+      Timber.e(e);
+    } catch (Exception e) {
+      Timber.e(e);
+    }
+    return null;
+  }
+
+  private static KeyManager[] prepareKeyManager(InputStream bksFile, String password) {
+    try {
+      if (bksFile == null || password == null) return null;
+      KeyStore clientKeyStore = KeyStore.getInstance("BKS");
+      clientKeyStore.load(bksFile, password.toCharArray());
+      KeyManagerFactory keyManagerFactory =
+          KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+      keyManagerFactory.init(clientKeyStore, password.toCharArray());
+      return keyManagerFactory.getKeyManagers();
+    } catch (KeyStoreException
+        | NoSuchAlgorithmException
+        | UnrecoverableKeyException
+        | CertificateException
+        | IOException e) {
+      Timber.e(e);
+    } catch (Exception e) {
+      Timber.e(e);
+    }
+    return null;
+  }
+
+  private static X509TrustManager chooseTrustManager(TrustManager[] trustManagers) {
+    for (TrustManager trustManager : trustManagers) {
+      if (trustManager instanceof X509TrustManager) {
+        return (X509TrustManager) trustManager;
+      }
+    }
+    return null;
+  }
+
+  private static class UnSafeTrustManager implements X509TrustManager {
+    @Override
+    public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+
+    @Override
+    public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+
+    @Override
+    public X509Certificate[] getAcceptedIssuers() {
+      return new X509Certificate[] {};
+    }
+  }
+
+  private static class MyTrustManager implements X509TrustManager {
+    private X509TrustManager defaultTrustManager;
+    private X509TrustManager localTrustManager;
+
+    public MyTrustManager(X509TrustManager localTrustManager)
+        throws NoSuchAlgorithmException, KeyStoreException {
+      TrustManagerFactory var4 =
+          TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+      var4.init((KeyStore) null);
+      defaultTrustManager = chooseTrustManager(var4.getTrustManagers());
+      this.localTrustManager = localTrustManager;
     }
 
-    private static TrustManager[] prepareTrustManager(InputStream... certificates) {
-        if (certificates == null || certificates.length <= 0) return null;
-        try {
-            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            keyStore.load(null);
-            int index = 0;
-            for (InputStream certificate : certificates) {
-                String certificateAlias = Integer.toString(index++);
-                keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
-                try {
-                    if (certificate != null) certificate.close();
-                } catch (IOException e) {
-                    Timber.e(e);
-                }
-            }
-            TrustManagerFactory trustManagerFactory;
-            trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init(keyStore);
-            return trustManagerFactory.getTrustManagers();
-        } catch (NoSuchAlgorithmException | CertificateException | KeyStoreException e) {
-            Timber.e(e);
-        } catch (Exception e) {
-            Timber.e(e);
-        }
-        return null;
+    @Override
+    public void checkClientTrusted(X509Certificate[] chain, String authType)
+        throws CertificateException {}
+
+    @Override
+    public void checkServerTrusted(X509Certificate[] chain, String authType)
+        throws CertificateException {
+      try {
+        defaultTrustManager.checkServerTrusted(chain, authType);
+      } catch (CertificateException ce) {
+        localTrustManager.checkServerTrusted(chain, authType);
+      }
     }
 
-    private static KeyManager[] prepareKeyManager(InputStream bksFile, String password) {
-        try {
-            if (bksFile == null || password == null) return null;
-            KeyStore clientKeyStore = KeyStore.getInstance("BKS");
-            clientKeyStore.load(bksFile, password.toCharArray());
-            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            keyManagerFactory.init(clientKeyStore, password.toCharArray());
-            return keyManagerFactory.getKeyManagers();
-        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | CertificateException | IOException e) {
-            Timber.e(e);
-        } catch (Exception e) {
-            Timber.e(e);
-        }
-        return null;
+    @Override
+    public X509Certificate[] getAcceptedIssuers() {
+      return new X509Certificate[0];
     }
-
-    private static X509TrustManager chooseTrustManager(TrustManager[] trustManagers) {
-        for (TrustManager trustManager : trustManagers) {
-            if (trustManager instanceof X509TrustManager) {
-                return (X509TrustManager) trustManager;
-            }
-        }
-        return null;
-    }
-
-    private static class UnSafeTrustManager implements X509TrustManager {
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) {
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) {
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[]{};
-        }
-    }
-
-    private static class MyTrustManager implements X509TrustManager {
-        private X509TrustManager defaultTrustManager;
-        private X509TrustManager localTrustManager;
-
-        public MyTrustManager(X509TrustManager localTrustManager) throws NoSuchAlgorithmException, KeyStoreException {
-            TrustManagerFactory var4 = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            var4.init((KeyStore) null);
-            defaultTrustManager = chooseTrustManager(var4.getTrustManagers());
-            this.localTrustManager = localTrustManager;
-        }
-
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-            try {
-                defaultTrustManager.checkServerTrusted(chain, authType);
-            } catch (CertificateException ce) {
-                localTrustManager.checkServerTrusted(chain, authType);
-            }
-        }
-
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return new X509Certificate[0];
-        }
-    }
+  }
 }

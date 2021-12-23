@@ -26,19 +26,26 @@ package me.shetj.base.tools.app
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowInsets
+import android.view.WindowInsetsAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.Keep
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.max
+import me.shetj.base.ktx.logi
 
 /**
  * @author shetj
@@ -155,13 +162,6 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
             activity.window.showSoftKeyboard()
         }
 
-        /**
-         * ViewCompat.setOnApplyWindowInsetsListener(bottomButton) { view, insets ->
-         *      val sysWindow = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime())
-         *      view.translationY = -sysWindow.bottom.toFloat()
-         *      insets
-         * }
-         */
         @JvmStatic
         fun focusEditShowKeyBoard(editText: EditText) {
             editText.isEnabled = true
@@ -201,6 +201,32 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
         fun isVisibleKeyBoard(window: Window): Boolean? {
             val insets = ViewCompat.getRootWindowInsets(window.decorView)
             return insets?.isVisible(WindowInsetsCompat.Type.ime())
+        }
+
+
+        fun addKeyBordHeightChangeCallBack(view: View,onAction:(height:Int) ->Unit){
+            var posBottom: Int
+            if (VERSION.SDK_INT >= VERSION_CODES.R) {
+                val cb = object : WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
+                    override fun onProgress(
+                        insets: WindowInsets,
+                        animations: MutableList<WindowInsetsAnimation>
+                    ): WindowInsets {
+                        posBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom +
+                            insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+                        onAction.invoke(posBottom)
+                        return insets
+                    }
+                }
+                view.setWindowInsetsAnimationCallback(cb)
+            } else {
+                ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
+                    posBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom +
+                            insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+                    onAction.invoke(posBottom)
+                    insets
+                }
+            }
         }
     }
 }

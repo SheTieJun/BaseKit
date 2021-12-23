@@ -29,7 +29,7 @@ import me.shetj.base.mvp.BaseModel
 import me.shetj.base.network.RxHttp
 import me.shetj.base.network_coroutine.cache.CacheMode
 import me.shetj.base.network.callBack.SimpleNetCallBack
-import me.shetj.base.network_coroutine.KCHttpV2
+import me.shetj.base.network_coroutine.KCHttpV3
 import shetj.me.base.bean.ResultMusic
 
 /**
@@ -46,7 +46,7 @@ class MainModel : BaseModel() {
     private val testUrl =
         "https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json"
 
-    suspend fun getMusicV2() = KCHttpV2.get<ResultMusic>(testUrl,
+    suspend fun getMusicV2() = KCHttpV3.get<ResultMusic>(testUrl,
         option = {
             this.cacheKey = "testUrl"
             this.cacheTime = 10
