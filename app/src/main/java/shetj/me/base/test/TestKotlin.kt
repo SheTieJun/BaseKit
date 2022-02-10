@@ -58,7 +58,7 @@ class TestKotlin {
 
 
         private val _testStatus = MutableSharedFlow<Int>(
-            replay = 1,
+            replay = 1, //至少1
             onBufferOverflow = BufferOverflow.DROP_OLDEST
         )
 
@@ -123,4 +123,12 @@ class TestKotlin {
         }
     }
 
+
+    fun openMini() {
+//        val req = WXLaunchMiniProgram.Req()
+//        req.userName = "gh_252c5f06840b" // 填小程序原始id
+//        req.path = "pages/detail/detail.html?url=https://docs.qq.com/doc/DYU5oU21hUE5LSFZM"
+//        req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE // 可选打开 开发版，体验版和正式版
+//        mWXApi?.sendReq(req)
+    }
 }

@@ -42,4 +42,23 @@
     <declare-styleable name="AutoTabLayout">
         <attr name="auto_textSize_base_width" format="boolean" />
     </declare-styleable>
+
+    <!-- 波纹进度条 -->
+    <declare-styleable name="WaveProgressView">
+        <attr name="progress_max" format="integer" />
+        <attr name="progress" format="integer" />
+        <attr name="speed" format="float" />
+        <attr name="wave_width" format="float" />
+        <attr name="wave_height" format="float" />
+        <attr name="wave_color" format="color" />
+        <attr name="wave_bg_color" format="color" />
+        <attr name="stroke_color" format="color" />
+        <attr name="main_text" format="string" />
+        <attr name="main_text_color" format="color" />
+        <attr name="main_text_size" format="dimension" />
+        <attr name="hint_text" format="string" />
+        <attr name="hint_color" format="color" />
+        <attr name="hint_size" format="dimension" />
+        <attr name="text_space" format="dimension" />
+    </declare-styleable>
 </resources>

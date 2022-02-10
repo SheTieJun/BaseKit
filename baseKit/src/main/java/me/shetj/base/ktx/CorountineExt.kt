@@ -25,8 +25,10 @@ package me.shetj.base.ktx
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
@@ -35,6 +37,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -122,4 +127,17 @@ suspend fun <T> retryDo(
         currentDelay = (currentDelay * factor).toLong().coerceAtMost(maxDelay)
     }
     return block() // last attempt
+}
+
+
+fun <T> Flow<T>.flowWithLifecycle(
+    lifecycle: Lifecycle,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED
+): Flow<T> = callbackFlow {
+    lifecycle.repeatOnLifecycle(minActiveState) {
+        this@flowWithLifecycle.collect {
+            send(it)
+        }
+    }
+    close()
 }

@@ -407,6 +407,11 @@ class ArmsUtils private constructor() {
             setAppearance(this, isBlack)
         }
 
+        /**
+         * 不沉侵，只修改状态栏的颜色
+         */
+        @JvmStatic
+        @JvmOverloads
         fun setAppearance(
             activity: Activity,
             isBlack: Boolean,
