@@ -37,7 +37,7 @@ import kotlinx.coroutines.delay
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.hasPermission
 import me.shetj.base.ktx.launch
-import me.shetj.base.ktx.logi
+import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.saverCreate
 import me.shetj.base.ktx.saverDB
@@ -62,6 +62,8 @@ import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
+import shetj.me.base.test_lib.defSet
+import shetj.me.base.test_lib.onYearMonthDay
 import timber.log.Timber
 
 class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
@@ -76,6 +78,9 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     }
 
     public override fun initView() {
+
+
+
 
         ArmsUtils.setAppearance(this,true)
 
@@ -120,6 +125,9 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
             CommentPopup.newInstance().show(supportFragmentManager)
         }
 
+        mViewBinding.content.btnTestPicker.setOnClickListener {
+            onYearMonthDay()
+        }
 
         mContent.btnInsert.setOnClickListener {
             saverCreate(key = "测试key", value = "测试value").apply {
@@ -144,17 +152,13 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
         }
 
         mContent.testEvent.setOnClickListener {
-            if (hasPermission(
-                    Manifest.permission.WRITE_CALENDAR,
-                    Manifest.permission.READ_CALENDAR,
-                    isRequest = true
-                )
-            ) {
+
+            if (requestPermissions(arrayOf(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR))){
                 mPresenter.addEvent(this)
             }
         }
         NetWorkLiveDate.getInstance().start(this)
-        NetWorkLiveDate.getInstance().observe(this, {
+        NetWorkLiveDate.getInstance().observe(this) {
             when (it?.netType) {
                 NetWorkLiveDate.NetType.NONE -> Timber.tag("requestNetWork")
                     .i("hasNet = ${it.hasNet},netType = NONE")
@@ -164,7 +168,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
                     .i("hasNet = ${it.hasNet},netType = WIFI")
                 else -> {}
             }
-        })
+        }
 
         mViewBinding.content.testThread.setOnClickListener {
             TaskExecutor.exit()
@@ -201,6 +205,17 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
                 Timber.tag("getMusic").e(this)
             }
         }
+
+        mViewBinding.content.start.defSet()
+        mViewBinding.content.end.defSet()
+    }
+
+    override fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
+        super.isPermissionGranted(permissions)
+        val empty = permissions.filter { !it.value }.isEmpty()
+        if (empty){
+            mPresenter.addEvent(this)
+        }
     }
 
     override fun onBackPressed() {
@@ -211,7 +226,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
         super.onResume()
         launch {
             delay(500)
-            paste(this@MainActivity).logi()
+            paste(this@MainActivity).logI()
         }
     }
 

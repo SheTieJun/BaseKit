@@ -24,15 +24,19 @@
 package me.shetj.base.base
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Message
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Keep
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import me.shetj.base.ktx.hasPermission
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -51,6 +55,45 @@ import org.greenrobot.eventbus.ThreadMode
  */
 @Keep
 abstract class AbBaseFragment : Fragment(), LifecycleObserver {
+
+    //region registerForActivityResult 权限判断
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            isPermissionGranted(it)
+        }
+
+    /**
+     * 请求权限
+     */
+    fun requestPermission(permission: String): Boolean {
+        val isGranted =
+            ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
+        if (!isGranted) {
+            permissionLauncher.launch(arrayOf(permission))
+        }
+        return isGranted
+    }
+
+    /**
+     * 请求权限
+     */
+    fun requestPermissions(permissions: Array<String>): Boolean {
+        val isGranted = requireActivity().hasPermission(*permissions, isRequest = false)
+        if (!isGranted) {
+            permissionLauncher.launch(permissions)
+        }
+        return isGranted
+    }
+
+    /**
+     * all has permission : permissions.filter { !it.value }.isEmpty()
+     */
+    open fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
+
+    }
+    //endregion
+
+
     protected var enabledOnBack: Boolean = false
         set(value) {
             field = value

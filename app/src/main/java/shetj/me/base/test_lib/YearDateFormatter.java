@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,38 +22,25 @@
  * SOFTWARE.
  */
 
+package shetj.me.base.test_lib;
 
-package shetj.me.base.view
+import com.github.gzuliyujiang.wheelpicker.contract.DateFormatter;
 
-import android.content.Context
-import android.util.AttributeSet
-import androidx.recyclerview.widget.RecyclerView
-import shetj.me.base.R
-import java.lang.reflect.Field
+class YearDateFormatter implements DateFormatter {
 
-
-class FixRecyclerView  :
-    RecyclerView {
-    constructor(context: Context):super(context){
-        change()
+    @Override
+    public String formatYear(int year) {
+        return "" + year % 100+"";
     }
 
-    constructor(context: Context, attrs: AttributeSet?):super(context, attrs){
-        change()
-    }
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int):super(context, attrs, defStyleAttr){
-        change()
+    @Override
+    public String formatMonth(int month) {
+        return month < 10 ? "0" + month : "" + month;
     }
 
-    private fun change() {
-
-        try {
-            val field: Field = (this::class.java.genericSuperclass as Class<*>).getDeclaredField("mRecyclerView")
-            field.isAccessible = true
-            val recyclerView = field.get(this) as RecyclerView
-            recyclerView.id = R.id.viewpager2_rv
-        } catch (e: NoSuchFieldException) {
-            e.printStackTrace()
-        }
+    @Override
+    public String formatDay(int day) {
+        return day < 10 ? "0" + day : "" + day;
     }
+
 }

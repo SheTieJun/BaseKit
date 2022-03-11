@@ -24,11 +24,15 @@
 package me.shetj.base.network.exception
 
 import android.net.ParseException
+import com.google.gson.JsonParseException
 import com.google.gson.JsonSerializer
+import com.google.gson.JsonSyntaxException
+import java.io.NotSerializableException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
+import org.json.JSONException
 import retrofit2.HttpException
 
 @Suppress("DEPRECATION")

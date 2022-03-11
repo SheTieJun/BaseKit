@@ -180,6 +180,10 @@ dependencies {
 
 //    debugImplementation 'com.glance.guolindev:glance:1.0.0' //debug 情况下查看数据库
 //    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+
+    def pick_version = "4.1.7"
+    implementation "com.github.gzu-liyujiang.AndroidPicker:Common:$pick_version"
+    implementation "com.github.gzu-liyujiang.AndroidPicker:WheelPicker:$pick_version"
 }
 
 //apply from: file("dokit-config.gradle")

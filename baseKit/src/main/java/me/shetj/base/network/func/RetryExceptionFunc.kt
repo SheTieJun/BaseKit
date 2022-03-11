@@ -25,6 +25,8 @@ package me.shetj.base.network.func
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.Function
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import me.shetj.base.network.exception.ApiException

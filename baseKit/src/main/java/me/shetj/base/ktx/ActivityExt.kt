@@ -46,6 +46,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
@@ -162,7 +163,7 @@ fun Context.collapseStatusBar() {
  *  可以使用 [AppCompatActivity.registerForActivityResult] 替代
  *  registerForActivityResult(ActivityResultContracts.RequestPermission())
  */
-fun AppCompatActivity.hasPermission(
+fun Activity.hasPermission(
     vararg permissions: String,
     isRequest: Boolean = true
 ): Boolean {
@@ -179,7 +180,7 @@ fun AppCompatActivity.hasPermission(
     }
     if (permissionsCheck.isEmpty()) return true
     if (isRequest) {
-        ActivityCompat.requestPermissions(this as Activity, permissionsCheck.toTypedArray(), 100)
+        ActivityCompat.requestPermissions(this, permissionsCheck.toTypedArray(), 100)
     }
     return false
 }

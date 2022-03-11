@@ -29,14 +29,12 @@ import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.cancel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import me.shetj.base.ktx.logd
+import me.shetj.base.ktx.logD
 import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
@@ -165,7 +163,7 @@ object KCHttpV3 {
                 } catch (e: Exception) {
                     withContext(Dispatchers.IO) {
                         kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
-                            "use cache key = ${cache.cacheKey} \n,value = $it ".logd()
+                            "use cache key = ${cache.cacheKey} \n,value = $it ".logD()
                         }
                     } ?: throw ApiException.handleException(e)
                 }
@@ -175,7 +173,7 @@ object KCHttpV3 {
                 withContext(Dispatchers.IO) {
                     kcCache.load(cache.cacheKey, cache.cacheTime)
                         ?.also {
-                            "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
+                            "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logD()
                         }
                 } ?: kotlin.run {
                     formNetworkValue(timeout, repeatNum).also {
@@ -193,7 +191,7 @@ object KCHttpV3 {
                 // 只读取缓存
                 withContext(Dispatchers.IO) {
                     kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
-                        "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logd()
+                        "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logD()
                     }
                 } ?: throw CacheException(
                     OK_CACHE_EXCEPTION,

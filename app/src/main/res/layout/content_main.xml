@@ -2,13 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main"
-    tools:context="shetj.me.base.func.main.MainActivity">
-
+    tools:context="shetj.me.base.func.main.MainActivity"
+    tools:showIn="@layout/activity_main">
 
 
     <Button
@@ -17,8 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textAllCaps="false"
         android:text="测试网络请求 "
+        android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,8 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textAllCaps="false"
         android:text="测TipPopupWindow "
+        android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_test_net" />
 
@@ -48,9 +47,9 @@
         android:id="@+id/btn_select_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="图片"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="图片"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_test_tip" />
 
@@ -59,9 +58,9 @@
         android:id="@+id/btn_insert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="插入一个数据"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="插入一个数据"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_select_image" />
 
@@ -69,9 +68,9 @@
         android:id="@+id/btn_find"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="查询数据"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="查询数据"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_insert" />
 
@@ -80,9 +79,9 @@
         android:id="@+id/btn_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="设置界面"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="设置界面"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_find" />
 
@@ -90,9 +89,9 @@
         android:id="@+id/btn_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="发送邮件"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="发送邮件"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_setting" />
 
@@ -100,9 +99,9 @@
         android:id="@+id/test_thread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试线程"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="测试线程"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_email" />
 
@@ -110,9 +109,9 @@
         android:id="@+id/test_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试Loading"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="测试Loading"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/test_thread" />
 
@@ -120,19 +119,19 @@
         android:id="@+id/test_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="日历事件"
         android:layout_marginStart="8dp"
-        app:layout_constraintTop_toTopOf="@id/test_loading"
+        android:text="日历事件"
+        app:layout_constraintBottom_toBottomOf="@id/test_loading"
         app:layout_constraintStart_toEndOf="@id/test_loading"
-        app:layout_constraintBottom_toBottomOf="@id/test_loading"/>
+        app:layout_constraintTop_toTopOf="@id/test_loading" />
 
     <Button
         android:id="@+id/test_download"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试Worker-download"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="测试Worker-download"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/test_loading" />
 
@@ -140,10 +139,43 @@
         android:id="@+id/btn_test_keybord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试键盘"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="测试键盘"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/test_download" />
 
+    <Button
+        android:id="@+id/btn_test_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="测试时间选择"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_test_keybord" />
+
+
+    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
+        android:id="@+id/start"
+        android:layout_width="170dp"
+        android:layout_height="200dp"
+        app:wheel_indicatorEnabled="false"
+        app:wheel_itemTextBoldSelected="true"
+        android:layout_marginStart="24dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
+        android:id="@+id/end"
+        android:layout_width="170dp"
+        android:layout_height="200dp"
+        app:wheel_indicatorEnabled="false"
+        app:wheel_itemTextBoldSelected="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/start"
+        app:layout_constraintBottom_toBottomOf="parent"
+         />
 </androidx.constraintlayout.widget.ConstraintLayout>

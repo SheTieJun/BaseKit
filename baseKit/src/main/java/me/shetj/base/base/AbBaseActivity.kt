@@ -24,16 +24,21 @@
 package me.shetj.base.base
 
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Message
 import android.view.View
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import me.shetj.base.R
+import me.shetj.base.ktx.array
+import me.shetj.base.ktx.hasPermission
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -44,6 +49,43 @@ import org.greenrobot.eventbus.ThreadMode
  */
 @Keep
 abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
+
+    //region registerForActivityResult 权限判断
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            isPermissionGranted(it)
+        }
+
+    /**
+     * 请求权限
+     */
+    fun requestPermission(permission: String): Boolean {
+        val isGranted = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+        if (!isGranted) {
+            permissionLauncher.launch(arrayOf(permission))
+        }
+        return isGranted
+    }
+
+    /**
+     * 请求权限
+     */
+    fun requestPermissions(permissions: Array<String>): Boolean {
+        val isGranted = hasPermission(*permissions, isRequest = false)
+        if (!isGranted) {
+            permissionLauncher.launch(permissions)
+        }
+        return isGranted
+    }
+
+    /**
+     * all has permission : permissions.filter { !it.value }.isEmpty()
+     */
+    open fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
+
+    }
+    //endregion
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
