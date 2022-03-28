@@ -24,19 +24,25 @@
 package me.shetj.base.base
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import me.shetj.base.ktx.hasPermission
 import me.shetj.base.tools.app.ArmsUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -45,6 +51,61 @@ import org.greenrobot.eventbus.ThreadMode
 @Keep
 abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
     BottomSheetDialogFragment() {
+
+    //region registerForActivityResult :1.RequestMultiplePermissions ,2.StartActivityForResult
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            isPermissionGranted(it)
+        }
+
+    private val activityLauncher =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        onStartActivityForResult(it)
+    }
+
+    /**
+     * 请求权限
+     */
+    fun requestPermission(permission: String): Boolean {
+        val isGranted =
+            ContextCompat.checkSelfPermission(requireContext(), permission) == PackageManager.PERMISSION_GRANTED
+        if (!isGranted) {
+            permissionLauncher.launch(arrayOf(permission))
+        }
+        return isGranted
+    }
+
+    /**
+     * 请求权限
+     */
+    fun requestPermissions(permissions: Array<String>): Boolean {
+        val isGranted = requireActivity().hasPermission(*permissions, isRequest = false)
+        if (!isGranted) {
+            permissionLauncher.launch(permissions)
+        }
+        return isGranted
+    }
+
+
+    /**
+     * 新的方式startActivityForResult
+     */
+    fun startActivityForResult(intent: Intent){
+        activityLauncher.launch(intent)
+    }
+
+    /**
+     * all has permission : permissions.filter { !it.value }.isEmpty()
+     */
+    open fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
+
+    }
+
+    /**
+     * handle activityResult
+     */
+    open fun onStartActivityForResult(activityResult: ActivityResult?) {
+
+    }
 
     protected lateinit var mViewBinding: VB
 

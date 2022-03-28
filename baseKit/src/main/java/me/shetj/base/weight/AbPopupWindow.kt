@@ -31,8 +31,9 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.Lifecycle.Event
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.shetj.base.base.DefCoroutineScope
@@ -49,7 +50,7 @@ import me.shetj.base.ktx.getClazz
  * }
  */
 abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatActivity) :
-    PopupWindow(mContext), LifecycleObserver, KtScopeComponent {
+    PopupWindow(mContext), LifecycleEventObserver, KtScopeComponent {
 
     private val lazyComposite = lazy { CompositeDisposable() }
     protected val mCompositeDisposable: CompositeDisposable by lazyComposite
@@ -81,6 +82,15 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
             .invoke(null, mContext.layoutInflater) as VB
     }
 
+
+    override fun onStateChanged(source: LifecycleOwner, event: Event) {
+        if (event == Event.ON_STOP) {
+            dismissStop()
+        } else if (source.lifecycle.currentState <= Lifecycle.State.DESTROYED) {
+            dismissOnDestroy()
+        }
+    }
+
     abstract fun VB.initUI()
 
     /**
@@ -90,7 +100,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
         showAtLocation(mContext.window.decorView, Gravity.BOTTOM, 0, 0)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     open fun dismissStop() {
         try {
             if (lazyComposite.isInitialized()) {
@@ -102,7 +111,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     open fun dismissOnDestroy() {
         try {
             if (lazyComposite.isInitialized()) {

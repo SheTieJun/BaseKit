@@ -33,6 +33,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import kotlin.collections.LinkedHashMap
+import me.shetj.base.S
 import me.shetj.base.ktx.toJson
 import me.shetj.base.tools.app.ArmsUtils.Companion.getString
 import me.shetj.base.tools.app.NetworkUtils
@@ -138,7 +139,7 @@ class HttpHeaders : Serializable {
                 Locale.getDefault().language + "_" + Locale.getDefault().country,
                 checkNameAndValue(Build.MANUFACTURER),
                 Build.VERSION.SDK_INT,
-                "Release"
+                if (S.isDebug)"DeBug" else "Release"
             )
 
         /**

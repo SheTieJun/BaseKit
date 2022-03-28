@@ -24,10 +24,12 @@
 package me.shetj.base.base
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Message
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
@@ -56,11 +58,15 @@ import org.greenrobot.eventbus.ThreadMode
 @Keep
 abstract class AbBaseFragment : Fragment(), LifecycleObserver {
 
-    //region registerForActivityResult 权限判断
+    //region registerForActivityResult :1.RequestMultiplePermissions ,2.StartActivityForResult
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
             isPermissionGranted(it)
         }
+
+    private val activityLauncher =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        onStartActivityForResult(it)
+    }
 
     /**
      * 请求权限
@@ -85,12 +91,28 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
         return isGranted
     }
 
+
+    /**
+     * 新的方式startActivityForResult
+     */
+    fun startActivityForResult(intent: Intent){
+        activityLauncher.launch(intent)
+    }
+
     /**
      * all has permission : permissions.filter { !it.value }.isEmpty()
      */
     open fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
 
     }
+
+    /**
+     * handle activityResult
+     */
+    open fun onStartActivityForResult(activityResult: ActivityResult?) {
+
+    }
+
     //endregion
 
 
