@@ -46,8 +46,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
-
 val dbModule = module {
     single(createdAtStart = false) { SaverDatabase.getInstance(androidApplication()) }
 

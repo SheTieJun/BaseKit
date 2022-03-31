@@ -26,7 +26,6 @@ package me.shetj.base.base
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.annotation.Keep
-import androidx.lifecycle.LifecycleObserver
 import androidx.viewbinding.ViewBinding
 import me.shetj.base.ktx.getClazz
 
@@ -49,5 +48,11 @@ abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity() {
     open fun initViewBinding(): VB {
         return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java)
             .invoke(null, layoutInflater) as VB
+    }
+
+    override fun initView() {
+    }
+
+    override fun initData() {
     }
 }

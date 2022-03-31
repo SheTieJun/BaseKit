@@ -54,7 +54,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
             isPermissionGranted(it)
         }
 
-    private val activityLauncher =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         onStartActivityForResult(it)
     }
 
@@ -81,11 +81,10 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         return isGranted
     }
 
-
     /**
      * 新的方式startActivityForResult
      */
-    fun startActivityForResult(intent: Intent){
+    fun startActivityForResult(intent: Intent) {
         activityLauncher.launch(intent)
     }
 
@@ -93,14 +92,12 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
      * all has permission : permissions.filter { !it.value }.isEmpty()
      */
     open fun isPermissionGranted(permissions: Map<String, Boolean>) {
-
     }
 
     /**
      * handle activityResult
      */
     open fun onStartActivityForResult(activityResult: ActivityResult?) {
-
     }
 
     protected lateinit var mViewBinding: VB
@@ -143,8 +140,6 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
     override fun onDestroy() {
         super.onDestroy()
     }
-
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden)

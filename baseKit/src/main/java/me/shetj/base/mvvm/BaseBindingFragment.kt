@@ -101,9 +101,9 @@ abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFra
     }
 
     /**
-     * 是否使用Activity的VM，默认不使用
+     * 是否使用Activity的VM，默认使用
      */
-    open fun useActivityVM() = false
+    open fun useActivityVM() = true
 
     protected open fun getFragmentViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mFragmentProvider == null) {
@@ -114,7 +114,7 @@ abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFra
 
     protected open fun getActivityViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mActivityProvider == null) {
-            mActivityProvider = ViewModelProvider(this)
+            mActivityProvider = ViewModelProvider(requireActivity())
         }
         return mActivityProvider!!.get(modelClass)
     }

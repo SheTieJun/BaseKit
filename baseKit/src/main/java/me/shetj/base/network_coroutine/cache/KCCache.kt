@@ -28,7 +28,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.shetj.base.network_coroutine.HttpKit
-import me.shetj.base.network_coroutine.KCHttpV3
 import me.shetj.base.network_coroutine.RequestOption
 import org.koin.java.KoinJavaComponent
 
@@ -146,9 +145,8 @@ class KCCache {
     }
 }
 
-
-suspend fun saveCache(block:RequestOption.() ->Unit, data: String){
-    saveCache(RequestOption().also(block),data)
+suspend fun saveCache(block: RequestOption.() -> Unit, data: String) {
+    saveCache(RequestOption().also(block), data)
 }
 
 suspend fun saveCache(requestOption: RequestOption?, data: String) {

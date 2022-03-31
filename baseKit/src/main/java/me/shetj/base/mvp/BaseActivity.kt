@@ -64,7 +64,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView {
         return getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
     }
 
-
     override fun updateView(message: Message) {
     }
 }

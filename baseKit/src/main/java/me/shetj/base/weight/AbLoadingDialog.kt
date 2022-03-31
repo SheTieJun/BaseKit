@@ -142,7 +142,6 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
         return this
     }
 
-
     inline fun showWithTimeOutAction(
         context: AppCompatActivity,
         time: Long = LOADING_SHORT,

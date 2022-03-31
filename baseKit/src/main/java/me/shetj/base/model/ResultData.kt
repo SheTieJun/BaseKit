@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,16 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.base
+package me.shetj.base.model
 
 /**
  * 配合liveData对数据处理
  */
-sealed class DataState<T>
-
-// 完成：结果返回
-data class ResultData<T>(val data: T) : DataState<T>()
+sealed class ResultData<T>
 
 // 完成：分页加载
 data class PageData<T>(val data: MutableList<T>, val isFirst: Boolean = true, val finish: Boolean = false) :
-    DataState<T>()
+    ResultData<T>()
+
+// 模型数据
+data class ModelData<T>(val data: T) : ResultData<T>()
+
+/**
+ * 没有数据
+ */
+object NoneData : ResultData<Any>()

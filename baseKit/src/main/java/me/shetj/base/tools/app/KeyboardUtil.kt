@@ -200,8 +200,7 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
             return insets?.isVisible(WindowInsetsCompat.Type.ime())
         }
 
-
-        fun addKeyBordHeightChangeCallBack(view: View,onAction:(height:Int) ->Unit){
+        fun addKeyBordHeightChangeCallBack(view: View, onAction: (height: Int) -> Unit) {
             var posBottom: Int
             if (VERSION.SDK_INT >= VERSION_CODES.R) {
                 val cb = object : WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
@@ -219,7 +218,7 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
             } else {
                 ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
                     posBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom +
-                            insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+                        insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
                     onAction.invoke(posBottom)
                     insets
                 }

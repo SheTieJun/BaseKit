@@ -115,7 +115,6 @@ class DebugFunc private constructor() {
     }
     //endregion logSetting
 
-
     fun outputToFile(info: String?, path: String? = saveLogFile) {
         TaskExecutor.executeOnIO {
             if (info.isNullOrEmpty()) return@executeOnIO

@@ -64,7 +64,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     override fun onStart() {
     }
 
-
     /**
      * //解除订阅
      * [BaseActivity.onDestroy] 调用[IPresenter.onDestroy]
@@ -75,14 +74,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         coroutineContext.cancelChildren()
         model.onDestroy()
     }
-
-    /**
-     * 是否使用 [EventBus],默认为使用(true)，
-     *
-     * @return
-     */
-    open fun useEventBus() = true
-
 
     fun startActivity(intent: Intent) {
         view.rxContext.startActivity(intent)

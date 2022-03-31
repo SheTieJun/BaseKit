@@ -35,7 +35,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import java.util.concurrent.TimeUnit
 import me.shetj.base.R
 import me.shetj.base.weight.AbLoadingDialog
 

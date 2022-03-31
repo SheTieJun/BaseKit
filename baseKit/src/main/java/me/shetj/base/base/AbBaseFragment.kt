@@ -27,7 +27,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Message
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -66,7 +65,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
             isPermissionGranted(it)
         }
 
-    private val activityLauncher =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         onStartActivityForResult(it)
     }
 
@@ -93,11 +92,10 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
         return isGranted
     }
 
-
     /**
      * 新的方式startActivityForResult
      */
-    fun startActivityForResult(intent: Intent){
+    fun startActivityForResult(intent: Intent) {
         activityLauncher.launch(intent)
     }
 
@@ -105,18 +103,15 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
      * all has permission : permissions.filter { !it.value }.isEmpty()
      */
     open fun isPermissionGranted(permissions: Map<String, Boolean>) {
-
     }
 
     /**
      * handle activityResult
      */
     open fun onStartActivityForResult(activityResult: ActivityResult?) {
-
     }
 
     //endregion
-
 
     protected var enabledOnBack: Boolean = false
         set(value) {
@@ -124,7 +119,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
             onBackPressedCallback.isEnabled = value
         }
 
-    //拦截activity的onBack，默认不拦截
+    // 拦截activity的onBack，默认不拦截
     protected val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             onBack()
@@ -153,7 +148,6 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
 
     open fun onBack() {}
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden)
     }
@@ -165,12 +159,12 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Event) {
-        when(event){
-            ON_START ->  viewBindData()
+        when (event) {
+            ON_START -> viewBindData()
             ON_RESUME -> onVisible()
             ON_PAUSE -> onInvisible()
             ON_CREATE -> initEventAndData()
-            else ->{}
+            else -> {}
         }
     }
 

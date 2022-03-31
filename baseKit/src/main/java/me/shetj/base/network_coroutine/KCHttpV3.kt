@@ -42,7 +42,6 @@ import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
 import me.shetj.base.network.exception.CacheException
 import me.shetj.base.network.kt.createJson
 import me.shetj.base.network_coroutine.cache.CacheMode
-import me.shetj.base.network_coroutine.cache.KCCache
 import me.shetj.base.network_coroutine.cache.saveCache
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
@@ -246,7 +245,7 @@ object KCHttpV3 {
                 val bufferedInputStream = BufferedInputStream(inputStream, bufferSize)
                 var readLength: Int
                 while (bufferedInputStream.read(buffer, 0, bufferSize)
-                        .also { readLength = it } != -1
+                    .also { readLength = it } != -1
                 ) {
                     outputStream.write(buffer, 0, readLength)
                     currentLength += readLength
@@ -280,7 +279,6 @@ object KCHttpV3 {
                 })
             }
     }
-
 
     inline fun <reified T> String.funTo() = if (T::class.java != String::class.java) {
         this.toBean()!!

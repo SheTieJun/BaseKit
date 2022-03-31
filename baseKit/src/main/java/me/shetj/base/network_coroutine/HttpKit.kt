@@ -55,7 +55,7 @@ object HttpKit {
             .setLogEnable(isPrintLog)
     }
 
-    fun getKCCache():KCCache{
+    fun getKCCache(): KCCache {
         return KoinJavaComponent.get(KCCache::class.java)
     }
 }

@@ -31,7 +31,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
-import me.shetj.base.base.UIState
+import me.shetj.base.model.UIState
 import me.shetj.base.ktx.isTrue
 import me.shetj.base.ktx.renderType
 import kotlin.time.DurationUnit
@@ -76,7 +76,7 @@ class TestKotlin {
                 started = SharingStarted.WhileSubscribed() //“启动”行为政策。
             )
 
-            _uiState.compareAndSet(UIState.Loading,UIState.End)
+            _uiState.compareAndSet(UIState.Loading, UIState.End)
 
             _testStatus.resetReplayCache()//清空前面的值 ,供您在不想重放已向数据流发送的最新信息
 

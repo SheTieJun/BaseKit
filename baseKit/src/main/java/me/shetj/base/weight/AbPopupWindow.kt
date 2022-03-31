@@ -51,7 +51,6 @@ import me.shetj.base.ktx.getClazz
 abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatActivity) :
     PopupWindow(mContext), LifecycleEventObserver, KtScopeComponent {
 
-
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding
 
@@ -78,7 +77,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
         return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java)
             .invoke(null, mContext.layoutInflater) as VB
     }
-
 
     override fun onStateChanged(source: LifecycleOwner, event: Event) {
         if (event == Event.ON_STOP) {
