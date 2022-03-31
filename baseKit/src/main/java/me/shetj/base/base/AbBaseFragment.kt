@@ -27,7 +27,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Message
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,12 +35,14 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.Lifecycle.Event
+import androidx.lifecycle.Lifecycle.Event.ON_CREATE
+import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
+import androidx.lifecycle.Lifecycle.Event.ON_START
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import me.shetj.base.ktx.hasPermission
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 /**
  * fragment基类
@@ -56,7 +57,7 @@ import org.greenrobot.eventbus.ThreadMode
  * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class AbBaseFragment : Fragment(), LifecycleObserver {
+abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
 
     //region registerForActivityResult :1.RequestMultiplePermissions ,2.StartActivityForResult
     private val permissionLauncher =
@@ -64,7 +65,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
             isPermissionGranted(it)
         }
 
-    private val activityLauncher =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         onStartActivityForResult(it)
     }
 
@@ -91,30 +92,26 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
         return isGranted
     }
 
-
     /**
      * 新的方式startActivityForResult
      */
-    fun startActivityForResult(intent: Intent){
+    fun startActivityForResult(intent: Intent) {
         activityLauncher.launch(intent)
     }
 
     /**
      * all has permission : permissions.filter { !it.value }.isEmpty()
      */
-    open fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
-
+    open fun isPermissionGranted(permissions: Map<String, Boolean>) {
     }
 
     /**
      * handle activityResult
      */
     open fun onStartActivityForResult(activityResult: ActivityResult?) {
-
     }
 
     //endregion
-
 
     protected var enabledOnBack: Boolean = false
         set(value) {
@@ -122,7 +119,8 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
             onBackPressedCallback.isEnabled = value
         }
 
-    protected val onBackPressedCallback = object : OnBackPressedCallback(true) {
+    // 拦截activity的onBack，默认不拦截
+    protected val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             onBack()
         }
@@ -146,28 +144,9 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
     override fun onDestroy() {
         super.onDestroy()
         lifecycle.removeObserver(this)
-        if (useEventBus()) {
-            EventBus.getDefault().unregister(this)
-        }
     }
 
     open fun onBack() {}
-
-    /**
-     * 是否使用eventBus,默认为使用(true)，
-     *
-     * @return boolean
-     */
-    open fun useEventBus(): Boolean {
-        return false
-    }
-
-    /**
-     * 让[EventBus] 默认主线程处理
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onEvent(message: Message) {
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden)
@@ -175,38 +154,41 @@ abstract class AbBaseFragment : Fragment(), LifecycleObserver {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (useEventBus()) {
-            EventBus.getDefault().register(this)
-        }
         onBackPressedCallback.isEnabled = enabledOnBack
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Event) {
+        when (event) {
+            ON_START -> viewBindData()
+            ON_RESUME -> onVisible()
+            ON_PAUSE -> onInvisible()
+            ON_CREATE -> initEventAndData()
+            else -> {}
+        }
     }
 
     /**
      * 初始化数据和界面绑定
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     open fun viewBindData() {
     }
 
     /**
      * On visible.
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     open fun onVisible() {
     }
 
     /**
      * On invisible.
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     open fun onInvisible() {
     }
 
     /**
      * Init event and data.
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     protected fun initEventAndData() {
     }
 

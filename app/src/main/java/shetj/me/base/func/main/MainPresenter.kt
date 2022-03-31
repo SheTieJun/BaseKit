@@ -31,7 +31,6 @@ import androidx.lifecycle.MutableLiveData
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.mvp.BasePresenter
 import me.shetj.base.mvp.IView
-import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.network_coroutine.HttpResult
 import me.shetj.base.tools.time.CalendarReminderUtils
 import me.shetj.base.tools.time.DateUtils
@@ -75,9 +74,6 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
         liveDate.postValue(model.getMusicV2())
     }
 
-    fun <T> getMusicByRxHttp(simpleNetCallBack: SimpleNetCallBack<T>) {
-        model.getMusicByRxHttp(simpleNetCallBack)
-    }
 
     fun addEvent(context: Context) {
         CalendarReminderUtils.addCalendarEvent(context,

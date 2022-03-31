@@ -32,7 +32,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import io.reactivex.rxjava3.disposables.Disposable
 import me.shetj.base.R
 import me.shetj.base.ktx.setDrawables
 import me.shetj.base.weight.AbLoadingDialog
@@ -91,26 +90,6 @@ class SimLoadingDialog : AbLoadingDialog() {
             crossinline action: suspend () -> Unit
         ): AbLoadingDialog {
             return SimLoadingDialog().showWithAction(context, action)
-        }
-
-        /**
-         * 和RxJava 一起使用
-         */
-        fun showWithRxAction(
-            context: AppCompatActivity,
-            action: () -> Disposable
-        ): AbLoadingDialog {
-            return SimLoadingDialog().showWithRxAction(context, action)
-        }
-
-        /**
-         * 和RxJava 一起使用
-         */
-        fun showWithDisposable(
-            context: AppCompatActivity,
-            disposable: Disposable
-        ): AbLoadingDialog {
-            return SimLoadingDialog().showWithDisposable(context, disposable)
         }
 
         @JvmStatic

@@ -129,7 +129,6 @@ suspend fun <T> retryDo(
     return block() // last attempt
 }
 
-
 fun <T> Flow<T>.flowWithLifecycle(
     lifecycle: Lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED

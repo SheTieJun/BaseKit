@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.network.callBack
+package me.shetj.base.model
 
-import android.content.Context
-import java.lang.reflect.Type
-import me.shetj.base.network.kt.ClassUtils
+/**
+ * 界面状态
+ */
+sealed class UIState {
+    // 正在加载
+    object Loading : UIState()
 
-// T  = List<MusicBean>
-abstract class NetCallBack<T>(val context: Context) : IType<T> {
+    // 加载完成
+    object End : UIState()
 
-    abstract fun onStart()
-    abstract fun onComplete()
-    abstract fun onError(e: Exception)
-    abstract fun onSuccess(data: T)
-
-    override fun getType(): Type {
-
-        return ClassUtils.findNeedClass(javaClass)
-        // 获取当前类型 T java.util.List<? extends shetj.me.base.bean.MusicBean>
-    }
-
-    open fun getRawType(): Type {
-        // 获取需要解析的泛型 <T> raw类型 interface java.util.List
-        return ClassUtils.findRawType(javaClass)
-    }
+    // 错误状态
+    class Error(val e: Exception) : UIState()
 }

@@ -58,6 +58,7 @@ dependencies {
     api "androidx.appcompat:appcompat:$appcompat"
 //    implementation "androidx.legacy:legacy-support-v4:$androidx"
     //https://material.io/develop/android/
+
     api "com.google.android.material:material:$material"
     api "androidx.recyclerview:recyclerview:$recyclerview"
     api "androidx.cardview:cardview:$androidx"
@@ -85,22 +86,16 @@ dependencies {
 
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$BRV"
 
-    api "com.github.greenrobot.EventBus:eventbus:$eventBus"
     api "com.google.code.gson:gson:$gsonVersion"
     //图片加载
     api "com.github.bumptech.glide:glide:$glideVersion"
 //    api 'jp.wasabeef:glide-transformations:4.1.0'
-
-    api 'io.reactivex.rxjava3:rxjava:3.0.4'
-    api 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    api 'io.reactivex.rxjava3:rxkotlin:3.0.0' //https://github.com/ReactiveX/RxKotlin
     //框架
     api 'com.jakewharton.timber:timber:5.0.1'
 
-    def coroutines = "1.5.2"
+    def coroutines = "1.6.0"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-rx3:$coroutines"
 
 // Koin main features for Android (Scope,ViewModel ...)
     api "io.insert-koin:koin-android:$koin_version"
@@ -113,17 +108,12 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:$retrofit2"
     //https://github.com/square/retrofit/tree/master/retrofit-converters
     api "com.squareup.retrofit2:converter-gson:$retrofit2"
-    //https://github.com/square/retrofit/tree/master/retrofit-adapters
-    api "com.squareup.retrofit2:adapter-rxjava3:$retrofit2"
     //Android Jetpack
 
     api "androidx.room:room-common:$room_version"
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-    api "androidx.room:room-rxjava3:$room_version"
     api "androidx.room:room-ktx:$room_version"
-
-//    api "androidx.paging:paging-runtime-ktx:$paging_version"
 
     api 'androidx.startup:startup-runtime:1.1.0'
 

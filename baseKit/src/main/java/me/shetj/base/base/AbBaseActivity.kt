@@ -27,7 +27,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Message
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
@@ -39,11 +38,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import me.shetj.base.R
-import me.shetj.base.ktx.array
 import me.shetj.base.ktx.hasPermission
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 基础类  view 层
@@ -58,8 +53,7 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
             isPermissionGranted(it)
         }
 
-
-    private val activityLauncher =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    private val activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         onStartActivityForResult(it)
     }
 
@@ -88,26 +82,23 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
     /**
      * 新的方式startActivityForResult
      */
-    fun startActivityForResult(intent: Intent){
+    fun startActivityForResult(intent: Intent) {
         activityLauncher.launch(intent)
     }
 
     /**
      * all has permission : permissions.filter { !it.value }.isEmpty()
      */
-    open fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
-
+    open fun isPermissionGranted(permissions: Map<String, Boolean>) {
     }
 
     /**
      * handle activityResult
      */
     open fun onStartActivityForResult(activityResult: ActivityResult?) {
-
     }
 
     //endregion
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,27 +118,12 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
     }
 
     open fun onActivityCreate() {
-        if (useEventBus()) {
-            // 注册到事件主线
-            EventBus.getDefault().register(this)
-        }
         findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
         initView()
         initData()
     }
 
     open fun onActivityDestroy() {
-        if (useEventBus()) {
-            // 如果要使用eventbus请将此方法返回true
-            EventBus.getDefault().unregister(this)
-        }
-    }
-
-    /**
-     * 让[EventBus] 默认主线程处理
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onEvent(message: Message) {
     }
 
     open fun setTitle(title: String) {
@@ -178,15 +154,6 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         // true - 界面加载成功的时候
-    }
-
-    /**
-     * 是否使用eventBus,默认为使用(false)，
-     *
-     * @return useEventBus
-     */
-    open fun useEventBus(): Boolean {
-        return false
     }
 
     /**

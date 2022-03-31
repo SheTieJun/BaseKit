@@ -67,15 +67,13 @@ open class BaseLifecycleHandler : Handler, LifecycleEventObserver {
      */
     private fun bindLifecycleOwner(owner: LifecycleOwner?) {
         owner?.lifecycle?.addObserver(this)
-
-
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         if (event == Lifecycle.Event.ON_DESTROY) {
             // 移除队列中所有未执行的消息
             removeCallbacksAndMessages(null)
-            source?.lifecycle?.removeObserver(this)
+            source.lifecycle.removeObserver(this)
         }
     }
 }

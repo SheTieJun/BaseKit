@@ -26,7 +26,6 @@ package me.shetj.base.mvp
 import android.os.Message
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import io.reactivex.rxjava3.disposables.Disposable
 import me.shetj.base.base.AbBaseActivity
 import me.shetj.base.ktx.getClazz
 
@@ -63,10 +62,6 @@ abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView {
      */
     open fun initPresenter(): T {
         return getClazz<T>(this).getConstructor(IView::class.java).newInstance(this)
-    }
-
-    fun addDispose(disposable: Disposable) {
-        mPresenter.addDispose(disposable)
     }
 
     override fun updateView(message: Message) {

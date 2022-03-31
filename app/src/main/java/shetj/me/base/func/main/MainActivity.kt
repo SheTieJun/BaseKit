@@ -31,11 +31,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import me.shetj.base.base.TaskExecutor
-import me.shetj.base.ktx.hasPermission
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
@@ -45,8 +43,6 @@ import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.toJson
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseBindingActivity
-import me.shetj.base.network.callBack.SimpleNetCallBack
-import me.shetj.base.network_coroutine.HttpKit
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
@@ -57,7 +53,6 @@ import me.shetj.base.tools.image.ImageCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
-import shetj.me.base.bean.MusicBean
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
@@ -80,9 +75,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     public override fun initView() {
 
 
-
-
-        ArmsUtils.setAppearance(this,true)
+        ArmsUtils.setAppearance(this, true)
 
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
@@ -131,29 +124,30 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
 
         mContent.btnInsert.setOnClickListener {
             saverCreate(key = "测试key", value = "测试value").apply {
-                saverDB.insert(this)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError {
-                        Timber.e(it)
-                    }
-                    .subscribe {
-                        Timber.i("测试koin")
-                    }
+                launch {
+                    saverDB.insert(this@apply)
+                }
             }
         }
 
         mContent.btnFind.setOnClickListener {
-            saverDB.getAll(groupN = "base", isDel = false)
-                .subscribeOn(Schedulers.io())
-                .doOnNext {
-                    Timber.i(it.toJson())
-                }.subscribe()
+            launch {
+                saverDB.getAll(groupN = "base", isDel = false)
+                    .collect {
+                        Timber.i(it.toJson())
+                    }
+            }
         }
 
         mContent.testEvent.setOnClickListener {
 
-            if (requestPermissions(arrayOf(Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR))){
+            if (requestPermissions(
+                    arrayOf(
+                        Manifest.permission.WRITE_CALENDAR,
+                        Manifest.permission.READ_CALENDAR
+                    )
+                )
+            ) {
                 mPresenter.addEvent(this)
             }
         }
@@ -182,22 +176,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
             }
         }
 
-        mViewBinding.content.btnTestNet.setOnClickListener {
-            HttpKit.debugHttp(true)
-            mPresenter.getMusicByRxHttp(object :
-                SimpleNetCallBack<List<MusicBean>>(this) {
-                override fun onSuccess(data: List<MusicBean>) {
-                    super.onSuccess(data)
-                    Timber.tag("getMusicByRxHttp").i(data.toJson())
-                }
-
-                override fun onError(e: Exception) {
-                    super.onError(e)
-                    Timber.e(e)
-                }
-            })
-        }
-        mPresenter.liveDate.observeChange(this){
+        mPresenter.liveDate.observeChange(this) {
             onSuccess = {
                 Timber.tag("getMusic").i(this.toJson())
             }
@@ -210,10 +189,10 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
         mViewBinding.content.end.defSet()
     }
 
-    override fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
+    override fun isPermissionGranted(permissions: Map<String, Boolean>) {
         super.isPermissionGranted(permissions)
         val empty = permissions.filter { !it.value }.isEmpty()
-        if (empty){
+        if (empty) {
             mPresenter.addEvent(this)
         }
     }

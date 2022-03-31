@@ -51,7 +51,7 @@ class RequestOption {
     var timeout: Long = -1L
 
     /**
-     * repeatNum <= 0 表不处理； 重试次数
+     * repeatNum <= 0 表不处理； 重试请求次数
      */
     var repeatNum: Int = -1
 }

@@ -3,17 +3,14 @@ package shetj.me.base.utils;
 
 import android.content.Context;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
-
-import me.shetj.base.base.BaseImageLoader;
 
 /**
  * 图片加载
  *
  * @author shetj
  */
-public interface ImageLoader extends BaseImageLoader {
+public interface ImageLoader  {
 
     /**
      * 加载图片

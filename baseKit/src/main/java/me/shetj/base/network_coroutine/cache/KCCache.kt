@@ -25,6 +25,10 @@ package me.shetj.base.network_coroutine.cache
 
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import me.shetj.base.network_coroutine.HttpKit
+import me.shetj.base.network_coroutine.RequestOption
 import org.koin.java.KoinJavaComponent
 
 /**
@@ -50,7 +54,7 @@ class KCCache {
      */
     fun load(key: String?, existTime: Long): String? {
         // 1.先检查key
-        requireNotNull(key, { "key == null" })
+        requireNotNull(key) { "key == null" }
 
         // 2.判断key是否存在,key不存在去读缓存没意义
         if (!containsKey(key)) {
@@ -82,7 +86,7 @@ class KCCache {
      */
     fun save(key: String?, value: String?): Boolean {
         // 1.先检查key
-        requireNotNull(key, { "key == null" })
+        requireNotNull(key) { "key == null" }
 
         // 2.如果要保存的值为空,则删除
         if (value == null) {
@@ -137,6 +141,18 @@ class KCCache {
             diskCache.doContainsKey(key)
         } finally {
             mLock.readLock().unlock()
+        }
+    }
+}
+
+suspend fun saveCache(block: RequestOption.() -> Unit, data: String) {
+    saveCache(RequestOption().also(block), data)
+}
+
+suspend fun saveCache(requestOption: RequestOption?, data: String) {
+    if (!requestOption?.cacheKey.isNullOrBlank()) {
+        withContext(Dispatchers.IO) {
+            HttpKit.getKCCache().save(requestOption?.cacheKey, data)
         }
     }
 }

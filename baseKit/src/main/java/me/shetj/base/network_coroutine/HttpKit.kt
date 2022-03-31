@@ -24,6 +24,7 @@
 package me.shetj.base.network_coroutine
 
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
+import me.shetj.base.network_coroutine.cache.KCCache
 import okhttp3.OkHttpClient
 import org.koin.java.KoinJavaComponent
 import retrofit2.Retrofit
@@ -52,5 +53,9 @@ object HttpKit {
     fun debugHttp(isPrintLog: Boolean) {
         KoinJavaComponent.get<HttpLoggingInterceptor>(HttpLoggingInterceptor::class.java)
             .setLogEnable(isPrintLog)
+    }
+
+    fun getKCCache(): KCCache {
+        return KoinJavaComponent.get(KCCache::class.java)
     }
 }

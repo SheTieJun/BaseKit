@@ -25,7 +25,6 @@ package me.shetj.base.tip
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import io.reactivex.rxjava3.disposables.Disposable
 import me.shetj.base.weight.AbLoadingDialog
 
 /**
@@ -136,11 +135,6 @@ object TipKit {
     @JvmStatic
     fun loading(context: AppCompatActivity, action: suspend () -> Unit): AbLoadingDialog {
         return SimLoadingDialog.showWithAction(context, action)
-    }
-
-    @JvmStatic
-    fun loadingRx(context: AppCompatActivity, action: () -> Disposable): AbLoadingDialog {
-        return SimLoadingDialog.showWithRxAction(context, action)
     }
 
     /**

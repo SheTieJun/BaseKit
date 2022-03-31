@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-
-package shetj.me.base.rxtest
-
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.FlowableTransformer
-import org.reactivestreams.Publisher
-
+package me.shetj.base.model
 
 /**
- * 自定义Transformer表示一个批量操作符的变换器，
- * 如果你在很多Observable中使用相同的一系列操作符，
- * 可以抽离出来
+ * 配合liveData对数据处理
  */
-class MyTransformer : FlowableTransformer<String,Int> {
-    override fun apply(upstream: Flowable<String>?): Publisher<Int> {
-        return upstream?.map { 1024 }!!
-    }
-}
+sealed class ResultData<T>
+
+// 完成：分页加载
+data class PageData<T>(val data: MutableList<T>, val isFirst: Boolean = true, val finish: Boolean = false) :
+    ResultData<T>()
+
+// 模型数据
+data class ModelData<T>(val data: T) : ResultData<T>()
+
+/**
+ * 没有数据
+ */
+object NoneData : ResultData<Any>()

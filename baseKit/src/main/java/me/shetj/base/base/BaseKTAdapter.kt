@@ -52,10 +52,6 @@ abstract class BaseKTAdapter<T, K : BaseViewHolder>
         return context.getString(id, formatArgs)
     }
 
-    override fun convert(holder: K, item: T, payloads: List<Any>) {
-        super.convert(holder, item, payloads)
-    }
-
     @ColorInt
     protected fun getColor(@ColorRes id: Int): Int {
         return ContextCompat.getColor(context, id)
