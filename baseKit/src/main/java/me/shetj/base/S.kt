@@ -33,7 +33,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.di.dbModule
-import me.shetj.base.network.RxHttp.Companion.getInstance
 import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.debug.DebugFunc
@@ -67,12 +66,20 @@ object S {
     var isDebug = true
         private set
 
+    private var dnsLocalMap = HashMap<String, String>()
+
     /**
      * 处理为捕捉的异常
      */
     val handler = CoroutineExceptionHandler { _, throwable ->
         Timber.tag("CoroutineException").e(throwable)
     }
+
+    fun addDnsMap(hashMap: HashMap<String, String>) {
+        dnsLocalMap.putAll(hashMap)
+    }
+
+    internal fun getDnsMap() = dnsLocalMap
 
     /**
      * 专门用来做不被取消的操作
@@ -110,21 +117,18 @@ object S {
             if (isDebug) {
                 DebugFunc.getInstance().apply {
                     initContext(application)
-                    setRxJavaErrorHandler()
                 }
             }
             startKoin {
                 fragmentFactory()
                 if (S.isDebug) {
+                    // No static method toDouble-impl
+                    //androidLogger() doesn't work with Kotlin 1.6
                     androidLogger(Level.ERROR)
                 }
                 androidContext(application)
                 androidFileProperties()
                 modules(dbModule)
-            }
-            baseUrl?.let {
-                getInstance().debug(S.isDebug)
-                    .setBaseUrl(S.baseUrl)
             }
         }
     }

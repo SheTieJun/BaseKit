@@ -25,8 +25,6 @@ package me.shetj.base.tools.debug
 
 import android.content.Context
 import android.os.Environment
-import io.reactivex.rxjava3.functions.Consumer
-import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -117,18 +115,6 @@ class DebugFunc private constructor() {
     }
     //endregion logSetting
 
-    fun setRxJavaErrorHandler() {
-        RxJavaPlugins.setErrorHandler(object : Consumer<Throwable?> {
-            @Throws(Exception::class)
-            override fun accept(throwable: Throwable?) {
-                if (throwable == null) return
-                throwable.printStackTrace()
-                if (isOutputLog) {
-                    outputToFile(throwable.message)
-                }
-            }
-        })
-    }
 
     fun outputToFile(info: String?, path: String? = saveLogFile) {
         TaskExecutor.executeOnIO {

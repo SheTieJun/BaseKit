@@ -7,11 +7,6 @@ class TestJava {
 
 
     public static void main(String[] args) {
-//        int[] data = new int[]{4,5,6,1,3,2};
-//        insertionSort(data,6);
-//        for (int i = 0; i < data.length; i++) {
-//            System.out.printf(data[i]+"");
-//        }
         System.out.printf("测试kt方法"+DataExtKt.getRandomString(3)+"\n");
     }
 

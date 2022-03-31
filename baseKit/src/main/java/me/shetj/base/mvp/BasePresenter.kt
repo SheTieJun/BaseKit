@@ -24,12 +24,9 @@
 package me.shetj.base.mvp
 
 import android.content.Intent
-import android.os.Message
 import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,9 +34,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import me.shetj.base.ktx.getObjByClassArg
 import me.shetj.base.ktx.toMessage
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 /**
@@ -50,7 +44,6 @@ import timber.log.Timber
 @Keep
 open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter, CoroutineScope {
 
-    private var mCompositeDisposable: CompositeDisposable? = null
     protected val model: T by lazy { initModel() }
 
     override val coroutineContext: CoroutineContext
@@ -68,19 +61,9 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         return getObjByClassArg(this)
     }
 
-    @CallSuper
     override fun onStart() {
-        if (useEventBus()) {
-            EventBus.getDefault().register(this)
-        }
     }
 
-    /**
-     * 让[EventBus] 默认主线程处理
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onEvent(message: Message) {
-    }
 
     /**
      * //解除订阅
@@ -89,12 +72,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
     @CallSuper
     override fun onDestroy() {
         Timber.i("${this.javaClass.simpleName}:onDestroy")
-        if (useEventBus()) {
-            EventBus.getDefault().unregister(this)
-        }
         coroutineContext.cancelChildren()
-        unDispose()
-        this.mCompositeDisposable = null
         model.onDestroy()
     }
 
@@ -105,23 +83,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      */
     open fun useEventBus() = true
 
-    /**
-     * 将 [Disposable] 添加到 [CompositeDisposable] 中统一管理
-     * 可在[android.app.Activity.onDestroy] 释放
-     */
-    fun addDispose(disposable: Disposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = CompositeDisposable()
-        }
-        mCompositeDisposable?.add(disposable)
-    }
-
-    /**
-     * 停止集合中正在执行的 RxJava 任务
-     */
-    fun unDispose() {
-        mCompositeDisposable?.clear()
-    }
 
     fun startActivity(intent: Intent) {
         view.rxContext.startActivity(intent)

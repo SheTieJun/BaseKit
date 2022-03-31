@@ -24,7 +24,7 @@
 package me.shetj.base.network.ohter
 
 import java.net.InetAddress
-import me.shetj.base.network.RxHttp
+import me.shetj.base.S
 import okhttp3.Dns
 
 /**
@@ -59,6 +59,6 @@ class OkHttpDns : Dns {
     }
 
     private fun getIpByHost(hostname: String): String? {
-        return RxHttp.getInstance().getDnsMap()[hostname]
+        return S.getDnsMap()[hostname]
     }
 }

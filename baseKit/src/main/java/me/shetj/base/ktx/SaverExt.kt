@@ -23,7 +23,6 @@
  */
 package me.shetj.base.ktx
 
-import io.reactivex.rxjava3.core.Completable
 import me.shetj.base.saver.Saver
 import me.shetj.base.saver.SaverDao
 import org.koin.java.KoinJavaComponent.get
@@ -33,9 +32,9 @@ val saverDB: SaverDao
         return get(SaverDao::class.java)
     }
 
-fun Saver.updateToDB(): Completable {
+suspend fun Saver.updateToDB() {
     this.updateTime = System.currentTimeMillis()
-    return saverDB.updateSaver(this)
+    saverDB.updateSaver(this)
 }
 
 fun saverCreate(group: String = "base", key: String, value: String): Saver {

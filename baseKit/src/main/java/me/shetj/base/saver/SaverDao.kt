@@ -28,39 +28,38 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Flowable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SaverDao {
 
     @Query("SELECT * FROM saver order by id")
-    fun getAll(): Flowable<List<Saver>>
+    fun getAll(): Flow<List<Saver>>
 
     @Query("SELECT * FROM saver WHERE isDel = 'false'")
-    fun getAllNoDEL(): Flowable<List<Saver>>
+    fun getAllNoDEL(): Flow<List<Saver>>
 
     @Query("SELECT * FROM saver WHERE isDel = 'true'")
-    fun getAllDEL(): Flowable<List<Saver>>
+    fun getAllDEL(): Flow<List<Saver>>
 
     @Query("SELECT * FROM saver WHERE groupName = :groupN AND isDel = :isDel order by updateTime ")
-    fun getAll(groupN: String, isDel: Boolean): Flowable<List<Saver>>
+    fun getAll(groupN: String, isDel: Boolean): Flow<List<Saver>>
 
     @Delete
-    fun deleteSaver(vararg saver: Saver): Completable
+    suspend fun deleteSaver(vararg saver: Saver)
 
     @Query("DELETE FROM saver")
-    fun deleteAll(): Completable
+    suspend fun deleteAll()
 
     @Insert
-    fun insert(vararg saver: Saver): Completable
+    suspend fun insert(saver: Saver): Long
 
     @Insert
-    fun insertAll(saver: List<Saver>): Completable
+    suspend fun insertAll(saver: List<Saver>): List<Long>
 
     @Query("SELECT * FROM saver WHERE groupName = :groupN AND keyName = :key LIMIT 1")
-    fun findSaver(groupN: String, key: String): Flowable<Saver>
+    fun findSaver(groupN: String, key: String): Flow<Saver>
 
     @Update
-    fun updateSaver(vararg saver: Saver): Completable
+    suspend fun updateSaver(vararg saver: Saver)
 }

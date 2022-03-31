@@ -43,6 +43,7 @@ import me.shetj.base.network.exception.CacheException
 import me.shetj.base.network.kt.createJson
 import me.shetj.base.network_coroutine.cache.CacheMode
 import me.shetj.base.network_coroutine.cache.KCCache
+import me.shetj.base.network_coroutine.cache.saveCache
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
 
@@ -54,8 +55,6 @@ import org.koin.java.KoinJavaComponent.get
 object KCHttpV3 {
 
     val apiService: KCApiService = get(KCApiService::class.java)
-
-    val kcCache: KCCache by lazy { KCCache() }
 
     @JvmOverloads
     suspend inline fun <reified T> get(
@@ -162,7 +161,7 @@ object KCHttpV3 {
                     formNetworkValue(timeout, repeatNum)
                 } catch (e: Exception) {
                     withContext(Dispatchers.IO) {
-                        kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
+                        HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)?.also {
                             "use cache key = ${cache.cacheKey} \n,value = $it ".logD()
                         }
                     } ?: throw ApiException.handleException(e)
@@ -171,7 +170,7 @@ object KCHttpV3 {
             CacheMode.FIRST_CACHE -> {
                 // 先加载缓存，缓存没有再去请求网络
                 withContext(Dispatchers.IO) {
-                    kcCache.load(cache.cacheKey, cache.cacheTime)
+                    HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)
                         ?.also {
                             "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logD()
                         }
@@ -190,7 +189,7 @@ object KCHttpV3 {
             CacheMode.ONLY_CACHE -> {
                 // 只读取缓存
                 withContext(Dispatchers.IO) {
-                    kcCache.load(cache.cacheKey, cache.cacheTime)?.also {
+                    HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)?.also {
                         "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logD()
                     }
                 } ?: throw CacheException(
@@ -203,7 +202,7 @@ object KCHttpV3 {
                      * 络请求回来发现数据是一样的就不会再返回，否则再返回
                      */
                 val cacheInfo = withContext(Dispatchers.IO) {
-                    kcCache.load(cache.cacheKey, cache.cacheTime)
+                    HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)
                 }
                 val apiInfo = formNetworkValue(timeout, repeatNum)
 
@@ -238,23 +237,30 @@ object KCHttpV3 {
                 val inputStream = body.byteStream()
                 val file = File(outputFile)
                 val outputStream = FileOutputStream(file)
+
                 var currentLength = 0
+                var emitProgress = 0f
+
                 val bufferSize = 1024 * 8
                 val buffer = ByteArray(bufferSize)
                 val bufferedInputStream = BufferedInputStream(inputStream, bufferSize)
                 var readLength: Int
                 while (bufferedInputStream.read(buffer, 0, bufferSize)
-                    .also { readLength = it } != -1
+                        .also { readLength = it } != -1
                 ) {
                     outputStream.write(buffer, 0, readLength)
                     currentLength += readLength
-                    emit(
-                        HttpResult.progress(
-                            currentLength.toLong(),
-                            contentLength,
-                            currentLength.toFloat() / contentLength.toFloat()
+                    val progress = currentLength.toFloat() / contentLength.toFloat()
+                    if (progress - emitProgress > 5) {
+                        emitProgress = progress
+                        emit(
+                            HttpResult.progress(
+                                currentLength.toLong(),
+                                contentLength,
+                                emitProgress
+                            )
                         )
-                    )
+                    }
                 }
                 bufferedInputStream.close()
                 outputStream.close()
@@ -275,13 +281,6 @@ object KCHttpV3 {
             }
     }
 
-    suspend fun saveCache(cache: RequestOption?, data: String) {
-        if (!cache?.cacheKey.isNullOrBlank()) {
-            withContext(Dispatchers.IO) {
-                kcCache.save(cache?.cacheKey, data)
-            }
-        }
-    }
 
     inline fun <reified T> String.funTo() = if (T::class.java != String::class.java) {
         this.toBean()!!

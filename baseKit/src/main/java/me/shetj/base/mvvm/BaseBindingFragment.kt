@@ -34,7 +34,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import me.shetj.base.base.AbBaseFragment
 import me.shetj.base.ktx.getClazz
-import org.greenrobot.eventbus.EventBus
 
 /**
  * fragment基类
@@ -99,9 +98,6 @@ abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFra
     override fun onDestroy() {
         super.onDestroy()
         lifecycle.removeObserver(this)
-        if (useEventBus()) {
-            EventBus.getDefault().unregister(this)
-        }
     }
 
     /**

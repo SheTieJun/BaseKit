@@ -26,9 +26,7 @@
 package shetj.me.base.func.main
 
 import me.shetj.base.mvp.BaseModel
-import me.shetj.base.network.RxHttp
 import me.shetj.base.network_coroutine.cache.CacheMode
-import me.shetj.base.network.callBack.SimpleNetCallBack
 import me.shetj.base.network_coroutine.KCHttpV3
 import shetj.me.base.bean.ResultMusic
 
@@ -55,7 +53,4 @@ class MainModel : BaseModel() {
             this.timeout = 5000L
         })
 
-
-    fun <T> getMusicByRxHttp(simpleNetCallBack: SimpleNetCallBack<T>) =
-        RxHttp.get(testUrl).execute(simpleNetCallBack)
 }

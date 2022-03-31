@@ -35,7 +35,6 @@ import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import me.shetj.base.base.DefCoroutineScope
 import me.shetj.base.base.KtScopeComponent
 import me.shetj.base.base.defScope
@@ -52,8 +51,6 @@ import me.shetj.base.ktx.getClazz
 abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatActivity) :
     PopupWindow(mContext), LifecycleEventObserver, KtScopeComponent {
 
-    private val lazyComposite = lazy { CompositeDisposable() }
-    protected val mCompositeDisposable: CompositeDisposable by lazyComposite
 
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding
@@ -102,9 +99,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
 
     open fun dismissStop() {
         try {
-            if (lazyComposite.isInitialized()) {
-                mCompositeDisposable.clear()
-            }
             dismiss()
         } catch (ignored: Exception) {
             // 暴力解决，可能的崩溃
@@ -113,9 +107,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
 
     open fun dismissOnDestroy() {
         try {
-            if (lazyComposite.isInitialized()) {
-                mCompositeDisposable.clear()
-            }
             dismiss()
         } catch (_: Exception) {
             // 暴力解决，可能的崩溃

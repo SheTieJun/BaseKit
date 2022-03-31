@@ -27,7 +27,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,9 +43,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import me.shetj.base.ktx.hasPermission
 import me.shetj.base.tools.app.ArmsUtils
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 @Keep
 abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
@@ -96,7 +92,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
     /**
      * all has permission : permissions.filter { !it.value }.isEmpty()
      */
-    open fun isPermissionGranted(permissions: MutableMap<String, Boolean>) {
+    open fun isPermissionGranted(permissions: Map<String, Boolean>) {
 
     }
 
@@ -146,26 +142,9 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     override fun onDestroy() {
         super.onDestroy()
-        if (useEventBus()) {
-            EventBus.getDefault().unregister(this)
-        }
     }
 
-    /**
-     * 是否使用eventBus,默认为使用(true)，
-     *
-     * @return boolean
-     */
-    open fun useEventBus(): Boolean {
-        return false
-    }
 
-    /**
-     * 让[EventBus] 默认主线程处理
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    open fun onEvent(message: Message) {
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden)
@@ -173,9 +152,6 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (useEventBus()) {
-            EventBus.getDefault().register(this)
-        }
     }
 
     /**

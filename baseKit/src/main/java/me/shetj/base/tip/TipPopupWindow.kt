@@ -35,8 +35,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 import me.shetj.base.R
 import me.shetj.base.weight.AbLoadingDialog
@@ -48,8 +46,6 @@ class TipPopupWindow(private val mContext: AppCompatActivity) :
     PopupWindow(mContext),
     LifecycleEventObserver {
     private var tvTip: TextView? = null
-    private val lazyComposite = lazy { CompositeDisposable() }
-    private val mCompositeDisposable: CompositeDisposable by lazyComposite
     private var currentDuration = AbLoadingDialog.LOADING_SHORT
 
     init {
@@ -68,9 +64,6 @@ class TipPopupWindow(private val mContext: AppCompatActivity) :
         tvTip = rootView.findViewById(R.id.tv_msg)
         contentView = rootView
         setOnDismissListener {
-            if (lazyComposite.isInitialized()) {
-                mCompositeDisposable.clear()
-            }
         }
     }
 
@@ -98,11 +91,6 @@ class TipPopupWindow(private val mContext: AppCompatActivity) :
         tvTip!!.text = tipMsg
         this.currentDuration = duration
         showAtLocation(mContext.window.decorView, Gravity.CENTER, 0, 0)
-        mCompositeDisposable.add(
-            AndroidSchedulers.mainThread().scheduleDirect({
-                tipDismiss()
-            }, duration, TimeUnit.MILLISECONDS)
-        )
     }
 
     companion object {

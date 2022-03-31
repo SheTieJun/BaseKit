@@ -32,13 +32,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import java.lang.ref.WeakReference
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import me.shetj.base.base.ABKtScopeComponent
@@ -60,8 +56,6 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
 
     private var weakReference: WeakReference<AppCompatActivity>? = null
     private var mLoadingDialog: AlertDialog? = null
-    private val lazyComposite = lazy { CompositeDisposable() }
-    private val mCompositeDisposable: CompositeDisposable by lazyComposite
 
     abstract fun createLoading(
         context: Context,
@@ -129,9 +123,6 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
     }
 
     private fun clean() {
-        if (lazyComposite.isInitialized()) {
-            mCompositeDisposable.clear()
-        }
         weakReference?.get()?.lifecycle?.removeObserver(this@AbLoadingDialog)
     }
 
@@ -151,49 +142,6 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
         return this
     }
 
-    /**
-     * 和RxJava 一起使用
-     * 需要自行退出loading
-     */
-    fun showWithRxAction(context: AppCompatActivity, action: () -> Disposable): AbLoadingDialog {
-        showLoading(context)
-        mCompositeDisposable.add(action())
-        return this
-    }
-
-    /**
-     * 和RxJava 一起使用，
-     * 绑定loading的生命周期
-     */
-    fun showWithRxAction(context: AppCompatActivity, action: Observable<*>): AbLoadingDialog {
-        showLoading(context)
-        action.doFinally(::hideLoading)
-        mCompositeDisposable.add(action.subscribe())
-        return this
-    }
-
-    /**
-     * 和RxJava 一起使用
-     * 需要自行退出loading
-     */
-    fun showWithRxAction(
-        context: AppCompatActivity,
-        action: (dialog: AbLoadingDialog) -> Disposable
-    ): AbLoadingDialog {
-        showLoading(context)
-        mCompositeDisposable.add(action(this))
-        return this
-    }
-
-    /**
-     * 和RxJava 一起使用
-     * 需要自行退出loading
-     */
-    fun showWithDisposable(context: AppCompatActivity, disposable: Disposable): AbLoadingDialog {
-        showLoading(context)
-        mCompositeDisposable.add(disposable)
-        return this
-    }
 
     inline fun showWithTimeOutAction(
         context: AppCompatActivity,
@@ -217,11 +165,10 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
         @LoadingTipsDuration time: Long = LOADING_SHORT
     ): AbLoadingDialog {
         showLoading(context, cancelable, msg, image)
-        mCompositeDisposable.add(
-            AndroidSchedulers.mainThread().scheduleDirect({
-                hideLoading()
-            }, time, TimeUnit.MILLISECONDS)
-        )
+        ktScope.launch {
+            delay(time)
+            hideLoading()
+        }
         return this
     }
 }

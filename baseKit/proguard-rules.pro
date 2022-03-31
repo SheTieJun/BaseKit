@@ -174,16 +174,6 @@
 -keep class com.kennyc.view.** { *; }
 -dontwarn com.kennyc.view.*
 
-#glide 4.x
-#作者Github地址：https://github.com/yourtion
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
-
-
 #Rxjava RxAndroid
 -dontwarn rx.*
 -dontwarn sun.misc.**
@@ -254,3 +244,17 @@
 
 #base
 -keep class me.shetj.base.tools.**{}
+
+#Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}
+# end Gilde

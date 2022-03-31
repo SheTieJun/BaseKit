@@ -35,7 +35,7 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), LifecycleObserver {
+abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity() {
 
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding

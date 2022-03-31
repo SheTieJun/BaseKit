@@ -91,48 +91,7 @@ object KCHttpV2 {
         onProcess: download_process = { _, _, _ -> },
         onSuccess: download_success = { }
     ) {
-        flow {
-            val body = apiService.downloadFile(url)
-            try {
-                val contentLength = body.contentLength()
-                val ios = body.byteStream()
-                val file = File(outputFile)
-                val ops = FileOutputStream(file)
-                var currentLength = 0
-                val bufferSize = 1024 * 8
-                val buffer = ByteArray(bufferSize)
-                val bufferedInputStream = BufferedInputStream(ios, bufferSize)
-                var readLength: Int
-                while (bufferedInputStream.read(buffer, 0, bufferSize)
-                        .also { readLength = it } != -1
-                ) {
-                    ops.write(buffer, 0, readLength)
-                    currentLength += readLength
-                    emit(
-                        HttpResult.progress(
-                            currentLength.toLong(),
-                            contentLength,
-                            currentLength.toFloat() / contentLength.toFloat()
-                        )
-                    )
-                }
-                bufferedInputStream.close()
-                ops.close()
-                ios.close()
-                emit(HttpResult.success(file))
-            } catch (e: Exception) {
-                emit(HttpResult.failure<File>(ApiException.handleException(e)))
-            }
-        }.flowOn(Dispatchers.IO)
-            .collect {
-                it.fold(onFailure = { e ->
-                    e?.let { it1 -> onError(it1) }
-                }, onSuccess = { file ->
-                    onSuccess(file)
-                }, onLoading = { progress ->
-                    onProcess(progress.currentLength, progress.length, progress.process)
-                })
-            }
+        KCHttpV3.download(url, outputFile,onError, onProcess, onSuccess)
     }
 
     inline fun <reified T> funTo(data: String) = if (T::class.java != String::class.java) {
