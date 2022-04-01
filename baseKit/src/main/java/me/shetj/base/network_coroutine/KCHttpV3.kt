@@ -29,7 +29,6 @@ import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -42,7 +41,6 @@ import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
 import me.shetj.base.network.exception.CacheException
 import me.shetj.base.network.kt.createJson
 import me.shetj.base.network_coroutine.cache.CacheMode
-import me.shetj.base.network_coroutine.cache.saveCache
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
 
@@ -50,6 +48,9 @@ import org.koin.java.KoinJavaComponent.get
  * 协程 Http请求
  * 感觉可能用的不多，所以就只写这几个方法了
  * [me.shetj.base.network_coroutine.RequestOption]控制缓存
+ *
+ * TODO(1. 需要测试各种请求)
+ * TODO(2. 添加上传)
  */
 object KCHttpV3 {
 
@@ -329,6 +330,17 @@ object KCHttpV3 {
         } else {
             withTimeout(timeout) {
                 block()
+            }
+        }
+    }
+
+    /**
+     * use by [me.shetj.base.network_coroutine.KCHttpV3]
+     */
+    suspend fun saveCache(requestOption: RequestOption?, data: String) {
+        if (!requestOption?.cacheKey.isNullOrBlank()) {
+            withContext(Dispatchers.IO) {
+                HttpKit.getKCCache().save(requestOption?.cacheKey, data)
             }
         }
     }

@@ -28,7 +28,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.shetj.base.network_coroutine.HttpKit
-import me.shetj.base.network_coroutine.RequestOption
+import me.shetj.base.network_coroutine.cache.KCCache.Companion.CACHE_NEVER_EXPIRE
 import org.koin.java.KoinJavaComponent
 
 /**
@@ -82,7 +82,7 @@ class KCCache {
      *
      * @param key   缓存key
      * @param value 缓存内容
-     * @return
+     * @return 是否缓存成功
      */
     fun save(key: String?, value: String?): Boolean {
         // 1.先检查key
@@ -145,14 +145,45 @@ class KCCache {
     }
 }
 
-suspend fun saveCache(block: RequestOption.() -> Unit, data: String) {
-    saveCache(RequestOption().also(block), data)
-}
-
-suspend fun saveCache(requestOption: RequestOption?, data: String) {
-    if (!requestOption?.cacheKey.isNullOrBlank()) {
+/**
+ * 缓存数据
+ * @param key 关键字，唯一
+ * @param value 值
+ */
+suspend fun saveCache(key: String?, value: String?) {
+    if (!key.isNullOrBlank()) {
         withContext(Dispatchers.IO) {
-            HttpKit.getKCCache().save(requestOption?.cacheKey, data)
+            HttpKit.getKCCache().save(key, value)
         }
     }
 }
+
+
+/**
+ * 获取缓存数据
+ * @param key 关键字，唯一
+ * @param existTime 过期时间，
+ *  * 如果 existTime =  [CACHE_NEVER_EXPIRE] :表示永不过期
+ *  * 如果缓存时间过期，缓存数据会被删除，返回 null
+ * @return String 如果缓存时间内，返回具体的缓存数据
+ */
+suspend fun loadCache(key: String?, existTime: Long = CACHE_NEVER_EXPIRE): String? {
+    return key?.let {
+        withContext(Dispatchers.IO) {
+            HttpKit.getKCCache().load(it, existTime)
+        }
+    }
+}
+
+
+/**
+ * 是否缓存
+ */
+suspend fun hasCached(key: String?): Boolean {
+    return key?.let {
+        withContext(Dispatchers.IO) {
+            HttpKit.getKCCache().containsKey(it)
+        }
+    }?:false
+}
+
