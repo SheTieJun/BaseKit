@@ -89,12 +89,12 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
 }
 
 //region log 相关
-fun String?.logI() {
-    Timber.tag("base").i(this.toString())
+fun String?.logI(tag: String = "base") {
+    Timber.tag(tag).i(this.toString())
 }
 
-fun String?.logE() {
-    Timber.tag("base").e(this.toString())
+fun String?.logE(tag: String = "base") {
+    Timber.tag(tag).e(this.toString())
 }
 
 fun Throwable.logE(tag: String = "base") {

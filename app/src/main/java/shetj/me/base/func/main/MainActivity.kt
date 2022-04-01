@@ -31,16 +31,21 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsCompat.Type
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.saverCreate
 import me.shetj.base.ktx.saverDB
 import me.shetj.base.ktx.sendEmailText
+import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.toJson
+import me.shetj.base.ktx.windowInsetsCompat
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
@@ -73,9 +78,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     }
 
     public override fun initView() {
-
-
-        ArmsUtils.setAppearance(this, true)
+         setAppearance(isBlack =  true)
 
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
@@ -128,6 +131,18 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
                     saverDB.insert(this@apply)
                 }
             }
+        }
+
+
+        mContent.btnCustomTab.setOnClickListener {
+            windowInsetsCompat?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
+            windowInsetsCompat?.getInsets(Type.statusBars()).toJson().logI("statusBars")
+            windowInsetsCompat?.getInsets(Type.captionBar()).toJson().logI("captionBar")
+
+            windowInsetsCompat?.isVisible(Type.navigationBars()).toJson().logI("navigationBars")
+            windowInsetsCompat?.isVisible(Type.statusBars()).toJson().logI("statusBars")
+            windowInsetsCompat?.isVisible(Type.captionBar()).toJson().logI("captionBar")
+            hideNavigationBars()
         }
 
         mContent.btnFind.setOnClickListener {

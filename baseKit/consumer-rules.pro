@@ -155,10 +155,6 @@
 
 ##---------------End: proguard configuration for Gson  ----------
 
-################RxJava and RxAndroid###############
-#Rxjava RxAndroid
--dontwarn java.util.concurrent.Flow*
-
 
 #retrofit
 -dontwarn okio.**
@@ -185,15 +181,3 @@
 #okio
 # Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
 -dontwarn org.codehaus.mojo.animal_sniffer.*
-
-#//Eventbus
--keepattributes *Annotation*
--keepclassmembers class * {
-    @org.greenrobot.eventbus.Subscribe <methods>;
-}
--keep enum org.greenrobot.eventbus.ThreadMode { *; }
-
-# And if you use AsyncExecutor:
--keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}

@@ -56,9 +56,12 @@ import java.io.IOException
 import java.io.InputStream
 import java.security.MessageDigest
 import me.shetj.base.S
+import me.shetj.base.ktx.hideSystemUI
+import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
+import me.shetj.base.ktx.updateSystemUIColor
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.qmui.QMUINotchHelper
 
@@ -404,64 +407,13 @@ class ArmsUtils private constructor() {
             WindowCompat.setDecorFitsSystemWindows(window, false)
             // 修改颜色
             updateSystemUIColor()
-            setAppearance(this, isBlack)
-        }
-
-        /**
-         * 不沉侵，只修改状态栏的颜色
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun setAppearance(
-            activity: Activity,
-            isBlack: Boolean,
-            @ColorInt color: Int = Color.TRANSPARENT
-        ) {
-            activity.updateSystemUIColor(color)
-            ViewCompat.getWindowInsetsController(activity.window.decorView)?.let { controller ->
-                controller.isAppearanceLightStatusBars = isBlack
-                controller.isAppearanceLightNavigationBars = isBlack
-            }
+            setAppearance(isBlack)
         }
 
         @Deprecated("已经弃用，使用新的API", replaceWith = ReplaceWith("hideSystemUI(activity)"))
         @JvmStatic
         fun fullScreencall(activity: Activity) {
             activity.hideSystemUI()
-        }
-
-        /**
-         * 全屏
-         * {@see [theme:EdgeStyle]} 填充刘海屏幕
-         */
-        @JvmStatic
-        fun Activity.hideSystemUI() {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-            ViewCompat.getWindowInsetsController(window.decorView)?.let { controller ->
-                controller.hide(WindowInsetsCompat.Type.systemBars())
-                controller.systemBarsBehavior =
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
-        }
-
-        /**
-         * 修改状态栏、底部的导航栏的颜色
-         */
-        fun Activity.updateSystemUIColor(@ColorInt color: Int = Color.TRANSPARENT) {
-            window.statusBarColor = color
-            window.navigationBarColor = color
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                window.navigationBarDividerColor = color
-            }
-        }
-
-        /**
-         * 展示系统UI:状态栏和导航栏
-         */
-        fun Activity.showSystemUI() {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
-            ViewCompat.getWindowInsetsController(window.decorView)
-                ?.show(WindowInsetsCompat.Type.systemBars())
         }
 
         @JvmStatic
