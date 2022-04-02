@@ -37,6 +37,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Add this line
+        classpath 'com.github.SheTieJun.lib-plugin:base-plugin:c3ef1be681'
     }
 }
 

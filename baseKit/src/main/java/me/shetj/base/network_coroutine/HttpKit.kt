@@ -33,6 +33,7 @@ import retrofit2.Retrofit
  * @author stj
  * @Date 2021/10/22-14:36
  * @Email 375105540@qq.com
+ * 网络相关：单例，用来修改具体的
  */
 
 object HttpKit {

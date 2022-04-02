@@ -36,14 +36,6 @@ typealias download_error = suspend (Throwable) -> Unit
 typealias download_process = suspend (downloadedSize: Long, length: Long, progress: Float) -> Unit
 typealias download_success = suspend (uri: File) -> Unit
 
-sealed class DownloadStatus {
-    data class DownloadProcess(val currentLength: Long, val length: Long, val process: Float) :
-        DownloadStatus()
-
-    data class DownloadError(val t: ApiException) : DownloadStatus()
-    data class DownloadSuccess(val file: File) : DownloadStatus()
-}
-
 /**
  * 学习源码！
  */

@@ -94,6 +94,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
             Event.ON_DESTROY -> {
                 hideLoading()
             }
+            else -> {}
         }
     }
 

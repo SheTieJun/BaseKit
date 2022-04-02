@@ -111,6 +111,7 @@ class TipPopupWindow(private val mContext: AppCompatActivity) :
             Event.ON_DESTROY -> {
                 tipDismiss()
             }
+            else -> {}
         }
     }
 }

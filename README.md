@@ -29,3 +29,6 @@ simplify
 
 ### dev记录
 [WindowInsetsControllerCompat](https://github.com/SheTieJun/BaseKit/wiki/WindowInsetsControllerCompat%E4%BD%BF%E7%94%A8)
+
+
+### [依赖库管理控制](https://github.com/SheTieJun/lib-plugin/tree/master/base-plugin)

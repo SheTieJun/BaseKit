@@ -50,9 +50,11 @@ import org.koin.java.KoinJavaComponent.get
  * [me.shetj.base.network_coroutine.RequestOption]控制缓存
  *
  * TODO(1. 需要测试各种请求)
- * TODO(2. 添加上传)
+ * TODO(2. 添加上传):但是好像现在基本不需要使用上传，都是使用云oss
  */
 object KCHttpV3 {
+
+    const val TAG = "KCHttpV3"
 
     val apiService: KCApiService = get(KCApiService::class.java)
 
@@ -162,7 +164,7 @@ object KCHttpV3 {
                 } catch (e: Exception) {
                     withContext(Dispatchers.IO) {
                         HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)?.also {
-                            "use cache key = ${cache.cacheKey} \n,value = $it ".logD()
+                            "use cache key = ${cache.cacheKey} \n,value = $it ".logD(TAG)
                         }
                     } ?: throw ApiException.handleException(e)
                 }
@@ -172,7 +174,7 @@ object KCHttpV3 {
                 withContext(Dispatchers.IO) {
                     HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)
                         ?.also {
-                            "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logD()
+                            "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logD(TAG)
                         }
                 } ?: kotlin.run {
                     formNetworkValue(timeout, repeatNum).also {
@@ -190,7 +192,7 @@ object KCHttpV3 {
                 // 只读取缓存
                 withContext(Dispatchers.IO) {
                     HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)?.also {
-                        "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logD()
+                        "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logD(TAG)
                     }
                 } ?: throw CacheException(
                     OK_CACHE_EXCEPTION,
@@ -218,10 +220,9 @@ object KCHttpV3 {
                     saveCache(cache, it)
                 }
             }
-        }.funTo()
+        }.convertToT()
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     @JvmOverloads
     suspend fun download(
         url: String,
@@ -281,7 +282,7 @@ object KCHttpV3 {
             }
     }
 
-    inline fun <reified T> String.funTo() = if (T::class.java != String::class.java) {
+    inline fun <reified T> String.convertToT() = if (T::class.java != String::class.java) {
         this.toBean()!!
     } else {
         this as T

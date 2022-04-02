@@ -92,14 +92,16 @@ val dbModule = module {
     single {
         Retrofit.Builder().apply {
             addConverterFactory(GsonConverterFactory.create(GsonKit.gson))
-            client(get())
-            baseUrl(S.baseUrl ?: "https://github.com/")
             validateEagerly(S.isDebug) // 在开始的时候直接开始检测所有的方法
         }
     }
 
     single<KCApiService> {
-        get<Retrofit.Builder>().build().create(KCApiService::class.java)
+        get<Retrofit.Builder>().apply {
+            //创建具体的ApiService的时候，才复制具体的client 和base 以及其他的变更
+            client(get())
+            baseUrl(S.baseUrl ?: "https://github.com/")
+        }.build().create(KCApiService::class.java)
     }
 
     single {

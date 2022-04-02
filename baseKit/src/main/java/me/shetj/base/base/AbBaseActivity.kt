@@ -114,6 +114,7 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
             Lifecycle.Event.ON_DESTROY -> {
                 onActivityDestroy()
             }
+            else -> {}
         }
     }
 
