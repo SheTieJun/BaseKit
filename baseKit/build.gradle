@@ -3,6 +3,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-parcelize")
+//    id 'kotlin-kapt'
     id("me.shetj.plugin.base-lib")
 }
 
@@ -58,7 +59,6 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
 }
 
 apply from: "uploadLocal.gradle"

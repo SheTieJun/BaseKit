@@ -98,7 +98,7 @@ val dbModule = module {
 
     single<KCApiService> {
         get<Retrofit.Builder>().apply {
-            //创建具体的ApiService的时候，才复制具体的client 和base 以及其他的变更
+            // 创建具体的ApiService的时候，才复制具体的client 和base 以及其他的变更
             client(get())
             baseUrl(S.baseUrl ?: "https://github.com/")
         }.build().create(KCApiService::class.java)

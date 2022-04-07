@@ -147,7 +147,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation project(':baseKit')
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
-
     //使用AS 自带得就可以了
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-2'
 //    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'

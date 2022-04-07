@@ -26,6 +26,7 @@ package me.shetj.base.saver
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -51,11 +52,11 @@ interface SaverDao {
     @Query("DELETE FROM saver")
     suspend fun deleteAll()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(saver: Saver): Long
 
     @Insert
-    suspend fun insertAll(saver: List<Saver>): List<Long>
+    suspend fun insertAll(saver: List<Saver>)
 
     @Query("SELECT * FROM saver WHERE groupName = :groupN AND keyName = :key LIMIT 1")
     fun findSaver(groupN: String, key: String): Flow<Saver>

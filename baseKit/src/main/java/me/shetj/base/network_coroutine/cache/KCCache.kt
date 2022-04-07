@@ -158,7 +158,6 @@ suspend fun saveCache(key: String?, value: String?) {
     }
 }
 
-
 /**
  * 获取缓存数据
  * @param key 关键字，唯一
@@ -175,7 +174,6 @@ suspend fun loadCache(key: String?, existTime: Long = CACHE_NEVER_EXPIRE): Strin
     }
 }
 
-
 /**
  * 是否缓存
  */
@@ -184,6 +182,5 @@ suspend fun hasCached(key: String?): Boolean {
         withContext(Dispatchers.IO) {
             HttpKit.getKCCache().containsKey(it)
         }
-    }?:false
+    } ?: false
 }
-

@@ -28,7 +28,6 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody.Part
 import okhttp3.RequestBody
 
-
 fun String.toRequestBody(): RequestBody {
     return toRequestBody("application/json;charset=utf-8")
 }
@@ -65,7 +64,7 @@ fun File?.createImage(): RequestBody {
     return RequestBody.create(MediaType.parse("image/jpg; charset=utf-8"), this)
 }
 
-fun  File?.createPart(name: String): Part {
+fun File?.createPart(name: String): Part {
     checkNotNull(this) { "file not null!" }
     return Part.createFormData(name, this.name, createFile())
 }
