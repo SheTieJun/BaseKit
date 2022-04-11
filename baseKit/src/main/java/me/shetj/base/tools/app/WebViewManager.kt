@@ -42,13 +42,13 @@ class WebViewManager(private val webView: WebView) {
         webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
-        webSettings.setAppCacheMaxSize(1024 * 1024 * 8)
+        webSettings.setAppCacheMaxSize(1024 * 1024 * 50)
         val appCachePath: String = webView.context.cacheDir.absolutePath
         webSettings.setAppCachePath(appCachePath)
         webSettings.allowFileAccess = true
         webSettings.setAppCacheEnabled(true)
-        webSettings.loadWithOverviewMode = true // 设置加载进来的页面自适应手机屏幕
-        webSettings.useWideViewPort = true
+        webSettings.loadWithOverviewMode = true
+        webSettings.useWideViewPort = true // 设置加载进来的页面自适应手机屏幕
         webSettings.builtInZoomControls = false // 设置页面可缩放,必须把缩放按钮禁掉,不然无法取消
         webSettings.displayZoomControls = false
         webSettings.setSupportZoom(true)

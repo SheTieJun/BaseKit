@@ -40,8 +40,8 @@ import org.koin.core.scope.Scope
  *   }
  */
 @Keep
-abstract class BaseKoinBindingActivity<VM : ViewModel, VB : ViewBinding> :
-    BaseBindingActivity<VM, VB>(), LifecycleObserver, AndroidScopeComponent {
+abstract class BaseKoinBindingActivity<VB : ViewBinding, VM : ViewModel> :
+    BaseBindingActivity<VB, VM>(), LifecycleObserver, AndroidScopeComponent {
 
     override val scope: Scope by activityScope()
 }

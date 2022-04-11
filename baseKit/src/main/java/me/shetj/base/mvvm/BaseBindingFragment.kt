@@ -50,7 +50,7 @@ import me.shetj.base.ktx.getClazz
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFragment() {
+abstract class BaseBindingFragment<VB : ViewBinding,VM : ViewModel> : AbBaseFragment() {
 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
@@ -75,7 +75,7 @@ abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFra
     @Suppress("UNCHECKED_CAST")
     @NonNull
     open fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
-        return getClazz<VB>(this, 1).getMethod(
+        return getClazz<VB>(this, 0).getMethod(
             "inflate",
             LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java
         )
@@ -90,9 +90,9 @@ abstract class BaseBindingFragment<VM : ViewModel, VB : ViewBinding> : AbBaseFra
     @NonNull
     open fun initViewModel(): VM {
         if (useActivityVM()) {
-            return getActivityViewModel(getClazz(this))
+            return getActivityViewModel(getClazz(this,1))
         }
-        return getFragmentViewModel(getClazz(this))
+        return getFragmentViewModel(getClazz(this,1))
     }
 
     override fun onDestroy() {

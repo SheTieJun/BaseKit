@@ -40,12 +40,12 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<VM : ViewModel, VB : ViewBinding> : AbBindingActivity<VB>() {
+abstract class BaseBindingActivity<VB : ViewBinding, VM : ViewModel> : AbBindingActivity<VB>() {
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel
 
     private val lazyViewBinding = lazy { initViewBinding() }
-    private var mAcProvider: ViewModelProvider ? = null
+    private var mAcProvider: ViewModelProvider? = null
 
     /**
      * 默认创建一个实例，
@@ -54,7 +54,7 @@ abstract class BaseBindingActivity<VM : ViewModel, VB : ViewBinding> : AbBinding
      */
     @NonNull
     open fun initViewModel(): VM {
-        return getActivityViewModel(getClazz(this))
+        return getActivityViewModel(getClazz(this, 1))
     }
 
     protected open fun getActivityViewModel(@NonNull modelClass: Class<VM>): VM {
