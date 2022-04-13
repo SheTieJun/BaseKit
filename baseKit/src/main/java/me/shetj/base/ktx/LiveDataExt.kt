@@ -33,12 +33,12 @@ import java.util.concurrent.atomic.AtomicBoolean
 /*** @Author stj
  * * @Date 2021/10/8-18:38
  * * @Email 375105540@qq.com
- * * 间隔固定时间取最后一个
+ * * 间隔固定时间内，取最后一个
  */
 fun <T> LiveData<T>.throttleLast(duration: Long = 1000L) = MediatorLiveData<T>().also { mld ->
     val source = this
     val handler = HandlerCompat.createAsync(Looper.getMainLooper())
-    val isUpdate = AtomicBoolean(true)
+    val isUpdate = AtomicBoolean(true) //用来通知发送delay
 
     val runnable = Runnable {
         if (isUpdate.compareAndSet(false, true)) {

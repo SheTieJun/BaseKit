@@ -42,6 +42,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 
 suspend inline fun <T> doOnIO(crossinline action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.IO) {
@@ -139,4 +140,20 @@ fun <T> Flow<T>.flowWithLifecycle(
         }
     }
     close()
+}
+
+
+private suspend fun  <T> runTimeout(
+    timeout: Long,
+    block: suspend () -> T
+): Result<T> {
+   return runCatching {
+        if (timeout <= 0L) {
+            block()
+        } else {
+            withTimeout(timeout) {
+                block()
+            }
+        }
+    }
 }

@@ -33,6 +33,7 @@ import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import java.lang.ref.WeakReference
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -146,15 +147,19 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
     inline fun showWithTimeOutAction(
         context: AppCompatActivity,
         time: Long = LOADING_SHORT,
-        crossinline action: () -> Unit
-    ) {
+        crossinline action: suspend () -> Unit
+    ) : AbLoadingDialog {
         ktScope.launch {
-            withTimeout(time) {
-                showLoading(context)
-                action.invoke()
+            try {
+                withTimeout(time) {
+                    showLoading(context)
+                    action.invoke()
+                }
+            } catch (e: TimeoutCancellationException) {
                 hideLoading()
             }
         }
+        return this
     }
 
     fun showTip(
