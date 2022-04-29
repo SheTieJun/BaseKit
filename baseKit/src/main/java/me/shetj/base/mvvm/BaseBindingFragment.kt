@@ -50,7 +50,7 @@ import me.shetj.base.ktx.getClazz
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseBindingFragment<VB : ViewBinding,VM : ViewModel> : AbBaseFragment() {
+abstract class BaseBindingFragment<VB : ViewBinding, VM : ViewModel> : AbBaseFragment() {
 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
@@ -90,9 +90,9 @@ abstract class BaseBindingFragment<VB : ViewBinding,VM : ViewModel> : AbBaseFrag
     @NonNull
     open fun initViewModel(): VM {
         if (useActivityVM()) {
-            return getActivityViewModel(getClazz(this,1))
+            return getActivityViewModel(getClazz(this, 1))
         }
-        return getFragmentViewModel(getClazz(this,1))
+        return getFragmentViewModel(getClazz(this, 1))
     }
 
     override fun onDestroy() {

@@ -128,7 +128,7 @@ object FileQUtils {
                 }
                 cur.close()
                 if (index != 0) {
-                    val u = Uri.parse("content://media/external/images/media/$index")
+                    Uri.parse("content://media/external/images/media/$index")
                     if (path != null) {
                         return File(path)
                     }

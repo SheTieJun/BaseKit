@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 fun <T> LiveData<T>.throttleLast(duration: Long = 1000L) = MediatorLiveData<T>().also { mld ->
     val source = this
     val handler = HandlerCompat.createAsync(Looper.getMainLooper())
-    val isUpdate = AtomicBoolean(true) //用来通知发送delay
+    val isUpdate = AtomicBoolean(true) // 用来通知发送delay
 
     val runnable = Runnable {
         if (isUpdate.compareAndSet(false, true)) {

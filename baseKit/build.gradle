@@ -1,9 +1,8 @@
 plugins {
     id("com.google.devtools.ksp")
     id("com.android.library")
-    id("kotlin-android")
+    id 'org.jetbrains.kotlin.android'
     id("kotlin-parcelize")
-//    id 'kotlin-kapt'
     id("me.shetj.plugin.base-lib")
 }
 
@@ -13,6 +12,9 @@ android {
 
     resourcePrefix 'base_'
     defaultConfig {
+        aarMetadata {
+            minCompileSdk = 21
+        }
         minSdkVersion rootProject.ext.minVersion
         targetSdkVersion rootProject.ext.targetSdkVer
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -44,7 +46,7 @@ android {
     libraryVariants.all {
         variant ->
             variant.outputs.all {
-                output -> output.outputFileName = "base-${defaultConfig.versionName}.aar"
+                output -> output.outputFileName = "base-${new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08:00"))}.aar"
             }
     }
 
@@ -58,7 +60,6 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 apply from: "uploadLocal.gradle"

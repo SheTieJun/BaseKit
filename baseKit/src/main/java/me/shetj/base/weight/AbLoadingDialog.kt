@@ -148,7 +148,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
         context: AppCompatActivity,
         time: Long = LOADING_SHORT,
         crossinline action: suspend () -> Unit
-    ) : AbLoadingDialog {
+    ): AbLoadingDialog {
         ktScope.launch {
             try {
                 withTimeout(time) {

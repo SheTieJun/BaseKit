@@ -225,6 +225,7 @@ class HttpResultCallBack<T> {
     var onFailure: OnFailure? = null
 }
 
+@Suppress("CAST_NEVER_SUCCEEDS")
 fun <T> LiveData<HttpResult<T>>.observeChange(
     owner: LifecycleOwner,
     block: HttpResultCallBack<T>.() -> Unit

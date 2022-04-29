@@ -25,11 +25,8 @@ package me.shetj.base.saver
 
 import android.content.Context
 import androidx.room.Database
-import androidx.room.RenameColumn
-import androidx.room.RenameTable
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.AutoMigrationSpec
 
 @Database(entities = [Saver::class], version = 1, exportSchema = false)
 abstract class SaverDatabase : RoomDatabase() {

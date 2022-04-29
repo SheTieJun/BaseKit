@@ -66,6 +66,7 @@ internal fun <T> Flow<T>.throttleLatestImpl(periodMillis: Long): Flow<T> {
                 timer = Timer()
                 timer?.scheduleAtFixedRate(
                     object : TimerTask() {
+                        @Suppress("UNCHECKED_CAST")
                         override fun run() {
                             val valueN = lastValue
                             lastValue = null

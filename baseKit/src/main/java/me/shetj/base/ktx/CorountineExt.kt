@@ -142,12 +142,11 @@ fun <T> Flow<T>.flowWithLifecycle(
     close()
 }
 
-
-private suspend fun  <T> runTimeout(
+private suspend fun <T> runTimeout(
     timeout: Long,
     block: suspend () -> T
 ): Result<T> {
-   return runCatching {
+    return runCatching {
         if (timeout <= 0L) {
             block()
         } else {
