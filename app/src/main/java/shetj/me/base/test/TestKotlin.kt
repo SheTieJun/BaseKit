@@ -28,6 +28,7 @@ package shetj.me.base.test
 import androidx.core.text.buildSpannedString
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import kotlin.properties.Delegates
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
@@ -81,6 +82,12 @@ class TestKotlin {
             _testStatus.resetReplayCache()//清空前面的值 ,供您在不想重放已向数据流发送的最新信息
 
 
+            var dets by Delegates.observable("默认值"){
+                    property, oldValue, newValue ->
+
+            }
+
+            dets = "new string"
         }
 
         /**
@@ -116,12 +123,18 @@ class TestKotlin {
         }
 
 
+
+
+
         @ExperimentalStdlibApi
         fun typeofTest(){
            val string =  renderType<String>()
             print(string)
         }
     }
+
+
+
 
 
     fun openMini() {
@@ -132,3 +145,36 @@ class TestKotlin {
 //        mWXApi?.sendReq(req)
     }
 }
+
+//fun main() {
+//
+//    method{
+//        return@method 1
+//        return
+//    }
+//
+//    method2 {
+//        return@method2  1
+//        return
+//    }
+//
+//    method3 {
+//        return@method3  3
+//        return
+//    }
+//
+//}
+//
+//
+//
+//fun method(t: (Int) -> Int) {
+//    t.invoke(1)
+//}
+//
+//inline fun method2(crossinline t: (Int) -> Int) {
+//    t.invoke(2)
+//}
+//
+//inline fun method3( t: (Int) -> Int) {
+//    t.invoke(3)
+//}

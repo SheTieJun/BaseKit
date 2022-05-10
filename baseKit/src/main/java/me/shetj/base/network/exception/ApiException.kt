@@ -106,7 +106,7 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
         const val NULLPOINTER_EXCEPTION = UNKNOWNHOST_ERROR + 1
 
         /**
-         * 正确错误
+         * 缓存错误
          */
         const val OK_CACHE_EXCEPTION = NULLPOINTER_EXCEPTION + 1
     }

@@ -60,4 +60,19 @@
         <item name="wheel_indicatorColor">@android:color/holo_green_dark</item>
         <item name="wheel_indicatorSize">1dp</item>
     </style>
+
+
+    <style name="App.SplashScreen" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/unsplash_cat1</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/white</item>
+    </style>
+
+
+
+    <style name="Base.Theme.SplashScreen" parent="AppTheme.NoActionBar"/>
+    <style name="Base.Theme.SplashScreen.DayNight" parent="AppTheme.NoActionBar"/>
+    <style name="Base.Theme.SplashScreen.Light" parent="AppTheme.NoActionBar"/>
+    <style name="Base.v21.Theme.SplashScreen" parent="AppTheme.NoActionBar"/>
+
 </resources>

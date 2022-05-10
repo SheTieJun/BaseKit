@@ -26,7 +26,9 @@ package me.shetj.base.ktx
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
+import androidx.core.app.NotificationManagerCompat
 import java.io.File
 
 fun Intent?.getQueryParameter(key: String): String? {
@@ -40,11 +42,36 @@ fun Context.openMarket() {
     startActivity(intent)
 }
 
+/**
+ * 去设置界面
+ */
 fun Context.openSetting() {
     val intent = Intent()
     intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
     val uri = Uri.fromParts("package", packageName, null)
     intent.data = uri
+    startActivity(intent)
+}
+
+/**
+ * 去通知管理界面
+ */
+fun Context.openNotifSetting(needCheck:Boolean = false) {
+    //检测是否具有通知权限
+    if (needCheck && NotificationManagerCompat.from(this).areNotificationsEnabled()){
+        return
+    }
+    val intent = Intent()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+        intent.putExtra(Settings.EXTRA_CHANNEL_ID, applicationInfo.uid)
+    } else {
+        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        val fromParts = Uri.fromParts("package", packageName, null)
+        intent.data = fromParts
+    }
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
     startActivity(intent)
 }
 

@@ -26,20 +26,24 @@
 package shetj.me.base.func.main
 
 import android.Manifest
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
-import me.shetj.base.ktx.openSetting
+import me.shetj.base.ktx.openMarket
 import me.shetj.base.ktx.saverCreate
 import me.shetj.base.ktx.saverDB
 import me.shetj.base.ktx.sendEmailText
@@ -51,8 +55,6 @@ import me.shetj.base.mvp.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
-import me.shetj.base.tools.app.ArmsUtils
-import me.shetj.base.tools.app.ArmsUtils.Companion.paste
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.image.ImageCallBack
 import me.shetj.base.tools.image.ImageUtils
@@ -68,10 +70,34 @@ import timber.log.Timber
 
 class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     private lateinit var mContent: ContentMainBinding
+    private var splashScreen:  SplashScreen? =null
     private var codeUtil: CodeUtil? = null
     private var isKeep = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        splashScreen = installSplashScreen()
+        lifecycleScope.launch {
+            delay(1000)
+            isKeep = false
+        }
+        splashScreen!!.setKeepOnScreenCondition(SplashScreen.KeepOnScreenCondition {
+            //指定保持启动画面展示的条件
+            return@KeepOnScreenCondition isKeep
+        })
+        splashScreen!!.setOnExitAnimationListener { splashScreenViewProvider ->
+            val splashScreenView = splashScreenViewProvider.view
+            val slideUp = ObjectAnimator.ofFloat(
+                splashScreenView,
+                View.ALPHA,
+                1f,
+                0f,
+            )
+            slideUp.duration = 800
+            slideUp.doOnEnd {
+                splashScreenViewProvider.remove()
+            }
+            slideUp.start()
+        }
         super.onCreate(savedInstanceState)
         KeyboardUtil.init(this)
         mContent = mViewBinding.content
@@ -107,7 +133,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
         }
 
         mContent.btnSetting.setOnClickListener {
-            openSetting()
+            openMarket()
         }
 
         mContent.tvTestCode.setOnClickListener { codeUtil!!.start() }
@@ -218,10 +244,10 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
 
     override fun onResume() {
         super.onResume()
-        launch {
-            delay(500)
-            paste(this@MainActivity).logI()
-        }
+//        launch {
+//            delay(500)
+//            paste(this@MainActivity).logI()
+//        }
     }
 
     suspend fun netTest() {
