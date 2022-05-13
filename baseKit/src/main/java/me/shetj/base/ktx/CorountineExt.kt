@@ -64,12 +64,27 @@ suspend inline fun <T> doOnUnconfined(crossinline action: suspend CoroutineScope
         return@withContext action()
     }
 
-suspend inline fun <T> doOnContext(
-    context: CoroutineContext = EmptyCoroutineContext,
-    crossinline action: suspend CoroutineScope.() -> T
-) = withContext(context) {
-    return@withContext action()
-}
+
+suspend inline fun <T,O> T.doOnIO(crossinline action: suspend CoroutineScope.(t:T) -> O) =
+    withContext(Dispatchers.IO) {
+        return@withContext this.action(this@doOnIO)
+    }
+
+suspend inline fun <T,O> T.doOnMain(crossinline action: suspend CoroutineScope.(t:T) -> O) =
+    withContext(Dispatchers.Main) {
+        return@withContext action(this@doOnMain)
+    }
+
+suspend inline fun <T,O> T.doOnDef(crossinline action: suspend CoroutineScope.(t:T) -> O) =
+    withContext(Dispatchers.Default) {
+        return@withContext action(this@doOnDef)
+    }
+
+suspend inline fun <T,O> T.doOnUnconfined(crossinline action: suspend CoroutineScope.(t:T) -> O) =
+    withContext(Dispatchers.Unconfined) {
+        return@withContext action(this@doOnUnconfined)
+    }
+
 
 inline fun ViewModel.launch(crossinline action: suspend CoroutineScope.() -> Unit): Job {
     return viewModelScope.launch {

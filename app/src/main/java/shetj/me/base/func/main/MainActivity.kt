@@ -40,6 +40,8 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.ktx.doOnIO
+import me.shetj.base.ktx.doOnMain
 import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
@@ -70,7 +72,7 @@ import timber.log.Timber
 
 class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     private lateinit var mContent: ContentMainBinding
-    private var splashScreen:  SplashScreen? =null
+    private var splashScreen: SplashScreen? = null
     private var codeUtil: CodeUtil? = null
     private var isKeep = true
 
@@ -104,7 +106,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     }
 
     public override fun initView() {
-         setAppearance(isBlack =  true)
+        setAppearance(isBlack = true)
 
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
@@ -158,6 +160,19 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
                 }
             }
         }
+
+        launch {
+            "111".doOnIO { i ->
+                i.toInt()
+            }.doOnMain {
+                it +1
+            }.doOnMain {
+                it.toString().logI("测试协程")
+            }.let {
+
+            }
+        }
+
 
 
         mContent.btnCustomTab.setOnClickListener {
