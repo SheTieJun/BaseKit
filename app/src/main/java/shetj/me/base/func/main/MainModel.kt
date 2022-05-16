@@ -41,16 +41,4 @@ import shetj.me.base.bean.ResultMusic
 class MainModel : BaseModel() {
 
 
-    private val testUrl =
-        "https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json"
-
-    suspend fun getMusicV2() = KCHttpV3.get<ResultMusic>(testUrl,
-        option = {
-            this.cacheKey = "testUrl"
-            this.cacheTime = 10
-            this.cacheMode = CacheMode.ONLY_NET
-            this.repeatNum = 10
-            this.timeout = 5000L
-        })
-
 }

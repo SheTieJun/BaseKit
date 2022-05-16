@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2021 SheTieJun
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<resources>
+
+    <style name="BaseTheme.MD3" parent="Theme.Material3.Light.NoActionBar">
+
+
+        <!--        &lt;!&ndash; Original AppCompat attributes. &ndash;&gt;-->
+        <!--        <item name="colorPrimary">@color/my_app_primary</item>-->
+        <!--        <item name="colorPrimaryDark">@color/my_app_primary_dark</item>-->
+        <!--        <item name="colorSecondary">@color/my_app_secondary</item>-->
+        <!--        <item name="android:colorBackground">@color/my_app_background</item>-->
+        <!--        <item name="colorError">@color/my_app_error</item>-->
+
+        <!--        &lt;!&ndash; MaterialComponents attributes (needed if parent="Theme.AppCompat"). &ndash;&gt;-->
+        <!--        <item name="colorPrimaryVariant">@color/my_app_primary_variant</item>-->
+        <!--        <item name="colorSecondaryVariant">@color/my_app_secondary_variant</item>-->
+        <!--        <item name="colorSurface">@color/my_app_surface</item>-->
+        <!--        <item name="colorOnPrimary">@color/my_app_on_primary</item>-->
+        <!--        <item name="colorOnSecondary">@color/my_app_on_secondary</item>-->
+        <!--        <item name="colorOnBackground">@color/my_app_on_background</item>-->
+        <!--        <item name="colorOnError">@color/my_app_on_error</item>-->
+        <!--        <item name="colorOnSurface">@color/my_app_on_surface</item>-->
+        <!--        <item name="scrimBackground">@color/mtrl_scrim</item>-->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+
+        <!--        防止小米主题切换崩溃-->
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+
+    <style name="BaseTheme.MD" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+
+        <!--        &lt;!&ndash; Original AppCompat attributes. &ndash;&gt;-->
+        <!--        <item name="colorPrimary">@color/my_app_primary</item>-->
+        <!--        <item name="colorPrimaryDark">@color/my_app_primary_dark</item>-->
+        <!--        <item name="colorSecondary">@color/my_app_secondary</item>-->
+        <!--        <item name="android:colorBackground">@color/my_app_background</item>-->
+        <!--        <item name="colorError">@color/my_app_error</item>-->
+
+        <!--        &lt;!&ndash; MaterialComponents attributes (needed if parent="Theme.AppCompat"). &ndash;&gt;-->
+        <!--        <item name="colorPrimaryVariant">@color/my_app_primary_variant</item>-->
+        <!--        <item name="colorSecondaryVariant">@color/my_app_secondary_variant</item>-->
+        <!--        <item name="colorSurface">@color/my_app_surface</item>-->
+        <!--        <item name="colorOnPrimary">@color/my_app_on_primary</item>-->
+        <!--        <item name="colorOnSecondary">@color/my_app_on_secondary</item>-->
+        <!--        <item name="colorOnBackground">@color/my_app_on_background</item>-->
+        <!--        <item name="colorOnError">@color/my_app_on_error</item>-->
+        <!--        <item name="colorOnSurface">@color/my_app_on_surface</item>-->
+        <!--        <item name="scrimBackground">@color/mtrl_scrim</item>-->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+        <!--        防止小米主题切换崩溃-->
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+</resources>

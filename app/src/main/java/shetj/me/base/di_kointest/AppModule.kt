@@ -30,7 +30,7 @@ import org.koin.dsl.module
 import shetj.me.base.common.bean.UpToken
 import shetj.me.base.common.manager.CommonModel
 import shetj.me.base.common.manager.CommonPresenter
-import shetj.me.base.func.main.MainPresenter
+import shetj.me.base.func.main.MainViewModel
 
 
 val appModule = module() {
@@ -55,7 +55,6 @@ val mvpModule = module {
 
     // // Inject presenter from MVPActivity's scope
     //    val scopedPresenter: MainPresenter by lifecycleScope.inject()
-    factory { (view: IView) -> MainPresenter(view) }  //使用参数创建
     factory { (view: IView) -> CommonPresenter(view) }
 }
 

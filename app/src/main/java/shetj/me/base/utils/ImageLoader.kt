@@ -1,24 +1,21 @@
-package shetj.me.base.utils;
+package shetj.me.base.utils
 
-
-import android.content.Context;
-import android.widget.ImageView;
-import androidx.annotation.NonNull;
+import android.content.Context
+import android.widget.ImageView
 
 /**
  * 图片加载
  *
  * @author shetj
  */
-public interface ImageLoader  {
-
+interface ImageLoader {
     /**
      * 加载图片
      *
      * @param simpleView 容器
      * @param url        url地址
      */
-    void load(ImageView simpleView, @NonNull String url);
+    fun load(simpleView: ImageView?, url: String)
 
     /**
      * 加载图片 是否展示进度
@@ -27,7 +24,7 @@ public interface ImageLoader  {
      * @param url         url地址
      * @param hasProgress 是否展示进度
      */
-    void load(ImageView simpleView, @NonNull String url, boolean hasProgress);
+    fun load(simpleView: ImageView?, url: String, hasProgress: Boolean)
 
     /**
      * 渐进式展示图片
@@ -35,7 +32,7 @@ public interface ImageLoader  {
      * @param mSimpleView 容器
      * @param url         url地址
      */
-    void loadProgressive(ImageView mSimpleView, @NonNull String url);
+    fun loadProgressive(mSimpleView: ImageView?, url: String)
 
     /**
      * 加载GIf
@@ -44,8 +41,7 @@ public interface ImageLoader  {
      * @param url        url地址(uri)
      * @param isAuto     是否自动播放
      */
-    void loadGif(ImageView simpleView, @NonNull String url, boolean isAuto);
-
+    fun loadGif(simpleView: ImageView?, url: String, isAuto: Boolean)
 
     /**
      * 预加载图片
@@ -53,23 +49,23 @@ public interface ImageLoader  {
      * @param url                      图片地址
      * @param isDiskCacheOrBitmapCache true Disk 或者 false 内存
      */
-    void prefetchImage(Context context, @NonNull String url, boolean isDiskCacheOrBitmapCache);
+    fun prefetchImage(context: Context?, url: String, isDiskCacheOrBitmapCache: Boolean)
 
     /**
      * 获取view
      *
      * @param context 上下文
-     * @return {@link ImageView}
+     * @return [ImageView]
      */
-    ImageView getSimpleView(Context context, @NonNull String url);
+    fun getSimpleView(context: Context?, url: String): ImageView?
 
     /**
      * 清理内存
      */
-    void clearMemCache();
+    fun clearMemCache()
 
     /**
      * 清理缓存
      */
-    void clearCacheFiles();
+    fun clearCacheFiles()
 }

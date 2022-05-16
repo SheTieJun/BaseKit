@@ -1,0 +1,96 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="BaseTheme.MD3" parent="Theme.Material3.Dark.NoActionBar">
+
+        <!--        &lt;!&ndash; Original AppCompat attributes. &ndash;&gt;-->
+        <!--        <item name="colorPrimary">@color/my_app_primary</item>-->
+        <!--        <item name="colorPrimaryDark">@color/my_app_primary_dark</item>-->
+        <!--        <item name="colorSecondary">@color/my_app_secondary</item>-->
+        <!--        <item name="android:colorBackground">@color/my_app_background</item>-->
+        <!--        <item name="colorError">@color/my_app_error</item>-->
+
+        <!--        &lt;!&ndash; Material3 attributes (needed if parent="Theme.MaterialComponents"). &ndash;&gt;-->
+        <!--        <item name="colorPrimaryInverse">@color/my_app_primary_inverse</item>-->
+        <!--        <item name="colorPrimaryContainer">@color/my_app_primary_container</item>-->
+        <!--        <item name="colorOnPrimaryContainer">@color/my_app_on_primary_container</item>-->
+        <!--        <item name="colorSecondaryContainer">@color/my_app_secondary_container</item>-->
+        <!--        <item name="colorOnSecondaryContainer">@color/my_app_on_secondary_container</item>-->
+        <!--        <item name="colorTertiary">@color/my_app_tertiary</item>-->
+        <!--        <item name="colorOnTertiary">@color/my_app_on_tertiary</item>-->
+        <!--        <item name="colorTertiaryContainer">@color/my_app_tertiary_container</item>-->
+        <!--        <item name="colorOnTertiaryContainer">@color/my_app_on_tertiary_container</item>-->
+        <!--        <item name="colorSurfaceVariant">@color/my_app_surface_variant</item>-->
+        <!--        <item name="colorOnSurfaceVariant">@color/my_app_on_surface_variant</item>-->
+        <!--        <item name="colorSurfaceInverse">@color/my_app_inverse_surface</item>-->
+        <!--        <item name="colorOnSurfaceInverse">@color/my_app_inverse_on_surface</item>-->
+        <!--        <item name="colorOutline">@color/my_app_outline</item>-->
+        <!--        <item name="colorErrorContainer">@color/my_app_error_container</item>-->
+        <!--        <item name="colorOnErrorContainer">@color/my_app_on_error_container</item>-->
+
+        <!--   字体大小     -->
+        <!--    57,45,36        -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.Material3.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.Material3.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.Material3.DisplaySmall</item>
+        <!--   32,28,24-->
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Material3.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Material3.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Material3.HeadlineSmall</item>
+            <!--   22,16,14-->
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Material3.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Material3.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Material3.TitleSmall</item>
+            <!--   16,14,12-->
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.Material3.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.Material3.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.Material3.BodySmall</item>
+            <!--   14,12,11-->
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.Material3.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
+
+        <!--  shape 圆角4,8,8     <item name="shapeAppearanceOverlay">@style/shapeAppearanceSmallComponent</item>   -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
+
+    </style>
+
+    <style name="BaseTheme.MD" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+
+        <!--        &lt;!&ndash; Original AppCompat attributes. &ndash;&gt;-->
+        <!--        <item name="colorPrimary">@color/my_app_primary</item>-->
+        <!--        <item name="colorPrimaryDark">@color/my_app_primary_dark</item>-->
+        <!--        <item name="colorSecondary">@color/my_app_secondary</item>-->
+        <!--        <item name="android:colorBackground">@color/my_app_background</item>-->
+        <!--        <item name="colorError">@color/my_app_error</item>-->
+
+        <!--        &lt;!&ndash; MaterialComponents attributes (needed if parent="Theme.AppCompat"). &ndash;&gt;-->
+        <!--        <item name="colorPrimaryVariant">@color/my_app_primary_variant</item>-->
+        <!--        <item name="colorSecondaryVariant">@color/my_app_secondary_variant</item>-->
+        <!--        <item name="colorSurface">@color/my_app_surface</item>-->
+        <!--        <item name="colorOnPrimary">@color/my_app_on_primary</item>-->
+        <!--        <item name="colorOnSecondary">@color/my_app_on_secondary</item>-->
+        <!--        <item name="colorOnBackground">@color/my_app_on_background</item>-->
+        <!--        <item name="colorOnError">@color/my_app_on_error</item>-->
+        <!--        <item name="colorOnSurface">@color/my_app_on_surface</item>-->
+        <!--        <item name="scrimBackground">@color/mtrl_scrim</item>-->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+
+        <!--        防止小米主题切换崩溃-->
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+</resources>

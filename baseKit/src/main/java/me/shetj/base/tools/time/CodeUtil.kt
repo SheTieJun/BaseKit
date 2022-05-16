@@ -58,7 +58,7 @@ class CodeUtil : ABKtScopeComponent {
         job?.cancel()
         job = ktScope.launch {
             repeat(timeLength) { second ->
-                codeTV?.text = String.format("%s秒后重新获取", second)
+                codeTV?.text = String.format("%s秒后重新获取", timeLength - second)
                 delay(1000)
             }
             codeTV?.text = "重新获取"

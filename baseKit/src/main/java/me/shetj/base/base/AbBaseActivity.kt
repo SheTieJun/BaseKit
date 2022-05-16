@@ -37,6 +37,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.appbar.MaterialToolbar
 import me.shetj.base.R
 import me.shetj.base.ktx.hasPermission
 
@@ -119,7 +120,12 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
     }
 
     open fun onActivityCreate() {
-        findViewById<View>(R.id.toolbar_back)?.setOnClickListener { back() }
+        findViewById<MaterialToolbar>(R.id.toolbar)?.apply {
+            setSupportActionBar(this)
+            setNavigationOnClickListener {
+                finishAfterTransition()
+            }
+        }
         initView()
         initData()
     }
@@ -128,9 +134,7 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
     }
 
     open fun setTitle(title: String) {
-        findViewById<TextView>(R.id.toolbar_title)?.apply {
-            text = title
-        }
+        supportActionBar?.title = title
     }
 
     // 设置横竖屏

@@ -10,7 +10,7 @@
     tools:showIn="@layout/activity_main">
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_CustomTab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,18 +21,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_test_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:text="测试codeutils"
         app:layout_constraintStart_toEndOf="@+id/btn_CustomTab"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_test_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_CustomTab" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_select_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@id/btn_test_tip" />
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_insert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,7 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_select_image" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_find"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@id/btn_insert" />
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,7 +86,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_find" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,7 +96,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_setting" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/test_thread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,7 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_email" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/test_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -115,7 +116,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/test_thread" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/test_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -125,7 +126,7 @@
         app:layout_constraintStart_toEndOf="@id/test_loading"
         app:layout_constraintTop_toTopOf="@id/test_loading" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/test_download"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,7 +136,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/test_loading" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_test_keybord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -145,7 +146,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/test_download" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_test_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -155,27 +156,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_test_keybord" />
 
-
-    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
-        android:id="@+id/start"
-        android:layout_width="170dp"
-        android:layout_height="200dp"
-        app:wheel_indicatorEnabled="false"
-        app:wheel_itemTextBoldSelected="true"
-        android:layout_marginStart="24dp"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.github.gzuliyujiang.wheelpicker.widget.DateWheelLayout
-        android:id="@+id/end"
-        android:layout_width="170dp"
-        android:layout_height="200dp"
-        app:wheel_indicatorEnabled="false"
-        app:wheel_itemTextBoldSelected="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/start"
-        app:layout_constraintBottom_toBottomOf="parent"
-         />
 </androidx.constraintlayout.widget.ConstraintLayout>

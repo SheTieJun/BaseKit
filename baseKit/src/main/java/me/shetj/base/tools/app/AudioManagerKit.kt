@@ -27,6 +27,7 @@
 package me.shetj.base.tools.app
 
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.AudioManager.OnAudioFocusChangeListener
@@ -60,13 +61,13 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
 
     private val focusChangeListener: OnAudioFocusChangeListener =
         OnAudioFocusChangeListener { focusChange ->
-            when(focusChange){
+            when (focusChange) {
                 AudioManager.AUDIOFOCUS_LOSS ->
                     onAudioFocusChangeListener?.onLoss()
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ->
                     //短暂性丢失焦点，当其他应用申请AUDIOFOCUS_GAIN_TRANSIENT或AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE时，
                     onAudioFocusChangeListener?.onLossTransient()
-                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK ->{
+                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                     onAudioFocusChangeListener?.onLossTransientCanDuck()
                 }
                 AudioManager.AUDIOFOCUS_GAIN -> {
@@ -77,7 +78,13 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
 
 
     private val audioFocusRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {            //Android 8.0+
-        AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+        AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+            .setAudioAttributes(AudioAttributes.Builder().run {
+                setUsage(AudioAttributes.USAGE_GAME)
+                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                build()
+            })
+            .setWillPauseWhenDucked(true)
             .setOnAudioFocusChangeListener(focusChangeListener).build()
     } else {
         null
@@ -92,7 +99,7 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
     /**
      * 申请音频焦点
      */
-    fun requestAudioFocus() {
+    private fun requestAudioFocus() {
         if (mAudioManager == null) return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {            //Android 8.0+
             audioFocusRequest!!.acceptsDelayedFocusGain()
@@ -101,7 +108,7 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
             mAudioManager!!.requestAudioFocus(
                 focusChangeListener,
                 AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+                AudioManager.AUDIOFOCUS_GAIN
             )
         }
     }
@@ -145,12 +152,12 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
     }
 
 
-    interface OnAudioFocusChange{
+    interface OnAudioFocusChange {
 
         /**
          * 获得了Audio Focus；
          */
-        fun onLoss(){
+        fun onLoss() {
 
         }
 
@@ -158,21 +165,21 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
         /**
          * 失去了Audio Focus，并将会持续很长的时间。这里因为可能会停掉很长时间，所以不仅仅要停止Audio的播放，最好直接释放掉Media资源。
          */
-        fun onGain(){
+        fun onGain() {
 
         }
 
         /**
          * 暂时失去Audio Focus，并会很快再次获得。必须停止Audio的播放，但是因为可能会很快再次获得AudioFocus，这里可以不释放Media资源；
          */
-        fun onLossTransient(){
+        fun onLossTransient() {
 
         }
 
         /**
          * 暂时失去AudioFocus，但是可以继续播放，不过要在降低音量。
          */
-        fun onLossTransientCanDuck(){
+        fun onLossTransientCanDuck() {
 
         }
 

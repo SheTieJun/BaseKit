@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/BaseTheme.MD3">
         <activity
             android:name=".func.main.MainActivity"
             android:label="@string/app_name"

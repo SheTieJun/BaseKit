@@ -31,7 +31,10 @@ import androidx.lifecycle.MutableLiveData
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.mvp.BasePresenter
 import me.shetj.base.mvp.IView
+import me.shetj.base.mvvm.BaseViewModel
 import me.shetj.base.network_coroutine.HttpResult
+import me.shetj.base.network_coroutine.KCHttpV3
+import me.shetj.base.network_coroutine.cache.CacheMode
 import me.shetj.base.tools.time.CalendarReminderUtils
 import me.shetj.base.tools.time.DateUtils
 import org.koin.java.KoinJavaComponent.get
@@ -45,19 +48,10 @@ import shetj.me.base.bean.ResultMusic
  * **@email：** 375105540@qq.com<br></br>
  * **@describe**<br></br>
  */
-class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
+class MainViewModel() :BaseViewModel() {
     val liveDate = MutableLiveData<HttpResult<ResultMusic>>()
-
+    var isKeep = true
     fun getNightModel(): Int {
-        //android:forceDarkAllowed="true"
-        //?android:attr/textColorPrimary 这是一种通用型文本颜色。它在浅色主题背景下接近于黑色，在深色主题背景下接近于白色。该颜色包含一个停用状态。
-        //?attr/colorControlNormal 一种通用图标颜色。该颜色包含一个停用状态。
-        //主题背景属性 ?attr/colorSurface 和 ?attr/colorOnSurface）轻松获取合适的颜色
-        //浅色 - MODE_NIGHT_NO
-        //深色 - MODE_NIGHT_YES
-        //由省电模式设置 - MODE_NIGHT_AUTO_BATTERY
-        //系统默认 - MODE_NIGHT_FOLLOW_SYSTEM
-        view.updateView(1.toMessage())
         val defaultNightMode = AppCompatDelegate.getDefaultNightMode()
 
         if (defaultNightMode == AppCompatDelegate.MODE_NIGHT_NO) {
@@ -69,9 +63,22 @@ class MainPresenter(view: IView) : BasePresenter<MainModel>(view) {
         return AppCompatDelegate.MODE_NIGHT_YES
     }
 
+    private val testUrl =
+        "https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json"
+
+    private suspend fun getMusicV3() = KCHttpV3.get<ResultMusic>(testUrl,
+        option = {
+            this.cacheKey = "testUrl"
+            this.cacheTime = 10
+            this.cacheMode = CacheMode.ONLY_NET
+            this.repeatNum = 10
+            this.timeout = 5000L
+        })
+
 
     suspend fun getMusicV2()  {
-        liveDate.postValue(model.getMusicV2())
+        val httpResult = getMusicV3()
+        liveDate.postValue(httpResult)
     }
 
 

@@ -45,7 +45,7 @@ import me.shetj.base.ktx.doOnMain
 import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
-import me.shetj.base.ktx.openMarket
+import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.saverCreate
 import me.shetj.base.ktx.saverDB
 import me.shetj.base.ktx.sendEmailText
@@ -53,7 +53,7 @@ import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsetsCompat
 import me.shetj.base.model.NetWorkLiveDate
-import me.shetj.base.mvp.BaseBindingActivity
+import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
@@ -66,25 +66,26 @@ import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
-import shetj.me.base.test_lib.defSet
 import shetj.me.base.test_lib.onYearMonthDay
 import timber.log.Timber
 
-class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
+
+class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
     private var splashScreen: SplashScreen? = null
     private var codeUtil: CodeUtil? = null
-    private var isKeep = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.BaseTheme_MD3)
         splashScreen = installSplashScreen()
         lifecycleScope.launch {
             delay(1000)
-            isKeep = false
+            mViewModel.isKeep = false
         }
         splashScreen!!.setKeepOnScreenCondition(SplashScreen.KeepOnScreenCondition {
             //指定保持启动画面展示的条件
-            return@KeepOnScreenCondition isKeep
+            return@KeepOnScreenCondition mViewModel.isKeep
         })
         splashScreen!!.setOnExitAnimationListener { splashScreenViewProvider ->
             val splashScreenView = splashScreenViewProvider.view
@@ -97,6 +98,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
             slideUp.duration = 800
             slideUp.doOnEnd {
                 splashScreenViewProvider.remove()
+                setAppearance(isBlack = true)
             }
             slideUp.start()
         }
@@ -107,7 +109,6 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
 
     public override fun initView() {
         setAppearance(isBlack = true)
-
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
                 this@MainActivity,
@@ -126,6 +127,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
             TipKit.error(this, "这是一个toast")
         }
 
+
         findViewById<View>(R.id.btn_email).setOnClickListener {
             sendEmailText(addresses = "375105540@qq.com", title = "Base测试", content = "这是一个测试代码")
         }
@@ -135,13 +137,13 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
         }
 
         mContent.btnSetting.setOnClickListener {
-            openMarket()
+            openSetting()
         }
 
         mContent.tvTestCode.setOnClickListener { codeUtil!!.start() }
 
         findViewById<View>(R.id.fab).setOnClickListener {
-            AppCompatDelegate.setDefaultNightMode(mPresenter.getNightModel())
+            AppCompatDelegate.setDefaultNightMode(mViewModel.getNightModel())
         }
 
         //btn_test_keybord
@@ -165,7 +167,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
             "111".doOnIO { i ->
                 i.toInt()
             }.doOnMain {
-                it +1
+                it + 1
             }.doOnMain {
                 it.toString().logI("测试协程")
             }.let {
@@ -204,7 +206,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
                     )
                 )
             ) {
-                mPresenter.addEvent(this)
+                mViewModel.addEvent(this)
             }
         }
         NetWorkLiveDate.getInstance().start(this)
@@ -232,7 +234,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
             }
         }
 
-        mPresenter.liveDate.observeChange(this) {
+        mViewModel.liveDate.observeChange(this) {
             onSuccess = {
                 Timber.tag("getMusic").i(this.toJson())
             }
@@ -240,16 +242,13 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
                 Timber.tag("getMusic").e(this)
             }
         }
-
-        mViewBinding.content.start.defSet()
-        mViewBinding.content.end.defSet()
     }
 
     override fun isPermissionGranted(permissions: Map<String, Boolean>) {
         super.isPermissionGranted(permissions)
         val empty = permissions.filter { !it.value }.isEmpty()
         if (empty) {
-            mPresenter.addEvent(this)
+            mViewModel.addEvent(this)
         }
     }
 
@@ -266,7 +265,7 @@ class MainActivity : BaseBindingActivity<MainPresenter, ActivityMainBinding>() {
     }
 
     suspend fun netTest() {
-        mPresenter.getMusicV2()
+        mViewModel.getMusicV2()
     }
 
     public override fun initData() {
