@@ -28,6 +28,7 @@ package shetj.me.base.func.main
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -46,6 +47,7 @@ import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
+import me.shetj.base.ktx.openUri
 import me.shetj.base.ktx.saverCreate
 import me.shetj.base.ktx.saverDB
 import me.shetj.base.ktx.sendEmailText
@@ -72,43 +74,18 @@ import timber.log.Timber
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
-    private var splashScreen: SplashScreen? = null
     private var codeUtil: CodeUtil? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.BaseTheme_MD3)
-        splashScreen = installSplashScreen()
-        lifecycleScope.launch {
-            delay(1000)
-            mViewModel.isKeep = false
-        }
-        splashScreen!!.setKeepOnScreenCondition(SplashScreen.KeepOnScreenCondition {
-            //指定保持启动画面展示的条件
-            return@KeepOnScreenCondition mViewModel.isKeep
-        })
-        splashScreen!!.setOnExitAnimationListener { splashScreenViewProvider ->
-            val splashScreenView = splashScreenViewProvider.view
-            val slideUp = ObjectAnimator.ofFloat(
-                splashScreenView,
-                View.ALPHA,
-                1f,
-                0f,
-            )
-            slideUp.duration = 800
-            slideUp.doOnEnd {
-                splashScreenViewProvider.remove()
-                setAppearance(isBlack = true)
-            }
-            slideUp.start()
-        }
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         KeyboardUtil.init(this)
         mContent = mViewBinding.content
     }
 
-    public override fun initView() {
-        setAppearance(isBlack = true)
+    override fun initView() {
+        setAppearance(isBlack = true,Color.TRANSPARENT)
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
                 this@MainActivity,
@@ -137,7 +114,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mContent.btnSetting.setOnClickListener {
-            openSetting()
+//            openSetting()
+//            openUri("lihua://wxMini?name=gh_d7564bed6a39&path=/pages/home/home%3Ffrom%3Dgjy%26a%3D2%26b%3D1")
+            openUri("lihuawriting://ordermarket")
         }
 
         mContent.tvTestCode.setOnClickListener { codeUtil!!.start() }
@@ -174,17 +153,16 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
             }
         }
-
-
-
-        mContent.btnCustomTab.setOnClickListener {
+        mContent.btnCustomTab.post {
             windowInsetsCompat?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
             windowInsetsCompat?.getInsets(Type.statusBars()).toJson().logI("statusBars")
             windowInsetsCompat?.getInsets(Type.captionBar()).toJson().logI("captionBar")
-
             windowInsetsCompat?.isVisible(Type.navigationBars()).toJson().logI("navigationBars")
             windowInsetsCompat?.isVisible(Type.statusBars()).toJson().logI("statusBars")
             windowInsetsCompat?.isVisible(Type.captionBar()).toJson().logI("captionBar")
+        }
+
+        mContent.btnCustomTab.setOnClickListener {
             hideNavigationBars()
         }
 

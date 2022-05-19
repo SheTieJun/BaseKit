@@ -30,7 +30,6 @@ import org.koin.dsl.module
 import shetj.me.base.common.bean.UpToken
 import shetj.me.base.common.manager.CommonModel
 import shetj.me.base.common.manager.CommonPresenter
-import shetj.me.base.func.main.MainViewModel
 
 
 val appModule = module() {

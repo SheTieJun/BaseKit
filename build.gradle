@@ -4,9 +4,9 @@ buildscript {
     repositories {
         gradlePluginPortal()
     }
-    dependencies {
-        classpath 'com.github.SheTieJun.lib-plugin:base-plugin:5e9776b731'
-    }
+//    dependencies {
+//        classpath 'com.github.SheTieJun.lib-plugin:base-plugin:5e9776b731'
+//    }
 }
 
 plugins {

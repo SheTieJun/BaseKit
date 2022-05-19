@@ -23,6 +23,7 @@
  */
 package me.shetj.base.ktx
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -30,6 +31,17 @@ import android.os.Build
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import java.io.File
+
+
+fun Context.openUri(uri: String){
+    val intent = Intent()
+    if (this !is Activity) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    intent.action = Intent.ACTION_VIEW
+    intent.data = Uri.parse(uri)
+    this.startActivity(intent)
+}
 
 fun Intent?.getQueryParameter(key: String): String? {
     val uri = this?.data

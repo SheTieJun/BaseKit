@@ -89,8 +89,5 @@
         <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
         <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
-
-        <!--        防止小米主题切换崩溃-->
-        <item name="android:forceDarkAllowed">false</item>
     </style>
 </resources>

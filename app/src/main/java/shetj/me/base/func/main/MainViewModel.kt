@@ -25,19 +25,16 @@
 
 package shetj.me.base.func.main
 
-import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
-import me.shetj.base.ktx.toMessage
-import me.shetj.base.mvp.BasePresenter
-import me.shetj.base.mvp.IView
 import me.shetj.base.mvvm.BaseViewModel
 import me.shetj.base.network_coroutine.HttpResult
 import me.shetj.base.network_coroutine.KCHttpV3
 import me.shetj.base.network_coroutine.cache.CacheMode
+import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.time.CalendarReminderUtils
 import me.shetj.base.tools.time.DateUtils
-import org.koin.java.KoinJavaComponent.get
 import shetj.me.base.bean.ResultMusic
 
 /**
@@ -82,12 +79,16 @@ class MainViewModel() :BaseViewModel() {
     }
 
 
-    fun addEvent(context: Context) {
-        CalendarReminderUtils.addCalendarEvent(context,
-                title = "这是一个测试时间",
-                des = "这是测试时间描述",
-                remindTime = DateUtils.str2Calendar("2020-12-16 00:00:00")!!.timeInMillis,
-                endTime = null, previousTime = 5
+    fun addEvent(context: AppCompatActivity) {
+        val id = CalendarReminderUtils.addCalendarEvent(
+            context,
+            title = "这是一个测试时间",
+            des = "这是测试时间描述",
+            remindTime = DateUtils.str2Calendar("2020-12-16 00:00:00")!!.timeInMillis,
+            endTime = null, previousTime = 5
         )
+        if (id != -1L){
+            TipKit.success(context,"添加成功")
+        }
     }
 }

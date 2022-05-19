@@ -59,6 +59,11 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/unsplash_cat1</item>
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenIconBackgroundColor">@color/white</item>
+
+        <!--        must be set-->
+        <item name="postSplashScreenTheme">@style/BaseTheme.MD3</item>
+
+
     </style>
 
 
