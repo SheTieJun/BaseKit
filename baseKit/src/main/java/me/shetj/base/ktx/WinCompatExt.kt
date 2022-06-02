@@ -78,6 +78,18 @@ fun FragmentActivity.hideNavigationBars() {
     }
 }
 
+
+/**
+ * 展示导航栏
+ */
+fun FragmentActivity.showNavigationBars() {
+    ViewCompat.getWindowInsetsController(findViewById(android.R.id.content))?.let { controller ->
+        controller.show(Type.navigationBars())
+        controller.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    }
+}
+
 /**
  * 全屏
  * {@see [theme:EdgeStyle]} 填充刘海屏幕

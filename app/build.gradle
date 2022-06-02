@@ -14,7 +14,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "shetj.me.base"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion rootProject.ext.targetSdkVer
         versionCode 1
         versionName "1.0"
@@ -144,8 +144,7 @@ dependencies {
 //    implementation "androidx.fragment:fragment:$fragment_version"
 //    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
-    implementation "androidx.datastore:datastore-preferences:1.0.0-rc01" //(key+value)
-    implementation "androidx.datastore:datastore-core:1.0.0-rc01"
+
 //    implementation "androidx.datastore:datastore-rxjava3:1.0.0-alpha06"
 //(Proto DataStore，它允许您存储类型化的对象（由协议缓冲区提供支持）)
 
@@ -192,6 +191,11 @@ dependencies {
 
 
     implementation "androidx.core:core-splashscreen:1.0.0-beta02"
+
+
+    implementation("androidx.draganddrop:draganddrop:1.0.0")
+
+    implementation "androidx.metrics:metrics-performance:1.0.0-alpha01"
 }
 
 //apply from: file("dokit-config.gradle")

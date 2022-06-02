@@ -23,7 +23,7 @@
  */
 
 
-package shetj.me.base.utils
+package me.shetj.base.tools.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -32,13 +32,14 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import me.shetj.base.S
 
 
 /**
  * dataStore
  */
-class DataStoreKit {
+object DataStoreKit {
 
     private val Context.dataStore by preferencesDataStore("filename")
 
@@ -81,14 +82,16 @@ class DataStoreKit {
         return false
     }
 
-    inline fun <reified T : Any> getFlow(key: Preferences.Key<T>): Flow<T?> {
-        return dataStore.data.map { it[key] }
+    inline fun <reified T : Any> get(key: Preferences.Key<T>): Flow<T?> {
+        return dataStore.data.map {
+            it[key] }
     }
 
-    suspend inline fun <reified T : Any> get(key: Preferences.Key<T>): T? {
+    suspend inline fun <reified T : Any> getOrNull(key: Preferences.Key<T>): T? {
         return kotlin.runCatching {
-            dataStore.data.map { it[key] }.first()
+            dataStore.data.mapNotNull { it[key] }.first()
         }.getOrNull()
     }
+
 
 }

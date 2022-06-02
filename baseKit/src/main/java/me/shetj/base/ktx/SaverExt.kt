@@ -34,7 +34,9 @@ val saverDB: SaverDao
 
 suspend fun Saver.updateToDB() {
     this.updateTime = System.currentTimeMillis()
-    saverDB.updateSaver(this)
+     doOnIO {
+        saverDB.updateSaver(this@updateToDB)
+    }
 }
 
 fun saverCreate(group: String = "base", key: String, value: String): Saver {

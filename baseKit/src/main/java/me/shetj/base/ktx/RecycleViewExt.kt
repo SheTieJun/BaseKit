@@ -52,19 +52,6 @@ fun Context.getSmoothScroller(speedTime: Float = 150f): LinearSmoothScroller {
     }
 }
 
-fun ViewPager2.fixId() {
-    try {
-        val cls = Class.forName("androidx.viewpager2.widget.ViewPager2")
-        val field: Field = cls.getDeclaredField("mRecyclerView")
-        field.isAccessible = true
-        val recyclerView = field.get(this) as RecyclerView
-        recyclerView.id = R.id.viewpager2_rv
-    } catch (e: ClassNotFoundException) {
-        e.printStackTrace()
-    } catch (e: NoSuchFieldException) {
-        e.printStackTrace()
-    }
-}
 
 fun RecyclerView?.smoothToPosition(
     position: Int,

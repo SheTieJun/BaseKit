@@ -62,15 +62,6 @@
 
         <!--        must be set-->
         <item name="postSplashScreenTheme">@style/BaseTheme.MD3</item>
-
-
     </style>
-
-
-
-    <style name="Base.Theme.SplashScreen" parent="BaseTheme.MD3"/>
-    <style name="Base.Theme.SplashScreen.DayNight" parent="BaseTheme.MD3"/>
-    <style name="Base.Theme.SplashScreen.Light" parent="BaseTheme.MD3"/>
-    <style name="Base.v21.Theme.SplashScreen" parent="BaseTheme.MD3"/>
 
 </resources>

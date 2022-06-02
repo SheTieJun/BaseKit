@@ -1,15 +1,25 @@
 package shetj.me.base.test;
 
 
-import me.shetj.base.ktx.DataExtKt;
+import java.util.LinkedHashSet;
 
 class TestJava {
 
 
     public static void main(String[] args) {
-        System.out.printf("测试kt方法"+DataExtKt.getRandomString(3)+"\n");
+        long time1 = System.currentTimeMillis() ;
+        String[] strings = new String[]{"1","2","3","4","5","6","7","8"};
+        setof(strings);
+        System.out.printf("耗时："+(System.currentTimeMillis() -time1));
     }
 
+    private static LinkedHashSet  setof(String... strings)  {
+        LinkedHashSet set = new LinkedHashSet<String>();
+        for (int i=0;  i<strings.length;i++){
+            set.add(strings[i]);
+        }
+        return set;
+    }
 
 
     public static void insertionSort(int[] a, int n) {

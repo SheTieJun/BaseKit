@@ -55,6 +55,8 @@ val mvpModule = module {
     // // Inject presenter from MVPActivity's scope
     //    val scopedPresenter: MainPresenter by lifecycleScope.inject()
     factory { (view: IView) -> CommonPresenter(view) }
+
+//    scope<MainActivity> {  }
 }
 
 val scopeModule = module {

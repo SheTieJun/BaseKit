@@ -28,15 +28,17 @@ package shetj.me.base.test
 import androidx.core.text.buildSpannedString
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import java.lang.Math.random
 import kotlin.properties.Delegates
+import kotlin.random.Random
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
-import me.shetj.base.model.UIState
 import me.shetj.base.ktx.isTrue
 import me.shetj.base.ktx.renderType
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import me.shetj.base.model.UIState
 
 
 class TestKotlin {
@@ -86,8 +88,6 @@ class TestKotlin {
                     property, oldValue, newValue ->
 
             }
-
-            dets = "new string"
         }
 
         /**

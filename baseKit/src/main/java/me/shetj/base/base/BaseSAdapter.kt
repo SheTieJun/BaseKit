@@ -38,8 +38,7 @@ abstract class BaseSAdapter<T, K : BaseViewHolder>
 @JvmOverloads constructor(
     @LayoutRes layoutResId: Int,
     data: MutableList<T>? = null
-) :
-    BaseQuickAdapter<T, K>(layoutResId, data) {
+) : BaseQuickAdapter<T, K>(layoutResId, data) {
 
     protected fun getString(@StringRes resId: Int): String {
         return context.getString(resId)

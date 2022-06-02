@@ -193,7 +193,7 @@ class ArmsUtils private constructor() {
          * @param viewName
          * @param <T>
          * @return
-         </T> */
+        </T> */
         @JvmStatic
         fun <T : View> findViewByName(context: Context, view: View, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
@@ -207,7 +207,7 @@ class ArmsUtils private constructor() {
          * @param viewName
          * @param <T>
          * @return
-         </T> */
+        </T> */
         @JvmStatic
         fun <T : View> findViewByName(context: Context, activity: Activity, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
@@ -244,7 +244,7 @@ class ArmsUtils private constructor() {
         @MainThread
         fun makeText(string: String) {
             if (mToast == null) {
-                mToast = Toast.makeText(Utils.app.applicationContext, string, Toast.LENGTH_SHORT)
+                mToast = Toast.makeText(Utils.app, string, Toast.LENGTH_SHORT)
             }
             mToast!!.setText(string)
             mToast!!.show()
@@ -456,14 +456,14 @@ class ArmsUtils private constructor() {
             if (null == context) {
                 return getScreenHeight()
             }
-            val outRect1 = Rect()
+            val outRect = Rect()
             try {
-                (context as Activity).window.decorView.getWindowVisibleDisplayFrame(outRect1)
+                (context as Activity).window.decorView.getWindowVisibleDisplayFrame(outRect)
             } catch (e: ClassCastException) {
                 e.printStackTrace()
                 return getScreenHeight(context)
             }
-            return outRect1.height()
+            return outRect.height()
         }
 
         /**

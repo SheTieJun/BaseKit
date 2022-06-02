@@ -100,6 +100,10 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : ViewModel> : AbBaseFra
         lifecycle.removeObserver(this)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
     /**
      * 是否使用Activity的VM，默认使用
      */
@@ -109,13 +113,13 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : ViewModel> : AbBaseFra
         if (mFragmentProvider == null) {
             mFragmentProvider = ViewModelProvider(this)
         }
-        return mFragmentProvider!!.get(modelClass)
+        return mFragmentProvider!![modelClass]
     }
 
     protected open fun getActivityViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mActivityProvider == null) {
             mActivityProvider = ViewModelProvider(requireActivity())
         }
-        return mActivityProvider!!.get(modelClass)
+        return mActivityProvider!![modelClass]
     }
 }

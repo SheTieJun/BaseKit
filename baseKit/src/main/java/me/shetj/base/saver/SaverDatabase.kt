@@ -48,6 +48,7 @@ abstract class SaverDatabase : RoomDatabase() {
 
         private fun buildDataBase(context: Context) =
             Room.databaseBuilder(context.applicationContext, SaverDatabase::class.java, "saver")
+                .allowMainThreadQueries()
                 .build()
     }
 }

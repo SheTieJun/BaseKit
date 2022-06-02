@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 package me.shetj.base.base
+
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -39,8 +40,7 @@ abstract class BaseKTAdapter<T, K : BaseViewHolder>
     owner: LifecycleOwner,
     @LayoutRes layoutResId: Int,
     data: MutableList<T>? = null
-) :
-    BaseQuickAdapter<T, K>(layoutResId, data), LifecycleKtScopeComponent {
+) : BaseQuickAdapter<T, K>(layoutResId, data), LifecycleKtScopeComponent {
 
     override val lifeKtScope: LifecycleCoroutineScope by owner.defLifeOwnerScope()
 

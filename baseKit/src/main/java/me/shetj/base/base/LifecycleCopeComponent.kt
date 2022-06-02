@@ -35,7 +35,7 @@ import kotlinx.coroutines.CoroutineScope
  *
  * * 自身[LifecycleOwner] + 自身[CoroutineScope]
  */
-abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
+abstract class AbLifecycleCopeComponent : LifecycleCopeComponent {
 
     override val ktScope: DefCoroutineScope by ktScopeWithLife(lifecycle)
 
@@ -105,7 +105,7 @@ abstract class AbLifecycleWithCopeComponent : LifecycleWithCopeComponent {
     }
 }
 
-interface LifecycleWithCopeComponent : KtScopeComponent, LifecycleOwner {
+interface LifecycleCopeComponent : KtScopeComponent, LifecycleOwner {
 
     @MainThread
     fun onCreate()

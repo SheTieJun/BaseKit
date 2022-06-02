@@ -159,7 +159,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         private const val STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN"
     }
 
-    fun safetyShow(fragmentManager: FragmentManager, tag: String) {
+    fun tryShow(fragmentManager: FragmentManager, tag: String) {
         runCatching {
             // 防止动画没有结束，fragment又被点击了，然后导致的崩溃
             fragmentManager.executePendingTransactions()
@@ -167,7 +167,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         }
     }
 
-    fun safetyHide() {
+    fun tryHide() {
         runCatching { dismissAllowingStateLoss() }
     }
 }

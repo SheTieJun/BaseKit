@@ -217,14 +217,46 @@ fun EditText.hidePassword() {
     setSelection(text.length)
 }
 
-/**
- * 点击动画
- */
+
 fun View?.setClicksAnimate() {
     this?.setOnTouchListener { _, event ->
         when (event.action) {
-            MotionEvent.ACTION_DOWN -> animate().scaleX(0.8f).scaleY(0.8f).setDuration(100).start()
-            MotionEvent.ACTION_UP -> animate().scaleX(1f).scaleY(1f).setDuration(100).start()
+            MotionEvent.ACTION_UP -> animate().scaleX(1.15f).scaleY(1.15f).setDuration(150)
+                .withEndAction {
+                    animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+                }
+                .start()
+        }
+        false
+    }
+}
+
+
+
+fun View?.setClicksAnimate2() {
+    var isDown = false
+    var isDownAnimEnd = false
+    this?.setOnTouchListener { _, event ->
+        when (event.action) {
+            MotionEvent.ACTION_DOWN ->{
+                isDown = true
+                animate().scaleX(0.8f).scaleY(0.8f).setDuration(150)
+                    .withStartAction {
+                        isDownAnimEnd = false
+                    }
+                    .withEndAction {
+                        isDownAnimEnd = true
+                        if (isDown) return@withEndAction
+                        animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+                    }
+                    .start()
+            }
+            MotionEvent.ACTION_UP ->{
+                isDown = false
+                if (isDownAnimEnd){
+                    animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+                }
+            }
         }
         false
     }

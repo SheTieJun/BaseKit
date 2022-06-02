@@ -30,7 +30,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
-import me.shetj.base.tools.app.BarUtils
 import me.shetj.base.tools.app.FloatKit
 import me.shetj.base.tools.app.FloatKit.checkFloatPermission
 import me.shetj.base.tools.app.FloatKit.getWinManager
@@ -45,7 +44,7 @@ abstract class BaseFloatView : FrameLayout {
     /**
      * 获取悬浮窗中的视频播放view
      */
-    private var mStatusBarHeight = statusBarHeight // 系统状态栏的高度
+    var topDistance  = 0 // 系统状态栏的高度
     private var mXDownInScreen = 0f // 按下事件距离屏幕左边界的距离
     private var mYDownInScreen = 0f // 按下事件距离屏幕上边界的距离
     private var mXInScreen = 0f // 滑动事件距离屏幕左边界的距离
@@ -142,11 +141,11 @@ abstract class BaseFloatView : FrameLayout {
                 mXInView = event.x
                 mYInView = event.y
                 mXInScreen = event.rawX
-                mYInScreen = event.rawY - mStatusBarHeight
+                mYInScreen = event.rawY - topDistance
             }
             MotionEvent.ACTION_MOVE -> {
                 mXInScreen = event.rawX
-                mYInScreen = event.rawY - mStatusBarHeight
+                mYInScreen = event.rawY - topDistance
                 updateViewPosition()
             }
             MotionEvent.ACTION_UP -> if (mXDownInScreen == mXInScreen &&
@@ -159,19 +158,6 @@ abstract class BaseFloatView : FrameLayout {
         }
         return true
     }
-
-    /**
-     * 获取系统状态栏高度
-     */
-    private val statusBarHeight: Int
-        get() {
-            if (mStatusBarHeight == 0) {
-                BarUtils.getStatusBarHeight(context).also {
-                    mStatusBarHeight = it
-                }
-            }
-            return mStatusBarHeight
-        }
 
     private fun updateViewPosition() {
         if (this::winManager.isInitialized) {

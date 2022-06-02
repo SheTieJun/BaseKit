@@ -26,32 +26,28 @@
 package shetj.me.base.func.main
 
 import android.Manifest
-import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.animation.doOnEnd
-import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import androidx.datastore.preferences.core.intPreferencesKey
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.doOnIO
 import me.shetj.base.ktx.doOnMain
+import me.shetj.base.ktx.hasNavigationBars
 import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
-import me.shetj.base.ktx.openUri
 import me.shetj.base.ktx.saverCreate
 import me.shetj.base.ktx.saverDB
 import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
+import me.shetj.base.ktx.showNavigationBars
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsetsCompat
 import me.shetj.base.model.NetWorkLiveDate
@@ -60,6 +56,7 @@ import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.KeyboardUtil
+import me.shetj.base.tools.data.DataStoreKit
 import me.shetj.base.tools.image.ImageCallBack
 import me.shetj.base.tools.image.ImageUtils
 import me.shetj.base.tools.time.CodeUtil
@@ -85,7 +82,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView() {
-        setAppearance(isBlack = true,Color.TRANSPARENT)
+        setAppearance(isBlack = true, Color.TRANSPARENT)
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
                 this@MainActivity,
@@ -94,6 +91,14 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 "wxwork_android_3.apk"
             )
         }
+
+        launch {
+            DataStoreKit.get(intPreferencesKey("Test"))
+                .collect {
+                    it.toString().logI("DataStoreKit")
+                }
+        }
+
 
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
             TipPopupWindow.showTip(this, tipMsg = "测试一下INFO")
@@ -113,10 +118,15 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             ImageUtils.selectLocalImage(this)
         }
 
+        var i = 0
+        findViewById<View>(R.id.btn_save).setOnClickListener {
+            launch {
+                DataStoreKit.save("Test", i++)
+            }
+        }
+
         mContent.btnSetting.setOnClickListener {
-//            openSetting()
-//            openUri("lihua://wxMini?name=gh_d7564bed6a39&path=/pages/home/home%3Ffrom%3Dgjy%26a%3D2%26b%3D1")
-            openUri("lihuawriting://ordermarket")
+            openSetting()
         }
 
         mContent.tvTestCode.setOnClickListener { codeUtil!!.start() }
@@ -163,7 +173,11 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mContent.btnCustomTab.setOnClickListener {
-            hideNavigationBars()
+            if (hasNavigationBars()) {
+                hideNavigationBars()
+            } else {
+                showNavigationBars()
+            }
         }
 
         mContent.btnFind.setOnClickListener {
