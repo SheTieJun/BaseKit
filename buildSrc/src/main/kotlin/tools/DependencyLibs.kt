@@ -121,6 +121,8 @@ object DependencyLibs {
         add(AndroidX.startup)
         add(AndroidX.cryptoSp)
         add(AndroidX.activityKtx)
+        add(AndroidX.datastore)
+        add(AndroidX.datastoreCore)
 
         add(Lifecycle.livedata)
         add(Lifecycle.viewmodel)
@@ -201,6 +203,8 @@ object DependencyLibs {
         const val startup = "androidx.startup:startup-runtime:1.1.0"
         const val cryptoSp = "androidx.security:security-crypto:1.1.0-alpha03"
         const val activityKtx = "androidx.activity:activity-ktx:1.4.0"
+        const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
+        const val datastoreCore = "androidx.datastore:datastore-core:1.0.0"
 
         object Constraint {
             private const val constraintlayout = "2.1.3"

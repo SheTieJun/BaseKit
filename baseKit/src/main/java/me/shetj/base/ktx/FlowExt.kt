@@ -26,6 +26,7 @@ package me.shetj.base.ktx
 import java.util.Timer
 import java.util.TimerTask
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
@@ -36,6 +37,7 @@ import kotlinx.coroutines.launch
 
 fun <T> Flow<T>.throttleFirst(duration: Long = 1000L) = this.throttleFirstImpl(duration)
 
+@FlowPreview
 fun <T> Flow<T>.throttleLast(duration: Long = 1000L) = this.sample(duration)
 
 internal fun <T> Flow<T>.throttleFirstImpl(periodMillis: Long): Flow<T> {

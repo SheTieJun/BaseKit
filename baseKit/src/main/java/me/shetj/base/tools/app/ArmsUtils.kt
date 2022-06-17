@@ -50,7 +50,7 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.security.MessageDigest
-import me.shetj.base.S
+import me.shetj.base.BaseKit
 import me.shetj.base.ktx.hideSystemUI
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.setClicksAnimate
@@ -430,7 +430,7 @@ class ArmsUtils private constructor() {
 
         private fun getDensity(): Float {
             if (density <= 0f) {
-                density = S.app.resources.displayMetrics.density
+                density = BaseKit.app.resources.displayMetrics.density
             }
             return density
         }

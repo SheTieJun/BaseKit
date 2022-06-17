@@ -1,7 +1,7 @@
 package shetj.me.base.common.manager;
 
 
-import me.shetj.base.S;
+import me.shetj.base.BaseKit;
 import me.shetj.base.tools.file.SPUtils;
 import me.shetj.base.tools.json.EmptyUtils;
 
@@ -35,7 +35,7 @@ public class TokenManager {
 
 
     public String getToken() {
-        String token = (String) SPUtils.get(S.getApp().getApplicationContext(), SAVE_TOKEN, "");
+        String token = (String) SPUtils.get(BaseKit.getApp().getApplicationContext(), SAVE_TOKEN, "");
         if (EmptyUtils.Companion.isEmpty(token)) {
             return "";
         }
@@ -44,13 +44,13 @@ public class TokenManager {
     }
 
     public boolean isLogin() {
-        String token = (String) SPUtils.get(S.getApp().getApplicationContext(), SAVE_TOKEN, "");
+        String token = (String) SPUtils.get(BaseKit.getApp().getApplicationContext(), SAVE_TOKEN, "");
         return EmptyUtils.Companion.isNotEmpty(token);
     }
 
 
     public void setToken(String token) {
-        SPUtils.put(S.getApp().getApplicationContext(), SAVE_TOKEN, token);
+        SPUtils.put(BaseKit.getApp().getApplicationContext(), SAVE_TOKEN, token);
     }
 
 

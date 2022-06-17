@@ -13,15 +13,13 @@ android {
         versionCode = 1
         versionName = "1.0"
         ndk {
-            this.abiFilters.add("armeabi-v7a")
-            this.abiFilters.add("arm64")
-            this.abiFilters.add("x86_64")
-            this.abiFilters.add("x86")
+            this.abiFilters.addAll(listOf("armeabi-v7a", "arm64", "x86_64", "x86"))
         }
     }
 
     buildFeatures {
         viewBinding = true
+
     }
 
     compileOptions {
@@ -33,13 +31,31 @@ android {
     }
 
     //产品变种组
-    flavorDimensions.add("dev")
+    flavorDimensions.addAll(listOf("dev","xm"))
 
     productFlavors {
         this.create("dev") {
             dimension = "dev"
             versionNameSuffix = "-dev"
             applicationIdSuffix = ".dev"
+        }
+        this.create("xm"){
+            dimension = "xm"
+            versionNameSuffix = "-xm"
+            applicationIdSuffix = ".xm"
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+            enableV4Signing = true
+            keyAlias = "shetj"
+            keyPassword = "123456"
+            storeFile = File("./test.jks")
+            storePassword = "123456"
         }
     }
 
@@ -52,6 +68,7 @@ android {
             isShrinkResources = true // 移除无用的resource文件
             multiDexEnabled = true //ex突破65535的限制
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             buildConfigField("boolean", "LOG_DEBUG", "true")
@@ -91,47 +108,23 @@ dependencies {
 //    val fragment_version = "1.1.0"
 //    implementation "androidx.fragment:fragment:$fragment_version"
 //    implementation "androidx.fragment:fragment-ktx:$fragment_version"
-
-
 //    implementation "androidx.datastore:datastore-rxjava3:1.0.0-alpha06"
 //(Proto DataStore，它允许您存储类型化的对象（由协议缓冲区提供支持）)
 
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     implementation(project(":baseKit"))
-    //使用AS 自带得就可以了
-//    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.0-alpha-2"
-//    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:1.6.1"
-//    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:1.6.1"
-
     implementation("com.github.LuckSiege.PictureSelector:picture_library:v2.5.8")
-
     implementation("com.github.ybq:Android-SpinKit:1.4.0")
     implementation("com.airbnb.android:lottie:3.7.0")
-
-//    implementation "com.github.razerdp:BasePopup:2.2.1"
-//    implementation "com.afollestad.material-dialogs:core:3.1.0"
-
     //图片预览 https://github.com/iielse/ImageWatcher
     implementation("com.github.iielse:ImageWatcher:1.1.5")
-
-    val workVersion = "2.7.0"
-    implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("androidx.work:work-runtime:$workVersion")
-    //文件下载
-    // core
-//    implementation "com.liulishuo.okdownload:okdownload:1.0.7"
-// provide sqlite to store breakpoints
-//    implementation "com.liulishuo.okdownload:sqlite:1.0.7"
-// provide okhttp to connect to backend
-//    implementation "com.liulishuo.okdownload:okhttp:1.0.7"
 
     val qmuiversionShetj = "79920f62d5"
     implementation("com.google.guava:guava:29.0-android")
     implementation("com.github.SheTieJun.QMUI_Android:qmui:$qmuiversionShetj")
 
 //    debugImplementation "com.glance.guolindev:glance:1.0.0" //debug 情况下查看数据库
-//    implementation "androidx.core:core-splashscreen:1.0.0-alpha02"
 
     val pickVersion = "4.1.7"
     implementation("com.github.gzu-liyujiang.AndroidPicker:Common:$pickVersion")

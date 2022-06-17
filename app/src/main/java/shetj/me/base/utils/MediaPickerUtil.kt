@@ -154,8 +154,7 @@ object MediaPickerUtil {
     }
 
     fun getImageName(media: LocalMedia): String {
-        var name = ""
-        name = if (media.isCompressed) {
+        val name: String = if (media.isCompressed) {
             File(media.compressPath).name
         } else if (media.isCut) {
             File(media.cutPath).name
@@ -166,11 +165,10 @@ object MediaPickerUtil {
     }
 
     fun getImagePath(media: LocalMedia): String {
-        var name = ""
         Timber.i("getCutPath =" + media.compressPath)
         Timber.i("getCutPath =" + media.cutPath)
         Timber.i("getPath =" + media.path)
-        name = if (media.isCompressed) {
+        val name: String = if (media.isCompressed) {
             media.compressPath
         } else if (media.isCut) {
             media.cutPath

@@ -30,9 +30,6 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data
-                android:name="me.shetj.base.init.CommonInitialize"
-                android:value="androidx.startup" />
         </provider>
 
 

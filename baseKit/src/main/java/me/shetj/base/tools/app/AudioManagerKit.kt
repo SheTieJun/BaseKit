@@ -147,6 +147,7 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
                 onAudioFocusChangeListener = null
                 lifecycleOwner?.lifecycle?.removeObserver(this)
             }
+            else -> {}
         }
 
     }

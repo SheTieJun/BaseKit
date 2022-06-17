@@ -27,7 +27,7 @@ import android.content.Context
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.atomic.AtomicBoolean
-import me.shetj.base.S
+import me.shetj.base.BaseKit
 import me.shetj.base.ktx.requestNetWork
 import me.shetj.base.tools.app.NetworkUtils
 
@@ -90,7 +90,7 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
     }
 
     data class NetWorkInfo(
-        var hasNet: Boolean = NetworkUtils.isAvailable(S.app),
+        var hasNet: Boolean = NetworkUtils.isAvailable(BaseKit.app),
         var netType: NetType = NetType.NONE
     )
 }

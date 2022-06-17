@@ -234,7 +234,8 @@ fun View?.setClicksAnimate() {
 
 
 fun View?.setClicksAnimate2() {
-    var isDown = false
+    var isDown: Boolean
+    isDown = false
     var isDownAnimEnd = false
     this?.setOnTouchListener { _, event ->
         when (event.action) {

@@ -35,7 +35,7 @@ object SoundPoolKit {
         //声音ID 加载音频资源,这里用的是第二种，第三个参数为priority，声音的优先级*API中指出，priority参数目前没有效果，建议设置为1。
         val voiceId = soundPool.load(context, id, 1)
         //异步需要等待加载完成，音频才能播放成功
-        soundPool.setOnLoadCompleteListener { pool, sampleId, status ->
+        soundPool.setOnLoadCompleteListener { pool, _, _ ->
             //第一个参数soundID
             //第二个参数leftVolume为左侧音量值（范围= 0.0到1.0）
             //第三个参数rightVolume为右的音量值（范围= 0.0到1.0）

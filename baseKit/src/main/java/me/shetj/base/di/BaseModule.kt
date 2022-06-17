@@ -25,7 +25,7 @@ package me.shetj.base.di
 
 import java.io.File
 import java.util.concurrent.TimeUnit
-import me.shetj.base.S
+import me.shetj.base.BaseKit
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
@@ -92,7 +92,7 @@ val dbModule = module {
     single {
         Retrofit.Builder().apply {
             addConverterFactory(GsonConverterFactory.create(GsonKit.gson))
-            validateEagerly(S.isDebug) // 在开始的时候直接开始检测所有的方法
+            validateEagerly(BaseKit.isDebug) // 在开始的时候直接开始检测所有的方法
         }
     }
 
@@ -100,12 +100,12 @@ val dbModule = module {
         get<Retrofit.Builder>().apply {
             // 创建具体的ApiService的时候，才复制具体的client 和base 以及其他的变更
             client(get())
-            baseUrl(S.baseUrl ?: "https://github.com/")
+            baseUrl(BaseKit.baseUrl ?: "https://github.com/")
         }.build().create(KCApiService::class.java)
     }
 
     single {
-        LruDiskCache(S.app.cacheDir, AppUtils.appVersionCode, 1024 * 1024 * 100)
+        LruDiskCache(BaseKit.app.cacheDir, AppUtils.appVersionCode, 1024 * 1024 * 100)
     }
 
     single {

@@ -35,6 +35,7 @@ import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
  * WebView管理器，提供常用设置
  * @author Administrator
  */
+@Suppress("DEPRECATION")
 class WebViewManager(private val webView: WebView) {
     private val webSettings: WebSettings = webView.settings
 

@@ -56,7 +56,7 @@ import timber.log.Timber
  */
 
 @Keep
-object S {
+object BaseKit {
     var baseUrl: String? = null
         private set
 
@@ -123,7 +123,7 @@ object S {
             }
             startKoin {
                 fragmentFactory()
-                if (S.isDebug) {
+                if (BaseKit.isDebug) {
                     // No static method toDouble-impl
                     // androidLogger() doesn't work with Kotlin 1.6
                     androidLogger(Level.ERROR)

@@ -26,7 +26,7 @@ package me.shetj.base.tools.file
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.Properties
-import me.shetj.base.S
+import me.shetj.base.BaseKit
 
 /**
  * 获取assent属性
@@ -46,7 +46,7 @@ object BaseProperties {
         }
     }
 
-    private fun loadInputStream(inputStream: InputStream = S.app.applicationContext.assets.open(properties)) {
+    private fun loadInputStream(inputStream: InputStream = BaseKit.app.applicationContext.assets.open(properties)) {
         p.load(inputStream)
     }
 

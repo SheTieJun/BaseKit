@@ -29,3 +29,7 @@ simplify
 
 ### dev记录
 [WindowInsetsControllerCompat](https://github.com/SheTieJun/BaseKit/wiki/WindowInsetsControllerCompat%E4%BD%BF%E7%94%A8)
+
+
+### 初始化
+AppInitializer.getInstance(context).initializeComponent(BaseInitialize::class.java)

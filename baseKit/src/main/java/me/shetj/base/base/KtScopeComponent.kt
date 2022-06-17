@@ -32,7 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import me.shetj.base.S
+import me.shetj.base.BaseKit
 
 /**
  * class: KtScopeComponent{
@@ -158,4 +158,4 @@ fun LifecycleOwner.defLifeOwnerScope() = lazy {
         }
 }
 
-private fun coroutineContext() = SupervisorJob() + Dispatchers.Main.immediate + S.handler
+private fun coroutineContext() = SupervisorJob() + Dispatchers.Main.immediate + BaseKit.handler

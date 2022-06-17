@@ -33,7 +33,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import me.shetj.base.S
+import me.shetj.base.BaseKit
 
 
 /**
@@ -43,7 +43,7 @@ object DataStoreKit {
 
     private val Context.dataStore by preferencesDataStore("filename")
 
-    val dataStore: DataStore<Preferences> by lazy { S.app.dataStore }
+    val dataStore: DataStore<Preferences> by lazy { BaseKit.app.dataStore }
 
     suspend inline fun <reified T : Any> save(key: String, value: T) :Boolean{
         try {

@@ -26,9 +26,10 @@
 package shetj.me.base
 
 import android.content.Context
+import androidx.startup.AppInitializer
 import androidx.startup.Initializer
 import me.shetj.base.BuildConfig
-import me.shetj.base.S
+import me.shetj.base.BaseKit
 import me.shetj.base.init.CommonInitialize
 import me.shetj.base.network_coroutine.HttpKit
 import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
@@ -41,8 +42,9 @@ import shetj.me.base.di_kointest.allModules
 class BaseInitialize:Initializer<Unit> {
 
     override fun create(context: Context) {
+        AppInitializer.getInstance(context).initializeComponent(BaseInitialize::class.java)
         Thread.setDefaultUncaughtExceptionHandler(BaseUncaughtExceptionHandler())
-        S.initKoin(allModules)
+        BaseKit.initKoin(allModules)
         HttpKit.debugHttp(BuildConfig.DEBUG)
     }
 
