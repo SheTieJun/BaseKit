@@ -30,6 +30,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -79,6 +80,15 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         super.onCreate(savedInstanceState)
         KeyboardUtil.init(this)
         mContent = mViewBinding.content
+    }
+
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return super.onTouchEvent(event)
     }
 
     override fun initView() {

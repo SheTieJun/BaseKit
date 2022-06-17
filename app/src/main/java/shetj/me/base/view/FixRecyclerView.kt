@@ -27,6 +27,7 @@ package shetj.me.base.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
 import shetj.me.base.R
 import java.lang.reflect.Field
@@ -55,5 +56,19 @@ class FixRecyclerView  :
         } catch (e: NoSuchFieldException) {
             e.printStackTrace()
         }
+    }
+
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return super.dispatchTouchEvent(ev)
+    }
+
+
+    override fun onInterceptTouchEvent(e: MotionEvent?): Boolean {
+        return super.onInterceptTouchEvent(e)
+    }
+
+    override fun onTouchEvent(e: MotionEvent?): Boolean {
+        return super.onTouchEvent(e)
     }
 }

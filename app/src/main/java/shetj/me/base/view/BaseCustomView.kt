@@ -29,6 +29,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.time.DateUtils
@@ -147,6 +148,11 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
         val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         measure(widthMeasureSpec, heightMeasureSpec)
         Timber.i("widthMeasureSpec = $widthMeasureSpec \n heightMeasureSpec = $heightMeasureSpec")
+    }
+
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return super.onTouchEvent(event)
     }
 }
 

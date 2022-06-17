@@ -72,6 +72,8 @@ class TestKotlin {
             }
 
 
+
+
             //
             _uiState.shareIn(
                 this,   //用于共享数据流的 CoroutineScope。此作用域函数的生命周期应长于任何使用方，以使共享数据流在足够长的时间内保持活跃状态。
@@ -98,7 +100,7 @@ class TestKotlin {
             //1.6.0
             buildList<String> {
 
-            }
+            }.isNullOrEmpty().not()
 
             buildMap<String,String> {
 
