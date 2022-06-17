@@ -107,6 +107,7 @@ object S {
      * @param isDebug 是否是Debug
      * @param baseUrl if not null will init http
      */
+    @KoinExperimentalAPI
     @JvmOverloads
     @JvmStatic
     internal fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
