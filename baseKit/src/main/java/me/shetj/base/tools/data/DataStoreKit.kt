@@ -39,6 +39,7 @@ import me.shetj.base.BaseKit
 /**
  * dataStore
  */
+@SuppressWarnings("Unchecked")
 object DataStoreKit {
 
     private val Context.dataStore by preferencesDataStore("filename")

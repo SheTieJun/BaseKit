@@ -16,10 +16,11 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "BaseKit"
-include(":baseKit")
 include(":app")
+include(":baseKit")
 
 
+val list = ArrayList<String>()
 //初始化阶段开始时间
 var beginOfSetting = System.currentTimeMillis()
 //配置阶段开始时间
@@ -32,9 +33,8 @@ var beginOfProjectConfig = HashMap<Any, Long>()
 var beginOfTaskExecute = 0L
 //初始化阶段执行完毕
 gradle.projectsLoaded {
-    println("初始化总耗时 ${System.currentTimeMillis() - beginOfSetting} ms")
+    list.add("初始化总耗时 ${System.currentTimeMillis() - beginOfSetting} ms")
 }
-
 
 //build.gradle 执行前
 gradle.beforeProject {
@@ -42,18 +42,18 @@ gradle.beforeProject {
         configHasBegin = true
         beginOfConfig = System.currentTimeMillis()
     }
-    beginOfProjectConfig.put(project, System.currentTimeMillis())
+    beginOfProjectConfig[project] = System.currentTimeMillis()
 }
 
 //build.gradle 执行后
 gradle.afterProject {
     val begin = beginOfProjectConfig[project] ?:0L
-    println("配置阶段，$project 耗时：${System.currentTimeMillis() - begin} ms")
+    list.add("配置阶段，$project 耗时：${System.currentTimeMillis() - begin} ms")
 }
 
 //配置阶段完毕
 gradle.taskGraph.whenReady {
-    println("配置阶段总耗时：${System.currentTimeMillis() - beginOfConfig} ms")
+    list.add("配置阶段总耗时：${System.currentTimeMillis() - beginOfConfig} ms")
     beginOfTaskExecute = System.currentTimeMillis()
 }
 
@@ -65,11 +65,14 @@ gradle.taskGraph.beforeTask {
     }
 
     doLast {
-        println("执行阶段，$this 耗时：${System.currentTimeMillis() - startTs} ms")
+        list.add("执行阶段，$this 耗时：${System.currentTimeMillis() - startTs} ms")
     }
 }
 
 //执行阶段完毕
 gradle.buildFinished {
-    println("执行阶段总耗时：${System.currentTimeMillis() - beginOfTaskExecute}")
+    list.add("执行阶段总耗时：${System.currentTimeMillis() - beginOfTaskExecute}")
+    list.forEach {
+        println(it)
+    }
 }

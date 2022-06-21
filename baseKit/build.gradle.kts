@@ -1,4 +1,3 @@
-import tools.DependencyLibs
 import tools.addAndroid
 import tools.addCoroutines
 import tools.addGson
@@ -10,9 +9,9 @@ import tools.addRoom
 plugins {
     id("com.google.devtools.ksp")
     id("com.android.library")
-    kotlin("android")
     id("kotlin-parcelize")
     id("maven-publish")
+    kotlin("android")
 }
 
 
@@ -28,7 +27,6 @@ android {
         targetSdk = (32)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFile("consumer-rules.pro")
-        resourceConfigurations.add("zh")
     }
 
 

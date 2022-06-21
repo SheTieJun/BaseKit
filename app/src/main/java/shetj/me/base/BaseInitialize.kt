@@ -26,6 +26,7 @@
 package shetj.me.base
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.startup.AppInitializer
 import androidx.startup.Initializer
 import me.shetj.base.BuildConfig
@@ -39,10 +40,10 @@ import shetj.me.base.di_kointest.allModules
 /**
  * 用start_up 代替application
  */
+@Keep
 class BaseInitialize:Initializer<Unit> {
 
     override fun create(context: Context) {
-        AppInitializer.getInstance(context).initializeComponent(BaseInitialize::class.java)
         Thread.setDefaultUncaughtExceptionHandler(BaseUncaughtExceptionHandler())
         BaseKit.initKoin(allModules)
         HttpKit.debugHttp(BuildConfig.DEBUG)

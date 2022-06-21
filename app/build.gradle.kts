@@ -1,20 +1,23 @@
 plugins {
     id("com.android.application")
+    id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
     kotlin("android")
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
     namespace = "shetj.me.base"
     defaultConfig {
         applicationId = "shetj.me.base"
         minSdk = 24
-        targetSdk = 31
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
         ndk {
-            this.abiFilters.addAll(listOf("armeabi-v7a", "arm64", "x86_64", "x86"))
+            this.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64", "x86"))
         }
+        setProperty("archivesBaseName", "Base-$versionName") //修改Apk的输出名字
     }
 
     buildFeatures {
@@ -30,8 +33,8 @@ android {
         jvmTarget = "11"
     }
 
-    //产品变种组
-    flavorDimensions.addAll(listOf("dev","xm"))
+    //产品变种组,
+    flavorDimensions += (listOf("dev","demo"))
 
     productFlavors {
         this.create("dev") {
@@ -39,10 +42,11 @@ android {
             versionNameSuffix = "-dev"
             applicationIdSuffix = ".dev"
         }
-        this.create("xm"){
-            dimension = "xm"
-            versionNameSuffix = "-xm"
-            applicationIdSuffix = ".xm"
+        this.create("demo") {
+            dimension = "demo"
+            versionNameSuffix = "-demo"
+            applicationIdSuffix = ".demo"
+            minSdk = 24
         }
     }
 
