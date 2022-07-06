@@ -26,9 +26,7 @@
 package shetj.me.base.func.main
 
 import android.Manifest
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -44,11 +42,14 @@ import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
+import me.shetj.base.ktx.openUri
 import me.shetj.base.ktx.saverCreate
 import me.shetj.base.ktx.saverDB
+import me.shetj.base.ktx.searchTypeFile
 import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.showNavigationBars
+import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsetsCompat
 import me.shetj.base.model.NetWorkLiveDate
@@ -58,8 +59,7 @@ import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.data.DataStoreKit
-import me.shetj.base.tools.image.ImageCallBack
-import me.shetj.base.tools.image.ImageUtils
+import me.shetj.base.tools.file.FileQUtils
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
 import shetj.me.base.common.other.CommentPopup
@@ -125,7 +125,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
-            ImageUtils.selectLocalImage(this)
+           searchTypeFile {
+               Timber.i("url = ${it.toString()}")
+               Timber.i("url = ${it?.let { it1 -> FileQUtils.getFileByUri(this, it1) }}")
+           }
         }
 
         var i = 0
@@ -135,8 +138,15 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        mContent.btnSetting.setOnClickListener {
+        mContent.btnSetting.setOnClickListener {view ->
             openSetting()
+//            startActivityResult(intent = Intent(this,TestActivity::class.java)){
+//                it.resultCode.toString().logI()
+//            }
+        }
+
+        mContent.btnGoRouter.setOnClickListener {
+            openUri(mContent.router.text.toString())
         }
 
         mContent.tvTestCode.setOnClickListener { codeUtil!!.start() }
@@ -200,18 +210,17 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mContent.testEvent.setOnClickListener {
-
-            if (requestPermissions(
-                    arrayOf(
-                        Manifest.permission.WRITE_CALENDAR,
-                        Manifest.permission.READ_CALENDAR
-                    )
-                )
-            ) {
-                mViewModel.addEvent(this)
+            startRequestPermissions(permissions =  arrayOf(
+                Manifest.permission.WRITE_CALENDAR,
+                Manifest.permission.READ_CALENDAR
+            )){
+                if (it.filter { !it.value }.isEmpty()){
+                    mViewModel.addEvent(this)
+                }
             }
         }
         NetWorkLiveDate.getInstance().start(this)
+
         NetWorkLiveDate.getInstance().observe(this) {
             when (it?.netType) {
                 NetWorkLiveDate.NetType.NONE -> Timber.tag("requestNetWork")
@@ -246,13 +255,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    override fun isPermissionGranted(permissions: Map<String, Boolean>) {
-        super.isPermissionGranted(permissions)
-        val empty = permissions.filter { !it.value }.isEmpty()
-        if (empty) {
-            mViewModel.addEvent(this)
-        }
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -273,29 +275,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     public override fun initData() {
         codeUtil = CodeUtil(mViewBinding.content.tvTestCode)
         codeUtil?.register(this.lifecycle)
-    }
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        ImageUtils.onActivityResult(
-            this,
-            requestCode,
-            resultCode,
-            data,
-            object : ImageCallBack {
-                override fun onSuccess(key: Uri) {
-                    Timber.i("url = $key")
-                }
-
-                override fun onFail() {
-
-                }
-
-                override fun isNeedCut(): Boolean {
-                    return false
-                }
-            })
     }
 
 }

@@ -79,5 +79,12 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
+    <style name="md_trans_bottom_dialog_style" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@null</item>
+    </style>
 
 </resources>

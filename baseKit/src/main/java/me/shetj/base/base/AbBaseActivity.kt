@@ -23,23 +23,15 @@
  */
 package me.shetj.base.base
 
-import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.appbar.MaterialToolbar
 import me.shetj.base.R
-import me.shetj.base.ktx.hasPermission
 
 /**
  * 基础类  view 层
@@ -47,59 +39,6 @@ import me.shetj.base.ktx.hasPermission
  */
 @Keep
 abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
-
-    //region registerForActivityResult :1.RequestMultiplePermissions ,2.StartActivityForResult
-    private val permissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-            isPermissionGranted(it)
-        }
-
-    private val activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        onStartActivityForResult(it)
-    }
-
-    /**
-     * 请求权限
-     */
-    fun requestPermission(permission: String): Boolean {
-        val isGranted = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
-        if (!isGranted) {
-            permissionLauncher.launch(arrayOf(permission))
-        }
-        return isGranted
-    }
-
-    /**
-     * 请求权限
-     */
-    fun requestPermissions(permissions: Array<String>): Boolean {
-        val isGranted = hasPermission(*permissions, isRequest = false)
-        if (!isGranted) {
-            permissionLauncher.launch(permissions)
-        }
-        return isGranted
-    }
-
-    /**
-     * 新的方式startActivityForResult
-     */
-    fun startActivityForResult(intent: Intent) {
-        activityLauncher.launch(intent)
-    }
-
-    /**
-     * all has permission : permissions.filter { !it.value }.isEmpty()
-     */
-    open fun isPermissionGranted(permissions: Map<String, Boolean>) {
-    }
-
-    /**
-     * handle activityResult
-     */
-    open fun onStartActivityForResult(activityResult: ActivityResult?) {
-    }
-
-    //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

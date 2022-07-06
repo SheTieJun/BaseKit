@@ -21,7 +21,7 @@ simplify
 #### [Flow 和 LiveData 之操作符：throttleFirst、 throttleLast 、throttleLatest、debounce](https://blog.csdn.net/StjunF/article/details/120872772)
 #### [Kotlin协程+Retrofit下载文件并实现进度监听](https://blog.csdn.net/StjunF/article/details/120909119)
 #### [WindowInsetsControllerCompat使用](https://blog.csdn.net/StjunF/article/details/121840122)
-
+#### [ActivityResultLauncher使用](https://github.com/SheTieJun/BaseKit/wiki/ActivityResultLauncher%E4%BD%BF%E7%94%A8)
 
 ### 分支
 [Base:含有Rx](https://github.com/SheTieJun/BaseKit/tree/base_rx)
@@ -29,7 +29,3 @@ simplify
 
 ### dev记录
 [WindowInsetsControllerCompat](https://github.com/SheTieJun/BaseKit/wiki/WindowInsetsControllerCompat%E4%BD%BF%E7%94%A8)
-
-
-### 初始化
-AppInitializer.getInstance(context).initializeComponent(BaseInitialize::class.java)

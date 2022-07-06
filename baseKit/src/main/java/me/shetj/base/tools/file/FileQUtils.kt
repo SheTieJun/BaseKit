@@ -32,47 +32,23 @@ import android.os.FileUtils
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
+import androidx.appcompat.app.AppCompatActivity
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import kotlin.random.Random
+import me.shetj.base.ktx.register
 
 /**
  * 安卓Q 文件基础操作
  */
 object FileQUtils {
-//
-//    /**
-//     * 搜索文档
-//     */
-//    fun AppCompatActivity.searchTypeFile(type:String = "image/*",callback:ActivityResultCallback<Uri?>): ActivityResultLauncher<String> {
-//        return registerForActivityResult(ActivityResultContracts.GetContent(),callback)
-//    }
-//
-//    /**
-//     * 搜索多类型的文件
-//     */
-//    fun AppCompatActivity.searchFile(vararg type:String ,callback:ActivityResultCallback<Uri?>){
-//        registerForActivityResult(ActivityResultContracts.OpenDocument(),callback).launch(type)
-//    }
-//
-//
-//    /**
-//     * 创建文件
-//     */
-//    fun AppCompatActivity.createFile( fileName: String,callback:ActivityResultCallback<Uri>){
-//        registerForActivityResult(ActivityResultContracts.CreateDocument(), callback).launch(fileName)
-//    }
-
-    /**
-     * 删除文件
-     */
-    fun Context.delFile(uri: Uri) {
-        DocumentsContract.deleteDocument(contentResolver, uri)
-    }
 
     @WorkerThread
     fun writeDataToDocument(context: Context, uri: Uri, content: String) {
@@ -184,4 +160,11 @@ object FileQUtils {
                     }
             } else null
         } else null
+}
+
+/**
+ * 删除文件
+ */
+fun Context.delFile(uri: Uri) {
+    DocumentsContract.deleteDocument(contentResolver, uri)
 }

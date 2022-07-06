@@ -30,6 +30,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
+import android.media.MediaScannerConnection.OnScanCompletedListener
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -46,6 +47,11 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
@@ -56,10 +62,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.Event
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import java.io.File
 import java.lang.reflect.Method
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.coroutines.resume
+import kotlin.random.Random
+import kotlin.random.asKotlinRandom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -205,14 +218,6 @@ fun AppCompatActivity.onRequestPermissionsResultImpl(
     return sb.toString()
 }
 
-inline fun runOnMain(crossinline run: () -> Unit = {}) {
-    TaskExecutor.executeOnMain { run() }
-}
-
-inline fun runOnIo(crossinline run: () -> Unit = { }) {
-    TaskExecutor.executeOnIO { run() }
-}
-
 fun isMainThread(): Boolean {
     return Looper.getMainLooper().thread === Thread.currentThread()
 }
@@ -299,23 +304,24 @@ internal fun Context.requestNetWork() {
                 super.onLost(network)
                 NetWorkLiveDate.getInstance().onLost()
             }
-//        override fun onCapabilitiesChanged (network: Network, networkCapabilities: NetworkCapabilities) {
-//            super.onCapabilitiesChanged(network, networkCapabilities)
-//            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-//
-//                when {
-//                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-//                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.WIFI)
-//                    }
-//                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-//                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.PHONE)
-//                    }
-//                    else -> {
-//                        NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
-//                    }
-//                }
-//            }
-//        }
+
+            override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+                super.onCapabilitiesChanged(network, networkCapabilities)
+                if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
+
+                    when {
+                        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                            NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.WIFI)
+                        }
+                        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                            NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.PHONE)
+                        }
+                        else -> {
+                            NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
+                        }
+                    }
+                }
+            }
         }
     )
 }
@@ -345,8 +351,10 @@ suspend fun refreshAlbum(context: Context, fileUri: String) {
         val file = File(fileUri)
         MediaScannerConnection.scanFile(
             context, arrayOf(file.toString()),
-            null, null
-        )
+            arrayOf("image/jpeg")
+        ) { path, uri ->
+            ("扫描完成 path: $path, uri: $uri").logI()
+        }
     }
 }
 
@@ -361,9 +369,15 @@ suspend fun Context.getMediaScanner(): MediaScannerConnection = withContext(Disp
                 }
 
                 override fun onScanCompleted(path: String?, uri: Uri?) {
+                    ("扫描完成 path: $path, uri: $uri").logI()
                 }
             }
         )
         mMediaScanner.connect()
     }
 }
+
+
+
+
+

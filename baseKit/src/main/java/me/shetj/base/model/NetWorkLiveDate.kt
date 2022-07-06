@@ -52,7 +52,6 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
         super.onInactive()
     }
 
-    @RequiresPermission(allOf = ["android.permission.CHANGE_NETWORK_STATE"])
     fun start(context: Context) {
         if (isStarted.compareAndSet(false, true)) {
             context.applicationContext.requestNetWork()

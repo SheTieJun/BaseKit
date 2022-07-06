@@ -21,4 +21,8 @@
     <declare-styleable name="ForegroundImageView">
         <attr name="android:foreground" />
     </declare-styleable>
+
+    <declare-styleable name="MediumBoldTextView">
+        <attr name="strokeWidth" format="dimension" />
+    </declare-styleable>
 </resources>

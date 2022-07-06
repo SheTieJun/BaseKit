@@ -166,4 +166,26 @@
         android:text="测试DataStore"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_test_picker" />
+
+
+    <EditText
+        android:id="@+id/router"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_go_router"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAllCaps="false"
+        android:text="go"
+        app:layout_constraintStart_toEndOf="@id/router"
+        app:layout_constraintBottom_toBottomOf="parent"
+      />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

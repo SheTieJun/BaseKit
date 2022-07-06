@@ -65,31 +65,36 @@ class TestKotlin {
             onBufferOverflow = BufferOverflow.DROP_OLDEST
         )
 
+//        @JvmStatic
+//        fun main(args: Array<String>) = runBlocking {
+//            liveDataA.addSource(liveDataB1) {
+//                liveDataA.postValue(liveDataB1.isTrue()|| liveDataB2.isTrue() )
+//            }
+//
+//
+//
+//
+//            //
+//            _uiState.shareIn(
+//                this,   //用于共享数据流的 CoroutineScope。此作用域函数的生命周期应长于任何使用方，以使共享数据流在足够长的时间内保持活跃状态。
+//                replay = 1, //要重放 (replay) 至每个新收集器的数据项数量。
+//                started = SharingStarted.WhileSubscribed() //“启动”行为政策。
+//            )
+//
+//            _uiState.compareAndSet(UIState.Loading, UIState.End)
+//
+//            _testStatus.resetReplayCache()//清空前面的值 ,供您在不想重放已向数据流发送的最新信息
+//
+//
+//            var dets by Delegates.observable("默认值"){
+//                    property, oldValue, newValue ->
+//
+//            }
+//        }
+
         @JvmStatic
-        fun main(args: Array<String>) = runBlocking {
-            liveDataA.addSource(liveDataB1) {
-                liveDataA.postValue(liveDataB1.isTrue()|| liveDataB2.isTrue() )
-            }
-
-
-
-
-            //
-            _uiState.shareIn(
-                this,   //用于共享数据流的 CoroutineScope。此作用域函数的生命周期应长于任何使用方，以使共享数据流在足够长的时间内保持活跃状态。
-                replay = 1, //要重放 (replay) 至每个新收集器的数据项数量。
-                started = SharingStarted.WhileSubscribed() //“启动”行为政策。
-            )
-
-            _uiState.compareAndSet(UIState.Loading, UIState.End)
-
-            _testStatus.resetReplayCache()//清空前面的值 ,供您在不想重放已向数据流发送的最新信息
-
-
-            var dets by Delegates.observable("默认值"){
-                    property, oldValue, newValue ->
-
-            }
+        fun main(args: Array<String>) {
+           println(System.currentTimeMillis().toInt())
         }
 
         /**
