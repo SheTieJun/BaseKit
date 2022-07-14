@@ -28,6 +28,7 @@ package shetj.me.base.func.main
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
+import java.util.concurrent.TimeUnit
 import me.shetj.base.mvvm.BaseViewModel
 import me.shetj.base.network_coroutine.HttpResult
 import me.shetj.base.network_coroutine.KCHttpV3
@@ -45,9 +46,8 @@ import shetj.me.base.bean.ResultMusic
  * **@email：** 375105540@qq.com<br></br>
  * **@describe**<br></br>
  */
-class MainViewModel() :BaseViewModel() {
+class MainViewModel() : BaseViewModel() {
     val liveDate = MutableLiveData<HttpResult<ResultMusic>>()
-    var isKeep = true
     fun getNightModel(): Int {
         val defaultNightMode = AppCompatDelegate.getDefaultNightMode()
 
@@ -60,11 +60,10 @@ class MainViewModel() :BaseViewModel() {
         return AppCompatDelegate.MODE_NIGHT_YES
     }
 
-    private val testUrl =
-        "https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json"
+    private val testUrl = "https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json"
 
     private suspend fun getMusicV3() = KCHttpV3.get<ResultMusic>(testUrl,
-        option = {
+        requestOption = {
             this.cacheKey = "testUrl"
             this.cacheTime = 10
             this.cacheMode = CacheMode.ONLY_NET
@@ -73,7 +72,7 @@ class MainViewModel() :BaseViewModel() {
         })
 
 
-    suspend fun getMusicV2()  {
+    suspend fun getMusicV2() {
         val httpResult = getMusicV3()
         liveDate.postValue(httpResult)
     }
@@ -84,11 +83,11 @@ class MainViewModel() :BaseViewModel() {
             context,
             title = "这是一个测试时间",
             des = "这是测试时间描述",
-            remindTime = DateUtils.str2Calendar("2020-12-16 00:00:00")!!.timeInMillis,
+            remindTime = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(5),
             endTime = null, previousTime = 5
         )
-        if (id != -1L){
-            TipKit.success(context,"添加成功")
+        if (id != -1L) {
+            TipKit.success(context, "添加成功")
         }
     }
 }

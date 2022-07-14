@@ -45,7 +45,7 @@ import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.openUri
 import me.shetj.base.ktx.saverCreate
 import me.shetj.base.ktx.saverDB
-import me.shetj.base.ktx.searchTypeFile
+import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.showNavigationBars
@@ -125,7 +125,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
-           searchTypeFile {
+           selectFile {
                Timber.i("url = ${it.toString()}")
                Timber.i("url = ${it?.let { it1 -> FileQUtils.getFileByUri(this, it1) }}")
            }

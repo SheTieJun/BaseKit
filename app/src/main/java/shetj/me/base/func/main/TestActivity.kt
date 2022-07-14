@@ -39,14 +39,12 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 class TestActivity:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(TextView(this))
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-
         setResult(RESULT_CANCELED)
     }
 }
