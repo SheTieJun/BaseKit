@@ -47,6 +47,7 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -235,7 +236,6 @@ fun View?.setClicksAnimate() {
 
 fun View?.setClicksAnimate2() {
     var isDown: Boolean
-    isDown = false
     var isDownAnimEnd = false
     this?.setOnTouchListener { _, event ->
         when (event.action) {

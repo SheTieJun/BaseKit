@@ -50,6 +50,7 @@ fun Context.openActivity(scheme: String) {
 /**
  * ABCD => (D->B) = ACDB
  * ABCBD => (D->B) = ABCDB
+ * 只把上一界面提前
  */
 fun Context.moveToFront(activity: Activity) {
     val intent: Intent = Intent(this, activity::class.java).apply {
@@ -59,7 +60,7 @@ fun Context.moveToFront(activity: Activity) {
 }
 
 /**
- * 通过包名，让APP到前台，前提是APP在后台了，所有如果代码无效，可能是因为APP判在前台
+ * 通过包名，让APP到前台，前提是APP在后台了，如果代码无效，可能是因为APP被判定在前台
  */
 fun ActivityManager.moveToFrontApp(packageName: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

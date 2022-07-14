@@ -108,7 +108,7 @@ fun String?.logD(tag: String = "base") {
 /**
  * 输出到文件
  */
-fun String?.logOutOut() {
+fun String?.logOutPut() {
     DebugFunc.getInstance().saveLogToFile(this)
 }
 

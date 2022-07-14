@@ -30,6 +30,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -42,9 +43,9 @@ import me.shetj.base.BaseKit
 @SuppressWarnings("Unchecked")
 object DataStoreKit {
 
-    private val Context.dataStore by preferencesDataStore("filename")
+    private val Context.myDataStore by preferencesDataStore("Base_DataStore")
 
-    val dataStore: DataStore<Preferences> by lazy { BaseKit.app.dataStore }
+    val dataStore: DataStore<Preferences> by lazy { BaseKit.app.myDataStore }
 
     suspend inline fun <reified T : Any> save(key: String, value: T) :Boolean{
         try {
@@ -85,7 +86,10 @@ object DataStoreKit {
 
     inline fun <reified T : Any> get(key: Preferences.Key<T>): Flow<T?> {
         return dataStore.data.map {
-            it[key] }
+            it[key]
+        }.catch {
+            it.printStackTrace()
+        }
     }
 
     suspend inline fun <reified T : Any> getOrNull(key: Preferences.Key<T>): T? {

@@ -48,9 +48,6 @@ import org.koin.java.KoinJavaComponent.get
  * 协程 Http请求
  * 感觉可能用的不多，所以就只写这几个方法了
  * [me.shetj.base.network_coroutine.RequestOption]控制缓存
- *
- * TODO(1. 需要测试各种请求)
- * TODO(2. 添加上传):但是好像现在基本不需要使用上传，都是使用云oss
  */
 object KCHttpV3 {
 
@@ -62,32 +59,25 @@ object KCHttpV3 {
     suspend inline fun <reified T> get(
         url: String,
         maps: Map<String, String>? = HashMap(),
-        noinline option: (RequestOption.() -> Unit)? = null
+        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            withContext(Dispatchers.IO) {
-                getDataFromApiOrCache(option) { timeout, repeatNum ->
-                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
-                        apiService.get(url, maps).string()
-                    }
-                }
+            doNet(requestOption) {
+                apiService.get(url, maps).string()
             }
         }
     }
+
 
     @JvmOverloads
     suspend inline fun <reified T> post(
         url: String,
         maps: Map<String, String>? = HashMap(),
-        noinline option: (RequestOption.() -> Unit)? = null
+        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            withContext(Dispatchers.IO) {
-                getDataFromApiOrCache(option) { timeout, repeatNum ->
-                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
-                        apiService.post(url, maps).string()
-                    }
-                }
+            doNet(requestOption) {
+                apiService.post(url, maps).string()
             }
         }
     }
@@ -96,15 +86,11 @@ object KCHttpV3 {
     suspend inline fun <reified T> postJson(
         url: String,
         json: String,
-        noinline option: (RequestOption.() -> Unit)? = null
+        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            withContext(Dispatchers.IO) {
-                getDataFromApiOrCache(option) { timeout, repeatNum ->
-                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
-                        apiService.postJson(url, json.createJson()).string()
-                    }
-                }
+            doNet(requestOption) {
+                apiService.postJson(url, json.createJson()).string()
             }
         }
     }
@@ -113,15 +99,11 @@ object KCHttpV3 {
     suspend inline fun <reified T> postBody(
         url: String,
         body: Any,
-        noinline option: (RequestOption.() -> Unit)? = null
+        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            withContext(Dispatchers.IO) {
-                getDataFromApiOrCache(option) { timeout, repeatNum ->
-                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
-                        apiService.postBody(url, body).string()
-                    }
-                }
+            doNet(requestOption) {
+                apiService.postBody(url, body).string()
             }
         }
     }
@@ -130,37 +112,36 @@ object KCHttpV3 {
     suspend inline fun <reified T> postBody(
         url: String,
         body: RequestBody,
-        noinline cacheOption: (RequestOption.() -> Unit)? = null
+        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            withContext(Dispatchers.IO) {
-                getDataFromApiOrCache(cacheOption) { timeout, repeatNum ->
-                    retryRequest(timeout = timeout, repeatNum = repeatNum) {
-                        apiService.postBody(url, body).string()
-                    }
-                }
+            doNet(requestOption) {
+                apiService.postBody(url, body).string()
             }
         }
     }
 
+    /**
+     * @param requestOption  请求选项
+     * @param fromNetworkValue 如果没有使用缓存，就会通过改方法获取，来自网络内容
+     */
     suspend inline fun <reified T> getDataFromApiOrCache(
-        noinline cacheOption: (RequestOption.() -> Unit)?,
-        crossinline formNetworkValue: suspend (timeout: Long, repeatNum: Int) -> String
+        noinline requestOption: (RequestOption.() -> Unit)?,
+        crossinline fromNetworkValue: suspend (timeout: Long, repeatNum: Int) -> String
     ): T {
-        val cache = cacheOption?.let { RequestOption().apply(cacheOption) }
+        val cache = requestOption?.let { RequestOption().apply(requestOption) }
         val timeout = cache?.timeout ?: -1
         val repeatNum = cache?.repeatNum ?: 1
 
         return when (cache?.cacheMode) {
             CacheMode.DEFAULT -> {
-
                 // 不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
-                formNetworkValue(timeout, repeatNum)
+                fromNetworkValue(timeout, repeatNum)
             }
             CacheMode.FIRST_NET -> {
                 // 先请求网络，请求网络失败后再加载缓存
                 try {
-                    formNetworkValue(timeout, repeatNum)
+                    fromNetworkValue(timeout, repeatNum)
                 } catch (e: Exception) {
                     withContext(Dispatchers.IO) {
                         HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)?.also {
@@ -177,14 +158,14 @@ object KCHttpV3 {
                             "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logD(TAG)
                         }
                 } ?: kotlin.run {
-                    formNetworkValue(timeout, repeatNum).also {
+                    fromNetworkValue(timeout, repeatNum).also {
                         saveCache(cache, it)
                     }
                 }
             }
             CacheMode.ONLY_NET -> {
                 // 仅加载网络，但数据依然会被缓存
-                formNetworkValue(timeout, repeatNum).also {
+                fromNetworkValue(timeout, repeatNum).also {
                     saveCache(cache, it)
                 }
             }
@@ -206,7 +187,7 @@ object KCHttpV3 {
                 val cacheInfo = withContext(Dispatchers.IO) {
                     HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)
                 }
-                val apiInfo = formNetworkValue(timeout, repeatNum)
+                val apiInfo = fromNetworkValue(timeout, repeatNum)
 
                 if (cacheInfo != apiInfo) {
                     saveCache(cache, apiInfo)
@@ -216,7 +197,7 @@ object KCHttpV3 {
                 }
             }
             else -> {
-                formNetworkValue(timeout, repeatNum).also {
+                fromNetworkValue(timeout, repeatNum).also {
                     saveCache(cache, it)
                 }
             }
@@ -247,12 +228,13 @@ object KCHttpV3 {
                 val bufferedInputStream = BufferedInputStream(inputStream, bufferSize)
                 var readLength: Int
                 while (bufferedInputStream.read(buffer, 0, bufferSize)
-                    .also { readLength = it } != -1
+                        .also { readLength = it } != -1
                 ) {
                     outputStream.write(buffer, 0, readLength)
                     currentLength += readLength
                     val progress = currentLength.toFloat() / contentLength.toFloat()
-                    if (progress - emitProgress > 5) {
+                    //每次超过%1才进行更新
+                    if (progress - emitProgress > 0.01) {
                         emitProgress = progress
                         emit(
                             HttpResult.progress(
@@ -288,13 +270,33 @@ object KCHttpV3 {
         this as T
     }
 
+
+    /**
+     * @param doNetWork 请求网络
+     */
+    suspend inline fun <reified T> doNet(
+        noinline option: (RequestOption.() -> Unit)? = null,
+        crossinline doNetWork: suspend () -> String
+    ) = withContext(Dispatchers.IO) {
+        getDataFromApiOrCache<T>(option,
+            fromNetworkValue = { timeout, repeatNum ->
+                retryRequest(timeout = timeout, repeatNum = repeatNum) {
+                    doNetWork.invoke()
+                }
+            })
+    }
+
     /**
      * 重试逻辑
+     * @param repeatNum 重试次数
+     * @param initialDelay 重试延迟,每次重试延迟多【次数*[factor]】秒,
+     * @param timeout 协程的超时处理，这里超过retrofit的超时就意义不大了
+     * @param factor 用处理重试延迟的样本
      */
     suspend fun retryRequest(
         repeatNum: Int = 3,
-        initialDelay: Long = 1000,
-        timeout: Long = 10000,
+        initialDelay: Long = 1000,//1 second
+        timeout: Long = 10000,//10 second
         factor: Double = 2.0,
         block: suspend () -> String
     ): String {
@@ -312,7 +314,7 @@ object KCHttpV3 {
             return requestWithTimeout(timeout, block)
         } catch (e: TimeoutCancellationException) {
             throw ApiException(e, TIMEOUT_ERROR).apply {
-                this.setDisplayMessage(" Timeout Cancel, Timeout $timeout, maybe has more time ")
+                this.setDisplayMessage("coroun Timeout Cancel, Timeout $timeout, maybe has more time ")
             }
         } catch (e: Exception) {
             throw ApiException.handleException(e)

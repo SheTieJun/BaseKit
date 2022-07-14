@@ -75,6 +75,9 @@ fun <T> LiveData<T>.throttleFirst(duration: Long = 1000L) = MediatorLiveData<T>(
     }
 }
 
+/**
+ * 一段时间内最新的值
+ */
 fun <T> LiveData<T>.throttleLatest(duration: Long = 1000L) = MediatorLiveData<T>().also { mld ->
 
     val isLatest = AtomicBoolean(true)

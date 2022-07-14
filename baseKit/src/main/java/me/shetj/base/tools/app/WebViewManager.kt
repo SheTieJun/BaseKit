@@ -24,6 +24,8 @@
 package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.util.Base64
 import android.webkit.CookieManager
 import android.webkit.WebSettings
@@ -141,6 +143,22 @@ class WebViewManager(private val webView: WebView) {
             cookieManager.setCookie(entry.key, entry.value)
         }
         cookieManager.flush()
+    }
+
+    /**
+     * 设置可以自定播放视频，不要去强制触碰
+     */
+    fun autoPlay(){
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+            webSettings.mediaPlaybackRequiresUserGesture = false
+        }
+    }
+
+
+    fun disAutoPlay(){
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+            webSettings.mediaPlaybackRequiresUserGesture = true
+        }
     }
 
     /**

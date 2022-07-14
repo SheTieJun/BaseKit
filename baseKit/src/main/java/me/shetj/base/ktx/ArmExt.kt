@@ -26,10 +26,10 @@ package me.shetj.base.ktx
 
 import me.shetj.base.base.TaskExecutor
 
-inline fun runOnMain(crossinline run: () -> Unit = {}) {
+fun runOnMain(run: () -> Unit = {}) {
     TaskExecutor.executeOnMain { run() }
 }
 
-inline fun runOnIo(crossinline run: () -> Unit = { }) {
+fun runOnIo(run: () -> Unit = { }) {
     TaskExecutor.executeOnIO { run() }
 }

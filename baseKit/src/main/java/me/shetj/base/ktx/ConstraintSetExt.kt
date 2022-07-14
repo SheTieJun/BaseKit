@@ -34,7 +34,7 @@ import androidx.constraintlayout.widget.ConstraintSet.START
 import androidx.constraintlayout.widget.ConstraintSet.TOP
 
 /**
- * 重写布局
+ * 感觉用updateLayout 更快捷
  */
 inline fun ConstraintLayout?.reLayout(crossinline onLayout: ConstraintSet.() -> Unit) {
     this?.let { constraintLayout ->

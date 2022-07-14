@@ -48,8 +48,6 @@ import java.util.concurrent.atomic.AtomicInteger
 /****************************************************************************************************************/
 
 
-private val mNextLocalRequestCode: AtomicInteger = AtomicInteger()
-
 fun <I, O> ComponentActivity.register(
     @NonNull key: String,
     @NonNull contract: ActivityResultContract<I, O>,
@@ -68,29 +66,33 @@ fun <I, O> ComponentActivity.register(
 
 
 fun ComponentActivity.startActivityResultLauncher(
-    @NonNull key: String = "startActivityResult" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startActivityResultLauncher",
     @NonNull callback: ActivityResultCallback<ActivityResult>
 ): ActivityResultLauncher<Intent> {
     return register(key, ActivityResultContracts.StartActivityForResult(), callback)
 }
 
 fun ComponentActivity.startRequestPermissionsLauncher(
-    @NonNull key: String = "startRequestMultiplePermissions" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startRequestPermissionsLauncher",
     @NonNull callback: ActivityResultCallback<Map<String, Boolean>>
 ): ActivityResultLauncher<Array<String>> {
     return register(key, ActivityResultContracts.RequestMultiplePermissions(), callback)
 }
 
 fun ComponentActivity.startRequestPermissionLauncher(
-    @NonNull key: String = "startRequestPermission" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startRequestPermissionLauncher",
     @NonNull callback: ActivityResultCallback<Boolean>
 ): ActivityResultLauncher<String> {
     return register(key, ActivityResultContracts.RequestPermission(), callback)
 }
 
 
+//region Activity 部分
+/**
+ * 获取多个权限
+ */
 fun ComponentActivity.startRequestPermissions(
-    @NonNull key: String = "startRequestMultiplePermissions" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startRequestMultiplePermissions",
     @NonNull permissions: Array<String>,
     @NonNull callback: ActivityResultCallback<Map<String, Boolean>>
 ) {
@@ -98,8 +100,11 @@ fun ComponentActivity.startRequestPermissions(
 }
 
 
+/**
+ * 获取单个权限
+ */
 fun ComponentActivity.startRequestPermission(
-    @NonNull key: String = "startRequestPermission" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startRequestPermission",
     @NonNull permission: String,
     @NonNull callback: ActivityResultCallback<Boolean>
 ) {
@@ -111,7 +116,7 @@ fun ComponentActivity.startRequestPermission(
  * startActivityResult
  */
 fun ComponentActivity.startActivityResult(
-    @NonNull key: String = "startActivityResult" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startActivityResult",
     @NonNull intent: Intent,
     @NonNull callback: ActivityResultCallback<ActivityResult>
 ) {
@@ -120,10 +125,17 @@ fun ComponentActivity.startActivityResult(
 
 
 /**
- * 搜索文档
+ * 选择一个文件
  */
-fun AppCompatActivity.searchTypeFile(type: String = "image/*", callback: ActivityResultCallback<Uri?>) {
+fun AppCompatActivity.selectFile(type: String = "image/*", callback: ActivityResultCallback<Uri?>) {
     register("GetContent", ActivityResultContracts.GetContent(), callback).launch(type)
+}
+
+/**
+ * 选择多个文件
+ */
+fun AppCompatActivity.selectMultipleFile(type: String = "image/*", callback: ActivityResultCallback<List<Uri>>) {
+    register("selectMultipleFile", ActivityResultContracts.GetMultipleContents(), callback).launch(type)
 }
 
 /**
@@ -142,9 +154,47 @@ fun AppCompatActivity.createFile(fileName: String, callback: ActivityResultCallb
 }
 
 
+/**
+ * 拍照
+ */
+fun AppCompatActivity.takePicture(callback: ActivityResultCallback<Uri?>) {
+    val pathUri = createImagePathUri(this)
+    register("takePicture", ActivityResultContracts.TakePicture()) { result ->
+        if (result) {
+            callback.onActivityResult(pathUri)
+        } else {
+            callback.onActivityResult(null)
+        }
+    }.launch(pathUri)
+}
+
+/**
+ * 视频
+ */
+fun AppCompatActivity.takeVideo(callback: ActivityResultCallback<Uri?>) {
+    val pathUri = createVideoPathUri(this)
+    register("takeVideo", ActivityResultContracts.CaptureVideo()) { result ->
+        if (result) {
+            callback.onActivityResult(pathUri)
+        } else {
+            callback.onActivityResult(null)
+        }
+    }.launch(pathUri)
+}
+
+
+/**
+ * 选择练习人
+ */
+fun AppCompatActivity.pickContact(callback: ActivityResultCallback<Uri?>) {
+    register("pickContact", ActivityResultContracts.PickContact(), callback).launch(null)
+}
+
+//endregion
+
 /********************************************Fragment 部分********************************************************/
 
-
+//region Fragment部分
 fun Fragment.getActivityResultRegistry(): ActivityResultRegistry? {
     return kotlin.runCatching { requireActivity().activityResultRegistry }.onFailure { it.printStackTrace() }
         .getOrNull()
@@ -167,21 +217,21 @@ fun <I, O> Fragment.register(
 }
 
 fun Fragment.startActivityResultLauncher(
-    @NonNull key: String = "startActivityResult" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startActivityResultLauncher",
     @NonNull callback: ActivityResultCallback<ActivityResult>
 ): ActivityResultLauncher<Intent>? {
     return register(key, ActivityResultContracts.StartActivityForResult(), callback)
 }
 
 fun Fragment.startRequestPermissionsLauncher(
-    @NonNull key: String = "startRequestMultiplePermissions" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startRequestPermissionsLauncher",
     @NonNull callback: ActivityResultCallback<Map<String, Boolean>>
 ): ActivityResultLauncher<Array<String>>? {
     return register(key, ActivityResultContracts.RequestMultiplePermissions(), callback)
 }
 
 fun Fragment.startRequestPermissionLauncher(
-    @NonNull key: String = "startRequestPermission" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startRequestPermissionLauncher",
     @NonNull callback: ActivityResultCallback<Boolean>
 ): ActivityResultLauncher<String>? {
     return register(key, ActivityResultContracts.RequestPermission(), callback)
@@ -189,7 +239,7 @@ fun Fragment.startRequestPermissionLauncher(
 
 
 fun Fragment.startRequestPermissions(
-    @NonNull key: String = "startRequestMultiplePermissions" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startRequestMultiplePermissions",
     @NonNull permissions: Array<String>,
     @NonNull callback: ActivityResultCallback<Map<String, Boolean>>
 ) {
@@ -198,7 +248,7 @@ fun Fragment.startRequestPermissions(
 
 
 fun Fragment.startRequestPermission(
-    @NonNull key: String = "startRequestPermission" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startRequestPermission",
     @NonNull permission: String,
     @NonNull callback: ActivityResultCallback<Boolean>
 ) {
@@ -210,12 +260,84 @@ fun Fragment.startRequestPermission(
  * startActivityResult
  */
 fun Fragment.startActivityResult(
-    @NonNull key: String = "startActivityResult" + mNextLocalRequestCode.getAndIncrement(),
+    @NonNull key: String = "startActivityResult",
     @NonNull intent: Intent,
     @NonNull callback: ActivityResultCallback<ActivityResult>
 ) {
     startActivityResultLauncher(key, callback)?.launch(intent)
 }
+
+/**
+ * 选择一个文件
+ */
+fun Fragment.selectFile(type: String = "image/*", callback: ActivityResultCallback<Uri?>) {
+    register("GetContent", ActivityResultContracts.GetContent(), callback)?.launch(type)
+}
+
+/**
+ * 选择多个文件
+ */
+fun Fragment.selectMultipleFile(type: String = "image/*", callback: ActivityResultCallback<List<Uri>>) {
+    register("selectMultipleFile", ActivityResultContracts.GetMultipleContents(), callback)?.launch(type)
+}
+
+/**
+ * 搜索多类型的文件
+ */
+fun Fragment.searchFile(type: Array<String>, callback: ActivityResultCallback<Uri?>) {
+    register("OpenDocument", ActivityResultContracts.OpenDocument(), callback)?.launch(type)
+}
+
+
+fun Fragment.selectFileByDir(dir: Uri?, callback: ActivityResultCallback<Uri?>) {
+    register("OpenDocumentTree", ActivityResultContracts.OpenDocumentTree(), callback)?.launch(dir)
+}
+
+/**
+ * 创建文件
+ */
+fun Fragment.createFile(fileName: String, callback: ActivityResultCallback<Uri?>) {
+    register("CreateDocument", ActivityResultContracts.CreateDocument(), callback)?.launch(fileName)
+}
+
+
+/**
+ * 拍照
+ */
+fun Fragment.takePicture(callback: ActivityResultCallback<Uri?>) {
+    val pathUri = createImagePathUri(requireContext())
+    register("takePicture", ActivityResultContracts.TakePicture()) { result ->
+        if (result) {
+            callback.onActivityResult(pathUri)
+        } else {
+            callback.onActivityResult(null)
+        }
+    }?.launch(pathUri)
+}
+
+/**
+ * 视频
+ */
+fun Fragment.takeVideo(callback: ActivityResultCallback<Uri?>) {
+    val pathUri = createVideoPathUri(requireContext())
+    register("takeVideo", ActivityResultContracts.CaptureVideo()) { result ->
+        if (result) {
+            callback.onActivityResult(pathUri)
+        } else {
+            callback.onActivityResult(null)
+        }
+    }?.launch(pathUri)
+}
+
+
+/**
+ * 选择练习人
+ */
+fun Fragment.pickContact(callback: ActivityResultCallback<Uri?>) {
+    register("pickContact", ActivityResultContracts.PickContact(), callback)?.launch(null)
+}
+
+//endregion
 
 /***************************************************Context 部分*******************************************************/
 
