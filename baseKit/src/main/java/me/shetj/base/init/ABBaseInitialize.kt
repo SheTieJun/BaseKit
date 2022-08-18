@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,37 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.network_coroutine
 
-import me.shetj.base.network_coroutine.cache.CacheMode
-import me.shetj.base.network_coroutine.cache.KCCache.Companion.CACHE_NEVER_EXPIRE
+package me.shetj.base.init
 
-/**
- * 请求选项选项
- */
-class RequestOption {
-    /**
-     * 缓存的key,if null ,cache no work
-     */
-    var cacheKey: String? = null
+import android.content.Context
+import androidx.startup.Initializer
 
-    /**
-     * 缓存的时间 单位:秒
-     */
-    var cacheTime: Long = CACHE_NEVER_EXPIRE
+abstract class ABBaseInitialize : Initializer<Unit> {
 
-    /**
-     * 不使用自定义缓存 cacheKey,cacheTime 无效，默认缓存规则，走OKhttp的Cache缓存
-     */
-    var cacheMode: CacheMode = CacheMode.DEFAULT
+    override fun create(context: Context) {
+        initContent(context)
+    }
 
-    /**
-     * timeout <= 0 表示不处理; 单位：毫秒；自定义超时处理,走的是协程的超时处理
-     */
-    var timeout: Long = -1L
+    abstract fun initContent(context: Context)
 
-    /**
-     * repeatNum <= 0 表不处理； 重试请求次数
-     */
-    var repeatNum: Int = -1
+    override fun dependencies(): MutableList<Class<out Initializer<*>>> {
+        return mutableListOf(CommonInitialize::class.java)
+    }
 }

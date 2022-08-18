@@ -27,6 +27,7 @@ package tools
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import tools.DependencyLibs.AndroidX.Constraint
 import tools.DependencyLibs.AndroidX.Lifecycle
+import tools.DependencyLibs.AndroidX.Paging
 import tools.DependencyLibs.AndroidX.Room
 import tools.DependencyLibs.AndroidX.WorkManager
 
@@ -75,17 +76,17 @@ object DependencyLibs {
     }
 
 
-    val retrofit2Lib =  mutableListOf<String>().apply {
+    val retrofit2Lib = mutableListOf<String>().apply {
         add(Retrofit2.gson)
         add(Retrofit2.retrofit)
     }
 
-    val roomLib = mutableListOf<String>().apply{
+    val roomLib = mutableListOf<String>().apply {
         add(Room.runtime)
         add(Room.ktx)
     }
 
-    val androidLib = mutableListOf<String>().apply{
+    val androidLib = mutableListOf<String>().apply {
         add(AndroidX.appcompat)
         add(AndroidX.palette)
         add(AndroidX.coreKtx)
@@ -146,7 +147,6 @@ object DependencyLibs {
     }
 
 
-
     object Third {
         const val BRV = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7"
         const val gson = "com.google.code.gson:gson:2.9.0"
@@ -188,6 +188,10 @@ object DependencyLibs {
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintlayout"
         }
 
+        object Paging {
+            private const val pagingVersion = "3.1.1"
+            const val paging = "androidx.paging:paging-runtime:$pagingVersion"
+        }
 
         object Lifecycle {
             private const val version = "2.4.0"
@@ -204,7 +208,7 @@ object DependencyLibs {
             const val compiler = "androidx.room:room-compiler:$version"
         }
 
-        object WorkManager{
+        object WorkManager {
             private const val workVersion = "2.7.0"
             const val worker = "androidx.work:work-runtime-ktx:$workVersion"
         }
@@ -239,48 +243,52 @@ fun DependencyHandler.annotationProcessor(depName: String) {
 
 //region 具体库
 
-fun DependencyHandler.addRoom(type:String = "api"){
+fun DependencyHandler.addRoom(type: String = "api") {
     DependencyLibs.roomLib.forEach { depName ->
         add(type, depName)
     }
     ksp(Room.compiler)
 }
 
-fun DependencyHandler.addAndroid(type:String = "api"){
+fun DependencyHandler.addAndroid(type: String = "api") {
     DependencyLibs.androidLib.forEach { depName ->
         add(type, depName)
     }
 }
 
 
-fun DependencyHandler.addRetrofit2(type:String = "api"){
+fun DependencyHandler.addRetrofit2(type: String = "api") {
     DependencyLibs.retrofit2Lib.forEach { depName ->
         add(type, depName)
     }
 }
 
-fun DependencyHandler.addGson(type:String = "api"){
+fun DependencyHandler.addGson(type: String = "api") {
     DependencyLibs.gsonLib.forEach { depName ->
         add(type, depName)
     }
 }
 
-fun DependencyHandler.addKoin(type:String = "api"){
+fun DependencyHandler.addKoin(type: String = "api") {
     DependencyLibs.koinLib.forEach { depName ->
         add(type, depName)
     }
 }
 
-fun DependencyHandler.addOther(type:String = "api"){
+fun DependencyHandler.addOther(type: String = "api") {
     DependencyLibs.otherLib.forEach { depName ->
         add(type, depName)
     }
 }
 
-fun DependencyHandler.addCoroutines(type:String = "api"){
+fun DependencyHandler.addCoroutines(type: String = "api") {
     DependencyLibs.coroutines.forEach { depName ->
         add(type, depName)
     }
+}
+
+fun DependencyHandler.addPaging(type: String = "api") {
+    add(type, Paging.paging)
 }
 
 //endregion

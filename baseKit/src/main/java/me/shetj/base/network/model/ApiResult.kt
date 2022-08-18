@@ -23,7 +23,11 @@
  */
 package me.shetj.base.network.model
 
-class ApiResult<T> {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+class ApiResult<T> : Parcelable {
     var code = 0
     var msg: String? = null
     var data: T? = null

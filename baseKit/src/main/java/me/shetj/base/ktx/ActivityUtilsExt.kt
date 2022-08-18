@@ -42,40 +42,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
-fun Context.openActivity(scheme: String) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scheme))
-    startActivity(intent)
-}
 
-/**
- * ABCD => (D->B) = ACDB
- * ABCBD => (D->B) = ABCDB
- * 只把上一界面提前
- */
-fun Context.moveToFront(activity: Activity) {
-    val intent: Intent = Intent(this, activity::class.java).apply {
-        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-    }
-    startActivity(intent)
-}
-
-/**
- * 通过包名，让APP到前台，前提是APP在后台了，如果代码无效，可能是因为APP被判定在前台
- */
-fun ActivityManager.moveToFrontApp(packageName: String) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        this.appTasks?.first {
-            it.taskInfo.baseIntent.component?.packageName == packageName
-        }?.apply {
-            moveToFront()
-        }
-    }
-}
-
-fun Context.openActivityByPackageName(ackageName: String) {
-    val intent = packageManager.getLaunchIntentForPackage(ackageName)
-    startActivity(intent)
-}
 
 fun FragmentManager.addFragmentToActivity(fragment: Fragment, frameId: Int) {
     val transaction = beginTransaction()
@@ -180,7 +147,4 @@ fun Fragment.setEnterTransition(slideTransition: Transition, shareTransition: Tr
     sharedElementEnterTransition = shareTransition
 }
 
-fun Context.getIdByName(className: String, resName: String): Int {
-    val packageName = packageName
-    return applicationContext.resources.getIdentifier(resName, className, packageName)
-}
+

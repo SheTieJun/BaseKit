@@ -52,3 +52,4 @@ base/lint.xml
 /.idea/inspectionProfiles/
 /.idea/libraries/
 /*/proguardMapping.txt
+.idea

@@ -21,7 +21,7 @@ android {
     resourcePrefix = "base_"
     defaultConfig {
         aarMetadata {
-            minCompileSdk = 21
+            this.minCompileSdk = 31
         }
         minSdk = (21)
         targetSdk = (32)

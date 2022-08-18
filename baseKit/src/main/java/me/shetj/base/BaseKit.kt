@@ -27,9 +27,8 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.provider.Settings
 import androidx.annotation.Keep
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.di.dbModule
@@ -84,9 +83,9 @@ object BaseKit {
 
     /**
      * 专门用来做不被取消的操作
+     * 全局的
      */
-    @DelicateCoroutinesApi
-    val applicationScope = GlobalScope.coroutineContext + SupervisorJob() + handler
+    val applicationScope = EmptyCoroutineContext + SupervisorJob() + handler
 
     /**
      * ANDROID_ID的生成规则为：签名+设备信息+设备用户

@@ -92,7 +92,9 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
         lifecycle.removeObserver(this)
     }
 
-    open fun onBack() {}
+    open fun onBack() {
+        requireActivity().onBackPressedDispatcher.onBackPressed()
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBoolean(STATE_SAVE_IS_HIDDEN, isHidden)

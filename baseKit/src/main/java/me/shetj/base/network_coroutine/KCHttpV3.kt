@@ -46,8 +46,8 @@ import org.koin.java.KoinJavaComponent.get
 
 /**
  * 协程 Http请求
- * 感觉可能用的不多，所以就只写这几个方法了
- * [me.shetj.base.network_coroutine.RequestOption]控制缓存
+ * - 感觉可能用的不多，所以就只写这几个方法了
+ * - [me.shetj.base.network_coroutine.RequestOption]控制缓存
  */
 object KCHttpV3 {
 
@@ -133,6 +133,9 @@ object KCHttpV3 {
         val timeout = cache?.timeout ?: -1
         val repeatNum = cache?.repeatNum ?: 1
 
+        if (cache?.cacheKey.isNullOrEmpty()){
+          return fromNetworkValue(timeout, repeatNum).convertToT()
+        }
         return when (cache?.cacheMode) {
             CacheMode.DEFAULT -> {
                 // 不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
@@ -234,7 +237,7 @@ object KCHttpV3 {
                     currentLength += readLength
                     val progress = currentLength.toFloat() / contentLength.toFloat()
                     //每次超过%1才进行更新
-                    if (progress - emitProgress > 0.01) {
+                    if (progress - emitProgress >= 0.01) {
                         emitProgress = progress
                         emit(
                             HttpResult.progress(
@@ -314,7 +317,7 @@ object KCHttpV3 {
             return requestWithTimeout(timeout, block)
         } catch (e: TimeoutCancellationException) {
             throw ApiException(e, TIMEOUT_ERROR).apply {
-                this.setDisplayMessage("coroun Timeout Cancel, Timeout $timeout, maybe has more time ")
+                this.setDisplayMessage("coroutines Timeout Cancel, Timeout $timeout, maybe has more time ")
             }
         } catch (e: Exception) {
             throw ApiException.handleException(e)

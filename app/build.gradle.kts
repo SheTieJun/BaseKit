@@ -1,3 +1,5 @@
+import tools.addPaging
+
 plugins {
     id("com.android.application")
     id("kotlin-parcelize")
@@ -136,6 +138,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0-beta02")
     implementation("androidx.draganddrop:draganddrop:1.0.0")
     implementation("androidx.metrics:metrics-performance:1.0.0-alpha01")
+
+    addPaging()
 }
 
 apply(from = "../spotless.gradle")
