@@ -39,7 +39,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 适用于界面创建成功，后动态创建launcher使用
@@ -148,9 +147,15 @@ fun AppCompatActivity.searchFile(type: Array<String>, callback: ActivityResultCa
 
 /**
  * 创建文件
- */
-fun AppCompatActivity.createFile(fileName: String, callback: ActivityResultCallback<Uri?>) {
-    register("CreateDocument", ActivityResultContracts.CreateDocument(), callback).launch(fileName)
+ * @param type image/png
+*"
+*/
+fun AppCompatActivity.createFile(
+    fileName: String,
+    type: String = "*/*",
+    callback: ActivityResultCallback<Uri?>
+) {
+    register("CreateDocument", ActivityResultContracts.CreateDocument(type), callback).launch(fileName)
 }
 
 
@@ -296,8 +301,8 @@ fun Fragment.selectFileByDir(dir: Uri?, callback: ActivityResultCallback<Uri?>) 
 /**
  * 创建文件
  */
-fun Fragment.createFile(fileName: String, callback: ActivityResultCallback<Uri?>) {
-    register("CreateDocument", ActivityResultContracts.CreateDocument(), callback)?.launch(fileName)
+fun Fragment.createFile(fileName: String, type: String = "*/*", callback: ActivityResultCallback<Uri?>) {
+    register("CreateDocument", ActivityResultContracts.CreateDocument(type), callback)?.launch(fileName)
 }
 
 
@@ -331,7 +336,7 @@ fun Fragment.takeVideo(callback: ActivityResultCallback<Uri?>) {
 
 
 /**
- * 选择练习人
+ * 选择联系人
  */
 fun Fragment.pickContact(callback: ActivityResultCallback<Uri?>) {
     register("pickContact", ActivityResultContracts.PickContact(), callback)?.launch(null)

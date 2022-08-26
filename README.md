@@ -16,6 +16,7 @@ simplify
 
 #### [mvnrepository](https://mvnrepository.com/)
 
+#### [Android 稳定lib](https://developer.android.com/jetpack/androidx/versions/stable-channel)
 
 ### 文章
 #### [Flow 和 LiveData 之操作符：throttleFirst、 throttleLast 、throttleLatest、debounce](https://blog.csdn.net/StjunF/article/details/120872772)
@@ -29,3 +30,21 @@ simplify
 
 ### dev记录
 [WindowInsetsControllerCompat](https://github.com/SheTieJun/BaseKit/wiki/WindowInsetsControllerCompat%E4%BD%BF%E7%94%A8)
+
+
+#### 应用场景记录
+- 使用`Navigation`代替`ARouter`
+
+
+#### 接入
+```groovy
+repositories {
+   maven {
+       url = "https://maven.pkg.github.com/SheTieJun/BaseKit"
+       credentials {
+           username = GITHUB_USER
+           password = GITHUB_TOKEN
+       }
+   }
+}
+```

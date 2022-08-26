@@ -86,7 +86,7 @@ class TestProxy<T> : InvocationHandler {
         }
         if (type is GenericArrayType) {
             val componentType = type.genericComponentType
-            return java.lang.reflect.Array.newInstance(getRawType(componentType), 0).javaClass
+            return getRawType(componentType)?.let { java.lang.reflect.Array.newInstance(it, 0).javaClass }
         }
         if (type is TypeVariable<*>) {
             // We could use the variable's bounds, but that won't work if there are multiple. Having a raw

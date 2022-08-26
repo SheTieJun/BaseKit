@@ -6,7 +6,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlin.coroutines.CoroutineContext
 import me.shetj.base.BaseKit
@@ -16,22 +17,23 @@ import me.shetj.base.BaseKit
  * 获取上下文的 CoroutineContext
  *
  * - Context:
- *   - 1.Service：BaseKit.applicationScope
- *   - 2.Application ：BaseKit.applicationScope
- *   - 3.Activity ：lifecycleScope.CoroutineContext
+ *   - 1.Service： return BaseKit.applicationScope
+ *   - 2.Application ：return  BaseKit.applicationScope
+ *   - 3.Activity ：return lifecycleScope.CoroutineContext
  *
- * 这里需要判断context 是不是  AppCompatActivity
+ * 这里需要判断context 是不是  ComponentActivity
  *
+ * - [androidx.lifecycle.Lifecycle.mInternalScopeRef]
  * 如果不是，我们需要去循环查找找
  */
 val Context.lifeScope: CoroutineContext
     get() {
-        if (this is AppCompatActivity) {
+        if (this is ComponentActivity) {
             return this.lifecycleScope.coroutineContext
         }
         var context = this
         while (context is ContextWrapper) {
-            if (context is AppCompatActivity) {
+            if (context is ComponentActivity) {
                 return context.lifecycleScope.coroutineContext
             }
             context = context.baseContext

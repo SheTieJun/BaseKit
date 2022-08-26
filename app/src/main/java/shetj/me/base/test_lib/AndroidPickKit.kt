@@ -47,8 +47,7 @@ fun Activity.onYearMonthDay() {
     //wheelLayout.setSelectedTextSize(16 * getResources().getDisplayMetrics().scaledDensity);
     //wheelLayout.getYearLabelView().setTextColor(0xFF999999);
     //wheelLayout.getMonthLabelView().setTextColor(0xFF999999);
-    picker.setOnDatePickedListener { year, month, day ->
-
+    picker.setOnDatePickedListener { _, _, _ ->
 
     }
     picker.getWheelLayout().setResetWhenLinkage(false)

@@ -32,11 +32,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     //产品变种组,
-    flavorDimensions += (listOf("dev","demo"))
+    flavorDimensions += (listOf("dev", "demo"))
 
     productFlavors {
         this.create("dev") {
@@ -107,19 +107,10 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     implementation("androidx.legacy:legacy-support-v4:$androidx")
-//    implementation project(path: ":annotation")
-//    kapt project(path: ":compilers")
-    //https://material.io/develop/android/
-//    implementation "androidx.legacy:legacy-support-v4:1.0.0"
-//    val fragment_version = "1.1.0"
-//    implementation "androidx.fragment:fragment:$fragment_version"
-//    implementation "androidx.fragment:fragment-ktx:$fragment_version"
-//    implementation "androidx.datastore:datastore-rxjava3:1.0.0-alpha06"
-//(Proto DataStore，它允许您存储类型化的对象（由协议缓冲区提供支持）)
-
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     implementation(project(":baseKit"))
+
     implementation("com.github.LuckSiege.PictureSelector:picture_library:v2.5.8")
     implementation("com.github.ybq:Android-SpinKit:1.4.0")
     implementation("com.airbnb.android:lottie:3.7.0")
@@ -135,10 +126,11 @@ dependencies {
     val pickVersion = "4.1.7"
     implementation("com.github.gzu-liyujiang.AndroidPicker:Common:$pickVersion")
     implementation("com.github.gzu-liyujiang.AndroidPicker:WheelPicker:$pickVersion")
-    implementation("androidx.core:core-splashscreen:1.0.0-beta02")
-    implementation("androidx.draganddrop:draganddrop:1.0.0")
-    implementation("androidx.metrics:metrics-performance:1.0.0-alpha01")
+    implementation("androidx.core:core-splashscreen:1.0.0-beta02")//启动图
+    implementation("androidx.draganddrop:draganddrop:1.0.0") //拖动
+    implementation("androidx.metrics:metrics-performance:1.0.0-alpha01") // 指标
 
+    implementation("com.github.SheTieJun:RoundedProgressBar:550a631d74")
     addPaging()
 }
 

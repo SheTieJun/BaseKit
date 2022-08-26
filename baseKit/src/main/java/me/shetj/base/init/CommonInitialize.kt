@@ -29,7 +29,6 @@ import androidx.annotation.Keep
 import androidx.startup.Initializer
 import me.shetj.base.BuildConfig
 import me.shetj.base.BaseKit
-import org.koin.core.KoinExperimentalAPI
 
 /**
  * 初始化PhotoLife

@@ -135,7 +135,7 @@ class HttpHeaders : Serializable {
                 "Android",
                 Build.VERSION.RELEASE,
                 Build.MODEL,
-                NetworkUtils.getNetWorkTypeName(app.applicationContext),
+                NetworkUtils.getPhoneType(app.applicationContext),
                 Locale.getDefault().language + "_" + Locale.getDefault().country,
                 checkNameAndValue(Build.MANUFACTURER),
                 Build.VERSION.SDK_INT,

@@ -24,7 +24,10 @@
 
 package tools
 
+import org.gradle.api.Action
+import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.accessors.runtime.addDependencyTo
 import tools.DependencyLibs.AndroidX.Constraint
 import tools.DependencyLibs.AndroidX.Lifecycle
 import tools.DependencyLibs.AndroidX.Paging
@@ -101,6 +104,7 @@ object DependencyLibs {
         add(AndroidX.activityKtx)
         add(AndroidX.datastore)
         add(AndroidX.datastoreCore)
+        add(AndroidX.dragAndDrop)
 
         add(Lifecycle.livedata)
         add(Lifecycle.viewmodel)
@@ -109,6 +113,9 @@ object DependencyLibs {
         add(Constraint.constraintLayout)
 
         add(WorkManager.worker)
+
+        add(AndroidX.Navigation.navigation)
+        add(AndroidX.Navigation.navigationUi)
     }
 
 
@@ -133,8 +140,13 @@ object DependencyLibs {
         add(Coroutines.core)
     }
 
+    val nav = mutableListOf<String>().apply {
+        add(AndroidX.Navigation.navigation)
+        add(AndroidX.Navigation.navigationUi)
+    }
+
     object Coroutines {
-        private const val version = "1.6.0"
+        private const val version = "1.6.4"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -157,7 +169,7 @@ object DependencyLibs {
     }
 
     object Koin {
-        private const val koin_version = "3.1.2"
+        private const val koin_version = "3.2.0"
 
         // Koin main features for Android (Scope,ViewModel ...)
         const val koinAndroid = "io.insert-koin:koin-android:$koin_version"
@@ -168,23 +180,24 @@ object DependencyLibs {
 
     object AndroidX {
 
-        const val appcompat = "androidx.appcompat:appcompat:1.4.2"
+        const val appcompat = "androidx.appcompat:appcompat:1.5.0"
         const val palette = "androidx.palette:palette:1.0.0"
-        const val coreKtx = "androidx.core:core-ktx:1.7.0"
+        const val coreKtx = "androidx.core:core-ktx:1.8.0"
         const val recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
         const val cardview = "androidx.cardview:cardview:1.0.0"
-        const val material = "com.google.android.material:material:1.5.0"
+        const val material = "com.google.android.material:material:1.6.1"
         const val animationCore = "androidx.core:core-animation:1.0.0-alpha02"
         const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.4.0"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.5.2"
         const val startup = "androidx.startup:startup-runtime:1.1.0"
         const val cryptoSp = "androidx.security:security-crypto:1.1.0-alpha03"
-        const val activityKtx = "androidx.activity:activity-ktx:1.4.0"
+        const val activityKtx = "androidx.activity:activity-ktx:1.5.1"
         const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
         const val datastoreCore = "androidx.datastore:datastore-core:1.0.0"
+        const val dragAndDrop = "androidx.draganddrop:draganddrop:1.0.0"
 
         object Constraint {
-            private const val constraintlayout = "2.1.3"
+            private const val constraintlayout = "2.1.4"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$constraintlayout"
         }
 
@@ -194,15 +207,20 @@ object DependencyLibs {
         }
 
         object Lifecycle {
-            private const val version = "2.4.0"
+            private const val version = "2.5.1"
             const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
         }
 
+        object Navigation {
+            private const val navVersion = "2.5.1"
+            const val navigation = "androidx.navigation:navigation-fragment-ktx:$navVersion"
+            const val navigationUi = "androidx.navigation:navigation-ui-ktx:$navVersion"
+        }
 
         object Room {
-            private const val version = "2.4.2"
+            private const val version = "2.4.3"
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
@@ -241,54 +259,89 @@ fun DependencyHandler.annotationProcessor(depName: String) {
     add("annotationProcessor", depName)
 }
 
+fun DependencyHandler.apiTransitive(depName: String) {
+    val dependencyConfiguration = Action<ExternalModuleDependency> {
+        isTransitive = true
+    }
+    addDependencyTo(
+        this, "api", depName, dependencyConfiguration
+    )
+}
+
+val defAction = Action<ExternalModuleDependency> {
+}
+
 //region 具体库
 
-fun DependencyHandler.addRoom(type: String = "api") {
+fun DependencyHandler.addRoom(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     DependencyLibs.roomLib.forEach { depName ->
-        add(type, depName)
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
     }
     ksp(Room.compiler)
 }
 
-fun DependencyHandler.addAndroid(type: String = "api") {
+fun DependencyHandler.addAndroid(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     DependencyLibs.androidLib.forEach { depName ->
-        add(type, depName)
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
     }
 }
 
 
-fun DependencyHandler.addRetrofit2(type: String = "api") {
+fun DependencyHandler.addRetrofit2(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     DependencyLibs.retrofit2Lib.forEach { depName ->
-        add(type, depName)
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
     }
 }
 
-fun DependencyHandler.addGson(type: String = "api") {
+fun DependencyHandler.addGson(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     DependencyLibs.gsonLib.forEach { depName ->
-        add(type, depName)
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
     }
 }
 
-fun DependencyHandler.addKoin(type: String = "api") {
+fun DependencyHandler.addKoin(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     DependencyLibs.koinLib.forEach { depName ->
-        add(type, depName)
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
     }
 }
 
-fun DependencyHandler.addOther(type: String = "api") {
+fun DependencyHandler.addOther(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     DependencyLibs.otherLib.forEach { depName ->
-        add(type, depName)
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
     }
 }
 
-fun DependencyHandler.addCoroutines(type: String = "api") {
+fun DependencyHandler.addCoroutines(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     DependencyLibs.coroutines.forEach { depName ->
-        add(type, depName)
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
     }
 }
 
-fun DependencyHandler.addPaging(type: String = "api") {
-    add(type, Paging.paging)
+fun DependencyHandler.addPaging(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
+    addDependencyTo(
+        this, "api", Paging.paging, dependencyConfiguration
+    )
 }
 
+fun DependencyHandler.addNav(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
+    DependencyLibs.nav.forEach { depName ->
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
+    }
+}
 //endregion

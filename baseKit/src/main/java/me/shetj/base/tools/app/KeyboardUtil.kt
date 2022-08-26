@@ -43,6 +43,7 @@ import androidx.annotation.Keep
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
+import me.shetj.base.ktx.windowInsetsController
 
 /**
  * @author shetj
@@ -151,12 +152,12 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
          */
         @JvmStatic
         fun hideSoftKeyboard(activity: Activity) {
-            activity.window.hideSoftKeyboard()
+            activity.windowInsetsController.hide(WindowInsetsCompat.Type.ime())
         }
 
         @JvmStatic
         fun showSoftKeyboard(activity: Activity) {
-            activity.window.showSoftKeyboard()
+            activity.windowInsetsController.show(WindowInsetsCompat.Type.ime())
         }
 
         @JvmStatic
@@ -177,27 +178,6 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
             } else {
                 hideSoftKeyboard(activity)
             }
-        }
-
-        @JvmStatic
-        fun Window.showSoftKeyboard() {
-            ViewCompat.getWindowInsetsController(decorView)
-                ?.show(WindowInsetsCompat.Type.ime())
-        }
-
-        @JvmStatic
-        fun Window.hideSoftKeyboard() {
-            ViewCompat.getWindowInsetsController(decorView)
-                ?.hide(WindowInsetsCompat.Type.ime())
-        }
-
-        /**
-         * 判断键盘是否建
-         */
-        @JvmStatic
-        fun isVisibleKeyBoard(window: Window): Boolean? {
-            val insets = ViewCompat.getRootWindowInsets(window.decorView)
-            return insets?.isVisible(WindowInsetsCompat.Type.ime())
         }
 
         fun addKeyBordHeightChangeCallBack(view: View, onAction: (height: Int) -> Unit) {

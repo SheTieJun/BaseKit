@@ -35,18 +35,21 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 
-val FragmentActivity.windowInsetsCompat: WindowInsetsCompat?
+val Activity.windowInsets: WindowInsetsCompat?
     get() = ViewCompat.getRootWindowInsets(findViewById(android.R.id.content))
 
+val Activity.windowInsetsController: WindowInsetsControllerCompat
+    get() = WindowCompat.getInsetsController(window,findViewById(android.R.id.content))
+
 val Fragment.windowInsetsCompat: WindowInsetsCompat?
-    get() = kotlin.runCatching { ViewCompat.getRootWindowInsets(requireActivity().findViewById(android.R.id.content)) }
+    get() = kotlin.runCatching { requireActivity().windowInsets }
         .getOrNull()
 
 /**
  * 是否具有 hasNavigationBars()
  */
-fun FragmentActivity.hasNavigationBars(): Boolean {
-    val windowInsetsCompat = windowInsetsCompat ?: return false
+fun Activity.hasNavigationBars(): Boolean {
+    val windowInsetsCompat = windowInsets ?: return false
     return windowInsetsCompat.isVisible(Type.navigationBars()) &&
         windowInsetsCompat.getInsets(Type.navigationBars()).bottom > 0
 }
@@ -54,24 +57,24 @@ fun FragmentActivity.hasNavigationBars(): Boolean {
 /**
  * 获取NavigationBarsHeight
  */
-fun FragmentActivity.getNavigationBarsHeight(): Int {
-    val windowInsetsCompat = windowInsetsCompat ?: return 0
+fun Activity.getNavigationBarsHeight(): Int {
+    val windowInsetsCompat = windowInsets ?: return 0
     return windowInsetsCompat.getInsets(Type.navigationBars()).bottom
 }
 
 /**
  * 获取StatusBarsHeight
  */
-fun FragmentActivity.getStatusBarsHeight(): Int {
-    val windowInsetsCompat = windowInsetsCompat ?: return 0
+fun Activity.getStatusBarsHeight(): Int {
+    val windowInsetsCompat = windowInsets ?: return 0
     return windowInsetsCompat.getInsets(Type.statusBars()).top
 }
 
 /**
  * 隐藏导航栏
  */
-fun FragmentActivity.hideNavigationBars() {
-    ViewCompat.getWindowInsetsController(findViewById(android.R.id.content))?.let { controller ->
+fun Activity.hideNavigationBars() {
+    windowInsetsController.let { controller ->
         controller.hide(Type.navigationBars())
         controller.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -82,8 +85,8 @@ fun FragmentActivity.hideNavigationBars() {
 /**
  * 展示导航栏
  */
-fun FragmentActivity.showNavigationBars() {
-    ViewCompat.getWindowInsetsController(findViewById(android.R.id.content))?.let { controller ->
+fun Activity.showNavigationBars() {
+    windowInsetsController.let { controller ->
         controller.show(Type.navigationBars())
         controller.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -97,7 +100,7 @@ fun FragmentActivity.showNavigationBars() {
 fun Activity.hideSystemUI() {
     // decorFitsSystemWindows 表示是否沉浸，false 表示沉浸，true表示不沉浸
     WindowCompat.setDecorFitsSystemWindows(window, false)
-    ViewCompat.getWindowInsetsController(findViewById(android.R.id.content))?.let { controller ->
+    windowInsetsController.let { controller ->
         controller.hide(Type.systemBars())
         controller.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -109,8 +112,7 @@ fun Activity.hideSystemUI() {
  */
 fun Activity.showSystemUI() {
     WindowCompat.setDecorFitsSystemWindows(window, true)
-    ViewCompat.getWindowInsetsController(findViewById(android.R.id.content))
-        ?.show(Type.systemBars())
+    windowInsetsController.show(Type.systemBars())
 }
 
 /**
@@ -121,7 +123,7 @@ fun Activity.setAppearance(
     @ColorInt color: Int = Color.TRANSPARENT
 ) {
     updateSystemUIColor(color)
-    ViewCompat.getWindowInsetsController(findViewById(android.R.id.content))?.let { controller ->
+    windowInsetsController.let { controller ->
         controller.isAppearanceLightStatusBars = isBlack
         controller.isAppearanceLightNavigationBars = isBlack
     }

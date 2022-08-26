@@ -6,8 +6,18 @@ afterEvaluate {
             release(MavenPublication) {
                 groupId "com.github.SheTieJun"
                 from components.release
-                artifactId = 'BaseKit'
+                artifactId = project.name
                 version = '1.0.0'
+            }
+        }
+//        定义发布到哪
+//        publishPluginPublicationToRepoRepository 发布到 build / mavenLib
+//        publishPluginPublicationToMavenLocal 发布到~/.m2/ repository
+
+        repositories {
+            maven {
+                name = "mavenLib"
+                url = file("../mavenLib")
             }
         }
     }

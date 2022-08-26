@@ -21,16 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-@file:Suppress("DEPRECATION")
-
 package me.shetj.base.tools.app
 
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
+import android.net.NetworkCapabilities
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import androidx.core.content.getSystemService
 
 /**
  * / **
@@ -51,17 +50,6 @@ import android.telephony.TelephonyManager
  * * HSPAP   3G HSPAP 比 HSDPA 快些
  */
 object NetworkUtils {
-    const val NETWORK_WIFI = 1 // wifi network
-    const val NETWORK_5G = 5 // "4G" networks
-    const val NETWORK_4G = 4 // "4G" networks
-    const val NETWORK_3G = 3 // "3G" networks
-    const val NETWORK_2G = 2 // "2G" networks
-    const val NETWORK_UNKNOWN = 6 // unknown network
-    const val NETWORK_NO = -1 // no network
-    private const val NETWORK_TYPE_GSM = 16
-    private const val NETWORK_TYPE_TD_SCDMA = 17
-    private const val NETWORK_TYPE_IWLAN = 18
-
     /**
      * 打开网络设置界面
      * 3.0以下打开设置界面
@@ -74,12 +62,13 @@ object NetworkUtils {
     /**
      * 获取活动网路信息
      * @param context 上下文
-     * @return NetworkInfo
+     * @return NetworkCapabilities
      */
-    private fun getActiveNetworkInfo(context: Context): NetworkInfo? {
-        val cm = context
-            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return cm.activeNetworkInfo
+    private fun getActiveNetworkInfo(context: Context): NetworkCapabilities? {
+        return context
+            .getSystemService<ConnectivityManager>()?.let {
+                it.getNetworkCapabilities(it.activeNetwork)
+            }
     }
 
     /**
@@ -87,8 +76,7 @@ object NetworkUtils {
      * 需添加权限 android.permission.ACCESS_NETWORK_STATE
      */
     fun isAvailable(context: Context): Boolean {
-        val info = getActiveNetworkInfo(context)
-        return info != null && info.isAvailable
+        return getActiveNetworkInfo(context)?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) == true
     }
 
     /**
@@ -99,19 +87,10 @@ object NetworkUtils {
      */
     fun isConnected(context: Context): Boolean {
         val info = getActiveNetworkInfo(context)
-        return info != null && info.isConnected
+        return info != null && (info.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                info.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
     }
 
-    /**
-     * 判断网络是否是4G
-     * 需添加权限 android.permission.ACCESS_NETWORK_STATE
-     * @param context 上下文
-     * @return true: 是<br></br>false: 不是
-     */
-    fun is4G(context: Context): Boolean {
-        val info = getActiveNetworkInfo(context)
-        return info != null && info.isAvailable && info.subtype == TelephonyManager.NETWORK_TYPE_LTE
-    }
 
     /**
      * 判断wifi是否连接状态
@@ -120,9 +99,8 @@ object NetworkUtils {
      * @return true: 连接<br></br>false: 未连接
      */
     fun isWifiConnected(context: Context): Boolean {
-        val cm = context
-            .getSystemService(Context.CONNECTIVITY_SERVICE)
-        return cm?.let { it as ConnectivityManager }?.activeNetworkInfo?.type == ConnectivityManager.TYPE_WIFI
+        val info = getActiveNetworkInfo(context)
+        return info != null && info.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
     }
 
     /**
@@ -132,9 +110,7 @@ object NetworkUtils {
      * @return 移动网络运营商名称
      */
     fun getNetworkOperatorName(context: Context): String? {
-        val tm = context
-            .getSystemService(Context.TELEPHONY_SERVICE)
-        return tm?.let { it as TelephonyManager }?.networkOperatorName
+        return context.getSystemService<TelephonyManager>()?.networkOperatorName
     }
 
     /**
@@ -146,89 +122,13 @@ object NetworkUtils {
      *  * PHONE_TYPE_CDMA  : 2 手机制式为CDMA，电信
      *  * PHONE_TYPE_SIP   : 3
      */
-    fun getPhoneType(context: Context): Int {
-        val tm = context
-            .getSystemService(Context.TELEPHONY_SERVICE)
-        return tm?.let { it as TelephonyManager }?.phoneType ?: -1
-    }
-
-    /**
-     * 获取当前的网络类型(WIFI,2G,3G,4G)
-     * 需添加权限 android.permission.ACCESS_NETWORK_STATE
-     * @param context 上下文
-     * @return 网络类型
-     *
-     *  * NETWORK_WIFI    = 1;
-     *  * NETWORK_4G      = 4;
-     *  * NETWORK_3G      = 3;
-     *  * NETWORK_2G      = 2;
-     *  * NETWORK_UNKNOWN = 5;
-     *  * NETWORK_NO      = -1;
-     *
-     */
-    fun getNetWorkType(context: Context): Int {
-        var netType = NETWORK_NO
-        val info = getActiveNetworkInfo(context)
-        if (info != null && info.isAvailable) {
-            netType = when (info.type) {
-                ConnectivityManager.TYPE_WIFI -> {
-                    NETWORK_WIFI
-                }
-                ConnectivityManager.TYPE_MOBILE -> {
-                    when (info.subtype) {
-                        NETWORK_TYPE_GSM, TelephonyManager.NETWORK_TYPE_GPRS,
-                        TelephonyManager.NETWORK_TYPE_CDMA, TelephonyManager.NETWORK_TYPE_EDGE,
-                        TelephonyManager.NETWORK_TYPE_1xRTT, TelephonyManager.NETWORK_TYPE_IDEN -> NETWORK_2G
-                        NETWORK_TYPE_TD_SCDMA, TelephonyManager.NETWORK_TYPE_EVDO_A,
-                        TelephonyManager.NETWORK_TYPE_UMTS, TelephonyManager.NETWORK_TYPE_EVDO_0,
-                        TelephonyManager.NETWORK_TYPE_HSDPA, TelephonyManager.NETWORK_TYPE_HSUPA,
-                        TelephonyManager.NETWORK_TYPE_HSPA, TelephonyManager.NETWORK_TYPE_EVDO_B,
-                        TelephonyManager.NETWORK_TYPE_EHRPD, TelephonyManager.NETWORK_TYPE_HSPAP -> NETWORK_3G
-                        NETWORK_TYPE_IWLAN, TelephonyManager.NETWORK_TYPE_LTE -> NETWORK_4G
-                        TelephonyManager.NETWORK_TYPE_NR -> NETWORK_5G
-                        else -> {
-                            val subtypeName = info.subtypeName
-                            if (subtypeName.equals("TD-SCDMA", ignoreCase = true) ||
-                                subtypeName.equals("WCDMA", ignoreCase = true) ||
-                                subtypeName.equals("CDMA2000", ignoreCase = true)
-                            ) {
-                                NETWORK_3G
-                            } else {
-                                NETWORK_UNKNOWN
-                            }
-                        }
-                    }
-                }
-                else -> {
-                    NETWORK_UNKNOWN
-                }
-            }
-        }
-        return netType
-    }
-
-    /**
-     * 获取当前的网络类型(WIFI,2G,3G,4G)
-     * 依赖上面的方法
-     * @param context 上下文
-     * @return 网络类型名称
-     *
-     *  * NETWORK_WIFI
-     *  * NETWORK_4G
-     *  * NETWORK_3G
-     *  * NETWORK_2G
-     *  * NETWORK_UNKNOWN
-     *  * NETWORK_NO
-     *
-     */
-    fun getNetWorkTypeName(context: Context): String {
-        return when (getNetWorkType(context)) {
-            NETWORK_WIFI -> "NETWORK_WIFI"
-            NETWORK_4G -> "NETWORK_4G"
-            NETWORK_3G -> "NETWORK_3G"
-            NETWORK_2G -> "NETWORK_2G"
-            NETWORK_NO -> "NETWORK_NO"
-            else -> "NETWORK_UNKNOWN"
+    fun getPhoneType(context: Context): String {
+        val i = context.getSystemService<TelephonyManager>()?.phoneType ?: -1
+        return when (i) {
+            1 -> "PHONE_TYPE_GSM"
+            2 -> "PHONE_TYPE_CDMA"
+            3 -> "PHONE_TYPE_SIP"
+            else -> "PHONE_TYPE_NONE"
         }
     }
 }

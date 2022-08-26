@@ -30,7 +30,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type
@@ -52,12 +51,11 @@ import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.showNavigationBars
 import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.ktx.toJson
-import me.shetj.base.ktx.windowInsetsCompat
+import me.shetj.base.ktx.windowInsets
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
-import me.shetj.base.tip.TipPopupWindow
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.data.DataStoreKit
 import me.shetj.base.tools.file.FileQUtils
@@ -112,7 +110,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
 
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
-            TipPopupWindow.showTip(this, tipMsg = "测试一下INFO")
             TipKit.normal(this, "这是一个toast")
             TipKit.info(this, "这是一个toast")
             TipKit.warn(this, "这是一个toast")
@@ -127,8 +124,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
            selectFile {
-               Timber.i("url = ${it.toString()}")
-               Timber.i("url = ${it?.let { it1 -> FileQUtils.getFileByUri(this, it1) }}")
+               "url = ${it.toString()}".logI()
+               ("url = ${it?.let { it1 -> FileQUtils.getFileByUri(this, it1) }}").logI()
            }
         }
 
@@ -139,7 +136,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        mContent.btnSetting.setOnClickListener {view ->
+        mContent.btnSetting.setOnClickListener {
             openSetting()
 //            startActivityResult(intent = Intent(this,TestActivity::class.java)){
 //                it.resultCode.toString().logI()
@@ -185,12 +182,12 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
         mContent.btnCustomTab.post {
-            windowInsetsCompat?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
-            windowInsetsCompat?.getInsets(Type.statusBars()).toJson().logI("statusBars")
-            windowInsetsCompat?.getInsets(Type.captionBar()).toJson().logI("captionBar")
-            windowInsetsCompat?.isVisible(Type.navigationBars()).toJson().logI("navigationBars")
-            windowInsetsCompat?.isVisible(Type.statusBars()).toJson().logI("statusBars")
-            windowInsetsCompat?.isVisible(Type.captionBar()).toJson().logI("captionBar")
+            windowInsets?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
+            windowInsets?.getInsets(Type.statusBars()).toJson().logI("statusBars")
+            windowInsets?.getInsets(Type.captionBar()).toJson().logI("captionBar")
+            windowInsets?.isVisible(Type.navigationBars()).toJson().logI("navigationBars")
+            windowInsets?.isVisible(Type.statusBars()).toJson().logI("statusBars")
+            windowInsets?.isVisible(Type.captionBar()).toJson().logI("captionBar")
         }
 
         mContent.btnCustomTab.setOnClickListener {
@@ -205,7 +202,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             launch {
                 saverDB.getAll(groupN = "base", isDel = false)
                     .collect {
-                        Timber.i(it.toJson())
+                        it.toJson().logI()
                     }
             }
         }
@@ -224,12 +221,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         NetWorkLiveDate.getInstance().observe(this) {
             when (it?.netType) {
-                NetWorkLiveDate.NetType.NONE -> Timber.tag("requestNetWork")
-                    .i("hasNet = ${it.hasNet},netType = NONE")
-                NetWorkLiveDate.NetType.PHONE -> Timber.tag("requestNetWork")
-                    .i("hasNet = ${it.hasNet},netType = PHONE")
-                NetWorkLiveDate.NetType.WIFI -> Timber.tag("requestNetWork")
-                    .i("hasNet = ${it.hasNet},netType = WIFI")
+                NetWorkLiveDate.NetType.NONE ->  ("hasNet = ${it.hasNet},netType = NONE").logI()
+                NetWorkLiveDate.NetType.PHONE ->  ("hasNet = ${it.hasNet},netType = PHONE").logI()
+                NetWorkLiveDate.NetType.WIFI ->  ("hasNet = ${it.hasNet},netType = WIFI").logI()
                 else -> {}
             }
         }
@@ -263,10 +257,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onResume() {
         super.onResume()
-//        launch {
-//            delay(500)
-//            paste(this@MainActivity).logI()
-//        }
     }
 
     suspend fun netTest() {

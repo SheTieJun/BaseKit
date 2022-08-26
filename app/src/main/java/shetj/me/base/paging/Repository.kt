@@ -30,6 +30,7 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlinx.coroutines.flow.Flow
+import me.shetj.base.ktx.logI
 import me.shetj.base.network_coroutine.KCHttpV3
 import me.shetj.base.network_coroutine.cache.CacheMode
 import me.shetj.base.network_coroutine.getOrThrow
@@ -65,6 +66,7 @@ class RepoPagingSource() : PagingSource<Int, DataBean>() {
                 this.repeatNum = 10
                 this.timeout = 5000L
             }
+            pageSize.toString().logI()
             if (repoResponse.isSuccess){
                 val repoItems = repoResponse.getOrThrow().data
                 val prevKey = if (page > 1) page - 1 else null

@@ -21,9 +21,9 @@ android {
     resourcePrefix = "base_"
     defaultConfig {
         aarMetadata {
-            this.minCompileSdk = 31
+            this.minCompileSdk = 32
         }
-        minSdk = (21)
+        minSdk = (23)
         targetSdk = (32)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFile("consumer-rules.pro")
@@ -33,7 +33,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro","consumer-rules.pro")
         }
     }
 
@@ -47,12 +47,30 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     lint {
-        abortOnError = false
+        abortOnError = true
+        checkDependencies = true
         checkOnly.addAll(setOf("NewApi", "HandlerLeak"))
+    }
+
+    libraryVariants.all {
+        if (buildType.name == "release") {
+            assembleProvider.configure {
+                doLast {
+//                    buildOutputs.find {
+//                        it.name == "release"
+//                    }?.let { output ->
+//                        copy {
+//                            from(output.outputFile)
+//                            into("../aarLib")
+//                        }
+//                    }
+                }
+            }
+        }
     }
 }
 
@@ -67,4 +85,5 @@ dependencies {
 }
 
 apply(from = "uploadLocal.gradle")
+apply(from = "uploadToGithub.gradle.kts")
 apply(from = "../spotless.gradle")

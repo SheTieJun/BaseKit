@@ -34,7 +34,6 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.net.Uri
 import android.os.Build
 import android.os.Looper
 import android.view.Gravity
@@ -59,11 +58,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
 import java.io.File
 import java.lang.reflect.Method
-import kotlin.coroutines.resume
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
 
@@ -159,7 +153,9 @@ fun Context.collapseStatusBar() {
 /**
  * 针对6.0动态请求权限问题,判断是否允许此权限
  *  可以使用 [AppCompatActivity.registerForActivityResult] 替代
+ *  ```
  *  registerForActivityResult(ActivityResultContracts.RequestPermission())
+ *  ```
  */
 fun Activity.hasPermission(
     vararg permissions: String,
@@ -286,6 +282,16 @@ internal fun Context.requestNetWork() {
     cm.requestNetwork(
         request,
         object : ConnectivityManager.NetworkCallback() {
+
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+            }
+
+            override fun onUnavailable() {
+                super.onUnavailable()
+                NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
+            }
+
             override fun onLost(network: Network) {
                 super.onLost(network)
                 NetWorkLiveDate.getInstance().onLost()
@@ -326,40 +332,13 @@ fun Activity.getWindowContent(): FrameLayout? {
  * Not works with file:// URIs from secondary storage (such as removable storage)
  * Not works with any content:// URI
  */
-suspend fun refreshAlbum(context: Context, fileUri: String) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        // no work
-        withTimeout(5000) {
-            val mediaScanner = context.getMediaScanner()
-            mediaScanner.scanFile(fileUri, "image/jpeg")
-        }
-    } else {
-        val file = File(fileUri)
-        MediaScannerConnection.scanFile(
-            context, arrayOf(file.toString()),
-            arrayOf("image/jpeg")
-        ) { path, uri ->
-            ("扫描完成 path: $path, uri: $uri").logI()
-        }
-    }
-}
-
-suspend fun Context.getMediaScanner(): MediaScannerConnection = withContext(Dispatchers.IO) {
-    return@withContext suspendCancellableCoroutine {
-        var mMediaScanner: MediaScannerConnection? = null
-        mMediaScanner = MediaScannerConnection(
-            this@getMediaScanner,
-            object : MediaScannerConnection.MediaScannerConnectionClient {
-                override fun onMediaScannerConnected() {
-                    it.resume(mMediaScanner!!)
-                }
-
-                override fun onScanCompleted(path: String?, uri: Uri?) {
-                    ("扫描完成 path: $path, uri: $uri").logI()
-                }
-            }
-        )
-        mMediaScanner.connect()
+ fun refreshAlbum(context: Context, fileUri: String) {
+    val file = File(fileUri)
+    MediaScannerConnection.scanFile(
+        context, arrayOf(file.toString()),
+        arrayOf("image/jpeg")
+    ) { path, uri ->
+        ("扫描完成 path: $path, uri: $uri").logI()
     }
 }
 

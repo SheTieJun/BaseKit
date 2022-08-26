@@ -39,21 +39,23 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.fragment.koin.fragmentFactory
-import org.koin.core.KoinExperimentalAPI
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.module.Module
 import timber.log.Timber
 
+
+@Deprecated("已弃用，是为了一些demo的快速升级")
+typealias S = BaseKit
+
 /**
  * **@packageName：** me.shetj.base<br></br>
  * **@author：** shetj<br></br>
  * **@createTime：** 2018/2/24<br></br>
  * **@email：** 375105540@qq.com<br></br>
- * **@describe**<br>super</br>
+ * **@describe**<br>工具类</br>
  */
-
 @Keep
 object BaseKit {
     var baseUrl: String? = null
@@ -106,7 +108,6 @@ object BaseKit {
      * @param isDebug 是否是Debug
      * @param baseUrl if not null will init http
      */
-    @KoinExperimentalAPI
     @JvmOverloads
     @JvmStatic
     internal fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {

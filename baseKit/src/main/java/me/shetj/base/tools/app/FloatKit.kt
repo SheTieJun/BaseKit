@@ -38,6 +38,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
+import me.shetj.base.ktx.logE
 import timber.log.Timber
 
 object FloatKit {
@@ -81,7 +82,7 @@ object FloatKit {
             }
         } else {
             if (!checkOp(this, OP_SYSTEM_ALERT_WINDOW)) {
-                Timber.e("need add permission")
+                "need add permission".logE()
                 return false
             }
         }
@@ -105,7 +106,7 @@ object FloatKit {
                 context.packageName
             ) as Int
         } catch (e: Exception) {
-            Timber.e(Log.getStackTraceString(e))
+            Log.getStackTraceString(e).logE()
         }
         return true
     }

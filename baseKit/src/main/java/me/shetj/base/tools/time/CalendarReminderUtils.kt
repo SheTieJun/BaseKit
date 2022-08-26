@@ -110,7 +110,7 @@ object CalendarReminderUtils {
         val value = ContentValues()
         value.put(CalendarContract.Calendars.NAME, CALENDARS_NAME)
         value.put(CalendarContract.Calendars.ACCOUNT_NAME, CALENDARS_ACCOUNT_NAME)
-        value.put(CalendarContract.Calendars.ACCOUNT_TYPE, CALENDARS_ACCOUNT_TYPE)
+        value.put(CalendarContract.Calendars.ACCOUNT_TYPE, context.packageName)
         value.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, CALENDARS_DISPLAY_NAME)
         value.put(CalendarContract.Calendars.VISIBLE, 1)
         value.put(CalendarContract.Calendars.CALENDAR_COLOR, Color.BLUE)

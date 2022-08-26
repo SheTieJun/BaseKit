@@ -39,6 +39,7 @@ import kotlinx.coroutines.runBlocking
 import me.shetj.base.ktx.isTrue
 import me.shetj.base.ktx.renderType
 import me.shetj.base.model.UIState
+import shetj.me.base.func.main.MainActivity
 
 
 class TestKotlin {
@@ -94,6 +95,7 @@ class TestKotlin {
 
         @JvmStatic
         fun main(args: Array<String>) {
+            MainActivity::class.java
            println(System.currentTimeMillis().toInt())
         }
 

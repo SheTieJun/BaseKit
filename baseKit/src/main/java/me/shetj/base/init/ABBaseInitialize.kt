@@ -27,6 +27,9 @@ package me.shetj.base.init
 import android.content.Context
 import androidx.startup.Initializer
 
+/**
+ * 抽象初始化工具
+ */
 abstract class ABBaseInitialize : Initializer<Unit> {
 
     override fun create(context: Context) {

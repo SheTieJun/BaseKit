@@ -23,24 +23,24 @@
  */
 package me.shetj.base.network.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
-@Parcelize
-class ApiResult<T> : Parcelable {
-    var code = 0
+class ApiResult<T> : Serializable {
+
+    var code: Int = 0
     var msg: String? = null
     var data: T? = null
+
 
     val isOk: Boolean
         get() = code == 0
 
     override fun toString(): String {
         return "ApiResult{" +
-            "code='" + code + '\'' +
-            ", msg='" + msg + '\'' +
-            ", data=" + data +
-            '}'
+                "code='" + code + '\'' +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}'
     }
 }
 
