@@ -41,79 +41,79 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 
-suspend inline fun <T> doOnIO(crossinline action: suspend CoroutineScope.() -> T) =
+suspend fun <T> doOnIO(action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.IO) {
         return@withContext this.action()
     }
 
-suspend inline fun <T> doOnMain(crossinline action: suspend CoroutineScope.() -> T) =
+suspend fun <T> doOnMain(action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.Main) {
         return@withContext action()
     }
 
-suspend inline fun <T> doOnDef(crossinline action: suspend CoroutineScope.() -> T) =
+suspend fun <T> doOnDef(action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.Default) {
         return@withContext action()
     }
 
-suspend inline fun <T> doOnUnconfined(crossinline action: suspend CoroutineScope.() -> T) =
+suspend fun <T> doOnUnconfined(action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.Unconfined) {
         return@withContext action()
     }
 
 
-suspend inline fun <T,O> T.doOnIO(crossinline action: suspend CoroutineScope.(t:T) -> O) =
+suspend fun <T, O> T.doOnIO(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.IO) {
         return@withContext this.action(this@doOnIO)
     }
 
-suspend inline fun <T,O> T.doOnMain(crossinline action: suspend CoroutineScope.(t:T) -> O) =
+suspend fun <T, O> T.doOnMain(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.Main) {
         return@withContext action(this@doOnMain)
     }
 
-suspend inline fun <T,O> T.doOnDef(crossinline action: suspend CoroutineScope.(t:T) -> O) =
+suspend fun <T, O> T.doOnDef(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.Default) {
         return@withContext action(this@doOnDef)
     }
 
-suspend inline fun <T,O> T.doOnUnconfined(crossinline action: suspend CoroutineScope.(t:T) -> O) =
+suspend fun <T, O> T.doOnUnconfined(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.Unconfined) {
         return@withContext action(this@doOnUnconfined)
     }
 
 
-inline fun ViewModel.launch(crossinline action: suspend CoroutineScope.() -> Unit): Job {
+fun ViewModel.launch(action: suspend CoroutineScope.() -> Unit): Job {
     return viewModelScope.launch {
         action()
     }
 }
 
-inline fun AppCompatActivity.launch(crossinline action: suspend CoroutineScope.() -> Unit): Job {
+fun AppCompatActivity.launch(action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launch {
         action()
     }
 }
 
-inline fun Fragment.launch(crossinline action: suspend CoroutineScope.() -> Unit): Job {
+fun Fragment.launch(action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launch {
         action()
     }
 }
 
-inline fun Fragment.runOnCreated(crossinline action: suspend CoroutineScope.() -> Unit): Job {
+fun Fragment.runOnCreated(action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launchWhenCreated {
         action()
     }
 }
 
-inline fun Fragment.runOnResumed(crossinline action: suspend CoroutineScope.() -> Unit): Job {
+fun Fragment.runOnResumed(action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launchWhenResumed {
         action()
     }
 }
 
-inline fun Fragment.runOnStarted(crossinline action: suspend CoroutineScope.() -> Unit): Job {
+fun Fragment.runOnStarted(action: suspend CoroutineScope.() -> Unit): Job {
     return lifecycleScope.launchWhenStarted {
         action()
     }

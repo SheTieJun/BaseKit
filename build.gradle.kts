@@ -15,5 +15,4 @@ plugins {
     id("com.google.devtools.ksp") version ("1.7.10-1.0.6")
 }
 
-group = "com.github.SheTieJun"
-version = "0.0.1"
+apply(from = "https://gist.githubusercontent.com/SheTieJun/f4cb1bd33997c2b46d9e3df40b95a02e/raw/c7b65d18aabfeccc09c37e3b2e7964cdd1f8e856/subprojects.gradle")

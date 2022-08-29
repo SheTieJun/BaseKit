@@ -14,7 +14,6 @@ plugins {
     kotlin("android")
 }
 
-
 android {
     compileSdk = 32
     namespace = "me.shetj.base"
@@ -23,7 +22,7 @@ android {
         aarMetadata {
             this.minCompileSdk = 32
         }
-        minSdk = (23)
+        minSdk = (24)
         targetSdk = (32)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFile("consumer-rules.pro")
@@ -85,5 +84,4 @@ dependencies {
 }
 
 apply(from = "uploadLocal.gradle")
-apply(from = "uploadToGithub.gradle.kts")
 apply(from = "../spotless.gradle")

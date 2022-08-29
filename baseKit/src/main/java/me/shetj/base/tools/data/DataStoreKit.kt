@@ -40,6 +40,7 @@ import me.shetj.base.BaseKit
 /**
  * dataStore
  */
+@Suppress("UNCHECKED_CAST")
 @SuppressWarnings("Unchecked")
 object DataStoreKit {
 

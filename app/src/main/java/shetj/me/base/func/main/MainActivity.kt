@@ -101,12 +101,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             )
         }
 
-        launch {
-            DataStoreKit.get(intPreferencesKey("Test"))
-                .collect {
-                    it.toString().logI("DataStoreKit")
-                }
-        }
+        dataStoreKit()
 
 
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
@@ -247,6 +242,15 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             onFailure = {
                 Timber.tag("getMusic").e(this)
             }
+        }
+    }
+
+    private fun dataStoreKit() {
+        launch {
+            DataStoreKit.get(intPreferencesKey("Test"))
+                .collect {
+                    it.toString().logI("DataStoreKit")
+                }
         }
     }
 
