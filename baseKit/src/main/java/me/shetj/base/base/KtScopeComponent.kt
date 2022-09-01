@@ -40,18 +40,11 @@ import me.shetj.base.BaseKit
  * }
  */
 interface KtScopeComponent {
-    val ktScope: DefCoroutineScope
+    val ktScope: CoroutineScope
 }
 
 abstract class ABKtScopeComponent : KtScopeComponent {
     override val ktScope: DefCoroutineScope by defScope()
-}
-
-fun ktScopeWithLife(lifecycle: Lifecycle) = lazy {
-    LifecycleCoroutineScopeImpl(lifecycle, coroutineContext())
-        .also {
-            it.register(lifecycle)
-        }
 }
 
 /**
@@ -84,78 +77,10 @@ class CoroutineScopeImpl(
     }
 }
 
-class LifecycleCoroutineScopeImpl(
-    val lifecycle: Lifecycle,
-    override val coroutineContext: CoroutineContext
-) : DefCoroutineScope(), LifecycleEventObserver {
 
-    init {
-        if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
-            coroutineContext.cancel()
-        }
-    }
-
-    override fun register(lifecycle: Lifecycle) {
-        launch(Dispatchers.Main.immediate) {
-            if (lifecycle.currentState >= Lifecycle.State.INITIALIZED) {
-                lifecycle.addObserver(this@LifecycleCoroutineScopeImpl)
-            } else {
-                coroutineContext.cancel()
-            }
-        }
-    }
-
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        if (lifecycle.currentState <= Lifecycle.State.DESTROYED) {
-            lifecycle.removeObserver(this)
-            coroutineContext.cancel()
-        }
-    }
-}
-
-interface LifecycleKtScopeComponent {
-    val lifeKtScope: LifecycleCoroutineScope
-}
 
 abstract class DefCoroutineScope : CoroutineScope {
     abstract fun register(lifecycle: Lifecycle)
-}
-
-/**
- * 结合外部的LifecycleOwner 使用
- */
-open class LifecycleCoroutineScope(override val coroutineContext: CoroutineContext) :
-    CoroutineScope, LifecycleEventObserver {
-
-    open fun register(lifecycle: Lifecycle) {
-        launch(Dispatchers.Main.immediate) {
-            if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
-                coroutineContext.cancel()
-            }
-            if (lifecycle.currentState >= Lifecycle.State.INITIALIZED) {
-                lifecycle.addObserver(this@LifecycleCoroutineScope)
-            } else {
-                coroutineContext.cancel()
-            }
-        }
-    }
-
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        if (source.lifecycle.currentState <= Lifecycle.State.DESTROYED) {
-            source.lifecycle.removeObserver(this)
-            coroutineContext.cancel()
-        }
-    }
-}
-
-/**
- * who use this need implements [LifecycleOwner]
- */
-fun LifecycleOwner.defLifeOwnerScope() = lazy {
-    LifecycleCoroutineScope(coroutineContext())
-        .also {
-            it.register(lifecycle)
-        }
 }
 
 private fun coroutineContext() = SupervisorJob() + Dispatchers.Main.immediate + BaseKit.handler

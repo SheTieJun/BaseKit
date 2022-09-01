@@ -26,6 +26,7 @@ package me.shetj.base.ktx
 import android.app.Activity
 import android.graphics.Color
 import android.os.Build
+import android.view.Window
 import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat

@@ -33,6 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import me.shetj.base.ktx.getObjByClassArg
+import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.toMessage
 import timber.log.Timber
 
@@ -53,7 +54,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         get() = view.rxContext
 
     init {
-        Timber.i("${this.javaClass.name}:onStart")
+        "${this.javaClass.name}:onStart".logI()
         onStart()
     }
 
@@ -70,7 +71,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      */
     @CallSuper
     override fun onDestroy() {
-        Timber.i("${this.javaClass.simpleName}:onDestroy")
+        "${this.javaClass.simpleName}:onDestroy".logI()
         coroutineContext.cancelChildren()
         model.onDestroy()
     }

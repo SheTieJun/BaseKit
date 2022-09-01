@@ -79,6 +79,5 @@ abstract class BaseService : Service(), KtScopeComponent {
     /**
      * 展示通知栏
      */
-    open fun createNotification(context: Context) {
-    }
+    abstract fun createNotification(context: Context)
 }

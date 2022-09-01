@@ -23,7 +23,6 @@
  */
 package me.shetj.base
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.provider.Settings
 import androidx.annotation.Keep
@@ -50,11 +49,8 @@ import timber.log.Timber
 typealias S = BaseKit
 
 /**
- * **@packageName：** me.shetj.base<br></br>
- * **@author：** shetj<br></br>
- * **@createTime：** 2018/2/24<br></br>
- * **@email：** 375105540@qq.com<br></br>
- * **@describe**<br>工具类</br>
+ * Base kit
+ * 工具初始化类
  */
 @Keep
 object BaseKit {
@@ -66,7 +62,6 @@ object BaseKit {
         get() = Utils.app
 
     var isDebug = true
-        private set
 
     private var dnsLocalMap = HashMap<String, String>()
 
@@ -94,7 +89,6 @@ object BaseKit {
      * ANDROID_ID重置规则：设备恢复出厂设置时，ANDROID_ID将被重置
      */
     val androidID: String
-        @SuppressLint("HardwareIds")
         get() {
             return Settings.Secure.getString(
                 app.applicationContext.contentResolver,

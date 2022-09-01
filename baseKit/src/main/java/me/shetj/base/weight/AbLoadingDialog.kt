@@ -111,7 +111,6 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
                 initSetting()
             }
             context.lifecycle.addObserver(this)
-            ktScope.register(context.lifecycle)
         }
     }
 

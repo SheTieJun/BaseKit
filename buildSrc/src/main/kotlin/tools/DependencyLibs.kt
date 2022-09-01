@@ -105,6 +105,7 @@ object DependencyLibs {
         add(AndroidX.datastore)
         add(AndroidX.datastoreCore)
         add(AndroidX.dragAndDrop)
+        add(AndroidX.webKit)
 
         add(Lifecycle.livedata)
         add(Lifecycle.viewmodel)
@@ -195,6 +196,7 @@ object DependencyLibs {
         const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
         const val datastoreCore = "androidx.datastore:datastore-core:1.0.0"
         const val dragAndDrop = "androidx.draganddrop:draganddrop:1.0.0"
+        const val webKit ="androidx.webkit:webkit:1.4.0"
 
         object Constraint {
             private const val constraintlayout = "2.1.4"

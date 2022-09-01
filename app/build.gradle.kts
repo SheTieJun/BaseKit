@@ -113,7 +113,7 @@ dependencies {
 
     implementation("com.github.LuckSiege.PictureSelector:picture_library:v2.5.8")
     implementation("com.github.ybq:Android-SpinKit:1.4.0")
-    implementation("com.airbnb.android:lottie:3.7.0")
+    implementation("com.airbnb.android:lottie:5.2.0")
     //图片预览 https://github.com/iielse/ImageWatcher
     implementation("com.github.iielse:ImageWatcher:1.1.5")
 
@@ -128,7 +128,8 @@ dependencies {
     implementation("com.github.gzu-liyujiang.AndroidPicker:WheelPicker:$pickVersion")
     implementation("androidx.core:core-splashscreen:1.0.0-beta02")//启动图
     implementation("androidx.draganddrop:draganddrop:1.0.0") //拖动
-    implementation("androidx.metrics:metrics-performance:1.0.0-alpha01") // 指标
+    implementation("androidx.metrics:metrics-performance:1.0.0-alpha03") // 指标
+    implementation("androidx.tracing:tracing-ktx:1.1.0")
 
     implementation("com.github.SheTieJun:RoundedProgressBar:550a631d74")
     addPaging()

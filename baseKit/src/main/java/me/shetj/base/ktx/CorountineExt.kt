@@ -31,6 +31,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import java.io.IOException
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,74 +48,89 @@ suspend fun <T> doOnIO(action: suspend CoroutineScope.() -> T) =
         return@withContext this.action()
     }
 
-suspend fun <T> doOnMain(action: suspend CoroutineScope.() -> T) =
+suspend fun <T> withMain(action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.Main) {
         return@withContext action()
     }
 
-suspend fun <T> doOnDef(action: suspend CoroutineScope.() -> T) =
+suspend fun <T> withDef(action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.Default) {
         return@withContext action()
     }
 
-suspend fun <T> doOnUnconfined(action: suspend CoroutineScope.() -> T) =
+suspend fun <T> withUnconfined(action: suspend CoroutineScope.() -> T) =
     withContext(Dispatchers.Unconfined) {
         return@withContext action()
     }
 
 
-suspend fun <T, O> T.doOnIO(action: suspend CoroutineScope.(t: T) -> O) =
+suspend fun <T, O> T.withIO(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.IO) {
-        return@withContext this.action(this@doOnIO)
+        return@withContext this.action(this@withIO)
     }
 
-suspend fun <T, O> T.doOnMain(action: suspend CoroutineScope.(t: T) -> O) =
+suspend fun <T, O> T.withMain(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.Main) {
-        return@withContext action(this@doOnMain)
+        return@withContext action(this@withMain)
     }
 
-suspend fun <T, O> T.doOnDef(action: suspend CoroutineScope.(t: T) -> O) =
+suspend fun <T, O> T.withDef(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.Default) {
-        return@withContext action(this@doOnDef)
+        return@withContext action(this@withDef)
     }
 
-suspend fun <T, O> T.doOnUnconfined(action: suspend CoroutineScope.(t: T) -> O) =
+suspend fun <T, O> T.withUnconfined(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.Unconfined) {
-        return@withContext action(this@doOnUnconfined)
+        return@withContext action(this@withUnconfined)
     }
 
 
-fun ViewModel.launch(action: suspend CoroutineScope.() -> Unit): Job {
-    return viewModelScope.launch {
+fun ViewModel.launch(
+    context: CoroutineContext = EmptyCoroutineContext,
+    action: suspend CoroutineScope.() -> Unit
+): Job {
+    return viewModelScope.launch(context) {
         action()
     }
 }
 
-fun AppCompatActivity.launch(action: suspend CoroutineScope.() -> Unit): Job {
-    return lifecycleScope.launch {
+fun AppCompatActivity.launch(
+    context: CoroutineContext = EmptyCoroutineContext,
+    action: suspend CoroutineScope.() -> Unit
+): Job {
+    return lifecycleScope.launch(context) {
         action()
     }
 }
 
-fun Fragment.launch(action: suspend CoroutineScope.() -> Unit): Job {
-    return lifecycleScope.launch {
+fun Fragment.launch(
+    context: CoroutineContext = EmptyCoroutineContext,
+    action: suspend CoroutineScope.() -> Unit
+): Job {
+    return lifecycleScope.launch(context) {
         action()
     }
 }
 
-fun Fragment.runOnCreated(action: suspend CoroutineScope.() -> Unit): Job {
+fun Fragment.runOnCreated(
+    action: suspend CoroutineScope.() -> Unit
+): Job {
     return lifecycleScope.launchWhenCreated {
         action()
     }
 }
 
-fun Fragment.runOnResumed(action: suspend CoroutineScope.() -> Unit): Job {
+fun Fragment.runOnResumed(
+    action: suspend CoroutineScope.() -> Unit
+): Job {
     return lifecycleScope.launchWhenResumed {
         action()
     }
 }
 
-fun Fragment.runOnStarted(action: suspend CoroutineScope.() -> Unit): Job {
+fun Fragment.runOnStarted(
+    action: suspend CoroutineScope.() -> Unit
+): Job {
     return lifecycleScope.launchWhenStarted {
         action()
     }

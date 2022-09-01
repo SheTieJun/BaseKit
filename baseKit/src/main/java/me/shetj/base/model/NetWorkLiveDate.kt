@@ -34,7 +34,8 @@ import me.shetj.base.tools.app.NetworkUtils
 /**
  * 网络状态变更
  */
-class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.NetWorkInfo>() {
+class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
+    MutableLiveData<NetWorkLiveDate.NetWorkInfo>(netWorkInfo) {
 
     sealed class NetType() {
         object WIFI : NetType()
@@ -75,14 +76,14 @@ class NetWorkLiveDate private constructor() : MutableLiveData<NetWorkLiveDate.Ne
 
     companion object {
 
-        @Volatile private var networkLiveData: NetWorkLiveDate? = null
+        @Volatile
+        private var networkLiveData: NetWorkLiveDate? = null
 
         @JvmStatic
         fun getInstance(): NetWorkLiveDate {
             return networkLiveData ?: synchronized(NetWorkLiveDate::class.java) {
-                return NetWorkLiveDate().apply {
+                return NetWorkLiveDate(NetWorkInfo()).apply {
                     networkLiveData = this
-                    this.value = NetWorkInfo()
                 }
             }
         }

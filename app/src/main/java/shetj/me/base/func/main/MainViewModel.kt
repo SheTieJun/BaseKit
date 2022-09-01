@@ -46,6 +46,7 @@ import shetj.me.base.bean.ResultMusic
  * **@describe**<br></br>
  */
 class MainViewModel : BaseViewModel() {
+    var isAddJankStats: Boolean = false
     val liveDate = MutableLiveData<HttpResult<ResultMusic>>()
     fun getNightModel(): Int {
         val defaultNightMode = AppCompatDelegate.getDefaultNightMode()

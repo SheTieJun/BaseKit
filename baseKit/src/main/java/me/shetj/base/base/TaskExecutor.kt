@@ -26,6 +26,7 @@ package me.shetj.base.base
 import android.os.Handler
 import android.os.Looper
 import androidx.core.os.HandlerCompat
+import java.util.concurrent.Executor
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.ThreadPoolExecutor
@@ -40,7 +41,7 @@ class TaskExecutor private constructor() {
     // 最大线程2，当不够时所有进入等待
     private val mDiskIO = ThreadPoolExecutor(
         2, 2,
-        0L, TimeUnit.MILLISECONDS,
+        10L, TimeUnit.MILLISECONDS,
         SynchronousQueue(),
         object : ThreadFactory {
             private val THREAD_NAME_STEM = "base_thread_%d"
@@ -52,6 +53,10 @@ class TaskExecutor private constructor() {
             }
         }
     )
+
+    fun getExecutor(): Executor {
+        return mDiskIO
+    }
 
     fun executeOnDiskIO(runnable: Runnable) {
         mDiskIO.execute(runnable)
@@ -114,6 +119,10 @@ class TaskExecutor private constructor() {
             getInstance().executeOnMainThread(runnable)
         }
 
+        /**
+         * 基本不会用，
+         * 如果用了，需要注意要确定不会有在使用的类
+         */
         fun exit() {
             getInstance().exit()
             sInstance = null

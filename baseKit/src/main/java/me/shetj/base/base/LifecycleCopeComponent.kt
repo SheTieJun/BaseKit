@@ -25,9 +25,11 @@ package me.shetj.base.base
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.coroutineScope
 import kotlinx.coroutines.CoroutineScope
 
 /*** 自己控制的生命周期和协程 类似actvity的基类
@@ -36,14 +38,13 @@ import kotlinx.coroutines.CoroutineScope
  * * 自身[LifecycleOwner] + 自身[CoroutineScope]
  */
 abstract class AbLifecycleCopeComponent : LifecycleCopeComponent {
-
-    override val ktScope: DefCoroutineScope by ktScopeWithLife(lifecycle)
-
-    private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(getOwner()) }
-
     init {
         initLifecycle()
     }
+
+    private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(getOwner()) }
+
+    override val ktScope: LifecycleCoroutineScope  = lifecycle.coroutineScope
 
     private fun initLifecycle() {
         lifecycle.addObserver(

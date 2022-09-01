@@ -26,18 +26,42 @@ package shetj.me.base.test_lib;
 
 import com.github.gzuliyujiang.wheelpicker.contract.DateFormatter;
 
+/**
+ * 年日期格式化程序
+ *
+ * @author shetj
+ * @date 2022/09/01
+ */
 class YearDateFormatter implements DateFormatter {
 
+    /**
+     * 格式一年
+     *
+     * @param year 一年
+     * @return {@link String}
+     */
     @Override
     public String formatYear(int year) {
         return "" + year % 100+"";
     }
 
+    /**
+     * 格式月
+     *
+     * @param month 月
+     * @return {@link String}
+     */
     @Override
     public String formatMonth(int month) {
         return month < 10 ? "0" + month : "" + month;
     }
 
+    /**
+     * 格式一天
+     *
+     * @param day 一天
+     * @return {@link String}
+     */
     @Override
     public String formatDay(int day) {
         return day < 10 ? "0" + day : "" + day;

@@ -47,7 +47,7 @@ gradle.beforeProject {
 
 //build.gradle 执行后
 gradle.afterProject {
-    val begin = beginOfProjectConfig[project] ?:0L
+    val begin = beginOfProjectConfig[project] ?: 0L
     list.add("配置阶段，$project 耗时：${System.currentTimeMillis() - begin} ms")
 }
 
@@ -57,22 +57,33 @@ gradle.taskGraph.whenReady {
     beginOfTaskExecute = System.currentTimeMillis()
 }
 
-//执行阶段
-gradle.taskGraph.beforeTask {
-    var startTs = 0L
-    doFirst {
-        startTs = System.currentTimeMillis()
-    }
 
-    doLast {
-        list.add("执行阶段，$this 耗时：${System.currentTimeMillis() - startTs} ms")
+gradle.taskGraph.addTaskExecutionGraphListener {
+    var startTs: Long
+    it.allTasks.forEach { task ->
+        startTs = 0L
+        task.doFirst {
+            startTs = System.currentTimeMillis()
+        }
+        task.doLast {
+            list.add("执行阶段，$this 耗时：${System.currentTimeMillis() - startTs} ms")
+        }
     }
 }
 
-//执行阶段完毕
-gradle.buildFinished {
-    list.add("执行阶段总耗时：${System.currentTimeMillis() - beginOfTaskExecute}")
-    list.forEach {
-        println(it)
+
+gradle.addBuildListener(object : BuildListener {
+    override fun settingsEvaluated(settings: Settings) { }
+
+    override fun projectsLoaded(gradle: Gradle) { }
+
+    override fun projectsEvaluated(gradle: Gradle) { }
+
+    override fun buildFinished(result: BuildResult) {
+        list.add("执行阶段总耗时：${System.currentTimeMillis() - beginOfTaskExecute}")
+        list.forEach {
+            println(it)
+        }
     }
-}
+})
+

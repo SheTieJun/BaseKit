@@ -36,7 +36,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.FragmentManager
+import androidx.metrics.performance.JankStats
+import androidx.metrics.performance.PerformanceMetricsState
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import me.shetj.base.ktx.logI
+import me.shetj.base.ktx.toJson
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.SoftInputUtil
 import shetj.me.base.R
@@ -57,7 +61,7 @@ class CommentPopup : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.popupwindow_comment, null)
-
+        val hierarchy = PerformanceMetricsState.getHolderForHierarchy(rootView)
         editContent = rootView.findViewById(R.id.edit_content)
         tvSend = rootView.findViewById(R.id.tv_send)
         tvSend?.isEnabled = false
@@ -85,15 +89,17 @@ class CommentPopup : BottomSheetDialogFragment() {
         softInputUtil.attachSoftInput(dialog?.window, object : SoftInputUtil.ISoftInputChanged {
             override fun onChanged(isSoftInputShow: Boolean) {
                 if (!isSoftInputShow) {
+                    hierarchy.state?.putState("input","hide")
                     dismissAllowingStateLoss()
                 }
             }
         })
 
         dialog?.setOnShowListener {
-            editContent?.postDelayed( {
+            editContent?.postDelayed({
+                hierarchy.state?.putState("input","show")
                 KeyboardUtil.focusEditShowKeyBoard(editContent!!)
-            },50)
+            }, 50)
         }
         return rootView
     }
@@ -101,6 +107,18 @@ class CommentPopup : BottomSheetDialogFragment() {
     fun show(manager: FragmentManager) {
         manager.executePendingTransactions()
         show(manager, "commentPopup")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dialog?.window?.let {
+            JankStats.createAndTrack(it){
+                if (it.isJank){
+                    ((it.frameDurationUiNanos/1000000).toString()+"毫秒").logI("JankStats")
+                }
+                it.toJson().logI("JankStats")
+            }
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

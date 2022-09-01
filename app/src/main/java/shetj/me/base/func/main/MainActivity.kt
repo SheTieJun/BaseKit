@@ -34,9 +34,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.metrics.performance.JankStats
+import androidx.metrics.performance.PerformanceMetricsState
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.doOnIO
-import me.shetj.base.ktx.doOnMain
 import me.shetj.base.ktx.hasNavigationBars
 import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
@@ -52,6 +53,8 @@ import me.shetj.base.ktx.showNavigationBars
 import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsets
+import me.shetj.base.ktx.withIO
+import me.shetj.base.ktx.withMain
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
@@ -91,6 +94,19 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView() {
+
+        if (!mViewModel.isAddJankStats){
+            "createAndTrack".logI()
+            JankStats.createAndTrack(window){
+                if (it.isJank){
+                    ((it.frameDurationUiNanos/1000000).toString()+"毫秒").logI("JankStats")
+                }
+                it.toJson().logI("JankStats")
+            }
+            mViewModel.isAddJankStats = true
+        }
+        val hierarchy = PerformanceMetricsState.getHolderForHierarchy(mViewBinding.content.root)
+
         setAppearance(isBlack = true, Color.TRANSPARENT)
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
@@ -150,6 +166,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         //btn_test_keybord
         mContent.btnTestKeybord.setOnClickListener {
+            hierarchy.state?.putState("CommentPopup","show")
             CommentPopup.newInstance().show(supportFragmentManager)
         }
 
@@ -166,11 +183,11 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         launch {
-            "111".doOnIO { i ->
+            "111".withIO { i ->
                 i.toInt()
-            }.doOnMain {
+            }.withMain {
                 it + 1
-            }.doOnMain {
+            }.withMain {
                 it.toString().logI("测试协程")
             }.let {
 
@@ -224,7 +241,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mViewBinding.content.testThread.setOnClickListener {
-            TaskExecutor.exit()
             TaskExecutor.executeOnIO {
                 Timber.tag("TaskExecutor").i(Thread.currentThread().name)
             }
@@ -266,6 +282,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     suspend fun netTest() {
         mViewModel.getMusicV2()
     }
+
 
     public override fun initData() {
         codeUtil = CodeUtil(mViewBinding.content.tvTestCode)

@@ -38,4 +38,4 @@ data class ModelData<T>(val data: T) : ResultData<T>()
 /**
  * 没有数据
  */
-object NoneData : ResultData<Any>()
+object EmptyData : ResultData<Any>()
