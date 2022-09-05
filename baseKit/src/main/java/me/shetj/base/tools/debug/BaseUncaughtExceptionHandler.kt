@@ -34,6 +34,7 @@ import java.io.IOException
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
+import me.shetj.base.ktx.logE
 import me.shetj.base.tools.debug.DebugFunc.Companion.logFilePath
 import me.shetj.base.tools.time.DateUtils
 import timber.log.Timber
@@ -43,9 +44,9 @@ import timber.log.Timber
  */
 class BaseUncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
     override fun uncaughtException(t: Thread, e: Throwable) {
-        Timber.tag("error").e("Thread = ${t.name} : Throwable = ${e.message}".trimIndent())
+        ("Thread = ${t.name} : Throwable = ${e.message}".trimIndent()).logE("error")
         val stackTraceInfo = getStackTraceInfo(e)
-        Timber.tag("error").e(stackTraceInfo)
+        stackTraceInfo.logE("error")
         if (DebugFunc.getInstance().isOutputLog) {
             saveThrowableMessage(stackTraceInfo)
         }
@@ -100,7 +101,7 @@ class BaseUncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
                     outputStream.write(bytes, 0, len)
                 }
                 outputStream.flush()
-                Timber.tag("error").e("写入本地文件成功：%s", file.absolutePath)
+                ("写入本地文件成功：${file.absolutePath}").logE("error")
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             } catch (e: IOException) {

@@ -26,18 +26,21 @@
 package shetj.me.base.func.main
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Service
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import me.shetj.base.base.TaskExecutor
-import me.shetj.base.ktx.doOnIO
 import me.shetj.base.ktx.hasNavigationBars
 import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
@@ -60,10 +63,11 @@ import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
-import me.shetj.base.tools.data.DataStoreKit
+import me.shetj.base.tools.data.defDataStoreKit
 import me.shetj.base.tools.file.FileQUtils
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
+import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
@@ -93,15 +97,30 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         return super.onTouchEvent(event)
     }
 
+    @SuppressLint("MissingPermission")
     override fun initView() {
+        //test
+        packageManager.getInstalledPackages(
+            PackageManager.GET_ACTIVITIES or
+                    PackageManager.GET_SERVICES
+        )
 
-        if (!mViewModel.isAddJankStats){
+
+        kotlin.runCatching {
+            val wifiManager: WifiManager? = getSystemService<WifiManager>()
+            val info = wifiManager?.connectionInfo
+            val wifiMac = info?.bssid
+            val phoneMac = info?.macAddress
+        }
+
+
+        if (!mViewModel.isAddJankStats) {
             "createAndTrack".logI()
-            JankStats.createAndTrack(window){
-                if (it.isJank){
-                    ((it.frameDurationUiNanos/1000000).toString()+"毫秒").logI("JankStats")
+            JankStats.createAndTrack(window) {
+                if (it.isJank) {
+                    ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logI("JankStats")
                 }
-                it.toJson().logI("JankStats")
+//                it.toJson().logI("JankStats")
             }
             mViewModel.isAddJankStats = true
         }
@@ -134,16 +153,16 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
-           selectFile {
-               "url = ${it.toString()}".logI()
-               ("url = ${it?.let { it1 -> FileQUtils.getFileByUri(this, it1) }}").logI()
-           }
+            selectFile {
+                "url = ${it.toString()}".logI()
+                ("url = ${it?.let { it1 -> FileQUtils.getFileByUri(this, it1) }}").logI()
+            }
         }
 
         var i = 0
         findViewById<View>(R.id.btn_save).setOnClickListener {
             launch {
-                DataStoreKit.save("Test", i++)
+                defDataStoreKit.save("Test", i++)
             }
         }
 
@@ -166,7 +185,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         //btn_test_keybord
         mContent.btnTestKeybord.setOnClickListener {
-            hierarchy.state?.putState("CommentPopup","show")
+            hierarchy.state?.putState("CommentPopup", "show")
             CommentPopup.newInstance().show(supportFragmentManager)
         }
 
@@ -220,11 +239,13 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mContent.testEvent.setOnClickListener {
-            startRequestPermissions(permissions =  arrayOf(
-                Manifest.permission.WRITE_CALENDAR,
-                Manifest.permission.READ_CALENDAR
-            )){
-                if (it.filter { !it.value }.isEmpty()){
+            startRequestPermissions(
+                permissions = arrayOf(
+                    Manifest.permission.WRITE_CALENDAR,
+                    Manifest.permission.READ_CALENDAR
+                )
+            ) {
+                if (it.filter { !it.value }.isEmpty()) {
                     mViewModel.addEvent(this)
                 }
             }
@@ -233,9 +254,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         NetWorkLiveDate.getInstance().observe(this) {
             when (it?.netType) {
-                NetWorkLiveDate.NetType.NONE ->  ("hasNet = ${it.hasNet},netType = NONE").logI()
-                NetWorkLiveDate.NetType.PHONE ->  ("hasNet = ${it.hasNet},netType = PHONE").logI()
-                NetWorkLiveDate.NetType.WIFI ->  ("hasNet = ${it.hasNet},netType = WIFI").logI()
+                NetWorkLiveDate.NetType.NONE -> ("hasNet = ${it.hasNet},netType = NONE").logI()
+                NetWorkLiveDate.NetType.PHONE -> ("hasNet = ${it.hasNet},netType = PHONE").logI()
+                NetWorkLiveDate.NetType.WIFI -> ("hasNet = ${it.hasNet},netType = WIFI").logI()
                 else -> {}
             }
         }
@@ -252,18 +273,17 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mViewModel.liveDate.observeChange(this) {
-            onSuccess = {
-                Timber.tag("getMusic").i(this.toJson())
-            }
+            onSuccess = {}
             onFailure = {
                 Timber.tag("getMusic").e(this)
             }
         }
     }
 
+    @Debug
     private fun dataStoreKit() {
         launch {
-            DataStoreKit.get(intPreferencesKey("Test"))
+            defDataStoreKit.get("Test", -1)
                 .collect {
                     it.toString().logI("DataStoreKit")
                 }
@@ -279,6 +299,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         super.onResume()
     }
 
+    @Debug
     suspend fun netTest() {
         mViewModel.getMusicV2()
     }
@@ -288,5 +309,4 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         codeUtil = CodeUtil(mViewBinding.content.tvTestCode)
         codeUtil?.register(this.lifecycle)
     }
-
 }

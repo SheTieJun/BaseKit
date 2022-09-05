@@ -70,9 +70,9 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
         cancelable: Boolean = true,
         msg: CharSequence = "加载中",
         @DrawableRes image: Int? = null
-    ): AlertDialog {
+    ): AlertDialog? {
         if (context.isFinishing) {
-            return mLoadingDialog!!
+            return null
         }
         initDialog(context, cancelable, msg, image)
         mLoadingDialog?.let {

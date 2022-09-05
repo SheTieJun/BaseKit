@@ -34,13 +34,6 @@
                 android:name="me.shetj.base.init.CommonInitialize"
                 android:value="androidx.startup" />
         </provider>
-
-
-        <meta-data android:name="permission.reason.android.permission.READ_PHONE_STATE" android:resource="@string/READ_PHONE_STATE"/>
-        <meta-data android:name="permission.reason.android.permission-group.STORAGE" android:resource="@string/STORAGE"/>
-        <meta-data android:name="permission.reason.android.permission-group.MICROPHONE" android:resource="@string/MICROPHONE"/>
-        <meta-data android:name="permission.reason.android.permission-group.CAMERA" android:resource="@string/CAMERA"/>
-        <meta-data android:name="permission.reason.android.permission-group.CALENDAR" android:resource="@string/CALENDAR"/>
     </application>
 
 </manifest>

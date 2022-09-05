@@ -93,7 +93,7 @@ class SimLoadingDialog : AbLoadingDialog() {
         }
 
         @JvmStatic
-        fun showNoAction(context: AppCompatActivity, cancelable: Boolean = true): Dialog {
+        fun showNoAction(context: AppCompatActivity, cancelable: Boolean = true): Dialog? {
             return SimLoadingDialog().showLoading(context, cancelable)
         }
     }

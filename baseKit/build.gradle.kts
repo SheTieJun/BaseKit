@@ -52,25 +52,10 @@ android {
     lint {
         abortOnError = true
         checkDependencies = true
+        htmlReport = true
         checkOnly.addAll(setOf("NewApi", "HandlerLeak"))
     }
 
-    libraryVariants.all {
-        if (buildType.name == "release") {
-            assembleProvider.configure {
-                doLast {
-//                    buildOutputs.find {
-//                        it.name == "release"
-//                    }?.let { output ->
-//                        copy {
-//                            from(output.outputFile)
-//                            into("../aarLib")
-//                        }
-//                    }
-                }
-            }
-        }
-    }
 }
 
 dependencies {

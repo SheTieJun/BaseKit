@@ -25,30 +25,49 @@
 
 package me.shetj.base.tools.data
 
+
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.migrations.SharedPreferencesMigration
+import androidx.datastore.preferences.SharedPreferencesMigration
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import me.shetj.base.BaseKit
 
 
-/**
- * dataStore
- */
-@Suppress("UNCHECKED_CAST")
-@SuppressWarnings("Unchecked")
-object DataStoreKit {
+val defDataStoreKit by lazy { BaseKit.app.dataStoreKit() }
 
-    private val Context.myDataStore by preferencesDataStore("Base_DataStore")
+fun Context.dataStoreKit(): DataStoreKit {
+    return DataStoreKit(this)
+}
 
-    val dataStore: DataStore<Preferences> by lazy { BaseKit.app.myDataStore }
+class DataStoreKit(
+    private val context: Context,
+    name: String = "_DataStore_Kit",
+    private val oldSp: List<String> = listOf()
+) {
 
-    suspend inline fun <reified T : Any> save(key: String, value: T) :Boolean{
+    private val Context.myDataStore by preferencesDataStore(
+        name,
+        produceMigrations = { context -> oldSp.map { context.getSPByName(it) } })
+
+    val dataStore: DataStore<Preferences> by lazy { context.myDataStore }
+
+    /**
+     * Save 保存
+     *
+     * @param T [Type]
+     * @param key
+     * @param value
+     * @return
+     */
+    @Suppress("UNCHECKED_CAST")
+    suspend inline fun <reified T : Any> save(key: String, value: T): Boolean {
         try {
             dataStore.edit {
                 when (T::class) {
@@ -85,19 +104,157 @@ object DataStoreKit {
         return false
     }
 
-    inline fun <reified T : Any> get(key: Preferences.Key<T>): Flow<T?> {
-        return dataStore.data.map {
-            it[key]
-        }.catch {
-            it.printStackTrace()
+    /**
+     * Get Flow by Preferences.Key
+     *
+     * @param T
+     * @param key
+     * @return
+     */
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T : Any> get(key: String, defaultValue: T): Flow<T> {
+        val data = dataStore.data.catch {
+            if (it is IOException) {
+                it.printStackTrace()
+                emit(emptyPreferences())
+            } else {
+                throw it
+            }
+        }.map {
+            when (T::class) {
+                Int::class -> {
+                    it[intPreferencesKey(key)]
+                }
+                Double::class -> {
+                    it[doublePreferencesKey(key)]
+                }
+                String::class -> {
+                    it[stringPreferencesKey(key)]
+                }
+                Boolean::class -> {
+                    it[booleanPreferencesKey(key)]
+                }
+                Float::class -> {
+                    it[floatPreferencesKey(key)]
+                }
+                Long::class -> {
+                    it[longPreferencesKey(key)]
+                }
+                Set::class -> {
+                    it[stringSetPreferencesKey(key)]
+                }
+                else -> {
+                    null
+                }
+            } ?: defaultValue
         }
+        return data as Flow<T>
     }
 
-    suspend inline fun <reified T : Any> getOrNull(key: Preferences.Key<T>): T? {
-        return kotlin.runCatching {
-            dataStore.data.mapNotNull { it[key] }.first()
-        }.getOrNull()
+    /**
+     * Get Flow by Preferences.Key
+     *
+     * @param T
+     * @param key
+     * @return
+     */
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T : Any> get(key: String): Flow<T?> {
+        val data = dataStore.data.catch {
+            if (it is IOException) {
+                it.printStackTrace()
+                emit(emptyPreferences())
+            } else {
+                throw it
+            }
+        }.map {
+            when (T::class) {
+                Int::class -> {
+                    it[intPreferencesKey(key)]
+                }
+                Double::class -> {
+                    it[doublePreferencesKey(key)]
+                }
+                String::class -> {
+                    it[stringPreferencesKey(key)]
+                }
+                Boolean::class -> {
+                    it[booleanPreferencesKey(key)]
+                }
+                Float::class -> {
+                    it[floatPreferencesKey(key)]
+                }
+                Long::class -> {
+                    it[longPreferencesKey(key)]
+                }
+                Set::class -> {
+                    it[stringSetPreferencesKey(key)]
+                }
+                else -> {
+                    null
+                }
+            }
+        }
+        return data as Flow<T?>
     }
 
+    /**
+     * Get first 只获取第一个值
+     *
+     * @param T
+     * @param key
+     * @param defaultValue
+     * @return
+     */
+    suspend inline fun <reified T : Any> getFirst(key: String, defaultValue: T): T {
+        var resultValue = defaultValue
+        dataStore.data.catch {
+            if (it is IOException) {
+                it.printStackTrace()
+                emit(emptyPreferences())
+            } else {
+                throw it
+            }
+        }.first {
+            resultValue = (when (T::class) {
+                Int::class -> {
+                    it[intPreferencesKey(key)]
+                }
+                Double::class -> {
+                    it[doublePreferencesKey(key)]
+                }
+                String::class -> {
+                    it[stringPreferencesKey(key)]
+                }
+                Boolean::class -> {
+                    it[booleanPreferencesKey(key)]
+                }
+                Float::class -> {
+                    it[floatPreferencesKey(key)]
+                }
+                Long::class -> {
+                    it[longPreferencesKey(key)]
+                }
+                Set::class -> {
+                    it[stringSetPreferencesKey(key)]
+                }
+                else -> {
+                    null
+                }
+            } ?: defaultValue) as T
+            true
+        }
+        return resultValue
+    }
+}
 
+
+/**
+ * Get SharedPreferencesMigration by name
+ *
+ * @param name sp fileName
+ * @return
+ */
+internal fun Context.getSPByName(name: String): SharedPreferencesMigration<Preferences> {
+    return SharedPreferencesMigration(this, name)
 }

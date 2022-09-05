@@ -1,4 +1,12 @@
+import com.android.build.api.instrumentation.AsmClassVisitorFactory
+import com.android.build.api.instrumentation.ClassContext
+import com.android.build.api.instrumentation.ClassData
+import com.android.build.api.instrumentation.InstrumentationParameters.None
+import com.android.build.api.instrumentation.InstrumentationScope
+import org.objectweb.asm.ClassVisitor
+import tools.addNav
 import tools.addPaging
+
 
 plugins {
     id("com.android.application")
@@ -133,6 +141,37 @@ dependencies {
 
     implementation("com.github.SheTieJun:RoundedProgressBar:550a631d74")
     addPaging()
+    addNav()
+}
+
+androidComponents {
+    onVariants {
+//        it.instrumentation.transformClassesWith(DebugAsmFactory::class.java, InstrumentationScope.ALL) {}
+//        it.instrumentation.transformClassesWith(PrivacyCheckFactory::class.java, InstrumentationScope.ALL) {}
+    }
+}
+
+abstract class DebugAsmFactory : AsmClassVisitorFactory<None> {
+
+    override fun createClassVisitor(classContext: ClassContext, nextClassVisitor: ClassVisitor): ClassVisitor {
+        return asm.DebugClassVisitor(nextClassVisitor)
+    }
+
+    override fun isInstrumentable(classData: ClassData): Boolean {
+        return true
+    }
+}
+
+
+abstract class PrivacyCheckFactory : AsmClassVisitorFactory<None> {
+
+    override fun createClassVisitor(classContext: ClassContext, nextClassVisitor: ClassVisitor): ClassVisitor {
+        return asm.PrivacyClassVisitor(nextClassVisitor)
+    }
+
+    override fun isInstrumentable(classData: ClassData): Boolean {
+        return true
+    }
 }
 
 apply(from = "../spotless.gradle")
