@@ -38,6 +38,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type
+import androidx.lifecycle.lifecycleScope
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import me.shetj.base.base.TaskExecutor
@@ -107,7 +108,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
 
         kotlin.runCatching {
-            val wifiManager: WifiManager? = getSystemService<WifiManager>()
+            val wifiManager: WifiManager? = getSystemService()
             val info = wifiManager?.connectionInfo
             val wifiMac = info?.bssid
             val phoneMac = info?.macAddress
@@ -277,6 +278,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             onFailure = {
                 Timber.tag("getMusic").e(this)
             }
+        }
+        mViewBinding.content.btnDoNotDisturb.setOnClickListener {
+
         }
     }
 

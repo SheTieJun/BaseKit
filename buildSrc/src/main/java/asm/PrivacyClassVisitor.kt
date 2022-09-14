@@ -54,6 +54,7 @@ val privacyClassSet = setOf(
     "java/net/NetworkInterface",
     "android/location/Location",
     "android/location/LocationManager",
+    "android/app/ApplicationPackageManager",
     "android/content/pm"//无法检测
 )
 

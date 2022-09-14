@@ -160,6 +160,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_test_picker" />
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/btn_DoNotDisturb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="免打扰模式"
+            android:textAllCaps="false"
+         />
+
     </com.google.android.material.chip.ChipGroup>
 
     <com.google.android.material.textview.MaterialTextView

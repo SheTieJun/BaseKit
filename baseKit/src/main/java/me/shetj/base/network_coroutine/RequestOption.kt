@@ -23,6 +23,7 @@
  */
 package me.shetj.base.network_coroutine
 
+import me.shetj.base.ktx.md5
 import me.shetj.base.network_coroutine.cache.CacheMode
 import me.shetj.base.network_coroutine.cache.KCCache.Companion.CACHE_NEVER_EXPIRE
 
@@ -54,4 +55,23 @@ class RequestOption {
      * repeatNum <= 0 表不处理； 重试请求次数
      */
     var repeatNum: Int = -1
+}
+
+
+fun String.getDefReqOption(): RequestOption {
+    return RequestOption().also {
+        it.cacheKey = this.md5
+        it.cacheTime = 36_00
+        it.cacheMode = CacheMode.FIRST_NET
+        it.repeatNum = 3
+        it.timeout = 10_000L
+    }
+}
+
+
+fun buildRequest(requestOption: (RequestOption.() -> Unit)? = null): RequestOption {
+    return RequestOption().also { option ->
+        requestOption?.let { option.apply(requestOption) }
+        checkNotNull(option.cacheKey) { "cacheKey must not be null" }
+    }
 }
