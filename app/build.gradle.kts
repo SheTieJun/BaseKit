@@ -68,7 +68,7 @@ android {
             enableV4Signing = true
             keyAlias = "shetj"
             keyPassword = "123456"
-            storeFile = File("./test.jks")
+            storeFile = file("test.jks")
             storePassword = "123456"
         }
     }
