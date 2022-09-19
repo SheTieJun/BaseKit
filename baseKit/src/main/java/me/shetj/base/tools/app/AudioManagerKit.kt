@@ -32,6 +32,7 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.AudioManager.OnAudioFocusChangeListener
 import android.os.Build
+import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
@@ -52,7 +53,7 @@ import androidx.lifecycle.LifecycleOwner
  * * [setOnAudioFocusChangeListener] 监听焦点变化
  */
 
-class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwner? = null) :
+class AudioManagerKit(val context: Context, private val lifecycleOwner: LifecycleOwner? = null) :
     LifecycleEventObserver {
 
     private var onAudioFocusChangeListener: OnAudioFocusChange? = null
@@ -91,15 +92,15 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
     }
 
     init {
-        getAudioManager(context)
-        lifecycleOwner?.lifecycle?.addObserver(this)
+        init()
     }
 
+    fun getAudioManager() = mAudioManager
 
     /**
      * 申请音频焦点
      */
-    private fun requestAudioFocus() {
+    fun requestAudioFocus() {
         if (mAudioManager == null) return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {            //Android 8.0+
             audioFocusRequest!!.acceptsDelayedFocusGain()
@@ -132,9 +133,9 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
         this.onAudioFocusChangeListener = onAudioFocusChangeListener
     }
 
-    private fun getAudioManager(context: Context) {
-        mAudioManager =
-            context.applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private fun init() {
+        mAudioManager = context.applicationContext.getSystemService()
+        lifecycleOwner?.lifecycle?.addObserver(this)
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Event) {

@@ -47,8 +47,7 @@ fun Activity.onRequestPermissionsResult2(permissions: Array<String>, grantResult
     var i = 0
     val len = grantResults.size
     while (i < len) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && grantResults[i] == PackageManager.PERMISSION_DENIED) {
+        if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
             badResults.add(permissions[i])
             //有不在提示的
             if (!shouldShowRequestPermissionRationale(permissions[i])) needJump2setting = true

@@ -1,0 +1,86 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2021 SheTieJun
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/**
+ *
+ * 这是一个测试demo
+ * 具体使用依赖
+ *
+ * ```
+ * 隐私检测工具： v0.0.3
+ * 1. （必须）需要在 `local.properties`或者`gradle-wrapper.properties`中添加 `GITHUB_READ_TOKEN=xxxxxxx`
+ * 2. 安装APP后打开悬浮窗权限
+ * apply from : "https://gist.githubusercontent.com/SheTieJun/f4cb1bd33997c2b46d9e3df40b95a02e/raw/f0c42c67f7c1a733266b5fdd4b8b8337621e107b/wk-config-maven-privacy-check.gradle"
+ * ```
+ *
+ *
+ * init settings.gradle
+ *
+ *  kts:
+ *   <code>
+ *       apply(from="private-maven.gradle")
+ *   </code>
+ *
+ *  apply from ="private-maven.gradle"
+ *
+ *
+ *  和
+ *  上传到私有maven 配置是成对存在的
+ *  apply(from = "https://gist.githubusercontent.com/SheTieJun/f4cb1bd33997c2b46d9e3df40b95a02e/raw/2118aaa5ba05206a4ae089e04f92045ee342070c/maven-shetj.gradle")
+ *
+ */
+Properties properties = new Properties()
+def file = new File("${rootProject.projectDir}${File.separator}local.properties")
+properties.load(file.newDataInputStream())
+
+
+Properties gradleProperties = new Properties()
+def gradleProfile = new File("${rootProject.projectDir}${File.separator}gradle${File.separator}wrapper${File.separator}gradle-wrapper.properties")
+gradleProperties.load(gradleProfile.newDataInputStream())
+
+settings.dependencyResolutionManagement {
+    repositories {
+        maven {
+            google()
+            mavenCentral()
+            mavenLocal()
+            url = uri("https://maven.pkg.github.com/SheTieJun/maven/")
+            credentials {
+                username = "SheTieJun"
+                password = properties.getProperty("GITHUB_READ_TOKEN") ?: System.getenv("GITHUB_READ_TOKEN") ?: gradleProperties.getProperty("GITHUB_READ_TOKEN")
+            }
+        }
+    }
+}
+
+/**
+ * 在项目配置成功的时候，添加依赖，进行隐私设置
+ */
+gradle.taskGraph.whenReady {
+    gradle.rootProject.subprojects.find {
+        it.name == "app"
+    }.dependencies {
+        implementation("com.github.shetiejun:privacy-check:0.0.3")
+    }
+}

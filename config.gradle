@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,29 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.ktx
-
-import me.shetj.base.saver.Saver
-import me.shetj.base.saver.SaverDao
-import org.koin.java.KoinJavaComponent.get
-
-val saverDB: SaverDao
-    get() {
-        return get(SaverDao::class.java)
-    }
-
-suspend fun Saver.updateToDB() {
-    this.updateTime = System.currentTimeMillis()
-    withIO {
-        saverDB.updateSaver(this@updateToDB)
-    }
-}
-
-fun saverCreate(group: String = "base", key: String, value: String): Saver {
-    return Saver(groupName = group, keyName = key, value = value).also {
-        System.currentTimeMillis().apply {
-            it.createTime = this
-            it.updateTime = this
-        }
-    }
+ext {
+    local_group_id = 'com.github.shetiejun'
 }

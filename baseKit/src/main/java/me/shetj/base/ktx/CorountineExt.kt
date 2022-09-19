@@ -43,27 +43,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 
-suspend fun <T> doOnIO(action: suspend CoroutineScope.() -> T) =
-    withContext(Dispatchers.IO) {
-        return@withContext this.action()
-    }
-
-suspend fun <T> withMain(action: suspend CoroutineScope.() -> T) =
-    withContext(Dispatchers.Main) {
-        return@withContext action()
-    }
-
-suspend fun <T> withDef(action: suspend CoroutineScope.() -> T) =
-    withContext(Dispatchers.Default) {
-        return@withContext action()
-    }
-
-suspend fun <T> withUnconfined(action: suspend CoroutineScope.() -> T) =
-    withContext(Dispatchers.Unconfined) {
-        return@withContext action()
-    }
-
-
 suspend fun <T, O> T.withIO(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.IO) {
         return@withContext this.action(this@withIO)
