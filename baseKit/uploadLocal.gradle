@@ -7,7 +7,7 @@ afterEvaluate {
                 groupId "com.github.shetiejun"
                 from components.release
                 artifactId = "base"
-                version = '1.0.1'
+                version = '1.0.2'
             }
         }
 //        定义发布到哪

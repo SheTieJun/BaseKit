@@ -48,7 +48,7 @@
 
     </style>
 
-    <style name="BaseTheme.MD" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="BaseTheme.MD" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
 
 <!--        &lt;!&ndash; Original AppCompat attributes. &ndash;&gt;-->
