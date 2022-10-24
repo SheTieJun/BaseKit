@@ -74,7 +74,7 @@ fun getDateString(): String {
 fun getStringData(): String {
     val c = Calendar.getInstance(Locale.getDefault())
     return c[Calendar.YEAR].toString() + "-" + (c[Calendar.MONTH] + 1).toString() +
-        "-" + c[Calendar.DAY_OF_MONTH].toString()
+            "-" + c[Calendar.DAY_OF_MONTH].toString()
 }
 
 /**
@@ -222,7 +222,7 @@ fun getSevenDate(): List<String> {
     for (i in 0..6) {
         val date: String =
             (c[Calendar.MONTH] + 1).toString() + "月" +
-                (c[Calendar.DAY_OF_MONTH] + i).toString() + "日"
+                    (c[Calendar.DAY_OF_MONTH] + i).toString() + "日"
         dates.add(date)
     }
     return dates
@@ -278,4 +278,20 @@ fun get7dateAndToday(): List<String> {
         dates.add(date)
     }
     return dates
+}
+
+fun Long.convertToMillisTime(): String {
+    System.currentTimeMillis()
+    val millis = this % 1000
+    val seconds = this / 1000
+    return ((seconds.toInt() / 60).convertTwoDecimals() + ":"
+            + (seconds.toInt() % 60).convertTwoDecimals()) + "." + (millis.toInt() / 10).convertTwoDecimals()
+}
+
+fun Int.convertTwoDecimals(): String {
+    return if (this in 0..9) {
+        "0$this"
+    } else {
+        this.toString() + ""
+    }
 }

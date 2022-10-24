@@ -105,6 +105,14 @@ fun String?.logD(tag: String = "base") {
     Timber.tag(tag).d(this.toString())
 }
 
+fun String?.logW(tag: String = "base") {
+    Timber.tag(tag).w(this.toString())
+}
+
+fun Throwable?.logW(tag: String = "base") {
+    Timber.tag(tag).w(this)
+}
+
 /**
  * 输出到文件
  */

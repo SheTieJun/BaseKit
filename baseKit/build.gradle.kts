@@ -52,10 +52,14 @@ android {
     lint {
         abortOnError = true
         checkDependencies = true
-        htmlReport = true
         checkOnly.addAll(setOf("NewApi", "HandlerLeak"))
     }
 
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {

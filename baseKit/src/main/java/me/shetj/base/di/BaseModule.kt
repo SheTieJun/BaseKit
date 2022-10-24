@@ -26,6 +26,7 @@ package me.shetj.base.di
 import java.io.File
 import java.util.concurrent.TimeUnit
 import me.shetj.base.BaseKit
+import me.shetj.base.ktx.isTrue
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
@@ -92,7 +93,7 @@ val dbModule = module {
     single {
         Retrofit.Builder().apply {
             addConverterFactory(GsonConverterFactory.create(GsonKit.gson))
-            validateEagerly(BaseKit.isDebug) // 在开始的时候直接开始检测所有的方法
+            validateEagerly(BaseKit.isDebug.isTrue()) // 在开始的时候直接开始检测所有的方法
         }
     }
 

@@ -400,8 +400,6 @@ class ArmsUtils private constructor() {
         fun Activity.statuInScreen(isBlack: Boolean = false) {
             // 关键代码
             WindowCompat.setDecorFitsSystemWindows(window, false)
-            // 修改颜色
-            updateSystemUIColor()
             setAppearance(isBlack)
         }
 

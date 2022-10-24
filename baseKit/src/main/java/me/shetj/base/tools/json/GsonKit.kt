@@ -28,70 +28,33 @@ import androidx.annotation.NonNull
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import com.google.gson.TypeAdapter
-import com.google.gson.internal.`$Gson$Types`
 import com.google.gson.reflect.TypeToken
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonToken
-import com.google.gson.stream.JsonWriter
-import java.io.IOException
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
+import me.shetj.base.ktx.list
+import me.shetj.base.ktx.map
 import timber.log.Timber
+
+
+fun getGson() =    GsonBuilder()
+    .excludeFieldsWithModifiers(
+        Modifier.TRANSIENT,
+        Modifier.STATIC
+    )   // 比如我们想排除私有字段不被序列化/反序列，默认
+    .registerTypeAdapter(Int::class.java, IntTypeAdapter())
+    .registerTypeAdapter(Float::class.java, FloatTypeAdapter())
+    .registerTypeAdapter(Double::class.java, DoubleTypeAdapter())
+    .registerTypeAdapter(Boolean::class.java, BooleanTypeAdapter())
+    .registerTypeAdapter(List::class.java, ListTypeAdapter())
+    .serializeNulls() // serializeNulls支持空对象序列化
+    .create()
 
 /**
  * @author shetj
  */
 @Keep
 object GsonKit {
-    val gson: Gson by lazy {
-        GsonBuilder()
-            .excludeFieldsWithModifiers(
-                Modifier.TRANSIENT,
-                Modifier.STATIC
-            )
-            .registerTypeAdapter(
-                Int::class.java,
-                object : TypeAdapter<Int?>() {
-                    @Throws(IOException::class)
-                    override fun write(out: JsonWriter, value: Int?) {
-                        out.value(value.toString())
-                    }
-
-                    @Throws(IOException::class)
-                    override fun read(`in`: JsonReader): Int? {
-                        if (`in`.peek() == JsonToken.NULL) {
-                            `in`.nextNull()
-                            return null
-                        }
-                        return try {
-                            Integer.valueOf(`in`.nextString())
-                        } catch (e: NumberFormatException) {
-                            0
-                        }
-                    }
-                }
-            ).registerTypeAdapter(
-                Float::class.java,
-                object : TypeAdapter<Float>() {
-                    @Throws(IOException::class)
-                    override fun write(out: JsonWriter, value: Float?) {
-                        out.value(value.toString())
-                    }
-
-                    @Throws(IOException::class)
-                    override fun read(`in`: JsonReader): Float {
-                        return try {
-                            java.lang.Float.valueOf(`in`.nextString())
-                        } catch (e: NumberFormatException) {
-                            0f
-                        }
-                    }
-                }
-            ) // 比如我们想排除私有字段不被序列化/反序列，默认
-            .serializeNulls() // serializeNulls支持空对象序列化
-            .create()
-    }
+    val gson: Gson by lazy { getGson() }
 
     /**
      * 将对象转换成json格式
@@ -99,8 +62,7 @@ object GsonKit {
     @JvmStatic
     fun objectToJson(@NonNull ts: Any): String? {
         return runCatching {
-            val jsonStr: String? = gson.toJson(ts)
-            jsonStr
+            gson.toJson(ts)
         }.onFailure {
             Timber.e(it)
         }.getOrNull()
@@ -130,7 +92,7 @@ object GsonKit {
     @JvmStatic
     fun <T> jsonToList(@NonNull json: String, cls: Class<T>): List<T>? {
         return runCatching<List<T>> {
-            gson.fromJson(json, TypeToken.getParameterized(List::class.java, cls).type)
+            gson.fromJson(json, list(cls))
         }.onFailure {
             Timber.e(it)
         }.getOrNull()
@@ -139,10 +101,7 @@ object GsonKit {
     @JvmStatic
     fun <T> jsonToList2(@NonNull json: String, cls: Class<T>): List<T>? {
         return runCatching<List<T>> {
-            gson.fromJson(
-                json,
-                `$Gson$Types`.newParameterizedTypeWithOwner(null, List::class.java, cls)
-            )
+            gson.fromJson(json, list(cls))
         }.onFailure {
             Timber.e(it)
         }.getOrNull()
@@ -156,8 +115,7 @@ object GsonKit {
         return runCatching<Map<String, Any>> {
             gson.fromJson(
                 gsonString,
-                object : TypeToken<Map<String, Any>>() {
-                }.type
+                map(String::class.java, Any::class.java)
             )
         }.onFailure {
             Timber.e(it)
@@ -172,7 +130,7 @@ object GsonKit {
         return runCatching {
             gson.fromJson<Map<String, String>>(
                 gsonString,
-                object : TypeToken<Map<String, String>>() {}.type
+                map(String::class.java, String::class.java)
             )
         }.onFailure {
             Timber.e(it)
@@ -219,3 +177,4 @@ object GsonKit {
         }.getOrNull()
     }
 }
+

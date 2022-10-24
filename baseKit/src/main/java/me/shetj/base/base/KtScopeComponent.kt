@@ -41,6 +41,10 @@ import me.shetj.base.BaseKit
  */
 interface KtScopeComponent {
     val ktScope: CoroutineScope
+
+    fun onScopeDestroy(){
+        ktScope.cancel()
+    }
 }
 
 abstract class ABKtScopeComponent : KtScopeComponent {

@@ -63,8 +63,8 @@ abstract class BaseService : Service(), KtScopeComponent {
     }
 
     override fun onDestroy() {
-        ktScope.cancel()
         super.onDestroy()
+        onScopeDestroy()
     }
 
     open fun needNotification(): Boolean {

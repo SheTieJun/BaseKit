@@ -27,8 +27,10 @@ import android.os.Bundle
 import android.os.Message
 import androidx.annotation.IntRange
 import kotlin.random.Random
+import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.json.EmptyUtils
+import me.shetj.datastore.dataStoreKit
 import timber.log.Timber
 
 @JvmOverloads
@@ -117,3 +119,6 @@ fun getTagThread(tag: String, run: Runnable): Thread {
     t.name = tag
     return t
 }
+
+
+val defDataStore by lazy { BaseKit.app.dataStoreKit() }

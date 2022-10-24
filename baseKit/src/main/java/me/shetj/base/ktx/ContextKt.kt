@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
 import me.shetj.base.BaseKit
 
 
@@ -26,15 +27,15 @@ import me.shetj.base.BaseKit
  * - [androidx.lifecycle.Lifecycle.mInternalScopeRef]
  * 如果不是，我们需要去循环查找找
  */
-val Context.lifeScope: CoroutineContext
+val Context.lifeScope: CoroutineScope
     get() {
         if (this is ComponentActivity) {
-            return this.lifecycleScope.coroutineContext
+            return this.lifecycleScope
         }
         var context = this
         while (context is ContextWrapper) {
             if (context is ComponentActivity) {
-                return context.lifecycleScope.coroutineContext
+                return context.lifecycleScope
             }
             context = context.baseContext
         }

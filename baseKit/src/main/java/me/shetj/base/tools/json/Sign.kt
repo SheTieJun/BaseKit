@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.tools.app
+package me.shetj.base.tools.json
 
 import java.io.IOException
 import java.security.GeneralSecurityException

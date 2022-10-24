@@ -27,7 +27,6 @@ package shetj.me.base.func.main
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Service
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.wifi.WifiManager
@@ -38,10 +37,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type
-import androidx.lifecycle.lifecycleScope
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import me.shetj.base.base.TaskExecutor
+import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.hasNavigationBars
 import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
@@ -54,6 +53,7 @@ import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.showNavigationBars
+import me.shetj.base.ktx.start
 import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsets
@@ -64,7 +64,6 @@ import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
-import me.shetj.base.tools.data.defDataStoreKit
 import me.shetj.base.tools.file.FileQUtils
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
@@ -73,6 +72,7 @@ import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
+import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.test_lib.onYearMonthDay
 import timber.log.Timber
 
@@ -156,14 +156,20 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
             selectFile {
                 "url = ${it.toString()}".logI()
-                ("url = ${it?.let { it1 -> FileQUtils.getFileByUri(this, it1) }}").logI()
+                ("url = ${it?.let { it1 -> FileQUtils.getFileAbsolutePath(this, it1) }}").logI()
             }
         }
 
         var i = 0
         findViewById<View>(R.id.btn_save).setOnClickListener {
             launch {
-                defDataStoreKit.save("Test", i++)
+                defDataStore.save("Test", i++)
+            }
+        }
+
+        mContent.btnDoc.setOnClickListener {
+            selectFile("*/*"){
+
             }
         }
 
@@ -182,6 +188,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         findViewById<View>(R.id.fab).setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(mViewModel.getNightModel())
+            start<Main2Activity>()
         }
 
         //btn_test_keybord
@@ -274,7 +281,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mViewModel.liveDate.observeChange(this) {
-            onSuccess = {}
+            onSuccess = {
+                this?.toJson().toString().logI()
+            }
             onFailure = {
                 Timber.tag("getMusic").e(this)
             }
@@ -287,7 +296,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     @Debug
     private fun dataStoreKit() {
         launch {
-            defDataStoreKit.get("Test", -1)
+            defDataStore.get("Test", -1)
                 .collect {
                     it.toString().logI("DataStoreKit")
                 }

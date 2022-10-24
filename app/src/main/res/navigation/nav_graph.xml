@@ -23,38 +23,30 @@
   ~ SOFTWARE.
   -->
 
-<resources>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FirstFragment">
 
-    <style name="Image_Circular">
-        <item name="cornerSize">50%</item>
-    </style>
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="shetj.me.base.func.md3.FirstFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_first">
 
-    <style name="Image_RoundedSquare">
-        <item name="cornerSize">10%</item>
-    </style>
+        <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SecondFragment"
+        android:name="shetj.me.base.func.md3.SecondFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_second">
 
-    <style name="Image_CornerCut">
-        <item name="cornerSize">15dp</item>
-        <item name="cornerFamily">cut</item>
-    </style>
-
-    <style name="Image_DiamondCut">
-        <item name="cornerSize">75dp</item>
-        <item name="cornerFamily">cut</item>
-    </style>
-
-    <style name="Image_SpecificCornerCut">
-        <item name="cornerSizeTopRight">75dp</item>
-        <item name="cornerFamilyTopRight">cut</item>
-        <item name="cornerSizeBottomLeft">75dp</item>
-        <item name="cornerFamilyBottomLeft">cut</item>
-    </style>
-
-    <style name="Image_SpecificCornerRounded">
-        <item name="cornerSizeTopRight">75dp</item>
-        <item name="cornerFamilyTopRight">rounded</item>
-        <item name="cornerSizeBottomLeft">75dp</item>
-        <item name="cornerFamilyBottomLeft">rounded</item>
-    </style>
-
-</resources>
+        <action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+</navigation>

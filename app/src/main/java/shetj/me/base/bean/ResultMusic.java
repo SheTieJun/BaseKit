@@ -14,11 +14,7 @@ package shetj.me.base.bean;
    limitations under the License.
  */
 
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-
 import androidx.annotation.Keep;
-
 import java.util.List;
 
 @Keep
@@ -29,11 +25,6 @@ public class ResultMusic {
         this.code = code;
         this.data = data;
     }
-
-    public static void main(String[] args) {
-
-    }
-
 
     private String msg;
     private int code;
@@ -71,41 +62,9 @@ public class ResultMusic {
          * imgUrl : https://img.lycheer.net/material/6583/5d70da288069bd42ddc9a961.png
          */
 
-        private String url;
-        private String title;
-        private String duration;
-        private String imgUrl;
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getDuration() {
-            return duration;
-        }
-
-        public void setDuration(String duration) {
-            this.duration = duration;
-        }
-
-        public String getImgUrl() {
-            return imgUrl;
-        }
-
-        public void setImgUrl(String imgUrl) {
-            this.imgUrl = imgUrl;
-        }
+        public int url;
+        public String title;
+        public String duration;
+        public String imgUrl;
     }
 }

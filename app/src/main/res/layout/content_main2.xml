@@ -23,38 +23,21 @@
   ~ SOFTWARE.
   -->
 
-<resources>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <style name="Image_Circular">
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="Image_RoundedSquare">
-        <item name="cornerSize">10%</item>
-    </style>
-
-    <style name="Image_CornerCut">
-        <item name="cornerSize">15dp</item>
-        <item name="cornerFamily">cut</item>
-    </style>
-
-    <style name="Image_DiamondCut">
-        <item name="cornerSize">75dp</item>
-        <item name="cornerFamily">cut</item>
-    </style>
-
-    <style name="Image_SpecificCornerCut">
-        <item name="cornerSizeTopRight">75dp</item>
-        <item name="cornerFamilyTopRight">cut</item>
-        <item name="cornerSizeBottomLeft">75dp</item>
-        <item name="cornerFamilyBottomLeft">cut</item>
-    </style>
-
-    <style name="Image_SpecificCornerRounded">
-        <item name="cornerSizeTopRight">75dp</item>
-        <item name="cornerFamilyTopRight">rounded</item>
-        <item name="cornerSizeBottomLeft">75dp</item>
-        <item name="cornerFamilyBottomLeft">rounded</item>
-    </style>
-
-</resources>
+    <fragment
+        android:id="@+id/nav_host_fragment_content_main2"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph" />
+</androidx.constraintlayout.widget.ConstraintLayout>

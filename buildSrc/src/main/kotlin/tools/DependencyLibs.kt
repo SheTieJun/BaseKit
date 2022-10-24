@@ -102,7 +102,9 @@ object DependencyLibs {
         add(AndroidX.startup)
         add(AndroidX.cryptoSp)
         add(AndroidX.activityKtx)
-        add(AndroidX.datastore)
+//        add(AndroidX.datastore)
+        add(Mine.dataStoreLib)
+//        add(Mine.activityLib)
         add(AndroidX.datastoreCore)
         add(AndroidX.dragAndDrop)
         add(AndroidX.webKit)
@@ -234,6 +236,11 @@ object DependencyLibs {
         }
     }
 
+
+    object Mine{
+        const val dataStoreLib = "com.github.SheTieJun.androidx-ktx:dataStoreLib:0.0.8"
+        const val activityLib =  "com.github.SheTieJun.androidx-ktx:activityLib:0.0.9"
+    }
 
 }
 

@@ -27,6 +27,7 @@ import android.app.Activity
 import android.graphics.Color
 import android.os.Build
 import android.view.Window
+import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -108,6 +109,61 @@ fun Activity.hideSystemUI() {
     }
 }
 
+
+/**
+ * Immerse 沉浸。设置沉浸的方式
+ *
+ * @param type Type.systemBars(),Type.statusBars(),Type.navigationBars()
+ * @param statusIsBlack 专栏文字 true 黑色,false 白色
+ * @param navigationIsBlack 导航栏按钮 true 黑色,false 白色
+ * @param color
+ */
+@JvmOverloads
+fun Activity.immerse(
+    @Type.InsetsType type: Int = Type.systemBars(),
+    statusIsBlack: Boolean = true,
+    navigationIsBlack: Boolean = true,
+    @ColorInt color: Int = Color.TRANSPARENT
+) {
+
+    when (type) {
+        Type.systemBars() -> {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            updateSystemUIColor(color)
+            windowInsetsController.let { controller ->
+                controller.isAppearanceLightStatusBars = statusIsBlack
+                controller.isAppearanceLightNavigationBars = navigationIsBlack
+            }
+            findViewById<FrameLayout>(android.R.id.content).apply {
+                setPadding(0, 0, 0, 0)
+            }
+        }
+        Type.statusBars() -> {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            window.statusBarColor = color
+            windowInsetsController.isAppearanceLightStatusBars = statusIsBlack
+            findViewById<FrameLayout>(android.R.id.content).apply {
+                post {
+                    setPadding(0, 0, 0, getNavigationBarsHeight())
+                }
+            }
+        }
+        Type.navigationBars() -> {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            window.navigationBarColor = color
+            windowInsetsController.isAppearanceLightNavigationBars = statusIsBlack
+            findViewById<FrameLayout>(android.R.id.content).apply {
+                post {
+                    setPadding(0, getStatusBarsHeight(), 0, 0)
+                }
+            }
+        }
+        else -> {
+            // no work
+        }
+    }
+}
+
 /**
  * 展示系统UI:状态栏和导航栏
  */
@@ -117,17 +173,14 @@ fun Activity.showSystemUI() {
 }
 
 /**
- * 不沉侵，只修改状态栏的颜色
+ * 不沉侵，只修改状态栏的颜色,导航栏不修改
  */
 fun Activity.setAppearance(
     isBlack: Boolean,
     @ColorInt color: Int = Color.TRANSPARENT
 ) {
-    updateSystemUIColor(color)
-    windowInsetsController.let { controller ->
-        controller.isAppearanceLightStatusBars = isBlack
-        controller.isAppearanceLightNavigationBars = isBlack
-    }
+    window.statusBarColor = color
+    windowInsetsController.isAppearanceLightStatusBars = isBlack
 }
 
 /**

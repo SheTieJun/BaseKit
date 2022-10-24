@@ -31,6 +31,7 @@ import androidx.lifecycle.Lifecycle
 import me.shetj.base.BaseKit
 import me.shetj.base.base.AbBaseFragment
 import me.shetj.base.ktx.getClazz
+import me.shetj.base.ktx.isTrue
 import me.shetj.base.ktx.toJson
 import me.shetj.base.tools.json.EmptyUtils
 import timber.log.Timber
@@ -73,7 +74,7 @@ abstract class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
 
     @SuppressLint("unchecked")
     override fun updateView(message: Message) {
-        if (BaseKit.isDebug && EmptyUtils.isNotEmpty(message)) {
+        if (BaseKit.isDebug.isTrue() && EmptyUtils.isNotEmpty(message)) {
             Timber.i(message.toJson())
         }
     }

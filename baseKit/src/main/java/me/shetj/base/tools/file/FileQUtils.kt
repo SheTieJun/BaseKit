@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.activity
+package me.shetj.base.tools.file
 
 import android.annotation.SuppressLint
 import android.content.ContentResolver
@@ -77,6 +77,9 @@ object FileQUtils {
                 }
             } else if (isDownloadsDocument(uri)) {
                 val id = DocumentsContract.getDocumentId(uri)
+                if (id.startsWith("raw:")) {
+                    return id.replaceFirst("raw:", "")
+                }
                 val contentUri = ContentUris.withAppendedId(
                     Uri.parse("content://downloads/public_downloads"),
                     java.lang.Long.valueOf(id)

@@ -26,11 +26,15 @@ package me.shetj.base
 import android.app.Application
 import android.provider.Settings
 import androidx.annotation.Keep
-import kotlin.coroutines.EmptyCoroutineContext
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.plus
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.di.dbModule
+import me.shetj.base.ktx.isTrue
 import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.debug.DebugFunc
@@ -45,9 +49,6 @@ import org.koin.core.module.Module
 import timber.log.Timber
 
 
-@Deprecated("已弃用，是为了一些demo的快速升级")
-typealias S = BaseKit
-
 /**
  * Base kit
  * 工具初始化类
@@ -61,7 +62,7 @@ object BaseKit {
     val app: Application
         get() = Utils.app
 
-    var isDebug = true
+    val isDebug = MutableLiveData(false)
 
     private var dnsLocalMap = HashMap<String, String>()
 
@@ -82,7 +83,8 @@ object BaseKit {
      * 专门用来做不被取消的操作
      * 全局的
      */
-    val applicationScope = EmptyCoroutineContext + SupervisorJob() + handler
+    @DelicateCoroutinesApi
+    val applicationScope = GlobalScope + SupervisorJob() + handler
 
     /**
      * ANDROID_ID的生成规则为：签名+设备信息+设备用户
@@ -105,7 +107,7 @@ object BaseKit {
     @JvmOverloads
     @JvmStatic
     internal fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
-        this.isDebug = isDebug
+        this.isDebug.postValue(isDebug)
         this.baseUrl = baseUrl
         TaskExecutor.getInstance().executeOnMainThread {
             Utils.init(application)
@@ -117,7 +119,7 @@ object BaseKit {
             }
             startKoin {
                 fragmentFactory()
-                if (BaseKit.isDebug) {
+                if (BaseKit.isDebug.isTrue()) {
                     // No static method toDouble-impl
                     // androidLogger() doesn't work with Kotlin 1.6
                     androidLogger(Level.ERROR)

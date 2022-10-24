@@ -25,11 +25,7 @@
 
 package shetj.me.base.func.main
 
-import java.io.File
 import me.shetj.base.mvp.BaseModel
-import me.shetj.base.network_coroutine.cache.CacheMode
-import me.shetj.base.network_coroutine.KCHttpV3
-import shetj.me.base.bean.ResultMusic
 
 /**
  * * @packageName：** shetj.me.base.fun<br></br>

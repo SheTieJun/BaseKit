@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ MIT License
   ~
@@ -23,38 +22,10 @@
   ~ SOFTWARE.
   -->
 
-<resources>
-
-    <style name="Image_Circular">
-        <item name="cornerSize">50%</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.BaseTheme.MD3" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
-
-    <style name="Image_RoundedSquare">
-        <item name="cornerSize">10%</item>
-    </style>
-
-    <style name="Image_CornerCut">
-        <item name="cornerSize">15dp</item>
-        <item name="cornerFamily">cut</item>
-    </style>
-
-    <style name="Image_DiamondCut">
-        <item name="cornerSize">75dp</item>
-        <item name="cornerFamily">cut</item>
-    </style>
-
-    <style name="Image_SpecificCornerCut">
-        <item name="cornerSizeTopRight">75dp</item>
-        <item name="cornerFamilyTopRight">cut</item>
-        <item name="cornerSizeBottomLeft">75dp</item>
-        <item name="cornerFamilyBottomLeft">cut</item>
-    </style>
-
-    <style name="Image_SpecificCornerRounded">
-        <item name="cornerSizeTopRight">75dp</item>
-        <item name="cornerFamilyTopRight">rounded</item>
-        <item name="cornerSizeBottomLeft">75dp</item>
-        <item name="cornerFamilyBottomLeft">rounded</item>
-    </style>
-
 </resources>
