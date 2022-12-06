@@ -18,6 +18,7 @@ dependencyResolutionManagement {
 rootProject.name = "BaseKit"
 include(":app")
 include(":baseKit")
+include(":benchmark")
 
 //apply(from="https://gist.githubusercontent.com/SheTieJun/f4cb1bd33997c2b46d9e3df40b95a02e/raw/888fd1f95857f1ae278dbafc0428e4c2b0d05ccf/config-maven-privacy-check.gradle")
 //apply(from="private-maven.gradle")
@@ -89,3 +90,5 @@ gradle.addBuildListener(object : BuildListener {
     }
 })
 
+
+include(":microbenchmark")

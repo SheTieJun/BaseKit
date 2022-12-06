@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="viewpager2_rv" type="id"/>
+    <item name="isGrayTheme" type="id"/>
 </resources>

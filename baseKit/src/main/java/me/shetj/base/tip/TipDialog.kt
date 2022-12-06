@@ -26,8 +26,8 @@ package me.shetj.base.tip
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.TextView
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import me.shetj.base.R
 import me.shetj.base.weight.AbLoadingDialog
 
@@ -50,7 +50,7 @@ class TipDialog : AbLoadingDialog() {
         @JvmStatic
         @JvmOverloads
         fun showTip(
-            context: AppCompatActivity,
+            context: ComponentActivity,
             msg: CharSequence = "加载中...",
             @LoadingTipsDuration time: Long = LOADING_SHORT
         ): AbLoadingDialog {

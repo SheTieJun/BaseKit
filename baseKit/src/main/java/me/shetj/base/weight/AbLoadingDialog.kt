@@ -25,10 +25,10 @@ package me.shetj.base.weight
 
 import android.app.Dialog
 import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.annotation.DrawableRes
 import androidx.annotation.LongDef
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -55,7 +55,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class LoadingTipsDuration
 
-    private var weakReference: WeakReference<AppCompatActivity>? = null
+    private var weakReference: WeakReference<ComponentActivity>? = null
     private var mLoadingDialog: AlertDialog? = null
 
     abstract fun createLoading(
@@ -66,7 +66,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
     ): AlertDialog?
 
     fun showLoading(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         cancelable: Boolean = true,
         msg: CharSequence = "加载中",
         @DrawableRes image: Int? = null
@@ -100,7 +100,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
     }
 
     private fun initDialog(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         cancelable: Boolean = true,
         msg: CharSequence = "加载中",
         @DrawableRes image: Int? = null
@@ -132,7 +132,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
      * 任务结束后自定退出
      */
     inline fun showWithAction(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         crossinline action: suspend () -> Unit
     ): AbLoadingDialog {
         showLoading(context)
@@ -144,7 +144,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
     }
 
     inline fun showWithTimeOutAction(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         time: Long = LOADING_SHORT,
         crossinline action: suspend () -> Unit
     ): AbLoadingDialog {
@@ -162,7 +162,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
     }
 
     fun showTip(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         cancelable: Boolean,
         msg: CharSequence = "加载中",
         @DrawableRes image: Int?,

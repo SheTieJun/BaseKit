@@ -43,7 +43,7 @@ import timber.log.Timber
  * @author shetj
  */
 @Keep
-open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter, CoroutineScope {
+open class BasePresenter<T : BaseModel>(protected var view: IView) : CoroutineScope {
 
     protected val model: T by lazy { initModel() }
 
@@ -54,7 +54,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         get() = view.rxContext
 
     init {
-        "${this.javaClass.name}:onStart".logI()
         onStart()
     }
 
@@ -62,7 +61,8 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
         return getObjByClassArg(this)
     }
 
-    override fun onStart() {
+    open fun onStart() {
+
     }
 
     /**
@@ -70,8 +70,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : IPresenter,
      * [BaseActivity.onDestroy] 调用[IPresenter.onDestroy]
      */
     @CallSuper
-    override fun onDestroy() {
-        "${this.javaClass.simpleName}:onDestroy".logI()
+      fun onDestroy() {
         coroutineContext.cancelChildren()
         model.onDestroy()
     }

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,23 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.mvp
 
-import androidx.annotation.Keep
+package com.shetj.benchmark
+
+import androidx.benchmark.macro.ExperimentalBaselineProfilesApi
+import androidx.benchmark.macro.junit4.BaselineProfileRule
+import org.junit.Rule
+import org.junit.Test
 
 /**
- * @author shetj
+ *  用来生成 baseline-prof.txt
+ *  但是需要root权限
+ * @constructor Create empty Trivial baseline profile benchmark
  */
-@Keep
-interface IPresenter {
+@OptIn(ExperimentalBaselineProfilesApi::class)
+class TrivialBaselineProfileBenchmark {
+    @get:Rule
+    val baselineProfileRule = BaselineProfileRule()
 
-    /**
-     * 做一些初始化操作
-     */
-    fun onStart()
-
-    /**
-     * Activity#onDestroy() 调用[IPresenter.onDestroy]
-     */
-    fun onDestroy()
+    @Test
+    fun startup() = baselineProfileRule.collectBaselineProfile(
+        packageName = "shetj.me.base.dev.demo",
+        profileBlock = {
+            startActivityAndWait()
+        }
+    )
 }

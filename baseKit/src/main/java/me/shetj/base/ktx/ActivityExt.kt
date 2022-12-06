@@ -54,10 +54,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
 import java.io.File
 import java.lang.reflect.Method
+import me.shetj.base.R
+import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
 
@@ -86,6 +89,22 @@ fun Context.start(intent: Intent, isFinish: Boolean = false) {
     ArmsUtils.startActivity(this as AppCompatActivity, intent)
     if (isFinish) {
         finish()
+    }
+}
+
+fun FragmentActivity.grayThemChange(isGrayTheme:Boolean){
+    val decorView = window?.decorView
+    val isMourn = (decorView?.getTag(R.id.isGrayTheme) as? Boolean )?:false
+    if (!isMourn){
+        if (isGrayTheme){
+            decorView?.setTag(R.id.isGrayTheme,true)
+            decorView?.setLayerType(View.LAYER_TYPE_HARDWARE, GrayThemeLiveData.getInstance().getSatPaint(0f))
+        }
+    }else{
+        if (!isGrayTheme){
+            decorView?.setTag(R.id.isGrayTheme,false)
+            decorView?.setLayerType(View.LAYER_TYPE_NONE, null)
+        }
     }
 }
 

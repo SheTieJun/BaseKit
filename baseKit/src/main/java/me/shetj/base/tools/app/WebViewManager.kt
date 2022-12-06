@@ -24,6 +24,8 @@
 package me.shetj.base.tools.app
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.util.Base64
@@ -45,10 +47,12 @@ class WebViewManager(private val webView: WebView) {
         webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
+        webSettings.defaultTextEncodingName = "utf-8" //设置编码格式
         webSettings.setAppCacheMaxSize(1024 * 1024 * 50)
         val appCachePath: String = webView.context.cacheDir.absolutePath
         webSettings.setAppCachePath(appCachePath)
-        webSettings.allowFileAccess = true
+        webSettings.allowFileAccess = true//将图片调整到适合WebView的大小
+        webSettings.loadsImagesAutomatically = true //支持自动加载图片
         webSettings.setAppCacheEnabled(true)
         webSettings.loadWithOverviewMode = true
         webSettings.useWideViewPort = true // 设置加载进来的页面自适应手机屏幕
@@ -63,15 +67,19 @@ class WebViewManager(private val webView: WebView) {
     fun imgReset() {
         webView.loadUrl(
             "javascript:(function(){" +
-                "var objs = document.getElementsByTagName('img'); " +
-                "for(var i=0;i<objs.length;i++)  " +
-                "{" +
-                "var img = objs[i];   " +
-                "    img.style.maxWidth = '100%';" +
-                "    img.style.height = 'auto';  " +
-                "}" +
-                "})()"
+                    "var objs = document.getElementsByTagName('img'); " +
+                    "for(var i=0;i<objs.length;i++)  " +
+                    "{" +
+                    "var img = objs[i];   " +
+                    "    img.style.maxWidth = '100%';" +
+                    "    img.style.height = 'auto';  " +
+                    "}" +
+                    "})()"
         )
+    }
+
+    fun loadHtml(html: String) {
+        webView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null)
     }
 
     /**
@@ -79,19 +87,20 @@ class WebViewManager(private val webView: WebView) {
      * 遍历所有的img节点，
      * 并添加onclick函数，
      * 函数的功能是在图片点击的时候调用本地java接口并传递url过去
+     * onPageFinish 调用才有用
      */
     fun addImageClickListner() {
         webView.loadUrl(
             "javascript:(function(){" +
-                "var objs = document.getElementsByTagName(\"img\"); " +
-                "for(var i=0;i<objs.length;i++)  " +
-                "{" +
-                "    objs[i].onclick=function()  " +
-                "    {  " +
-                "        window.imagelistner.openImage(this.src);  " +
-                "    }  " +
-                "}" +
-                "})()"
+                    "var objs = document.getElementsByTagName(\"img\"); " +
+                    "for(var i=0;i<objs.length;i++)  " +
+                    "{" +
+                    "    objs[i].onclick=function()  " +
+                    "    {  " +
+                    "        window.imagelistner.openImage(this.src);  " +
+                    "    }  " +
+                    "}" +
+                    "})()"
         )
     }
 
@@ -105,12 +114,12 @@ class WebViewManager(private val webView: WebView) {
             val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
             webView.loadUrl(
                 "javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var script = document.createElement('script');" +
-                    "script.type = 'text/javascript';" +
-                    "script.innerHTML = window.atob('$encoded');" +
-                    "parent.appendChild(script)" +
-                    "})()"
+                        "var parent = document.getElementsByTagName('head').item(0);" +
+                        "var script = document.createElement('script');" +
+                        "script.type = 'text/javascript';" +
+                        "script.innerHTML = window.atob('$encoded');" +
+                        "parent.appendChild(script)" +
+                        "})()"
             )
         }
     }
@@ -148,14 +157,14 @@ class WebViewManager(private val webView: WebView) {
     /**
      * 设置可以自定播放视频，不要去强制触碰
      */
-    fun autoPlay(){
+    fun autoPlay() {
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
             webSettings.mediaPlaybackRequiresUserGesture = false
         }
     }
 
 
-    fun disAutoPlay(){
+    fun disAutoPlay() {
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
             webSettings.mediaPlaybackRequiresUserGesture = true
         }
@@ -230,6 +239,59 @@ class WebViewManager(private val webView: WebView) {
     fun disableJavaScriptOpenWindowsAutomatically(): WebViewManager {
         webSettings.javaScriptCanOpenWindowsAutomatically = false
         return this
+    }
+
+
+    fun clearCache() {
+        // 清空网页访问留下的缓存数据。
+        // 需要注意的时，由于缓存是全局的，所以只要是WebView用到的缓存都会被清空，即便其他地方也会使用到。
+        // 该方法接受一个参数，从命名即可看出作用。若设为false，则只清空内存里的资源缓存，而不清空磁盘里的
+        webView.clearCache(true)
+
+        // 清除当前WebView访问的历史记录
+        // 只会WebView访问历史记录里的所有记录除了当前访问记录
+        webView.clearHistory()
+
+        // 清除自动完成填充的表单数据。
+        // 需要注意的是，该方法仅仅清除当前表单域自动完成填充的表单数据，并不会清除WebView存储到本地的数据。
+        webView.clearFormData()
+    }
+
+    // 向上滚动
+    fun pageUp(top: Boolean) {
+        // top为true时，将WebView展示的页面滑动至顶部
+        // top为false时，将WebView展示的页面向上滚动一个页面高度
+        webView.pageUp(top)
+    }
+
+    // 向下滚动
+    fun pageDown(bottom: Boolean) {
+        // bottom为true时，将WebView展示的页面滑动至底部
+        // top为false时，将WebView展示的页面向下滚动一个页面高度
+        webView.pageDown(bottom)
+    }
+
+
+    fun limitFile(){
+        // 禁用 file 协议；
+        webSettings.allowFileAccess = false
+        webSettings.allowFileAccessFromFileURLs = false
+        webSettings.allowUniversalAccessFromFileURLs = false
+    }
+
+    /**
+     * Capture picture
+     * 获取webview 内容截图
+     * @return
+     */
+    fun capturePicture(): Bitmap {
+        val width = webView.width
+        val scale: Float = webView.scale
+        val height = (webView.contentHeight* scale + 0.5).toInt()
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        val canvas = Canvas(bitmap)
+        webView.draw(canvas)
+        return bitmap
     }
 
     /**

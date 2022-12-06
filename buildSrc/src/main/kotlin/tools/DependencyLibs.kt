@@ -148,6 +148,11 @@ object DependencyLibs {
         add(AndroidX.Navigation.navigationUi)
     }
 
+    val proInstaller = mutableListOf<String>().apply {
+        add(AndroidX.Benchmark.profileinstaller)
+    }
+
+
     object Coroutines {
         private const val version = "1.6.4"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
@@ -233,6 +238,11 @@ object DependencyLibs {
         object WorkManager {
             private const val workVersion = "2.7.0"
             const val worker = "androidx.work:work-runtime-ktx:$workVersion"
+        }
+
+        object Benchmark{
+
+            const val profileinstaller = "androidx.profileinstaller:profileinstaller:1.2.0"
         }
     }
 
@@ -348,6 +358,14 @@ fun DependencyHandler.addPaging(dependencyConfiguration: Action<ExternalModuleDe
 
 fun DependencyHandler.addNav(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     DependencyLibs.nav.forEach { depName ->
+        addDependencyTo(
+            this, "api", depName, dependencyConfiguration
+        )
+    }
+}
+
+fun DependencyHandler.addProInstaller(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
+    DependencyLibs.proInstaller.forEach { depName ->
         addDependencyTo(
             this, "api", depName, dependencyConfiguration
         )

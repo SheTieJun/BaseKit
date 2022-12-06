@@ -24,7 +24,7 @@
 package me.shetj.base.tip
 
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import me.shetj.base.weight.AbLoadingDialog
 
 /**
@@ -39,7 +39,7 @@ object TipKit {
     @JvmOverloads
     @JvmStatic
     fun normal(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         message: CharSequence,
         duration: Int = Toast.LENGTH_SHORT
     ) {
@@ -60,7 +60,7 @@ object TipKit {
     @JvmOverloads
     @JvmStatic
     fun info(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         message: CharSequence,
         duration: Int = Toast.LENGTH_SHORT
     ) {
@@ -81,12 +81,12 @@ object TipKit {
     @JvmOverloads
     @JvmStatic
     fun success(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         message: CharSequence,
         duration: Int = Toast.LENGTH_SHORT
     ) {
         SimLoadingDialog.showTip(
-            context, message, Tip.SUCCESS,
+            context, message, TipType.SUCCESS,
             when (duration) {
                 Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
                 else -> AbLoadingDialog.LOADING_LONG
@@ -102,12 +102,12 @@ object TipKit {
     @JvmOverloads
     @JvmStatic
     fun error(
-        context: AppCompatActivity,
+        context: ComponentActivity,
         message: CharSequence,
         duration: Int = Toast.LENGTH_LONG
     ) {
         SimLoadingDialog.showTip(
-            context, message, Tip.ERROR,
+            context, message, TipType.ERROR,
             when (duration) {
                 Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
                 else -> AbLoadingDialog.LOADING_LONG
@@ -122,9 +122,9 @@ object TipKit {
      */
     @JvmOverloads
     @JvmStatic
-    fun warn(context: AppCompatActivity, message: CharSequence, duration: Int = Toast.LENGTH_LONG) {
+    fun warn(context: ComponentActivity, message: CharSequence, duration: Int = Toast.LENGTH_LONG) {
         SimLoadingDialog.showTip(
-            context, message, Tip.WARNING,
+            context, message, TipType.WARNING,
             when (duration) {
                 Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
                 else -> AbLoadingDialog.LOADING_LONG
@@ -133,7 +133,7 @@ object TipKit {
     }
 
     @JvmStatic
-    fun loading(context: AppCompatActivity, action: suspend () -> Unit): AbLoadingDialog {
+    fun loading(context: ComponentActivity, action: suspend () -> Unit): AbLoadingDialog {
         return SimLoadingDialog.showWithAction(context, action)
     }
 
@@ -141,7 +141,7 @@ object TipKit {
      * 超时结束的
      */
     @JvmStatic
-    fun loading(context: AppCompatActivity, time: Long, action: () -> Unit) {
+    fun loading(context: ComponentActivity, time: Long, action: () -> Unit) {
         SimLoadingDialog().showWithTimeOutAction(context, time, action)
     }
 }

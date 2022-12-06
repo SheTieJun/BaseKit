@@ -2,8 +2,8 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters.None
-import com.android.build.api.instrumentation.InstrumentationScope
 import org.objectweb.asm.ClassVisitor
+import tools.addProInstaller
 import tools.addNav
 import tools.addPaging
 
@@ -93,6 +93,13 @@ android {
             multiDexEnabled = true //ex突破65535的限制
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+
+        create("benchmark") {
+            initWith(getByName("release"))
+            matchingFallbacks += listOf("release")
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = false
+        }
     }
 
     lint {
@@ -139,7 +146,7 @@ implementation("com.google.android.material:material:1.5.0-alpha04")
     val pickVersion = "4.1.7"
     implementation("com.github.gzu-liyujiang.AndroidPicker:Common:$pickVersion")
     implementation("com.github.gzu-liyujiang.AndroidPicker:WheelPicker:$pickVersion")
-    implementation("androidx.core:core-splashscreen:1.0.0-beta02")//启动图
+    implementation("androidx.core:core-splashscreen:1.0.0")//启动图
     implementation("androidx.draganddrop:draganddrop:1.0.0") //拖动
     implementation("androidx.metrics:metrics-performance:1.0.0-alpha03") // 指标
     implementation("androidx.tracing:tracing-ktx:1.1.0")
@@ -147,6 +154,7 @@ implementation("com.google.android.material:material:1.5.0-alpha04")
     implementation("com.github.SheTieJun:RoundedProgressBar:550a631d74")
     addPaging()
     addNav()
+    addProInstaller()
 }
 
 androidComponents {

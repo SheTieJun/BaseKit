@@ -29,11 +29,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import me.shetj.base.base.AbBaseFragment
 import me.shetj.base.ktx.getClazz
+import me.shetj.base.tip.TipKit
+import me.shetj.base.tip.TipType.DEFAULT
+import me.shetj.base.tip.TipType.ERROR
+import me.shetj.base.tip.TipType.INFO
+import me.shetj.base.tip.TipType.SUCCESS
+import me.shetj.base.tip.TipType.WARNING
 
 /**
  * fragment基类
@@ -50,7 +57,7 @@ import me.shetj.base.ktx.getClazz
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseBindingFragment<VB : ViewBinding, VM : ViewModel> : AbBaseFragment() {
+abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBaseFragment(), Observer<ViewAction> {
 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
@@ -82,6 +89,23 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : ViewModel> : AbBaseFra
             .invoke(null, inflater, container, false) as VB
     }
 
+
+    override fun viewBindData() {
+        super.viewBindData()
+        mViewModel.baseAction.observe(this, this)
+    }
+
+    override fun onChanged(action: ViewAction?) {
+        if (action is TipAction){
+            when(action.tipType){
+                DEFAULT -> TipKit.normal(requireActivity(),action.msg)
+                INFO -> TipKit.info(requireActivity(),action.msg)
+                ERROR -> TipKit.error(requireActivity(),action.msg)
+                SUCCESS -> TipKit.success(requireActivity(),action.msg)
+                WARNING -> TipKit.warn(requireActivity(),action.msg)
+            }
+        }
+    }
     /**
      * 默认创建一个
      *

@@ -59,6 +59,7 @@ import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsets
 import me.shetj.base.ktx.withIO
 import me.shetj.base.ktx.withMain
+import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
@@ -288,8 +289,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 Timber.tag("getMusic").e(this)
             }
         }
-        mViewBinding.content.btnDoNotDisturb.setOnClickListener {
-
+        mViewBinding.content.btnGrayModel.setOnClickListener {
+            mViewModel.isGrayTheme = !mViewModel.isGrayTheme
+            GrayThemeLiveData.getInstance().postValue(mViewModel.isGrayTheme)
         }
     }
 
@@ -301,6 +303,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                     it.toString().logI("DataStoreKit")
                 }
         }
+    }
+
+    override fun isEnableGrayTheme(): Boolean {
+        return true
     }
 
 

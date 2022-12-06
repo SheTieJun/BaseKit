@@ -25,11 +25,8 @@
 
 package shetj.me.base.di_kointest
 
-import me.shetj.base.mvp.IView
 import org.koin.dsl.module
 import shetj.me.base.common.bean.UpToken
-import shetj.me.base.common.manager.CommonModel
-import shetj.me.base.common.manager.CommonPresenter
 
 
 val appModule = module() {
@@ -48,15 +45,7 @@ val mvvmModule = module {
  *  scoped： 自定义scope
  */
 val mvpModule = module {
-    //工程创建？  val presenter : Presenter by inject { parametersOf(view) }
-    //单例
-    single { CommonModel() }
 
-    // // Inject presenter from MVPActivity's scope
-    //    val scopedPresenter: MainPresenter by lifecycleScope.inject()
-    factory { (view: IView) -> CommonPresenter(view) }
-
-//    scope<MainActivity> {  }
 }
 
 val scopeModule = module {

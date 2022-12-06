@@ -32,6 +32,8 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.appbar.MaterialToolbar
 import me.shetj.base.R
+import me.shetj.base.ktx.grayThemChange
+import me.shetj.base.model.GrayThemeLiveData
 
 /**
  * 基础类  view 层
@@ -44,6 +46,9 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
         super.onCreate(savedInstanceState)
         startAnimation()
         lifecycle.addObserver(this)
+        if (isEnableGrayTheme()){
+            GrayThemeLiveData.getInstance().observe(this,this::grayThemChange)
+        }
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -68,6 +73,8 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
         initView()
         initData()
     }
+
+    open fun isEnableGrayTheme() = false
 
     open fun onActivityDestroy() {
     }

@@ -16,7 +16,7 @@ simplify
 
 #### [mvnrepository](https://mvnrepository.com/)
 
-#### [Android 稳定lib](https://developer.android.com/jetpack/androidx/versions/stable-channel)
+#### [Android  jetpack stable-channel](https://developer.android.com/jetpack/androidx/versions/stable-channel)
 
 ## 文章
 #### [Flow 和 LiveData 之操作符：throttleFirst、 throttleLast 、throttleLatest、debounce](https://blog.csdn.net/StjunF/article/details/120872772)

@@ -75,6 +75,10 @@ fun intToHStr(@IntRange(from = 0, to = 255) x: Int): String {
     }
 }
 
+fun convertHexColorString(color: Int): String {
+    return String.format("#%06X", 0xFFFFFF and color)
+}
+
 val Float.dp2px
     get() = ArmsUtils.dp2px(this)
 

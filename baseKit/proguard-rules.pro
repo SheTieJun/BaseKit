@@ -32,6 +32,7 @@
 -keepattributes *Annotation*,InnerClasses
 -keepattributes Signature
 -keepattributes SourceFile,LineNumberTable
+-dontobfuscate
 #----------------------------------------------------------------------------
 
 #---------------------------------默认保留区---------------------------------

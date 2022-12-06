@@ -23,8 +23,11 @@
  */
 package me.shetj.base.model
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import androidx.annotation.RequiresPermission
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.atomic.AtomicBoolean
 import me.shetj.base.BaseKit
@@ -54,6 +57,13 @@ class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
     }
 
     fun start(context: Context) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.CHANGE_NETWORK_STATE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         if (isStarted.compareAndSet(false, true)) {
             context.applicationContext.requestNetWork()
         }

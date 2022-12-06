@@ -29,6 +29,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -67,17 +68,17 @@ class SimLoadingDialog : AbLoadingDialog() {
         @JvmStatic
         @JvmOverloads
         fun showTip(
-            context: AppCompatActivity,
+            context: ComponentActivity,
             msg: CharSequence = "加载中...",
-            tip: Tip = Tip.INFO,
+            tip: TipType = TipType.INFO,
             @LoadingTipsDuration time: Long = LOADING_SHORT
         ): AbLoadingDialog {
             val image = when (tip) {
-                Tip.SUCCESS -> R.drawable.icon_tip_success
-                Tip.DEFAULT -> R.drawable.icon_tip_success
-                Tip.WARNING -> R.drawable.icon_tip_warn
-                Tip.INFO -> R.drawable.icon_tip_success
-                Tip.ERROR -> R.drawable.icon_tip_error
+                TipType.SUCCESS -> R.drawable.icon_tip_success
+                TipType.DEFAULT -> R.drawable.icon_tip_success
+                TipType.WARNING -> R.drawable.icon_tip_warn
+                TipType.INFO -> R.drawable.icon_tip_success
+                TipType.ERROR -> R.drawable.icon_tip_error
             }
             return SimLoadingDialog().showTip(context, false, msg, image, time)
         }
@@ -86,7 +87,7 @@ class SimLoadingDialog : AbLoadingDialog() {
          * 和协程一起使用
          */
         inline fun showWithAction(
-            context: AppCompatActivity,
+            context: ComponentActivity,
             crossinline action: suspend () -> Unit
         ): AbLoadingDialog {
             return SimLoadingDialog().showWithAction(context, action)
