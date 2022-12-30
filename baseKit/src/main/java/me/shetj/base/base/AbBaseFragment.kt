@@ -108,18 +108,10 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
 
     override fun onStateChanged(source: LifecycleOwner, event: Event) {
         when (event) {
-            ON_START -> viewBindData()
             ON_RESUME -> onVisible()
             ON_PAUSE -> onInvisible()
-            ON_CREATE -> initEventAndData()
             else -> {}
         }
-    }
-
-    /**
-     * 初始化数据和界面绑定
-     */
-    open fun viewBindData() {
     }
 
     /**
@@ -137,7 +129,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
     /**
      * Init event and data.
      */
-    protected fun initEventAndData() {
+    open fun initEventAndData() {
     }
 
     companion object {

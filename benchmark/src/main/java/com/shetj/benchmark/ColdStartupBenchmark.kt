@@ -36,6 +36,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class ColdStartupBenchmark : AbstractStartupBenchmark(StartupMode.COLD)
+
 abstract class AbstractStartupBenchmark(private val startupMode: StartupMode) {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()

@@ -57,6 +57,7 @@ abstract class BaseBindingFragment<T : BasePresenter<*>, VB : ViewBinding> : Bas
         savedInstanceState: Bundle?
     ): View? {
         mViewBinding = initViewBinding(inflater, container)
+        initEventAndData()
         return mViewBinding.root
     }
 

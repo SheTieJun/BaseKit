@@ -73,6 +73,7 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
         savedInstanceState: Bundle?
     ): View? {
         mViewBinding = initViewBinding(inflater, container)
+        initEventAndData()
         return mViewBinding.root
     }
 
@@ -90,8 +91,8 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
     }
 
 
-    override fun viewBindData() {
-        super.viewBindData()
+    override fun initEventAndData() {
+        super.initEventAndData()
         mViewModel.baseAction.observe(this, this)
     }
 

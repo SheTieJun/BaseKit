@@ -29,6 +29,7 @@ import androidx.benchmark.junit4.BenchmarkRule
 import androidx.benchmark.junit4.measureRepeated
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import java.util.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -59,6 +60,18 @@ class ExampleBenchmark {
     @Test
     fun benchmarkSomeWork() {
         benchmarkRule.measureRepeated {
+            doSomething()
         }
     }
+
+
+    /**
+     * 测试的内容
+     */
+    private fun doSomething() {
+
+
+    }
+
+
 }

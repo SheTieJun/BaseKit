@@ -42,6 +42,22 @@ val Context.lifeScope: CoroutineScope
         return BaseKit.applicationScope
     }
 
+val Context.asActivity: Activity
+    get() {
+        if (this is Activity) {
+            return this
+        }
+        var context = this
+        while (context is ContextWrapper) {
+            if (context is Activity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        error("The passed Context is not an Activity.")
+    }
+
+
 fun Context.getIdByName(className: String, resName: String): Int {
     val packageName = packageName
     return applicationContext.resources.getIdentifier(resName, className, packageName)
