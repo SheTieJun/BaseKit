@@ -128,6 +128,7 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
         finishAfterTransition()
     }
 
+    @Suppress("DEPRECATION")
     override fun onBackPressed() {
         super.onBackPressed()
     }
