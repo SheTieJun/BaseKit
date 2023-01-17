@@ -74,6 +74,10 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
         initData()
     }
 
+    /**
+     * Is enable gray theme
+     * 是否可以展示灰色主题
+     */
     open fun isEnableGrayTheme() = false
 
     open fun onActivityDestroy() {

@@ -34,6 +34,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Process
 import androidx.annotation.Keep
@@ -41,6 +42,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import kotlin.system.exitProcess
+import me.shetj.base.ktx.drawableToBitmap
 import me.shetj.base.tools.file.FileUtils
 
 @Keep
@@ -667,6 +669,15 @@ class AppUtils private constructor() {
                 }
                 return list
             }
+
+        @JvmStatic
+        val appIconBitmap: Bitmap? = try {
+            val drawableIcon =
+                Utils.app.packageManager.getApplicationIcon(Utils.app.applicationContext.packageName)
+            drawableToBitmap(drawableIcon) ?: throw PackageManager.NameNotFoundException()
+        } catch (e: PackageManager.NameNotFoundException) {
+           null
+        }
 
         /**
          * 清除App所有数据

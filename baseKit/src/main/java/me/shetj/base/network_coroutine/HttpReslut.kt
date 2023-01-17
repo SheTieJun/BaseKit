@@ -78,6 +78,8 @@ class HttpResult<out T> constructor(val value: Any?) {
 
         fun <T> progress(currentLength: Long, length: Long, process: Float): HttpResult<T> =
             HttpResult(createLoading(currentLength, length, process))
+
+        fun <T> loading(): HttpResult<T> = HttpResult(createLoading(0, 0, 0f))
     }
 
     data class Failure(

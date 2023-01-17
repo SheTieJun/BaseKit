@@ -47,9 +47,7 @@ class BaseUncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
         ("Thread = ${t.name} : Throwable = ${e.message}".trimIndent()).logE("error")
         val stackTraceInfo = getStackTraceInfo(e)
         stackTraceInfo.logE("error")
-        if (DebugFunc.getInstance().isOutputLog) {
-            saveThrowableMessage(stackTraceInfo)
-        }
+        saveThrowableMessage(stackTraceInfo)
         SystemClock.sleep(1000)
         Process.killProcess(Process.myPid())
     }

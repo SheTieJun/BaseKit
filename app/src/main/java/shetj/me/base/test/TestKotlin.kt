@@ -28,18 +28,13 @@ package shetj.me.base.test
 import androidx.core.text.buildSpannedString
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import java.lang.Math.random
-import kotlin.properties.Delegates
-import kotlin.random.Random
+import androidx.lifecycle.map
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
-import me.shetj.base.ktx.isTrue
 import me.shetj.base.ktx.renderType
 import me.shetj.base.model.UIState
-import shetj.me.base.func.main.MainActivity
 
 
 class TestKotlin {
@@ -95,7 +90,6 @@ class TestKotlin {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            MainActivity::class.java
            println(System.currentTimeMillis().toInt())
         }
 
@@ -107,7 +101,7 @@ class TestKotlin {
             //1.6.0
             buildList<String> {
 
-            }.isNullOrEmpty().not()
+            }.isEmpty()
 
             buildMap<String,String> {
 
@@ -126,11 +120,21 @@ class TestKotlin {
 
             }
 
+            buildString(1) {
+
+            }
+
             5000.toDuration(DurationUnit.SECONDS).toDouble(DurationUnit.HOURS)
 
 
         }
 
+
+        fun testLiveData(){
+
+            liveDataA.map {  }
+
+        }
 
 
 

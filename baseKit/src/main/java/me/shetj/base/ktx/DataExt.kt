@@ -23,9 +23,9 @@
  */
 package me.shetj.base.ktx
 
-import android.os.Bundle
 import android.os.Message
 import androidx.annotation.IntRange
+import androidx.annotation.Px
 import kotlin.random.Random
 import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
@@ -39,13 +39,6 @@ fun Any?.toMessage(code: Int = 1): Message {
         what = code
         obj = this@toMessage
     }
-}
-
-/**
- * 获取参数
- */
-inline fun <reified T> Bundle?.getDataOrNull(key: String): T? {
-    return this?.getSerializable(key) as? T
 }
 
 /**
@@ -80,6 +73,7 @@ fun convertHexColorString(color: Int): String {
 }
 
 val Float.dp2px
+    @Px
     get() = ArmsUtils.dp2px(this)
 
 val Float.px2dp

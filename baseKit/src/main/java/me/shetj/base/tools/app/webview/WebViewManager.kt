@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,18 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.tools.app
+package me.shetj.base.tools.app.webview
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.util.Base64
 import android.webkit.CookieManager
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebSettings
 import android.webkit.WebView
+import androidx.appcompat.app.AppCompatActivity
 import java.io.InputStream
+import me.shetj.base.ktx.searchFile
+import me.shetj.base.ktx.searchFiles
+import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 
 /**
@@ -48,12 +55,9 @@ class WebViewManager(private val webView: WebView) {
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
         webSettings.defaultTextEncodingName = "utf-8" //设置编码格式
-        webSettings.setAppCacheMaxSize(1024 * 1024 * 50)
-        val appCachePath: String = webView.context.cacheDir.absolutePath
-        webSettings.setAppCachePath(appCachePath)
         webSettings.allowFileAccess = true//将图片调整到适合WebView的大小
         webSettings.loadsImagesAutomatically = true //支持自动加载图片
-        webSettings.setAppCacheEnabled(true)
+        webSettings.cacheMode = WebSettings.LOAD_DEFAULT
         webSettings.loadWithOverviewMode = true
         webSettings.useWideViewPort = true // 设置加载进来的页面自适应手机屏幕
         webSettings.builtInZoomControls = false // 设置页面可缩放,必须把缩放按钮禁掉,不然无法取消
@@ -89,7 +93,7 @@ class WebViewManager(private val webView: WebView) {
      * 函数的功能是在图片点击的时候调用本地java接口并传递url过去
      * onPageFinish 调用才有用
      */
-    fun addImageClickListner() {
+    fun addImageClick() {
         webView.loadUrl(
             "javascript:(function(){" +
                     "var objs = document.getElementsByTagName(\"img\"); " +
@@ -97,31 +101,78 @@ class WebViewManager(private val webView: WebView) {
                     "{" +
                     "    objs[i].onclick=function()  " +
                     "    {  " +
-                    "        window.imagelistner.openImage(this.src);  " +
+                    "        window.App.openImage(this.src);  " +
                     "    }  " +
                     "}" +
                     "})()"
         )
     }
 
-    fun addVideoStartListener() {
-        webView.context?.assets?.let {
-            val inputStream: InputStream = it.open("video.js")
+
+    /**
+     * Add console2
+     * 通过本地文件加载(推荐)
+     */
+    fun addConsole() {
+        webView.context?.assets?.let { manager ->
+            val inputStream: InputStream = manager.open("vconsole.js")
             val buffer = ByteArray(inputStream.available())
             inputStream.read(buffer)
             inputStream.close()
-
             val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
             webView.loadUrl(
                 "javascript:(function() {" +
                         "var parent = document.getElementsByTagName('head').item(0);" +
-                        "var script = document.createElement('script');" +
-                        "script.type = 'text/javascript';" +
-                        "script.innerHTML = window.atob('$encoded');" +
-                        "parent.appendChild(script)" +
+                        "var scriptConsole = document.createElement('script');" +
+                        "scriptConsole.innerHTML = window.atob('$encoded');" +
+                        "parent.appendChild(scriptConsole);" +
+                        "var scriptAdd = document.createElement('script');" +
+                        "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
+                        "parent.appendChild(scriptAdd);" +
                         "})()"
             )
         }
+    }
+
+    /**
+     *  通往CDN连接加载
+     */
+    fun addConsole2() {
+        webView.loadUrl(
+            "javascript:(function() {" +
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var scriptConsole = document.createElement('script');" +
+                    "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
+                    "parent.appendChild(scriptConsole);" +
+                    "var scriptAdd = document.createElement('script');" +
+                    "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
+                    "parent.appendChild(scriptAdd);" +
+                    "})()"
+        )
+    }
+
+
+    fun onShowFileChooser(
+        activity: AppCompatActivity,
+        filePathCallback: ValueCallback<Array<Uri>>?,
+        fileChooserParams: FileChooserParams?
+    ): Boolean {
+        fileChooserParams?.acceptTypes?.also {
+            if(it.isNotEmpty()){
+                activity.searchFiles(fileChooserParams.acceptTypes){
+                    it?.let {
+                        filePathCallback?.onReceiveValue(it.toTypedArray())
+                    }
+                }
+                return true
+            }
+        }
+        return false
+    }
+
+    fun setGeolocationEnabled(enabled: Boolean){
+        webSettings.setGeolocationEnabled(enabled)
+        webSettings.setGeolocationDatabasePath(webView.context.filesDir.path)
     }
 
     /**
@@ -152,6 +203,18 @@ class WebViewManager(private val webView: WebView) {
             cookieManager.setCookie(entry.key, entry.value)
         }
         cookieManager.flush()
+    }
+
+    /**
+     * [HttpHeaders.userAgent]
+     * @param userAgent
+     */
+    fun setUserAgent(userAgent: String){
+        webSettings.userAgentString = userAgent
+    }
+
+    fun getUserAgentString(): String {
+        return webSettings.userAgentString?:""
     }
 
     /**
@@ -272,7 +335,7 @@ class WebViewManager(private val webView: WebView) {
     }
 
 
-    fun limitFile(){
+    fun limitFile() {
         // 禁用 file 协议；
         webSettings.allowFileAccess = false
         webSettings.allowFileAccessFromFileURLs = false
@@ -287,7 +350,7 @@ class WebViewManager(private val webView: WebView) {
     fun capturePicture(): Bitmap {
         val width = webView.width
         val scale: Float = webView.scale
-        val height = (webView.contentHeight* scale + 0.5).toInt()
+        val height = (webView.contentHeight * scale + 0.5).toInt()
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
         val canvas = Canvas(bitmap)
         webView.draw(canvas)

@@ -68,7 +68,7 @@ settings.dependencyResolutionManagement {
             url = uri("https://maven.pkg.github.com/SheTieJun/maven/")
             credentials {
                 username = "SheTieJun"
-                password = properties.getProperty("GITHUB_READ_TOKEN") ?: System.getenv("GITHUB_READ_TOKEN") ?: gradleProperties.getProperty("GITHUB_READ_TOKEN")
+                password = properties.getProperty("g_token") ?: System.getenv("g_token") ?: gradleProperties.getProperty("g_token")
             }
         }
     }

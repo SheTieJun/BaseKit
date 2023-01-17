@@ -35,7 +35,8 @@ simplify
 
 ## 应用场景记录
 - 使用`Navigation`代替`ARouter`
-
+- 用start_up 代替Application中初始化
+- 可视化日志，用自己写的[LogKit](https://github.com/SheTieJun/LogKit)
 
 ## 拆出去的扩展封装库
 - [AndroidX-KTX)](https://github.com/SheTieJun/AndroidX-KTX)

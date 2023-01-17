@@ -126,13 +126,7 @@ class HttpLoggingInterceptor : Interceptor {
             log(requestStartMessage)
             if (logHeaders) {
                 val headers = request.headers()
-                var i = 0
-                val count = headers.size()
-                while (i < count) {
-                    log("\t" + headers.name(i) + ": " + headers.value(i))
-                    i++
-                }
-                // log(" ");
+                log(headers.toString())
                 if (logBody && hasRequestBody) {
                     if (isPlaintext(requestBody!!.contentType())) {
                         bodyToString(request)
@@ -143,8 +137,6 @@ class HttpLoggingInterceptor : Interceptor {
             }
         } catch (e: Exception) {
             e(e)
-        } finally {
-            log("--> END " + request.method())
         }
     }
 
@@ -162,12 +154,6 @@ class HttpLoggingInterceptor : Interceptor {
                 ) + " (" + tookMs + "ms）"
             )
             if (logHeaders) {
-//                log(" ");
-//                Headers headers = clone.headers();
-//                for (int i = 0, count = headers.size(); i < count; i++) {
-//                    log("\t" + headers.name(i) + ": " + headers.value(i));
-//                }
-//                log(" ");
                 if (logBody && HttpHeaders.hasBody(clone)) {
                     if (isPlaintext(responseBody!!.contentType())) {
                         val body = responseBody.string()
@@ -182,8 +168,6 @@ class HttpLoggingInterceptor : Interceptor {
             }
         } catch (e: Exception) {
             e(e)
-        } finally {
-            log("<-- END HTTP")
         }
         return response
     }

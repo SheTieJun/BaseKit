@@ -5,7 +5,6 @@ import tools.addKoin
 import tools.addOther
 import tools.addRetrofit2
 import tools.addRoom
-
 plugins {
     id("com.google.devtools.ksp")
     id("com.android.library")
@@ -15,12 +14,12 @@ plugins {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = 33
     namespace = "me.shetj.base"
     resourcePrefix = "base_"
     defaultConfig {
         aarMetadata {
-            this.minCompileSdk = 32
+            this.minCompileSdk = 33
         }
         minSdk = (24)
         targetSdk = (32)

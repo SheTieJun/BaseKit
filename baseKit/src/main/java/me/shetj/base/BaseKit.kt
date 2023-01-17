@@ -35,6 +35,7 @@ import kotlinx.coroutines.plus
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.di.dbModule
 import me.shetj.base.ktx.isTrue
+import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.debug.DebugFunc
@@ -57,6 +58,8 @@ import timber.log.Timber
 object BaseKit {
     var baseUrl: String? = null
         private set
+
+    var TAG = "BaseKit"
 
     @JvmStatic
     val app: Application
@@ -129,6 +132,7 @@ object BaseKit {
                 modules(dbModule)
             }
         }
+        this.TAG = AppUtils.appName?:"BaseKit"
     }
 
     @JvmStatic

@@ -16,12 +16,12 @@ plugins {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = 33
     namespace = "shetj.me.base"
     defaultConfig {
         applicationId = "shetj.me.base"
         minSdk = 24
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
         ndk {
@@ -118,11 +118,6 @@ android {
 //}
 
 dependencies {
-implementation("com.google.android.material:material:1.5.0-alpha04")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
     //    implementation fileTree (include: ["*.jar"], dir: "libs")
     testImplementation("junit:junit:4.13.2")
     val androidx = "1.0.0"
@@ -140,7 +135,6 @@ implementation("com.google.android.material:material:1.5.0-alpha04")
     implementation("com.github.iielse:ImageWatcher:1.1.5")
 
     val qmuiversionShetj = "79920f62d5"
-    implementation("com.google.guava:guava:29.0-android")
     implementation("com.github.SheTieJun.QMUI_Android:qmui:$qmuiversionShetj")
 
 //    debugImplementation "com.glance.guolindev:glance:1.0.0" //debug 情况下查看数据库
@@ -157,6 +151,9 @@ implementation("com.google.android.material:material:1.5.0-alpha04")
     addPaging()
     addNav()
     addProInstaller()
+    //https://github.com/SheTieJun/LogKit
+    implementation("com.github.SheTieJun.LogKit:logkit-messenger:1.7")
+//    implementation ("com.github.shetiejun:logkit-messenger:0.0.1")
 }
 
 androidComponents {
@@ -188,5 +185,3 @@ abstract class PrivacyCheckFactory : AsmClassVisitorFactory<None> {
         return true
     }
 }
-
-apply(from = "../spotless.gradle")

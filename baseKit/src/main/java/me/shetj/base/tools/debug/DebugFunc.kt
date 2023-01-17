@@ -48,8 +48,6 @@ class DebugFunc private constructor() {
 
     var isOutputHttp = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_HTTP, BuildConfig.DEBUG) as Boolean }
         ?: false
-    var isOutputLog = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_LOG, BuildConfig.DEBUG) as Boolean }
-        ?: false
 
     companion object {
         val saveLogFile =
@@ -98,19 +96,9 @@ class DebugFunc private constructor() {
     //endregion httpSetting
 
     //region logSetting
-    fun getLogSetting(): Boolean {
-        return isOutputLog
-    }
 
-    fun setIsOutputLog(isOutput: Boolean) {
-        isOutputLog = isOutput
-        mContext?.let {
-            SPUtils.put(it, KEY_IS_OUTPUT_LOG, isOutput)
-        }
-    }
 
     fun saveLogToFile(info: String?) {
-        if (!isOutputLog) return
         outputToFile(info, saveLogFile)
     }
     //endregion logSetting

@@ -155,6 +155,15 @@ fun AppCompatActivity.searchFile(type: Array<String>, callback: ActivityResultCa
 
 
 /**
+ * 搜索多类型的文件
+ */
+@MainThread
+fun AppCompatActivity.searchFiles(type: Array<String>, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
+    register("OpenDocument", ActivityResultContracts.OpenMultipleDocuments(), callback).launch(type)
+}
+
+
+/**
  * 创建文件
  * @param type image/png
 *"

@@ -32,6 +32,7 @@ import androidx.core.text.parseAsHtml
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.debug.DebugFunc
 import me.shetj.base.tools.file.StringUtils
@@ -89,27 +90,27 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
 }
 
 //region log 相关
-fun String?.logI(tag: String = "base") {
+fun String?.logI(tag: String = BaseKit.TAG) {
     Timber.tag(tag).i(this.toString())
 }
 
-fun String?.logE(tag: String = "base") {
+fun String?.logE(tag: String = BaseKit.TAG) {
     Timber.tag(tag).e(this.toString())
 }
 
-fun Throwable.logE(tag: String = "base") {
+fun Throwable.logE(tag: String = BaseKit.TAG) {
     Timber.tag(tag).e(this)
 }
 
-fun String?.logD(tag: String = "base") {
+fun String?.logD(tag: String = BaseKit.TAG) {
     Timber.tag(tag).d(this.toString())
 }
 
-fun String?.logW(tag: String = "base") {
+fun String?.logW(tag: String = BaseKit.TAG) {
     Timber.tag(tag).w(this.toString())
 }
 
-fun Throwable?.logW(tag: String = "base") {
+fun Throwable?.logW(tag: String = BaseKit.TAG) {
     Timber.tag(tag).w(this)
 }
 

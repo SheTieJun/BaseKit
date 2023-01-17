@@ -26,7 +26,7 @@ class ResultMusic(var msg: String, var code: Int, var data: List<DataBean>) {
          * duration : 03:34
          * imgUrl : https://img.lycheer.net/material/6583/5d70da288069bd42ddc9a961.png
          */
-        var url = 0
+        var url :String ?= null
         var title: String? = null
         var duration: String? = null
         var imgUrl: String? = null
