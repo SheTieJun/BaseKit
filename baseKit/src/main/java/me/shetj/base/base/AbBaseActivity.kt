@@ -128,11 +128,6 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
         finishAfterTransition()
     }
 
-    @Suppress("DEPRECATION")
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
     override fun onNightModeChanged(mode: Int) {
         super.onNightModeChanged(mode)
     }

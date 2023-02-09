@@ -5,8 +5,9 @@ import tools.addKoin
 import tools.addOther
 import tools.addRetrofit2
 import tools.addRoom
+
 plugins {
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
     id("com.android.library")
     id("kotlin-parcelize")
     id("maven-publish")
@@ -22,7 +23,6 @@ android {
             this.minCompileSdk = 33
         }
         minSdk = (24)
-        targetSdk = (32)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFile("consumer-rules.pro")
     }
@@ -31,12 +31,17 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro","consumer-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+                "consumer-rules.pro"
+            )
         }
     }
 
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 
     compileOptions {

@@ -301,7 +301,7 @@ fun DependencyHandler.addRoom(dependencyConfiguration: Action<ExternalModuleDepe
             this, "api", depName, dependencyConfiguration
         )
     }
-    ksp(Room.compiler)
+    kapt(Room.compiler)
 }
 
 fun DependencyHandler.addAndroid(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {

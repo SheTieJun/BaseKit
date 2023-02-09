@@ -33,7 +33,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.plus
 import me.shetj.base.base.TaskExecutor
-import me.shetj.base.di.dbModule
+import me.shetj.base.di.getDBModule
+import me.shetj.base.di.getHttpModule
 import me.shetj.base.ktx.isTrue
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.Tim
@@ -129,7 +130,8 @@ object BaseKit {
                 }
                 androidContext(application)
                 androidFileProperties()
-                modules(dbModule)
+                modules(getDBModule())
+                modules(getHttpModule())
             }
         }
         this.TAG = AppUtils.appName?:"BaseKit"

@@ -27,6 +27,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -57,7 +58,7 @@ import me.shetj.base.ktx.hasPermission
  * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
+abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControllerFunctionsImpl{
 
     protected var enabledOnBack: Boolean = false
         set(value) {
@@ -87,12 +88,20 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        addObservers()
+        setUpClicks()
+        onInitialized()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         lifecycle.removeObserver(this)
     }
 
     open fun onBack() {
+        enabledOnBack = false
         requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 

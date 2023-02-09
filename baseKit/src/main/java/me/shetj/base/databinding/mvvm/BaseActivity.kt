@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 SheTieJun
+ * Copyright (c) 2021 SheTieJun
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,41 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.base
+
+package me.shetj.base.databinding.mvvm
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import androidx.annotation.Keep
-import androidx.viewbinding.ViewBinding
-import me.shetj.base.ktx.getClazz
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import me.shetj.base.base.BaseControllerFunctionsImpl
 
 /**
- * 基础类  view 层,只有binding
- * @author shetj
+ * Base class for activities that using databind feature to bind the view
+ * also Implements [BaseControllerFunctionsImpl] interface
+ * @param T A class that extends [ViewDataBinding] that will be used by the activity layout binding view.
+ * @param layoutId the resource layout view going to bind with the [binding] variable
  */
-@Keep
-abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity() ,BaseControllerFunctionsImpl{
+abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
+    AppCompatActivity(), BaseControllerFunctionsImpl {
 
-    private val lazyViewBinding = lazy { initViewBinding() }
-    protected val mViewBinding: VB by lazyViewBinding
+    /**
+     * activity layout view binding object
+     */
+    lateinit var binding: T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mViewBinding.root)
+        binding = DataBindingUtil.setContentView(this@BaseActivity, layoutId) as T
+        binding.lifecycleOwner = this
         addObservers()
         setUpClicks()
         onInitialized()
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    open fun initViewBinding(): VB {
-        return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java)
-            .invoke(null, layoutInflater) as VB
-    }
-
-    override fun initView() {
-    }
-
-    override fun initData() {
     }
 }

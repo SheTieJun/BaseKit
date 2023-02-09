@@ -6,14 +6,16 @@ buildscript {
     }
 }
 
+//https://developer.android.com/reference/tools/gradle-api
+
 plugins {
-    id("com.android.application") version ("7.2.2") apply false
-    id("com.android.library") version ("7.2.2") apply false
+    id("com.android.application") version ("7.4.1") apply false
+    id("com.android.library") version ("7.4.1") apply false
     id("org.jetbrains.kotlin.android") version ("1.7.20") apply false
     id("com.diffplug.spotless") version ("6.0.0")
     id("maven-publish")
-    id("com.google.devtools.ksp") version ("1.7.20-1.0.8")
-    id("com.android.test") version "7.2.2" apply false
+//    id("com.google.devtools.ksp") version ("1.7.20-1.0.8")//databinding no support
+    id("com.android.test") version "7.4.1" apply false
     id("androidx.benchmark") version "1.1.0-beta04" apply false
 }
 

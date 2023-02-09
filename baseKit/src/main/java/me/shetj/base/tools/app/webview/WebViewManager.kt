@@ -27,15 +27,18 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
+import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.util.Base64
 import android.webkit.CookieManager
 import android.webkit.ValueCallback
+import android.webkit.WebBackForwardList
 import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import java.io.InputStream
 import me.shetj.base.ktx.searchFile
 import me.shetj.base.ktx.searchFiles
@@ -63,6 +66,8 @@ class WebViewManager(private val webView: WebView) {
         webSettings.builtInZoomControls = false // 设置页面可缩放,必须把缩放按钮禁掉,不然无法取消
         webSettings.displayZoomControls = false
         webSettings.setSupportZoom(true)
+        // 5.0以上允许加载http和https混合的页面(5.0以下默认允许，5.0+默认禁止)
+        webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
     }
 
     /**
@@ -80,6 +85,17 @@ class WebViewManager(private val webView: WebView) {
                     "}" +
                     "})()"
         )
+    }
+
+    fun enableLoadLocalFile() {
+        //是否可访问Content Provider的资源，默认值 true
+        webSettings.allowContentAccess = true
+        // 是否可访问本地文件，默认值 true
+        webSettings.allowFileAccess = true
+        // 是否允许通过file url加载的Javascript读取本地文件，默认值 false
+        webSettings.allowFileAccessFromFileURLs = false
+        // 是否允许通过file url加载的Javascript读取全部资源(包括文件,http,https)，默认值 false
+        webSettings.allowUniversalAccessFromFileURLs = false
     }
 
     fun loadHtml(html: String) {
@@ -153,13 +169,13 @@ class WebViewManager(private val webView: WebView) {
 
 
     fun onShowFileChooser(
-        activity: AppCompatActivity,
+        activity: FragmentActivity,
         filePathCallback: ValueCallback<Array<Uri>>?,
         fileChooserParams: FileChooserParams?
     ): Boolean {
         fileChooserParams?.acceptTypes?.also {
-            if(it.isNotEmpty()){
-                activity.searchFiles(fileChooserParams.acceptTypes){
+            if (it.isNotEmpty()) {
+                activity.searchFiles(fileChooserParams.acceptTypes) {
                     it?.let {
                         filePathCallback?.onReceiveValue(it.toTypedArray())
                     }
@@ -170,7 +186,7 @@ class WebViewManager(private val webView: WebView) {
         return false
     }
 
-    fun setGeolocationEnabled(enabled: Boolean){
+    fun setGeolocationEnabled(enabled: Boolean) {
         webSettings.setGeolocationEnabled(enabled)
         webSettings.setGeolocationDatabasePath(webView.context.filesDir.path)
     }
@@ -209,12 +225,12 @@ class WebViewManager(private val webView: WebView) {
      * [HttpHeaders.userAgent]
      * @param userAgent
      */
-    fun setUserAgent(userAgent: String){
+    fun setUserAgent(userAgent: String) {
         webSettings.userAgentString = userAgent
     }
 
     fun getUserAgentString(): String {
-        return webSettings.userAgentString?:""
+        return webSettings.userAgentString ?: ""
     }
 
     /**
@@ -231,6 +247,15 @@ class WebViewManager(private val webView: WebView) {
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
             webSettings.mediaPlaybackRequiresUserGesture = true
         }
+    }
+
+    /**
+     * Is enable auto load image
+     * 自动价值图片
+     * @param enabled
+     */
+    fun isEnableAutoLoadImage(enabled: Boolean) {
+        webSettings.loadsImagesAutomatically = enabled
     }
 
     /**
@@ -355,6 +380,14 @@ class WebViewManager(private val webView: WebView) {
         val canvas = Canvas(bitmap)
         webView.draw(canvas)
         return bitmap
+    }
+
+    /**
+     * Get copy back list
+     * 获取WebView栈内存储了多少子页面
+     */
+    fun getCopyBackList(): WebBackForwardList {
+        return webView.copyBackForwardList()
     }
 
     /**

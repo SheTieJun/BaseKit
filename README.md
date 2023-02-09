@@ -40,3 +40,18 @@ simplify
 
 ## 拆出去的扩展封装库
 - [AndroidX-KTX)](https://github.com/SheTieJun/AndroidX-KTX)
+
+## 模块类型
+
+- 应用模块
+- 数据模块
+- 功能模块
+- 通用模块
+  - 界面模块
+  - 网络模块
+  - 辅助模块
+- 通信模块：用于模块间的通信
+
+
+
+    

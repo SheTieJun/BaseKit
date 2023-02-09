@@ -35,7 +35,6 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
@@ -133,7 +132,7 @@ fun ComponentActivity.startActivityResult(
  * 选择一个文件
  */
 @MainThread
-fun AppCompatActivity.selectFile(type: String = "image/*", callback: ActivityResultCallback<Uri?>) {
+fun ComponentActivity.selectFile(type: String = "image/*", callback: ActivityResultCallback<Uri?>) {
     register("GetContent", ActivityResultContracts.GetContent(), callback).launch(type)
 }
 
@@ -141,7 +140,7 @@ fun AppCompatActivity.selectFile(type: String = "image/*", callback: ActivityRes
  * 选择多个文件
  */
 @MainThread
-fun AppCompatActivity.selectMultipleFile(type: String = "image/*", callback: ActivityResultCallback<List<Uri>>) {
+fun ComponentActivity.selectMultipleFile(type: String = "image/*", callback: ActivityResultCallback<List<Uri>>) {
     register("selectMultipleFile", ActivityResultContracts.GetMultipleContents(), callback).launch(type)
 }
 
@@ -149,7 +148,7 @@ fun AppCompatActivity.selectMultipleFile(type: String = "image/*", callback: Act
  * 搜索多类型的文件
  */
 @MainThread
-fun AppCompatActivity.searchFile(type: Array<String>, callback: ActivityResultCallback<Uri?>) {
+fun ComponentActivity.searchFile(type: Array<String>, callback: ActivityResultCallback<Uri?>) {
     register("OpenDocument", ActivityResultContracts.OpenDocument(), callback).launch(type)
 }
 
@@ -158,7 +157,7 @@ fun AppCompatActivity.searchFile(type: Array<String>, callback: ActivityResultCa
  * 搜索多类型的文件
  */
 @MainThread
-fun AppCompatActivity.searchFiles(type: Array<String>, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
+fun ComponentActivity.searchFiles(type: Array<String>, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
     register("OpenDocument", ActivityResultContracts.OpenMultipleDocuments(), callback).launch(type)
 }
 
@@ -169,7 +168,7 @@ fun AppCompatActivity.searchFiles(type: Array<String>, callback: ActivityResultC
 *"
 */
 @MainThread
-fun AppCompatActivity.createFile(
+fun ComponentActivity.createFile(
     fileName: String,
     type: String = "*/*",
     callback: ActivityResultCallback<Uri?>
@@ -182,7 +181,7 @@ fun AppCompatActivity.createFile(
  * 拍照
  */
 @MainThread
-fun AppCompatActivity.takePicture(callback: ActivityResultCallback<Uri?>) {
+fun ComponentActivity.takePicture(callback: ActivityResultCallback<Uri?>) {
     val pathUri = createImagePathUri(this)
     register("takePicture", ActivityResultContracts.TakePicture()) { result ->
         if (result) {
@@ -197,7 +196,7 @@ fun AppCompatActivity.takePicture(callback: ActivityResultCallback<Uri?>) {
  * 视频
  */
 @MainThread
-fun AppCompatActivity.takeVideo(callback: ActivityResultCallback<Uri?>) {
+fun ComponentActivity.takeVideo(callback: ActivityResultCallback<Uri?>) {
     val pathUri = createVideoPathUri(this)
     register("takeVideo", ActivityResultContracts.CaptureVideo()) { result ->
         if (result) {
@@ -213,7 +212,7 @@ fun AppCompatActivity.takeVideo(callback: ActivityResultCallback<Uri?>) {
  * 选择练习人
  */
 @MainThread
-fun AppCompatActivity.pickContact(callback: ActivityResultCallback<Uri?>) {
+fun ComponentActivity.pickContact(callback: ActivityResultCallback<Uri?>) {
     register("pickContact", ActivityResultContracts.PickContact(), callback).launch(null)
 }
 

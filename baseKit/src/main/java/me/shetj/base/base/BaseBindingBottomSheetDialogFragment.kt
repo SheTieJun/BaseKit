@@ -46,7 +46,7 @@ import me.shetj.base.tools.app.ArmsUtils
 
 @Keep
 abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
-    BottomSheetDialogFragment() {
+    BottomSheetDialogFragment() ,BaseControllerFunctionsImpl{
 
     protected lateinit var mViewBinding: VB
 
@@ -62,6 +62,13 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         mViewBinding = initViewBinding(inflater, container)
         viewBindData()
         return mViewBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        addObservers()
+        setUpClicks()
+        onInitialized()
     }
 
     open fun getBehavior(): BottomSheetBehavior<FrameLayout>? {

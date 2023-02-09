@@ -42,74 +42,83 @@ import me.shetj.base.tools.json.GsonKit
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.Module
 import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-val dbModule = module {
-    single(createdAtStart = false) { SaverDatabase.getInstance(androidApplication()) }
 
-    // try to override existing definition. 覆盖其他实例
-    // (override = true) -> FIX:Please use override option or check for definition '[Single:'me.shetj.base.saver.SaverDao']'
-    single(createdAtStart = false) { get<SaverDatabase>().saverDao() }
+fun getHttpModule(): Module {
+  return module {
+      single<OkHttpClient> {
+          get<OkHttpClient.Builder>().build()
+      }
 
-    single<OkHttpClient> {
-        get<OkHttpClient.Builder>().build()
-    }
+      single {
+          HttpLoggingInterceptor("OkHttp").apply {
+              setLevel(HttpLoggingInterceptor.Level.BODY)
+              setLogEnable(true)
+          }
+      }
 
-    single {
-        HttpLoggingInterceptor("OkHttp").apply {
-            setLevel(HttpLoggingInterceptor.Level.BODY)
-            setLogEnable(true)
-        }
-    }
+      single {
 
-    single {
+          val timeout = 20000L // 默认的超时时间20秒
 
-        val timeout = 20000L // 默认的超时时间20秒
+          OkHttpClient.Builder().apply {
+              connectTimeout(timeout, TimeUnit.MILLISECONDS)
+              readTimeout(timeout, TimeUnit.MILLISECONDS)
+              writeTimeout(timeout, TimeUnit.MILLISECONDS)
+              addInterceptor(
+                  HeadersInterceptor(
+                      HttpHeaders().apply {
+                          put(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, HttpHeaders.acceptLanguage)
+                          put(HttpHeaders.HEAD_KEY_USER_AGENT, HttpHeaders.userAgent)
+                      }
+                  )
+              )
+              hostnameVerifier { _, _ -> true } // 主机验证
+              val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
+              sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+              addInterceptor(get(HttpLoggingInterceptor::class.java))
+              cache(Cache(File(EnvironmentStorage.getPath(packagePath = "base")), 1024 * 1024 * 12))
+              dns(OkHttpDns.getInstance())
+          }
+      }
 
-        OkHttpClient.Builder().apply {
-            connectTimeout(timeout, TimeUnit.MILLISECONDS)
-            readTimeout(timeout, TimeUnit.MILLISECONDS)
-            writeTimeout(timeout, TimeUnit.MILLISECONDS)
-            addInterceptor(
-                HeadersInterceptor(
-                    HttpHeaders().apply {
-                        put(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, HttpHeaders.acceptLanguage)
-                        put(HttpHeaders.HEAD_KEY_USER_AGENT, HttpHeaders.userAgent)
-                    }
-                )
-            )
-            hostnameVerifier { _, _ -> true } // 主机验证
-            val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
-            sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
-            addInterceptor(get(HttpLoggingInterceptor::class.java))
-            cache(Cache(File(EnvironmentStorage.getPath(packagePath = "base")), 1024 * 1024 * 12))
-            dns(OkHttpDns.getInstance())
-        }
-    }
+      single {
+          Retrofit.Builder().apply {
+              addConverterFactory(GsonConverterFactory.create(GsonKit.gson))
+              validateEagerly(BaseKit.isDebug.isTrue()) // 在开始的时候直接开始检测所有的方法
+          }
+      }
 
-    single {
-        Retrofit.Builder().apply {
-            addConverterFactory(GsonConverterFactory.create(GsonKit.gson))
-            validateEagerly(BaseKit.isDebug.isTrue()) // 在开始的时候直接开始检测所有的方法
-        }
-    }
+      single<KCApiService> {
+          get<Retrofit.Builder>().apply {
+              // 创建具体的ApiService的时候，才复制具体的client 和base 以及其他的变更
+              client(get())
+              baseUrl(BaseKit.baseUrl ?: "https://github.com/")
+          }.build().create(KCApiService::class.java)
+      }
 
-    single<KCApiService> {
-        get<Retrofit.Builder>().apply {
-            // 创建具体的ApiService的时候，才复制具体的client 和base 以及其他的变更
-            client(get())
-            baseUrl(BaseKit.baseUrl ?: "https://github.com/")
-        }.build().create(KCApiService::class.java)
-    }
+      single {
+          LruDiskCache(BaseKit.app.cacheDir, AppUtils.appVersionCode, 1024 * 1024 * 100)
+      }
 
-    single {
-        LruDiskCache(BaseKit.app.cacheDir, AppUtils.appVersionCode, 1024 * 1024 * 100)
-    }
+      single {
+          KCCache()
+      }
+  }
+}
 
-    single {
-        KCCache()
+fun getDBModule():Module{
+    return  module {
+        single(createdAtStart = false) { SaverDatabase.getInstance(androidApplication()) }
+
+        // try to override existing definition. 覆盖其他实例
+        // (override = true) -> FIX:Please use override option or check for definition '[Single:'me.shetj.base.saver.SaverDao']'
+        single(createdAtStart = false) { get<SaverDatabase>().saverDao() }
     }
 }
+
