@@ -25,30 +25,37 @@
 package me.shetj.base.databinding.mvvm
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import me.shetj.base.base.BaseControllerFunctionsImpl
 
 /**
- * Base class for activities that using databind feature to bind the view
+ * Base class for fragments that using databind feature to bind the view
  * also Implements [BaseControllerFunctionsImpl] interface
- * @param T A class that extends [ViewDataBinding] that will be used by the activity layout binding view.
+ * @param T A class that extends [ViewDataBinding] that will be used by the fragment layout binding view.
  * @param layoutId the resource layout view going to bind with the [binding] variable
  */
-abstract class BaseActivity<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
-    AppCompatActivity(), BaseControllerFunctionsImpl {
-
-    /**
-     * activity layout view binding object
-     */
+abstract class BaseBindingFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) : Fragment(),
+    BaseControllerFunctionsImpl {
     lateinit var binding: T
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this@BaseActivity, layoutId) as T
-        binding.lifecycleOwner = this
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        binding.lifecycleOwner = requireActivity()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         addObservers()
         setUpClicks()
         onInitialized()

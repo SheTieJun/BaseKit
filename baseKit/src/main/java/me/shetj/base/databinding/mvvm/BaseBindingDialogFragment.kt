@@ -40,7 +40,7 @@ import me.shetj.base.base.BaseControllerFunctionsImpl
  * @param T A class that extends [ViewDataBinding] that will be used by the dialog layout binding view.
  * @param layoutId the resource layout view going to bind with the [binding] variable
  */
-abstract class BaseDialogFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
+abstract class BaseBindingDialogFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
     DialogFragment(), BaseControllerFunctionsImpl {
     lateinit var binding: T
 

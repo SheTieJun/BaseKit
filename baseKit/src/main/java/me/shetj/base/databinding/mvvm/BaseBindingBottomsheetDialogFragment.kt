@@ -31,17 +31,17 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import me.shetj.base.base.BaseControllerFunctionsImpl
 
 /**
- * Base class for fragments that using databind feature to bind the view
+ * Base class for bottom sheet dialogs that using databind feature to bind the view
  * also Implements [BaseControllerFunctionsImpl] interface
- * @param T A class that extends [ViewDataBinding] that will be used by the fragment layout binding view.
+ * @param T A class that extends [ViewDataBinding] that will be used by the dialog layout binding view.
  * @param layoutId the resource layout view going to bind with the [binding] variable
  */
-abstract class BaseFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) : Fragment(),
-    BaseControllerFunctionsImpl {
+abstract class BaseBindingBottomsheetDialogFragment<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
+    BottomSheetDialogFragment(), BaseControllerFunctionsImpl {
     lateinit var binding: T
 
     override fun onCreateView(

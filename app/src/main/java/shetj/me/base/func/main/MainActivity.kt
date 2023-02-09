@@ -100,6 +100,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         return super.onTouchEvent(event)
     }
 
+    override fun setUpClicks() {
+
+    }
+
     @SuppressLint("MissingPermission")
     override fun initView() {
         //test

@@ -11,7 +11,7 @@ import tools.addPaging
 plugins {
     id("com.android.application")
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
     kotlin("android")
 }
 
@@ -32,7 +32,7 @@ android {
 
     buildFeatures {
         viewBinding = true
-
+        dataBinding = true
     }
 
 
