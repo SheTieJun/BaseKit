@@ -31,7 +31,6 @@ import java.io.FileWriter
 import me.shetj.base.BuildConfig
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_HTTP
-import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_LOG
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.FileUtils
 import me.shetj.base.tools.file.SPUtils
