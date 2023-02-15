@@ -57,7 +57,7 @@ fun loadImageFromNetwork(
 ) {
     var imageURL = url
 
-    if (imageURL != null && !imageURL.isEmpty() && !imageURL.equals(
+    if (imageURL != null && imageURL.isNotEmpty() && !imageURL.equals(
             "",
             ignoreCase = true
         )

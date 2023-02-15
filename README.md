@@ -1,30 +1,29 @@
 # BaseKit
 
-为简化自己写代码
+为减少写重复代码
 
 -----------------
 ### 框架
-- MVC/MVP/MVVM ,任意搭配
+- MVC/MVP/MVVM  
 
 ### Libraries
 
 1. Retrofit- REST API Call
-   https://square.github.io/retrofit/
+   - https://square.github.io/retrofit/
 2. Glide - Image Loading and caching.
-   https://github.com/bumptech/glide
+   - https://github.com/bumptech/glide
 3. koin - Dependency Injection
-   https://insert-koin.io/
+   - https://insert-koin.io/
 4. gson - json serialization/deserialization
-   https://github.com/google/gson
+   - https://github.com/google/gson
 5. Android Jetpack 
    - https://developer.android.google.cn/jetpack/
    - stable-channel : https://developer.android.com/jetpack/androidx/versions/stable-channel
 6. Material Design Components - Google's latest Material Components.
-   https://material.io/develop/android
+   - https://material.io/develop/android
 
 ---------------------
 ```
-
 ```
 ## 文章
 #### [Flow 和 LiveData 之操作符](https://blog.csdn.net/StjunF/article/details/120872772)
@@ -34,19 +33,17 @@
 #### [DataStoreKit使用](https://github.com/SheTieJun/BaseKit/wiki/DataStoreKit%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 
 ## 分支
-[Base:含有RxJava的分支，很老的分支](https://github.com/SheTieJun/BaseKit/tree/base_rx)
-[Base:只有viewbinding没有Databinding的分支](https://github.com/SheTieJun/BaseKit/tree/feat_viewbinding)
+- [Base:含有RxJava的分支，很老的分支](https://github.com/SheTieJun/BaseKit/tree/base_rx)
+- [Base:只有viewbinding没有Databinding的分支](https://github.com/SheTieJun/BaseKit/tree/feat_viewbinding)
 
 ## 应用场景记录
 - 使用`Navigation`代替`ARouter`
 - 用start_up 代替Application中初始化
 - 可视化日志，用自己写的[LogKit](https://github.com/SheTieJun/LogKit)
 
-## 拆出去的扩展封装库
-- [AndroidX-KTX](https://github.com/SheTieJun/AndroidX-KTX)
-
+```
+```
 ## 模块类型
-
 - 应用模块
 - 数据模块
 - 功能模块

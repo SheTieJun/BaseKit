@@ -58,6 +58,12 @@ class RequestOption {
 }
 
 
+/**
+ * Get def req option
+ *
+ * `key.getDefReqOption()`
+ * @return [RequestOption]
+ */
 fun String.getDefReqOption(): RequestOption {
     return RequestOption().also {
         it.cacheKey = this.md5

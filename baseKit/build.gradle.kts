@@ -64,6 +64,9 @@ android {
             withSourcesJar()
         }
     }
+
+    //    ./gradlew printProjectStructure
+    tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
 }
 
 dependencies {

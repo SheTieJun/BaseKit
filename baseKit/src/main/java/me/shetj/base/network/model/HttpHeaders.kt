@@ -124,9 +124,7 @@ class HttpHeaders : Serializable {
         const val HEAD_KEY_LOCATION = "Location"
         const val HEAD_KEY_USER_AGENT = "User-Agent"
         const val HEAD_KEY_COOKIE = "Cookie"
-        const val HEAD_KEY_COOKIE2 = "Cookie2"
         const val HEAD_KEY_SET_COOKIE = "Set-Cookie"
-        const val HEAD_KEY_SET_COOKIE2 = "Set-Cookie2"
 
         @SuppressLint("ConstantLocale")
         private val USER_AGENT =

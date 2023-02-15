@@ -1,8 +1,5 @@
 <component name="CopyrightManager">
   <settings default="MIT-shetj">
-    <module2copyright>
-      <element module="BaseKit" copyright="MIT-shetj" />
-    </module2copyright>
     <LanguageOptions name="JAVA">
       <option name="fileTypeOverride" value="3" />
     </LanguageOptions>

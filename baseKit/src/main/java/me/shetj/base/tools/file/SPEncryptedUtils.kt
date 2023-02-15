@@ -28,6 +28,7 @@ import android.content.SharedPreferences
 import androidx.annotation.Keep
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import androidx.security.crypto.MasterKey.KeyScheme.AES256_GCM
 
 /**
  * 加密的 sharedPreferences
@@ -133,7 +134,9 @@ class SPEncryptedUtils {
         }
 
         private fun getSharePreference(context: Context): SharedPreferences {
-            val masterKey = MasterKey.Builder(context).build()
+            val masterKey = MasterKey.Builder(context)
+                .setKeyScheme(AES256_GCM)
+                .build()
             return EncryptedSharedPreferences.create(
                 context,
                 "shared_preferences_encrypted",
