@@ -30,6 +30,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import java.util.*
+import me.shetj.base.tools.app.LanguageKit
 import shetj.me.base.R
 import shetj.me.base.databinding.FragmentFirstBinding
 
@@ -60,7 +62,23 @@ class FirstFragment : Fragment() {
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+
+        binding.buttonChange.setOnClickListener {
+            if (!isEn) {
+                LanguageKit.changeLanguage(requireContext(), Locale.ENGLISH)
+            } else {
+                LanguageKit.changeLanguage(requireContext(), Locale.CHINA)
+            }
+        }
     }
+
+    val isEn: Boolean
+        get() {
+            return LanguageKit.getAppLocale(requireContext()).let {
+                it.country == Locale.ENGLISH.country && it.language == Locale.ENGLISH.language
+            }
+        }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -30,6 +30,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import me.shetj.base.ktx.isTrue
+import me.shetj.base.model.GrayThemeLiveData
 import shetj.me.base.R
 import shetj.me.base.databinding.FragmentSecondBinding
 
@@ -37,7 +39,7 @@ import shetj.me.base.databinding.FragmentSecondBinding
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class SecondFragment : Fragment() {
-
+    var isGrayTheme = false
     private var _binding: FragmentSecondBinding? = null
 
     // This property is only valid between onCreateView and
@@ -59,6 +61,20 @@ class SecondFragment : Fragment() {
 
         binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        }
+
+        isGrayTheme = GrayThemeLiveData.getInstance().isTrue()
+        if (isGrayTheme){
+            binding.buttonChangeTheme.text = "灰色模式"
+        }
+        binding.buttonChangeTheme.setOnClickListener {
+             isGrayTheme = !isGrayTheme
+            GrayThemeLiveData.getInstance().postValue(isGrayTheme)
+            if (isGrayTheme){
+                binding.buttonChangeTheme.text = "正常模式"
+            }else{
+                binding.buttonChangeTheme.text = "灰色模式"
+            }
         }
     }
 

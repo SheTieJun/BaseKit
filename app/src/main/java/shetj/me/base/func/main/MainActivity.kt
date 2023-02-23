@@ -40,6 +40,7 @@ import androidx.core.view.WindowInsetsCompat.Type
 import androidx.lifecycle.liveData
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
+import java.util.*
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.hasNavigationBars
@@ -66,6 +67,7 @@ import me.shetj.base.mvvm.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
+import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.file.FileQUtils
 import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
@@ -186,6 +188,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 //            }
         }
 
+        mContent.startAc2.setOnClickListener {
+            start<Main2Activity>()
+        }
+
         mContent.btnGoRouter.setOnClickListener {
             openUri(mContent.router.text.toString())
         }
@@ -194,7 +200,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         findViewById<View>(R.id.fab).setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(mViewModel.getNightModel())
-            start<Main2Activity>()
+//            start<Main2Activity>()
         }
 
         //btn_test_keybord
@@ -226,7 +232,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
             }
         }
-        mContent.btnCustomTab.post {
+        runOnUiThread {
             windowInsets?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
             windowInsets?.getInsets(Type.statusBars()).toJson().logI("statusBars")
             windowInsets?.getInsets(Type.captionBar()).toJson().logI("captionBar")
@@ -235,13 +241,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             windowInsets?.isVisible(Type.captionBar()).toJson().logI("captionBar")
         }
 
-        mContent.btnCustomTab.setOnClickListener {
-            if (hasNavigationBars()) {
-                hideNavigationBars()
-            } else {
-                showNavigationBars()
-            }
-        }
 
         mContent.btnFind.setOnClickListener {
             launch {
@@ -298,7 +297,24 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             mViewModel.isGrayTheme = !mViewModel.isGrayTheme
             GrayThemeLiveData.getInstance().postValue(mViewModel.isGrayTheme)
         }
+
+
+        mViewBinding.content.changeLanguage.setOnClickListener {
+            if (!isEn){
+                LanguageKit.changeLanguage(this, Locale.ENGLISH)
+            }else{
+                LanguageKit.changeLanguage(this, Locale.CHINA)
+            }
+
+        }
     }
+
+    val isEn:Boolean
+        get() {
+           return LanguageKit.getAppLocale(this).let {
+               it.country == Locale.ENGLISH.country && it.language == Locale.ENGLISH.language
+            }
+        }
 
     @Debug
     private fun dataStoreKit() {

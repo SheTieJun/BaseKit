@@ -4,7 +4,7 @@
 
 -----------------
 ### 框架
-- MVC/MVP/MVVM  
+- MVC/MVP/MVVM([ViewBinding](baseKit/src/main/java/me/shetj/base/mvvm)/[DataBinding](baseKit/src/main/java/me/shetj/base/databinding))  
 
 ### Libraries
 

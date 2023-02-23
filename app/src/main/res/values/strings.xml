@@ -1,46 +1,49 @@
 <resources>
-    <string name="app_name">Base-shetj</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">BaseKit</string>
+    <string name="action_settings">设置</string>
 
-    <string name="hello_blank_fragment">Hello blank fragmentHello blank fragmentHello blank fragmentHello blank fragmentHello blank fragment</string>
+    <string name="hello_blank_fragment">你好空白片段你好空白片段你好空白片段你好空白片段你好空白片段你好空白片段</string>
     <!--footer-->
     <string name="base_title">推送管理</string>
     <string name="title_activity_main">MainActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="first_fragment_label">第一个 Fragment</string>
+    <string name="second_fragment_label">第二个 Fragment</string>
+    <string name="next">下一页</string>
+    <string name="previous">上一页</string>
 
     <string name="lorem_ipsum">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id
-        interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales
-        nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-        himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero
-        aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
-        Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a
-        condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat,
-        dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-        Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet
-        metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.\n\n
-        Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit amet auctor at,
-        mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel, molestie quam. Fusce blandit
-        tincidunt nulla, quis sollicitudin libero facilisis et. Integer interdum nunc ligula, et fermentum metus
-        hendrerit id. Vestibulum lectus felis, dictum at lacinia sit amet, tristique id quam. Cras eu consequat
-        dui. Suspendisse sodales nunc ligula, in lobortis sem porta sed. Integer id ultrices magna, in luctus elit.
-        Sed a pellentesque est.\n\n
-        Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh. Morbi laoreet,
-        tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui non lorem. Nam mollis ipsum quis
-        auctor varius. Quisque elementum eu libero sed commodo. In eros nisl, imperdiet vel imperdiet et,
-        scelerisque a mauris. Pellentesque varius ex nunc, quis imperdiet eros placerat ac. Duis finibus orci et
-        est auctor tincidunt. Sed non viverra ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi
-        a consectetur ipsum, a placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet
-        finibus convallis.\n\n
-        Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
-        turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa gravida. Pellentesque id tellus orci.
-        Integer dictum, lorem sed efficitur ullamcorper, libero justo consectetur ipsum, in mollis nisl ex sed
-        nisl. Donec maximus ullamcorper sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla.
-        Donec rhoncus libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
-        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
+              洛里姆·伊普苏姆·多洛尔坐在一起，不断地吸收精英。南在斯凯莱里斯克学院。莫里斯·沃尔特帕特，多洛尔·艾德
+中间的超级大角鲨鱼，杜鹃花凝集素，安静的马蒂斯普鲁斯。非苏打水
+尼斯，维尔·迪肯塔姆·多洛尔。每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月每个月
+喜美娜。悬浮液包括白花蛇舌草、金黄色葡萄球菌、硫化金黄色葡萄球菌。阿利卡姆伊格特利沃
+等分的，不适合饮食的nisl a，ornare例如。这是一个非常重要的问题。字典中的模糊。\n\n
+暂停中期装饰前。阿利卡姆，新加坡人。莫比身份大费里斯。维瓦姆斯·埃斯塔斯，等等
+条件性外生条件，草炭疽，在白喉愈伤组织中。莫比·泰勒斯·埃拉特
+这是一个很重要的问题。中期和马来苏达期间在水汽中发现了一种初级水电站。
+库拉比特尔和埃罗斯波提托尔，尤特里西亚乌尔纳维塔，摩尔斯提尼布。逗号处的相量，非等分
+梅特斯。Sed maximus nisl nec dolor biendum，连接到leo egestas。\ n\ n
+在人马座里斯莫利斯奎斯。库拉比特·米·奥迪奥，调味品拍卖师，
+软体动物非草皮。Nullam前庭自由前庭，finibus orci vel, molestie quam。杂色涂层
+在自由便利条件下发生的事件。整数中间带，发酵单位
+hendrerit id金龟子，金龟子，金龟子，金龟子。Cras eu结果
+杜伊。悬浮苏打水，女修道院。整数id超大型，在luctus elit中。
+发送了一个详细的评估。\ n\ n
+爱尼亚女修道士，拉西尼亚女修道士，超级女修道士。埃蒂亚姆是一个维也纳人。莫比·劳雷特
+变形龙须菜，无核龙须菜，无核元素。南美洲软体动物
+拍卖变量。古典元素欧盟解放组织。在埃罗斯尼斯尔，英国
     </string>
+    <string name="string_change_lang">语言切换</string>
+    <string name="string_go_test">去测试界面</string>
+    <string name="string_gray_them">灰色模式（哀悼模式）</string>
+    <string name="test_dir">测试文件夹</string>
+    <string name="string_datastore">测试DataStore</string>
+    <string name="string_test_time">测试时间选择</string>
+    <string name="test_key">测试键盘</string>
+    <string name="string_pic">图片</string>
+    <string name="string_test_db">插入一个数据</string>
+    <string name="string_test_db_2">查询数据</string>
+    <string name="test_setting">设置界面</string>
+    <string name="test_send_email">发送邮件</string>
+    <string name="test_thread">测试线程</string>
+    <string name="test_cla">日历事件</string>
 </resources>

@@ -48,7 +48,16 @@ class Main2Activity : BaseBindingActivity<ActivityMain2Binding>(R.layout.activit
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
+    override fun initView() {
 
+    }
+
+    override fun initData() {
+    }
+
+    override fun isEnableGrayTheme(): Boolean {
+        return true
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main2)

@@ -32,6 +32,7 @@ import me.shetj.base.BuildConfig
 import me.shetj.base.BaseKit
 import me.shetj.base.init.ABBaseInitialize
 import me.shetj.base.network_coroutine.HttpKit
+import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
 import shetj.me.base.di_kointest.allModules
 import shetj.me.base.utils.SLogMessengerTree
@@ -52,7 +53,7 @@ class BaseInitialize : ABBaseInitialize() {
         SLogMessenger.getInstance().bindService(context, "me.shetj.logkit.demo")
 //        SLogMessenger.getInstance().autoHide(context,false)
 //        SLogMessenger.getInstance().bindService(context,"me.shetj.beloved")
-        Timber.plant(SLogMessengerTree())
+//        Timber.plant(SLogMessengerTree())
     }
 
 }
