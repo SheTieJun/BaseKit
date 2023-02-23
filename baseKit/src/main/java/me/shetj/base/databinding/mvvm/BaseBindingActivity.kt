@@ -26,9 +26,9 @@ package me.shetj.base.databinding.mvvm
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import me.shetj.base.base.AbBaseActivity
 import me.shetj.base.base.BaseControllerFunctionsImpl
 
 /**
@@ -38,7 +38,7 @@ import me.shetj.base.base.BaseControllerFunctionsImpl
  * @param layoutId the resource layout view going to bind with the [binding] variable
  */
 abstract class BaseBindingActivity<T : ViewDataBinding>(@LayoutRes val layoutId: Int) :
-    AppCompatActivity(), BaseControllerFunctionsImpl {
+    AbBaseActivity(), BaseControllerFunctionsImpl {
 
     /**
      * activity layout view binding object

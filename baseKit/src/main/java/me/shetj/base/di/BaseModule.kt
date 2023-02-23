@@ -26,7 +26,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-fun getHttpModule(): Module {
+internal fun getHttpModule(): Module {
   return module {
       single<OkHttpClient> {
           get<OkHttpClient.Builder>().build()
@@ -80,7 +80,7 @@ fun getHttpModule(): Module {
       }
 
       single {
-          LruDiskCache(BaseKit.app.cacheDir, AppUtils.appVersionCode, 1024 * 1024 * 100)
+          LruDiskCache(BaseKit.app.getExternalFilesDir("cacheFile"), AppUtils.appVersionCode, 1024 * 1024 * 100)
       }
 
       single {
@@ -89,7 +89,7 @@ fun getHttpModule(): Module {
   }
 }
 
-fun getDBModule():Module{
+internal fun getDBModule():Module{
     return  module {
         single(createdAtStart = false) { SaverDatabase.getInstance(androidApplication()) }
 

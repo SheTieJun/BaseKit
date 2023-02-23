@@ -23,7 +23,9 @@
  */
 package me.shetj.base.base
 
+import android.content.Context
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +36,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import me.shetj.base.R
 import me.shetj.base.ktx.grayThemChange
 import me.shetj.base.model.GrayThemeLiveData
+import me.shetj.base.tools.app.LanguageKit
 
 /**
  * 基础类  view 层
@@ -130,5 +133,16 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
 
     override fun onNightModeChanged(mode: Int) {
         super.onNightModeChanged(mode)
+        LanguageKit.attachBaseContext(this)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LanguageKit.attachBaseContext(this)
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase)
+        LanguageKit.attachBaseContext(this)
     }
 }
