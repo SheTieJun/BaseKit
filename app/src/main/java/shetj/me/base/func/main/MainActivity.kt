@@ -37,14 +37,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type
-import androidx.lifecycle.liveData
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import java.util.*
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.defDataStore
-import me.shetj.base.ktx.hasNavigationBars
-import me.shetj.base.ktx.hideNavigationBars
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
@@ -54,7 +51,6 @@ import me.shetj.base.ktx.saverDB
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
-import me.shetj.base.ktx.showNavigationBars
 import me.shetj.base.ktx.start
 import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.ktx.toJson
@@ -63,7 +59,7 @@ import me.shetj.base.ktx.withIO
 import me.shetj.base.ktx.withMain
 import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.model.NetWorkLiveDate
-import me.shetj.base.mvvm.BaseBindingActivity
+import me.shetj.base.mvvm.viewbind.BaseBindingActivity
 import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil

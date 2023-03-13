@@ -19,6 +19,6 @@ interface BaseControllerFunctionsImpl {
     /**
      * All click action code will be handled in this method inside controllers.
      */
-    abstract fun setUpClicks()
+    open fun setUpClicks() {}
 
 }

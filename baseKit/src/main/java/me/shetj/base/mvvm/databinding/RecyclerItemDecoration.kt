@@ -1,4 +1,4 @@
-package me.shetj.base.databinding
+package me.shetj.base.mvvm.databinding
 
 import android.graphics.Rect
 import android.view.View

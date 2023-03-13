@@ -31,7 +31,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
-import me.shetj.base.databinding.mvvm.BaseBindingActivity
+import me.shetj.base.mvvm.databinding.BaseBindingActivity
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivityMain2Binding
 

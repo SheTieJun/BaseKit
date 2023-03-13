@@ -1,28 +1,6 @@
-/*
- * MIT License
- *
- * Copyright (c) 2019 SheTieJun
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package me.shetj.base.base
 
+import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -32,7 +10,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
 import kotlinx.coroutines.CoroutineScope
 
-/*** 自己控制的生命周期和协程 类似actvity的基类
+/*** 自己控制的生命周期和协程 类似activity的基类
  *  生命周期 + 协程作业用域
  *
  * * 自身[LifecycleOwner] + 自身[CoroutineScope]
@@ -64,45 +42,28 @@ abstract class AbLifecycleCopeComponent : LifecycleCopeComponent {
         return this
     }
 
+    @CallSuper
     override fun onClear() {
     }
 
+    @CallSuper
     override fun onCreate() {
-        if (lifecycle is LifecycleRegistry) {
-            (lifecycle as LifecycleRegistry).apply {
-                if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)) {
-                    handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-                }
-            }
-        }
+        lifecycleRegistry.currentState = Lifecycle.State.CREATED
     }
 
+    @CallSuper
     override fun onStart() {
-        if (lifecycle is LifecycleRegistry) {
-            (lifecycle as LifecycleRegistry).apply {
-                if (lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
-                    handleLifecycleEvent(Lifecycle.Event.ON_START) // 更新状态，并且通知观察者
-                }
-            }
-        }
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
     }
 
+    @CallSuper
     override fun onResume() {
-        if (lifecycle is LifecycleRegistry) {
-            (lifecycle as LifecycleRegistry).apply {
-                if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                    handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-                }
-            }
-        }
+        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
     }
 
+    @CallSuper
     override fun onDeStory() {
-        if (lifecycle is LifecycleRegistry) {
-            (lifecycle as LifecycleRegistry).apply {
-                handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            }
-        }
+        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
     }
 }
 

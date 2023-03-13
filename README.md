@@ -4,7 +4,7 @@
 
 -----------------
 ### 框架
-- MVC/MVP/MVVM([ViewBinding](baseKit/src/main/java/me/shetj/base/mvvm)/[DataBinding](baseKit/src/main/java/me/shetj/base/databinding))  
+- MVC/MVP/MVVM([ViewBinding](baseKit/src/main/java/me/shetj/base/mvvm/viewbind)/[DataBinding](baseKit/src/main/java/me/shetj/base/mvvm/databinding))  
 
 ### Libraries
 
@@ -38,8 +38,10 @@
 
 ## 应用场景记录
 - 使用`Navigation`代替`ARouter`
-- 用start_up 代替Application中初始化
+- 用`start_up`代替`Application`中初始化
+  - 隐私政策，可以分阶段初始化，比如登录后才初始化
 - 可视化日志，用自己写的[LogKit](https://github.com/SheTieJun/LogKit)
+  - 拦截网页的请求，或者动态添加vConsole
 
 ```
 ```

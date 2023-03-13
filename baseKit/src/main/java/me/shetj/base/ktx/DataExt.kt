@@ -1,31 +1,7 @@
-/*
- * MIT License
- *
- * Copyright (c) 2019 SheTieJun
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package me.shetj.base.ktx
 
 import android.os.Message
 import androidx.annotation.IntRange
-import androidx.annotation.Px
 import kotlin.random.Random
 import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
@@ -73,11 +49,16 @@ fun convertHexColorString(color: Int): String {
 }
 
 val Float.dp2px
-    @Px
     get() = ArmsUtils.dp2px(this)
 
 val Float.px2dp
     get() = ArmsUtils.px2dp(this)
+
+val Int.dp2px
+    get() = this.toFloat().dp2px
+
+val Int.px2dp
+    get() = this.toFloat().px2dp
 
 fun Any?.isEmpty() = EmptyUtils.isEmpty(this)
 

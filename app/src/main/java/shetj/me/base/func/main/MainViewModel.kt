@@ -29,7 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.TimeUnit
-import me.shetj.base.mvvm.BaseViewModel
+import me.shetj.base.mvvm.viewbind.BaseViewModel
 import me.shetj.base.network_coroutine.HttpResult
 import me.shetj.base.network_coroutine.KCHttpV3
 import me.shetj.base.network_coroutine.KCHttpV4

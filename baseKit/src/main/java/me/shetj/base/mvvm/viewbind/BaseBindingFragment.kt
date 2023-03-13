@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.mvvm
+package me.shetj.base.mvvm.viewbind
 
 import android.os.Bundle
 import android.view.LayoutInflater

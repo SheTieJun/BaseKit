@@ -21,27 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package me.shetj.base.mvvm
+package me.shetj.base.mvvm.viewbind
 
-import androidx.annotation.Keep
-import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.viewbinding.ViewBinding
-import org.koin.android.scope.AndroidScopeComponent
-import org.koin.androidx.scope.activityScope
-import org.koin.core.scope.Scope
+import me.shetj.base.tip.TipType
 
-/**
- *  TODO 还未测试
- *
- *  Koin Activity : 需要在提前在module{
- *   scope< S:BaseKoinBindingActivity > {
- *   }
- *   }
- */
-@Keep
-abstract class BaseKoinBindingActivity<VB : ViewBinding, VM : BaseViewModel> :
-    BaseBindingActivity<VB, VM>(), LifecycleObserver, AndroidScopeComponent {
+open class BaseViewModel : ViewModel() {
 
-    override val scope: Scope by activityScope()
+    val baseAction:MutableLiveData<ViewAction> = MutableLiveData()
+
+
+    override fun onCleared() {
+        super.onCleared()
+    }
 }
+
+
+sealed class ViewAction
+
+class TipAction(val tipType: TipType, val msg:String): ViewAction()
+
+class NetErrorAction(val msg: String): ViewAction()
+

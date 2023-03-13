@@ -153,13 +153,15 @@ dependencies {
     addProInstaller()
     //https://github.com/SheTieJun/LogKit
     implementation("com.github.SheTieJun.LogKit:logkit-messenger:1.7")
-//    implementation ("com.github.shetiejun:logkit-messenger:0.0.1")
 }
 
 androidComponents {
     onVariants {
-//        it.instrumentation.transformClassesWith(DebugAsmFactory::class.java, InstrumentationScope.ALL) {}
-//        it.instrumentation.transformClassesWith(PrivacyCheckFactory::class.java, InstrumentationScope.ALL) {}
+        println("onVariants:"+it.name)
+        if (it.name.contains("debug",true)){
+            it.instrumentation.transformClassesWith(DebugAsmFactory::class.java, com.android.build.api.instrumentation.InstrumentationScope.ALL) {}
+            it.instrumentation.transformClassesWith(PrivacyCheckFactory::class.java, com.android.build.api.instrumentation.InstrumentationScope.ALL) {}
+        }
     }
 }
 

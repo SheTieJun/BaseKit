@@ -4,6 +4,7 @@ buildscript {
     repositories {
         gradlePluginPortal()
     }
+    dependencies {}
 }
 
 //https://developer.android.com/reference/tools/gradle-api
