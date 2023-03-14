@@ -102,7 +102,6 @@ object DependencyLibs {
         add(AndroidX.startup)
         add(AndroidX.cryptoSp)
         add(AndroidX.activityKtx)
-//        add(AndroidX.datastore)
         add(Mine.dataStoreLib)
 //        add(Mine.activityLib)
         add(AndroidX.datastoreCore)
@@ -116,6 +115,7 @@ object DependencyLibs {
         add(Constraint.constraintLayout)
 
         add(WorkManager.worker)
+        add(WorkManager.worker_multiprocess)
 
         add(AndroidX.Navigation.navigation)
         add(AndroidX.Navigation.navigationUi)
@@ -191,12 +191,12 @@ object DependencyLibs {
 
     object AndroidX {
 
-        const val appcompat = "androidx.appcompat:appcompat:1.5.1"
+        const val appcompat = "androidx.appcompat:appcompat:1.6.1"
         const val palette = "androidx.palette:palette:1.0.0"
         const val coreKtx = "androidx.core:core-ktx:1.9.0"
         const val recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
         const val cardview = "androidx.cardview:cardview:1.0.0"
-        const val material = "com.google.android.material:material:1.8.0-rc01"
+        const val material = "com.google.android.material:material:1.8.0"
         const val animationCore = "androidx.core:core-animation:1.0.0-beta01"
         const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
         const val fragmentKtx = "androidx.fragment:fragment-ktx:1.6.0-alpha04"
@@ -232,15 +232,16 @@ object DependencyLibs {
         }
 
         object Room {
-            private const val version = "2.4.3"
+            private const val version = "2.5.0"
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
         }
 
         object WorkManager {
-            private const val workVersion = "2.7.1"
+            private const val workVersion = "2.8.0"
             const val worker = "androidx.work:work-runtime-ktx:$workVersion"
+            const val worker_multiprocess = "androidx.work:work-multiprocess:$workVersion"
         }
 
         object Benchmark {
@@ -251,8 +252,9 @@ object DependencyLibs {
 
 
     object Mine {
-        const val dataStoreLib = "com.github.SheTieJun.androidx-ktx:dataStoreLib:1.0.0"
-        const val activityLib = "com.github.SheTieJun.androidx-ktx:activityLib:1.0.0"
+        private const val libVersion = "1.1.0"
+        const val dataStoreLib = "com.github.SheTieJun.androidx-ktx:datastore:$libVersion"
+        const val activityLib = "com.github.SheTieJun.androidx-ktx:activity:$libVersion"
     }
 
 }

@@ -1,31 +1,9 @@
-/*
- * MIT License
- *
- * Copyright (c) 2019 SheTieJun
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
 package me.shetj.base.ktx
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -34,8 +12,11 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.net.Uri
 import android.os.Build
 import android.os.Looper
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -53,6 +34,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
@@ -92,17 +74,17 @@ fun Context.start(intent: Intent, isFinish: Boolean = false) {
     }
 }
 
-fun FragmentActivity.grayThemChange(isGrayTheme:Boolean){
+fun FragmentActivity.grayThemChange(isGrayTheme: Boolean) {
     val decorView = window?.decorView
-    val isMourn = (decorView?.getTag(R.id.isGrayTheme) as? Boolean )?:false
-    if (!isMourn){
-        if (isGrayTheme){
-            decorView?.setTag(R.id.isGrayTheme,true)
+    val isMourn = (decorView?.getTag(R.id.isGrayTheme) as? Boolean) ?: false
+    if (!isMourn) {
+        if (isGrayTheme) {
+            decorView?.setTag(R.id.isGrayTheme, true)
             decorView?.setLayerType(View.LAYER_TYPE_HARDWARE, GrayThemeLiveData.getInstance().getSatPaint(0f))
         }
-    }else{
-        if (!isGrayTheme){
-            decorView?.setTag(R.id.isGrayTheme,false)
+    } else {
+        if (!isGrayTheme) {
+            decorView?.setTag(R.id.isGrayTheme, false)
             decorView?.setLayerType(View.LAYER_TYPE_NONE, null)
         }
     }
@@ -243,14 +225,14 @@ inline fun onBackKeyUp(
     return false
 }
 
-fun Activity.onBackGoHome() {
+fun FragmentActivity.onBackGoHome() {
     try {
         val i = Intent(Intent.ACTION_MAIN)
         i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         i.addCategory(Intent.CATEGORY_HOME)
         startActivity(i)
     } catch (e: Exception) {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
     }
 }
 
@@ -351,7 +333,7 @@ fun Activity.getWindowContent(): FrameLayout? {
  * Not works with file:// URIs from secondary storage (such as removable storage)
  * Not works with any content:// URI
  */
- fun refreshAlbum(context: Context, fileUri: String) {
+fun refreshAlbum(context: Context, fileUri: String) {
     val file = File(fileUri)
     MediaScannerConnection.scanFile(
         context, arrayOf(file.toString()),
@@ -362,6 +344,22 @@ fun Activity.getWindowContent(): FrameLayout? {
 }
 
 
+fun Context.startPowerManager() {
+    val i = Intent();
+    i.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
+    //data为应用包名
+    i.data = Uri.parse("package:$packageName");
+    startActivity(i);
+}
+
+/**
+ * 是否忽略电池优化
+ * @return
+ */
+fun Context.isIgnoringPower(): Boolean {
+    val powerManager: PowerManager?= getSystemService()
+    return powerManager?.isIgnoringBatteryOptimizations(packageName)?:false
+}
 
 
 

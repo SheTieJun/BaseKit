@@ -186,7 +186,15 @@
             android:text="@string/string_go_test"
             android:textAllCaps="false"
             />
-
+        <com.google.android.material.chip.Chip
+            android:id="@+id/start_power"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="电池优化"
+            android:textAllCaps="false"
+            />
 
     </com.google.android.material.chip.ChipGroup>
 

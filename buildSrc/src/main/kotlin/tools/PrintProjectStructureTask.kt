@@ -14,7 +14,7 @@ open class PrintProjectStructureTask : DefaultTask() {
         printSubDirs(projectDir, 1)
     }
 
-    private fun printSubDirs(dir: File, indentLevel: Int, need: Boolean = true) {
+    private fun printSubDirs(dir: File, indentLevel: Int) {
         dir.listFiles()?.filter { it.isDirectory }
             ?.filter {
                 it.name != ("build")
