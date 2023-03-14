@@ -81,13 +81,6 @@ fun TextView.setTextAndMargin(content: String, marginStart: Float) {
     text = spannableString
 }
 
-/**
- * 文字加粗
- */
-internal fun TextView.testBold(isBold: Boolean) {
-    paint.isFakeBoldText = isBold
-}
-
 fun TextView.setBold(isBold: Boolean) {
     typeface = if (isBold) {
         Typeface.defaultFromStyle(Typeface.BOLD)

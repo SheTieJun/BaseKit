@@ -9,23 +9,13 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                groupId "com.github.shetiejun"
-                from components.release
+                groupId "com.github.SheTieJun"
                 artifact sourceJar
+                from components.release
                 artifactId = "base"
                 version = '1.0.8'
             }
         }
-//        定义发布到哪
-//        publishPluginPublicationToRepoRepository 发布到 build / mavenLib
-//        publishPluginPublicationToMavenLocal 发布到~/.m2/ repository
-
-//        repositories {
-//            maven {
-//                name = "mavenLib"
-//                url = file("../mavenLib")
-//            }
-//        }
     }
 }
 

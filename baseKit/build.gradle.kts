@@ -59,12 +59,6 @@ android {
         checkOnly.addAll(setOf("NewApi", "HandlerLeak"))
     }
 
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
-
     //    ./gradlew printProjectStructure
     tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
 }

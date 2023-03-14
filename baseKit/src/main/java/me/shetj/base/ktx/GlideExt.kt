@@ -29,19 +29,6 @@ fun ImageView.loadImageBitmap(
         .into(this)
 }
 
-@JvmOverloads
-fun ImageView.loadImageAny(
-    url: String? = null,
-    @DrawableRes rId: Int? = null,
-    placeholderDrawable: Drawable? = null,
-    errorDrawable: Drawable? = null
-) {
-    Glide.with(context)
-        .load(url ?: rId)
-        .placeholder(placeholderDrawable)
-        .error(errorDrawable)
-        .into(this)
-}
 
 @JvmOverloads
 fun ImageView.loadImage(
