@@ -3,19 +3,17 @@
 package shetj.me.base.func.main
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.wifi.WifiManager
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
+import androidx.metrics.performance.PerformanceMetricsState.Holder
+import com.google.android.material.sidesheet.SideSheetDialog
 import java.util.*
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.defDataStore
@@ -23,8 +21,6 @@ import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.openUri
-import me.shetj.base.ktx.saverCreate
-import me.shetj.base.ktx.saverDB
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
@@ -33,8 +29,6 @@ import me.shetj.base.ktx.startPowerManager
 import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsets
-import me.shetj.base.ktx.withIO
-import me.shetj.base.ktx.withMain
 import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvvm.viewbind.BaseBindingActivity
@@ -43,7 +37,6 @@ import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.file.FileQUtils
-import me.shetj.base.tools.time.CodeUtil
 import shetj.me.base.R
 import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
@@ -51,65 +44,23 @@ import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
-import shetj.me.base.test_lib.onYearMonthDay
 import timber.log.Timber
 
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
-    private var codeUtil: CodeUtil? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
         KeyboardUtil.init(this)
-        mContent = mViewBinding.content
-    }
-
-
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        return super.dispatchTouchEvent(ev)
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
     }
 
     override fun setUpClicks() {
-
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun initView() {
-        //test
-        packageManager.getInstalledPackages(
-            PackageManager.GET_ACTIVITIES or
-                    PackageManager.GET_SERVICES
-        )
-
-
-        kotlin.runCatching {
-            val wifiManager: WifiManager? = getSystemService()
-            val info = wifiManager?.connectionInfo
-            val wifiMac = info?.bssid
-            val phoneMac = info?.macAddress
-        }
-
-
-        if (!mViewModel.isAddJankStats) {
-            "createAndTrack".logI()
-            JankStats.createAndTrack(window) {
-                if (it.isJank) {
-                    ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logI("JankStats")
-                }
-//                it.toJson().logI("JankStats")
-            }
-            mViewModel.isAddJankStats = true
-        }
-        val hierarchy = PerformanceMetricsState.getHolderForHierarchy(mViewBinding.content.root)
-
-        setAppearance(isBlack = true, Color.TRANSPARENT)
+        mContent = mViewBinding.content
+        val hierarchy = addJankStats()
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
                 this@MainActivity,
@@ -118,10 +69,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 "wxwork_android_3.apk"
             )
         }
-
-        dataStoreKit()
-
-
         findViewById<View>(R.id.btn_test_tip).setOnClickListener {
             TipKit.normal(this, "这是一个toast")
             TipKit.info(this, "这是一个toast")
@@ -129,11 +76,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             TipKit.success(this, "这是一个toast")
             TipKit.error(this, "这是一个toast")
         }
-
-
         findViewById<View>(R.id.btn_email).setOnClickListener {
             sendEmailText(addresses = "375105540@qq.com", title = "Base测试", content = "这是一个测试代码")
         }
+
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
             selectFile {
@@ -142,24 +88,12 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        var i = 0
-        findViewById<View>(R.id.btn_save).setOnClickListener {
-            launch {
-                defDataStore.save("Test", i++)
-            }
-        }
-
         mContent.btnDoc.setOnClickListener {
-            selectFile("*/*"){
-
-            }
+            selectFile("*/*"){}
         }
 
         mContent.btnSetting.setOnClickListener {
             openSetting()
-//            startActivityResult(intent = Intent(this,TestActivity::class.java)){
-//                it.resultCode.toString().logI()
-//            }
         }
 
         mContent.startAc2.setOnClickListener {
@@ -170,59 +104,14 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             openUri(mContent.router.text.toString())
         }
 
-        mContent.tvTestCode.setOnClickListener { codeUtil!!.start() }
 
         findViewById<View>(R.id.fab).setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(mViewModel.getNightModel())
-//            start<Main2Activity>()
         }
 
-        //btn_test_keybord
         mContent.btnTestKeybord.setOnClickListener {
             hierarchy.state?.putState("CommentPopup", "show")
             CommentPopup.newInstance().show(supportFragmentManager)
-        }
-
-        mViewBinding.content.btnTestPicker.setOnClickListener {
-            onYearMonthDay()
-        }
-
-        mContent.btnInsert.setOnClickListener {
-            saverCreate(key = "测试key", value = "测试value").apply {
-                launch {
-                    saverDB.insert(this@apply)
-                }
-            }
-        }
-
-        launch {
-            "111".withIO { i ->
-                i.toInt()
-            }.withMain {
-                it + 1
-            }.withMain {
-                it.toString().logI("测试协程")
-            }.let {
-
-            }
-        }
-        runOnUiThread {
-            windowInsets?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
-            windowInsets?.getInsets(Type.statusBars()).toJson().logI("statusBars")
-            windowInsets?.getInsets(Type.captionBar()).toJson().logI("captionBar")
-            windowInsets?.isVisible(Type.navigationBars()).toJson().logI("navigationBars")
-            windowInsets?.isVisible(Type.statusBars()).toJson().logI("statusBars")
-            windowInsets?.isVisible(Type.captionBar()).toJson().logI("captionBar")
-        }
-
-
-        mContent.btnFind.setOnClickListener {
-            launch {
-                saverDB.getAll(groupN = "base", isDel = false)
-                    .collect {
-                        it.toJson().logI()
-                    }
-            }
         }
 
         mContent.testEvent.setOnClickListener {
@@ -237,16 +126,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         }
-        NetWorkLiveDate.getInstance().start(this)
-
-        NetWorkLiveDate.getInstance().observe(this) {
-            when (it?.netType) {
-                NetWorkLiveDate.NetType.NONE -> ("hasNet = ${it.hasNet},netType = NONE").logI()
-                NetWorkLiveDate.NetType.PHONE -> ("hasNet = ${it.hasNet},netType = PHONE").logI()
-                NetWorkLiveDate.NetType.WIFI -> ("hasNet = ${it.hasNet},netType = WIFI").logI()
-                else -> {}
-            }
-        }
 
         mViewBinding.content.testThread.setOnClickListener {
             TaskExecutor.executeOnIO {
@@ -259,14 +138,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        mViewModel.liveDate.observeChange(this) {
-            onSuccess = {
-                this?.toJson().toString().logI()
-            }
-            onFailure = {
-                Timber.tag("getMusic").e(this)
-            }
-        }
         mViewBinding.content.btnGrayModel.setOnClickListener {
             mViewModel.isGrayTheme = !mViewModel.isGrayTheme
             GrayThemeLiveData.getInstance().postValue(mViewModel.isGrayTheme)
@@ -284,6 +155,68 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         mContent.startPower.setOnClickListener {
             startPowerManager()
         }
+        mContent.showSideDialog.setOnClickListener {
+            val sideSheetDialog = SideSheetDialog(this)
+            sideSheetDialog.setContentView(R.layout.fragment_first)
+            sideSheetDialog.setOnShowListener {
+                sideSheetDialog.window?.let {
+                    WindowCompat.setDecorFitsSystemWindows(it, false)
+                }
+            }
+            sideSheetDialog.show()
+        }
+    }
+
+    override fun onInitialized() {
+        super.onInitialized()
+        NetWorkLiveDate.getInstance().start(this)
+    }
+
+    override fun addObservers() {
+        super.addObservers()
+        NetWorkLiveDate.getInstance().observe(this) {
+            when (it?.netType) {
+                NetWorkLiveDate.NetType.NONE -> ("hasNet = ${it.hasNet},netType = NONE").logI()
+                NetWorkLiveDate.NetType.PHONE -> ("hasNet = ${it.hasNet},netType = PHONE").logI()
+                NetWorkLiveDate.NetType.WIFI -> ("hasNet = ${it.hasNet},netType = WIFI").logI()
+                else -> {}
+            }
+        }
+        mViewModel.liveDate.observeChange(this) {
+            onSuccess = {
+                this?.toJson().toString().logI()
+            }
+            onFailure = {
+                Timber.tag("getMusic").e(this)
+            }
+        }
+    }
+
+
+    override fun initView() {
+        setAppearance(isBlack = true, Color.TRANSPARENT)
+        runOnUiThread {
+            windowInsets?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
+            windowInsets?.getInsets(Type.statusBars()).toJson().logI("statusBars")
+            windowInsets?.getInsets(Type.captionBar()).toJson().logI("captionBar")
+            windowInsets?.isVisible(Type.navigationBars()).toJson().logI("navigationBars")
+            windowInsets?.isVisible(Type.statusBars()).toJson().logI("statusBars")
+            windowInsets?.isVisible(Type.captionBar()).toJson().logI("captionBar")
+        }
+        dataStoreKit()
+    }
+
+    private fun addJankStats(): Holder {
+        if (!mViewModel.isAddJankStats) {
+            JankStats.createAndTrack(window) {
+                if (it.isJank) {
+                    ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logI("JankStats")
+                }
+            }
+            mViewModel.isAddJankStats = true
+        }
+        val hierarchy = PerformanceMetricsState.getHolderForHierarchy(mViewBinding.content.root)
+        return hierarchy
     }
 
     val isEn:Boolean
@@ -307,23 +240,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         return true
     }
 
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
     @Debug
     suspend fun netTest() {
         mViewModel.getMusicV2()
     }
 
-
-    public override fun initData() {
-        codeUtil = CodeUtil(mViewBinding.content.tvTestCode)
-        codeUtil?.register(this.lifecycle)
-    }
 }

@@ -1,7 +1,6 @@
 package shetj.me.base.utils;
 
 import androidx.annotation.Keep;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

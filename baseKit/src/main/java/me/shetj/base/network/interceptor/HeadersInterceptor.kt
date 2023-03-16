@@ -1,6 +1,7 @@
 package me.shetj.base.network.interceptor
 
 import java.io.IOException
+import me.shetj.base.ktx.logE
 import me.shetj.base.network.model.HttpHeaders
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -17,7 +18,7 @@ class HeadersInterceptor(private val headers: HttpHeaders) : Interceptor {
                 builder.header(it.key, it.value).build()
             }
         } catch (e: Exception) {
-            Timber.e(e)
+            e.logE()
         }
         return chain.proceed(builder.build())
     }

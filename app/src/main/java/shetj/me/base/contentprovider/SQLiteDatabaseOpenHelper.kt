@@ -3,8 +3,8 @@
 package shetj.me.base.contentprovider
 
 import android.content.Context
-import android.database.sqlite.SQLiteOpenHelper
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 
 class SQLiteDatabaseOpenHelper(context: Context?) :
     SQLiteOpenHelper(context, "testcontentprovider.db", null, 1) {

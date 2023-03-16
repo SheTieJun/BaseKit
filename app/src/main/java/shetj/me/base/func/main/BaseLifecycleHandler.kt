@@ -5,10 +5,8 @@ package shetj.me.base.func.main
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.NonNull
-
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
 

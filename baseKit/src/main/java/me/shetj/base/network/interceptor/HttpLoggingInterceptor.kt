@@ -93,7 +93,7 @@ class HttpLoggingInterceptor : Interceptor {
         val logHeaders = level == Level.BODY || level == Level.HEADERS
         val requestBody = request.body()
         val hasRequestBody = requestBody != null
-        val protocol = if (connection != null) connection.protocol() else Protocol.HTTP_1_1
+        val protocol = connection?.protocol() ?: Protocol.HTTP_1_1
         try {
             val requestStartMessage = "--> " + request.method() +
                 ' ' + URLDecoder.decode(

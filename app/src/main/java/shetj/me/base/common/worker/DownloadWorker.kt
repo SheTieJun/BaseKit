@@ -16,10 +16,10 @@ import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import java.util.*
 import me.shetj.base.ktx.logI
 import me.shetj.base.network_coroutine.KCHttpV3
 import shetj.me.base.R
-import java.util.UUID
 
 
 /**
@@ -70,7 +70,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
             .setContentText(progress)
             .setSmallIcon(R.mipmap.shetj_logo)
             .setOngoing(true) //防止滑动删除
-            .addAction(R.drawable.picture_icon_delete, "取消", intent)
+            .addAction(0, "取消", intent)
             .build()
 
         return ForegroundInfo("下载文件".hashCode(), notification)

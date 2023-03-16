@@ -1,7 +1,6 @@
 package shetj.me.base.bean
 
 import androidx.annotation.Keep
-import shetj.me.base.bean.ResultMusic.DataBean
 
 /*Copyright 2020 shetiejun(375105540@qq.com)
 

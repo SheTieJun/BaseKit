@@ -6,8 +6,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
-import shetj.me.base.R
 import java.lang.reflect.Field
+import shetj.me.base.R
 
 
 class FixRecyclerView  :

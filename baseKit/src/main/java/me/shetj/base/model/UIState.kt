@@ -11,7 +11,7 @@ sealed class UIState {
     object End : UIState()
 
     // 错误状态
-    class Error(val e: Exception) : UIState()
+    class Error(val e: ErrorType) : UIState()
 }
 
 
@@ -26,4 +26,24 @@ sealed class LoginUiState {
     object InProgress : LoginUiState()
     object Error : LoginUiState()
     object SignIn : LoginUiState()
+}
+
+sealed class ErrorType{
+
+    /**
+     * 网络错误
+     */
+    object NetError:ErrorType()
+
+    /**
+     * 接口错误
+     */
+    class APIError(msg:String):ErrorType()
+
+    /**
+     * Other error
+     * 其他错误
+     */
+    class OtherError(msg:String):ErrorType()
+
 }

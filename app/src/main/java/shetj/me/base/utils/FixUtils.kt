@@ -4,11 +4,9 @@ package shetj.me.base.utils
 
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.webkit.WebView
 import me.shetj.base.ktx.showToast
-import java.util.*
 
 
 /**

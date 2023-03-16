@@ -1,10 +1,8 @@
 package shetj.me.base.common.other
 
-import me.shetj.base.tools.app.ArmsUtils.Companion.dp2px
 import androidx.annotation.ColorRes
-import shetj.me.base.R
 import androidx.recyclerview.widget.OrientationHelper
-import me.shetj.base.tools.app.ArmsUtils
+import me.shetj.base.tools.app.ArmsUtils.Companion.dp2px
 import shetj.me.base.R.color
 
 class ItemDecorationOptions {

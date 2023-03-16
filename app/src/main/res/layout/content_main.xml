@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="shetj.me.base.func.main.MainActivity"
-    >
+    tools:context="shetj.me.base.func.main.MainActivity">
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_test_tip"
@@ -22,9 +21,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="TipPopupWindow "
-            android:textAllCaps="false"
-            app:layout_constraintStart_toStartOf="parent"
-          />
+            android:textAllCaps="false" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_select_image"
@@ -32,31 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/string_pic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_test_tip" />
-
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/btn_insert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/string_test_db"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_select_image" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/btn_find"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/string_test_db_2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_insert" />
-
+            android:text="@string/string_pic" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_setting"
@@ -64,9 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/test_setting"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_find" />
+            android:text="@string/test_setting" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_email"
@@ -74,9 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/test_send_email"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_setting" />
+            android:text="@string/test_send_email" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/test_thread"
@@ -84,9 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/test_thread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_email" />
+            android:text="@string/test_thread" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/test_loading"
@@ -94,19 +61,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Loading"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/test_thread" />
+            android:text="Loading" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/test_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="@string/test_cla"
-            app:layout_constraintBottom_toBottomOf="@id/test_loading"
-            app:layout_constraintStart_toEndOf="@id/test_loading"
-            app:layout_constraintTop_toTopOf="@id/test_loading" />
+            android:text="@string/test_cla" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/test_download"
@@ -114,9 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Worker-download"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/test_loading" />
+            android:text="Worker-download" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_test_keybord"
@@ -124,30 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/test_key"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/test_download" />
+            android:text="@string/test_key" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/btn_test_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/string_test_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_test_keybord" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/string_datastore"
-            android:textAllCaps="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_test_picker" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_doc"
@@ -156,8 +94,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/test_dir"
-            android:textAllCaps="false"
-            />
+            android:textAllCaps="false" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_gray_model"
@@ -166,8 +103,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/string_gray_them"
-            android:textAllCaps="false"
-            />
+            android:textAllCaps="false" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/change_language"
             android:layout_width="wrap_content"
@@ -175,8 +112,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/string_change_lang"
-            android:textAllCaps="false"
-            />
+            android:textAllCaps="false" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/start_ac2"
             android:layout_width="wrap_content"
@@ -184,29 +121,25 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/string_go_test"
-            android:textAllCaps="false"
-            />
+            android:textAllCaps="false" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/start_power"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="电池优化"
-            android:textAllCaps="false"
-            />
+            android:text="@string/ig_power"
+            android:textAllCaps="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/showSideDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="SideSheetDialog" />
 
     </com.google.android.material.chip.ChipGroup>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_test_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="codeUtils"
-        app:layout_constraintTop_toBottomOf="@id/group" />
 
 
     <EditText

@@ -24,37 +24,6 @@
     </style>
 
 
-<!--    <style name="Theme.AppSplashScreen" parent="Theme.SplashScreen.IconBackground">-->
-<!--&lt;!&ndash;        设置背景颜色&ndash;&gt;-->
-<!--        <item name="windowSplashScreenBackground">@color/purple_200</item>-->
-<!--&lt;!&ndash;        设置显示在屏幕中间的图标， 如果是通过&ndash;&gt;-->
-<!--&lt;!&ndash;        AnimationDrawable 和 AnimatedVectorDrawable 创建的对象，可呈现动画效果，则会在页面显示的时候，播放动画&ndash;&gt;-->
-<!--        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>-->
-
-<!--&lt;!&ndash;        设置显示动画不可见时，使用 APP 的默认主题&ndash;&gt;-->
-<!--        <item name="postSplashScreenTheme">@style/Theme.AppTheme</item>-->
-<!--    </style>-->
-
-
-
-    <style name="WheelStyleDemo">
-        <item name="wheel_itemTextColor">@android:color/holo_green_dark</item>
-        <item name="wheel_itemTextColorSelected">@android:color/holo_green_light</item>
-        <item name="wheel_itemTextSize">20sp</item>
-        <item name="wheel_itemTextSizeSelected">22sp</item>
-        <item name="wheel_itemTextBoldSelected">true</item>
-        <item name="wheel_sameWidthEnabled">false</item>
-        <item name="wheel_atmosphericEnabled">true</item>
-        <item name="wheel_curtainEnabled">false</item>
-        <item name="wheel_curvedEnabled">false</item>
-        <item name="wheel_curvedMaxAngle">60</item>
-        <item name="wheel_cyclicEnabled">true</item>
-        <item name="wheel_indicatorEnabled">true</item>
-        <item name="wheel_indicatorColor">@android:color/holo_green_dark</item>
-        <item name="wheel_indicatorSize">1dp</item>
-    </style>
-
-
     <style name="App.SplashScreen" parent="Theme.SplashScreen.IconBackground">
         <item name="windowSplashScreenAnimatedIcon">@drawable/unsplash_cat1</item>
         <item name="windowSplashScreenBackground">@color/white</item>

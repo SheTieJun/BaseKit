@@ -2,9 +2,16 @@
 
 package shetj.me.base.test
 
-import me.shetj.base.ktx.toJson
-import java.lang.reflect.*
+import java.lang.reflect.GenericArrayType
+import java.lang.reflect.InvocationHandler
+import java.lang.reflect.Method
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Proxy
+import java.lang.reflect.Type
+import java.lang.reflect.TypeVariable
+import java.lang.reflect.WildcardType
 import java.util.*
+import me.shetj.base.ktx.toJson
 
 
 class TestProxy<T> : InvocationHandler {
