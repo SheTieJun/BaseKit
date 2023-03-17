@@ -1,5 +1,3 @@
-
-
 package shetj.me.base.func.md3
 
 import android.os.Bundle
@@ -16,6 +14,8 @@ import shetj.me.base.databinding.ActivityMain2Binding
 class Main2Activity : BaseBindingActivity<ActivityMain2Binding>(R.layout.activity_main2) {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private val TAG = Main2Activity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)

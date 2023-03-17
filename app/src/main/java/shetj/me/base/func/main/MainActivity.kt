@@ -1,10 +1,14 @@
-
-
 package shetj.me.base.func.main
 
 import android.Manifest
+import android.app.Activity
+import android.app.ActivityManager
+import android.app.ApplicationExitInfo
 import android.graphics.Color
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.os.health.SystemHealthManager
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -14,6 +18,7 @@ import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
+import java.nio.charset.Charset
 import java.util.*
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.defDataStore
@@ -25,7 +30,7 @@ import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.start
-import me.shetj.base.ktx.startPowerManager
+import me.shetj.base.ktx.startIgnoreBatteryOpt
 import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsets
@@ -50,12 +55,22 @@ import timber.log.Timber
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
         KeyboardUtil.init(this)
+
+        val healthStats = getSystemService(SystemHealthManager::class.java).takeMyUidSnapshot()
+        healthStats.measurementKeyCount
+
+        if (VERSION.SDK_INT >= VERSION_CODES.R) {
+            getSystemService(ActivityManager::class.java).getHistoricalProcessExitReasons(packageName, 0, 0)
+                .takeIf { it.isNotEmpty() }?.get(0)?.let {
+                    //上一次应用结束的原因说明
+                    it.toString().logI("APP")
+                }
+        }
     }
 
     override fun setUpClicks() {
@@ -64,7 +79,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
                 this@MainActivity,
-                "https://dldir1.qq.com/wework/work_weixin/wxwork_android_3.0.31.13637_100001.apk",
+                "https://",
                 this@MainActivity.cacheDir.path,
                 "wxwork_android_3.apk"
             )
@@ -89,7 +104,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mContent.btnDoc.setOnClickListener {
-            selectFile("*/*"){}
+            selectFile("*/*") {}
         }
 
         mContent.btnSetting.setOnClickListener {
@@ -145,15 +160,15 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
 
         mViewBinding.content.changeLanguage.setOnClickListener {
-            if (!isEn){
+            if (!isEn) {
                 LanguageKit.changeLanguage(this, Locale.ENGLISH)
-            }else{
+            } else {
                 LanguageKit.changeLanguage(this, Locale.CHINA)
             }
 
         }
         mContent.startPower.setOnClickListener {
-            startPowerManager()
+            startIgnoreBatteryOpt()
         }
         mContent.showSideDialog.setOnClickListener {
             val sideSheetDialog = SideSheetDialog(this)
@@ -211,6 +226,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             JankStats.createAndTrack(window) {
                 if (it.isJank) {
                     ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logI("JankStats")
+                    it.toJson().logI("JankStats")
                 }
             }
             mViewModel.isAddJankStats = true
@@ -219,10 +235,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         return hierarchy
     }
 
-    val isEn:Boolean
+    val isEn: Boolean
         get() {
-           return LanguageKit.getAppLocale(this).let {
-               it.country == Locale.ENGLISH.country && it.language == Locale.ENGLISH.language
+            return LanguageKit.getAppLocale(this).let {
+                it.country == Locale.ENGLISH.country && it.language == Locale.ENGLISH.language
             }
         }
 

@@ -11,6 +11,7 @@ import java.io.IOException
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
+import kotlin.system.exitProcess
 import me.shetj.base.ktx.logE
 import me.shetj.base.tools.debug.DebugFunc.Companion.logFilePath
 import me.shetj.base.tools.time.DateUtils
@@ -26,7 +27,7 @@ class BaseUncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
         stackTraceInfo.logE("error")
         saveThrowableMessage(stackTraceInfo)
         SystemClock.sleep(1000)
-        Process.killProcess(Process.myPid())
+        exitProcess(0)
     }
 
     /**

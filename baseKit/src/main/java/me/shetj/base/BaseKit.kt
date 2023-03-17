@@ -1,9 +1,18 @@
 package me.shetj.base
 
+import android.app.AppOpsManager
 import android.app.Application
+import android.app.AsyncNotedAppOp
+import android.app.SyncNotedAppOp
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.provider.Settings
+import android.util.Log
 import androidx.annotation.Keep
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -13,6 +22,7 @@ import me.shetj.base.base.TaskExecutor
 import me.shetj.base.di.getDBModule
 import me.shetj.base.di.getHttpModule
 import me.shetj.base.ktx.isTrue
+import me.shetj.base.ktx.logD
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.app.Utils
@@ -79,6 +89,7 @@ object BaseKit {
             )
         }
 
+
     /**
      * 初始化
      * @param application 初始
@@ -101,12 +112,10 @@ object BaseKit {
             startKoin {
                 fragmentFactory()
                 if (BaseKit.isDebug.isTrue()) {
-                    // No static method toDouble-impl
-                    // androidLogger() doesn't work with Kotlin 1.6
                     androidLogger(Level.ERROR)
                 }
                 androidContext(application)
-                androidFileProperties()
+                androidFileProperties("base.properties")
                 modules(getDBModule())
                 modules(getHttpModule())
             }
@@ -114,8 +123,10 @@ object BaseKit {
         this.TAG = AppUtils.appName?:"BaseKit"
     }
 
+
     @JvmStatic
     fun initKoin(modules: List<Module>) {
         loadKoinModules(modules)
     }
+
 }

@@ -13,6 +13,7 @@ import kotlin.collections.LinkedHashMap
 import me.shetj.base.BaseKit
 import me.shetj.base.ktx.isTrue
 import me.shetj.base.ktx.toJson
+import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.ArmsUtils.Companion.getString
 import me.shetj.base.tools.app.NetworkUtils
 import me.shetj.base.tools.app.Utils.Companion.app
@@ -106,11 +107,12 @@ class HttpHeaders : Serializable {
         @SuppressLint("ConstantLocale")
         private val USER_AGENT =
             String.format(
-                " SystemName/%s SystemVersion/%s Device/%s NetType/%s " +
+                " SystemName/%s SystemVersion/%s AppName/%s Device/%s NetType/%s " +
                     "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
                 "Android",
                 Build.VERSION.RELEASE,
                 Build.MODEL,
+                AppUtils.appName?:"null",
                 NetworkUtils.getPhoneType(app.applicationContext),
                 Locale.getDefault().language + "_" + Locale.getDefault().country,
                 checkNameAndValue(Build.MANUFACTURER),

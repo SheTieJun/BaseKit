@@ -37,6 +37,7 @@
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:launchSingleTop="true"
             app:destination="@id/SecondFragment" />
     </fragment>
     <fragment
@@ -47,6 +48,7 @@
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:launchSingleTop="true"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>

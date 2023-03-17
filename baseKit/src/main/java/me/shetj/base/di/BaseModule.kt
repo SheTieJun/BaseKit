@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 internal fun getHttpModule(): Module {
   return module {
-      single<OkHttpClient> {
+      single {
           get<OkHttpClient.Builder>().build()
       }
 
@@ -71,7 +71,7 @@ internal fun getHttpModule(): Module {
           }
       }
 
-      single<KCApiService> {
+      single {
           get<Retrofit.Builder>().apply {
               // 创建具体的ApiService的时候，才复制具体的client 和base 以及其他的变更
               client(get())

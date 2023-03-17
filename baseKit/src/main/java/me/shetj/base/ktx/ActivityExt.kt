@@ -3,7 +3,6 @@ package me.shetj.base.ktx
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -344,7 +343,7 @@ fun refreshAlbum(context: Context, fileUri: String) {
 }
 
 
-fun Context.startPowerManager() {
+fun Context.startIgnoreBatteryOpt() {
     val i = Intent();
     i.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
     //data为应用包名
