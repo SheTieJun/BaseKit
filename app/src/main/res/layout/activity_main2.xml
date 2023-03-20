@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-<!--       <variable name="addressVM" type="AddressVM"/>-->
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

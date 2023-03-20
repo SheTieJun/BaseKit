@@ -3,6 +3,7 @@ package me.shetj.base.base
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.annotation.Keep
+import androidx.databinding.ViewDataBinding
 import androidx.viewbinding.ViewBinding
 import me.shetj.base.ktx.getClazz
 
@@ -19,6 +20,9 @@ abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity() ,BaseContr
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mViewBinding.root)
+        if (mViewBinding is ViewDataBinding){
+            (mViewBinding as ViewDataBinding).lifecycleOwner = this
+        }
         addObservers()
         setUpClicks()
         onInitialized()

@@ -11,7 +11,7 @@ import me.shetj.base.mvvm.databinding.BaseBindingActivity
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivityMain2Binding
 
-class Main2Activity : BaseBindingActivity<ActivityMain2Binding>(R.layout.activity_main2) {
+class Main2Activity : BaseBindingActivity<ActivityMain2Binding,Main2TestVM>(R.layout.activity_main2) {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
