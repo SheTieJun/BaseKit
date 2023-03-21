@@ -4,8 +4,8 @@
 
 -----------------
 ### 框架
-- MVC/MVP/MVVM([ViewBinding](baseKit/src/main/java/me/shetj/base/mvvm/viewbind)/[DataBinding](baseKit/src/main/java/me/shetj/base/mvvm/databinding))  
-
+- MVC/MVP/MVVM
+ 
 ### Libraries
 
 1. Retrofit- REST API Call

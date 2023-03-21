@@ -1,9 +1,7 @@
 package shetj.me.base.func.main
 
 import android.Manifest
-import android.app.Activity
 import android.app.ActivityManager
-import android.app.ApplicationExitInfo
 import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
@@ -18,7 +16,6 @@ import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
-import java.nio.charset.Charset
 import java.util.*
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.defDataStore
@@ -74,7 +71,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun setUpClicks() {
-        mContent = mViewBinding.content
+        mContent = binding.content
         val hierarchy = addJankStats()
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
@@ -142,24 +139,24 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        mViewBinding.content.testThread.setOnClickListener {
+        binding.content.testThread.setOnClickListener {
             TaskExecutor.executeOnIO {
                 Timber.tag("TaskExecutor").i(Thread.currentThread().name)
             }
         }
-        mViewBinding.content.testLoading.setOnClickListener {
+        binding.content.testLoading.setOnClickListener {
             TipKit.loading(this) {
                 netTest()
             }
         }
 
-        mViewBinding.content.btnGrayModel.setOnClickListener {
+        binding.content.btnGrayModel.setOnClickListener {
             mViewModel.isGrayTheme = !mViewModel.isGrayTheme
             GrayThemeLiveData.getInstance().postValue(mViewModel.isGrayTheme)
         }
 
 
-        mViewBinding.content.changeLanguage.setOnClickListener {
+        binding.content.changeLanguage.setOnClickListener {
             if (!isEn) {
                 LanguageKit.changeLanguage(this, Locale.ENGLISH)
             } else {
@@ -231,7 +228,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
             mViewModel.isAddJankStats = true
         }
-        val hierarchy = PerformanceMetricsState.getHolderForHierarchy(mViewBinding.content.root)
+        val hierarchy = PerformanceMetricsState.getHolderForHierarchy(binding.content.root)
         return hierarchy
     }
 

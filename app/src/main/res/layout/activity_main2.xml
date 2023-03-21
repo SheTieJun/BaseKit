@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="shetj.me.base.func.md3.Main2TestVM"/>
+
+        <variable
+            name="vm"
+            type="Main2TestVM" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -32,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/fab_margin"
+            android:onClick="@{(v)->vm.testFab(v)}"
             android:layout_marginBottom="16dp"
             app:srcCompat="@android:drawable/ic_dialog_email" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

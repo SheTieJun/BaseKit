@@ -8,20 +8,21 @@ import androidx.viewbinding.ViewBinding
 import me.shetj.base.ktx.getClazz
 
 /**
- * 基础类  view 层,只有binding
+ * 基础类  view 层,
+ * binding:可以是DataBinding/ViewBinding
  * @author shetj
  */
 @Keep
-abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity() ,BaseControllerFunctionsImpl{
+abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseControllerFunctionsImpl {
 
-    private val lazyViewBinding = lazy { initViewBinding() }
-    protected val mViewBinding: VB by lazyViewBinding
+    private val lazyViewBinding = lazy { getBinding() }
+    protected val binding: VB by lazyViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(mViewBinding.root)
-        if (mViewBinding is ViewDataBinding){
-            (mViewBinding as ViewDataBinding).lifecycleOwner = this
+        setContentView(binding.root)
+        if (binding is ViewDataBinding) {
+            (binding as ViewDataBinding).lifecycleOwner = this
         }
         addObservers()
         setUpClicks()
@@ -29,7 +30,7 @@ abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity() ,BaseContr
     }
 
     @Suppress("UNCHECKED_CAST")
-    open fun initViewBinding(): VB {
+    open fun getBinding(): VB {
         return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java)
             .invoke(null, layoutInflater) as VB
     }

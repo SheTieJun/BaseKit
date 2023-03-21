@@ -1,21 +1,22 @@
 package shetj.me.base.func.md3
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.android.material.snackbar.Snackbar
-import me.shetj.base.mvvm.databinding.BaseBindingActivity
+import me.shetj.base.base.AbBindingActivity
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivityMain2Binding
 
-class Main2Activity : BaseBindingActivity<ActivityMain2Binding,Main2TestVM>(R.layout.activity_main2) {
+class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private val TAG = Main2Activity::class.java.simpleName
+    private val main2TestVM :Main2TestVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -31,6 +32,7 @@ class Main2Activity : BaseBindingActivity<ActivityMain2Binding,Main2TestVM>(R.la
     }
 
     override fun initData() {
+        binding.vm = main2TestVM
     }
 
     override fun isEnableGrayTheme(): Boolean {
@@ -44,10 +46,6 @@ class Main2Activity : BaseBindingActivity<ActivityMain2Binding,Main2TestVM>(R.la
     }
 
     override fun setUpClicks() {
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show()
-        }
+
     }
 }

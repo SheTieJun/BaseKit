@@ -1,31 +1,30 @@
 package me.shetj.base.base
 
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import me.shetj.base.ktx.hasPermission
 import me.shetj.base.tools.app.ArmsUtils
 
+/**
+ * Base binding bottom sheet dialog fragment
+ * @param VB binding:可以是DataBinding/ViewBinding
+ */
 @Keep
 abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
     BottomSheetDialogFragment() ,BaseControllerFunctionsImpl{
 
-    protected lateinit var mViewBinding: VB
+    protected lateinit var binding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +35,12 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mViewBinding = initViewBinding(inflater, container)
+        binding = getBinding(inflater, container)
+        if (binding is ViewDataBinding){
+            (binding as ViewDataBinding).lifecycleOwner = this
+        }
         viewBindData()
-        return mViewBinding.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +69,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
      * 系统会默认生成对应的[ViewBinding]
      */
     @NonNull
-    abstract fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+    abstract fun getBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     override fun onDestroy() {
         super.onDestroy()

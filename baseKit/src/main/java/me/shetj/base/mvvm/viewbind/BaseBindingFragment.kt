@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Keep
 import androidx.annotation.NonNull
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -39,19 +40,22 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
 
-    private val lazyViewModel = lazy { initViewModel() }
+    private val lazyViewModel = lazy { getViewModel() }
     protected val mViewModel: VM by lazyViewModel
 
-    protected lateinit var mViewBinding: VB
+    protected lateinit var binding: VB
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mViewBinding = initViewBinding(inflater, container)
+        binding = getBinding(inflater, container)
+        if (binding is ViewDataBinding){
+            (binding as ViewDataBinding).lifecycleOwner = this
+        }
         initEventAndData()
-        return mViewBinding.root
+        return binding.root
     }
 
     /**
@@ -59,7 +63,7 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
      */
     @Suppress("UNCHECKED_CAST")
     @NonNull
-    open fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
+    open fun getBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
         return getClazz<VB>(this, 0).getMethod(
             "inflate",
             LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java
@@ -90,7 +94,7 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
      * [useActivityVM] = true 才会使用activity的[ViewModel]
      */
     @NonNull
-    open fun initViewModel(): VM {
+    open fun getViewModel(): VM {
         if (useActivityVM()) {
             return getActivityViewModel(getClazz(this, 1))
         }
