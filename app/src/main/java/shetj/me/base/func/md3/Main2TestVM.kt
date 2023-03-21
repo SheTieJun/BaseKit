@@ -10,8 +10,6 @@ import shetj.me.base.R
 
 /**
  *
- * <b>@author：</b> shetj<br>
- * <b>@createTime：</b> 2023/3/20<br>
  */
 class Main2TestVM:BaseViewModel() {
     var isGrayTheme = GrayThemeLiveData.getInstance().isTrue()

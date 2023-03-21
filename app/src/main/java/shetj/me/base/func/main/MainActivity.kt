@@ -71,7 +71,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun setUpClicks() {
-        mContent = binding.content
+        mContent = mBinding.content
         val hierarchy = addJankStats()
         findViewById<View>(R.id.test_download).setOnClickListener {
             DownloadWorker.startDownload(
@@ -139,24 +139,24 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        binding.content.testThread.setOnClickListener {
+        mBinding.content.testThread.setOnClickListener {
             TaskExecutor.executeOnIO {
                 Timber.tag("TaskExecutor").i(Thread.currentThread().name)
             }
         }
-        binding.content.testLoading.setOnClickListener {
+        mBinding.content.testLoading.setOnClickListener {
             TipKit.loading(this) {
                 netTest()
             }
         }
 
-        binding.content.btnGrayModel.setOnClickListener {
+        mBinding.content.btnGrayModel.setOnClickListener {
             mViewModel.isGrayTheme = !mViewModel.isGrayTheme
             GrayThemeLiveData.getInstance().postValue(mViewModel.isGrayTheme)
         }
 
 
-        binding.content.changeLanguage.setOnClickListener {
+        mBinding.content.changeLanguage.setOnClickListener {
             if (!isEn) {
                 LanguageKit.changeLanguage(this, Locale.ENGLISH)
             } else {
@@ -228,7 +228,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
             mViewModel.isAddJankStats = true
         }
-        val hierarchy = PerformanceMetricsState.getHolderForHierarchy(binding.content.root)
+        val hierarchy = PerformanceMetricsState.getHolderForHierarchy(mBinding.content.root)
         return hierarchy
     }
 

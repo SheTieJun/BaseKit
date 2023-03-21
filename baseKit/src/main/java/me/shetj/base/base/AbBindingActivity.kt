@@ -15,14 +15,14 @@ import me.shetj.base.ktx.getClazz
 @Keep
 abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseControllerFunctionsImpl {
 
-    private val lazyViewBinding = lazy { getBinding() }
-    protected val binding: VB by lazyViewBinding
+    private val lazyViewBinding = lazy { initBinding() }
+    protected val mBinding: VB by lazyViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        if (binding is ViewDataBinding) {
-            (binding as ViewDataBinding).lifecycleOwner = this
+        setContentView(mBinding.root)
+        if (mBinding is ViewDataBinding) {
+            (mBinding as ViewDataBinding).lifecycleOwner = this
         }
         addObservers()
         setUpClicks()
@@ -30,7 +30,7 @@ abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseContr
     }
 
     @Suppress("UNCHECKED_CAST")
-    open fun getBinding(): VB {
+    open fun initBinding(): VB {
         return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java)
             .invoke(null, layoutInflater) as VB
     }

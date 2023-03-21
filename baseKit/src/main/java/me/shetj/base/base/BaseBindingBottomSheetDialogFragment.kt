@@ -24,7 +24,7 @@ import me.shetj.base.tools.app.ArmsUtils
 abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
     BottomSheetDialogFragment() ,BaseControllerFunctionsImpl{
 
-    protected lateinit var binding: VB
+    protected lateinit var mBinding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +35,12 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = getBinding(inflater, container)
-        if (binding is ViewDataBinding){
-            (binding as ViewDataBinding).lifecycleOwner = this
+        mBinding = initBinding(inflater, container)
+        if (mBinding is ViewDataBinding){
+            (mBinding as ViewDataBinding).lifecycleOwner = this
         }
         viewBindData()
-        return binding.root
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,7 +69,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
      * 系统会默认生成对应的[ViewBinding]
      */
     @NonNull
-    abstract fun getBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+    protected abstract fun initBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     override fun onDestroy() {
         super.onDestroy()

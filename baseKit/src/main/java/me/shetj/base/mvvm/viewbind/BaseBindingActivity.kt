@@ -25,17 +25,16 @@ import me.shetj.base.tip.TipType.WARNING
 @Keep
 abstract class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> : AbBindingActivity<VB>(),
     Observer<ViewAction> {
-    private val lazyViewModel = lazy { getViewModel() }
+    private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel
 
-    private val lazyViewBinding = lazy { getBinding() }
+    private val lazyViewBinding = lazy { initBinding() }
     private var mAcProvider: ViewModelProvider? = null
 
     override fun onActivityCreate() {
         super.onActivityCreate()
         mViewModel.baseAction.observe(this,this)
     }
-
 
     override fun onChanged(action: ViewAction?) {
         if (action is TipAction){
@@ -55,7 +54,7 @@ abstract class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> : AbBin
      * 如果不实现，建议写一个emptyVM
      */
     @NonNull
-    open fun getViewModel(): VM {
+    open fun initViewModel(): VM {
         return getActivityViewModel(getClazz(this, 1))
     }
 
