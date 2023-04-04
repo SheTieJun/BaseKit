@@ -289,7 +289,7 @@ class StringUtils private constructor() {
             val reg1 = "[0-9]{15}"
             val regex = "[0-9]{18}"
             return text.matches(regx.toRegex()) ||
-                text.matches(reg1.toRegex()) || text.matches(regex.toRegex())
+                    text.matches(reg1.toRegex()) || text.matches(regex.toRegex())
         }
 
         /** * 检测是否有emoji表情 * @param source * @return  */
@@ -312,12 +312,12 @@ class StringUtils private constructor() {
          */
         private fun isEmojiCharacter(codePoint: Char): Boolean {
             return (
-                codePoint.code == 0x0 || codePoint.code == 0x9 ||
-                    codePoint.code == 0xA || codePoint.code == 0xD ||
-                    codePoint.code in 0x20..0xD7FF ||
-                    codePoint.code in 0xE000..0xFFFD ||
-                    codePoint.code in 0x10000..0x10FFFF
-                )
+                    codePoint.code == 0x0 || codePoint.code == 0x9 ||
+                            codePoint.code == 0xA || codePoint.code == 0xD ||
+                            codePoint.code in 0x20..0xD7FF ||
+                            codePoint.code in 0xE000..0xFFFD ||
+                            codePoint.code in 0x10000..0x10FFFF
+                    )
         }
 
         @JvmStatic
@@ -338,6 +338,55 @@ class StringUtils private constructor() {
                 if (isChinese(element)) return true
             }
             return false
+        }
+
+        @JvmStatic
+        fun numberToCH(intInput: Int): String {
+            val si = intInput.toString()
+            var sd = ""
+            when (si.length) {
+                1 -> { // 个
+                    sd += getCH(intInput)
+                    return sd
+                }
+                2 -> {// 十
+                    sd += if (si.substring(0, 1) == "1") "十" else getCH(intInput / 10) + "十"
+                    sd += numberToCH(intInput % 10)
+                }
+                3 -> {// 百
+                    sd += getCH(intInput / 100) + "百"
+                    if ((intInput % 100).toString().length < 2) sd += "零"
+                    sd += numberToCH(intInput % 100)
+                }
+                4 -> {// 千
+                    sd += getCH(intInput / 1000) + "千"
+                    if ((intInput % 1000).toString().length < 3) sd += "零"
+                    sd += numberToCH(intInput % 1000)
+                }
+                5 -> {// 万
+                    sd += getCH(intInput / 10000) + "万"
+                    if ((intInput % 10000).toString().length < 4) sd += "零"
+                    sd += numberToCH(intInput % 10000)
+                }
+            }
+            return sd
+        }
+
+        private fun getCH(input: Int): String {
+            var sd = ""
+            when (input) {
+                1 -> sd = "一"
+                2 -> sd = "二"
+                3 -> sd = "三"
+                4 -> sd = "四"
+                5 -> sd = "五"
+                6 -> sd = "六"
+                7 -> sd = "七"
+                8 -> sd = "八"
+                9 -> sd = "九"
+                else -> {}
+            }
+            return sd
         }
     }
 }

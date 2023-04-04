@@ -13,7 +13,7 @@ class SecondFragment : BaseBindingFragment<FragmentSecondBinding, Main2TestVM>()
 
     override fun setUpClicks() {
         mBinding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().popBackStack()
         }
         if (mViewModel.isGrayTheme) {
             mBinding.buttonChangeTheme.text = "灰色模式"

@@ -2,6 +2,7 @@ package me.shetj.base.ktx
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
@@ -50,7 +51,7 @@ fun ViewModel.launch(
     }
 }
 
-fun AppCompatActivity.launch(
+fun FragmentActivity.launch(
     context: CoroutineContext = EmptyCoroutineContext,
     action: suspend CoroutineScope.() -> Unit
 ): Job {

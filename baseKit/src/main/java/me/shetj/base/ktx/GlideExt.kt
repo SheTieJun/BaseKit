@@ -46,7 +46,7 @@ fun ImageView.loadImage(
 /**
  * 使用Glide 下载图片
  */
-inline fun downloadImage(context: Context, url: String, crossinline onSuccess: ((String) -> Unit)) {
+inline fun downloadImgByGlide(context: Context, url: String, crossinline onSuccess: ((String) -> Unit)) {
     runOnIo {
         Glide.with(context).downloadOnly().load(url).submit().get().apply {
             onSuccess.invoke(this.absolutePath)

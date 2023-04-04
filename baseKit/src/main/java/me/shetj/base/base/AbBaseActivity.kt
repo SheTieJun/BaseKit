@@ -47,7 +47,7 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
         findViewById<MaterialToolbar>(R.id.toolbar)?.apply {
             setSupportActionBar(this)
             setNavigationOnClickListener {
-                finishAfterTransition()
+                back()
             }
         }
         initView()

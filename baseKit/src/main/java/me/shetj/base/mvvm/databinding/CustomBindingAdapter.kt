@@ -6,7 +6,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -140,3 +143,26 @@ fun setTextUnderline(
     }
 }
 
+/*数据变化，刷新 UI*/
+@BindingAdapter("android:refreshing", requireAll = false)
+fun setSwipeRefreshing(view: SwipeRefreshLayout, oldValue: Boolean, newValue: Boolean) {
+    //判断是否是新的值，避免陷入死循环
+    if (oldValue != newValue)
+        view.isRefreshing = newValue
+}
+
+
+/*ui 的状态，反向绑定给数据变化*/
+@BindingAdapter("android:refreshingAttrChanged", requireAll = false)
+fun setRefreshCallback(view: SwipeRefreshLayout, listener: InverseBindingListener?) {
+    listener ?: return
+    view.setOnRefreshListener {
+        //由ui层的刷新状态变化，反向通知数据层的变化
+        listener.onChange()
+    }
+}
+/* 反向绑定的实现,将UI的变化，回调给bindingListener，listener就会onChange，通知数据变化*/
+@InverseBindingAdapter(attribute = "android:refreshing", event = "android:refreshingAttrChanged")
+fun isSwipeRefreshing(view: SwipeRefreshLayout): Boolean {
+    return view.isRefreshing
+}

@@ -5,6 +5,7 @@ import androidx.annotation.IntRange
 import kotlin.random.Random
 import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
+import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.datastore.dataStoreKit
 import timber.log.Timber
@@ -24,6 +25,15 @@ inline fun runTimeMillis(crossinline run: () -> Unit): Long {
     val time = System.currentTimeMillis()
     run.invoke()
     return System.currentTimeMillis() - time
+}
+
+/**
+ * int 转中文的个十百千万
+ * @return
+ */
+fun Int?.toNumberCH(): String {
+    val inputInt = this ?: 0
+    return StringUtils.numberToCH(inputInt)
 }
 
 /**

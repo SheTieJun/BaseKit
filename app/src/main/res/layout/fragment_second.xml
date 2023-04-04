@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
 
         <import type="shetj.me.base.func.md3.Main2TestVM"/>
 
@@ -46,7 +47,7 @@
                 android:id="@+id/button_change_theme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{vm.themInfo}"
+                android:text="@{vm.themInfo,default=正常模式}"
                 android:onClick="@{()->vm.changeThem()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

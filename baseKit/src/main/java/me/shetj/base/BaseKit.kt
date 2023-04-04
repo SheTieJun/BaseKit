@@ -1,18 +1,9 @@
 package me.shetj.base
 
-import android.app.AppOpsManager
 import android.app.Application
-import android.app.AsyncNotedAppOp
-import android.app.SyncNotedAppOp
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.provider.Settings
-import android.util.Log
 import androidx.annotation.Keep
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.MutableLiveData
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -22,7 +13,6 @@ import me.shetj.base.base.TaskExecutor
 import me.shetj.base.di.getDBModule
 import me.shetj.base.di.getHttpModule
 import me.shetj.base.ktx.isTrue
-import me.shetj.base.ktx.logD
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.app.Utils
@@ -35,6 +25,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.module.Module
+import org.koin.mp.KoinPlatformTools
 import timber.log.Timber
 
 
@@ -120,9 +111,12 @@ object BaseKit {
                 modules(getHttpModule())
             }
         }
-        this.TAG = AppUtils.appName?:"BaseKit"
+        this.TAG = AppUtils.appName ?: "BaseKit"
     }
 
+    fun getVersion(): String? {
+        return "Version："+KoinPlatformTools.defaultContext().get().getProperty("version")
+    }
 
     @JvmStatic
     fun initKoin(modules: List<Module>) {

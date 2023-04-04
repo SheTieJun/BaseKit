@@ -28,10 +28,10 @@ class SimLoadingDialog : AbLoadingDialog() {
         val view = LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
         return AlertDialog.Builder(context, R.style.trans_dialog).apply {
             val tvMsg = view.findViewById<TextView>(R.id.tv_msg)
-            tvMsg.text = msg
+            tvMsg?.text = msg
             image?.let {
-                tvMsg.setDrawables(it, Gravity.TOP)
-                view.findViewById<ProgressBar>(R.id.progress).isVisible = false
+                tvMsg?.setDrawables(it, Gravity.TOP)
+                view.findViewById<ProgressBar>(R.id.progress)?.isVisible = false
             }
             setView(view)
             setCancelable(cancelable)

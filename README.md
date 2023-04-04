@@ -5,7 +5,9 @@
 -----------------
 ### 框架
 - MVC/MVP/MVVM
- 
+
+MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData 
+
 ### Libraries
 
 1. Retrofit- REST API Call

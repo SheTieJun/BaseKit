@@ -66,6 +66,10 @@ fun TextView.setDrawables(
     }
 }
 
+fun TextView.clearDrawables() {
+    setCompoundDrawablesRelative(null, null, null, null)
+}
+
 /**
  * 设置文字显示缩进
  */
