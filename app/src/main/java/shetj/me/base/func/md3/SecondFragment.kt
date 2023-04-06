@@ -3,7 +3,6 @@ package shetj.me.base.func.md3
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import me.shetj.base.mvvm.viewbind.BaseBindingFragment
-import shetj.me.base.R
 import shetj.me.base.databinding.FragmentSecondBinding
 
 /**

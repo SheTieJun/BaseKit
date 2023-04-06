@@ -1,26 +1,18 @@
 package me.shetj.base.base
 
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Keep
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.Event
-import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
-import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import me.shetj.base.ktx.hasPermission
 
 /**
  * fragment基类
@@ -53,7 +45,8 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(this)
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && !isNavigationF()) {
+            // 如果是导航的fragment，不需要恢复状态
             val flag = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN)
             val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
             if (flag) {
@@ -64,6 +57,11 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
             transaction.commit()
         }
     }
+
+    /**
+     * 是否是导航的fragment
+     */
+    open fun isNavigationF()  = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
