@@ -59,7 +59,7 @@ internal fun getHttpModule(): Module {
               val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
               sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
               addInterceptor(get(HttpLoggingInterceptor::class.java))
-              cache(Cache(File(EnvironmentStorage.getPath(packagePath = "base")), 1024 * 1024 * 12))
+              cache(Cache(File(EnvironmentStorage.getPath(packagePath = "unKonw")), 1024 * 1024 * 12))
               dns(OkHttpDns.getInstance())
           }
       }

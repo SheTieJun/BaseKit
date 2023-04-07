@@ -15,6 +15,7 @@ import me.shetj.base.tools.debug.DebugFunc
 import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.GsonKit
 import timber.log.Timber
+import timber.log.Timber.Forest.tag
 
 fun String?.isPhone() = this?.let { StringUtils.isPhone(it) } ?: false
 
@@ -89,6 +90,31 @@ fun String?.logW(tag: String = BaseKit.TAG) {
 
 fun Throwable?.logW(tag: String = BaseKit.TAG) {
     Timber.tag(tag).w(this)
+}
+
+
+fun logI(info: String?) {
+    Timber.i(info)
+}
+
+fun logE(info: String?) {
+    Timber.e(info)
+}
+
+fun logE(info: Throwable?) {
+    Timber.e(info)
+}
+
+fun logD(info: String?) {
+    Timber.d(info)
+}
+
+fun logW(info: String?) {
+    Timber.w(info)
+}
+
+fun logW(info: Throwable?) {
+    Timber.w(info)
 }
 
 /**

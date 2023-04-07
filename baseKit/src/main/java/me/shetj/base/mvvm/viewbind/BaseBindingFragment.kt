@@ -1,7 +1,6 @@
 package me.shetj.base.mvvm.viewbind
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +51,7 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
         savedInstanceState: Bundle?
     ): View? {
         mBinding = initBinding(inflater, container)
-        if (mBinding is ViewDataBinding){
+        if (mBinding is ViewDataBinding) {
             (mBinding as ViewDataBinding).lifecycleOwner = this
         }
         initEventAndData()
@@ -79,16 +78,17 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
     }
 
     override fun onChanged(action: ViewAction?) {
-        if (action is TipAction){
-            when(action.tipType){
-                DEFAULT -> TipKit.normal(requireActivity(),action.msg)
-                INFO -> TipKit.info(requireActivity(),action.msg)
-                ERROR -> TipKit.error(requireActivity(),action.msg)
-                SUCCESS -> TipKit.success(requireActivity(),action.msg)
-                WARNING -> TipKit.warn(requireActivity(),action.msg)
+        if (useActivityVM() && action is TipAction) {
+            when (action.tipType) {
+                DEFAULT -> TipKit.normal(requireActivity(), action.msg)
+                INFO -> TipKit.info(requireActivity(), action.msg)
+                ERROR -> TipKit.error(requireActivity(), action.msg)
+                SUCCESS -> TipKit.success(requireActivity(), action.msg)
+                WARNING -> TipKit.warn(requireActivity(), action.msg)
             }
         }
     }
+
     /**
      * 默认创建一个
      *

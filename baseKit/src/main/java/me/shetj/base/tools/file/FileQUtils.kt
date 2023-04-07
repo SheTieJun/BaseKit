@@ -240,7 +240,7 @@ object FileQUtils {
                     MimeTypeMap.getSingleton()
                         .getExtensionFromMimeType(contentResolver.getType(uri))
                 }"
-            }
+            }.replace("/", "_") //修复复制文件时，文件名中包含/导致的文件复制失败
             val ios = contentResolver.openInputStream(uri)
             if (ios != null) {
                 File("${context.cacheDir.absolutePath}/$displayName")

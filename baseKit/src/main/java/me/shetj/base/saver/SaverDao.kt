@@ -7,9 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import me.shetj.base.base.BaseDao
 
 @Dao
-interface SaverDao {
+interface SaverDao :BaseDao<Saver>{
 
     @Query("SELECT * FROM saver order by id")
     fun getAll(): Flow<List<Saver>>
@@ -28,9 +29,6 @@ interface SaverDao {
 
     @Query("DELETE FROM saver")
     suspend fun deleteAll()
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(saver: Saver): Long
 
     @Insert
     suspend fun insertAll(saver: List<Saver>)
