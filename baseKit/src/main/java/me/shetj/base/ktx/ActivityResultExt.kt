@@ -150,6 +150,10 @@ fun ComponentActivity.searchFile(
     register("OpenDocument", ActivityResultContracts.OpenDocument(), callback).launch(type)
 }
 
+fun ComponentActivity.searchFiles(type: Array<String>, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
+    register("OpenDocument", ActivityResultContracts.OpenMultipleDocuments(), callback).launch(type)
+}
+
 
 /**
  * 创建文件

@@ -26,7 +26,6 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.annotation.Keep
 import androidx.core.content.FileProvider.getUriForFile
-import androidx.fragment.app.FragmentActivity
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileDescriptor
@@ -34,7 +33,6 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import me.shetj.base.ktx.takePicture
 import me.shetj.base.tools.file.EnvironmentStorage
 
 @Keep

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
-import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.util.Base64
@@ -15,11 +14,11 @@ import android.webkit.WebBackForwardList
 import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebSettings
 import android.webkit.WebView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import java.io.InputStream
-import me.shetj.base.ktx.searchFile
-import me.shetj.base.ktx.searchFiles
+import me.shetj.activity.searchFile
+import me.shetj.activity.searchFiles
+import me.shetj.activity.selectMultipleFile
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 
