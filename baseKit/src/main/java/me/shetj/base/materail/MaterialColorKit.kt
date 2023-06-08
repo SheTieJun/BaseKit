@@ -2,6 +2,7 @@ package me.shetj.base.materail
 
 import android.content.Context
 import com.google.android.material.color.MaterialColors
+import me.shetj.base.R
 
 /**
  * Material color kit
@@ -37,11 +38,35 @@ import com.google.android.material.color.MaterialColors
 
 /**----------------------------------------------------------------------**/
 
+fun Context.getColorPrimary(): Int {
+    return MaterialColors.getColor(
+        this,
+        com.google.android.material.R.attr.colorPrimaryContainer,
+        "colorPrimary"
+    )
+}
 
 fun Context.getColorOnPrimaryContainer(): Int {
     return MaterialColors.getColor(
         this,
         com.google.android.material.R.attr.colorOnPrimaryContainer,
+        "colorOnPrimaryContainer"
+    )
+}
+
+fun Context.getColorBackground(): Int {
+    return MaterialColors.getColor(
+        this,
+          android.R.attr.colorBackground,
+        "colorOnPrimaryContainer"
+    )
+}
+
+
+fun Context.getColorOnBackground(): Int {
+    return MaterialColors.getColor(
+        this,
+        com.google.android.material.R.attr.colorOnBackground,
         "colorOnPrimaryContainer"
     )
 }

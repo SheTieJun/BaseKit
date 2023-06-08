@@ -1,9 +1,10 @@
 package me.shetj.base.ktx
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -91,6 +92,31 @@ fun Fragment.runOnStarted(
     return lifecycleScope.launchWhenStarted {
         action()
     }
+}
+
+
+fun <T> Fragment.liveData(
+    context: CoroutineContext = lifecycleScope.coroutineContext,
+    timeoutInMs: Long = 5000L,
+    block: suspend LiveDataScope<T>.() -> Unit
+): LiveData<T> {
+    return androidx.lifecycle.liveData(context, timeoutInMs, block)
+}
+
+fun <T> FragmentActivity.liveData(
+    context: CoroutineContext = lifecycleScope.coroutineContext,
+    timeoutInMs: Long = 5000L,
+    block: suspend LiveDataScope<T>.() -> Unit
+): LiveData<T> {
+    return androidx.lifecycle.liveData(context, timeoutInMs, block)
+}
+
+fun <T> ViewModel.liveData(
+    context: CoroutineContext = viewModelScope.coroutineContext,
+    timeoutInMs: Long = 5000L,
+    block: suspend LiveDataScope<T>.() -> Unit
+): LiveData<T> {
+    return androidx.lifecycle.liveData(context, timeoutInMs, block)
 }
 
 /**

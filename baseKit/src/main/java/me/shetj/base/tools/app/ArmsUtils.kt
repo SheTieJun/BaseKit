@@ -380,12 +380,6 @@ class ArmsUtils private constructor() {
             setAppearance(isBlack)
         }
 
-        @Deprecated("已经弃用，使用新的API", replaceWith = ReplaceWith("hideSystemUI(activity)"))
-        @JvmStatic
-        fun fullScreencall(activity: Activity) {
-            activity.hideSystemUI()
-        }
-
         @JvmStatic
         fun setSwipeRefresh(
             mSwipeRefreshLayout: SwipeRefreshLayout,

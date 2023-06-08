@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.health.SystemHealthManager
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
