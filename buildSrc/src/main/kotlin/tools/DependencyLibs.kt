@@ -178,7 +178,7 @@ object DependencyLibs {
         const val animationCore = "androidx.core:core-animation:1.0.0-beta01"
         const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
         const val fragmentKtx = "androidx.fragment:fragment-ktx:1.6.0-alpha04"
-        const val startup = "androidx.startup:startup-runtime:1.2.0-alpha01"
+        const val startup = "androidx.startup:startup-runtime:1.1.1"
         const val cryptoSp = "androidx.security:security-crypto:1.1.0-alpha04"
         const val activityKtx = "androidx.activity:activity-ktx:1.7.0-alpha02"
         const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
