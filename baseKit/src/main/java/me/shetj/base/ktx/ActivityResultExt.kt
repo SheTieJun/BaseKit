@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.shetj.activity
+package me.shetj.base.ktx
 
 import android.content.Intent
 import android.net.Uri
@@ -40,17 +40,12 @@ import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import java.util.concurrent.atomic.AtomicInteger
-import me.shetj.base.ktx.CropImage
-import me.shetj.base.ktx.CropImageContract
-import me.shetj.base.ktx.createImagePathUri
-import me.shetj.base.ktx.createVideoPathUri
 
 /**
  * 适用于界面创建成功，后动态创建launcher使用
  */
 
 /****************************************************************************************************************/
-
 
 private val mNextLocalRequestCode: AtomicInteger = AtomicInteger()
 

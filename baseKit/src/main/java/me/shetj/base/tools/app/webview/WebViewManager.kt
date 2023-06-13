@@ -16,9 +16,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.fragment.app.FragmentActivity
 import java.io.InputStream
-import me.shetj.activity.searchFile
-import me.shetj.activity.searchFiles
-import me.shetj.activity.selectMultipleFile
+import me.shetj.base.ktx.searchFiles
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 

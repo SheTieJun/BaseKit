@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.health.SystemHealthManager
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
@@ -18,8 +17,8 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
 import java.util.*
-import me.shetj.activity.selectFile
-import me.shetj.activity.startRequestPermissions
+import me.shetj.base.ktx.selectFile
+import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
