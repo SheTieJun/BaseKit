@@ -186,6 +186,7 @@ class WebViewManager(private val webView: WebView) {
 
     /**
      * 设置cookie
+     * @param map<url,cookie>
      */
     fun setCookie(map: MutableMap<String, String>) {
         val cookieManager: CookieManager = CookieManager.getInstance()

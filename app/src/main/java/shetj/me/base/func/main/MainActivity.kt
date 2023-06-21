@@ -2,11 +2,13 @@ package shetj.me.base.func.main
 
 import android.Manifest
 import android.app.ActivityManager
+import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
+import android.provider.MediaStore.Images.Media
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -17,18 +19,19 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
 import java.util.*
-import me.shetj.base.ktx.selectFile
-import me.shetj.base.ktx.startRequestPermissions
+import kotlin.collections.ArrayList
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.openUri
+import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.start
 import me.shetj.base.ktx.startIgnoreBatteryOpt
+import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsets
 import me.shetj.base.model.GrayThemeLiveData
@@ -43,6 +46,7 @@ import shetj.me.base.R
 import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.common.worker.DownloadWorker
+import shetj.me.base.contentprovider.ScreenshotKit
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
@@ -68,6 +72,13 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                     it.toString().logI("APP")
                 }
         }
+        ScreenshotKit.initActivity(this,true)
+        ScreenshotKit.setScreenshotListener(object : ScreenshotKit.ScreenshotListener {
+            override fun onScreenShot(path: String?) {
+                "path = $path".logI()
+                "截屏了:$path".logI()
+            }
+        })
     }
 
     override fun setUpClicks() {

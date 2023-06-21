@@ -65,6 +65,16 @@
                 android:name="shetj.me.base.BaseInitialize"
                 android:value="androidx.startup" />
         </provider>
+
+        <receiver android:name=".contentprovider.ScreenshotReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_SCANNER_SCAN_FILE" />
+                <data android:scheme="file" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
