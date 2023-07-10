@@ -79,6 +79,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 "截屏了:$path".logI()
             }
         })
+
+
     }
 
     override fun setUpClicks() {

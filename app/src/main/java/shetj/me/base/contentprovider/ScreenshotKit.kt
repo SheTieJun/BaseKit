@@ -1,5 +1,6 @@
 package shetj.me.base.contentprovider
 
+import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.database.ContentObserver
@@ -8,6 +9,7 @@ import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.os.CancellationSignal
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
@@ -19,10 +21,15 @@ import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import java.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import me.shetj.base.BaseKit
 
 /**
- * 用来监听用户是否截屏的工具类
+ * 用来监听用户是否截屏的工具类,在需要监听的页面调用[initActivity]方法即可
+ * - 利用lifecycle，来注册[initMediaContentObserver]和反注册[unregisterMediaContentObserver]监听
+ * - 已经兼容若在Android 11 版本后进行共享数据的查询，需要使用ContentReslover#query()方法参数为Bundle的方法，
+ *   查[官方文档](https://developer.android.google.cn/reference/kotlin/android/content/ContentResolver?hl=en#query_2)，将查询条件使用Bundle组装。
  */
 object ScreenshotKit {
 
@@ -42,6 +49,11 @@ object ScreenshotKit {
     private var mScreenshotListener: ScreenshotListener? = null
     private var canObserver = false
 
+
+    /**
+     * 因为有隐私协议的问题，添加参数在进行判断是否加入监听
+     * @param canObserver
+     */
     fun setCanObserver(canObserver: Boolean) {
         this.canObserver = canObserver
     }
@@ -61,45 +73,59 @@ object ScreenshotKit {
         mScreenshotListener = listener
     }
 
-    fun initActivity(activity: FragmentActivity,canObserver: Boolean){
+    fun initActivity(activity: FragmentActivity, canObserver: Boolean) {
         setCanObserver(canObserver)
         initActivity(activity)
     }
 
-    fun initActivity(activity: FragmentActivity){
-        activity.lifecycle.addObserver(object :LifecycleEventObserver{
-            override fun onStateChanged(source: LifecycleOwner, event: Event) {
-                 if (event == Event.ON_RESUME) {
-                     initMediaContentObserver(activity)
-                 }else if (event == Event.ON_PAUSE){
-                     unregisterMediaContentObserver(activity)
-                 }
-            }
-        })
+    fun initActivity(activity: FragmentActivity) {
+        if (VERSION.SDK_INT >= 34) {
+            val screenshotListener = Activity.ScreenCaptureCallback { handleMediaContentChange(Media.EXTERNAL_CONTENT_URI) }
+            activity.lifecycle.addObserver(object : LifecycleEventObserver {
+                override fun onStateChanged(source: LifecycleOwner, event: Event) {
+                    if (event == Event.ON_START) {
+                        activity.registerScreenCaptureCallback(Dispatchers.Main.asExecutor(), screenshotListener)
+                    } else if (event == Event.ON_STOP) {
+                        activity.unregisterScreenCaptureCallback(screenshotListener)
+                    }
+                }
+            })
+
+        } else {
+            activity.lifecycle.addObserver(object : LifecycleEventObserver {
+                override fun onStateChanged(source: LifecycleOwner, event: Event) {
+                    if (event == Event.ON_RESUME) {
+                        initMediaContentObserver(activity)
+                    } else if (event == Event.ON_PAUSE) {
+                        unregisterMediaContentObserver(activity)
+                    }
+                }
+            })
+        }
     }
 
 
-    private  fun initMediaContentObserver(context: Context) {
+    private fun initMediaContentObserver(context: Context) {
         if (isCanObserver()) {
             // 运行在 UI 线程的 Handler, 用于运行监听器回调
-            if (mUiHandler == null){
-                mUiHandler =   Handler(Looper.getMainLooper());
+            if (mUiHandler == null) {
+                mUiHandler = Handler(Looper.getMainLooper())
             }
 
             // 创建内容观察者，包括内部存储和外部存储
             if (mInternalObserver == null) mInternalObserver = MediaContentObserver(Media.INTERNAL_CONTENT_URI, mUiHandler)
             if (mExternalObserver == null) mExternalObserver = MediaContentObserver(Media.EXTERNAL_CONTENT_URI, mUiHandler)
-            // 注册内容观察者
+            // 注意 第二个boolean参数 要设置为true 不然有些机型（Android 11必须要true）由于多媒体文件层级不同 导致变化监听不到 所以设置后代文件夹发生了文件改变也要进行通知
             context.contentResolver.registerContentObserver(
-                Media.INTERNAL_CONTENT_URI, VERSION.SDK_INT > VERSION_CODES.Q, mInternalObserver!!
+                Media.INTERNAL_CONTENT_URI, true, mInternalObserver!!
             )
             context.contentResolver.registerContentObserver(
-                Media.EXTERNAL_CONTENT_URI, VERSION.SDK_INT > VERSION_CODES.Q, mExternalObserver!!
+                Media.EXTERNAL_CONTENT_URI, true, mExternalObserver!!
             )
         }
     }
 
-    private   fun unregisterMediaContentObserver(context: Context) {
+    private fun unregisterMediaContentObserver(context: Context) {
         if (isCanObserver()) {
             if (mInternalObserver != null) context.contentResolver.unregisterContentObserver(mInternalObserver!!)
             if (mExternalObserver != null) context.contentResolver.unregisterContentObserver(mExternalObserver!!)
@@ -107,7 +133,8 @@ object ScreenshotKit {
     }
 
     private class MediaContentObserver(
-        private val mediaContentUri: Uri, handler: Handler?) : ContentObserver(handler) {
+        private val mediaContentUri: Uri, handler: Handler?
+    ) : ContentObserver(handler) {
         // 处理媒体数据库反馈的数据变化
         override fun onChange(selfChange: Boolean) {
             super.onChange(selfChange)
@@ -115,27 +142,27 @@ object ScreenshotKit {
         }
     }
 
-    private  fun handleMediaContentChange(contentUri: Uri) {
-        var cursor: Cursor? = null
+    private fun handleMediaContentChange(contentUri: Uri) {
         try {
-            fetchGalleryFirstImages(context = BaseKit.app.applicationContext,contentUri, orderBy = Media.DATE_TAKEN, orderAscending = false, limit = 15, offset = 0).apply {
-                if (this != null) {
-                    handleMediaRowData(this)
-                }
+            fetchGalleryFirstImages(
+                context = BaseKit.app.applicationContext,
+                contentUri,
+                orderBy = Media.DATE_ADDED,
+                orderAscending = false,
+                limit = 1,
+                offset = 0
+            )?.apply {
+                handleMediaRowData(this)
             }
         } catch (e: Exception) {
             e.printStackTrace()
-        } finally {
-            if (cursor != null && !cursor.isClosed) {
-                cursor.close()
-            }
         }
     }
 
 
     private fun fetchGalleryFirstImages(
         context: Context,
-        collection:Uri,
+        collection: Uri,
         orderBy: String,
         orderAscending: Boolean,
         limit: Int = 10,
@@ -175,9 +202,10 @@ object ScreenshotKit {
         offset: Int = 0
     ): Cursor? = when {
         VERSION.SDK_INT >= VERSION_CODES.O -> {
-            val selection = createSelectionBundle( orderBy, orderAscending, limit, offset)
-            contentResolver.query(collection, projection, selection, null)
+            val selection = createSelectionBundle(orderBy, orderAscending, limit, offset)
+            contentResolver.query(collection, projection, selection, CancellationSignal())
         }
+
         else -> {
             val orderDirection = if (orderAscending) "ASC" else "DESC"
             var order = when (orderBy) {
@@ -210,7 +238,7 @@ object ScreenshotKit {
     /**
      * 处理监听到的资源
      */
-    private  fun handleMediaRowData(data: String) {
+    private fun handleMediaRowData(data: String) {
         if (checkScreenShot(data)) {
             mScreenshotListener?.onScreenShot(data)
         }
@@ -219,7 +247,7 @@ object ScreenshotKit {
     /**
      * 判断是否是截屏
      */
-    private  fun checkScreenShot(data: String): Boolean {
+    private fun checkScreenShot(data: String): Boolean {
         var data = data
         data = data.lowercase(Locale.getDefault())
         // 判断图片路径是否含有指定的关键字之一, 如果有, 则认为当前截屏了

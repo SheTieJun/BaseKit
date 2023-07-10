@@ -16,12 +16,12 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     namespace = "shetj.me.base"
     defaultConfig {
         applicationId = "shetj.me.base"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         ndk {

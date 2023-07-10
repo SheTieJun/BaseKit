@@ -15,12 +15,12 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     namespace = "me.shetj.base"
     resourcePrefix = "base_"
     defaultConfig {
         aarMetadata {
-            this.minCompileSdk = 33
+            this.minCompileSdk = 34
         }
         minSdk = (24)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

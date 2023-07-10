@@ -104,17 +104,17 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     }
 
     //开始绘制
-    override fun draw(canvas: Canvas?) {
+    override fun draw(canvas: Canvas) {
         super.draw(canvas)
     }
 
     //绘制前景
-    override fun onDrawForeground(canvas: Canvas?) {
+    override fun onDrawForeground(canvas: Canvas) {
         super.onDrawForeground(canvas)
     }
 
     //绘制内容
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
     }
 
