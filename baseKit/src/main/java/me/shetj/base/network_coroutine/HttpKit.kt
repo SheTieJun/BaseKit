@@ -10,7 +10,7 @@ import retrofit2.Retrofit
  * @author stj
  * @Date 2021/10/22-14:36
  * @Email 375105540@qq.com
- * 网络相关：单例，用来修改具体的
+ * 网络相关：单例，用来更新具体的修改，比如需要是否打印日志
  */
 
 object HttpKit {

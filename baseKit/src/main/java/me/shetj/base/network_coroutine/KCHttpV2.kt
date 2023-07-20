@@ -47,7 +47,6 @@ object KCHttpV2 {
         }
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
     @JvmOverloads
     suspend fun download(
         url: String,

@@ -14,14 +14,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/btn_test_tip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="TipPopupWindow "
-            android:textAllCaps="false" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_select_image"
@@ -39,21 +31,6 @@
             android:layout_marginTop="8dp"
             android:text="@string/test_setting" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/btn_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/test_send_email" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/test_thread"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/test_thread" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/test_loading"
@@ -69,14 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/test_cla" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/test_download"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Worker-download" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_test_keybord"
@@ -142,23 +111,6 @@
     </com.google.android.material.chip.ChipGroup>
 
 
-    <EditText
-        android:id="@+id/router"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_go_router"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="go"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/router" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

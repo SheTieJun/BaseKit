@@ -38,6 +38,7 @@ import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.lang.reflect.Method
 import me.shetj.base.R
@@ -124,6 +125,12 @@ fun <T : View> T.animator() = ViewCompat.animate(this)
  */
 @MainThread
 fun String.showToast() = ArmsUtils.makeText(this)
+
+
+@JvmOverloads
+fun Activity.showSnack(msg: String,view: View? = null) {
+    Snackbar.make(view?:findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT).show()
+}
 
 /**
  * 判断是否是当前状态

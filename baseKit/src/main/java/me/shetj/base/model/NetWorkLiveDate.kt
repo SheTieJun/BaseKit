@@ -3,7 +3,6 @@ package me.shetj.base.model
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.atomic.AtomicBoolean
@@ -44,6 +43,10 @@ class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
         if (isStarted.compareAndSet(false, true)) {
             context.applicationContext.requestNetWork()
         }
+    }
+
+    fun isStart(): Boolean {
+        return isStarted.get()
     }
 
     internal fun onAvailable() {

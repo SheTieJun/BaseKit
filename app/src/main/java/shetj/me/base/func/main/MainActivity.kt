@@ -2,13 +2,11 @@ package shetj.me.base.func.main
 
 import android.Manifest
 import android.app.ActivityManager
-import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
-import android.provider.MediaStore.Images.Media
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -19,15 +17,12 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
 import java.util.*
-import kotlin.collections.ArrayList
-import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.openUri
 import me.shetj.base.ktx.selectFile
-import me.shetj.base.ktx.sendEmailText
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.start
 import me.shetj.base.ktx.startIgnoreBatteryOpt
@@ -45,7 +40,6 @@ import me.shetj.base.tools.file.FileQUtils
 import shetj.me.base.R
 import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
-import shetj.me.base.common.worker.DownloadWorker
 import shetj.me.base.contentprovider.ScreenshotKit
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
@@ -86,24 +80,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     override fun setUpClicks() {
         mContent = mBinding.content
         val hierarchy = addJankStats()
-        findViewById<View>(R.id.test_download).setOnClickListener {
-            DownloadWorker.startDownload(
-                this@MainActivity,
-                "https://",
-                this@MainActivity.cacheDir.path,
-                "wxwork_android_3.apk"
-            )
-        }
-        findViewById<View>(R.id.btn_test_tip).setOnClickListener {
-            TipKit.normal(this, "这是一个toast")
-            TipKit.info(this, "这是一个toast")
-            TipKit.warn(this, "这是一个toast")
-            TipKit.success(this, "这是一个toast")
-            TipKit.error(this, "这是一个toast")
-        }
-        findViewById<View>(R.id.btn_email).setOnClickListener {
-            sendEmailText(addresses = "375105540@qq.com", title = "Base测试", content = "这是一个测试代码")
-        }
 
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
@@ -125,9 +101,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             start<Main2Activity>()
         }
 
-        mContent.btnGoRouter.setOnClickListener {
-            openUri(mContent.router.text.toString())
-        }
 
 
         findViewById<View>(R.id.fab).setOnClickListener {
@@ -152,11 +125,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        mBinding.content.testThread.setOnClickListener {
-            TaskExecutor.executeOnIO {
-                Timber.tag("TaskExecutor").i(Thread.currentThread().name)
-            }
-        }
         mBinding.content.testLoading.setOnClickListener {
             TipKit.loading(this) {
                 netTest()

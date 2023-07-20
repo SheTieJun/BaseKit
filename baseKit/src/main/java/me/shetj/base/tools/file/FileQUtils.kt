@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build.VERSION
@@ -115,8 +116,6 @@ object FileQUtils {
         } else if (ContentResolver.SCHEME_CONTENT == scheme) {
             val projection = arrayOf(ImageColumns.DATA)
             val cursor = context.contentResolver.query(uri, projection, null, null, null)
-
-//            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
             if (null != cursor) {
                 if (cursor.moveToFirst()) {
                     val index = cursor.getColumnIndex(ImageColumns.DATA)
@@ -253,6 +252,16 @@ object FileQUtils {
             } else null
         } else null
     }
+
+    /**
+     * Take file permission
+     * 获取长时间的文件读取权限
+     * @param uri
+     */
+    fun takeFilePermission(context: Context,uri:Uri){
+        val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        context.contentResolver.takePersistableUriPermission(uri, flag)
+    }
 }
 
 /**
@@ -261,3 +270,5 @@ object FileQUtils {
 fun Context.delFile(uri: Uri) {
     DocumentsContract.deleteDocument(contentResolver, uri)
 }
+
+
