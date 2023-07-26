@@ -114,9 +114,7 @@ object BaseKit {
         this.TAG = AppUtils.appName ?: "BaseKit"
     }
 
-    fun getVersion(): String? {
-        return "Version："+KoinPlatformTools.defaultContext().get().getProperty("version")
-    }
+    val versionName by lazy {  "Version："+KoinPlatformTools.defaultContext().get().getProperty("version") }
 
     @JvmStatic
     fun initKoin(modules: List<Module>) {
