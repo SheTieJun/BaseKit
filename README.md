@@ -33,7 +33,7 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
 #### [WindowInsetsControllerCompat使用](https://blog.csdn.net/StjunF/article/details/121840122)
 #### [ActivityResultLauncher使用](https://github.com/SheTieJun/BaseKit/wiki/ActivityResultLauncher%E4%BD%BF%E7%94%A8)
 #### [DataStoreKit使用](https://github.com/SheTieJun/BaseKit/wiki/DataStoreKit%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
-#### [基于MD颜色系统的主题切换工具](https://github.com/SheTieJun/BaseKit/wiki/%E4%B8%BB%E9%A2%98%E5%88%87%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB-MDThemeKit)
+#### [基于MD颜色系统的主题切换工具](https://github.com/SheTieJun/BaseKit/wiki/MDThemeKit-%EF%BC%9A%E4%B8%BB%E9%A2%98%E5%88%87%E6%8D%A2%E5%B7%A5%E5%85%B7%E7%B1%BB)
 
 ## 分支
 - [Base:含有RxJava的分支，很老的分支](https://github.com/SheTieJun/BaseKit/tree/base_rx)
