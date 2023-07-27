@@ -1,0 +1,62 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.LF.RED" parent="Theme.Material3.DayNight.NoActionBar">
+
+
+        <!--        colorPrimary：您的应用的主要品牌颜色，主要用于主题
+        colorPrimaryVariant：您的主要品牌颜色的较浅/较暗变体，在主题中很少使用
+        colorOnPrimary：用于显示在原色上方的元素的颜色（例如，文本和图标，根据可访问性，通常为白色或半透明的黑色）
+        colorSecondary：您应用程式的次要品牌色彩，主要用于强调某些需要突出的小部件
+        colorSecondaryVariant：您的次要品牌颜色的较浅/较深变体，在主题中很少使用
+        colorOnSecondary：用于显示在辅助颜色顶部的元素的颜色
+        colorError：用于错误的颜色（通常为红色阴影）
+        colorOnError：用于显示在错误颜色顶部的元素的颜色
+        colorSurface：用于表面的颜色（即材料“纸张”）
+        colorOnSurface：用于显示在表面颜色顶部的元素的颜色
+        android:colorBackground：所有其他屏幕内容后面的颜色
+        colorOnBackground：用于显示在背景色上方的元素的颜色
+        -->
+
+<!--        textAppearanceHeadline1：轻，96sp
+textAppearanceHeadline2：轻，60sp
+textAppearanceHeadline3：常规的48sp
+textAppearanceHeadline4：常规的34sp
+textAppearanceHeadline5：常规，24sp
+textAppearanceHeadline6：中20sp
+textAppearanceSubtitle1：常规16sp
+textAppearanceSubtitle2：中14sp
+textAppearanceBody1：常规16sp
+textAppearanceBody2：常规，14sp
+textAppearanceCaption：常规，12sp
+textAppearanceButton：常规，14sp，全大写
+textAppearanceOverline：常规，12sp，全大写
+-->
+
+        <item name="colorPrimary">@color/red_md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/red_md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/red_md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/red_md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/red_md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/red_md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/red_md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/red_md_theme_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/red_md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/red_md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/red_md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/red_md_theme_light_onTertiaryContainer</item>
+        <item name="colorError">@color/red_md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/red_md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/red_md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/red_md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/red_md_theme_light_background</item>
+        <item name="colorOnBackground">@color/red_md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/red_md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/red_md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/red_md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/red_md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/red_md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/red_md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/red_md_theme_light_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/red_md_theme_light_inversePrimary</item>
+    </style>
+</resources>

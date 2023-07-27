@@ -36,6 +36,7 @@ import me.shetj.base.network_coroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.LanguageKit
+import me.shetj.base.tools.app.MDThemeKit
 import me.shetj.base.tools.file.FileQUtils
 import shetj.me.base.R
 import shetj.me.base.annotation.Debug
@@ -101,6 +102,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             start<Main2Activity>()
         }
 
+
+        mContent.btnChangeTheme.setOnClickListener {
+            MDThemeKit.showChangeThemeDialog(this)
+        }
 
 
         findViewById<View>(R.id.fab).setOnClickListener {

@@ -4,12 +4,15 @@ package shetj.me.base
 
 import android.content.Context
 import androidx.annotation.Keep
+import androidx.appcompat.app.AppCompatDelegate
 import com.shetj.messenger.SLogMessenger
 import me.shetj.base.BaseKit
 import me.shetj.base.BuildConfig
 import me.shetj.base.init.ABBaseInitialize
 import me.shetj.base.ktx.logD
 import me.shetj.base.network_coroutine.HttpKit
+import me.shetj.base.tools.app.MDThemeKit
+import me.shetj.base.tools.app.MDThemeKit.ThemeBean
 import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
 
 
@@ -28,6 +31,13 @@ class BaseInitialize : ABBaseInitialize() {
 //        SLogMessenger.getInstance().autoHide(context,false)
 //        SLogMessenger.getInstance().bindService(context,"me.shetj.beloved")
 //        Timber.plant(SLogMessengerTree())
+        MDThemeKit.startInit(context, listOf(
+            ThemeBean(R.style.BaseTheme_MD3, "默认主题-跟随系统"),
+            ThemeBean(R.style.BaseTheme_MD3, "默认主题-黑夜", AppCompatDelegate.MODE_NIGHT_YES),
+            ThemeBean(R.style.BaseTheme_MD3, "默认主题-日间", AppCompatDelegate.MODE_NIGHT_NO),
+            ThemeBean(R.style.Base_Theme_LF_Green, "春色宜人(GREEN)", AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
+            ThemeBean(R.style.Base_Theme_LF_RED, "红红火火(RED)", AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
+        ))
     }
 
 }
