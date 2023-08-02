@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.whenResumed
+import androidx.lifecycle.whenStateAtLeast
+import androidx.lifecycle.withStateAtLeast
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -21,6 +24,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import me.shetj.base.R
 
 suspend fun <T, O> T.withIO(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.IO) {
@@ -66,30 +70,6 @@ fun Fragment.launch(
     action: suspend CoroutineScope.() -> Unit
 ): Job {
     return lifecycleScope.launch(context) {
-        action()
-    }
-}
-
-fun Fragment.runOnCreated(
-    action: suspend CoroutineScope.() -> Unit
-): Job {
-    return lifecycleScope.launchWhenCreated {
-        action()
-    }
-}
-
-fun Fragment.runOnResumed(
-    action: suspend CoroutineScope.() -> Unit
-): Job {
-    return lifecycleScope.launchWhenResumed {
-        action()
-    }
-}
-
-fun Fragment.runOnStarted(
-    action: suspend CoroutineScope.() -> Unit
-): Job {
-    return lifecycleScope.launchWhenStarted {
         action()
     }
 }

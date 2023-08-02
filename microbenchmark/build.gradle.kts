@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.shetj.microbenchmark"
-    compileSdk = 33
+    compileSdk = 34
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

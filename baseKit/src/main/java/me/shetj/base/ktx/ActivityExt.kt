@@ -77,13 +77,11 @@ fun Context.start(intent: Intent, isFinish: Boolean = false) {
 fun FragmentActivity.grayThemChange(isGrayTheme: Boolean) {
     val decorView = window?.decorView
     val isMourn = (decorView?.getTag(R.id.isGrayTheme) as? Boolean) ?: false
-    if (!isMourn) {
+    if (isGrayTheme != isMourn){
         if (isGrayTheme) {
             decorView?.setTag(R.id.isGrayTheme, true)
             decorView?.setLayerType(View.LAYER_TYPE_HARDWARE, GrayThemeLiveData.getInstance().getSatPaint(0f))
-        }
-    } else {
-        if (!isGrayTheme) {
+        }else{
             decorView?.setTag(R.id.isGrayTheme, false)
             decorView?.setLayerType(View.LAYER_TYPE_NONE, null)
         }

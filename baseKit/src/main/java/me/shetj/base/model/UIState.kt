@@ -38,12 +38,12 @@ sealed class ErrorType{
     /**
      * 接口错误
      */
-    class APIError(msg:String):ErrorType()
+    class APIError(val msg:String):ErrorType()
 
     /**
      * Other error
      * 其他错误
      */
-    class OtherError(msg:String):ErrorType()
+    class OtherError(val msg:String):ErrorType()
 
 }

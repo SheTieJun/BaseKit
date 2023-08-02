@@ -150,9 +150,9 @@ class WebViewManager(private val webView: WebView) {
     ): Boolean {
         fileChooserParams?.acceptTypes?.also {
             if (it.isNotEmpty()) {
-                activity.searchFiles(fileChooserParams.acceptTypes) {
-                    it?.let {
-                        filePathCallback?.onReceiveValue(it.toTypedArray())
+                activity.searchFiles(fileChooserParams.acceptTypes) { files->
+                    files?.let {
+                        filePathCallback?.onReceiveValue(files.toTypedArray())
                     }
                 }
                 return true

@@ -25,3 +25,4 @@
 #-renamesourcefileattribute SourceFile
 
 #---------------------------------基本指令区----------------------------------
+-keep class java.io.PrintStream { *; }

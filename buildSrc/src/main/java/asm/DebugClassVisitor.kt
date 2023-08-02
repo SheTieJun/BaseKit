@@ -15,8 +15,10 @@ class DebugClassVisitor(classVisitor: ClassVisitor) :
         signature: String?,
         exceptions: Array<out String>?
     ): MethodVisitor {
-
-        return DebugMethodVisitor(super.visitMethod(access, name, descriptor, signature, exceptions))
+        if (descriptor == null||name == null){
+            return super.visitMethod(access, name, descriptor, signature, exceptions)
+        }
+        return DebugMethodVisitor(name,descriptor,super.visitMethod(access, name, descriptor, signature, exceptions))
     }
 
 }

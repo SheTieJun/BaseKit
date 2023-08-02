@@ -34,9 +34,8 @@ abstract class AbLifecycleCopeComponent : LifecycleCopeComponent {
         )
     }
 
-    override fun getLifecycle(): Lifecycle {
-        return lifecycleRegistry
-    }
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
 
     private fun getOwner(): LifecycleOwner {
         return this

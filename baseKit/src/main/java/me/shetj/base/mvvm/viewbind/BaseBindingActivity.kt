@@ -36,14 +36,14 @@ abstract class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> : AbBin
         mViewModel.baseAction.observe(this,this)
     }
 
-    override fun onChanged(action: ViewAction?) {
-        if (action is TipAction){
-           when(action.tipType){
-               DEFAULT -> TipKit.normal(this,action.msg)
-               INFO -> TipKit.info(this,action.msg)
-               ERROR -> TipKit.error(this,action.msg)
-               SUCCESS -> TipKit.success(this,action.msg)
-               WARNING -> TipKit.warn(this,action.msg)
+    override fun onChanged(value: ViewAction) {
+        if (value is TipAction){
+           when(value.tipType){
+               DEFAULT -> TipKit.normal(this,value.msg)
+               INFO -> TipKit.info(this,value.msg)
+               ERROR -> TipKit.error(this,value.msg)
+               SUCCESS -> TipKit.success(this,value.msg)
+               WARNING -> TipKit.warn(this,value.msg)
            }
         }
     }

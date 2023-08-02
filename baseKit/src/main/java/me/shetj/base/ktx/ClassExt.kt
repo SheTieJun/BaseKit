@@ -26,7 +26,7 @@ fun <C> getClazz(obj: Any, position: Int = 0): Class<C> {
  * 通过class<T>、T的无参数的构造函数，创建对象T
  */
 fun <T> getObjByClassArg(obj: Any, position: Int = 0): T {
-    return getClazz<T>(obj, position).newInstance()
+    return getClazz<T>(obj, position).getDeclaredConstructor().newInstance()
 }
 
 fun getParameterizedType(type: Type, typeArguments: Type): ParameterizedType? {

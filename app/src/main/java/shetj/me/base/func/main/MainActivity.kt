@@ -2,14 +2,19 @@ package shetj.me.base.func.main
 
 import android.Manifest
 import android.app.ActivityManager
+import android.content.Context
 import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
+import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.LayoutInflaterCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.metrics.performance.JankStats
@@ -20,10 +25,12 @@ import java.util.*
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
+import me.shetj.base.ktx.logJson
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.openUri
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.setAppearance
+import me.shetj.base.ktx.showToast
 import me.shetj.base.ktx.start
 import me.shetj.base.ktx.startIgnoreBatteryOpt
 import me.shetj.base.ktx.startRequestPermissions
@@ -42,6 +49,7 @@ import shetj.me.base.R
 import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.ScreenshotKit
+import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
@@ -52,6 +60,28 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        LayoutInflaterCompat.setFactory2(layoutInflater, object : LayoutInflater.Factory2 {
+            override fun onCreateView(
+                parent: View?,
+                name: String,
+                context: Context,
+                attrs: AttributeSet
+            ): View? {
+                val  delegate = getDelegate();
+                val  view = delegate.createView(parent, name, context, attrs);
+                return null
+            }
+
+            override fun onCreateView(
+                name: String,
+                context: Context,
+                attrs: AttributeSet
+            ): View? {
+
+                return null
+            }
+        })
+
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
@@ -75,7 +105,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         })
 
+        intent.getStringExtra("name")?.showToast()
 
+        WidgetProvider.registerReceiver(this)
     }
 
     override fun setUpClicks() {
@@ -182,7 +214,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
         mViewModel.liveDate.observeChange(this) {
             onSuccess = {
-                this?.toJson().toString().logI()
             }
             onFailure = {
                 Timber.tag("getMusic").e(this)

@@ -73,6 +73,12 @@ object ScreenshotKit {
         mScreenshotListener = listener
     }
 
+    /**
+     * Get screenshot listener
+     * 获取截屏监听
+     * @param canObserver 因为有隐私协议的问题，所以需要用户自己选择是否监听
+     * @return
+     */
     fun initActivity(activity: FragmentActivity, canObserver: Boolean) {
         setCanObserver(canObserver)
         initActivity(activity)
@@ -248,11 +254,10 @@ object ScreenshotKit {
      * 判断是否是截屏
      */
     private fun checkScreenShot(data: String): Boolean {
-        var data = data
-        data = data.lowercase(Locale.getDefault())
+        val dataL = data.lowercase(Locale.getDefault())
         // 判断图片路径是否含有指定的关键字之一, 如果有, 则认为当前截屏了
         for (keyWork in KEYWORDS) {
-            if (data.contains(keyWork)) {
+            if (dataL.contains(keyWork)) {
                 return true
             }
         }

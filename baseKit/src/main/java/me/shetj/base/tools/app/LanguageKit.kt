@@ -42,22 +42,11 @@ object LanguageKit {
         val resources = context.resources
         val metrics = resources.displayMetrics
         val configuration = resources.configuration
-        //Android 7.0以上的方法
-        if (VERSION.SDK_INT >= 24) {
-            configuration.setLocale(locale)
-            configuration.setLocales(LocaleList(locale))
-            context.createConfigurationContext(configuration)
-            //实测，updateConfiguration这个方法虽然很多博主说是版本不适用
-            //但是我的生产环境androidX+Android Q环境下，必须加上这一句，才可以通过重启App来切换语言
-            resources.updateConfiguration(configuration, metrics)
-        } else if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-            //Android 4.1 以上方法
-            configuration.setLocale(locale)
-            resources.updateConfiguration(configuration, metrics)
-        } else {
-            configuration.locale = locale
-            resources.updateConfiguration(configuration, metrics)
-        }
+        configuration.setLocale(locale)
+        configuration.setLocales(LocaleList(locale))
+        context.createConfigurationContext(configuration)
+        //实测，updateConfiguration这个方法虽然很多博主说是版本不适用
+        resources.updateConfiguration(configuration, metrics)
     }
 
     /**
@@ -100,12 +89,7 @@ object LanguageKit {
      * 获取应用语言
      */
     fun getAppLocale(context: Context): Locale {
-        val local: Locale = if (VERSION.SDK_INT >= VERSION_CODES.N) {
-            context.resources.configuration.locales[0]
-        } else {
-            context.resources.configuration.locale
-        }
-        return local
+        return   context.resources.configuration.locales[0]
     }
 
 

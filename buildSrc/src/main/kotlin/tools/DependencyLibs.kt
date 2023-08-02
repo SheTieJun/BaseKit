@@ -132,7 +132,7 @@ object DependencyLibs {
 
 
     object Coroutines {
-        private const val version = "1.6.4"
+        private const val version = "1.7.3"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -158,7 +158,7 @@ object DependencyLibs {
     }
 
     object Koin {
-        private const val koin_version = "3.2.0"
+        private const val koin_version = "3.4.3"
 
         // Koin main features for Android (Scope,ViewModel ...)
         const val koinAndroid = "io.insert-koin:koin-android:$koin_version"
@@ -171,16 +171,16 @@ object DependencyLibs {
 
         const val appcompat = "androidx.appcompat:appcompat:1.6.1"
         const val palette = "androidx.palette:palette:1.0.0"
-        const val coreKtx = "androidx.core:core-ktx:1.9.0"
-        const val recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
+        const val coreKtx = "androidx.core:core-ktx:1.10.1"
+        const val recyclerview = "androidx.recyclerview:recyclerview:1.3.1"
         const val cardview = "androidx.cardview:cardview:1.0.0"
         const val material = "com.google.android.material:material:1.9.0"
         const val animationCore = "androidx.core:core-animation:1.0.0-beta01"
         const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.6.0-alpha04"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.6.1"
         const val startup = "androidx.startup:startup-runtime:1.1.1"
         const val cryptoSp = "androidx.security:security-crypto:1.1.0-alpha04"
-        const val activityKtx = "androidx.activity:activity-ktx:1.7.0-alpha02"
+        const val activityKtx = "androidx.activity:activity-ktx:1.7.2"
         const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
         const val datastoreCore = "androidx.datastore:datastore-core:1.0.0"
         const val dragAndDrop = "androidx.draganddrop:draganddrop:1.0.0"
@@ -192,7 +192,7 @@ object DependencyLibs {
         }
 
         object Paging {
-            private const val pagingVersion = "3.1.1"
+            private const val pagingVersion = "3.2.0"
             const val paging = "androidx.paging:paging-runtime:$pagingVersion"
         }
 
@@ -204,20 +204,20 @@ object DependencyLibs {
         }
 
         object Navigation {
-            private const val navVersion = "2.5.3"
+            private const val navVersion = "2.6.0"
             const val navigation = "androidx.navigation:navigation-fragment-ktx:$navVersion"
             const val navigationUi = "androidx.navigation:navigation-ui-ktx:$navVersion"
         }
 
         object Room {
-            private const val version = "2.5.0"
+            private const val version = "2.5.2"
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"
         }
 
         object WorkManager {
-            private const val workVersion = "2.8.0"
+            private const val workVersion = "2.8.1"
             const val worker = "androidx.work:work-runtime-ktx:$workVersion"
             const val worker_multiprocess = "androidx.work:work-multiprocess:$workVersion"
         }

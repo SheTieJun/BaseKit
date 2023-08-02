@@ -4,6 +4,7 @@ import java.io.IOException
 import java.net.URLDecoder
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
+import me.shetj.base.ktx.logJson
 import me.shetj.base.tools.debug.DebugFunc
 import okhttp3.Connection
 import okhttp3.Interceptor
@@ -37,7 +38,7 @@ class HttpLoggingInterceptor : Interceptor {
 
     fun log(message: String?) {
         if (!isLogEnable) return
-        Timber.tag(tag).i(message)
+        message.logJson(tag)
         if (DebugFunc.getInstance().isOutputHttp) {
             DebugFunc.getInstance().saveHttpToFile(message)
         }
@@ -134,7 +135,7 @@ class HttpLoggingInterceptor : Interceptor {
                 if (logBody && HttpHeaders.hasBody(clone)) {
                     if (isPlaintext(responseBody!!.contentType())) {
                         val body = responseBody.string()
-                        log("\tbody:$body")
+                        log(body)
                         responseBody = ResponseBody.create(responseBody.contentType(), body)
                         return response.newBuilder().body(responseBody).build()
                     } else {
@@ -159,7 +160,7 @@ class HttpLoggingInterceptor : Interceptor {
             if (contentType != null) {
                 charset = contentType.charset(UTF8)
             }
-            log("\tbody:" + URLDecoder.decode(buffer.readString(charset), UTF8.name()))
+            log(URLDecoder.decode(buffer.readString(charset), UTF8.name()))
         } catch (e: Exception) {
             e.printStackTrace()
         }

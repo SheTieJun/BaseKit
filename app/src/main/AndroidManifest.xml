@@ -69,6 +69,30 @@
                 android:value="androidx.startup" />
         </provider>
 
+        <!-- 声明widget对应的AppWidgetProvider -->
+        <receiver android:name=".contentprovider.WidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <!--这个是必须要有的系统规定-->
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <!--这个是我们自定义的 action ，用来更新UI，还可以自由添加更多 -->
+                <action android:name="com.shetj.widget.UPDATE_ALL"/>
+            </intent-filter>
+            <!--要显示的布局-->
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget"/>
+        </receiver>
+
+        <!-- 用来计时，发送 通知桌面部件更新 -->
+        <service android:name=".contentprovider.WidgetService"
+            android:exported="false">
+            <intent-filter>
+                <!--用来启动服务-->
+                <action android:name="android.appwidget.action.APP_WIDGET_SERVICE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
