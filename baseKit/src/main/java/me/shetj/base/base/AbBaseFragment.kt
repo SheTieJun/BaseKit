@@ -46,7 +46,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(this)
         if (savedInstanceState != null && !isNavigationF()) {
-            // 如果是导航的fragment，不需要恢复状态
+            // 如果是导航的fragment，不需要恢复状态Navigation回去恢复
             val flag = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN)
             val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
             if (flag) {

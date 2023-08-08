@@ -1,14 +1,10 @@
-### [自定义操作符](https://juejin.im/post/6844903842698493960)
+### 自定义操作符
 
-lift()是对原始Observable的事件序列的每一项做变换，  
-而compose()是将原始Observable自身进行变换成另一个Observable。
-
-自定义Operator
-自定义操作
-
-自定义Transformer
-
-自定义Plugin
+- lift()是对原始Observable的事件序列的每一项做变换，而compose()是将原始Observable自身进行变换成另一个Observable。
+- 自定义Operator
+- 自定义操作
+- 自定义Transformer
+- 自定义Plugin
 ```
 RxJavaPlugins.setOnObservableAssembly(new CustomObservableAssembly());//任意操作符都有回调
 RxJavaPlugins.setOnObservableSubscribe(new CustomObservableSubscribe());//每次subscribe时候有回调

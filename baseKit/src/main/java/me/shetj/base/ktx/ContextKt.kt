@@ -24,7 +24,7 @@ import me.shetj.base.BaseKit
  *
  * 这里需要判断context 是不是  ComponentActivity
  *
- * - [androidx.lifecycle.Lifecycle.mInternalScopeRef]
+ * - [androidx.lifecycle.Lifecycle.internalScopeRef]
  * 如果不是，我们需要去循环查找找
  */
 val Context.lifeScope: CoroutineScope
@@ -77,6 +77,8 @@ fun Context.openActivityByPackageName(ackageName: String) {
 /**
  *  - 让APP到前台，前提是APP已经后台了
  *  - 如果代码无效，可能是因为APP被判定在前台
+ *  <!--    需要悬浮窗权限-->
+ *     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
  */
 fun Context.moveToFrontApp() {
     (getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager)?.moveToFrontApp(packageName)
@@ -86,6 +88,7 @@ fun Context.moveToFrontApp() {
 /**
  * - 通过包名，让APP到前台，前提是APP在后台了
  * - 如果代码无效，可能是因为APP被判定在前台
+ * - Android 11 可以 Android 12 不行了
  */
 fun ActivityManager.moveToFrontApp(packageName: String) {
     this.appTasks?.first {

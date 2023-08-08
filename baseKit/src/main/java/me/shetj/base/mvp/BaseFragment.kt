@@ -49,10 +49,6 @@ abstract class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
         super.onDestroyView()
     }
 
-    @SuppressLint("unchecked")
     override fun updateView(message: Message) {
-        if (BaseKit.isDebug.isTrue() && EmptyUtils.isNotEmpty(message)) {
-            Timber.i(message.toJson())
-        }
     }
 }

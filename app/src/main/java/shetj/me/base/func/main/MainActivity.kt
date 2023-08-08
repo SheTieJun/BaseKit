@@ -2,7 +2,9 @@ package shetj.me.base.func.main
 
 import android.Manifest
 import android.app.ActivityManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
@@ -22,10 +24,12 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
 import java.util.*
+import kotlinx.coroutines.delay
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.logJson
+import me.shetj.base.ktx.moveToFrontApp
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.openUri
 import me.shetj.base.ktx.selectFile
@@ -60,27 +64,27 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        LayoutInflaterCompat.setFactory2(layoutInflater, object : LayoutInflater.Factory2 {
-            override fun onCreateView(
-                parent: View?,
-                name: String,
-                context: Context,
-                attrs: AttributeSet
-            ): View? {
-                val  delegate = getDelegate();
-                val  view = delegate.createView(parent, name, context, attrs);
-                return null
-            }
-
-            override fun onCreateView(
-                name: String,
-                context: Context,
-                attrs: AttributeSet
-            ): View? {
-
-                return null
-            }
-        })
+//        LayoutInflaterCompat.setFactory2(layoutInflater, object : LayoutInflater.Factory2 {
+//            override fun onCreateView(
+//                parent: View?,
+//                name: String,
+//                context: Context,
+//                attrs: AttributeSet
+//            ): View? {
+//                val  delegate = getDelegate();
+//                val  view = delegate.createView(parent, name, context, attrs);
+//                return null
+//            }
+//
+//            override fun onCreateView(
+//                name: String,
+//                context: Context,
+//                attrs: AttributeSet
+//            ): View? {
+//
+//                return null
+//            }
+//        })
 
         installSplashScreen()
         super.onCreate(savedInstanceState)

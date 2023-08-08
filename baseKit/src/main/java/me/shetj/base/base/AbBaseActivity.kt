@@ -20,26 +20,14 @@ import me.shetj.base.tools.app.LanguageKit
  * @author shetj
  */
 @Keep
-abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
+abstract class AbBaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startAnimation()
-        lifecycle.addObserver(this)
+        onActivityCreate()
         if (isEnableGrayTheme()){
             GrayThemeLiveData.getInstance().observe(this,this::grayThemChange)
-        }
-    }
-
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        when (event) {
-            Lifecycle.Event.ON_CREATE -> {
-                onActivityCreate()
-            }
-            Lifecycle.Event.ON_DESTROY -> {
-                onActivityDestroy()
-            }
-            else -> {}
         }
     }
 
@@ -74,6 +62,11 @@ abstract class AbBaseActivity : AppCompatActivity(), LifecycleEventObserver {
         } else {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
+    }
+
+    override fun onDestroy() {
+        onActivityDestroy()
+        super.onDestroy()
     }
 
     /**

@@ -122,10 +122,7 @@ fun String?.logJson(tag: String = BaseKit.TAG) {
 
     if (isJson){
         printLine(tag, true)
-        val lines = message.split(System.lineSeparator())
-        lines.forEach {
-            Timber.tag(tag).i(it)
-        }
+        message.logI()
         printLine(tag, false)
     }else{
         Timber.tag(tag).i(message)
