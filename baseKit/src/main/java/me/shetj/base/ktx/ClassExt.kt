@@ -13,12 +13,22 @@ import java.util.Objects
 /**
  * 参数化类型
  * A<C>  -> getClazz(this) -> C
- * 获取当前类的第一个泛型
- * tip：必须是泛型
+ * 获取当前类的第一个泛型,
+ * - 继承基类而来的泛型: getGenericSuperclass() , 转型为 ParameterizedType 来获得实际类型
+ * - tip：必须是泛型,否则会异常
  */
 @Suppress("UNCHECKED_CAST")
 fun <C> getClazz(obj: Any, position: Int = 0): Class<C> {
     return (obj.javaClass.genericSuperclass as ParameterizedType)
+        .actualTypeArguments[position] as Class<C>
+}
+
+/**
+ * -实现接口而来的泛型，就用 getGenericInterfaces() , 针对其中的元素转型为 ParameterizedType 来获得实际类型
+ * - tip：必须是泛型,否则会异常
+ */
+fun <C> getClazzByInterface(obj: Any, positionInterface: Int = 0,position: Int = 0): Class<C> {
+    return (obj.javaClass.genericInterfaces[positionInterface] as ParameterizedType)
         .actualTypeArguments[position] as Class<C>
 }
 
