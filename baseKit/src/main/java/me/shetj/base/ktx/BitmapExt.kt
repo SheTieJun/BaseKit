@@ -9,6 +9,7 @@ import android.graphics.PixelFormat
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 
+@Suppress("DEPRECATION")
 fun drawableToBitmap(drawable: Drawable?): Bitmap? {
     if (drawable == null) return null else if (drawable is BitmapDrawable) {
         return drawable.bitmap

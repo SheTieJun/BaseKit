@@ -38,6 +38,7 @@ object LanguageKit {
      * @param context
      * @param locale
      */
+    @Suppress("DEPRECATION")
     private fun setAppLanguage(context: Context, locale: Locale) {
         val resources = context.resources
         val metrics = resources.displayMetrics

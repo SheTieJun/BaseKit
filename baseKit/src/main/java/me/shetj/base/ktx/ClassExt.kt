@@ -27,7 +27,8 @@ fun <C> getClazz(obj: Any, position: Int = 0): Class<C> {
  * -实现接口而来的泛型，就用 getGenericInterfaces() , 针对其中的元素转型为 ParameterizedType 来获得实际类型
  * - tip：必须是泛型,否则会异常
  */
-fun <C> getClazzByInterface(obj: Any, positionInterface: Int = 0,position: Int = 0): Class<C> {
+@Suppress("UNCHECKED_CAST")
+fun <C> getClazzByInterface(obj: Any, positionInterface: Int = 0, position: Int = 0): Class<C> {
     return (obj.javaClass.genericInterfaces[positionInterface] as ParameterizedType)
         .actualTypeArguments[position] as Class<C>
 }

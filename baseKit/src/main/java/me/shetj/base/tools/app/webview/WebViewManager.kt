@@ -151,7 +151,7 @@ class WebViewManager(private val webView: WebView) {
         fileChooserParams?.acceptTypes?.also {
             if (it.isNotEmpty()) {
                 activity.searchFiles(fileChooserParams.acceptTypes) { files->
-                    files?.let {
+                    files.let {
                         filePathCallback?.onReceiveValue(files.toTypedArray())
                     }
                 }

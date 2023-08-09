@@ -190,3 +190,6 @@
     # Keep the public no-argument constructor while allowing other methods to be optimized.
     <init>();
 }
+
+
+-dontwarn com.google.android.material.R$attr

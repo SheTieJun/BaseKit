@@ -20,6 +20,7 @@ abstract class BaseViewBindingAdapter<T, BD : ViewBinding>
 
     private val clazz = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<*>
 
+    @Suppress("UNCHECKED_CAST")
     private fun getBinding(view: View):BD{
         return clazz.getMethod("bind", View::class.java)
             .invoke(null, view) as BD
