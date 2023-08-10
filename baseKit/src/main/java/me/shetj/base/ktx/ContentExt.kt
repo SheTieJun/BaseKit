@@ -40,7 +40,7 @@ fun createImagePathUri(context: Context): Uri {
     }
 }
 
-fun createImagePath(context: Context): String {
+internal fun createImagePath(context: Context): String {
     val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
     val time = System.currentTimeMillis()
     val imageName = timeFormatter.format(Date(time))
@@ -50,7 +50,7 @@ fun createImagePath(context: Context): String {
     ) + "/" + imageName + ".jpg"
 }
 
-fun createImageUri(context: Context): Uri {
+internal fun createImageUri(context: Context): Uri {
     return context.contentResolver.insert(
         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
         ContentValues()
@@ -80,14 +80,14 @@ fun createVideoPathUri(context: Context): Uri {
 
 
 
-fun createVideoUri(context: Context): Uri {
+internal fun createVideoUri(context: Context): Uri {
     return context.contentResolver.insert(
         MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
         ContentValues()
     ) ?: throw NullPointerException("create createImageUri fail")
 }
 
-fun getPath(root: String, packagePath: String): String {
+internal fun getPath(root: String, packagePath: String): String {
     val path = StringBuilder(root)
     val f = packagePath.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
     for (aF in f) {
@@ -101,7 +101,7 @@ fun getPath(root: String, packagePath: String): String {
 }
 
 
-fun createVideoPath(context:Context): String {
+internal fun createVideoPath(context:Context): String {
     val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
     val time = System.currentTimeMillis()
     val imageName = timeFormatter.format(Date(time))

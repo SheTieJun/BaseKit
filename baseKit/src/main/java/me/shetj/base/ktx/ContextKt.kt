@@ -43,6 +43,12 @@ val Context.lifeScope: CoroutineScope
         return BaseKit.applicationScope
     }
 
+/**
+ * Context:
+ * - 1.Service： return BaseKit.applicationScope
+ * - 2.Application ：return  BaseKit.applicationScope
+ * - 3.Activity ：return lifecycleScope.CoroutineContext
+ */
 val Context.asActivity: Activity
     get() {
         if (this is Activity) {

@@ -109,5 +109,8 @@ fun getTagThread(tag: String, run: Runnable): Thread {
     return t
 }
 
-
+/**
+ * DataStore 非常适合存储键值对，例如用户设置，具体示例可能包括时间格式、通知偏好设置，以及是显示还是隐藏用户已阅读的新闻报道。
+ * DataStore 还可以使用协议缓冲区来存储类型化对象。
+ */
 val defDataStore by lazy { BaseKit.app.dataStoreKit() }

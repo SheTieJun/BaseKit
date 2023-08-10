@@ -1,5 +1,5 @@
+@file:JvmName("WinCompat")
 package me.shetj.base.ktx
-
 import android.app.Activity
 import android.graphics.Color
 import android.os.Build

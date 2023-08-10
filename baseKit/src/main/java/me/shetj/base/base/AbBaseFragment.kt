@@ -65,6 +65,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initBaseView()
         addObservers()
         setUpClicks()
         onInitialized()
@@ -110,11 +111,6 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
     open fun onInvisible() {
     }
 
-    /**
-     * Init event and data.
-     */
-    open fun initEventAndData() {
-    }
 
     companion object {
         private const val STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN"

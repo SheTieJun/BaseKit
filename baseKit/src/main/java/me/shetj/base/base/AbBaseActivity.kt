@@ -25,31 +25,17 @@ abstract class AbBaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startAnimation()
-        onActivityCreate()
         if (isEnableGrayTheme()){
             GrayThemeLiveData.getInstance().observe(this,this::grayThemChange)
         }
-    }
-
-    open fun onActivityCreate() {
-        findViewById<MaterialToolbar>(R.id.toolbar)?.apply {
-            setSupportActionBar(this)
-            setNavigationOnClickListener {
-                back()
-            }
-        }
-        initView()
-        initData()
     }
 
     /**
      * Is enable gray theme
      * 是否可以展示灰色主题
      */
-    open fun isEnableGrayTheme() = false
+    open fun isEnableGrayTheme() = true
 
-    open fun onActivityDestroy() {
-    }
 
     open fun setTitle(title: String) {
         supportActionBar?.title = title
@@ -65,7 +51,6 @@ abstract class AbBaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        onActivityDestroy()
         super.onDestroy()
     }
 

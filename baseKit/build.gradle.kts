@@ -58,6 +58,12 @@ android {
         checkDependencies = true
         checkOnly.addAll(setOf("NewApi", "HandlerLeak"))
     }
+
+
+    packaging {
+        resources.excludes += "DebugProbesKt.bin"
+    }
+
     //    ./gradlew printProjectStructure
     tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
 }

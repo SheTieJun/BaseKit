@@ -95,47 +95,27 @@ fun Throwable?.logW(tag: String = BaseKit.TAG) {
 }
 
 /**
- * 打印json,因为可能数据过多，所以分行打印
+ * 数据对象，因为可能数据过多导致打印问题，所以转成json
  */
 fun String?.logJson(tag: String = BaseKit.TAG) {
     if (this.isNullOrEmpty()) {
-        Timber.tag(tag).e("Empty/Null json content")
+        Timber.tag(tag).e("this Empty/Null json content")
         return
     }
-    var isJson = false
     val message: String = try {
         if (startsWith("{")) {
-            isJson = true
             val jsonObject = JSONObject(this)
             jsonObject.toString(2)//最重要的方法，就一行，返回格式化的json字符串，其中的数字4是缩进字符数
         } else if (startsWith("[")) {
             val jsonArray = JSONArray(this)
-            isJson = true
             jsonArray.toString(2)
         } else {
             this
         }
     } catch (e: JSONException) {
-        isJson = false
         this
     }
-
-    if (isJson){
-        printLine(tag, true)
-        message.logI()
-        printLine(tag, false)
-    }else{
-        Timber.tag(tag).i(message)
-    }
-
-}
-
-private fun printLine(tag: String, isTop: Boolean) {
-    if (isTop) {
-        Timber.tag(tag).i("----------------------------------------------------------------------------------------")
-    } else {
-        Timber.tag(tag).i("----------------------------------------------------------------------------------------")
-    }
+    message.logI()
 }
 
 /**
@@ -150,7 +130,7 @@ fun String?.logOutPut() {
 /**
  * val json = getAssetsJson(context, "country.json")
  */
-fun getAssetsJson(context: Context, fileName: String): String {
+fun getAssetsString(context: Context, fileName: String): String {
     val stringBuilder = StringBuilder()
     try {
         val assetManager: AssetManager = context.assets

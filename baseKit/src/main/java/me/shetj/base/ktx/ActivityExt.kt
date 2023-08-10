@@ -74,14 +74,18 @@ fun Context.start(intent: Intent, isFinish: Boolean = false) {
     }
 }
 
+inline fun <reified T : Activity> Context.intentFrom(): Intent {
+    return Intent(this, T::class.java)
+}
+
 fun FragmentActivity.grayThemChange(isGrayTheme: Boolean) {
     val decorView = window?.decorView
     val isMourn = (decorView?.getTag(R.id.isGrayTheme) as? Boolean) ?: false
-    if (isGrayTheme != isMourn){
+    if (isGrayTheme != isMourn) {
         if (isGrayTheme) {
             decorView?.setTag(R.id.isGrayTheme, true)
             decorView?.setLayerType(View.LAYER_TYPE_HARDWARE, GrayThemeLiveData.getInstance().getSatPaint(0f))
-        }else{
+        } else {
             decorView?.setTag(R.id.isGrayTheme, false)
             decorView?.setLayerType(View.LAYER_TYPE_NONE, null)
         }
@@ -126,8 +130,8 @@ fun String.showToast() = ArmsUtils.makeText(this)
 
 
 @JvmOverloads
-fun Activity.showSnack(msg: String,view: View? = null) {
-    Snackbar.make(view?:findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT).show()
+fun Activity.showSnack(msg: String, view: View? = null) {
+    Snackbar.make(view ?: findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT).show()
 }
 
 /**
@@ -310,9 +314,11 @@ internal fun Context.requestNetWork() {
                         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
                             NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.WIFI)
                         }
+
                         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
                             NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.PHONE)
                         }
+
                         else -> {
                             NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
                         }
@@ -361,8 +367,8 @@ fun Context.startIgnoreBatteryOpt() {
  * @return
  */
 fun Context.isIgnoringPower(): Boolean {
-    val powerManager: PowerManager?= getSystemService()
-    return powerManager?.isIgnoringBatteryOptimizations(packageName)?:false
+    val powerManager: PowerManager? = getSystemService()
+    return powerManager?.isIgnoringBatteryOptimizations(packageName) ?: false
 }
 
 

@@ -5,7 +5,9 @@ import android.provider.Settings
 import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.plus
@@ -44,7 +46,7 @@ object BaseKit {
     val app: Application
         get() = Utils.app
 
-    val isDebug = MutableLiveData(false)
+    private val isDebug = MutableLiveData(false)
 
     private var dnsLocalMap = HashMap<String, String>()
 
@@ -65,8 +67,7 @@ object BaseKit {
      * 专门用来做不被取消的操作
      * 全局的
      */
-    @DelicateCoroutinesApi
-    val applicationScope = GlobalScope + SupervisorJob() + handler
+    val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default + Dispatchers.Main.immediate) + handler
 
     /**
      * ANDROID_ID的生成规则为：签名+设备信息+设备用户
@@ -92,7 +93,8 @@ object BaseKit {
     internal fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
         this.isDebug.postValue(isDebug)
         this.baseUrl = baseUrl
-        TaskExecutor.getInstance().executeOnMainThread {
+        this.TAG = AppUtils.appName ?: "BaseKit"
+        TaskExecutor.executeOnMain {
             Utils.init(application)
             Tim.setLogAuto(isDebug)
             if (isDebug) {
@@ -111,10 +113,9 @@ object BaseKit {
                 modules(getHttpModule())
             }
         }
-        this.TAG = AppUtils.appName ?: "BaseKit"
     }
 
-    val versionName by lazy {  "Version："+KoinPlatformTools.defaultContext().get().getProperty("version") }
+    val versionName by lazy { "Version：" + KoinPlatformTools.defaultContext().get().getProperty("version") }
 
     @JvmStatic
     fun initKoin(modules: List<Module>) {

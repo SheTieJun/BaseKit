@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:viewBindingIgnore="true">
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="116dp"
-        android:minHeight="116dp"
         android:layout_gravity="center"
         android:background="@drawable/bg_loading_dialog"
         android:gravity="center"
+        android:minWidth="116dp"
+        android:minHeight="116dp"
         android:orientation="vertical"
-        android:paddingTop="22dp"
-        >
+        android:paddingTop="22dp">
 
         <ProgressBar
             android:id="@+id/progress"
@@ -29,13 +30,13 @@
             android:id="@+id/tv_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
             android:drawablePadding="8dp"
+            android:gravity="center"
             android:maxEms="9"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
-            android:gravity="center"
             android:text="正在加载..."
-            android:layout_marginBottom="22dp"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </LinearLayout>

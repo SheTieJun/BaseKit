@@ -1,10 +1,7 @@
 package me.shetj.base.ktx
 
 import android.app.Activity
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.transition.Transition
 import android.view.View
@@ -80,10 +77,10 @@ fun Fragment.setBackgroundResource(@DrawableRes resId: Int) {
  */
 fun Activity.getActivityOptions(
     sharedCardView: View,
-    transition_name_card: String
+    transitionNameCard: String
 ): ActivityOptionsCompat {
     return ActivityOptionsCompat
-        .makeSceneTransitionAnimation(this, sharedCardView, transition_name_card)
+        .makeSceneTransitionAnimation(this, sharedCardView, transitionNameCard)
 }
 
 /**

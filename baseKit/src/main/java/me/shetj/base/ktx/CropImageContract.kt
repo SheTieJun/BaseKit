@@ -72,6 +72,6 @@ class CropImageContract : ActivityResultContract<CropImage, Uri?>() {
 @Keep
 data class CropImage(
     var uri: Uri, //裁剪框横向比例数值
-    var aspectX: Int, //裁剪框比例数值
-    var aspectY: Int //裁剪框比例数值
+    var aspectX: Int, //裁剪框比例数值0，表示不限制
+    var aspectY: Int //裁剪框比例数值0，表示不限制
 )

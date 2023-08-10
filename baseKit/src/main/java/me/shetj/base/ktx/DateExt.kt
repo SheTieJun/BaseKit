@@ -8,9 +8,12 @@ import java.util.Locale
 import java.util.TimeZone
 import kotlin.collections.ArrayList
 
-fun Date?.getWeekOfDate(aLocale: Locale = Locale.getDefault()): String? {
+fun Date?.getWeekOfDate(
+    aLocale: Locale = Locale.getDefault(),
+    weekDaysName: Array<String> = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
+): String? {
     this?.apply {
-        val weekDaysName = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
+//        val weekDaysName = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
         // String[] weekDaysCode = { "0", "1", "2", "3", "4", "5", "6" };
         val calendar = Calendar.getInstance(aLocale)
         calendar.time = this

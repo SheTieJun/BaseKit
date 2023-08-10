@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.view.ViewTreeObserver
+import android.view.autofill.AutofillManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
@@ -23,8 +24,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView

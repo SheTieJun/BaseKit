@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import androidx.annotation.Keep
 import androidx.databinding.ViewDataBinding
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.appbar.MaterialToolbar
+import me.shetj.base.R
 import me.shetj.base.ktx.getClazz
 
 /**
@@ -24,9 +26,21 @@ abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseContr
         if (mBinding is ViewDataBinding) {
             (mBinding as ViewDataBinding).lifecycleOwner = this
         }
+        initBaseView()
         addObservers()
         setUpClicks()
         onInitialized()
+    }
+
+    override fun initBaseView() {
+        findViewById<MaterialToolbar>(R.id.toolbar)?.apply {
+            setSupportActionBar(this)
+            setNavigationOnClickListener {
+                back()
+            }
+        }
+        initView()
+        initData()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -35,9 +49,11 @@ abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseContr
             .invoke(null, layoutInflater) as VB
     }
 
+    @Deprecated("后续直接写在initBaseView中")
     override fun initView() {
     }
 
+    @Deprecated("后续直接写在initBaseView中")
     override fun initData() {
     }
 }

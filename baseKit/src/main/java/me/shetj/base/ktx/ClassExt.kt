@@ -23,9 +23,12 @@ fun <C> getClazz(obj: Any, position: Int = 0): Class<C> {
         .actualTypeArguments[position] as Class<C>
 }
 
-/**
- * -实现接口而来的泛型，就用 getGenericInterfaces() , 针对其中的元素转型为 ParameterizedType 来获得实际类型
+
+/** -实现接口而来的泛型，就用 getGenericInterfaces() , 针对其中的元素转型为 ParameterizedType 来获得实际类型
  * - tip：必须是泛型,否则会异常
+ * @param positionInterface 要获取泛型接口位置
+ * @param position 泛型位置
+ * @return
  */
 @Suppress("UNCHECKED_CAST")
 fun <C> getClazzByInterface(obj: Any, positionInterface: Int = 0, position: Int = 0): Class<C> {
@@ -73,9 +76,9 @@ fun getRawType(type: Type): Class<*>? {
     }
     throw IllegalArgumentException(
         "Expected a Class, ParameterizedType, or " +
-            "GenericArrayType, but <" +
-            type +
-            "> is of type " +
-            type.javaClass.name
+                "GenericArrayType, but <" +
+                type +
+                "> is of type " +
+                type.javaClass.name
     )
 }

@@ -26,10 +26,6 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     protected lateinit var mBinding: VB
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,12 +35,12 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         if (mBinding is ViewDataBinding){
             (mBinding as ViewDataBinding).lifecycleOwner = this
         }
-        viewBindData()
         return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initBaseView()
         addObservers()
         setUpClicks()
         onInitialized()
@@ -81,12 +77,6 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-    }
-
-    /**
-     * 初始化数据和界面绑定
-     */
-    open fun viewBindData() {
     }
 
     companion object {

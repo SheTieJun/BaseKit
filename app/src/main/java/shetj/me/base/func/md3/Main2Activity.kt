@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import me.shetj.base.base.AbBindingActivity
+import me.shetj.base.ktx.defDataStore
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivityMain2Binding
 import shetj.me.base.jankstats.JankStatsAggregator
