@@ -225,8 +225,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-
-    override fun initView() {
+    override fun initBaseView() {
+        super.initBaseView()
         setAppearance(isBlack = true, Color.TRANSPARENT)
         runOnUiThread {
             windowInsets?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")

@@ -1,8 +1,14 @@
 package me.shetj.base.mvp
 
+import android.os.Bundle
 import android.os.Message
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.AppLaunchChecker
+import androidx.core.app.AppLaunchChecker.onActivityCreate
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import me.shetj.base.base.AbBaseActivity
 import me.shetj.base.ktx.getClazz
 
@@ -11,12 +17,36 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView {
+abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView,LifecycleEventObserver {
     protected val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 
     override val rxContext: AppCompatActivity
         get() = this
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycle.addObserver(this)
+    }
+
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_CREATE -> {
+                onActivityCreate()
+            }
+            Lifecycle.Event.ON_DESTROY -> {
+                onActivityDestroy()
+            }
+            else -> {}
+        }
+    }
+
+    open fun onActivityCreate(){
+        initView()
+        initData()
+    }
 
     open fun onActivityDestroy() {
         if (lazyPresenter.isInitialized()) {
@@ -24,10 +54,10 @@ abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView {
         }
     }
 
-    override fun initView() {
+    open fun initView() {
     }
 
-    override fun initData() {
+    open fun initData() {
     }
 
 

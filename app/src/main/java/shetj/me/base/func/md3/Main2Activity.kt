@@ -50,6 +50,7 @@ class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
 
         // Initialize JankStats with an aggregator for the current window.
         jankStatsAggregator = JankStatsAggregator(window, jankReportListener)
+        mBinding.vm = main2TestVM
     }
 
 
@@ -66,13 +67,8 @@ class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
         jankStatsAggregator.jankStats.isTrackingEnabled = true
     }
 
-    override fun initView() {
 
-    }
 
-    override fun initData() {
-        mBinding.vm = main2TestVM
-    }
 
     override fun isEnableGrayTheme(): Boolean {
         return true

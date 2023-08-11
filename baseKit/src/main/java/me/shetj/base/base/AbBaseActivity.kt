@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -54,15 +55,6 @@ abstract class AbBaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    /**
-     * 连接view
-     */
-    protected abstract fun initView()
-
-    /**
-     * 连接数据
-     */
-    protected abstract fun initData()
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
