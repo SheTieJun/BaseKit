@@ -18,8 +18,7 @@ abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView {
     override val rxContext: AppCompatActivity
         get() = this
 
-    override fun onActivityDestroy() {
-        super.onActivityDestroy()
+    open fun onActivityDestroy() {
         if (lazyPresenter.isInitialized()) {
             mPresenter.onDestroy()
         }
@@ -29,6 +28,12 @@ abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView {
     }
 
     override fun initData() {
+    }
+
+
+    override fun onDestroy() {
+        onActivityDestroy()
+        super.onDestroy()
     }
 
     /**

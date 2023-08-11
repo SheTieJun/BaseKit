@@ -6,9 +6,7 @@ import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.plus
 import me.shetj.base.base.TaskExecutor
@@ -121,5 +119,7 @@ object BaseKit {
     fun initKoin(modules: List<Module>) {
         loadKoinModules(modules)
     }
+
+    fun isDebug() = isDebug.isTrue()
 
 }

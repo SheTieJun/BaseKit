@@ -3,6 +3,7 @@ package me.shetj.base.tools.file
 import android.content.Context
 import androidx.annotation.Keep
 
+@Suppress("UNCHECKED_CAST")
 @Keep
 class SPUtils {
     init {
@@ -63,6 +64,7 @@ class SPUtils {
                 is Boolean -> sp.getBoolean(key, defaultObject)
                 is Float -> sp.getFloat(key, defaultObject)
                 is Long -> sp.getLong(key, defaultObject)
+                is Set<*> -> sp.getStringSet(key, defaultObject as? Set<String>)
                 else -> null
             }
         }
@@ -131,6 +133,20 @@ class SPUtils {
             return sp.all
         }
 
+        /**
+         * 返回所有的键值对
+         *
+         * @param context
+         * @return
+         */
+        @JvmStatic
+        fun getAll(context: Context,spName:String): Map<String, *> {
+            val sp = context.getSharedPreferences(
+                FILE_NAME,
+                Context.MODE_PRIVATE
+            )
+            return sp.all
+        }
 
     }
 }

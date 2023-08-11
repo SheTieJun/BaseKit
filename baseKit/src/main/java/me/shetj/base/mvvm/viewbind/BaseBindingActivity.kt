@@ -31,8 +31,8 @@ abstract class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> : AbBin
     private val lazyViewBinding = lazy { initBinding() }
     private var mAcProvider: ViewModelProvider? = null
 
-    override fun onActivityCreate() {
-        super.onActivityCreate()
+    override fun addObservers() {
+        super.addObservers()
         mViewModel.baseAction.observe(this,this)
     }
 

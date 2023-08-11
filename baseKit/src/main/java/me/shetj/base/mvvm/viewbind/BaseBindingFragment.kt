@@ -54,7 +54,6 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
         if (mBinding is ViewDataBinding) {
             (mBinding as ViewDataBinding).lifecycleOwner = this
         }
-        initEventAndData()
         return mBinding.root
     }
 
@@ -71,9 +70,8 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
             .invoke(null, inflater, container, false) as VB
     }
 
-
-    override fun initEventAndData() {
-        super.initEventAndData()
+    override fun addObservers() {
+        super.addObservers()
         mViewModel.baseAction.observe(this, this)
     }
 

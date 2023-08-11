@@ -11,7 +11,6 @@ import java.util.Locale
 import java.util.TimeZone
 import kotlin.collections.LinkedHashMap
 import me.shetj.base.BaseKit
-import me.shetj.base.ktx.isTrue
 import me.shetj.base.ktx.toJson
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.ArmsUtils.Companion.getString
@@ -117,7 +116,7 @@ class HttpHeaders : Serializable {
                 Locale.getDefault().language + "_" + Locale.getDefault().country,
                 checkNameAndValue(Build.MANUFACTURER),
                 Build.VERSION.SDK_INT,
-                if (BaseKit.isDebug.isTrue())"Debug" else "Release"
+                if (BaseKit.isDebug())"Debug" else "Release"
             )
 
         /**

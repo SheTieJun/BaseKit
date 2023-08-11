@@ -39,21 +39,11 @@ abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseContr
                 back()
             }
         }
-        initView()
-        initData()
     }
 
     @Suppress("UNCHECKED_CAST")
     open fun initBinding(): VB {
         return getClazz<VB>(this, 0).getMethod("inflate", LayoutInflater::class.java)
             .invoke(null, layoutInflater) as VB
-    }
-
-    @Deprecated("后续直接写在initBaseView中")
-    override fun initView() {
-    }
-
-    @Deprecated("后续直接写在initBaseView中")
-    override fun initData() {
     }
 }
