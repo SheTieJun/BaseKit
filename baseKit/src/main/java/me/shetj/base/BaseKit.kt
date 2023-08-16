@@ -91,9 +91,9 @@ object BaseKit {
     internal fun init(application: Application, isDebug: Boolean, baseUrl: String? = null) {
         this.isDebug.postValue(isDebug)
         this.baseUrl = baseUrl
-        this.TAG = AppUtils.appName ?: "BaseKit"
+        Utils.init(application)
         TaskExecutor.executeOnMain {
-            Utils.init(application)
+            this.TAG = AppUtils.appName ?: "BaseKit"
             Tim.setLogAuto(isDebug)
             if (isDebug) {
                 DebugFunc.getInstance().apply {

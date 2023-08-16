@@ -6,6 +6,7 @@ import me.shetj.base.BaseKit
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
+import me.shetj.base.network.interceptor.ReceivedCookiesInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.ohter.OkHttpDns
 import me.shetj.base.network_coroutine.KCApiService
@@ -39,6 +40,17 @@ internal fun getHttpModule(): Module {
       }
 
       single {
+          ReceivedCookiesInterceptor(false)
+      }
+
+      single {
+          HttpHeaders().apply {
+              put(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, HttpHeaders.acceptLanguage)
+              put(HttpHeaders.HEAD_KEY_USER_AGENT, HttpHeaders.userAgent)
+          }
+      }
+
+      single {
 
           val timeout = 20000L // 默认的超时时间20秒
 
@@ -46,19 +58,13 @@ internal fun getHttpModule(): Module {
               connectTimeout(timeout, TimeUnit.MILLISECONDS)
               readTimeout(timeout, TimeUnit.MILLISECONDS)
               writeTimeout(timeout, TimeUnit.MILLISECONDS)
-              addInterceptor(
-                  HeadersInterceptor(
-                      HttpHeaders().apply {
-                          put(HttpHeaders.HEAD_KEY_ACCEPT_LANGUAGE, HttpHeaders.acceptLanguage)
-                          put(HttpHeaders.HEAD_KEY_USER_AGENT, HttpHeaders.userAgent)
-                      }
-                  )
-              )
+              addInterceptor(HeadersInterceptor(get(HttpHeaders::class.java)))
+              addInterceptor(get(ReceivedCookiesInterceptor::class.java))
               hostnameVerifier { _, _ -> true } // 主机验证
               val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
               sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
               addInterceptor(get(HttpLoggingInterceptor::class.java))
-              cache(Cache(File(EnvironmentStorage.getPath(packagePath = "unKonw")), 1024 * 1024 * 12))
+              cache(Cache(File(EnvironmentStorage.getPath(packagePath = "unKnow")), 1024 * 1024 * 12))
               dns(OkHttpDns.getInstance())
           }
       }

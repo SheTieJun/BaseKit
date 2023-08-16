@@ -1,30 +1,32 @@
-package shetj.me.base.test;
+package me.shetj.base.network.interceptor
 
-import android.content.SharedPreferences;
-import java.io.IOException;
-import java.util.HashSet;
-import me.shetj.base.BaseKit;
-import okhttp3.Interceptor;
-import okhttp3.Response;
+import java.io.IOException
+import me.shetj.base.network.model.HttpHeaders
+import me.shetj.base.network_coroutine.HttpKit
+import okhttp3.Interceptor
+import okhttp3.Interceptor.Chain
+import okhttp3.Response
 
-public class ReceivedCookiesInterceptor implements Interceptor {
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-        Response originalResponse = chain.proceed(chain.request());
+/**
+ * Received cookies interceptor
+ * 用于支持一些公开的API,他们使用的是cookie来进行权限验证
+ */
+class ReceivedCookiesInterceptor (private var enable:Boolean = false): Interceptor {
 
-        if (!originalResponse.headers("Set-Cookie").isEmpty()) {
-            HashSet<String> cookies = new HashSet<>();
+    fun setEnable(enable:Boolean){
+        this.enable = enable
+    }
 
-            for (String header : originalResponse.headers("Set-Cookie")) {
-                cookies.add(header);
+    @Throws(IOException::class)
+    override fun intercept(chain: Chain): Response {
+        val originalResponse = chain.proceed(chain.request())
+        if (originalResponse.headers(HttpHeaders.HEAD_KEY_SET_COOKIE).isNotEmpty() && enable) {
+            val cookies = HashSet<String>()
+            for (header in originalResponse.headers("Set-Cookie")) {
+                cookies.add(header)
+                HttpKit.addCookie(header)
             }
-
-            SharedPreferences.Editor config = BaseKit.getApp().getSharedPreferences("config",  BaseKit.getApp().MODE_PRIVATE)
-                    .edit();
-            config.putStringSet("cookie", cookies);
-            config.commit();
         }
-
-        return originalResponse;
+        return originalResponse
     }
 }
