@@ -39,10 +39,11 @@ object KCHttpV4 {
         useDefOption: Boolean = false,
         requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
     ): HttpResult<T> {
-        return runCatching<T> {
-            doNet(requestOption) {
-                apiService.get(url, maps).string()
-            }
+        return try {
+            val result = doGetCache(url, maps, useDefOption, requestOption).convertToT<T>()
+            HttpResult.success(result)
+        } catch (e: Throwable) {
+            HttpResult.failure(ApiException.handleException(e))
         }
     }
 
@@ -54,10 +55,11 @@ object KCHttpV4 {
         useDefOption: Boolean = false,
         requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
     ): HttpResult<T> {
-        return runCatching<T> {
-            doNet(requestOption) {
-                apiService.post(url, maps).string()
-            }
+        return try {
+            val result = doPostCache(url, maps, useDefOption, requestOption).convertToT<T>()
+            HttpResult.success(result)
+        } catch (e: Throwable) {
+            HttpResult.failure(ApiException.handleException(e))
         }
     }
 
@@ -68,10 +70,11 @@ object KCHttpV4 {
         useDefOption: Boolean = false,
         requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
     ): HttpResult<T> {
-        return runCatching<T> {
-            doNet(requestOption) {
-                apiService.postJson(url, json.createJson()).string()
-            }
+        return try {
+            val result = doPostJsonCache(url, json, useDefOption, requestOption).convertToT<T>()
+            HttpResult.success(result)
+        } catch (e: Throwable) {
+            HttpResult.failure(ApiException.handleException(e))
         }
     }
 
@@ -82,10 +85,11 @@ object KCHttpV4 {
         useDefOption: Boolean = false,
         requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
     ): HttpResult<T> {
-        return runCatching<T> {
-            doNet(requestOption) {
-                apiService.postBody(url, body).string()
-            }
+        return try {
+            val result = doPostBodyCache(url, body, useDefOption, requestOption).convertToT<T>()
+            HttpResult.success(result)
+        } catch (e: Throwable) {
+            HttpResult.failure(ApiException.handleException(e))
         }
     }
 
@@ -96,36 +100,168 @@ object KCHttpV4 {
         useDefOption: Boolean = false,
         requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
     ): HttpResult<T> {
-        return runCatching<T> {
-            doNet(requestOption) {
+        return try {
+            val result = doPostBodyCache(url, body, useDefOption, requestOption).convertToT<T>()
+            HttpResult.success(result)
+        } catch (e: Throwable) {
+            HttpResult.failure(ApiException.handleException(e))
+        }
+    }
+
+
+    suspend fun doGetCache(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+        useDefOption: Boolean = false,
+        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+    ): String {
+        return getDataFromApiOrCache(requestOption,
+            fromNetworkValue = {
+                doGetReTry(url, maps, requestOption)
+            })
+    }
+
+    suspend fun doGetReTry(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+        requestOption: RequestOption? = null
+    ): String {
+        return if (requestOption == null) {
+            apiService.get(url, maps).string()
+        } else {
+            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
+                apiService.get(url, maps).string()
+            }
+        }
+    }
+
+
+    suspend fun doPostCache(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+        useDefOption: Boolean = false,
+        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+    ): String {
+        return getDataFromApiOrCache(requestOption,
+            fromNetworkValue = {
+                doPostReTry(url, maps, requestOption)
+            })
+    }
+
+    suspend fun doPostReTry(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+        requestOption: RequestOption? = null
+    ): String {
+        return if (requestOption == null) {
+            apiService.post(url, maps).string()
+        } else {
+            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
+                apiService.post(url, maps).string()
+            }
+        }
+    }
+
+    suspend fun doPostJsonCache(
+        url: String,
+        json: String,
+        useDefOption: Boolean = false,
+        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+    ): String {
+        return getDataFromApiOrCache(requestOption,
+            fromNetworkValue = {
+                doPostJsonReTry(url, json, requestOption)
+            })
+    }
+
+    suspend fun doPostJsonReTry(
+        url: String,
+        json: String,
+        requestOption: RequestOption? = null
+    ): String {
+        return if (requestOption == null) {
+            apiService.postJson(url, json.createJson()).string()
+        } else {
+            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
+                apiService.postJson(url, json.createJson()).string()
+            }
+        }
+    }
+
+    suspend fun doPostBodyCache(
+        url: String,
+        body: Any,
+        useDefOption: Boolean = false,
+        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+    ): String {
+        return getDataFromApiOrCache(requestOption,
+            fromNetworkValue = {
+                doPostBodyReTry(url, body, requestOption)
+            })
+    }
+
+    suspend fun doPostBodyReTry(
+        url: String,
+        body: Any,
+        requestOption: RequestOption? = null
+    ): String {
+        return if (requestOption == null) {
+            apiService.postBody(url, body).string()
+        } else {
+            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
                 apiService.postBody(url, body).string()
             }
         }
     }
 
+    suspend fun doPostBodyCache(
+        url: String,
+        body: RequestBody,
+        useDefOption: Boolean = false,
+        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+    ): String {
+        return getDataFromApiOrCache(requestOption,
+            fromNetworkValue = {
+                doPostBodyReTry(url, body, requestOption)
+            })
+    }
+
+    suspend fun doPostBodyReTry(
+        url: String,
+        body: RequestBody,
+        requestOption: RequestOption? = null
+    ): String {
+        return if (requestOption == null) {
+            apiService.postBody(url, body).string()
+        } else {
+            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
+                apiService.postBody(url, body).string()
+            }
+        }
+    }
+
+
     /**
      * @param requestOption  请求选项
      * @param fromNetworkValue 如果没有使用缓存，就会通过改方法获取，来自网络内容
      */
-    suspend inline fun <reified T> getDataFromApiOrCache(
+    private suspend fun getDataFromApiOrCache(
         requestOption: RequestOption? = null,
-        crossinline fromNetworkValue: suspend (timeout: Long, repeatNum: Int) -> String
-    ): T {
-        val timeout = requestOption?.timeout ?: -1
-        val repeatNum = requestOption?.repeatNum ?: 1
-
+        fromNetworkValue: suspend () -> String
+    ): String {
         if (requestOption?.cacheKey.isNullOrEmpty()) {
-            return fromNetworkValue(timeout, repeatNum).convertToT()
+            return fromNetworkValue().convertToT()
         }
         return when (requestOption?.cacheMode) {
             CacheMode.DEFAULT -> {
                 // 不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
-                fromNetworkValue(timeout, repeatNum)
+                fromNetworkValue()
             }
+
             CacheMode.FIRST_NET -> {
                 // 先请求网络，请求网络失败后再加载缓存
                 try {
-                    fromNetworkValue(timeout, repeatNum)
+                    fromNetworkValue()
                 } catch (e: Exception) {
                     withContext(Dispatchers.IO) {
                         HttpKit.getKCCache().load(requestOption.cacheKey, requestOption.cacheTime)?.also {
@@ -134,6 +270,7 @@ object KCHttpV4 {
                     } ?: throw ApiException.handleException(e)
                 }
             }
+
             CacheMode.FIRST_CACHE -> {
                 // 先加载缓存，缓存没有再去请求网络
                 withContext(Dispatchers.IO) {
@@ -142,17 +279,19 @@ object KCHttpV4 {
                             "use cache :cacheKey = ${requestOption.cacheKey} \n,value = $it ".logD(TAG)
                         }
                 } ?: kotlin.run {
-                    fromNetworkValue(timeout, repeatNum).also {
+                    fromNetworkValue().also {
                         saveCache(requestOption, it)
                     }
                 }
             }
+
             CacheMode.ONLY_NET -> {
                 // 仅加载网络，但数据依然会被缓存
-                fromNetworkValue(timeout, repeatNum).also {
+                fromNetworkValue().also {
                     saveCache(requestOption, it)
                 }
             }
+
             CacheMode.ONLY_CACHE -> {
                 // 只读取缓存
                 withContext(Dispatchers.IO) {
@@ -164,6 +303,7 @@ object KCHttpV4 {
                     "cacheKey = '${requestOption.cacheKey}' no cache"
                 )
             }
+
             CacheMode.CACHE_NET_DISTINCT -> {
                 /* 先使用缓存，不管是否存在，仍然请求网络，会先把缓存回调给你，
                      * 络请求回来发现数据是一样的就不会再返回，否则再返回
@@ -171,7 +311,7 @@ object KCHttpV4 {
                 val cacheInfo = withContext(Dispatchers.IO) {
                     HttpKit.getKCCache().load(requestOption.cacheKey, requestOption.cacheTime)
                 }
-                val apiInfo = fromNetworkValue(timeout, repeatNum)
+                val apiInfo = fromNetworkValue()
 
                 if (cacheInfo != apiInfo) {
                     saveCache(requestOption, apiInfo)
@@ -180,12 +320,13 @@ object KCHttpV4 {
                     throw CacheException(OK_CACHE_EXCEPTION, "the same data,so not update")
                 }
             }
+
             else -> {
-                fromNetworkValue(timeout, repeatNum).also {
+                fromNetworkValue().also {
                     saveCache(requestOption, it)
                 }
             }
-        }.convertToT()
+        }
     }
 
     @JvmOverloads
@@ -254,21 +395,6 @@ object KCHttpV4 {
         this as T
     }
 
-
-    /**
-     * @param doNetWork 请求网络
-     */
-    suspend inline fun <reified T> doNet(
-        option: RequestOption? = null,
-        crossinline doNetWork: suspend () -> String
-    ) = withContext(Dispatchers.IO) {
-        getDataFromApiOrCache<T>(option,
-            fromNetworkValue = { timeout, repeatNum ->
-                retryRequest(timeout = timeout, repeatNum = repeatNum) {
-                    doNetWork.invoke()
-                }
-            })
-    }
 
     /**
      * 重试逻辑

@@ -16,7 +16,7 @@ import androidx.annotation.Keep
    See the License for the specific language governing permissions and
    limitations under the License.
  */@Keep
-class ResultMusic(var msg: String, var code: Int, var data: List<DataBean>) {
+data class ResultMusic(var msg: String, var code: Int, var data: List<DataBean>) {
 
     class DataBean {
         var url :String ?= null

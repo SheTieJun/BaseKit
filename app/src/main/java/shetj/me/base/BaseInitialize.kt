@@ -7,12 +7,12 @@ import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatDelegate
 import com.shetj.messenger.SLogMessenger
 import me.shetj.base.BaseKit
-import me.shetj.base.BuildConfig
 import me.shetj.base.init.ABBaseInitialize
 import me.shetj.base.ktx.logD
 import me.shetj.base.network_coroutine.HttpKit
 import me.shetj.base.tools.app.MDThemeKit
 import me.shetj.base.tools.app.MDThemeKit.ThemeBean
+import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
 
 
@@ -24,7 +24,8 @@ class BaseInitialize : ABBaseInitialize() {
 
     override fun initContent(context: Context) {
         Thread.setDefaultUncaughtExceptionHandler(BaseUncaughtExceptionHandler())
-        HttpKit.debugHttp(BuildConfig.DEBUG)
+        HttpKit.debugHttp(true)
+        Tim.setLogAuto(true)
         //这里需要安装另外一个demo(专门用来接收日志的),服务APP,最好开启自启动
         SLogMessenger.getInstance().bindService(context, "me.shetj.logkit.demo")
         BaseKit.versionName.logD("")

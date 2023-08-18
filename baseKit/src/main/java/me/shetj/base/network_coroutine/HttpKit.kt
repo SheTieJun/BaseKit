@@ -60,14 +60,14 @@ object HttpKit {
     }
 
     private fun saveCookie() {
-        SPUtils.put(BaseKit.app, HttpHeaders.HEAD_KEY_COOKIE, headers.toJSONString())
+        SPUtils.put(BaseKit.app, HttpHeaders.HEAD_KEY_COOKIE, headers[HttpHeaders.HEAD_KEY_COOKIE].toString())
     }
 
     fun loadCookie() {
         enableReceivedCookies(true)
         (SPUtils.get(BaseKit.app, HttpHeaders.HEAD_KEY_COOKIE, "") as? String)?.let {
-            GsonKit.jsonToStringMap(it)?.forEach { (key, value) ->
-                headers.put(key, value)
+            if (it.isNotEmpty()){
+                headers.put(HttpHeaders.HEAD_KEY_COOKIE, it)
             }
         }
     }

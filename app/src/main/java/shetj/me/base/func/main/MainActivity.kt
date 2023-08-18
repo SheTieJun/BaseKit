@@ -277,6 +277,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     @Debug
     suspend fun netTest() {
         mViewModel.getMusicV2()
+//        mViewModel.getMusicV3()
     }
 
 }

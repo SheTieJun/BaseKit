@@ -17,6 +17,7 @@ import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
 import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
 import me.shetj.base.network.exception.CacheException
 import me.shetj.base.network.kt.createJson
+import me.shetj.base.network_coroutine.RequestOption.Companion
 import me.shetj.base.network_coroutine.cache.CacheMode
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
@@ -24,7 +25,7 @@ import org.koin.java.KoinJavaComponent.get
 /**
  * 协程 Http请求
  * - 感觉可能用的不多，所以就只写这几个方法了
- * - [me.shetj.base.network_coroutine.RequestOption]控制缓存
+ * 带重试
  */
 object KCHttpV3 {
 
@@ -32,157 +33,84 @@ object KCHttpV3 {
 
     val apiService: KCApiService = get(KCApiService::class.java)
 
-    @JvmOverloads
     suspend inline fun <reified T> get(
         url: String,
         maps: Map<String, String>? = HashMap(),
-        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            doNet(requestOption) {
-                apiService.get(url, maps).string()
-            }
+            doGet(url, maps).convertToT()
         }
     }
 
 
-    @JvmOverloads
     suspend inline fun <reified T> post(
         url: String,
         maps: Map<String, String>? = HashMap(),
-        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            doNet(requestOption) {
-                apiService.post(url, maps).string()
-            }
+            doPost(url, maps).convertToT()
         }
     }
 
-    @JvmOverloads
+
     suspend inline fun <reified T> postJson(
         url: String,
         json: String,
-        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            doNet(requestOption) {
-                apiService.postJson(url, json.createJson()).string()
-            }
+            doPostJson(url, json).convertToT()
         }
     }
 
-    @JvmOverloads
-    suspend inline fun <reified T> postBody(
-        url: String,
-        body: Any,
-        noinline requestOption: (RequestOption.() -> Unit)? = null
-    ): HttpResult<T> {
-        return runCatching<T> {
-            doNet(requestOption) {
-                apiService.postBody(url, body).string()
-            }
-        }
-    }
 
-    @JvmOverloads
     suspend inline fun <reified T> postBody(
         url: String,
         body: RequestBody,
-        noinline requestOption: (RequestOption.() -> Unit)? = null
     ): HttpResult<T> {
         return runCatching<T> {
-            doNet(requestOption) {
-                apiService.postBody(url, body).string()
-            }
+            doPostBody(url, body).convertToT()
         }
     }
 
-    /**
-     * @param requestOption  请求选项
-     * @param fromNetworkValue 如果没有使用缓存，就会通过改方法获取，来自网络内容
-     */
-    suspend inline fun <reified T> getDataFromApiOrCache(
-        noinline requestOption: (RequestOption.() -> Unit)?,
-        crossinline fromNetworkValue: suspend (timeout: Long, repeatNum: Int) -> String
-    ): T {
-        val cache = requestOption?.let { RequestOption().apply(requestOption) }
-        val timeout = cache?.timeout ?: -1
-        val repeatNum = cache?.repeatNum ?: 1
-
-        if (cache?.cacheKey.isNullOrEmpty()){
-          return fromNetworkValue(timeout, repeatNum).convertToT()
+    @JvmOverloads
+    suspend fun doPost(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+    ): String {
+        return retryRequest {
+            apiService.post(url, maps).string()
         }
-        return when (cache?.cacheMode) {
-            CacheMode.DEFAULT -> {
-                // 不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
-                fromNetworkValue(timeout, repeatNum)
-            }
-            CacheMode.FIRST_NET -> {
-                // 先请求网络，请求网络失败后再加载缓存
-                try {
-                    fromNetworkValue(timeout, repeatNum)
-                } catch (e: Exception) {
-                    withContext(Dispatchers.IO) {
-                        HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)?.also {
-                            "use cache key = ${cache.cacheKey} \n,value = $it ".logD(TAG)
-                        }
-                    } ?: throw ApiException.handleException(e)
-                }
-            }
-            CacheMode.FIRST_CACHE -> {
-                // 先加载缓存，缓存没有再去请求网络
-                withContext(Dispatchers.IO) {
-                    HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)
-                        ?.also {
-                            "use cache :cacheKey = ${cache.cacheKey} \n,value = $it ".logD(TAG)
-                        }
-                } ?: kotlin.run {
-                    fromNetworkValue(timeout, repeatNum).also {
-                        saveCache(cache, it)
-                    }
-                }
-            }
-            CacheMode.ONLY_NET -> {
-                // 仅加载网络，但数据依然会被缓存
-                fromNetworkValue(timeout, repeatNum).also {
-                    saveCache(cache, it)
-                }
-            }
-            CacheMode.ONLY_CACHE -> {
-                // 只读取缓存
-                withContext(Dispatchers.IO) {
-                    HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)?.also {
-                        "use cache : cacheKey = ${cache.cacheKey} \n,value = $it ".logD(TAG)
-                    }
-                } ?: throw CacheException(
-                    OK_CACHE_EXCEPTION,
-                    "cacheKey = '${cache.cacheKey}' no cache"
-                )
-            }
-            CacheMode.CACHE_NET_DISTINCT -> {
-                /* 先使用缓存，不管是否存在，仍然请求网络，会先把缓存回调给你，
-                     * 络请求回来发现数据是一样的就不会再返回，否则再返回
-                     */
-                val cacheInfo = withContext(Dispatchers.IO) {
-                    HttpKit.getKCCache().load(cache.cacheKey, cache.cacheTime)
-                }
-                val apiInfo = fromNetworkValue(timeout, repeatNum)
-
-                if (cacheInfo != apiInfo) {
-                    saveCache(cache, apiInfo)
-                    apiInfo
-                } else {
-                    throw CacheException(OK_CACHE_EXCEPTION, "the same data,so not update")
-                }
-            }
-            else -> {
-                fromNetworkValue(timeout, repeatNum).also {
-                    saveCache(cache, it)
-                }
-            }
-        }.convertToT()
     }
+    @JvmOverloads
+    suspend fun doGet(
+        url: String,
+        maps: Map<String, String>? = HashMap(),
+    ): String {
+        return retryRequest {
+            apiService.get(url, maps).string()
+        }
+    }
+
+
+    suspend fun doPostJson(
+        url: String,
+        json: String,
+    ): String {
+        return retryRequest {
+            apiService.postJson(url, json.createJson()).string()
+        }
+    }
+
+
+    suspend fun doPostBody(
+        url: String,
+        body: RequestBody,
+    ): String {
+        return retryRequest {
+            apiService.postBody(url, body).string()
+        }
+    }
+
 
     @JvmOverloads
     suspend fun download(
@@ -252,21 +180,6 @@ object KCHttpV3 {
 
 
     /**
-     * @param doNetWork 请求网络
-     */
-    suspend inline fun <reified T> doNet(
-        noinline option: (RequestOption.() -> Unit)? = null,
-        crossinline doNetWork: suspend () -> String
-    ) = withContext(Dispatchers.IO) {
-        getDataFromApiOrCache<T>(option,
-            fromNetworkValue = { timeout, repeatNum ->
-                retryRequest(timeout = timeout, repeatNum = repeatNum) {
-                    doNetWork.invoke()
-                }
-            })
-    }
-
-    /**
      * 重试逻辑
      * @param repeatNum 重试次数
      * @param initialDelay 重试延迟,每次重试延迟多【次数*[factor]】秒,
@@ -317,14 +230,4 @@ object KCHttpV3 {
         }
     }
 
-    /**
-     * use by [me.shetj.base.network_coroutine.KCHttpV3]
-     */
-    suspend fun saveCache(requestOption: RequestOption?, data: String) {
-        if (!requestOption?.cacheKey.isNullOrBlank()) {
-            withContext(Dispatchers.IO) {
-                HttpKit.getKCCache().save(requestOption?.cacheKey, data)
-            }
-        }
-    }
 }

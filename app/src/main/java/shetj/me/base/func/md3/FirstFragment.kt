@@ -8,10 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import java.util.*
+import me.shetj.base.ktx.logI
 import me.shetj.base.tools.app.LanguageKit
 import shetj.me.base.R
 import shetj.me.base.databinding.FragmentFirstBinding
+import shetj.me.base.day.Month
+import shetj.me.base.day.MonthAdapter
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -48,6 +52,22 @@ class FirstFragment : Fragment() {
                 LanguageKit.changeLanguage(requireContext(), Locale.CHINA)
             }
         }
+
+        addMonthAdapter()
+    }
+
+    private fun addMonthAdapter() {
+        val current = Month.current()
+
+        """daysInMonth:${current.daysInMonth}
+            |month:${current.month}
+            |year:${current.year}
+            |timeInMillis:${current.timeInMillis}
+            |daysInWeek:${current.daysInWeek}
+        """.trimMargin().logI()
+        binding.groupLayout.layoutManager = GridLayoutManager(requireContext(), 7)
+        binding.groupLayout.adapter = MonthAdapter(current)
+
     }
 
     val isEn: Boolean
