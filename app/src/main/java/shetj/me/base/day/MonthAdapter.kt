@@ -44,7 +44,7 @@ class MonthAdapter(private val month: Month) : RecyclerView.Adapter<BaseViewHold
     }
 
     override fun getItemCount(): Int {
-        return dayToPosition(month.daysInMonth)
+        return dayToPosition(month.daysInMonth)+1
     }
     /**
      * Returns the index of the first position which is part of the month.

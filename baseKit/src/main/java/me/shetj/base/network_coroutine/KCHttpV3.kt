@@ -35,7 +35,7 @@ object KCHttpV3 {
 
     suspend inline fun <reified T> get(
         url: String,
-        maps: Map<String, String>? = HashMap(),
+        maps: Map<String, String>
     ): HttpResult<T> {
         return runCatching<T> {
             doGet(url, maps).convertToT()
@@ -45,7 +45,7 @@ object KCHttpV3 {
 
     suspend inline fun <reified T> post(
         url: String,
-        maps: Map<String, String>? = HashMap(),
+        maps: Map<String, String>
     ): HttpResult<T> {
         return runCatching<T> {
             doPost(url, maps).convertToT()

@@ -56,6 +56,12 @@ inline fun <reified T> String?.toBean() = this?.let { GsonKit.jsonToBean(it, T::
 
 inline fun <reified T> String?.toList() = this?.let { GsonKit.jsonToList(it, T::class.java) }
 
+inline fun <reified T> String.convertToT() = if (T::class.java != String::class.java) {
+    this.toBean()!!
+} else {
+    this as T
+}
+
 fun String?.toMap() = this?.let { GsonKit.jsonToStringMap(it) }
 
 //endregion Json相关

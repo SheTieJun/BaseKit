@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import me.shetj.base.ktx.convertToT
 import me.shetj.base.ktx.logD
-import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
 import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
@@ -30,98 +30,70 @@ object KCHttpV4 {
 
     const val TAG = "KCHttpV4"
 
-    val apiService: KCApiService = get(KCApiService::class.java)
+    private val apiService: KCApiService = get(KCApiService::class.java)
 
-    @JvmOverloads
+
     suspend inline fun <reified T> get(
         url: String,
-        maps: Map<String, String>? = HashMap(),
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        maps: Map<String, String>,
+        requestOption: RequestOption
     ): HttpResult<T> {
-        return try {
-            val result = doGetCache(url, maps, useDefOption, requestOption).convertToT<T>()
-            HttpResult.success(result)
-        } catch (e: Throwable) {
-            HttpResult.failure(ApiException.handleException(e))
+        return runCatching<T> {
+            doGetCache(url, maps, requestOption).convertToT()
         }
     }
 
 
-    @JvmOverloads
     suspend inline fun <reified T> post(
         url: String,
-        maps: Map<String, String>? = HashMap(),
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        maps: Map<String, String>,
+        requestOption: RequestOption
     ): HttpResult<T> {
-        return try {
-            val result = doPostCache(url, maps, useDefOption, requestOption).convertToT<T>()
-            HttpResult.success(result)
-        } catch (e: Throwable) {
-            HttpResult.failure(ApiException.handleException(e))
+        return runCatching<T> {
+            doPostCache(url, maps, requestOption).convertToT()
         }
     }
 
-    @JvmOverloads
     suspend inline fun <reified T> postJson(
         url: String,
         json: String,
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        requestOption: RequestOption
     ): HttpResult<T> {
-        return try {
-            val result = doPostJsonCache(url, json, useDefOption, requestOption).convertToT<T>()
-            HttpResult.success(result)
-        } catch (e: Throwable) {
-            HttpResult.failure(ApiException.handleException(e))
+        return runCatching<T> {
+            doPostJsonCache(url, json, requestOption).convertToT()
         }
     }
 
-    @JvmOverloads
     suspend inline fun <reified T> postBody(
         url: String,
         body: Any,
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        requestOption: RequestOption
     ): HttpResult<T> {
-        return try {
-            val result = doPostBodyCache(url, body, useDefOption, requestOption).convertToT<T>()
-            HttpResult.success(result)
-        } catch (e: Throwable) {
-            HttpResult.failure(ApiException.handleException(e))
+        return runCatching<T> {
+            doPostBodyCache(url, body, requestOption).convertToT()
         }
     }
 
-    @JvmOverloads
     suspend inline fun <reified T> postBody(
         url: String,
         body: RequestBody,
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        requestOption: RequestOption
     ): HttpResult<T> {
-        return try {
-            val result = doPostBodyCache(url, body, useDefOption, requestOption).convertToT<T>()
-            HttpResult.success(result)
-        } catch (e: Throwable) {
-            HttpResult.failure(ApiException.handleException(e))
+        return runCatching<T> {
+            doPostBodyCache(url, body, requestOption).convertToT()
         }
     }
 
 
     suspend fun doGetCache(
         url: String,
-        maps: Map<String, String>? = HashMap(),
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        maps: Map<String, String> = HashMap(),
+        requestOption: RequestOption = url.getDefReqOption()
     ): String {
-        return getDataFromApiOrCache(requestOption,
-            fromNetworkValue = {
-                doGetReTry(url, maps, requestOption)
-            })
+        return getDataFromApiOrCache(requestOption, fromNetworkValue = { doGetRetry(url, maps, requestOption) })
     }
 
-    suspend fun doGetReTry(
+    suspend fun doGetRetry(
         url: String,
         maps: Map<String, String>? = HashMap(),
         requestOption: RequestOption? = null
@@ -138,17 +110,13 @@ object KCHttpV4 {
 
     suspend fun doPostCache(
         url: String,
-        maps: Map<String, String>? = HashMap(),
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        maps: Map<String, String> = HashMap(),
+        requestOption: RequestOption = url.getDefReqOption()
     ): String {
-        return getDataFromApiOrCache(requestOption,
-            fromNetworkValue = {
-                doPostReTry(url, maps, requestOption)
-            })
+        return getDataFromApiOrCache(requestOption, fromNetworkValue = { doPostRetry(url, maps, requestOption) })
     }
 
-    suspend fun doPostReTry(
+    suspend fun doPostRetry(
         url: String,
         maps: Map<String, String>? = HashMap(),
         requestOption: RequestOption? = null
@@ -165,78 +133,54 @@ object KCHttpV4 {
     suspend fun doPostJsonCache(
         url: String,
         json: String,
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        requestOption: RequestOption = url.getDefReqOption()
     ): String {
-        return getDataFromApiOrCache(requestOption,
-            fromNetworkValue = {
-                doPostJsonReTry(url, json, requestOption)
-            })
+        return getDataFromApiOrCache(requestOption, fromNetworkValue = { doPostJsonRetry(url, json, requestOption) })
     }
 
-    suspend fun doPostJsonReTry(
+    suspend fun doPostJsonRetry(
         url: String,
         json: String,
-        requestOption: RequestOption? = null
+        requestOption: RequestOption
     ): String {
-        return if (requestOption == null) {
+        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
             apiService.postJson(url, json.createJson()).string()
-        } else {
-            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
-                apiService.postJson(url, json.createJson()).string()
-            }
         }
     }
 
     suspend fun doPostBodyCache(
         url: String,
         body: Any,
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        requestOption: RequestOption = url.getDefReqOption()
     ): String {
-        return getDataFromApiOrCache(requestOption,
-            fromNetworkValue = {
-                doPostBodyReTry(url, body, requestOption)
-            })
+        return getDataFromApiOrCache(requestOption, fromNetworkValue = { doPostBodyRetry(url, body, requestOption) })
     }
 
-    suspend fun doPostBodyReTry(
+    suspend fun doPostBodyRetry(
         url: String,
         body: Any,
-        requestOption: RequestOption? = null
+        requestOption: RequestOption
     ): String {
-        return if (requestOption == null) {
+        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
             apiService.postBody(url, body).string()
-        } else {
-            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
-                apiService.postBody(url, body).string()
-            }
         }
     }
 
     suspend fun doPostBodyCache(
         url: String,
         body: RequestBody,
-        useDefOption: Boolean = false,
-        requestOption: RequestOption? = if (useDefOption) url.getDefReqOption() else null
+        requestOption: RequestOption = url.getDefReqOption()
     ): String {
-        return getDataFromApiOrCache(requestOption,
-            fromNetworkValue = {
-                doPostBodyReTry(url, body, requestOption)
-            })
+        return getDataFromApiOrCache(requestOption, fromNetworkValue = { doPostBodyRetry(url, body, requestOption) })
     }
 
-    suspend fun doPostBodyReTry(
+    suspend fun doPostBodyRetry(
         url: String,
         body: RequestBody,
-        requestOption: RequestOption? = null
+        requestOption: RequestOption
     ): String {
-        return if (requestOption == null) {
+        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
             apiService.postBody(url, body).string()
-        } else {
-            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
-                apiService.postBody(url, body).string()
-            }
         }
     }
 
@@ -387,12 +331,6 @@ object KCHttpV4 {
                     onProcess(progress.currentLength, progress.length, progress.process)
                 })
             }
-    }
-
-    inline fun <reified T> String.convertToT() = if (T::class.java != String::class.java) {
-        this.toBean()!!
-    } else {
-        this as T
     }
 
 

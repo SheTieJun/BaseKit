@@ -103,21 +103,24 @@ class HttpHeaders : Serializable {
         const val HEAD_KEY_COOKIE = "Cookie"
         const val HEAD_KEY_SET_COOKIE = "Set-Cookie"
 
-        @SuppressLint("ConstantLocale")
-        private val USER_AGENT =
-            String.format(
-                " SystemName/%s SystemVersion/%s AppName/%s Device/%s NetType/%s " +
-                    "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
-                "Android",
-                Build.VERSION.RELEASE,
-                Build.MODEL,
-                AppUtils.appName?:"null",
-                NetworkUtils.getPhoneType(app.applicationContext),
-                Locale.getDefault().language + "_" + Locale.getDefault().country,
-                checkNameAndValue(Build.MANUFACTURER),
-                Build.VERSION.SDK_INT,
-                if (BaseKit.isDebug())"Debug" else "Release"
-            )
+        private val USER_AGENT:String
+            get() {
+               return checkNameAndValue(String.format(
+                    " SystemName/%s SystemVersion/%s %s/%s Device/%s NetType/%s " +
+                            "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
+                    "Android",
+                    Build.VERSION.RELEASE,
+                    Build.MODEL,
+                    AppUtils.appName?:"BaseKit",
+                    AppUtils.appVersionName?:"1.0.0",
+                    NetworkUtils.getPhoneType(app.applicationContext),
+                    Locale.getDefault().language + "_" + Locale.getDefault().country,
+                    checkNameAndValue(Build.MANUFACTURER),
+                    Build.VERSION.SDK_INT,
+                    if (BaseKit.isDebug())"Debug" else "Release"
+                ))?: userAgent?:""
+            }
+
 
         /**
          * Accept-Language: zh-CN,zh;q=0.8
@@ -149,7 +152,7 @@ class HttpHeaders : Serializable {
                     } catch (_: Exception) {
                     }
                     if (TextUtils.isEmpty(webUserAgent)) {
-                        webUserAgent = USER_AGENT
+                        webUserAgent = checkNameAndValue(USER_AGENT)
                     }
                     field = webUserAgent
                     return field

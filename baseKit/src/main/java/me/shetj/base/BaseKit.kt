@@ -44,7 +44,7 @@ object BaseKit {
     val app: Application
         get() = Utils.app
 
-    private val isDebug = MutableLiveData(false)
+    val isDebug = MutableLiveData(false)
 
     private var dnsLocalMap = HashMap<String, String>()
 
@@ -121,5 +121,6 @@ object BaseKit {
     }
 
     fun isDebug() = isDebug.isTrue()
+
 
 }
