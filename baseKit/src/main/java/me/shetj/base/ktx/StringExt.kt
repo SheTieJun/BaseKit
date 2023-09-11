@@ -124,6 +124,23 @@ fun String?.logJson(tag: String = BaseKit.TAG) {
     message.logI()
 }
 
+
+/**
+ * Log chunked
+ * 用于超长日志输出问题，分段打印日志
+ * @param size
+ */
+fun String?.logChunked(size:Int = 200){
+    this?.let {
+        if (it.length > size){
+            //分开输出
+            it.chunked(size).joinToString("\n").logI()
+        }else{
+            it.logI()
+        }
+    }
+}
+
 /**
  * 输出到文件
  */

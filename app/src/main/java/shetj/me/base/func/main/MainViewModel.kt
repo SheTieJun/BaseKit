@@ -45,7 +45,7 @@ class MainViewModel : BaseViewModel() {
     private val testUrl = "https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json"
 
     suspend fun getMusicV2() {
-        KCHttpV2.get<ResultMusic>(testUrl) //有错误待修复
+        KCHttpV2.get<ResultMusic>(testUrl,HashMap()) //有错误待修复
     }
 
 
