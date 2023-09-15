@@ -4,15 +4,11 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.PersistableBundle
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import com.google.android.material.appbar.MaterialToolbar
-import me.shetj.base.R
 import me.shetj.base.ktx.grayThemChange
+import me.shetj.base.ktx.logUILife
 import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.tools.app.LanguageKit
 
@@ -23,17 +19,33 @@ import me.shetj.base.tools.app.LanguageKit
 @Keep
 abstract class AbBaseActivity : AppCompatActivity() {
 
+    protected val TAG: String = this::class.java.simpleName
+
+    protected var enabledOnBack: Boolean = false
+        set(value) {
+            field = value
+            onBackPressedCallback.isEnabled = value
+        }
+
+    protected val onBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            onBack()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        "$TAG : onCreate".logUILife()
         startAnimation()
         if (isEnableGrayTheme()){
             GrayThemeLiveData.getInstance().observe(this,this::grayThemChange)
         }
+        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
     }
 
     /**
      * Is enable gray theme
-     * 是否可以展示灰色主题
+     * 是否可以切换到灰色主题
      */
     open fun isEnableGrayTheme() = true
 
@@ -51,9 +63,6 @@ abstract class AbBaseActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -75,7 +84,12 @@ abstract class AbBaseActivity : AppCompatActivity() {
      * 用来替换 [finish] 返回
      */
     open fun back() {
-        finishAfterTransition()
+        onBackPressedDispatcher.onBackPressed()
+    }
+
+    open fun onBack() {
+        enabledOnBack = false
+        onBackPressedDispatcher.onBackPressed()
     }
 
     override fun onNightModeChanged(mode: Int) {
@@ -91,5 +105,35 @@ abstract class AbBaseActivity : AppCompatActivity() {
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(newBase)
         LanguageKit.attachBaseContext(this)
+    }
+
+    override fun onRestart() {
+        "$TAG : onStart".logUILife()
+        super.onRestart()
+    }
+
+    override fun onStart() {
+        "$TAG : onStart".logUILife()
+        super.onStart()
+    }
+
+    override fun onResume() {
+        "$TAG : onResume".logUILife()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        "$TAG : onPause".logUILife()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        "$TAG : onStop".logUILife()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        "$TAG : onDestroy".logUILife()
+        super.onDestroy()
     }
 }

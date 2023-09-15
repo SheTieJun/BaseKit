@@ -47,10 +47,10 @@ class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
         val navController = findNavController(R.id.nav_host_fragment_content_main2)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
         // Initialize JankStats with an aggregator for the current window.
         jankStatsAggregator = JankStatsAggregator(window, jankReportListener)
         mBinding.vm = main2TestVM
+        enabledOnBack = true //启动拦截事件
     }
 
 

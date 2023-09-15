@@ -98,19 +98,17 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             getSystemService(ActivityManager::class.java).getHistoricalProcessExitReasons(packageName, 0, 0)
                 .takeIf { it.isNotEmpty() }?.get(0)?.let {
                     //上一次应用结束的原因说明
-                    it.toString().logI("APP")
+                    it.toString().logI("APP-Exit")
                 }
         }
-        ScreenshotKit.initActivity(this,true)
+        ScreenshotKit.initActivity(this)
         ScreenshotKit.setScreenshotListener(object : ScreenshotKit.ScreenshotListener {
             override fun onScreenShot(path: String?) {
-                "path = $path".logI()
+                "截屏了:$path".showToast()
                 "截屏了:$path".logI()
             }
         })
-
         intent.getStringExtra("name")?.showToast()
-
         WidgetProvider.registerReceiver(this)
     }
 

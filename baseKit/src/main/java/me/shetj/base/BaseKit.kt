@@ -46,7 +46,16 @@ object BaseKit {
 
     val isDebug = MutableLiveData(false)
 
+
+    private var enableLogUI = true
     private var dnsLocalMap = HashMap<String, String>()
+
+
+    fun enableLogUILife(isLogUI: Boolean) {
+        this.enableLogUI = isLogUI
+    }
+
+    fun isLogUILife() = enableLogUI
 
     /**
      * 处理为捕捉的异常

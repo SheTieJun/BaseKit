@@ -45,7 +45,7 @@ fun Context.openSetting() {
 /**
  * 去通知管理界面
  */
-fun Context.openNotifSetting(needCheck:Boolean = false) {
+fun Context.openNotificationSetting(needCheck:Boolean = false) {
     //检测是否具有通知权限
     if (needCheck && NotificationManagerCompat.from(this).areNotificationsEnabled()){
         return

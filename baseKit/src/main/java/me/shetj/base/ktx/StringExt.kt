@@ -100,6 +100,13 @@ fun Throwable?.logW(tag: String = BaseKit.TAG) {
     Timber.tag(tag).w(this)
 }
 
+
+fun String?.logUILife(){
+    if (BaseKit.isLogUILife()){
+        this.logD("UI-Life")
+    }
+}
+
 /**
  * 数据对象，因为可能数据过多导致打印问题，所以转成json
  */

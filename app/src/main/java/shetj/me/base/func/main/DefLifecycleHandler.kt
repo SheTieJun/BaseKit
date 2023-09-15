@@ -13,7 +13,7 @@ import androidx.lifecycle.LifecycleOwner
 /**
  * 绑定生命周期的Handler
  */
-open class BaseLifecycleHandler : Handler, LifecycleEventObserver {
+open class DefLifecycleHandler : Handler, LifecycleEventObserver {
 
     constructor(@NonNull owner: LifecycleOwner) : super(Looper.getMainLooper()) {
         bindLifecycleOwner(owner)

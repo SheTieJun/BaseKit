@@ -20,16 +20,19 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import java.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import me.shetj.base.BaseKit
+import me.shetj.base.ktx.isTrue
 
 /**
  * 用来监听用户是否截屏的工具类,在需要监听的页面调用[initActivity]方法即可
  * - 利用lifecycle，来注册[initMediaContentObserver]和反注册[unregisterMediaContentObserver]监听
  * - 已经兼容若在Android 11 版本后进行共享数据的查询，需要使用ContentReslover#query()方法参数为Bundle的方法，
  *   查[官方文档](https://developer.android.google.cn/reference/kotlin/android/content/ContentResolver?hl=en#query_2)，将查询条件使用Bundle组装。
+ * - 主要隐私政策判断
  */
 object ScreenshotKit {
 
@@ -47,22 +50,7 @@ object ScreenshotKit {
     private var mExternalObserver: MediaContentObserver? = null
     private var mUiHandler: Handler? = null
     private var mScreenshotListener: ScreenshotListener? = null
-    private var canObserver = false
 
-
-    /**
-     * 因为有隐私协议的问题，添加参数在进行判断是否加入监听
-     * @param canObserver
-     */
-    fun setCanObserver(canObserver: Boolean) {
-        this.canObserver = canObserver
-    }
-
-    /**
-     * Is can observer
-     * 因为有隐私协议的问题，所以需要用户自己选择是否监听
-     */
-    private fun isCanObserver() = canObserver
 
     /**
      * Set screenshot listener
@@ -79,11 +67,6 @@ object ScreenshotKit {
      * @param canObserver 因为有隐私协议的问题，所以需要用户自己选择是否监听
      * @return
      */
-    fun initActivity(activity: FragmentActivity, canObserver: Boolean) {
-        setCanObserver(canObserver)
-        initActivity(activity)
-    }
-
     fun initActivity(activity: FragmentActivity) {
         if (VERSION.SDK_INT >= 34) {
             val screenshotListener = Activity.ScreenCaptureCallback { handleMediaContentChange(Media.EXTERNAL_CONTENT_URI) }
@@ -112,30 +95,26 @@ object ScreenshotKit {
 
 
     private fun initMediaContentObserver(context: Context) {
-        if (isCanObserver()) {
-            // 运行在 UI 线程的 Handler, 用于运行监听器回调
-            if (mUiHandler == null) {
-                mUiHandler = Handler(Looper.getMainLooper())
-            }
-
-            // 创建内容观察者，包括内部存储和外部存储
-            if (mInternalObserver == null) mInternalObserver = MediaContentObserver(Media.INTERNAL_CONTENT_URI, mUiHandler)
-            if (mExternalObserver == null) mExternalObserver = MediaContentObserver(Media.EXTERNAL_CONTENT_URI, mUiHandler)
-            // 注意 第二个boolean参数 要设置为true 不然有些机型（Android 11必须要true）由于多媒体文件层级不同 导致变化监听不到 所以设置后代文件夹发生了文件改变也要进行通知
-            context.contentResolver.registerContentObserver(
-                Media.INTERNAL_CONTENT_URI, true, mInternalObserver!!
-            )
-            context.contentResolver.registerContentObserver(
-                Media.EXTERNAL_CONTENT_URI, true, mExternalObserver!!
-            )
+        // 运行在 UI 线程的 Handler, 用于运行监听器回调
+        if (mUiHandler == null) {
+            mUiHandler = Handler(Looper.getMainLooper())
         }
+
+        // 创建内容观察者，包括内部存储和外部存储
+        if (mInternalObserver == null) mInternalObserver = MediaContentObserver(Media.INTERNAL_CONTENT_URI, mUiHandler)
+        if (mExternalObserver == null) mExternalObserver = MediaContentObserver(Media.EXTERNAL_CONTENT_URI, mUiHandler)
+        // 注意 第二个boolean参数 要设置为true 不然有些机型（Android 11必须要true）由于多媒体文件层级不同 导致变化监听不到 所以设置后代文件夹发生了文件改变也要进行通知
+        context.contentResolver.registerContentObserver(
+            Media.INTERNAL_CONTENT_URI, true, mInternalObserver!!
+        )
+        context.contentResolver.registerContentObserver(
+            Media.EXTERNAL_CONTENT_URI, true, mExternalObserver!!
+        )
     }
 
     private fun unregisterMediaContentObserver(context: Context) {
-        if (isCanObserver()) {
-            if (mInternalObserver != null) context.contentResolver.unregisterContentObserver(mInternalObserver!!)
-            if (mExternalObserver != null) context.contentResolver.unregisterContentObserver(mExternalObserver!!)
-        }
+        if (mInternalObserver != null) context.contentResolver.unregisterContentObserver(mInternalObserver!!)
+        if (mExternalObserver != null) context.contentResolver.unregisterContentObserver(mExternalObserver!!)
     }
 
     private class MediaContentObserver(

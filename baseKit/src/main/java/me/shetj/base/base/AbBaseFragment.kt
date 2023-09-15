@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import me.shetj.base.ktx.logUILife
 
 /**
  * fragment基类
@@ -28,6 +29,8 @@ import androidx.lifecycle.LifecycleOwner
  */
 @Keep
 abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControllerFunctionsImpl{
+
+    protected val TAG: String = this::class.java.simpleName
 
     protected var enabledOnBack: Boolean = false
         set(value) {
@@ -87,6 +90,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        //添加返回拦截，通过enabledOnBack = true 开启
         onBackPressedCallback.isEnabled = enabledOnBack
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
@@ -114,5 +118,31 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
 
     companion object {
         private const val STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN"
+    }
+
+
+    override fun onStart() {
+        "$TAG : onStart".logUILife()
+        super.onStart()
+    }
+
+    override fun onResume() {
+        "$TAG : onResume".logUILife()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        "$TAG : onPause".logUILife()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        "$TAG : onStop".logUILife()
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        "$TAG : onDestroyView".logUILife()
+        super.onDestroyView()
     }
 }

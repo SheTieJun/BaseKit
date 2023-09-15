@@ -1,0 +1,48 @@
+apply plugin: 'maven-publish'
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    archiveClassifier = "sources"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+
+            //这是一个自定义的pom的demo
+            mavenCustom(MavenPublication) {
+                groupId "com.github.SheTieJun"
+                artifact sourceJar
+                from components.release
+                artifactId = "sdk"
+                version = '1.1.1'
+                // 这是demo穿件pom
+                pom.withXml {
+                    asNode().children().last() + {
+                        resolveStrategy = DELEGATE_FIRST
+                        dependencyManagement {
+                            dependencies {
+                                dependency {
+                                    groupId "com.shetj.sdk.android"
+                                    artifactId "events"
+                                    version "1.0.2"
+                                }
+                                dependency {
+                                    groupId "com.shetj.sdk.android"
+                                    artifactId "abtest"
+                                    version "5.0.3"
+                                }
+                                dependency {
+                                    groupId "com.shetj.sdk.android"
+                                    artifactId "authentication"
+                                    version "3.0.0"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

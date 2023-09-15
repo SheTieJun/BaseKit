@@ -4,18 +4,20 @@ import android.content.Context
 import android.graphics.Outline
 import android.graphics.Typeface
 import android.os.Build
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.text.SpannableString
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.LeadingMarginSpan
 import android.view.Gravity
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.view.ViewTreeObserver
-import android.view.autofill.AutofillManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
@@ -24,7 +26,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
@@ -69,6 +70,19 @@ fun TextView.setDrawables(
 
 fun TextView.clearDrawables() {
     setCompoundDrawablesRelative(null, null, null, null)
+}
+
+
+/**
+ * Perform haptic feedback
+ * 触摸反馈
+ */
+fun View.performHapticFeedback(){
+    //HapticFeedbackConstants.CLOCK_TICK 是一个触觉反馈常量，用于指定时钟滴答的触觉反馈效果。它用于模拟时钟滴答的感觉，通常用于时钟应用程序或需要模拟时钟滴答的场景。
+    //HapticFeedbackConstants.VIRTUAL_KEY 虚拟按键反馈效果。通常用于模拟按下虚拟按键时的触觉反馈。
+    val feedbackKey =
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) HapticFeedbackConstants.CLOCK_TICK else HapticFeedbackConstants.VIRTUAL_KEY
+    this.performHapticFeedback(feedbackKey)
 }
 
 /**

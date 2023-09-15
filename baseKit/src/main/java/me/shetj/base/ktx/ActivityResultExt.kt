@@ -34,6 +34,7 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.VisualMediaType
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle.Event
@@ -211,6 +212,11 @@ fun ComponentActivity.pickVisualMedia(inputType: PickVisualMediaRequest, callbac
     register("PickVisualMedia", ActivityResultContracts.PickVisualMedia(), callback).launch(inputType)
 }
 
+fun ComponentActivity.pickVisualMedia(inputType: VisualMediaType, callback: ActivityResultCallback<Uri?>) {
+    PickVisualMediaRequest.Builder().setMediaType(inputType).build().let {
+        register("PickVisualMedia", ActivityResultContracts.PickVisualMedia(), callback).launch(it)
+    }
+}
 
 /**
  * Pick visual media
@@ -221,6 +227,12 @@ fun ComponentActivity.pickMultipleVisualMedia(inputType: PickVisualMediaRequest,
     register("PickMultipleVisualMedia", ActivityResultContracts.PickMultipleVisualMedia(), callback).launch(inputType)
 }
 
+
+fun ComponentActivity.pickMultipleVisualMedia(inputType: VisualMediaType, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
+    PickVisualMediaRequest.Builder().setMediaType(inputType).build().let {
+        register("PickMultipleVisualMedia", ActivityResultContracts.PickMultipleVisualMedia(), callback).launch(it)
+    }
+}
 
 //endregion
 
