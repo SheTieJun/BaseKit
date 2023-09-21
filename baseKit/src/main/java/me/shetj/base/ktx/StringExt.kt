@@ -96,13 +96,21 @@ fun String?.logW(tag: String = BaseKit.TAG) {
     Timber.tag(tag).w(this.toString())
 }
 
+fun String?.logV(tag: String = BaseKit.TAG) {
+    Timber.tag(tag).v(this.toString())
+}
+
+fun String?.logWtf(tag: String = BaseKit.TAG) {
+    Timber.tag(tag).wtf(this.toString())
+}
+
 fun Throwable?.logW(tag: String = BaseKit.TAG) {
     Timber.tag(tag).w(this)
 }
 
 
-fun String?.logUILife(){
-    if (BaseKit.isLogUILife()){
+fun String?.logUILife() {
+    if (BaseKit.isLogUILife()) {
         this.logD("UI-Life")
     }
 }
@@ -137,12 +145,12 @@ fun String?.logJson(tag: String = BaseKit.TAG) {
  * 用于超长日志输出问题，分段打印日志
  * @param size
  */
-fun String?.logChunked(size:Int = 200){
+fun String?.logChunked(size: Int = 200) {
     this?.let {
-        if (it.length > size){
+        if (it.length > size) {
             //分开输出
             it.chunked(size).joinToString("\n").logI()
-        }else{
+        } else {
             it.logI()
         }
     }

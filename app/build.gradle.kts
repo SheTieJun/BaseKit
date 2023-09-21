@@ -3,6 +3,7 @@ import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters.None
 import org.objectweb.asm.ClassVisitor
+import tools.addGuava
 import tools.addProInstaller
 import tools.addNav
 import tools.addPaging
@@ -141,6 +142,7 @@ dependencies {
     implementation("com.github.SheTieJun:RoundedProgressBar:550a631d74")
     addPaging()
     addNav()
+    addGuava()//大部分功能kotlin都有了
     addProInstaller()
     //https://github.com/SheTieJun/LogKit
     implementation("com.github.SheTieJun.LogKit:logkit-messenger:1.7")
@@ -148,9 +150,8 @@ dependencies {
 
 androidComponents {
     onVariants {
-        println("onVariants:"+it.name)
         if (it.name.contains("debug",true)){
-//            it.instrumentation.transformClassesWith(DebugAsmFactory::class.java, com.android.build.api.instrumentation.InstrumentationScope.PROJECT) {}
+            it.instrumentation.transformClassesWith(DebugAsmFactory::class.java, com.android.build.api.instrumentation.InstrumentationScope.PROJECT) {}
 //            it.instrumentation.transformClassesWith(PrivacyCheckFactory::class.java, com.android.build.api.instrumentation.InstrumentationScope.ALL) {}
         }
     }

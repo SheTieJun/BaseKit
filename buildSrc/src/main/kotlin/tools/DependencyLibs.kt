@@ -11,6 +11,7 @@ import tools.DependencyLibs.AndroidX.Lifecycle
 import tools.DependencyLibs.AndroidX.Paging
 import tools.DependencyLibs.AndroidX.Room
 import tools.DependencyLibs.AndroidX.WorkManager
+import tools.DependencyLibs.Guava
 
 
 object DependencyLibs {
@@ -85,6 +86,7 @@ object DependencyLibs {
         add(AndroidX.datastoreCore)
         add(AndroidX.dragAndDrop)
         add(AndroidX.webKit)
+        add(AndroidX.window)
 
         add(Lifecycle.livedata)
         add(Lifecycle.viewmodel)
@@ -171,11 +173,11 @@ object DependencyLibs {
 
         const val appcompat = "androidx.appcompat:appcompat:1.6.1"
         const val palette = "androidx.palette:palette:1.0.0"
-        const val coreKtx = "androidx.core:core-ktx:1.10.1"
+        const val coreKtx = "androidx.core:core-ktx:1.12.0"
         const val recyclerview = "androidx.recyclerview:recyclerview:1.3.1"
         const val cardview = "androidx.cardview:cardview:1.0.0"
         const val material = "com.google.android.material:material:1.9.0"
-        const val animationCore = "androidx.core:core-animation:1.0.0-beta01"
+        const val animationCore = "androidx.core:core-animation:1.0.0-rc01"
         const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
         const val fragmentKtx = "androidx.fragment:fragment-ktx:1.6.1"
         const val startup = "androidx.startup:startup-runtime:1.1.1"
@@ -184,7 +186,8 @@ object DependencyLibs {
         const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
         const val datastoreCore = "androidx.datastore:datastore-core:1.0.0"
         const val dragAndDrop = "androidx.draganddrop:draganddrop:1.0.0"
-        const val webKit = "androidx.webkit:webkit:1.5.0"
+        const val webKit = "androidx.webkit:webkit:1.8.0"
+        const val window = "androidx.window:window:1.1.0"
 
         object Constraint {
             private const val constraintlayout = "2.1.4"
@@ -233,6 +236,11 @@ object DependencyLibs {
         private const val libVersion = "1.1.0"
         const val dataStoreLib = "com.github.SheTieJun.androidx-ktx:datastore:$libVersion"
         const val activityLib = "com.github.SheTieJun.androidx-ktx:activity:$libVersion"
+    }
+
+    private const val guavaVersion = "32.1.2-android"
+    enum class Guava(val value: String) {
+        guava("com.google.guava:guava:$guavaVersion")
     }
 
 }
@@ -351,6 +359,14 @@ fun DependencyHandler.addProInstaller(dependencyConfiguration: Action<ExternalMo
     DependencyLibs.proInstaller.forEach { depName ->
         addDependencyTo(
             this, "api", depName, dependencyConfiguration
+        )
+    }
+}
+
+fun DependencyHandler.addGuava(dependencyConfiguration: Action<ExternalModuleDependency> = defAction){
+    Guava.values().forEach { depName ->
+        addDependencyTo(
+            this, "api", depName.value, dependencyConfiguration
         )
     }
 }

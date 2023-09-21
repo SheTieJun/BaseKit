@@ -33,6 +33,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
@@ -90,6 +91,10 @@ fun FragmentActivity.grayThemChange(isGrayTheme: Boolean) {
             decorView?.setLayerType(View.LAYER_TYPE_NONE, null)
         }
     }
+}
+
+fun FragmentActivity.disableSecure(){
+    window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
 }
 
 /**
@@ -170,14 +175,9 @@ fun Activity.hasPermission(
     vararg permissions: String,
     isRequest: Boolean = true
 ): Boolean {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
     val permissionsCheck: MutableList<String> = ArrayList()
     for (permission in permissions) {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                permission
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (PermissionChecker.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             permissionsCheck.add(permission)
         }
     }

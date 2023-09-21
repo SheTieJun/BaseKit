@@ -30,6 +30,17 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
 6. Material Design Components - Google's latest Material Components.
    - https://material.io/develop/android
 
+
+
+1. **Retrofit**：Retrofit 是一个类型安全的 HTTP 客户端，用于 Android 和 Java。它使得网络请求变得非常简单和直观。
+2. **OkHttp**：OkHttp 是一个高效的 HTTP 客户端，它可以用于请求和接收数据。
+3. **Glide**：Glide用于在 Android 中加载和缓存图片的库。
+4. **Room**：Room 是 Google 提供的一个对 SQLite 的抽象层，使得在应用中使用本地数据库变得更加直观和方便。
+5. **Gson**：Gson 是用于在 Java 对象和 JSON 之间转换的库。
+6. **LiveData/ViewModel**：LiveData 和 ViewModel 是 Android 架构组件的一部分，用于构建健壮，可测试和可维护的应用。
+7. **Navigation Component**：Navigation Component 是一个用于实现 Android 应用导航的库。
+8. **Coroutines**：Coroutines 用于简化 Android 中的异步编程和线程管理。
+
 ---------------------
 
 ## 文章
@@ -50,6 +61,7 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
   - 隐私政策，可以分阶段初始化，比如登录后才初始化
 - 可视化日志，用自己写的[LogKit](https://github.com/SheTieJun/LogKit)
   - 拦截网页的请求，或者动态添加vConsole
+- 注解+ASM 
 ---------------------
 ## 模块类型
 - 应用模块
@@ -77,7 +89,3 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
 2. ViewModel/Presenter层应该创建自己的协程，方便取消
 3. ViewModel/Presenter 层下面的层应该公开挂起函数和 Flows
 4. 对于不应该取消的操作，请在 Application 类中创建您自己的作用域，并在由它启动的协程中调用不想被ViewModel/Presenter取消的代码。
-
----------------------
-## 难点命名
----------------------

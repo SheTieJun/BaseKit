@@ -20,7 +20,7 @@ data class MediaItem(
     val duration: Long?
 )
 
-private fun fetchGalleryImages(
+fun fetchGalleryImages(
     context: Context,
     orderBy: String,
     orderAscending: Boolean,

@@ -249,9 +249,9 @@ object FileQUtils {
         val contentResolver = context.contentResolver
         if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
             val cursor = contentResolver.query(uri, null, null, null, null)
-            cursor.use { cursor ->
-                if (cursor != null && cursor.moveToFirst()) {
-                    fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            cursor.use { cu ->
+                if (cu != null && cu.moveToFirst()) {
+                    fileName = cu.getString(cu.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                 }
             }
         }

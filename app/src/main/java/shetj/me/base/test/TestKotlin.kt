@@ -101,8 +101,9 @@ class TestKotlin {
 
             }
 
-            5000.toDuration(DurationUnit.SECONDS).toDouble(DurationUnit.HOURS)
-
+            5000.toDuration(DurationUnit.SECONDS).apply {
+                this.inWholeDays
+            }.toDouble(DurationUnit.HOURS)
 
         }
 

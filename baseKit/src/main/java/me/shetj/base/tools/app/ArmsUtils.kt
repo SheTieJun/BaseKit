@@ -21,6 +21,7 @@ import androidx.annotation.Keep
 import androidx.annotation.MainThread
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
+import androidx.core.util.TypedValueCompat
 import androidx.core.view.WindowCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import java.io.File
@@ -406,12 +407,12 @@ class ArmsUtils private constructor() {
 
         @JvmStatic
         fun dp2px(dpValue: Float): Int {
-            return (dpValue * getDensity() + 0.5f).toInt()
+            return TypedValueCompat.dpToPx(dpValue, BaseKit.app.resources.displayMetrics).toInt()
         }
 
         @JvmStatic
         fun px2dp(pxValue: Float): Int {
-            return (pxValue / getDensity() + 0.5f).toInt()
+            return TypedValueCompat.pxToDp(pxValue, BaseKit.app.resources.displayMetrics).toInt()
         }
 
         @JvmStatic

@@ -2,21 +2,15 @@ package shetj.me.base.func.main
 
 import android.Manifest
 import android.app.ActivityManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
-import android.util.AttributeSet
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.LayoutInflaterCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.metrics.performance.JankStats
@@ -24,14 +18,10 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
 import java.util.*
-import kotlinx.coroutines.delay
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logI
-import me.shetj.base.ktx.logJson
-import me.shetj.base.ktx.moveToFrontApp
 import me.shetj.base.ktx.openSetting
-import me.shetj.base.ktx.openUri
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.showToast
@@ -58,7 +48,6 @@ import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
 import timber.log.Timber
-
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
@@ -108,7 +97,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 "截屏了:$path".logI()
             }
         })
-        intent.getStringExtra("name")?.showToast()
+
         WidgetProvider.registerReceiver(this)
     }
 
@@ -120,7 +109,13 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
             selectFile {
                 "url = ${it.toString()}".logI()
-                ("url = ${it?.let { it1 -> FileQUtils.getFileAbsolutePath(this, it1) }}").logI()
+                ("url = ${
+                    it?.let { it1 ->
+                        FileQUtils.getFileAbsolutePath(this, it1)
+                    }
+                }").logI()
+
+
             }
         }
 
@@ -166,7 +161,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         mBinding.content.testLoading.setOnClickListener {
             TipKit.loading(this) {
-                netTest()
+                 netTest()
             }
         }
 
@@ -272,8 +267,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         return true
     }
 
-    @Debug
-    suspend fun netTest() {
+    @Debug(level = Log.ERROR, enableTime = true,  watchStack = true)
+    suspend fun  netTest() {
         mViewModel.getMusicV2()
 //        mViewModel.getMusicV3()
     }
