@@ -47,6 +47,7 @@ import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
+import shetj.me.base.func.slidingpane.SlidingPaneActivity
 import timber.log.Timber
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
@@ -191,6 +192,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
             sideSheetDialog.show()
+        }
+        mContent.btnSlidingPane.setOnClickListener {
+            start<SlidingPaneActivity>()
         }
     }
 

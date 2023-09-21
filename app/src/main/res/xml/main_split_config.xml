@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:window="http://schemas.android.com/apk/res-auto">
+    <SplitPairRule
+        window:finishPrimaryWithSecondary="never"
+        window:finishSecondaryWithPrimary="always"
+        window:splitMinWidthDp="840"
+        window:splitRatio="0.33">
+        <SplitPairFilter
+            window:primaryActivityName="shetj.me.base.func.main.MainActivity"
+            window:secondaryActivityName="shetj.me.base.func.md3.Main2Activity" />
+    </SplitPairRule>
+    <!--为共享分屏的 activity 配置分屏选项
+splitRatio - 指定主要 activity 占据了任务窗口的比例 (33%)，剩余空间则留给辅助 activity。
+splitMinWidthDp - 指定两个 activity 在屏幕上同时显示所需的最小显示宽度 (840)。单位是密度无关像素 (dp)。
+注意：840dp 是较大窗口大小类别的断点。
+
+finishPrimaryWithSecondary - 指定当辅助容器中的所有 activity 结束时，主要分屏容器中的 activity 是否结束（永不）。
+finishSecondaryWithPrimary - 指定当主要容器中的所有 activity 结束时，辅助分屏容器中的 activity 是否结束（始终）。
+包含一个分屏过滤器，用于定义共享任务窗口分屏的 activity。主要 activity 为 ListActivity；辅助 activity 为 DetailActivity。-->
+
+    <SplitPlaceholderRule
+        window:finishPrimaryWithPlaceholder="always"
+        window:placeholderActivityName="shetj.me.base.func.slidingpane.PlaceholderActivity"
+        window:splitMinWidthDp="840"
+        window:splitRatio="0.33"
+        window:stickyPlaceholder="false">
+        <ActivityFilter window:activityName="shetj.me.base.func.main.MainActivity" />
+    </SplitPlaceholderRule>
+
+<!--    标识占位符 activity PlaceholderActivity（我们将在下一步中创建此 activity）
+配置占位符的选项：
+splitRatio - 指定主要 activity 占据了任务窗口的比例 (33%)，剩余空间则留给占位符。通常，此值应与占位符关联的分屏对规则的分屏比率一致。
+splitMinWidthDp - 指定占位符与主要 activity 在屏幕上同时显示所需的最小显示宽度 (840)。通常，此值应与占位符关联的分屏对规则的最小宽度一致。单位是密度无关像素 (dp)。
+finishPrimaryWithPlaceholder - 指定当占位符结束时，主要分屏容器中的 activity 是否结束（始终）。
+stickyPlaceholder - 指示在将显示从双窗格显示缩小为单窗格显示（例如，当可折叠设备被折叠时），占位符是否应作为顶层 activity 保留在屏幕上 (false)。
+它包括一个 activity 过滤器，用于指定与占位符共享任务窗口分屏的 activity (ListActivity)。-->
+
+    <ActivityRule
+        window:alwaysExpand="true">
+        <ActivityFilter
+            window:activityName="shetj.me.base.func.slidingpane.SlidingPaneActivity"/>
+    </ActivityRule>
+
+<!--    用于标识应全屏显示的 activity (SummaryActivity).
+为 activity 配置选项：
+alwaysExpand - 指定 activity 是否应展开以填充所有可用的显示空间。-->
+</resources>
+

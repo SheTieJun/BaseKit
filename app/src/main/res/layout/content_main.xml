@@ -114,6 +114,13 @@
             android:layout_height="wrap_content"
             android:text="MDThemeKit"/>
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/btn_SlidingPane"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SlidingPane"/>
+
+
     </com.google.android.material.chip.ChipGroup>
 
 

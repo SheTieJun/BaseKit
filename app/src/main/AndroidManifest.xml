@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <queries>
-        <package android:name="me.shetj.beloved"/>
+        <package android:name="me.shetj.beloved" />
         <package android:name="me.shetj.logkit.demo" />
     </queries>
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-
-
-<!--    截屏监听-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 截屏监听 -->
     <uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />
-
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/shetj_logo"
-        android:label="@string/app_name"
         android:enableOnBackInvokedCallback="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BaseTheme.MD3"
         tools:targetApi="tiramisu">
-<!--        基准优化-->
+
+        <!--        分屏 activity 嵌入分屏-->
+        <property
+            android:name="android.window.PROPERTY_ACTIVITY_EMBEDDING_SPLITS_ENABLED"
+            android:value="true" />
+
+<!--        拒绝系统的嵌入-->
+        <property
+            android:name="android.window.PROPERTY_ACTIVITY_EMBEDDING_ALLOW_SYSTEM_OVERRIDE"
+            android:value="false" />
+
+
+        <activity android:name=".func.slidingpane.PlaceholderActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".func.slidingpane.SlidingPaneActivity"
+            android:exported="false" />
+        <!-- 基准优化 -->
         <profileable
             android:shell="true"
             tools:targetApi="29" />
@@ -69,32 +83,35 @@
             <meta-data
                 android:name="shetj.me.base.BaseInitialize"
                 android:value="androidx.startup" />
-        </provider>
+            <meta-data
+                android:name="shetj.me.base.SplitInitializer"
+                android:value="androidx.startup" />
+        </provider> <!-- 声明widget对应的AppWidgetProvider -->
 
-        <!-- 声明widget对应的AppWidgetProvider -->
-        <receiver android:name=".contentprovider.WidgetProvider"
+        <receiver
+            android:name=".contentprovider.WidgetProvider"
             android:exported="false">
             <intent-filter>
-                <!--这个是必须要有的系统规定-->
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <!--这个是我们自定义的 action ，用来更新UI，还可以自由添加更多 -->
-                <action android:name="com.shetj.widget.UPDATE_ALL"/>
+
+                <!-- 这个是必须要有的系统规定 -->
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <!-- 这个是我们自定义的 action ，用来更新UI，还可以自由添加更多 -->
+                <action android:name="com.shetj.widget.UPDATE_ALL" />
             </intent-filter>
-            <!--要显示的布局-->
+            <!-- 要显示的布局 -->
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/app_widget"/>
-        </receiver>
-
-        <!-- 用来计时，发送 通知桌面部件更新 -->
-        <service android:name=".contentprovider.WidgetService"
+                android:resource="@xml/app_widget" />
+        </receiver> <!-- 用来计时，发送 通知桌面部件更新 -->
+        <service
+            android:name=".contentprovider.WidgetService"
             android:exported="false">
             <intent-filter>
-                <!--用来启动服务-->
+
+                <!-- 用来启动服务 -->
                 <action android:name="android.appwidget.action.APP_WIDGET_SERVICE" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

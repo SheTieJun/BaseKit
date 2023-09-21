@@ -4,13 +4,18 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
+import me.shetj.base.ktx.getWindowContent
 import me.shetj.base.ktx.grayThemChange
 import me.shetj.base.ktx.logUILife
 import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.tools.app.LanguageKit
+import me.shetj.base.tools.app.WindowKit
+import me.shetj.base.tools.app.WindowKit.WindowSizeClass
 
 /**
  * 基础类  view 层
@@ -20,6 +25,9 @@ import me.shetj.base.tools.app.LanguageKit
 abstract class AbBaseActivity : AppCompatActivity() {
 
     protected val TAG: String = this::class.java.simpleName
+
+    protected val windowSizeStream: MutableLiveData<Pair<WindowSizeClass, WindowSizeClass>> =
+        MutableLiveData<Pair<WindowSizeClass, WindowSizeClass>>()
 
     protected var enabledOnBack: Boolean = false
         set(value) {
@@ -37,10 +45,47 @@ abstract class AbBaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         "$TAG : onCreate".logUILife()
         startAnimation()
-        if (isEnableGrayTheme()){
-            GrayThemeLiveData.getInstance().observe(this,this::grayThemChange)
+        if (isEnableGrayTheme()) {
+            GrayThemeLiveData.getInstance().observe(this, this::grayThemChange)
         }
-        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+        configWindow()
+    }
+
+    private fun configWindow() {
+        getWindowContent()?.addView(object : View(this) {
+            override fun onConfigurationChanged(newConfig: Configuration?) {
+                super.onConfigurationChanged(newConfig)
+                computeWindowSizeClasses()
+            }
+        })
+        computeWindowSizeClasses()
+        windowSizeStream.observe(this) {
+            "$TAG onWindowSizeChange : widthWindowSizeClass = ${it.first},heightWindowSizeClass = ${it.second}".logUILife()
+            onWindowSizeChange(it)
+        }
+    }
+
+    /**
+     * On window size change
+     * 当activity界面屏幕大小改变的时候
+     * @param windowSizeWH
+     */
+    open fun onWindowSizeChange(windowSizeWH: Pair<WindowSizeClass, WindowSizeClass>) {
+        onWindowSizeChangeWidth(windowSizeWH.first)
+        onWindowSizeChangeHeight(windowSizeWH.second)
+    }
+
+    open fun onWindowSizeChangeHeight(windowSizeH: WindowSizeClass) {
+
+    }
+
+    open fun onWindowSizeChangeWidth(windowSizeW: WindowSizeClass) {
+
+    }
+
+    protected fun computeWindowSizeClasses() {
+        windowSizeStream.postValue(WindowKit.windowSizeStream(this@AbBaseActivity))
     }
 
     /**
@@ -62,7 +107,6 @@ abstract class AbBaseActivity : AppCompatActivity() {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
-
 
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -99,6 +143,7 @@ abstract class AbBaseActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        computeWindowSizeClasses()
         LanguageKit.attachBaseContext(this)
     }
 
