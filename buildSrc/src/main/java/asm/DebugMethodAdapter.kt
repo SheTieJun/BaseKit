@@ -113,9 +113,7 @@ internal class DebugMethodAdapter(
                 "(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JI)V", false
             )
             mv.visitVarInsn(ILOAD, methodId)
-            //            LogHelper.log("methodId------- " + methodId);
             mv.visitLdcInsn(level)
-            println("level $level")
             mv.visitLdcInsn(enableTime)
             mv.visitLdcInsn(tagName)
             mv.visitLdcInsn(watchStack)

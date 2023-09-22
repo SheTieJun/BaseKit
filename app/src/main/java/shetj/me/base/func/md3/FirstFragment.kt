@@ -1,5 +1,3 @@
-
-
 package shetj.me.base.func.md3
 
 import android.os.Bundle

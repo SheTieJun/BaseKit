@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
+import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import me.shetj.base.ktx.getWindowContent
@@ -131,6 +132,7 @@ abstract class AbBaseActivity : AppCompatActivity() {
         onBackPressedDispatcher.onBackPressed()
     }
 
+    @MainThread
     open fun onBack() {
         enabledOnBack = false
         onBackPressedDispatcher.onBackPressed()

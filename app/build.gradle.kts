@@ -49,19 +49,19 @@ android {
     //产品变种组,
     flavorDimensions += (listOf("dev", "demo"))
 
-    productFlavors {
-        this.create("dev") {
-            dimension = "dev"
-            versionNameSuffix = "-dev"
-            applicationIdSuffix = ".dev"
-        }
-        this.create("demo") {
-            dimension = "demo"
-            versionNameSuffix = "-demo"
-            applicationIdSuffix = ".demo"
-            minSdk = 24
-        }
-    }
+//    productFlavors {
+//        this.create("dev") {
+//            dimension = "dev"
+//            versionNameSuffix = "-dev"
+//            applicationIdSuffix = ".dev"
+//        }
+//        this.create("demo") {
+//            dimension = "demo"
+//            versionNameSuffix = "-demo"
+//            applicationIdSuffix = ".demo"
+//            minSdk = 24
+//        }
+//    }
 
     signingConfigs {
         create("release") {
@@ -128,7 +128,8 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     implementation(project(":baseKit"))
-    implementation("com.github.ybq:Android-SpinKit:1.4.0")
+//    implementation("com.github.SheTieJun:base:1.1.38")
+//    implementation("com.github.ybq:Android-SpinKit:1.4.0")
     implementation("com.airbnb.android:lottie:5.2.0")
     //图片预览 https://github.com/iielse/ImageWatcher
     implementation("com.github.iielse:ImageWatcher:1.1.5")
@@ -136,8 +137,8 @@ dependencies {
     implementation("com.github.SheTieJun.QMUI_Android:qmui:$qmuiversionShetj")
     implementation("androidx.core:core-splashscreen:1.0.0")//启动图
     implementation("androidx.draganddrop:draganddrop:1.0.0") //拖动
-    implementation("androidx.metrics:metrics-performance:1.0.0-alpha03") // 指标
-    implementation("androidx.tracing:tracing-ktx:1.1.0")
+    implementation("androidx.metrics:metrics-performance:1.0.0-alpha04") // 指标
+    implementation("androidx.tracing:tracing-ktx:1.1.0")//将跟踪事件写入系统跟踪缓冲区。
 
     implementation("com.github.SheTieJun:RoundedProgressBar:550a631d74")
     addPaging()

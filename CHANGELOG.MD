@@ -1,5 +1,7 @@
 ## CHANGELOG
 
+# 2023年9月21日
+- add androidx.window
 
 # 2023年9月19日
 - core-ktx :      1.10.1 -> 1.12.0

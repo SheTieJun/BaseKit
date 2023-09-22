@@ -31,8 +31,8 @@ class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
             // A real app could do something more interesting, like writing the info to local storage and later on report it.
 
             Timber.run {
-                tag("JankStatsSample")
-                    .v("%s%s", "%sjankFrames = ", "%s, ", "%s%s", "%totalFrames = ", "%s), ", "*** Jank Report (%s", reason, totalFrames, jankFrameData.size)
+                tag("JankStats")
+                    .v("%s%s", "%s jankFrames = ", "%s, ", "%s%s", "%totalFrames = ", "%s), ", "*** Jank Report (%s", reason, totalFrames, jankFrameData.size)
             }
 
             jankFrameData.forEach { frameData ->
@@ -68,6 +68,9 @@ class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
     }
 
 
+    override fun onStop() {
+        super.onStop()
+    }
 
 
     override fun isEnableGrayTheme(): Boolean {

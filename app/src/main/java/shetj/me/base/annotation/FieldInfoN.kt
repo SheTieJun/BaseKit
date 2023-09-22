@@ -8,9 +8,9 @@ class FieldInfoN internal constructor(var descriptor: String, var name: String, 
                 '}'
     }
 
-    override fun equals(obj: Any?): Boolean {
-        return if (obj is FieldInfoN) {
-            obj.descriptor == descriptor && obj.name == name && obj.value == value
+    override fun equals(other: Any?): Boolean {
+        return if (other is FieldInfoN) {
+            other.descriptor == descriptor && other.name == name && other.value == value
         } else {
             false
         }

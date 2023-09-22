@@ -20,6 +20,7 @@ import com.google.android.material.sidesheet.SideSheetDialog
 import java.util.*
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
+import me.shetj.base.ktx.logE
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.selectFile
@@ -105,7 +106,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     override fun setUpClicks() {
         mContent = mBinding.content
         val hierarchy = addJankStats()
-
+        hierarchy.state?.putState("Activity", javaClass.simpleName)
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
             selectFile {
@@ -196,6 +197,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         mContent.btnSlidingPane.setOnClickListener {
             start<SlidingPaneActivity>()
         }
+
     }
 
     override fun onInitialized() {
@@ -240,7 +242,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         if (!mViewModel.isAddJankStats) {
             JankStats.createAndTrack(window) {
                 if (it.isJank) {
-                    ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logI("JankStats")
+                    ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logE("JankStats")
+                }else{
                     it.toJson().logI("JankStats")
                 }
             }

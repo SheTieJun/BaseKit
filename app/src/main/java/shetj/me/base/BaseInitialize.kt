@@ -14,6 +14,8 @@ import me.shetj.base.tools.app.MDThemeKit
 import me.shetj.base.tools.app.MDThemeKit.ThemeBean
 import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
+import shetj.me.base.utils.SLogMessengerTree
+import timber.log.Timber
 
 
 /**
@@ -28,11 +30,11 @@ class BaseInitialize : ABBaseInitialize() {
         BaseKit.enableLogUILife(isLogUI = true) //关闭界面生命周期的日志
         Tim.setLogAuto(true)
         //这里需要安装另外一个demo(专门用来接收日志的),服务APP,最好开启自启动
-        SLogMessenger.getInstance().bindService(context, "me.shetj.logkit.demo")
+//        SLogMessenger.getInstance().bindService(context, "me.shetj.logkit.demo")
         BaseKit.versionName.logD("")
 //        SLogMessenger.getInstance().autoHide(context,false)
-//        SLogMessenger.getInstance().bindService(context,"me.shetj.beloved")
-//        Timber.plant(SLogMessengerTree())
+        SLogMessenger.getInstance().bindService(context,"me.shetj.beloved")
+        Timber.plant(SLogMessengerTree())
         MDThemeKit.startInit(context, listOf(
             ThemeBean(R.style.BaseTheme_MD3, "默认主题-跟随系统"),
             ThemeBean(R.style.BaseTheme_MD3, "默认主题-黑夜", AppCompatDelegate.MODE_NIGHT_YES),

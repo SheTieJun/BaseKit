@@ -19,7 +19,7 @@ class MonthAdapter(private val month: Month) : RecyclerView.Adapter<BaseViewHold
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val offsetPosition: Int = position - firstPositionInMonth()
-        var dayNumber = NO_DAY_NUMBER
+        val dayNumber: Int
         if (offsetPosition < 0 || offsetPosition >= month.daysInMonth) {
             holder.itemView.visibility = View.GONE
             holder.itemView.isEnabled = false
