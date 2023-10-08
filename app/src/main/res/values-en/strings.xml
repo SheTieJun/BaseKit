@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Base-shetj</string>
+    <string name="app_name">BaseKit</string>
     <string name="action_settings">Settings</string>
 
     <string name="hello_blank_fragment">Hello blank fragmentHello blank fragmentHello blank fragmentHello blank fragmentHello blank fragment</string>

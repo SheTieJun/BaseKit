@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--        必须设置启动的activity下面-->
     <shortcut
         android:enabled="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +13,8 @@
             android:action="android.intent.action.VIEW"
             android:targetClass="shetj.me.base.func.md3.Main2Activity"
             android:targetPackage="shetj.me.base" />
+        <!--        如果不出现，可能是xml相关设置问题                  -->
+        <!--        如果出现，但是点击没有效果，那么必然是intent设置问题   -->
     </shortcut>
 
 </shortcuts>

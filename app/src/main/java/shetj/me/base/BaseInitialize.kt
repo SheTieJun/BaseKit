@@ -33,8 +33,8 @@ class BaseInitialize : ABBaseInitialize() {
 //        SLogMessenger.getInstance().bindService(context, "me.shetj.logkit.demo")
         BaseKit.versionName.logD("")
 //        SLogMessenger.getInstance().autoHide(context,false)
-        SLogMessenger.getInstance().bindService(context,"me.shetj.beloved")
-        Timber.plant(SLogMessengerTree())
+//        SLogMessenger.getInstance().bindService(context,"me.shetj.beloved")
+//        Timber.plant(SLogMessengerTree())
         MDThemeKit.startInit(context, listOf(
             ThemeBean(R.style.BaseTheme_MD3, "默认主题-跟随系统"),
             ThemeBean(R.style.BaseTheme_MD3, "默认主题-黑夜", AppCompatDelegate.MODE_NIGHT_YES),

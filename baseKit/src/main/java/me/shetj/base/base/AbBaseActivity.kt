@@ -53,6 +53,12 @@ abstract class AbBaseActivity : AppCompatActivity() {
         configWindow()
     }
 
+
+    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
+        "$TAG : onMultiWindowModeChanged:$isInMultiWindowMode".logUILife()
+    }
+
     private fun configWindow() {
         getWindowContent()?.addView(object : View(this) {
             override fun onConfigurationChanged(newConfig: Configuration?) {
@@ -86,7 +92,7 @@ abstract class AbBaseActivity : AppCompatActivity() {
     }
 
     protected fun computeWindowSizeClasses() {
-        windowSizeStream.postValue(WindowKit.windowSizeStream(this@AbBaseActivity))
+        windowSizeStream.postValue(WindowKit.windowSize(this@AbBaseActivity))
     }
 
     /**

@@ -70,7 +70,7 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
 1. DataStore 非常适合存储键值对，例如用户设置，具体示例可能包括时间格式、通知偏好设置，以及是显示还是隐藏用户已阅读的新闻报道。DataStore 还可以使用协议缓冲区来存储类型化对象。
 2. 借助 WorkManager，可以轻松调度异步的可靠工作，并可以负责管理约束条件。我们建议使用该库执行持久性工作。为了执行上面定义的任务，我们创建了一个 Worker 类：RefreshLatestNewsWorker。此类以 NewsRepository 作为依赖项，以便获取最新新闻并将其缓存到磁盘中。
 3. 为了保护来自不同线程的读取和写入操作，我们使用了 Mutex。
-4. async 用于在外部作用域内启动协程。await 在新的协程上调用，以便在网络请求返回结果并且结果保存到缓存中之前，一直保持挂起状态。如果届时用户仍位于屏幕上，就会看到最新新闻；如果用户已离开屏幕，await 将被取消，但 async 内部的逻辑将继续执行。
+4. async 用于在外部作用域内启动协程。await 在新的协程上调用，以便在网络请求返回结果并且结果保存到缓存中之前，一直保持挂起状态。如果届时用户仍位于屏幕上，就会看到最新新闻；如果用户已离开屏幕，await 将被取消，但 async 内部的逻辑将继续执行。`luanch`适用于“发射并忘记”，而`async`适用于“异步并等待结果”
 5. [数据和文件存储](https://developer.android.com/training/data-storage?hl=zh-cn)：room /DataStore/ File
 
 ### 协程最佳实践

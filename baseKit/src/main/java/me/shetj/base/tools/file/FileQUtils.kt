@@ -274,7 +274,8 @@ object FileQUtils {
      * @param uri
      */
     fun takeFilePermission(context: Context, uri: Uri) {
-        val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        val flag: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         context.contentResolver.takePersistableUriPermission(uri, flag)
     }
 }

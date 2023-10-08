@@ -29,12 +29,24 @@
         android:theme="@style/BaseTheme.MD3"
         tools:targetApi="tiramisu">
 
-        <!--        分屏 activity 嵌入分屏-->
+        <activity android:name=".func.SplashActivity"
+            android:theme="@style/App.SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <!--分屏 activity 嵌入分屏-->
         <property
             android:name="android.window.PROPERTY_ACTIVITY_EMBEDDING_SPLITS_ENABLED"
             android:value="true" />
 
-<!--        拒绝系统的嵌入-->
+        <!--拒绝系统的嵌入-->
         <property
             android:name="android.window.PROPERTY_ACTIVITY_EMBEDDING_ALLOW_SYSTEM_OVERRIDE"
             android:value="false" />
@@ -76,14 +88,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
         </activity>
 
         <service

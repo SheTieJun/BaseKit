@@ -10,7 +10,6 @@ import android.os.health.SystemHealthManager
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.metrics.performance.JankStats
@@ -77,11 +76,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 //            }
 //        })
 
-        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         KeyboardUtil.init(this)
-
         val healthStats = getSystemService(SystemHealthManager::class.java).takeMyUidSnapshot()
         healthStats.measurementKeyCount
 
@@ -227,7 +224,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     override fun initBaseView() {
         super.initBaseView()
         setAppearance(isBlack = true, Color.TRANSPARENT)
-        runOnUiThread {
+        mBinding.root.post {
             windowInsets?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
             windowInsets?.getInsets(Type.statusBars()).toJson().logI("statusBars")
             windowInsets?.getInsets(Type.captionBar()).toJson().logI("captionBar")

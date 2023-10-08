@@ -36,7 +36,6 @@ class DebugClassVisitor(classVisitor: ClassVisitor) :
     }
 
     override fun visitAnnotation(descriptor: String, visible: Boolean): AnnotationVisitor? {
-//        println("visitAnnotation descriptor " + descriptor + " visible " + visible);
         //获取类上的annotation，如果有类上的annotation，那么给每一个方法生成一个log
         //如果有cnLog那么其他的方法上的log就不再处理
         if (descriptor == Constants.ANNOTATION_NAME) {
@@ -50,7 +49,6 @@ class DebugClassVisitor(classVisitor: ClassVisitor) :
     override fun visitField(access: Int, name: String?, descriptor: String?, signature: String?, value: Any?): FieldVisitor {
         val type: Type = Type.getType(descriptor)
         //判断是否是静态方法，如果是静态方法则不能去获取类中非field的值，如果不是静态方法则可以获取field的值
-//        LogHelper.log(" visit visitField access " + access + " name " + name + " descriptor " + descriptor + " signature " + signature + " value " + value + " type " + type);
         //用fieldInfo将当前的field存放起来
         fieldInfos.add(FieldInfos(descriptor, access, type, name))
         return super.visitField(access, name, descriptor, signature, value)

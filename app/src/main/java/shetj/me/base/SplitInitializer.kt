@@ -4,6 +4,11 @@ import android.content.Context
 import androidx.startup.Initializer
 import androidx.window.embedding.RuleController
 
+/**
+ * Split initializer
+ * 分屏
+ * @constructor Create empty Split initializer
+ */
 class SplitInitializer : Initializer<RuleController> {
 
  override fun create(context: Context): RuleController {

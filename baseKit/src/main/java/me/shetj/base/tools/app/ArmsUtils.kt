@@ -229,17 +229,6 @@ class ArmsUtils private constructor() {
         }
 
         /**
-         * 通过资源id获得drawable
-         *
-         * @param rID
-         * @return
-         */
-        @JvmStatic
-        fun getDrawableByResource(context: Context, rID: Int): Drawable? {
-            return ContextCompat.getDrawable(context, rID)
-        }
-
-        /**
          * 跳转界面 3
          *
          * @param activity

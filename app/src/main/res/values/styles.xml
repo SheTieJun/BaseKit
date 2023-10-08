@@ -25,7 +25,7 @@
 
 
     <style name="App.SplashScreen" parent="Theme.SplashScreen.IconBackground">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/unsplash_cat1</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenIconBackgroundColor">@color/white</item>
 

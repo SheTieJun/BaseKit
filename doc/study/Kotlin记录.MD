@@ -80,3 +80,4 @@ implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.20'
 ### DSL 特定领域语言：lambda \扩展函数\顶层函数\invoke约定
 ### SupervisorJob() 便于协程的故障不会再层级间传播
 ### job 中的IO,都是会被阻塞的
+### `luanch`适用于“发射并忘记”，而`async`适用于“异步并等待结果”

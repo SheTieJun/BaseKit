@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.TimeUnit
 import me.shetj.base.ktx.convertToT
+import me.shetj.base.ktx.getTagThread
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.toJson
 import me.shetj.base.mvvm.viewbind.BaseViewModel
@@ -55,7 +56,8 @@ class MainViewModel : BaseViewModel() {
             title = "这是一个测试时间",
             des = "这是测试时间描述",
             remindTime = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(5),
-            endTime = null, previousTime = 5
+            endTime = null,
+            previousTime = 5
         )
         if (id != -1L) {
             TipKit.success(context, "添加成功")
