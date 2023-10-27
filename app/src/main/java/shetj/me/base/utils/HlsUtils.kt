@@ -89,10 +89,10 @@ object HlsUtils {
     fun getWiFiIpAddress(context: Context): String {
         var ipAddress = 0
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
             ipAddress = wifiManager.connectionInfo.ipAddress
         } else {
-            val connectivityManager = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             connectivityManager.run {
                 activeNetwork?.let { network ->
                     (getNetworkCapabilities(network)?.transportInfo as? WifiInfo)?.let { wifiInfo ->

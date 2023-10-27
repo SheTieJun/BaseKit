@@ -31,7 +31,7 @@ import androidx.lifecycle.LifecycleOwner
  * * [setOnAudioFocusChangeListener] 监听焦点变化
  */
 
-class AudioManagerKit(val context: Context, private val lifecycleOwner: LifecycleOwner? = null) :
+class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwner? = null) :
     LifecycleEventObserver {
 
     private var onAudioFocusChangeListener: OnAudioFocusChange? = null
@@ -70,7 +70,7 @@ class AudioManagerKit(val context: Context, private val lifecycleOwner: Lifecycl
     }
 
     init {
-        init()
+        init(context)
     }
 
     fun getAudioManager() = mAudioManager
@@ -111,7 +111,12 @@ class AudioManagerKit(val context: Context, private val lifecycleOwner: Lifecycl
         this.onAudioFocusChangeListener = onAudioFocusChangeListener
     }
 
-    private fun init() {
+
+    fun adjustStreamVolume(){
+        mAudioManager?.adjustStreamVolume(AudioManager.STREAM_MUSIC,AudioManager.ADJUST_RAISE,AudioManager.FLAG_SHOW_UI)
+    }
+
+    private fun init(context: Context) {
         mAudioManager = context.applicationContext.getSystemService()
         lifecycleOwner?.lifecycle?.addObserver(this)
     }

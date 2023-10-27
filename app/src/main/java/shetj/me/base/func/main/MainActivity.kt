@@ -17,7 +17,9 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
 import java.util.*
+import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
+import me.shetj.base.ktx.hasPermission
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logE
 import me.shetj.base.ktx.logI
@@ -96,7 +98,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 "截屏了:$path".logI()
             }
         })
-
         WidgetProvider.registerReceiver(this)
     }
 
@@ -195,6 +196,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             start<SlidingPaneActivity>()
         }
 
+        mContent.btnPerm.setOnClickListener {
+            FixPermission.checkHasExternalFile(this)
+        }
     }
 
     override fun onInitialized() {

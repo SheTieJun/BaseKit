@@ -16,6 +16,7 @@ import android.provider.MediaStore
 import android.provider.MediaStore.Images.ImageColumns
 import android.provider.MediaStore.Images.Media
 import androidx.annotation.RequiresApi
+import androidx.annotation.RequiresPermission
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
@@ -25,6 +26,7 @@ import java.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import me.shetj.base.BaseKit
+import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.isTrue
 
 /**
@@ -64,10 +66,13 @@ object ScreenshotKit {
     /**
      * Get screenshot listener
      * 获取截屏监听
-     * @param canObserver 因为有隐私协议的问题，所以需要用户自己选择是否监听
+     * Android >=33    @RequiresPermission("android.permission.READ_MEDIA_IMAGES")
+     * Android <33    @RequiresPermission("android.permission.READ_EXTERNAL_STORAGE")
+     * @param isRequest 是否请求对应权限
      * @return
      */
-    fun initActivity(activity: FragmentActivity) {
+    fun initActivity(activity: FragmentActivity,isRequest:Boolean = true) {
+        FixPermission.checkReadMediaFile(activity, isRequest)
         if (VERSION.SDK_INT >= 34) {
             val screenshotListener = Activity.ScreenCaptureCallback { handleMediaContentChange(Media.EXTERNAL_CONTENT_URI) }
             activity.lifecycle.addObserver(object : LifecycleEventObserver {

@@ -9,7 +9,7 @@ import me.shetj.base.weight.AbLoadingDialog
  */
 object TipKit {
     /**
-     * 标准类型的taost
+     * 标准类型的Toast
      *
      * 默认不显示icon，显示时间为Toast.LENGTH_SHORT
      */
@@ -30,7 +30,7 @@ object TipKit {
     }
 
     /**
-     * 信息类型的taost
+     * 信息类型的Toast
      *
      * 默认显示icon，显示时间为Toast.LENGTH_SHORT
      */
@@ -51,7 +51,7 @@ object TipKit {
     }
 
     /**
-     * 成功类型的taost
+     * 成功类型的Toast
      *
      * 默认显示icon，显示时间为Toast.LENGTH_SHORT
      */
