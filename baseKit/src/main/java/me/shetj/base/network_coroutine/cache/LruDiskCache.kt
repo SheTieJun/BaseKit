@@ -2,15 +2,15 @@ package me.shetj.base.network_coroutine.cache
 
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException
-import java.io.File
-import java.io.IOException
-import java.nio.charset.Charset
 import me.shetj.base.ktx.md5
 import me.shetj.base.tools.file.CloseUtils
 import okhttp3.internal.cache.DiskLruCache
 import okhttp3.internal.io.FileSystem
 import okio.Okio
 import timber.log.Timber
+import java.io.File
+import java.io.IOException
+import java.nio.charset.Charset
 
 /**
  * Source对应InputStream， Sink对应OutputStream
@@ -94,7 +94,7 @@ class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Lon
             return false
         }
         try {
-            return mDiskLruCache!!.get(key.md5) != null
+            return mDiskLruCache?.get(key.md5) != null
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -106,7 +106,7 @@ class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Lon
             return false
         }
         try {
-            return mDiskLruCache!!.remove(key.md5)
+            return mDiskLruCache?.remove(key.md5) == true
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -116,7 +116,7 @@ class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Lon
     override fun doClear(): Boolean {
         var statu = false
         try {
-            mDiskLruCache!!.delete()
+            mDiskLruCache?.delete()
             statu = true
         } catch (e: IOException) {
             e.printStackTrace()
@@ -130,7 +130,7 @@ class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Lon
         }
         if (existTime > -1) { // -1表示永久性存储 不用进行过期校验
             // 为什么这么写，请了解DiskLruCache，看它的源码
-            val file = File(mDiskLruCache!!.directory, "${key.md5}.0")
+            val file = File(mDiskLruCache?.directory, "${key.md5}.0")
             if (isCacheDataFailure(file, existTime)) { // 没有获取到缓存,或者缓存已经过期!
                 return true
             }

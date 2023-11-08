@@ -1,9 +1,9 @@
 @file:JvmName("WinCompat")
+
 package me.shetj.base.ktx
 import android.app.Activity
 import android.graphics.Color
 import android.os.Build
-import android.view.Window
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.core.view.ViewCompat
@@ -12,13 +12,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 
 val Activity.windowInsets: WindowInsetsCompat?
     get() = ViewCompat.getRootWindowInsets(findViewById(android.R.id.content))
 
 val Activity.windowInsetsController: WindowInsetsControllerCompat
-    get() = WindowCompat.getInsetsController(window,findViewById(android.R.id.content))
+    get() = WindowCompat.getInsetsController(window, findViewById(android.R.id.content))
 
 val Fragment.windowInsetsCompat: WindowInsetsCompat?
     get() = kotlin.runCatching { requireActivity().windowInsets }
@@ -60,7 +59,6 @@ fun Activity.hideNavigationBars() {
     }
 }
 
-
 /**
  * 展示导航栏
  */
@@ -86,7 +84,6 @@ fun Activity.hideSystemUI() {
     }
 }
 
-
 /**
  * Immerse 沉浸。设置沉浸的方式
  *
@@ -102,7 +99,6 @@ fun Activity.immerse(
     navigationIsBlack: Boolean = true,
     @ColorInt color: Int = Color.TRANSPARENT
 ) {
-
     when (type) {
         Type.systemBars() -> {
             WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -111,9 +107,7 @@ fun Activity.immerse(
                 controller.isAppearanceLightStatusBars = statusIsBlack
                 controller.isAppearanceLightNavigationBars = navigationIsBlack
             }
-            findViewById<FrameLayout>(android.R.id.content).apply {
-                setPadding(0, 0, 0, 0)
-            }
+            findViewById<FrameLayout>(android.R.id.content).setPadding(0, 0, 0, 0)
         }
         Type.statusBars() -> {
             WindowCompat.setDecorFitsSystemWindows(window, false)

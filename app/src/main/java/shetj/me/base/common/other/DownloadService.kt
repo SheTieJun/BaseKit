@@ -11,12 +11,12 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Environment
 import android.os.IBinder
-import java.io.File
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.file.EnvironmentStorage.Companion.getExternalFilesDir
 import shetj.me.base.common.other.DownloadService.Companion.getApkName
 import shetj.me.base.common.other.DownloadService.Companion.install
 import timber.log.Timber
+import java.io.File
 
 /**
  * ** [DownloadService] 主要是为了app更新下载，直接执行安装处理</br>
@@ -34,7 +34,7 @@ class DownloadService : Service() {
 
     private var mIsDownloading = false
 
-    //--- Override methods -------------------------------------------------------------------------
+    // --- Override methods -------------------------------------------------------------------------
 
     override fun onCreate() {
         super.onCreate()
@@ -84,18 +84,21 @@ class DownloadService : Service() {
         super.onDestroy()
     }
 
-    //--- Private methods --------------------------------------------------------------------------
+    // --- Private methods --------------------------------------------------------------------------
 
     private fun startDownLoad() {
         Timber.d("start download apk")
         val request = DownloadManager.Request(
-                Uri.parse(mDownloadUrl))
+            Uri.parse(mDownloadUrl)
+        )
         request.setMimeType("application/vnd.android.package-archive")
         request.setAllowedNetworkTypes(
-                DownloadManager.Request.NETWORK_MOBILE or DownloadManager.Request.NETWORK_WIFI)
+            DownloadManager.Request.NETWORK_MOBILE or DownloadManager.Request.NETWORK_WIFI
+        )
         request.setTitle(mNewestAppName)
         request.setNotificationVisibility(
-                DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
+        )
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, mNewestAppName)
         mDownLoadAPKId = mDm!!.enqueue(request)
         mIsDownloading = true
@@ -103,7 +106,7 @@ class DownloadService : Service() {
 
     companion object {
 
-        //--- Private attributes -----------------------------------------------------------------------
+        // --- Private attributes -----------------------------------------------------------------------
 
         private val EXTRA_DOWNLOAD_VERSION = "com.shetj.me.DOWNLOAD_VERSION"
         private val EXTRA_DOWNLOAD_APK_NAME = "com.shetj.me.DOWNLOAD_APK_NAME"
@@ -113,7 +116,7 @@ class DownloadService : Service() {
 
         private var mDm: DownloadManager? = null
 
-        //--- Public static methods --------------------------------------------------------------------
+        // --- Public static methods --------------------------------------------------------------------
 
         /**
          * 开启下载
@@ -122,9 +125,12 @@ class DownloadService : Service() {
          * @param appName     使用[.getApkName]获取
          * @param downloadUrl 下载的路径
          */
-        fun install(appContext: Context, versionName: String,
-                    appName: String,
-                    downloadUrl: String) {
+        fun install(
+            appContext: Context,
+            versionName: String,
+            appName: String,
+            downloadUrl: String
+        ) {
             if (hasDownloadedApk(appName)) {
                 installApk(appContext, appName)
             } else {
@@ -167,7 +173,7 @@ class DownloadService : Service() {
             return "$APK_SUFFIX$versionName-$fileName"
         }
 
-        //--- Private static methods -------------------------------------------------------------------
+        // --- Private static methods -------------------------------------------------------------------
 
         private val downloadDir: String
             get() = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)

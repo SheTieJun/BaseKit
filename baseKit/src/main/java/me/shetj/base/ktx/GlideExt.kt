@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import java.io.File
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.FileUtils
 import me.shetj.base.tools.file.FileUtils.copyFile
+import java.io.File
 
 //region Glide 加载
 
@@ -28,7 +28,6 @@ fun ImageView.loadImageBitmap(
         .load(url ?: rId)
         .into(this)
 }
-
 
 @JvmOverloads
 fun ImageView.loadImage(
@@ -48,17 +47,17 @@ fun ImageView.loadImage(
  */
 inline fun downloadImgByGlide(context: Context, url: String, crossinline onSuccess: ((String) -> Unit)) {
     runOnIo {
-        Glide.with(context).downloadOnly().load(url).submit().get().apply {
-            onSuccess.invoke(this.absolutePath)
+        Glide.with(context).downloadOnly().load(url).submit().get().also {
+            onSuccess.invoke(it.absolutePath)
         }
     }
 }
 
 fun ImageView.loadImage(obj: Any, requestOptions: RequestOptions? = null) {
     Glide.with(context)
-        .load(obj).apply {
+        .load(obj).also {
             if (requestOptions != null) {
-                apply(requestOptions)
+                it.apply(requestOptions)
             }
         }
         .into(this)
@@ -103,8 +102,8 @@ fun getRequestOptions(
         placeholderDrawable?.let {
             placeholder(it)
         }
-        errorDrawable?.let {
-            error(it)
+        errorDrawable?.run {
+            error(this)
         }
     }
 }
@@ -125,7 +124,7 @@ fun AppCompatActivity.saveImage(shareCardUrl: String) {
 suspend fun saveImage(
     context: Context,
     shareCardUrl: String,
-): Result<String> = withContext(Dispatchers.IO) {
+): Result<String> = withContext(DispatcherProvider.io()) {
     return@withContext kotlin.runCatching {
         val cacheFile = Glide.with(context)
             .downloadOnly()
@@ -136,7 +135,8 @@ suspend fun saveImage(
             )
         val targetFile = File(filePath)
         val resultIsSuccess = copyFile(
-            cacheFile, targetFile,
+            cacheFile,
+            targetFile,
             FileUtils.OnReplaceListener {
                 return@OnReplaceListener true
             }

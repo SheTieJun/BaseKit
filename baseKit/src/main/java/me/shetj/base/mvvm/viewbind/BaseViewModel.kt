@@ -7,18 +7,15 @@ import me.shetj.base.tip.TipType
 
 open class BaseViewModel : ViewModel() {
 
-    val baseAction:MutableLiveData<ViewAction> = SingleLiveEvent()
-
+    val baseAction: MutableLiveData<ViewAction> = SingleLiveEvent()
 
     override fun onCleared() {
         super.onCleared()
     }
 }
 
-
 sealed class ViewAction
 
-class TipAction(val tipType: TipType, val msg:String): ViewAction()
+class TipAction(val tipType: TipType, val msg: String) : ViewAction()
 
-class NetErrorAction(val msg: String): ViewAction()
-
+class NetErrorAction(val msg: String) : ViewAction()

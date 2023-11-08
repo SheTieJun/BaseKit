@@ -6,13 +6,11 @@ import me.shetj.base.base.AbBaseActivity
 import me.shetj.base.ktx.start
 import shetj.me.base.func.main.MainActivity
 
-class SplashActivity:AbBaseActivity() {
+class SplashActivity : AbBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen().apply {
-            setOnExitAnimationListener { _ ->
-                start<MainActivity>(isFinish = true)
-            }
+        installSplashScreen().setOnExitAnimationListener { _ ->
+            start<MainActivity>(isFinish = true)
         }
     }
 }

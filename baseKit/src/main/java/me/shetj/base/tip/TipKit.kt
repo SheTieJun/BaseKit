@@ -9,7 +9,7 @@ import me.shetj.base.weight.AbLoadingDialog
  */
 object TipKit {
     /**
-     * 标准类型的taost
+     * 标准类型的Toast
      *
      * 默认不显示icon，显示时间为Toast.LENGTH_SHORT
      */
@@ -21,7 +21,8 @@ object TipKit {
         duration: Int = Toast.LENGTH_SHORT
     ) {
         TipDialog.showTip(
-            context, message,
+            context,
+            message,
             when (duration) {
                 Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
                 else -> AbLoadingDialog.LOADING_LONG
@@ -30,7 +31,7 @@ object TipKit {
     }
 
     /**
-     * 信息类型的taost
+     * 信息类型的Toast
      *
      * 默认显示icon，显示时间为Toast.LENGTH_SHORT
      */
@@ -42,7 +43,8 @@ object TipKit {
         duration: Int = Toast.LENGTH_SHORT
     ) {
         TipDialog.showTip(
-            context, message,
+            context,
+            message,
             when (duration) {
                 Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
                 else -> AbLoadingDialog.LOADING_LONG
@@ -51,7 +53,7 @@ object TipKit {
     }
 
     /**
-     * 成功类型的taost
+     * 成功类型的Toast
      *
      * 默认显示icon，显示时间为Toast.LENGTH_SHORT
      */
@@ -63,7 +65,9 @@ object TipKit {
         duration: Int = Toast.LENGTH_SHORT
     ) {
         SimLoadingDialog.showTip(
-            context, message, TipType.SUCCESS,
+            context,
+            message,
+            TipType.SUCCESS,
             when (duration) {
                 Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
                 else -> AbLoadingDialog.LOADING_LONG
@@ -84,7 +88,9 @@ object TipKit {
         duration: Int = Toast.LENGTH_LONG
     ) {
         SimLoadingDialog.showTip(
-            context, message, TipType.ERROR,
+            context,
+            message,
+            TipType.ERROR,
             when (duration) {
                 Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
                 else -> AbLoadingDialog.LOADING_LONG
@@ -101,7 +107,9 @@ object TipKit {
     @JvmStatic
     fun warn(context: ComponentActivity, message: CharSequence, duration: Int = Toast.LENGTH_LONG) {
         SimLoadingDialog.showTip(
-            context, message, TipType.WARNING,
+            context,
+            message,
+            TipType.WARNING,
             when (duration) {
                 Toast.LENGTH_SHORT -> AbLoadingDialog.LOADING_SHORT
                 else -> AbLoadingDialog.LOADING_LONG

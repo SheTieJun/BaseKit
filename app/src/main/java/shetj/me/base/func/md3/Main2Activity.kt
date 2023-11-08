@@ -9,7 +9,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import me.shetj.base.base.AbBindingActivity
-import me.shetj.base.ktx.defDataStore
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivityMain2Binding
 import shetj.me.base.jankstats.JankStatsAggregator
@@ -50,9 +49,8 @@ class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
         // Initialize JankStats with an aggregator for the current window.
         jankStatsAggregator = JankStatsAggregator(window, jankReportListener)
         mBinding.vm = main2TestVM
-        enabledOnBack = true //启动拦截事件
+        enabledOnBack = true // 启动拦截事件
     }
-
 
     override fun onPause() {
         super.onPause()
@@ -67,11 +65,9 @@ class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
         jankStatsAggregator.jankStats.isTrackingEnabled = true
     }
 
-
     override fun onStop() {
         super.onStop()
     }
-
 
     override fun isEnableGrayTheme(): Boolean {
         return true
@@ -79,11 +75,10 @@ class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main2)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) ||
+            super.onSupportNavigateUp()
     }
 
     override fun setUpClicks() {
-
     }
 }

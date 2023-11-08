@@ -24,13 +24,14 @@ object AppSigningUtils {
     /**
      * 获取签名信息
      */
-    fun getSignature(context: Context,packageName: String = context.packageName): String? {
+    fun getSignature(context: Context, packageName: String = context.packageName): String? {
         try {
             /** 通过包管理器获得指定包名包含签名的包信息  */
             val packageInfo = context.packageManager.getPackageInfo(
                 packageName,
                 PackageManager.GET_SIGNATURES
             )
+
             /******* 通过返回的包信息获得签名数组  */
             val signatures = packageInfo.signatures
             /******* 循环遍历签名数组拼接应用签名  */
@@ -49,32 +50,37 @@ object AppSigningUtils {
      * @param type
      * @return 因为一个安装包可以被多个签名文件签名，所以返回一个签名信息的list
      */
-    fun getSignInfo(context: Context?, type: String?, pkg: String? = context?.packageName,lowCase: Boolean = false): ArrayList<String>? {
+    fun getSignInfo(
+        context: Context?,
+        type: String?,
+        pkg: String? = context?.packageName,
+        lowCase: Boolean = false
+    ): ArrayList<String>? {
         if (context == null || type == null) {
             return null
         }
-        val packageName = pkg?:context.packageName ?: return null
-        if (mSignMap[type+lowCase] != null) {
-            return mSignMap[type+lowCase]
+        val packageName = pkg ?: context.packageName ?: return null
+        if (mSignMap[type + lowCase] != null) {
+            return mSignMap[type + lowCase]
         }
         val mList = ArrayList<String>()
         try {
-            val signs = getSignatures(context, packageName)
-            for (sig in signs!!) {
+            val signs = getSignatures(context, packageName) ?: return null
+            for (sig in signs) {
                 var tmp = "error!"
                 if (MD5 == type) {
-                    tmp = getSignatureByteString(sig, MD5,lowCase)
+                    tmp = getSignatureByteString(sig, MD5, lowCase)
                 } else if (SHA1 == type) {
-                    tmp = getSignatureByteString(sig, SHA1,lowCase)
+                    tmp = getSignatureByteString(sig, SHA1, lowCase)
                 } else if (SHA256 == type) {
-                    tmp = getSignatureByteString(sig, SHA256,lowCase)
+                    tmp = getSignatureByteString(sig, SHA256, lowCase)
                 }
                 mList.add(tmp)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        mSignMap[type+lowCase] = mList
+        mSignMap[type + lowCase] = mList
         return mList
     }
 
@@ -176,7 +182,7 @@ object AppSigningUtils {
      * @param type
      * @return
      */
-    private fun getSignatureByteString(sig: Signature, type: String,lowCase:Boolean = false): String {
+    private fun getSignatureByteString(sig: Signature, type: String, lowCase: Boolean = false): String {
         val hexBytes = sig.toByteArray()
         var fingerprint = "error!"
         try {
@@ -184,12 +190,12 @@ object AppSigningUtils {
             val digestBytes = digest.digest(hexBytes)
             val sb = StringBuilder()
             for (digestByte in digestBytes) {
-                if (lowCase){
+                if (lowCase) {
                     sb.append(
                         Integer.toHexString(digestByte.toInt() and 0xFF or 0x100)
                             .substring(1, 3).lowercase(Locale.getDefault())
                     )
-                }else{
+                } else {
                     sb.append(
                         Integer.toHexString(digestByte.toInt() and 0xFF or 0x100)
                             .substring(1, 3).uppercase(Locale.getDefault())

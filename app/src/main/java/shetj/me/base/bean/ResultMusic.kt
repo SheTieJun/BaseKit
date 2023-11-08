@@ -15,11 +15,12 @@ import androidx.annotation.Keep
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */@Keep
+ */
+@Keep
 data class ResultMusic(var msg: String, var code: Int, var data: List<DataBean>) {
 
     class DataBean {
-        var url :String ?= null
+        var url: String? = null
         var title: String? = null
         var duration: String? = null
         var imgUrl: String? = null

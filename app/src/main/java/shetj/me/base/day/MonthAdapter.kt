@@ -6,15 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import java.util.*
 import shetj.me.base.databinding.LMtrlCalendarDayBinding
+import java.util.*
 
+@Suppress("DEPRECATION")
 class MonthAdapter(private val month: Month) : RecyclerView.Adapter<BaseViewHolder>() {
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-         return BaseViewHolder(LMtrlCalendarDayBinding.inflate(LayoutInflater.from(parent.context),parent,false).root)
+        return BaseViewHolder(LMtrlCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false).root)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
@@ -38,14 +37,14 @@ class MonthAdapter(private val month: Month) : RecyclerView.Adapter<BaseViewHold
         return (position / month.daysInWeek).toLong()
     }
 
-
     private fun isToday(date: Long): Boolean {
         return LocalDates.getTodayCalendar().timeInMillis == date
     }
 
     override fun getItemCount(): Int {
-        return dayToPosition(month.daysInMonth)+1
+        return dayToPosition(month.daysInMonth) + 1
     }
+
     /**
      * Returns the index of the first position which is part of the month.
      *
@@ -55,7 +54,7 @@ class MonthAdapter(private val month: Month) : RecyclerView.Adapter<BaseViewHold
      * be greater than 0.
      */
     fun firstPositionInMonth(): Int {
-        //Calendar.MONDAY
+        // Calendar.MONDAY
         return month.daysFromStartOfWeekToFirstOfMonth(Calendar.MONDAY)
     }
 

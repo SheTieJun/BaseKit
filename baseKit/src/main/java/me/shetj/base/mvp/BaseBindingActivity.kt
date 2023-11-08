@@ -11,7 +11,7 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : BaseActivity<P>() {
+open class BaseBindingActivity<P : BasePresenter<*>, VB : ViewBinding> : BaseActivity<P>() {
 
     private val lazyViewBinding = lazy { initViewBinding() }
     protected val mViewBinding: VB by lazyViewBinding

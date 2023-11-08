@@ -12,7 +12,6 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.Uri
-import android.os.Build
 import android.os.Looper
 import android.os.PowerManager
 import android.provider.Settings
@@ -32,7 +31,6 @@ import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
@@ -40,12 +38,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
-import java.io.File
-import java.lang.reflect.Method
 import me.shetj.base.R
 import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
+import java.io.File
+import java.lang.reflect.Method
 
 /**
  * 用来防止重新进入的时候多次展示 Splash
@@ -93,7 +91,7 @@ fun FragmentActivity.grayThemChange(isGrayTheme: Boolean) {
     }
 }
 
-fun FragmentActivity.disableSecure(){
+fun FragmentActivity.disableSecure() {
     window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
 }
 
@@ -132,7 +130,6 @@ fun <T : View> T.animator() = ViewCompat.animate(this)
  */
 @MainThread
 fun String.showToast() = ArmsUtils.makeText(this)
-
 
 @JvmOverloads
 fun Activity.showSnack(msg: String, view: View? = null) {
@@ -309,7 +306,6 @@ internal fun Context.requestNetWork() {
             override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
                 super.onCapabilitiesChanged(network, networkCapabilities)
                 if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-
                     when {
                         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
                             NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.WIFI)
@@ -346,20 +342,20 @@ fun Activity.getWindowContent(): FrameLayout? {
 fun refreshAlbum(context: Context, fileUri: String) {
     val file = File(fileUri)
     MediaScannerConnection.scanFile(
-        context, arrayOf(file.toString()),
+        context,
+        arrayOf(file.toString()),
         arrayOf("image/jpeg")
     ) { path, uri ->
         ("扫描完成 path: $path, uri: $uri").logI()
     }
 }
 
-
 fun Context.startIgnoreBatteryOpt() {
-    val i = Intent();
-    i.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;
-    //data为应用包名
-    i.data = Uri.parse("package:$packageName");
-    startActivity(i);
+    val i = Intent()
+    i.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+    // data为应用包名
+    i.data = Uri.parse("package:$packageName")
+    startActivity(i)
 }
 
 /**
@@ -370,6 +366,3 @@ fun Context.isIgnoringPower(): Boolean {
     val powerManager: PowerManager? = getSystemService()
     return powerManager?.isIgnoringBatteryOptimizations(packageName) ?: false
 }
-
-
-

@@ -1,40 +1,33 @@
-
-
 package shetj.me.base.test
 
 import androidx.core.text.buildSpannedString
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import me.shetj.base.ktx.renderType
 import me.shetj.base.model.UIState
-
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class TestKotlin {
 
-
-
     companion object {
 
-
-          val liveDataA = MediatorLiveData<Boolean>()
-          val liveDataB1 = MediatorLiveData<Boolean>()
-          val liveDataB2 = MutableLiveData<Boolean>()
-          val liveDataC1 = MutableLiveData<Boolean>()
-          val liveDataC2 = MutableLiveData<Boolean>()
+        val liveDataA = MediatorLiveData<Boolean>()
+        val liveDataB1 = MediatorLiveData<Boolean>()
+        val liveDataB2 = MutableLiveData<Boolean>()
+        val liveDataC1 = MutableLiveData<Boolean>()
+        val liveDataC2 = MutableLiveData<Boolean>()
 
         /**
          * [UIState]
          */
         private val _uiState = MutableStateFlow<UIState>(UIState.Loading)
 
-
         private val _testStatus = MutableSharedFlow<Int>(
-            replay = 1, //至少1
+            replay = 1, // 至少1
             onBufferOverflow = BufferOverflow.DROP_OLDEST
         )
 
@@ -67,66 +60,48 @@ class TestKotlin {
 
         @JvmStatic
         fun main(args: Array<String>) {
-           println(System.currentTimeMillis().toInt())
+            println(System.currentTimeMillis().toInt())
         }
 
         /**
-        *@[测试]
-        */
-        fun testBuild(){
-
-            //1.6.0
+         *@[测试]
+         */
+        fun testBuild() {
+            // 1.6.0
             buildList<String> {
-
             }.isEmpty()
 
-            buildMap<String,String> {
-
+            buildMap<String, String> {
             }
 
             buildSet<String> {
-
             }
-            //end 1.6.0
+            // end 1.6.0
 
             buildString {
-
             }
 
             buildSpannedString {
-
             }
 
             buildString(1) {
-
             }
 
             5000.toDuration(DurationUnit.SECONDS).apply {
                 this.inWholeDays
             }.toDouble(DurationUnit.HOURS)
-
         }
 
-
-        fun testLiveData(){
-
-            liveDataA.map {  }
-
+        fun testLiveData() {
+            liveDataA.map { }
         }
-
-
-
 
         @ExperimentalStdlibApi
-        fun typeofTest(){
-           val string =  renderType<String>()
+        fun typeofTest() {
+            val string = renderType<String>()
             print(string)
         }
     }
-
-
-
-
 
     fun openMini() {
 //        val req = WXLaunchMiniProgram.Req()
@@ -137,7 +112,7 @@ class TestKotlin {
     }
 }
 
-//fun main() {
+// fun main() {
 //
 //    method{
 //        return@method 1
@@ -154,18 +129,18 @@ class TestKotlin {
 //        return
 //    }
 //
-//}
+// }
 //
 //
 //
-//fun method(t: (Int) -> Int) {
+// fun method(t: (Int) -> Int) {
 //    t.invoke(1)
-//}
+// }
 //
-//inline fun method2(crossinline t: (Int) -> Int) {
+// inline fun method2(crossinline t: (Int) -> Int) {
 //    t.invoke(2)
-//}
+// }
 //
-//inline fun method3( t: (Int) -> Int) {
+// inline fun method3( t: (Int) -> Int) {
 //    t.invoke(3)
-//}
+// }

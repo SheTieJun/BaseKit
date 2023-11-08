@@ -1,8 +1,5 @@
 package me.shetj.base.network_coroutine
 
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
@@ -10,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.ktx.convertToT
 import me.shetj.base.ktx.logD
 import me.shetj.base.network.exception.ApiException
@@ -20,6 +18,9 @@ import me.shetj.base.network.kt.createJson
 import me.shetj.base.network_coroutine.cache.CacheMode
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * 协程 Http请求
@@ -32,7 +33,6 @@ object KCHttpV4 {
 
     private val apiService: KCApiService = get(KCApiService::class.java)
 
-
     suspend inline fun <reified T> get(
         url: String,
         maps: Map<String, String>,
@@ -42,7 +42,6 @@ object KCHttpV4 {
             doGetCache(url, maps, requestOption).convertToT()
         }
     }
-
 
     suspend inline fun <reified T> post(
         url: String,
@@ -84,7 +83,6 @@ object KCHttpV4 {
         }
     }
 
-
     suspend fun doGetCache(
         url: String,
         maps: Map<String, String> = HashMap(),
@@ -106,7 +104,6 @@ object KCHttpV4 {
             }
         }
     }
-
 
     suspend fun doPostCache(
         url: String,
@@ -184,7 +181,6 @@ object KCHttpV4 {
         }
     }
 
-
     /**
      * @param requestOption  请求选项
      * @param fromNetworkValue 如果没有使用缓存，就会通过改方法获取，来自网络内容
@@ -207,7 +203,7 @@ object KCHttpV4 {
                 try {
                     fromNetworkValue()
                 } catch (e: Exception) {
-                    withContext(Dispatchers.IO) {
+                    withContext(DispatcherProvider.io()) {
                         HttpKit.getKCCache().load(requestOption.cacheKey, requestOption.cacheTime)?.also {
                             "use cache key = ${requestOption.cacheKey} \n,value = $it ".logD(TAG)
                         }
@@ -217,7 +213,7 @@ object KCHttpV4 {
 
             CacheMode.FIRST_CACHE -> {
                 // 先加载缓存，缓存没有再去请求网络
-                withContext(Dispatchers.IO) {
+                withContext(DispatcherProvider.io()) {
                     HttpKit.getKCCache().load(requestOption.cacheKey, requestOption.cacheTime)
                         ?.also {
                             "use cache :cacheKey = ${requestOption.cacheKey} \n,value = $it ".logD(TAG)
@@ -238,7 +234,7 @@ object KCHttpV4 {
 
             CacheMode.ONLY_CACHE -> {
                 // 只读取缓存
-                withContext(Dispatchers.IO) {
+                withContext(DispatcherProvider.io()) {
                     HttpKit.getKCCache().load(requestOption.cacheKey, requestOption.cacheTime)?.also {
                         "use cache : cacheKey = ${requestOption.cacheKey} \n,value = $it ".logD(TAG)
                     }
@@ -250,9 +246,9 @@ object KCHttpV4 {
 
             CacheMode.CACHE_NET_DISTINCT -> {
                 /* 先使用缓存，不管是否存在，仍然请求网络，会先把缓存回调给你，
-                     * 络请求回来发现数据是一样的就不会再返回，否则再返回
-                     */
-                val cacheInfo = withContext(Dispatchers.IO) {
+                 * 络请求回来发现数据是一样的就不会再返回，否则再返回
+                 */
+                val cacheInfo = withContext(DispatcherProvider.io()) {
                     HttpKit.getKCCache().load(requestOption.cacheKey, requestOption.cacheTime)
                 }
                 val apiInfo = fromNetworkValue()
@@ -302,7 +298,7 @@ object KCHttpV4 {
                     outputStream.write(buffer, 0, readLength)
                     currentLength += readLength
                     val progress = currentLength.toFloat() / contentLength.toFloat()
-                    //每次超过%1才进行更新
+                    // 每次超过%1才进行更新
                     if (progress - emitProgress >= 0.01) {
                         emitProgress = progress
                         emit(
@@ -321,7 +317,7 @@ object KCHttpV4 {
             } catch (e: Exception) {
                 emit(HttpResult.failure<File>(ApiException.handleException(e)))
             }
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(DispatcherProvider.io())
             .collect {
                 it.fold(onFailure = { e ->
                     e?.let { it1 -> onError(it1) }
@@ -333,7 +329,6 @@ object KCHttpV4 {
             }
     }
 
-
     /**
      * 重试逻辑
      * @param repeatNum 重试次数
@@ -343,8 +338,8 @@ object KCHttpV4 {
      */
     suspend fun retryRequest(
         repeatNum: Int = 3,
-        initialDelay: Long = 1000,//1 second
-        timeout: Long = 10000,//10 second
+        initialDelay: Long = 1000, // 1 second
+        timeout: Long = 10000, // 10 second
         factor: Double = 2.0,
         block: suspend () -> String
     ): String {

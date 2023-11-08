@@ -4,13 +4,13 @@ import android.net.ParseException
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSerializer
 import com.google.gson.JsonSyntaxException
+import org.json.JSONException
+import retrofit2.HttpException
 import java.io.NotSerializableException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
-import org.json.JSONException
-import retrofit2.HttpException
 
 @Suppress("DEPRECATION")
 class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
@@ -120,15 +120,15 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
                     ex.message = "网络错误,Code:"+httpException.code()+" ,err:"+httpException.getMessage();
                     break;
             }*/
-                ex.message = e.message!!
+                ex.message = e.message
                 ex
             } else if (e is ServerException) {
                 ex = ApiException(e, e.errCode)
-                ex.message = e.message!!
+                ex.message = e.message
                 ex
             } else if (e is CacheException) {
                 ex = ApiException(e, ERROR.OK_CACHE_EXCEPTION)
-                ex.message = "缓存处理异常：" + e.message!!
+                ex.message = "缓存处理异常：" + e.message
                 ex
             } else if (e is JsonParseException ||
                 e is JSONException ||

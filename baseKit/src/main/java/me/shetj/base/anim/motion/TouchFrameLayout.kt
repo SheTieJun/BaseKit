@@ -11,7 +11,7 @@ class TouchFrameLayout : FrameLayout, NestedScrollingParent2 {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
         super(context, attrs, defStyleAttr) {
-        }
+    }
 
     val motionLayout: NestedScrollingParent2
         get() = parent as NestedScrollingParent2
@@ -37,8 +37,12 @@ class TouchFrameLayout : FrameLayout, NestedScrollingParent2 {
         type: Int
     ) {
         motionLayout.onNestedScroll(
-            target, dxConsumed, dyConsumed, dxUnconsumed,
-            dyUnconsumed, type
+            target,
+            dxConsumed,
+            dyConsumed,
+            dxUnconsumed,
+            dyUnconsumed,
+            type
         )
     }
 

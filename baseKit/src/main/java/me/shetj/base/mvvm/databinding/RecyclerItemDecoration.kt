@@ -46,7 +46,6 @@ class RecyclerItemDecoration(spacing: Int, includeEdge: Boolean) : RecyclerView.
         setSpacingForDirection(outRect, layoutManager, position, itemCount)
     }
 
-
     /**
      * the method is used to handle spacing between list items,
      * which changes the rectangle offsets based on spacing where the rectangle is boundary of cell item.
@@ -62,7 +61,6 @@ class RecyclerItemDecoration(spacing: Int, includeEdge: Boolean) : RecyclerView.
         position: Int,
         itemCount: Int
     ) {
-
         // Resolve display mode automatically
         if (displayMode == -1) {
             displayMode = resolveDisplayMode(layoutManager)
@@ -100,7 +98,6 @@ class RecyclerItemDecoration(spacing: Int, includeEdge: Boolean) : RecyclerView.
                     outRect.right = (column + 1) * spacing / spanCount
                     outRect.top = spacing
                     outRect.bottom = if (position / spanCount == rows - 1) spacing else 0
-
                 } else {
                     column * spacing / spanCount
                     outRect.left = column * spacing / spanCount
@@ -108,7 +105,6 @@ class RecyclerItemDecoration(spacing: Int, includeEdge: Boolean) : RecyclerView.
                     outRect.top = if (position / spanCount == 0) 0 else spacing
                     outRect.bottom = 0
                 }
-
             }
             STAGGERED_GRID -> if (layoutManager is StaggeredGridLayoutManager) {
                 val spanCount = layoutManager.spanCount
@@ -120,7 +116,6 @@ class RecyclerItemDecoration(spacing: Int, includeEdge: Boolean) : RecyclerView.
                     outRect.right = (column + 1) * spacing / spanCount
                     outRect.top = spacing
                     outRect.bottom = if (position / spanCount == rows - 1) spacing else 0
-
                 } else {
                     column * spacing / spanCount
                     outRect.left = column * spacing / spanCount
@@ -142,7 +137,7 @@ class RecyclerItemDecoration(spacing: Int, includeEdge: Boolean) : RecyclerView.
             is GridLayoutManager -> GRID
             is StaggeredGridLayoutManager -> STAGGERED_GRID
             else -> {
-                if (layoutManager!!.canScrollHorizontally()) HORIZONTAL else VERTICAL
+                if (layoutManager?.canScrollHorizontally() == true) HORIZONTAL else VERTICAL
             }
         }
     }

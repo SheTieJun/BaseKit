@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import java.lang.reflect.Field
-import me.shetj.base.R
 
 /**
  * startSmoothScroll(smoothScroller)
@@ -29,17 +27,15 @@ fun Context.getSmoothScroller(speedTime: Float = 150f): LinearSmoothScroller {
     }
 }
 
-
 fun RecyclerView?.smoothToPosition(
     position: Int,
     scroller: LinearSmoothScroller? = this?.context?.getSmoothScroller()
 ) {
-    this?.let {
-        scroller?.let {
-            it.targetPosition = position
-            layoutManager?.startSmoothScroll(scroller)
-        } ?: this.smoothScrollToPosition(position)
-    }
+    if (this == null) return
+    scroller?.let {
+        scroller.targetPosition = position
+        layoutManager?.startSmoothScroll(scroller)
+    } ?: this.smoothScrollToPosition(position)
 }
 
 inline fun <reified T : BaseViewHolder> RecyclerView.findEachViewHolder(action: T?.() -> Unit) {

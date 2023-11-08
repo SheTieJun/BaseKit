@@ -1,13 +1,11 @@
 package me.shetj.base.tools.app
 
 import android.content.Context
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.LocaleList
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
-import java.util.*
 import me.shetj.base.tools.file.SPUtils
+import java.util.*
 
 object LanguageKit {
     private const val SP_LANGUAGE = "SP_LANGUAGE"
@@ -23,7 +21,7 @@ object LanguageKit {
         saveLanguageSetting(context, newLocale)
         val defaultNightMode = AppCompatDelegate.getDefaultNightMode()
         if (defaultNightMode != AppCompatDelegate.MODE_NIGHT_YES) {
-            //ActivityCompat recreate
+            // ActivityCompat recreate
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             AppCompatDelegate.setDefaultNightMode(defaultNightMode)
         }
@@ -46,7 +44,7 @@ object LanguageKit {
         configuration.setLocale(locale)
         configuration.setLocales(LocaleList(locale))
         context.createConfigurationContext(configuration)
-        //实测，updateConfiguration这个方法虽然很多博主说是版本不适用
+        // 实测，updateConfiguration这个方法虽然很多博主说是版本不适用
         resources.updateConfiguration(configuration, metrics)
     }
 
@@ -57,7 +55,7 @@ object LanguageKit {
         val language = SPUtils.get(context, SP_LANGUAGE, "") as String
         val country = SPUtils.get(context, SP_COUNTRY, "") as String
         if (!TextUtils.isEmpty(language)) {
-            //强制修改应用语言
+            // 强制修改应用语言
             if (!isSameWithSetting(context)) {
                 val locale = Locale(language, country)
                 setAppLanguage(context, locale)
@@ -90,8 +88,6 @@ object LanguageKit {
      * 获取应用语言
      */
     fun getAppLocale(context: Context): Locale {
-        return   context.resources.configuration.locales[0]
+        return context.resources.configuration.locales[0]
     }
-
-
 }

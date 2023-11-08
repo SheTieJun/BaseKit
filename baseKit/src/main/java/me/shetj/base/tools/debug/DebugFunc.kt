@@ -2,9 +2,6 @@ package me.shetj.base.tools.debug
 
 import android.content.Context
 import android.os.Environment
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
 import me.shetj.base.BuildConfig
 import me.shetj.base.base.TaskExecutor
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_HTTP
@@ -12,6 +9,9 @@ import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.FileUtils
 import me.shetj.base.tools.file.SPUtils
 import timber.log.Timber
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
 
 /**
  * debug 功能扩展 必须开启debug的情况下
@@ -72,7 +72,6 @@ class DebugFunc private constructor() {
     //endregion httpSetting
 
     //region logSetting
-
 
     fun saveLogToFile(info: String?) {
         outputToFile(info, saveLogFile)

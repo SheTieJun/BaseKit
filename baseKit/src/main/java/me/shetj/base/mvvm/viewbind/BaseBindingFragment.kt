@@ -35,7 +35,7 @@ import me.shetj.base.tip.TipType.WARNING
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBaseFragment(), Observer<ViewAction> {
+open class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBaseFragment(), Observer<ViewAction> {
 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null
@@ -65,7 +65,9 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
     open fun initBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
         return getClazz<VB>(this, 0).getMethod(
             "inflate",
-            LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
         )
             .invoke(null, inflater, container, false) as VB
     }

@@ -4,13 +4,13 @@ import android.content.Intent
 import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import me.shetj.base.ktx.getObjByClassArg
 import me.shetj.base.ktx.toMessage
+import kotlin.coroutines.CoroutineContext
 
 /**
  *
@@ -37,7 +37,6 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : CoroutineSc
     }
 
     open fun onStart() {
-
     }
 
     /**
@@ -45,7 +44,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : CoroutineSc
      * [BaseActivity.onDestroy] 调用[IPresenter.onDestroy]
      */
     @CallSuper
-      fun onDestroy() {
+    fun onDestroy() {
         coroutineContext.cancelChildren()
         model.onDestroy()
     }

@@ -1,17 +1,11 @@
 package me.shetj.base.mvp
 
-import android.annotation.SuppressLint
 import android.os.Message
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
-import me.shetj.base.BaseKit
 import me.shetj.base.base.AbBaseFragment
 import me.shetj.base.ktx.getClazz
-import me.shetj.base.ktx.isTrue
-import me.shetj.base.ktx.toJson
-import me.shetj.base.tools.json.EmptyUtils
-import timber.log.Timber
 
 /**
  * fragment基类
@@ -23,7 +17,7 @@ import timber.log.Timber
  * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
+open class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
     protected val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 

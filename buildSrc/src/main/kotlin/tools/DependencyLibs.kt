@@ -99,6 +99,8 @@ object DependencyLibs {
 
         add(AndroidX.Navigation.navigation)
         add(AndroidX.Navigation.navigationUi)
+
+        add(AndroidX.concurrent)
     }
 
 
@@ -188,6 +190,7 @@ object DependencyLibs {
         const val dragAndDrop = "androidx.draganddrop:draganddrop:1.0.0"
         const val webKit = "androidx.webkit:webkit:1.8.0"
         const val window = "androidx.window:window:1.1.0"
+        const val concurrent = "androidx.concurrent:concurrent-futures-ktx:1.1.0"
 
         object Constraint {
             private const val constraintlayout = "2.1.4"
@@ -213,7 +216,7 @@ object DependencyLibs {
         }
 
         object Room {
-            private const val version = "2.5.2"
+            private const val version = "2.6.0"  //kotlin 1.9.0之后需要升级到2.6.0
             const val runtime = "androidx.room:room-runtime:$version"
             const val ktx = "androidx.room:room-ktx:$version"
             const val compiler = "androidx.room:room-compiler:$version"

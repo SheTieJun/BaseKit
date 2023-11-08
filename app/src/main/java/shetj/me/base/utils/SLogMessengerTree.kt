@@ -13,7 +13,7 @@ class SLogMessengerTree : Timber.Tree() {
             Log.INFO -> SLogMessenger.getInstance().i(tag1, message)
             Log.DEBUG -> SLogMessenger.getInstance().d(tag1, message)
             Log.WARN -> SLogMessenger.getInstance().w(tag1, message)
-            Log.ERROR -> SLogMessenger.getInstance().e(tag1, message,true)
+            Log.ERROR -> SLogMessenger.getInstance().e(tag1, message, true)
             else -> SLogMessenger.getInstance().v(tag1, message)
         }
     }

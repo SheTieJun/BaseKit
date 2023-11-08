@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
-import java.util.concurrent.atomic.AtomicBoolean
 import me.shetj.base.model.PlugLiveData
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * 用来判断是否连接上了耳机

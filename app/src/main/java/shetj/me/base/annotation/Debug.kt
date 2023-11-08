@@ -2,7 +2,6 @@ package shetj.me.base.annotation
 
 import android.util.Log
 
-
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CONSTRUCTOR, AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.BINARY)
 annotation class Debug(

@@ -15,14 +15,14 @@ import kotlinx.coroutines.CoroutineScope
  *
  * * 自身[LifecycleOwner] + 自身[CoroutineScope]
  */
-abstract class AbLifecycleCopeComponent : LifecycleCopeComponent {
+open class AbLifecycleCopeComponent : LifecycleCopeComponent {
     init {
         initLifecycle()
     }
 
     private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(getOwner()) }
 
-    override val ktScope: LifecycleCoroutineScope  = lifecycle.coroutineScope
+    override val ktScope: LifecycleCoroutineScope = lifecycle.coroutineScope
 
     private fun initLifecycle() {
         lifecycle.addObserver(

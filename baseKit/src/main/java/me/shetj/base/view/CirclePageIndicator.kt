@@ -52,7 +52,10 @@ class CirclePageIndicator @JvmOverloads constructor(
     init {
 
         val a = context.theme.obtainStyledAttributes(
-            attrs, R.styleable.CirclePageIndicator, 0, 0
+            attrs,
+            R.styleable.CirclePageIndicator,
+            0,
+            0
         )
         try {
             mIndicatorSpacing = a.getDimensionPixelSize(
@@ -75,7 +78,8 @@ class CirclePageIndicator @JvmOverloads constructor(
         orientation = HORIZONTAL
         if (layoutParams !is FrameLayout.LayoutParams) {
             val params = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
             )
             params.gravity = Gravity.BOTTOM or Gravity.START
             layoutParams = params
@@ -91,16 +95,16 @@ class CirclePageIndicator @JvmOverloads constructor(
 
     fun setSize(size: Int) {
         this.size = size
-        if (mViewPager != null) {
-            addIndicator(mViewPager!!.adapter!!.count)
+        mViewPager?.adapter?.count?.let {
+            addIndicator(it)
         }
     }
 
     fun setIndicatorType(indicatorType: IndicatorType) {
         mIndicatorType = indicatorType
         mIndicatorTypeChanged = true
-        if (mViewPager != null) {
-            addIndicator(mViewPager!!.adapter!!.count)
+        mViewPager?.adapter?.count?.let {
+            addIndicator(it)
         }
     }
 
@@ -128,7 +132,7 @@ class CirclePageIndicator @JvmOverloads constructor(
             val params = LayoutParams(size, size)
             addView(textView, params)
         }
-        updateIndicator(mViewPager!!.currentItem)
+        mViewPager?.let { updateIndicator(it.currentItem) }
     }
 
     private fun updateIndicator(position: Int) {
@@ -163,25 +167,20 @@ class CirclePageIndicator @JvmOverloads constructor(
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        if (mUserDefinedPageChangeListener != null) {
-            mUserDefinedPageChangeListener!!.onPageScrolled(
-                position, positionOffset,
-                positionOffsetPixels
-            )
-        }
+        mUserDefinedPageChangeListener?.onPageScrolled(
+            position,
+            positionOffset,
+            positionOffsetPixels
+        )
     }
 
     override fun onPageSelected(position: Int) {
         updateIndicator(position)
-        if (mUserDefinedPageChangeListener != null) {
-            mUserDefinedPageChangeListener!!.onPageSelected(position)
-        }
+        mUserDefinedPageChangeListener?.onPageSelected(position)
     }
 
     override fun onPageScrollStateChanged(state: Int) {
-        if (mUserDefinedPageChangeListener != null) {
-            mUserDefinedPageChangeListener!!.onPageScrollStateChanged(state)
-        }
+        mUserDefinedPageChangeListener?.onPageScrollStateChanged(state)
     }
 
     companion object {

@@ -23,7 +23,6 @@ fun <C> getClazz(obj: Any, position: Int = 0): Class<C> {
         .actualTypeArguments[position] as Class<C>
 }
 
-
 /** -实现接口而来的泛型，就用 getGenericInterfaces() , 针对其中的元素转型为 ParameterizedType 来获得实际类型
  * - tip：必须是泛型,否则会异常
  * @param positionInterface 要获取泛型接口位置
@@ -55,7 +54,6 @@ fun getRawType(type: Type): Class<*>? {
         return type
     }
     if (type is ParameterizedType) {
-
         // I'm not exactly sure why getRawType() returns Type instead of Class. Neal isn't either but
         // suspects some pathological case related to nested classes exists.
         val rawType = type.rawType
@@ -76,9 +74,9 @@ fun getRawType(type: Type): Class<*>? {
     }
     throw IllegalArgumentException(
         "Expected a Class, ParameterizedType, or " +
-                "GenericArrayType, but <" +
-                type +
-                "> is of type " +
-                type.javaClass.name
+            "GenericArrayType, but <" +
+            type +
+            "> is of type " +
+            type.javaClass.name
     )
 }

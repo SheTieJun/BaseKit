@@ -15,7 +15,7 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseControllerFunctionsImpl {
+open class AbBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseControllerFunctionsImpl {
 
     private val lazyViewBinding = lazy { initBinding() }
     protected val mBinding: VB by lazyViewBinding

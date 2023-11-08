@@ -5,13 +5,12 @@ package me.shetj.base.base
  */
 interface BaseControllerFunctionsImpl {
 
-
     /**
      * step 1
      * Init base view
      * i.e. setTitle, setToolbar, setBackButton, etc.
      */
-    fun initBaseView(){}
+    fun initBaseView() {}
 
     /**
      * step 2
@@ -31,5 +30,4 @@ interface BaseControllerFunctionsImpl {
      * All click action code will be handled in this method inside controllers.
      */
     fun setUpClicks() {}
-
 }

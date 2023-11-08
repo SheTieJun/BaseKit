@@ -1,9 +1,5 @@
 package me.shetj.base.network.interceptor
 
-import java.io.IOException
-import java.net.URLDecoder
-import java.nio.charset.Charset
-import java.util.concurrent.TimeUnit
 import me.shetj.base.ktx.logJson
 import me.shetj.base.tools.debug.DebugFunc
 import okhttp3.Connection
@@ -15,7 +11,10 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import okhttp3.internal.http.HttpHeaders
 import okio.Buffer
-import timber.log.Timber
+import java.io.IOException
+import java.net.URLDecoder
+import java.nio.charset.Charset
+import java.util.concurrent.TimeUnit
 
 /**
  *
@@ -98,9 +97,9 @@ class HttpLoggingInterceptor : Interceptor {
         try {
             val requestStartMessage = "--> " + request.method() +
                 ' ' + URLDecoder.decode(
-                request.url().url().toString(),
-                UTF8.name()
-            ) + ' ' + protocol
+                    request.url().url().toString(),
+                    UTF8.name()
+                ) + ' ' + protocol
             log(requestStartMessage)
             if (logHeaders) {
                 val headers = request.headers()
@@ -188,8 +187,10 @@ class HttpLoggingInterceptor : Interceptor {
                 subtype.contains("json") ||
                 subtype.contains("xml") ||
                 subtype.contains("html")
-            ) //
+            ) {
+                //
                 return true
+            }
             return false
         }
     }

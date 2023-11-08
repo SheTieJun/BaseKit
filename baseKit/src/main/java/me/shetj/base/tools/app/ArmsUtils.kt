@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Environment
 import android.os.Message
@@ -24,19 +23,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.util.TypedValueCompat
 import androidx.core.view.WindowCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
-import java.security.MessageDigest
 import me.shetj.base.BaseKit
-import me.shetj.base.ktx.hideSystemUI
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
-import me.shetj.base.ktx.updateSystemUIColor
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.qmui.QMUINotchHelper
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.security.MessageDigest
 
 /**
  * ================================================
@@ -171,7 +168,7 @@ class ArmsUtils private constructor() {
          * @param viewName
          * @param <T>
          * @return
-        </T> */
+         </T> */
         @JvmStatic
         fun <T : View> findViewByName(context: Context, view: View, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
@@ -185,7 +182,7 @@ class ArmsUtils private constructor() {
          * @param viewName
          * @param <T>
          * @return
-        </T> */
+         </T> */
         @JvmStatic
         fun <T : View> findViewByName(context: Context, activity: Activity, viewName: String): T {
             val id = getResources(context).getIdentifier(viewName, "id", context.packageName)
@@ -224,8 +221,8 @@ class ArmsUtils private constructor() {
             if (mToast == null) {
                 mToast = Toast.makeText(Utils.app, string, Toast.LENGTH_SHORT)
             }
-            mToast!!.setText(string)
-            mToast!!.show()
+            mToast?.setText(string)
+            mToast?.show()
         }
 
         /**
@@ -304,7 +301,9 @@ class ArmsUtils private constructor() {
             val typedValue = TypedValue()
             return if (context.theme.resolveAttribute(attributeResId, typedValue, true)) {
                 typedValue
-            } else null
+            } else {
+                null
+            }
         }
 
         /**
@@ -459,8 +458,8 @@ class ArmsUtils private constructor() {
         fun paste(context: Context): String? {
             val manager = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
             if (manager != null) {
-                if (manager.hasPrimaryClip() && manager.primaryClip!!.itemCount > 0) {
-                    val addedText = manager.primaryClip!!.getItemAt(0).text
+                if (manager.hasPrimaryClip() && (manager.primaryClip?.itemCount ?: 0) > 0) {
+                    val addedText = manager.primaryClip?.getItemAt(0)?.text
                     return addedText.toString()
                 }
             }

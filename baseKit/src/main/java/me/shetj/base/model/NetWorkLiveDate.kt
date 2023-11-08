@@ -5,10 +5,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-import java.util.concurrent.atomic.AtomicBoolean
 import me.shetj.base.BaseKit
 import me.shetj.base.ktx.requestNetWork
 import me.shetj.base.tools.app.NetworkUtils
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * 网络状态变更

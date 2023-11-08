@@ -8,7 +8,7 @@ import shetj.me.base.databinding.ActivitySlidingPaneBinding
 import shetj.me.base.day.Month
 import shetj.me.base.day.MonthAdapter
 
-class SlidingPaneActivity : BaseBindingActivity<ActivitySlidingPaneBinding,BaseViewModel>() {
+class SlidingPaneActivity : BaseBindingActivity<ActivitySlidingPaneBinding, BaseViewModel>() {
 
     override fun initBaseView() {
         super.initBaseView()
@@ -26,6 +26,5 @@ class SlidingPaneActivity : BaseBindingActivity<ActivitySlidingPaneBinding,BaseV
         """.trimMargin().logI()
         mBinding.recyclerView.layoutManager = GridLayoutManager(this, 7)
         mBinding.recyclerView.adapter = MonthAdapter(current)
-
     }
 }

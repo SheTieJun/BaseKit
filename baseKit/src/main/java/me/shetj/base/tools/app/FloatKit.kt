@@ -16,7 +16,6 @@ import android.view.Gravity
 import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import me.shetj.base.ktx.logE
-import timber.log.Timber
 
 object FloatKit {
 

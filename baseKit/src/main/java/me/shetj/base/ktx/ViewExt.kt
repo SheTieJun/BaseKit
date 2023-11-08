@@ -72,14 +72,13 @@ fun TextView.clearDrawables() {
     setCompoundDrawablesRelative(null, null, null, null)
 }
 
-
 /**
  * Perform haptic feedback
  * 触摸反馈
  */
-fun View.performHapticFeedback(){
-    //HapticFeedbackConstants.CLOCK_TICK 是一个触觉反馈常量，用于指定时钟滴答的触觉反馈效果。它用于模拟时钟滴答的感觉，通常用于时钟应用程序或需要模拟时钟滴答的场景。
-    //HapticFeedbackConstants.VIRTUAL_KEY 虚拟按键反馈效果。通常用于模拟按下虚拟按键时的触觉反馈。
+fun View.performHapticFeedback() {
+    // HapticFeedbackConstants.CLOCK_TICK 是一个触觉反馈常量，用于指定时钟滴答的触觉反馈效果。它用于模拟时钟滴答的感觉，通常用于时钟应用程序或需要模拟时钟滴答的场景。
+    // HapticFeedbackConstants.VIRTUAL_KEY 虚拟按键反馈效果。通常用于模拟按下虚拟按键时的触觉反馈。
     val feedbackKey =
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) HapticFeedbackConstants.CLOCK_TICK else HapticFeedbackConstants.VIRTUAL_KEY
     this.performHapticFeedback(feedbackKey)
@@ -205,7 +204,6 @@ fun EditText.hidePassword() {
     transformationMethod = PasswordTransformationMethod.getInstance()
 }
 
-
 fun View?.setClicksAnimate() {
     this?.setOnTouchListener { _, event ->
         when (event.action) {
@@ -219,14 +217,12 @@ fun View?.setClicksAnimate() {
     }
 }
 
-
-
 fun View?.setClicksAnimate2() {
     var isDown: Boolean
     var isDownAnimEnd = false
     this?.setOnTouchListener { _, event ->
         when (event.action) {
-            MotionEvent.ACTION_DOWN ->{
+            MotionEvent.ACTION_DOWN -> {
                 isDown = true
                 animate().scaleX(0.8f).scaleY(0.8f).setDuration(150)
                     .withStartAction {
@@ -239,9 +235,10 @@ fun View?.setClicksAnimate2() {
                     }
                     .start()
             }
-            MotionEvent.ACTION_UP ->{
+
+            MotionEvent.ACTION_UP -> {
                 isDown = false
-                if (isDownAnimEnd){
+                if (isDownAnimEnd) {
                     animate().scaleX(1f).scaleY(1f).setDuration(150).start()
                 }
             }
@@ -312,9 +309,7 @@ fun View?.layoutRationByWidth(parentW: Int, ratioW: Int, ratioH: Int) {
 
 @UiThread
 fun View?.use16And9() {
-    this?.apply {
-        layoutRationByWidth(ArmsUtils.getScreenWidth(), 16, 9)
-    }
+    this?.layoutRationByWidth(ArmsUtils.getScreenWidth(), 16, 9)
 }
 
 @UiThread

@@ -12,7 +12,7 @@ object KCHttpV2 {
 
     val apiService: KCApiService = get(KCApiService::class.java)
 
-    suspend inline fun <reified T> get(url: String, maps: Map<String, String> ): HttpResult<T> {
+    suspend inline fun <reified T> get(url: String, maps: Map<String, String>): HttpResult<T> {
         return runCatching<T> {
             val data = apiService.get(url, maps).string()
             funTo(data)

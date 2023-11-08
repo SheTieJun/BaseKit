@@ -12,11 +12,10 @@ import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.time.DateUtils
 import timber.log.Timber
 
-
 open class BaseCustomView
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
-        View(context, attrs, defStyle) {
+    View(context, attrs, defStyle) {
     protected val defaultSize = ArmsUtils.dp2px(88f)
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -24,7 +23,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
         super.onLayout(changed, left, top, right, bottom)
     }
 
-    //测量
+    // 测量
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         Timber.i("onMeasure($widthMeasureSpec,$heightMeasureSpec)")
         val width = measureWidth(widthMeasureSpec, defaultSize)
@@ -103,30 +102,28 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
         return (paint.ascent() + paint.descent()) / 2
     }
 
-    //开始绘制
+    // 开始绘制
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
     }
 
-    //绘制前景
+    // 绘制前景
     override fun onDrawForeground(canvas: Canvas) {
         super.onDrawForeground(canvas)
     }
 
-    //绘制内容
+    // 绘制内容
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
     }
 
-
-    //强行绘制得到宽高
+    // 强行绘制得到宽高
     fun forceSpec() {
         val widthMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         measure(widthMeasureSpec, heightMeasureSpec)
         Timber.i("widthMeasureSpec = $widthMeasureSpec \n heightMeasureSpec = $heightMeasureSpec")
     }
-
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return super.onTouchEvent(event)

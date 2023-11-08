@@ -3,70 +3,60 @@ package me.shetj.base.network.model
 import android.annotation.SuppressLint
 import android.os.Build
 import android.text.TextUtils
-import java.io.Serializable
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
-import kotlin.collections.LinkedHashMap
 import me.shetj.base.BaseKit
 import me.shetj.base.ktx.toJson
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.ArmsUtils.Companion.getString
 import me.shetj.base.tools.app.NetworkUtils
 import me.shetj.base.tools.app.Utils.Companion.app
+import java.io.Serializable
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HttpHeaders : Serializable {
-    var headersMap: LinkedHashMap<String, String>? = null
+    val headersMap: LinkedHashMap<String, String> = LinkedHashMap()
 
-    private fun init() {
-        headersMap = LinkedHashMap()
-    }
-
-    constructor() {
-        init()
-    }
+    constructor()
 
     constructor(key: String?, value: String?) {
-        init()
         put(key, value)
     }
 
     fun put(key: String?, value: String?) {
         if (key != null && value != null) {
-            headersMap!!.remove(key)
-            headersMap!![key] = value
+            headersMap.remove(key)
+            headersMap[key] = value
         }
     }
 
     fun put(headers: HttpHeaders?) {
         headers?.headersMap?.forEach {
-            headersMap?.remove(it.key)
-            headersMap?.put(it.key, it.value)
+            headersMap.remove(it.key)
+            headersMap.put(it.key, it.value)
         }
     }
 
     val isEmpty: Boolean
-        get() = headersMap!!.isEmpty()
+        get() = headersMap.isEmpty()
 
     operator fun get(key: String): String? {
-        return headersMap!![key]
+        return headersMap[key]
     }
 
     fun remove(key: String): String {
-        return headersMap!!.remove(key)!!
+        return headersMap.remove(key).orEmpty()
     }
 
     fun clear() {
-        headersMap!!.clear()
+        headersMap.clear()
     }
 
     val names: Set<String>
-        get() = headersMap!!.keys
+        get() = headersMap.keys
 
     fun toJSONString(): String {
-        return headersMap?.toJson() ?: ""
+        return headersMap.toJson().orEmpty()
     }
 
     override fun toString(): String {
@@ -103,24 +93,25 @@ class HttpHeaders : Serializable {
         const val HEAD_KEY_COOKIE = "Cookie"
         const val HEAD_KEY_SET_COOKIE = "Set-Cookie"
 
-        private val USER_AGENT:String
+        private val USER_AGENT: String
             get() {
-               return checkNameAndValue(String.format(
-                    " SystemName/%s SystemVersion/%s %s/%s Device/%s NetType/%s " +
-                            "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
-                    "Android",
-                    Build.VERSION.RELEASE,
-                    Build.MODEL,
-                    AppUtils.appName?:"BaseKit",
-                    AppUtils.appVersionName?:"1.0.0",
-                    NetworkUtils.getPhoneType(app.applicationContext),
-                    Locale.getDefault().language + "_" + Locale.getDefault().country,
-                    checkNameAndValue(Build.MANUFACTURER),
-                    Build.VERSION.SDK_INT,
-                    if (BaseKit.isDebug())"Debug" else "Release"
-                ))?: userAgent?:""
+                return checkNameAndValue(
+                    String.format(
+                        " SystemName/%s SystemVersion/%s %s/%s Device/%s NetType/%s " +
+                            "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s",
+                        "Android",
+                        Build.VERSION.RELEASE,
+                        Build.MODEL,
+                        AppUtils.appName ?: "BaseKit",
+                        AppUtils.appVersionName ?: "1.0.0",
+                        NetworkUtils.getPhoneType(app.applicationContext),
+                        Locale.getDefault().language + "_" + Locale.getDefault().country,
+                        checkNameAndValue(Build.MANUFACTURER),
+                        Build.VERSION.SDK_INT,
+                        if (BaseKit.isDebug()) "Debug" else "Release"
+                    )
+                ) ?: userAgent.orEmpty()
             }
-
 
         /**
          * Accept-Language: zh-CN,zh;q=0.8
@@ -132,8 +123,10 @@ class HttpHeaders : Serializable {
                     val language = locale.language
                     val country = locale.country
                     val acceptLanguageBuilder = StringBuilder(language)
-                    if (!TextUtils.isEmpty(country)) acceptLanguageBuilder.append('-')
-                        .append(country).append(',').append(language).append(";q=0.8")
+                    if (!TextUtils.isEmpty(country)) {
+                        acceptLanguageBuilder.append('-')
+                            .append(country).append(',').append(language).append(";q=0.8")
+                    }
                     field = acceptLanguageBuilder.toString()
                     return field
                 }
@@ -162,7 +155,7 @@ class HttpHeaders : Serializable {
 
         fun getDate(gmtTime: String?): Long {
             return try {
-                parseGMTToMillis(gmtTime)
+                gmtTime?.let { parseGMTToMillis(it) } ?: 0
             } catch (e: ParseException) {
                 0
             }
@@ -174,7 +167,7 @@ class HttpHeaders : Serializable {
 
         fun getExpiration(expiresTime: String?): Long {
             return try {
-                parseGMTToMillis(expiresTime)
+                expiresTime?.let { parseGMTToMillis(it) } ?: -1
             } catch (e: ParseException) {
                 -1
             }
@@ -182,7 +175,7 @@ class HttpHeaders : Serializable {
 
         fun getLastModified(lastModified: String?): Long {
             return try {
-                parseGMTToMillis(lastModified)
+                lastModified?.let { parseGMTToMillis(it) } ?: 0
             } catch (e: ParseException) {
                 0
             }
@@ -194,11 +187,11 @@ class HttpHeaders : Serializable {
         }
 
         @Throws(ParseException::class)
-        fun parseGMTToMillis(gmtTime: String?): Long {
+        fun parseGMTToMillis(gmtTime: String): Long {
             if (TextUtils.isEmpty(gmtTime)) return 0
             val formatter = SimpleDateFormat(FORMAT_HTTP_DATA, Locale.US)
             formatter.timeZone = GMT_TIME_ZONE
-            val date = formatter.parse(gmtTime!!)
+            val date = formatter.parse(gmtTime)
             return date?.time ?: 0
         }
 

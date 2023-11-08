@@ -2,12 +2,10 @@ package me.shetj.base.init
 
 import android.app.Application
 import android.content.Context
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import androidx.annotation.Keep
 import androidx.startup.Initializer
-import me.shetj.base.BuildConfig
 import me.shetj.base.BaseKit
+import me.shetj.base.BuildConfig
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.network_coroutine.HttpKit
 

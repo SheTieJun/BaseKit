@@ -15,10 +15,10 @@ import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.fragment.app.FragmentActivity
-import java.io.InputStream
 import me.shetj.base.ktx.searchFiles
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
+import java.io.InputStream
 
 /**
  * WebView管理器，提供常用设置
@@ -32,9 +32,9 @@ class WebViewManager(private val webView: WebView) {
         webSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
-        webSettings.defaultTextEncodingName = "utf-8" //设置编码格式
-        webSettings.allowFileAccess = true//将图片调整到适合WebView的大小
-        webSettings.loadsImagesAutomatically = true //支持自动加载图片
+        webSettings.defaultTextEncodingName = "utf-8" // 设置编码格式
+        webSettings.allowFileAccess = true // 将图片调整到适合WebView的大小
+        webSettings.loadsImagesAutomatically = true // 支持自动加载图片
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
         webSettings.loadWithOverviewMode = true
         webSettings.useWideViewPort = true // 设置加载进来的页面自适应手机屏幕
@@ -51,19 +51,19 @@ class WebViewManager(private val webView: WebView) {
     fun imgReset() {
         webView.loadUrl(
             "javascript:(function(){" +
-                    "var objs = document.getElementsByTagName('img'); " +
-                    "for(var i=0;i<objs.length;i++)  " +
-                    "{" +
-                    "var img = objs[i];   " +
-                    "    img.style.maxWidth = '100%';" +
-                    "    img.style.height = 'auto';  " +
-                    "}" +
-                    "})()"
+                "var objs = document.getElementsByTagName('img'); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{" +
+                "var img = objs[i];   " +
+                "    img.style.maxWidth = '100%';" +
+                "    img.style.height = 'auto';  " +
+                "}" +
+                "})()"
         )
     }
 
     fun enableLoadLocalFile() {
-        //是否可访问Content Provider的资源，默认值 true
+        // 是否可访问Content Provider的资源，默认值 true
         webSettings.allowContentAccess = true
         // 是否可访问本地文件，默认值 true
         webSettings.allowFileAccess = true
@@ -87,18 +87,17 @@ class WebViewManager(private val webView: WebView) {
     fun addImageClick() {
         webView.loadUrl(
             "javascript:(function(){" +
-                    "var objs = document.getElementsByTagName(\"img\"); " +
-                    "for(var i=0;i<objs.length;i++)  " +
-                    "{" +
-                    "    objs[i].onclick=function()  " +
-                    "    {  " +
-                    "        window.App.openImage(this.src);  " +
-                    "    }  " +
-                    "}" +
-                    "})()"
+                "var objs = document.getElementsByTagName(\"img\"); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{" +
+                "    objs[i].onclick=function()  " +
+                "    {  " +
+                "        window.App.openImage(this.src);  " +
+                "    }  " +
+                "}" +
+                "})()"
         )
     }
-
 
     /**
      * Add console2
@@ -113,14 +112,14 @@ class WebViewManager(private val webView: WebView) {
             val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
             webView.loadUrl(
                 "javascript:(function() {" +
-                        "var parent = document.getElementsByTagName('head').item(0);" +
-                        "var scriptConsole = document.createElement('script');" +
-                        "scriptConsole.innerHTML = window.atob('$encoded');" +
-                        "parent.appendChild(scriptConsole);" +
-                        "var scriptAdd = document.createElement('script');" +
-                        "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
-                        "parent.appendChild(scriptAdd);" +
-                        "})()"
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var scriptConsole = document.createElement('script');" +
+                    "scriptConsole.innerHTML = window.atob('$encoded');" +
+                    "parent.appendChild(scriptConsole);" +
+                    "var scriptAdd = document.createElement('script');" +
+                    "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
+                    "parent.appendChild(scriptAdd);" +
+                    "})()"
             )
         }
     }
@@ -131,17 +130,16 @@ class WebViewManager(private val webView: WebView) {
     fun addConsole2() {
         webView.loadUrl(
             "javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var scriptConsole = document.createElement('script');" +
-                    "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
-                    "parent.appendChild(scriptConsole);" +
-                    "var scriptAdd = document.createElement('script');" +
-                    "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
-                    "parent.appendChild(scriptAdd);" +
-                    "})()"
+                "var parent = document.getElementsByTagName('head').item(0);" +
+                "var scriptConsole = document.createElement('script');" +
+                "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
+                "parent.appendChild(scriptConsole);" +
+                "var scriptAdd = document.createElement('script');" +
+                "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
+                "parent.appendChild(scriptAdd);" +
+                "})()"
         )
     }
-
 
     fun onShowFileChooser(
         activity: FragmentActivity,
@@ -150,7 +148,7 @@ class WebViewManager(private val webView: WebView) {
     ): Boolean {
         fileChooserParams?.acceptTypes?.also {
             if (it.isNotEmpty()) {
-                activity.searchFiles(fileChooserParams.acceptTypes) { files->
+                activity.searchFiles(fileChooserParams.acceptTypes) { files ->
                     files.let {
                         filePathCallback?.onReceiveValue(files.toTypedArray())
                     }
@@ -206,7 +204,7 @@ class WebViewManager(private val webView: WebView) {
     }
 
     fun getUserAgentString(): String {
-        return webSettings.userAgentString ?: ""
+        return webSettings.userAgentString.orEmpty()
     }
 
     /**
@@ -217,7 +215,6 @@ class WebViewManager(private val webView: WebView) {
             webSettings.mediaPlaybackRequiresUserGesture = false
         }
     }
-
 
     fun disAutoPlay() {
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
@@ -305,7 +302,6 @@ class WebViewManager(private val webView: WebView) {
         return this
     }
 
-
     fun clearCache() {
         // 清空网页访问留下的缓存数据。
         // 需要注意的时，由于缓存是全局的，所以只要是WebView用到的缓存都会被清空，即便其他地方也会使用到。
@@ -334,7 +330,6 @@ class WebViewManager(private val webView: WebView) {
         // top为false时，将WebView展示的页面向下滚动一个页面高度
         webView.pageDown(bottom)
     }
-
 
     fun limitFile() {
         // 禁用 file 协议；

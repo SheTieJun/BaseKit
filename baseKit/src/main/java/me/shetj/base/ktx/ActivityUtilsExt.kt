@@ -16,8 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
-
-
 fun FragmentManager.addFragmentToActivity(fragment: Fragment, frameId: Int) {
     val transaction = beginTransaction()
     transaction.add(frameId, fragment)
@@ -90,9 +88,11 @@ fun Activity.getActivityOptions(view: View): ActivityOptionsCompat {
     return ActivityOptionsCompat.makeScaleUpAnimation(
         view,
         // The View that the new activity is animating from
-        view.width / 2, view.height / 2,
+        view.width / 2,
+        view.height / 2,
         // 拉伸开始的坐标
-        0, 0
+        0,
+        0
     )
 }
 
@@ -120,5 +120,3 @@ fun Fragment.setEnterTransition(slideTransition: Transition, shareTransition: Tr
     allowReturnTransitionOverlap = true
     sharedElementEnterTransition = shareTransition
 }
-
-

@@ -9,13 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import shetj.me.base.R
+import kotlin.coroutines.CoroutineContext
 
 /**
  * I think QMUIDialog is better but maybe use
@@ -23,7 +23,6 @@ import shetj.me.base.R
 class LoadingFragmentDialog : DialogFragment {
     constructor() : super()
     constructor(contentLayoutId: Int) : super(contentLayoutId)
-
 
     class LoadingScope(override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Main.immediate) : CoroutineScope
 
@@ -40,7 +39,6 @@ class LoadingFragmentDialog : DialogFragment {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
-
         }
     }
 
@@ -50,7 +48,6 @@ class LoadingFragmentDialog : DialogFragment {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.base_dialog_loading, container, false)
-
     }
 
     fun showLoading(context: AppCompatActivity): DialogFragment? {
@@ -78,5 +75,4 @@ class LoadingFragmentDialog : DialogFragment {
             dismissAllowingStateLoss()
         }
     }
-
 }

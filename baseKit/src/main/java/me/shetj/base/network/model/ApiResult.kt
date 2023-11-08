@@ -8,16 +8,15 @@ class ApiResult<T> : Serializable {
     var msg: String? = null
     var data: T? = null
 
-
     val isOk: Boolean
         get() = code == 0
 
     override fun toString(): String {
         return "ApiResult{" +
-                "code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
-                '}'
+            "code='" + code + '\'' +
+            ", msg='" + msg + '\'' +
+            ", data=" + data +
+            '}'
     }
 }
 

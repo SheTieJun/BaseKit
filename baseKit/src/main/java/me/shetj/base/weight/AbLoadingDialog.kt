@@ -9,13 +9,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import java.lang.ref.WeakReference
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import me.shetj.base.base.ABKtScopeComponent
+import java.lang.ref.WeakReference
 
 /**
  *   must  【 android:configChanges="orientation|keyboardHidden|screenSize"】
@@ -52,18 +52,17 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
             return null
         }
         initDialog(context, cancelable, msg, image)
-        mLoadingDialog?.let {
-            if (!mLoadingDialog!!.isShowing) {
-                mLoadingDialog!!.show()
+        return mLoadingDialog?.also {
+            if (!it.isShowing) {
+                it.show()
             }
         }
-        return mLoadingDialog!!
     }
 
     open fun hideLoading() {
         ktScope.cancel()
-        if (null != mLoadingDialog && mLoadingDialog!!.isShowing) {
-            mLoadingDialog!!.dismiss()
+        if (mLoadingDialog?.isShowing == true) {
+            mLoadingDialog?.dismiss()
         }
     }
 
@@ -72,6 +71,7 @@ abstract class AbLoadingDialog : LifecycleEventObserver, ABKtScopeComponent() {
             Event.ON_DESTROY -> {
                 hideLoading()
             }
+
             else -> {}
         }
     }

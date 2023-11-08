@@ -9,5 +9,4 @@ import shetj.me.base.databinding.ActivityPlaceholderBinding
  * <b>@author：</b> shetj<br>
  * <b>@createTime：</b> 2023/9/21<br>
  */
-class PlaceholderActivity:BaseBindingActivity<ActivityPlaceholderBinding,BaseViewModel>() {
-}
+class PlaceholderActivity : BaseBindingActivity<ActivityPlaceholderBinding, BaseViewModel>()

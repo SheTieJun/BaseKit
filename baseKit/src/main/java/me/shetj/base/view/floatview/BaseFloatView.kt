@@ -21,7 +21,7 @@ abstract class BaseFloatView : FrameLayout {
     /**
      * 获取悬浮窗中的视频播放view
      */
-    var topDistance  = 0 // 系统状态栏的高度
+    var topDistance = 0 // 系统状态栏的高度
     private var mXDownInScreen = 0f // 按下事件距离屏幕左边界的距离
     private var mYDownInScreen = 0f // 按下事件距离屏幕上边界的距离
     private var mXInScreen = 0f // 滑动事件距离屏幕左边界的距离
@@ -109,6 +109,7 @@ abstract class BaseFloatView : FrameLayout {
             return@setOnTouchListener true
         }
     }
+
     /**
      * 重写触摸事件监听，实现悬浮窗随手指移动
      */
@@ -119,6 +120,8 @@ abstract class BaseFloatView : FrameLayout {
                 mYInView = event.y
                 mXInScreen = event.rawX
                 mYInScreen = event.rawY - topDistance
+                mXDownInScreen = event.rawX
+                mYDownInScreen = event.rawY - topDistance
             }
             MotionEvent.ACTION_MOVE -> {
                 mXInScreen = event.rawX

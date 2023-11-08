@@ -1,19 +1,19 @@
 package me.shetj.base.network.interceptor
 
-import java.io.IOException
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network_coroutine.HttpKit
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response
+import java.io.IOException
 
 /**
  * Received cookies interceptor
  * 用于支持一些公开的API,他们使用的是cookie来进行权限验证
  */
-class ReceivedCookiesInterceptor (private var enable:Boolean = false): Interceptor {
+class ReceivedCookiesInterceptor(private var enable: Boolean = false) : Interceptor {
 
-    fun setEnable(enable:Boolean){
+    fun setEnable(enable: Boolean) {
         this.enable = enable
     }
 

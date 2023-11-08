@@ -16,11 +16,10 @@ import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import java.util.*
 import me.shetj.base.ktx.logI
 import me.shetj.base.network_coroutine.KCHttpV3
 import shetj.me.base.R
-
+import java.util.*
 
 /**
  * 测试下载
@@ -42,18 +41,25 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
     }
 
     private suspend fun download(downloadUrl: String, outputFile: String, fileName: String) {
-        KCHttpV3.download(downloadUrl, "$outputFile/$fileName",
+        KCHttpV3.download(
+            downloadUrl,
+            "$outputFile/$fileName",
             onProcess = { _, _, process ->
                 setForeground(createForegroundInfo("${(process * 100).toInt()}%"))
-                setProgress(Data.Builder().let {
-                    it.putInt("progress", (process * 100).toInt())
-                    it.build()
-                })
-            }, onSuccess = {
+                setProgress(
+                    Data.Builder().let {
+                        it.putInt("progress", (process * 100).toInt())
+                        it.build()
+                    }
+                )
+            },
+            onSuccess = {
                 setForeground(createForegroundInfo("download ok"))
-            }, onError = {
+            },
+            onError = {
                 it.message.logI()
-            })
+            }
+        )
     }
 
     private fun createForegroundInfo(progress: String): ForegroundInfo {
@@ -69,7 +75,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
             .setTicker(getTitle())
             .setContentText(progress)
             .setSmallIcon(R.mipmap.shetj_logo)
-            .setOngoing(true) //防止滑动删除
+            .setOngoing(true) // 防止滑动删除
             .addAction(0, "取消", intent)
             .build()
 

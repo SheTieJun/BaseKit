@@ -1,0 +1,407 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CommentWrapping:MDThemeKit.kt$MDThemeKit$/* force= */</ID>
+    <ID>CommentWrapping:ScreenshotKit.kt$ScreenshotKit$/* notifyForDescendants = */</ID>
+    <ID>CommentWrapping:ScreenshotKit.kt$ScreenshotKit$/* observer = */</ID>
+    <ID>ComplexCondition:ActivityExt.kt$(keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE) &amp;&amp; event.isTracking &amp;&amp; !event.isCanceled</ID>
+    <ID>ComplexCondition:ApiException.kt$ApiException.Companion$e is JsonParseException || e is JSONException || e is JsonSyntaxException || e is JsonSerializer&lt;*&gt; || e is NotSerializableException || e is ParseException</ID>
+    <ID>ComplexCondition:FragmentUtils.kt$FragmentUtils.Companion$fragment.isResumed &amp;&amp; fragment.isVisible &amp;&amp; fragment.userVisibleHint &amp;&amp; fragment is OnBackClickListener &amp;&amp; (fragment as OnBackClickListener).onBackClick()</ID>
+    <ID>ComplexCondition:HttpLoggingInterceptor.kt$HttpLoggingInterceptor.Companion$subtype.contains("x-www-form-urlencoded") || subtype.contains("json") || subtype.contains("xml") || subtype.contains("html")</ID>
+    <ID>ComplexCondition:RecycleViewExt.kt$this == null || this.adapter == null || this.layoutManager == null || this.layoutManager !is LinearLayoutManager</ID>
+    <ID>ComplexCondition:ViewExt.kt$this != null &amp;&amp; left == this.paddingLeft &amp;&amp; top == this.paddingTop &amp;&amp; right == this.paddingRight &amp;&amp; bottom == this.paddingBottom</ID>
+    <ID>CyclomaticComplexMethod:ApiException.kt$ApiException.Companion$fun handleException(e: Throwable): ApiException</ID>
+    <ID>CyclomaticComplexMethod:EmptyUtils.kt$EmptyUtils.Companion$@JvmStatic fun isEmpty(obj: Any?): Boolean</ID>
+    <ID>CyclomaticComplexMethod:FileQUtils.kt$FileQUtils$fun getFileAbsolutePath(context: Context?, uri: Uri?, filename10IsTemp: Boolean = true): String?</ID>
+    <ID>CyclomaticComplexMethod:FragmentUtils.kt$FragmentUtils.Companion$private fun operate( type: Int, fm: FragmentManager, ft: FragmentTransaction, src: Fragment?, vararg dest: Fragment )</ID>
+    <ID>CyclomaticComplexMethod:KCHttpV4.kt$KCHttpV4$private suspend fun getDataFromApiOrCache( requestOption: RequestOption? = null, fromNetworkValue: suspend () -&gt; String ): String</ID>
+    <ID>CyclomaticComplexMethod:RecyclerItemDecoration.kt$RecyclerItemDecoration$private fun setSpacingForDirection( outRect: Rect, layoutManager: RecyclerView.LayoutManager?, position: Int, itemCount: Int )</ID>
+    <ID>EmptyCatchBlock:FileQUtils.kt$FileQUtils${ }</ID>
+    <ID>EmptyCatchBlock:ImageUtils.kt$ImageUtils.Companion${ }</ID>
+    <ID>EmptyDefaultConstructor:NetWorkLiveDate.kt$NetWorkLiveDate.NetType$()</ID>
+    <ID>EmptyDefaultConstructor:WindowKit.kt$WindowKit.WindowSizeClass$()</ID>
+    <ID>EmptyFunctionBlock:BaseActivity.kt$BaseActivity${ }</ID>
+    <ID>EmptyFunctionBlock:BaseFragment.kt$BaseFragment${ }</ID>
+    <ID>EmptyFunctionBlock:BaseModel.kt$BaseModel${ }</ID>
+    <ID>EmptyFunctionBlock:DrawerContent.kt$DrawerContent${ }</ID>
+    <ID>EmptyFunctionBlock:ImageCallBack.kt$ImageCallBackImpl${ }</ID>
+    <ID>EmptyFunctionBlock:LifecycleCopeComponent.kt$AbLifecycleCopeComponent${ }</ID>
+    <ID>EmptyFunctionBlock:MDThemeKit.kt$MDThemeKit.ColorsActivityLifecycleCallbacks${ }</ID>
+    <ID>EmptyFunctionBlock:MDThemeKit.kt$MDThemeKit.ColorsActivityLifecycleCallbacks${}</ID>
+    <ID>EmptyFunctionBlock:Utils.kt$Utils.Companion.&lt;no name provided&gt;${ }</ID>
+    <ID>EmptyFunctionBlock:ViewpagerHeader.kt$ViewpagerHeader${ }</ID>
+    <ID>EmptySecondaryConstructor:DES.kt$DES${}</ID>
+    <ID>EmptySecondaryConstructor:MediumBoldTextView.kt$MediumBoldTextView${}</ID>
+    <ID>EmptySecondaryConstructor:ScrollableViewPager.kt$ScrollableViewPager${}</ID>
+    <ID>EmptySecondaryConstructor:TouchFrameLayout.kt$TouchFrameLayout${ }</ID>
+    <ID>EmptySecondaryConstructor:TouchFrameLayout.kt$TouchFrameLayout${}</ID>
+    <ID>FunctionParameterNaming:KCApiService.kt$KCApiService$@Body `object`: Any?</ID>
+    <ID>FunctionParameterNaming:SPEncryptedUtils.kt$SPEncryptedUtils.Companion$`object`: Any</ID>
+    <ID>FunctionParameterNaming:SPUtils.kt$SPUtils.Companion$`object`: Any</ID>
+    <ID>ImplicitDefaultLocale:CircleImageView.kt$CircleImageView$String.format("ScaleType %s not supported.", scaleType)</ID>
+    <ID>ImplicitDefaultLocale:CirclePageIndicator.kt$CirclePageIndicator$String.format("%d/%d", position + 1, textView.tag as Int)</ID>
+    <ID>ImplicitDefaultLocale:CodeUtil.kt$CodeUtil$String.format("%s秒后重新获取", timeLength - second)</ID>
+    <ID>ImplicitDefaultLocale:DataExt.kt$String.format("#%06X", 0xFFFFFF and color)</ID>
+    <ID>ImplicitDefaultLocale:FixPermission.kt$FixPermission$String.format("package:%s", context.packageName)</ID>
+    <ID>LargeClass:FragmentUtils.kt$FragmentUtils$Companion</ID>
+    <ID>LongMethod:FileQUtils.kt$FileQUtils$fun getFileAbsolutePath(context: Context?, uri: Uri?, filename10IsTemp: Boolean = true): String?</ID>
+    <ID>LongMethod:KCHttpV4.kt$KCHttpV4$private suspend fun getDataFromApiOrCache( requestOption: RequestOption? = null, fromNetworkValue: suspend () -&gt; String ): String</ID>
+    <ID>LongMethod:RecyclerItemDecoration.kt$RecyclerItemDecoration$private fun setSpacingForDirection( outRect: Rect, layoutManager: RecyclerView.LayoutManager?, position: Int, itemCount: Int )</ID>
+    <ID>LongParameterList:AppUtils.kt$AppUtils.AppInfo$( packageName: String, name: String, icon: Drawable, packagePath: String, versionName: String, versionCode: Int, isSystem: Boolean )</ID>
+    <ID>LongParameterList:CalendarReminderUtils.kt$CalendarReminderUtils$( context: Context, calId: Int, eventId: Long, title: String?, des: String?, remindTime: Long, endTime: Long?, previousTime: Long, packageName: String? = null, scheme: String? = null )</ID>
+    <ID>LongParameterList:CalendarReminderUtils.kt$CalendarReminderUtils$( context: Context, id: Long, title: String?, des: String?, remindTime: Long, endTime: Long?, previousTime: Long )</ID>
+    <ID>LongParameterList:CalendarReminderUtils.kt$CalendarReminderUtils$( context: Context?, title: String?, des: String?, remindTime: Long, endTime: Long?, previousTime: Long, packageName: String? = null, scheme: String? = null )</ID>
+    <ID>LongParameterList:CustomBindingAdapter.kt$( imageView: ImageView, url: String?, placeHolder: Drawable?, placeHolderError: Drawable?, cornerRadius: Float, circular: Boolean )</ID>
+    <ID>LongParameterList:FragmentUtils.kt$FragmentUtils.Companion$( fm: FragmentManager, add: Fragment, @IdRes containerId: Int, @AnimRes enterAnim: Int, @AnimRes exitAnim: Int, @AnimRes popEnterAnim: Int, @AnimRes popExitAnim: Int )</ID>
+    <ID>LongParameterList:FragmentUtils.kt$FragmentUtils.Companion$( fm: FragmentManager, add: Fragment, @IdRes containerId: Int, isAddStack: Boolean, @AnimRes enterAnim: Int, @AnimRes exitAnim: Int, @AnimRes popEnterAnim: Int = 0, @AnimRes popExitAnim: Int = 0 )</ID>
+    <ID>LongParameterList:FragmentUtils.kt$FragmentUtils.Companion$( fm: FragmentManager, fragment: Fragment, @IdRes containerId: Int, @AnimRes enterAnim: Int, @AnimRes exitAnim: Int, @AnimRes popEnterAnim: Int, @AnimRes popExitAnim: Int )</ID>
+    <ID>LongParameterList:FragmentUtils.kt$FragmentUtils.Companion$( fm: FragmentManager, fragment: Fragment, @IdRes containerId: Int, isAddStack: Boolean, @AnimRes enterAnim: Int, @AnimRes exitAnim: Int, @AnimRes popEnterAnim: Int = 0, @AnimRes popExitAnim: Int = 0 )</ID>
+    <ID>LongParameterList:FragmentUtils.kt$FragmentUtils.Companion$( srcFragment: Fragment, destFragment: Fragment, @AnimRes enterAnim: Int, @AnimRes exitAnim: Int, @AnimRes popEnterAnim: Int, @AnimRes popExitAnim: Int )</ID>
+    <ID>LongParameterList:FragmentUtils.kt$FragmentUtils.Companion$( srcFragment: Fragment, destFragment: Fragment, isAddStack: Boolean, @AnimRes enterAnim: Int, @AnimRes exitAnim: Int, @AnimRes popEnterAnim: Int = 0, @AnimRes popExitAnim: Int = 0 )</ID>
+    <ID>LongParameterList:GlideExt.kt$( isCenterCrop: Boolean = true, @DrawableRes placeholder: Int? = null, @DrawableRes error: Int? = null, placeholderDrawable: Drawable? = null, errorDrawable: Drawable? = null, diskCacheStrategy: DiskCacheStrategy? = DiskCacheStrategy.AUTOMATIC )</ID>
+    <ID>LongParameterList:ScreenshotKit.kt$ScreenshotKit$( contentResolver: ContentResolver, collection: Uri, projection: Array&lt;String&gt;, orderBy: String, orderAscending: Boolean, limit: Int = 20, offset: Int = 0 )</ID>
+    <ID>MagicNumber:ActivityExt.kt$100</ID>
+    <ID>MagicNumber:ActivityExt.kt$300f</ID>
+    <ID>MagicNumber:AnimatorExt.kt$359f</ID>
+    <ID>MagicNumber:AppSigningUtils.kt$AppSigningUtils$0x100</ID>
+    <ID>MagicNumber:AppSigningUtils.kt$AppSigningUtils$0xFF</ID>
+    <ID>MagicNumber:AppSigningUtils.kt$AppSigningUtils$3</ID>
+    <ID>MagicNumber:ArmsUtils.kt$ArmsUtils.Companion$0x10</ID>
+    <ID>MagicNumber:ArmsUtils.kt$ArmsUtils.Companion$0xFF</ID>
+    <ID>MagicNumber:ArmsUtils.kt$ArmsUtils.Companion$62</ID>
+    <ID>MagicNumber:ArmsUtils.kt$ArmsUtils.Companion$9</ID>
+    <ID>MagicNumber:BaseModule.kt$100</ID>
+    <ID>MagicNumber:BaseModule.kt$1024</ID>
+    <ID>MagicNumber:BaseModule.kt$12</ID>
+    <ID>MagicNumber:BaseModule.kt$20000L</ID>
+    <ID>MagicNumber:BaseUncaughtExceptionHandler.kt$BaseUncaughtExceptionHandler$1000</ID>
+    <ID>MagicNumber:BaseUncaughtExceptionHandler.kt$BaseUncaughtExceptionHandler$1024</ID>
+    <ID>MagicNumber:ByteUtils.kt$ByteUtils$0x00000000000000ff</ID>
+    <ID>MagicNumber:ByteUtils.kt$ByteUtils$0x00ff</ID>
+    <ID>MagicNumber:ByteUtils.kt$ByteUtils$8</ID>
+    <ID>MagicNumber:CalendarReminderUtils.kt$CalendarReminderUtils$10</ID>
+    <ID>MagicNumber:CalendarReminderUtils.kt$CalendarReminderUtils$1000</ID>
+    <ID>MagicNumber:CalendarReminderUtils.kt$CalendarReminderUtils$5</ID>
+    <ID>MagicNumber:CalendarReminderUtils.kt$CalendarReminderUtils$60</ID>
+    <ID>MagicNumber:CalendarUtils.kt$CalendarUtils$100</ID>
+    <ID>MagicNumber:CalendarUtils.kt$CalendarUtils$28</ID>
+    <ID>MagicNumber:CalendarUtils.kt$CalendarUtils$29</ID>
+    <ID>MagicNumber:CalendarUtils.kt$CalendarUtils$30</ID>
+    <ID>MagicNumber:CalendarUtils.kt$CalendarUtils$31</ID>
+    <ID>MagicNumber:CalendarUtils.kt$CalendarUtils$4</ID>
+    <ID>MagicNumber:CalendarUtils.kt$CalendarUtils$400</ID>
+    <ID>MagicNumber:CircleImageView.kt$CircleImageView$0.5f</ID>
+    <ID>MagicNumber:CirclePageIndicator.kt$CirclePageIndicator$5f</ID>
+    <ID>MagicNumber:CircularRevealHelper.kt$CircularRevealHelper$3000</ID>
+    <ID>MagicNumber:CodeUtil.kt$CodeUtil$1000</ID>
+    <ID>MagicNumber:CodeUtil.kt$CodeUtil$60</ID>
+    <ID>MagicNumber:DataExt.kt$0xFFFFFF</ID>
+    <ID>MagicNumber:DataExt.kt$15</ID>
+    <ID>MagicNumber:DataExt.kt$62</ID>
+    <ID>MagicNumber:DataExt.kt$9</ID>
+    <ID>MagicNumber:DateExt.kt$10</ID>
+    <ID>MagicNumber:DateExt.kt$1000</ID>
+    <ID>MagicNumber:DateExt.kt$5</ID>
+    <ID>MagicNumber:DateExt.kt$6</ID>
+    <ID>MagicNumber:DateExt.kt$60</ID>
+    <ID>MagicNumber:DateExt.kt$9</ID>
+    <ID>MagicNumber:DateUtils.kt$DateUtils$1000</ID>
+    <ID>MagicNumber:DateUtils.kt$DateUtils$24</ID>
+    <ID>MagicNumber:DateUtils.kt$DateUtils$3600</ID>
+    <ID>MagicNumber:DateUtils.kt$DateUtils$60</ID>
+    <ID>MagicNumber:FlipRevealHelper.kt$FlipRevealHelper$3000</ID>
+    <ID>MagicNumber:FlipRevealHelper.kt$FlipRevealHelper$90f</ID>
+    <ID>MagicNumber:ImageUtils.kt$ImageUtils.Companion$100</ID>
+    <ID>MagicNumber:ImageUtils.kt$ImageUtils.Companion$5</ID>
+    <ID>MagicNumber:KCHttpV3.kt$KCHttpV3$0.01</ID>
+    <ID>MagicNumber:KCHttpV3.kt$KCHttpV3$1024</ID>
+    <ID>MagicNumber:KCHttpV3.kt$KCHttpV3$8</ID>
+    <ID>MagicNumber:KCHttpV4.kt$KCHttpV4$0.01</ID>
+    <ID>MagicNumber:KCHttpV4.kt$KCHttpV4$1024</ID>
+    <ID>MagicNumber:KCHttpV4.kt$KCHttpV4$8</ID>
+    <ID>MagicNumber:LruDiskCache.kt$LruDiskCache$1000</ID>
+    <ID>MagicNumber:MediumBoldTextView.kt$MediumBoldTextView$0.9f</ID>
+    <ID>MagicNumber:NestedScrollableHost.kt$NestedScrollableHost$.5f</ID>
+    <ID>MagicNumber:NetworkUtils.kt$NetworkUtils$3</ID>
+    <ID>MagicNumber:NotificationKit.kt$NotificationKit$31</ID>
+    <ID>MagicNumber:ProcessUtils.kt$ProcessUtils.Companion$7</ID>
+    <ID>MagicNumber:ProcessUtils.kt$ProcessUtils.Companion$86400000</ID>
+    <ID>MagicNumber:RecyclerItemDecoration.kt$RecyclerItemDecoration$3</ID>
+    <ID>MagicNumber:RequestOption.kt$10_000L</ID>
+    <ID>MagicNumber:RequestOption.kt$3</ID>
+    <ID>MagicNumber:RequestOption.kt$36_00</ID>
+    <ID>MagicNumber:ScreenshotKit.kt$ScreenshotKit$8000</ID>
+    <ID>MagicNumber:Sign.kt$Sign$0xFF</ID>
+    <ID>MagicNumber:SoftInputUtil.kt$SoftInputUtil$200</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0x0f0</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0x10000</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0x10FFFF</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0x20</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0x9</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0xA</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0xD7FF</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0xE000</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$0xFFFD</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$10</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$100</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$1000</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$10000</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$12288</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$126</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$171941</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$19968</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$3</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$32</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$33</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$4</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$5</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$6</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$65248</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$65281</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$65374</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$7</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$8</ID>
+    <ID>MagicNumber:StringUtils.kt$StringUtils.Companion$9</ID>
+    <ID>MagicNumber:TaskExecutor.kt$TaskExecutor$10L</ID>
+    <ID>MagicNumber:TaskExecutor.kt$TaskExecutor$60</ID>
+    <ID>MagicNumber:ViewExt.kt$0.5f</ID>
+    <ID>MagicNumber:ViewExt.kt$0.8f</ID>
+    <ID>MagicNumber:ViewExt.kt$1.15f</ID>
+    <ID>MagicNumber:ViewExt.kt$10f</ID>
+    <ID>MagicNumber:ViewExt.kt$150</ID>
+    <ID>MagicNumber:ViewExt.kt$16</ID>
+    <ID>MagicNumber:ViewExt.kt$9</ID>
+    <ID>MagicNumber:ViewpagerHeader.kt$ViewpagerHeader$3</ID>
+    <ID>MagicNumber:WebViewManager.kt$WebViewManager$0.5</ID>
+    <ID>MagicNumber:WindowKit.kt$WindowKit$480f</ID>
+    <ID>MagicNumber:WindowKit.kt$WindowKit$600f</ID>
+    <ID>MagicNumber:WindowKit.kt$WindowKit$840f</ID>
+    <ID>MagicNumber:WindowKit.kt$WindowKit$900f</ID>
+    <ID>MaximumLineLength:AbBaseActivity.kt$AbBaseActivity$ </ID>
+    <ID>MaximumLineLength:ActivityResultExt.kt$fun</ID>
+    <ID>MaximumLineLength:FileQUtils.kt$FileQUtils$ </ID>
+    <ID>MaximumLineLength:MDThemeKit.kt$MDThemeKit$ </ID>
+    <ID>MaximumLineLength:ScreenshotKit.kt$ScreenshotKit$ </ID>
+    <ID>MaximumLineLength:ViewExt.kt$ </ID>
+    <ID>MaximumLineLength:WindowKit.kt$WindowKit$ </ID>
+    <ID>MemberNameEqualsClassName:GrayThemeLiveData.kt$GrayThemeLiveData.Companion$@Volatile private var grayThemeLiveData: GrayThemeLiveData? = null</ID>
+    <ID>NestedBlockDepth:ActivityExt.kt$fun AppCompatActivity.onRequestPermissionsResultImpl( @NonNull permissions: Array&lt;String&gt;, @NonNull grantResults: IntArray ): String</ID>
+    <ID>NestedBlockDepth:CalendarReminderUtils.kt$CalendarReminderUtils$fun deleteCalendarEvent(context: Context?, title: String)</ID>
+    <ID>NestedBlockDepth:CleanUtils.kt$CleanUtils.Companion$private fun deleteDir(dir: File?): Boolean</ID>
+    <ID>NestedBlockDepth:CleanUtils.kt$CleanUtils.Companion$private fun deleteFilesInDir(dir: File?): Boolean</ID>
+    <ID>NestedBlockDepth:FileQUtils.kt$FileQUtils$private fun getRealFilePath(context: Context, uri: Uri?): String?</ID>
+    <ID>NestedBlockDepth:FloatKit.kt$FloatKit$fun Context.checkFloatPermission(needGet: Boolean = false): Boolean</ID>
+    <ID>NestedBlockDepth:FragmentUtils.kt$FragmentUtils.Companion$private fun getTopShowIsInStack( fm: FragmentManager, isInStack: Boolean ): Fragment?</ID>
+    <ID>NestedBlockDepth:FragmentUtils.kt$FragmentUtils.Companion$private fun operate( type: Int, fm: FragmentManager, ft: FragmentTransaction, src: Fragment?, vararg dest: Fragment )</ID>
+    <ID>NestedBlockDepth:GsonTypeAdapter.kt$DoubleTypeAdapter$override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Double</ID>
+    <ID>NestedBlockDepth:GsonTypeAdapter.kt$FloatTypeAdapter$override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Float</ID>
+    <ID>NestedBlockDepth:GsonTypeAdapter.kt$IntTypeAdapter$override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Int</ID>
+    <ID>NestedBlockDepth:HttpLoggingInterceptor.kt$HttpLoggingInterceptor$@Throws(IOException::class) private fun logForRequest(request: Request, connection: Connection?)</ID>
+    <ID>NestedBlockDepth:HttpLoggingInterceptor.kt$HttpLoggingInterceptor$private fun logForResponse(response: Response, tookMs: Long): Response</ID>
+    <ID>NestedBlockDepth:NestedScrollableHost.kt$NestedScrollableHost$private fun handleInterceptTouchEvent(e: MotionEvent)</ID>
+    <ID>NestedBlockDepth:RecyclerItemDecoration.kt$RecyclerItemDecoration$private fun setSpacingForDirection( outRect: Rect, layoutManager: RecyclerView.LayoutManager?, position: Int, itemCount: Int )</ID>
+    <ID>NestedBlockDepth:Share.kt$Share$fun shareBySystem()</ID>
+    <ID>NestedBlockDepth:StringUtils.kt$StringUtils.Companion$@JvmStatic fun equals(a: CharSequence, b: CharSequence): Boolean</ID>
+    <ID>NoBlankLineBeforeRbrace:BaseKit.kt$BaseKit$ </ID>
+    <ID>NoConsecutiveBlankLines:BaseKit.kt$ </ID>
+    <ID>NoConsecutiveBlankLines:BaseKit.kt$BaseKit$ </ID>
+    <ID>NoUnusedImports:BaseKit.kt$me.shetj.base.BaseKit.kt</ID>
+    <ID>PackageName:CacheMode.kt$package me.shetj.base.network_coroutine.cache</ID>
+    <ID>PackageName:HttpKit.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageName:HttpReslut.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageName:IResultCache.kt$package me.shetj.base.network_coroutine.cache</ID>
+    <ID>PackageName:KCApiService.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageName:KCCache.kt$package me.shetj.base.network_coroutine.cache</ID>
+    <ID>PackageName:KCHttpV2.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageName:KCHttpV3.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageName:KCHttpV4.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageName:LruDiskCache.kt$package me.shetj.base.network_coroutine.cache</ID>
+    <ID>PackageName:RequestOption.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageNaming:CacheMode.kt$package me.shetj.base.network_coroutine.cache</ID>
+    <ID>PackageNaming:HttpKit.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageNaming:HttpReslut.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageNaming:IResultCache.kt$package me.shetj.base.network_coroutine.cache</ID>
+    <ID>PackageNaming:KCApiService.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageNaming:KCCache.kt$package me.shetj.base.network_coroutine.cache</ID>
+    <ID>PackageNaming:KCHttpV2.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageNaming:KCHttpV3.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageNaming:KCHttpV4.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageNaming:LruDiskCache.kt$package me.shetj.base.network_coroutine.cache</ID>
+    <ID>PackageNaming:RequestOption.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PrintStackTrace:ActivityExt.kt$localException</ID>
+    <ID>PrintStackTrace:AppSigningUtils.kt$AppSigningUtils$e</ID>
+    <ID>PrintStackTrace:AppUtils.kt$AppUtils.Companion$e</ID>
+    <ID>PrintStackTrace:ArmsUtils.kt$ArmsUtils.Companion$e</ID>
+    <ID>PrintStackTrace:BaseProperties.kt$BaseProperties$e</ID>
+    <ID>PrintStackTrace:BitmapExt.kt$e</ID>
+    <ID>PrintStackTrace:CalendarReminderUtils.kt$CalendarReminderUtils$e</ID>
+    <ID>PrintStackTrace:CircleImageView.kt$CircleImageView$e</ID>
+    <ID>PrintStackTrace:CirclePageIndicator.kt$CirclePageIndicator$e</ID>
+    <ID>PrintStackTrace:CloseUtils.kt$CloseUtils.Companion$e</ID>
+    <ID>PrintStackTrace:CommandUtils.kt$CommandUtils$e</ID>
+    <ID>PrintStackTrace:CommandUtils.kt$CommandUtils$ex</ID>
+    <ID>PrintStackTrace:DES.kt$DES$e</ID>
+    <ID>PrintStackTrace:DateExt.kt$e</ID>
+    <ID>PrintStackTrace:DateUtils.kt$DateUtils$e</ID>
+    <ID>PrintStackTrace:HttpLoggingInterceptor.kt$HttpLoggingInterceptor$e</ID>
+    <ID>PrintStackTrace:ImageUtils.kt$ImageUtils.Companion$e</ID>
+    <ID>PrintStackTrace:LruDiskCache.kt$LruDiskCache$e</ID>
+    <ID>PrintStackTrace:ProcessUtils.kt$ProcessUtils.Companion$e</ID>
+    <ID>PrintStackTrace:ScreenshotKit.kt$ScreenshotKit$e</ID>
+    <ID>PrintStackTrace:StringExt.kt$e</ID>
+    <ID>ReturnCount:AppSigningUtils.kt$AppSigningUtils$fun getSignInfo( context: Context?, type: String?, pkg: String? = context?.packageName, lowCase: Boolean = false ): ArrayList&lt;String&gt;?</ID>
+    <ID>ReturnCount:AppUtils.kt$AppUtils.Companion$private fun isSpace(s: String?): Boolean</ID>
+    <ID>ReturnCount:ArmsUtils.kt$ArmsUtils.Companion$@JvmStatic fun getActivityHeight(context: Context?): Int</ID>
+    <ID>ReturnCount:BitmapExt.kt$@Suppress("DEPRECATION") fun drawableToBitmap(drawable: Drawable?): Bitmap?</ID>
+    <ID>ReturnCount:CalendarReminderUtils.kt$CalendarReminderUtils$fun addCalendarEvent( context: Context?, title: String?, des: String?, remindTime: Long, endTime: Long?, previousTime: Long, packageName: String? = null, scheme: String? = null ): Long</ID>
+    <ID>ReturnCount:CalendarReminderUtils.kt$CalendarReminderUtils$fun deleteCalendarEvent(context: Context?, title: String)</ID>
+    <ID>ReturnCount:CalendarReminderUtils.kt$CalendarReminderUtils$fun updateRemindEvent( context: Context, calId: Int, eventId: Long, title: String?, des: String?, remindTime: Long, endTime: Long?, previousTime: Long, packageName: String? = null, scheme: String? = null ): Boolean</ID>
+    <ID>ReturnCount:CircleImageView.kt$CircleImageView$private fun getBitmapFromDrawable(drawable: Drawable?): Bitmap?</ID>
+    <ID>ReturnCount:CircleImageView.kt$CircleImageView$private fun setup()</ID>
+    <ID>ReturnCount:ClassExt.kt$fun getRawType(type: Type): Class&lt;*&gt;?</ID>
+    <ID>ReturnCount:CleanUtils.kt$CleanUtils.Companion$private fun deleteDir(dir: File?): Boolean</ID>
+    <ID>ReturnCount:CleanUtils.kt$CleanUtils.Companion$private fun deleteFilesInDir(dir: File?): Boolean</ID>
+    <ID>ReturnCount:CleanUtils.kt$CleanUtils.Companion$private fun isSpace(s: String?): Boolean</ID>
+    <ID>ReturnCount:DateExt.kt$fun getDayWeek(time: String): Int</ID>
+    <ID>ReturnCount:EmptyUtils.kt$EmptyUtils.Companion$@JvmStatic fun isEmpty(obj: Any?): Boolean</ID>
+    <ID>ReturnCount:FileQUtils.kt$FileQUtils$@SuppressLint("Range") private fun getFileFromContentUri(context: Context, uri: Uri?): String?</ID>
+    <ID>ReturnCount:FileQUtils.kt$FileQUtils$fun getFileAbsolutePath(context: Context?, uri: Uri?, filename10IsTemp: Boolean = true): String?</ID>
+    <ID>ReturnCount:FloatKit.kt$FloatKit$fun Context.checkFloatPermission(needGet: Boolean = false): Boolean</ID>
+    <ID>ReturnCount:FragmentUtils.kt$FragmentUtils.Companion$fun dispatchBackPress(fm: FragmentManager): Boolean</ID>
+    <ID>ReturnCount:FragmentUtils.kt$FragmentUtils.Companion$private fun getTopIsInStack( fm: FragmentManager, isInStack: Boolean ): Fragment?</ID>
+    <ID>ReturnCount:FragmentUtils.kt$FragmentUtils.Companion$private fun getTopShowIsInStack( fm: FragmentManager, isInStack: Boolean ): Fragment?</ID>
+    <ID>ReturnCount:GsonTypeAdapter.kt$BooleanTypeAdapter$@Throws(JsonParseException::class) override fun deserialize( json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext? ): Boolean?</ID>
+    <ID>ReturnCount:GsonTypeAdapter.kt$DoubleTypeAdapter$override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Double</ID>
+    <ID>ReturnCount:GsonTypeAdapter.kt$FloatTypeAdapter$override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Float</ID>
+    <ID>ReturnCount:GsonTypeAdapter.kt$IntTypeAdapter$override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Int</ID>
+    <ID>ReturnCount:GsonTypeAdapter.kt$ListTypeAdapter$override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): List&lt;*&gt;</ID>
+    <ID>ReturnCount:HttpLoggingInterceptor.kt$HttpLoggingInterceptor.Companion$fun isPlaintext(mediaType: MediaType?): Boolean</ID>
+    <ID>ReturnCount:ImageUtils.kt$ImageUtils.Companion$@JvmOverloads fun compressByQuality(src: Bitmap, maxByteSize: Long, recycle: Boolean = false): Bitmap?</ID>
+    <ID>ReturnCount:KCCache.kt$KCCache$fun load(key: String?, existTime: Long): String?</ID>
+    <ID>ReturnCount:KCHttpV3.kt$KCHttpV3$suspend fun retryRequest( repeatNum: Int = 3, initialDelay: Long = 1000, // 1 second timeout: Long = 10000, // 10 second factor: Double = 2.0, block: suspend () -&gt; String ): String</ID>
+    <ID>ReturnCount:KCHttpV4.kt$KCHttpV4$suspend fun retryRequest( repeatNum: Int = 3, initialDelay: Long = 1000, // 1 second timeout: Long = 10000, // 10 second factor: Double = 2.0, block: suspend () -&gt; String ): String</ID>
+    <ID>ReturnCount:LruDiskCache.kt$LruDiskCache$override fun doContainsKey(key: String): Boolean</ID>
+    <ID>ReturnCount:LruDiskCache.kt$LruDiskCache$override fun doLoad(key: String): String?</ID>
+    <ID>ReturnCount:LruDiskCache.kt$LruDiskCache$override fun doRemove(key: String): Boolean</ID>
+    <ID>ReturnCount:LruDiskCache.kt$LruDiskCache$override fun doSave(key: String, value: String): Boolean</ID>
+    <ID>ReturnCount:LruDiskCache.kt$LruDiskCache$override fun isExpiry(key: String, existTime: Long): Boolean</ID>
+    <ID>ReturnCount:RecycleViewExt.kt$fun RecyclerView?.isCompleteVisibleShow(position: Int): Int</ID>
+    <ID>ReturnCount:ScreenshotKit.kt$ScreenshotKit$private fun fetchGalleryFirstImages(context: Context, collection: Uri): String?</ID>
+    <ID>ReturnCount:ScrollableViewPager.kt$ScrollableViewPager$override fun onTouchEvent(arg0: MotionEvent): Boolean</ID>
+    <ID>ReturnCount:Share.kt$Share$private fun checkShareParam(): Boolean</ID>
+    <ID>ReturnCount:ShareFileUtil.kt$ShareFileUtil$fun getFileRealPath(context: Context?, uri: Uri?): String?</ID>
+    <ID>ReturnCount:ShareFileUtil.kt$ShareFileUtil$fun getFileUri( context: Context?, @ShareContentType shareContentType: String?, file: File? ): Uri?</ID>
+    <ID>ReturnCount:StringUtils.kt$StringUtils.Companion$@JvmStatic fun containsChinese(s: String?): Boolean</ID>
+    <ID>SerialVersionUIDInSerializableClass:ApiResult.kt$ApiResult&lt;T&gt; : Serializable</ID>
+    <ID>SerialVersionUIDInSerializableClass:HttpHeaders.kt$HttpHeaders : Serializable</ID>
+    <ID>SpreadOperator:ClassUtils.kt$ClassUtils$(needTypes, *childTypes)</ID>
+    <ID>SpreadOperator:FragmentUtils.kt$FragmentUtils.Companion$( fm, TYPE_HIDE_FRAGMENT, null, *fragments.toTypedArray() )</ID>
+    <ID>SpreadOperator:FragmentUtils.kt$FragmentUtils.Companion$( fm, TYPE_REMOVE_FRAGMENT, null, *fragments.toTypedArray() )</ID>
+    <ID>SpreadOperator:FragmentUtils.kt$FragmentUtils.Companion$( fm, TYPE_SHOW_FRAGMENT, null, *fragments.toTypedArray() )</ID>
+    <ID>SpreadOperator:FragmentUtils.kt$FragmentUtils.Companion$( show.fragmentManager!!, TYPE_SHOW_HIDE_FRAGMENT, show, *hide.toTypedArray() )</ID>
+    <ID>SpreadOperator:FragmentUtils.kt$FragmentUtils.Companion$(fm, TYPE_ADD_FRAGMENT, null, *adds)</ID>
+    <ID>SwallowedException:AbLoadingDialog.kt$AbLoadingDialog$e: TimeoutCancellationException</ID>
+    <ID>SwallowedException:ActivityExt.kt$e: Exception</ID>
+    <ID>SwallowedException:AppUtils.kt$AppUtils.Companion$e: PackageManager.NameNotFoundException</ID>
+    <ID>SwallowedException:BaseUncaughtExceptionHandler.kt$BaseUncaughtExceptionHandler$e: Exception</ID>
+    <ID>SwallowedException:FileQUtils.kt$FileQUtils$e: Exception</ID>
+    <ID>SwallowedException:FixPermission.kt$FixPermission$e: Exception</ID>
+    <ID>SwallowedException:ImageUtils.kt$ImageUtils.Companion$e: IOException</ID>
+    <ID>SwallowedException:KCHttpV3.kt$KCHttpV3$e: Exception</ID>
+    <ID>SwallowedException:KCHttpV4.kt$KCHttpV4$e: Exception</ID>
+    <ID>SwallowedException:RequestBodyUtils.kt$RequestBodyUtils.&lt;no name provided&gt;$e: IOException</ID>
+    <ID>SwallowedException:ShareFileUtil.kt$ShareFileUtil$ex: Exception</ID>
+    <ID>SwallowedException:StringExt.kt$e: JSONException</ID>
+    <ID>SwallowedException:StringExt.kt$e: java.lang.IllegalArgumentException</ID>
+    <ID>SwallowedException:StringUtils.kt$StringUtils.Companion$e: JSONException</ID>
+    <ID>SwallowedException:TransitionExt.kt$e: Resources.NotFoundException</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:NestedScrollableHost.kt$NestedScrollableHost$IllegalArgumentException()</ID>
+    <ID>ThrowsCount:KCHttpV4.kt$KCHttpV4$private suspend fun getDataFromApiOrCache( requestOption: RequestOption? = null, fromNetworkValue: suspend () -&gt; String ): String</ID>
+    <ID>TooGenericExceptionCaught:ActivityExt.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ActivityExt.kt$localException: Exception</ID>
+    <ID>TooGenericExceptionCaught:AppSigningUtils.kt$AppSigningUtils$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AppUtils.kt$AppUtils.Companion$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ArmsUtils.kt$ArmsUtils.Companion$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:BaseProperties.kt$BaseProperties$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:BaseUncaughtExceptionHandler.kt$BaseUncaughtExceptionHandler$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CalendarReminderUtils.kt$CalendarReminderUtils$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CircleImageView.kt$CircleImageView$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DES.kt$DES$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DateUtils.kt$DateUtils$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DebugFunc.kt$DebugFunc$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:FileQUtils.kt$FileQUtils$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:FixPermission.kt$FixPermission$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:FloatKit.kt$FloatKit$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HeadersInterceptor.kt$HeadersInterceptor$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HttpLoggingInterceptor.kt$HttpLoggingInterceptor$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HttpReslut.kt$e: Throwable</ID>
+    <ID>TooGenericExceptionCaught:ImageUtils.kt$ImageUtils.Companion$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:KCHttpV3.kt$KCHttpV3$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:KCHttpV4.kt$KCHttpV4$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:LruDiskCache.kt$LruDiskCache$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ScreenshotKit.kt$ScreenshotKit$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Share.kt$Share$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ShareFileUtil.kt$ShareFileUtil$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ShareFileUtil.kt$ShareFileUtil$ex: Exception</ID>
+    <ID>TooGenericExceptionThrown:EnvironmentStorage.kt$EnvironmentStorage.Companion$throw RuntimeException("sdcard is unmounted")</ID>
+    <ID>TooManyFunctions:AbBaseActivity.kt$AbBaseActivity : AppCompatActivity</ID>
+    <ID>TooManyFunctions:AbBaseFragment.kt$AbBaseFragment : FragmentLifecycleEventObserverBaseControllerFunctionsImpl</ID>
+    <ID>TooManyFunctions:AbEdgeEffect.kt$AbEdgeEffect : EdgeEffect</ID>
+    <ID>TooManyFunctions:ActivityExt.kt$me.shetj.base.ktx.ActivityExt.kt</ID>
+    <ID>TooManyFunctions:ActivityResultExt.kt$me.shetj.base.ktx.ActivityResultExt.kt</ID>
+    <ID>TooManyFunctions:ActivityUtilsExt.kt$me.shetj.base.ktx.ActivityUtilsExt.kt</ID>
+    <ID>TooManyFunctions:AppUtils.kt$AppUtils$Companion</ID>
+    <ID>TooManyFunctions:ArmsUtils.kt$ArmsUtils$Companion</ID>
+    <ID>TooManyFunctions:CircleImageView.kt$CircleImageView : AppCompatImageView</ID>
+    <ID>TooManyFunctions:CirclePageIndicator.kt$CirclePageIndicator : LinearLayoutOnPageChangeListener</ID>
+    <ID>TooManyFunctions:CleanUtils.kt$CleanUtils$Companion</ID>
+    <ID>TooManyFunctions:ConstraintSetExt.kt$me.shetj.base.ktx.ConstraintSetExt.kt</ID>
+    <ID>TooManyFunctions:CorountineExt.kt$me.shetj.base.ktx.CorountineExt.kt</ID>
+    <ID>TooManyFunctions:DataExt.kt$me.shetj.base.ktx.DataExt.kt</ID>
+    <ID>TooManyFunctions:DateExt.kt$me.shetj.base.ktx.DateExt.kt</ID>
+    <ID>TooManyFunctions:DateUtils.kt$DateUtils</ID>
+    <ID>TooManyFunctions:FileQUtils.kt$FileQUtils</ID>
+    <ID>TooManyFunctions:FragmentUtils.kt$FragmentUtils$Companion</ID>
+    <ID>TooManyFunctions:HttpReslut.kt$me.shetj.base.network_coroutine.HttpReslut.kt</ID>
+    <ID>TooManyFunctions:ImageUtils.kt$ImageUtils$Companion</ID>
+    <ID>TooManyFunctions:IntentUtils.kt$IntentUtils$Companion</ID>
+    <ID>TooManyFunctions:KCApiService.kt$KCApiService</ID>
+    <ID>TooManyFunctions:KCHttpV3.kt$KCHttpV3</ID>
+    <ID>TooManyFunctions:KCHttpV4.kt$KCHttpV4</ID>
+    <ID>TooManyFunctions:MDThemeKit.kt$MDThemeKit</ID>
+    <ID>TooManyFunctions:MaterialColorKit.kt$me.shetj.base.materail.MaterialColorKit.kt</ID>
+    <ID>TooManyFunctions:ShareFileUtil.kt$ShareFileUtil</ID>
+    <ID>TooManyFunctions:SpanExt.kt$me.shetj.base.ktx.SpanExt.kt</ID>
+    <ID>TooManyFunctions:StringExt.kt$me.shetj.base.ktx.StringExt.kt</ID>
+    <ID>TooManyFunctions:StringUtils.kt$StringUtils$Companion</ID>
+    <ID>TooManyFunctions:ViewExt.kt$me.shetj.base.ktx.ViewExt.kt</ID>
+    <ID>TooManyFunctions:WebViewManager.kt$WebViewManager</ID>
+    <ID>UnusedPrivateMember:AppSigningUtils.kt$AppSigningUtils$private fun getSignatureString(sig: Signature, type: String): String</ID>
+    <ID>UnusedPrivateMember:ArmsUtils.kt$ArmsUtils.Companion$private fun getDensity(): Float</ID>
+    <ID>UnusedPrivateMember:CorountineExt.kt$private suspend fun &lt;T&gt; runTimeout( timeout: Long, block: suspend () -&gt; T ): Result&lt;T&gt;</ID>
+    <ID>UnusedPrivateMember:FileQUtils.kt$FileQUtils$@SuppressLint("Range") private fun getFileFromContentUri(context: Context, uri: Uri?): String?</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$// 对应HTTP的状态码 private const val BADREQUEST = 400</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val BAD_GATEWAY = 502</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val FORBIDDEN = 403</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val GATEWAY_TIMEOUT = 504</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val INTERNAL_SERVER_ERROR = 500</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val METHOD_NOT_ALLOWED = 405</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val NOT_FOUND = 404</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val REQUEST_TIMEOUT = 408</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val SERVICE_UNAVAILABLE = 503</ID>
+    <ID>UnusedPrivateProperty:ApiException.kt$ApiException.Companion$private const val UNAUTHORIZED = 401</ID>
+    <ID>UnusedPrivateProperty:BaseBindingActivity.kt$BaseBindingActivity$private val lazyViewBinding = lazy { initBinding() }</ID>
+    <ID>UnusedPrivateProperty:CirclePageIndicator.kt$CirclePageIndicator$i</ID>
+    <ID>UseCheckOrError:ArmsUtils.kt$ArmsUtils$throw IllegalStateException("you can't instantiate me!")</ID>
+    <ID>UtilityClassWithPublicConstructor:ImageUtils.kt$ImageUtils</ID>
+    <ID>UtilityClassWithPublicConstructor:SPEncryptedUtils.kt$SPEncryptedUtils</ID>
+    <ID>UtilityClassWithPublicConstructor:SPUtils.kt$SPUtils</ID>
+    <ID>VariableNaming:AbBaseActivity.kt$AbBaseActivity$protected val TAG: String = this::class.java.simpleName</ID>
+    <ID>VariableNaming:AbBaseFragment.kt$AbBaseFragment$protected val TAG: String = this::class.java.simpleName</ID>
+    <ID>VariableNaming:RecyclerItemDecoration.kt$RecyclerItemDecoration$val GRID = 2</ID>
+    <ID>VariableNaming:RecyclerItemDecoration.kt$RecyclerItemDecoration$val HORIZONTAL = 0</ID>
+    <ID>VariableNaming:RecyclerItemDecoration.kt$RecyclerItemDecoration$val STAGGERED_GRID = 3</ID>
+    <ID>VariableNaming:RecyclerItemDecoration.kt$RecyclerItemDecoration$val VERTICAL = 1</ID>
+  </CurrentIssues>
+</SmellBaseline>

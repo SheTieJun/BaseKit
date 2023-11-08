@@ -112,7 +112,10 @@ fun createSelectionBundle(
     putInt(ContentResolver.QUERY_ARG_OFFSET, offset)
     // Sort function
     when (orderBy) {
-        "ALPHABET" -> putStringArray(ContentResolver.QUERY_ARG_SORT_COLUMNS, arrayOf(MediaStore.Files.FileColumns.TITLE))
+        "ALPHABET" -> putStringArray(
+            ContentResolver.QUERY_ARG_SORT_COLUMNS,
+            arrayOf(MediaStore.Files.FileColumns.TITLE)
+        )
         else -> putStringArray(ContentResolver.QUERY_ARG_SORT_COLUMNS, arrayOf(MediaStore.Files.FileColumns.DATE_ADDED))
     }
     // Sorting direction

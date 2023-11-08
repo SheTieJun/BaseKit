@@ -9,8 +9,7 @@ import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import java.io.File
 
-
-fun Context.openUri(uri: String){
+fun Context.openUri(uri: String) {
     val intent = Intent()
     if (this !is Activity) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -45,9 +44,9 @@ fun Context.openSetting() {
 /**
  * 去通知管理界面
  */
-fun Context.openNotificationSetting(needCheck:Boolean = false) {
-    //检测是否具有通知权限
-    if (needCheck && NotificationManagerCompat.from(this).areNotificationsEnabled()){
+fun Context.openNotificationSetting(needCheck: Boolean = false) {
+    // 检测是否具有通知权限
+    if (needCheck && NotificationManagerCompat.from(this).areNotificationsEnabled()) {
         return
     }
     val intent = Intent()

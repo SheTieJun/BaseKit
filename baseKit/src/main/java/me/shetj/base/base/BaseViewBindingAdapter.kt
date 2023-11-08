@@ -7,7 +7,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import java.lang.reflect.ParameterizedType
 
-
 /**
  * Base view binding adapter
  * 当只有ViewBinding的时候，可以使用这个
@@ -21,7 +20,7 @@ abstract class BaseViewBindingAdapter<T, BD : ViewBinding>
     private val clazz = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<*>
 
     @Suppress("UNCHECKED_CAST")
-    private fun getBinding(view: View):BD{
+    private fun getBinding(view: View): BD {
         return clazz.getMethod("bind", View::class.java)
             .invoke(null, view) as BD
     }
@@ -36,5 +35,5 @@ abstract class BaseViewBindingAdapter<T, BD : ViewBinding>
 
     abstract fun convert(holder: BD, item: T)
 
-    open fun convert(holder: BD, item: T, payloads: List<Any>){}
+    open fun convert(holder: BD, item: T, payloads: List<Any>) {}
 }

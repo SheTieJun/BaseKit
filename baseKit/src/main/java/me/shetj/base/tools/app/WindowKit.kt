@@ -9,20 +9,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.window.embedding.SplitController
-import androidx.window.layout.DisplayFeature
 import androidx.window.layout.FoldingFeature
-import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowMetricsCalculator
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
 import me.shetj.base.ktx.getWindowContent
 import me.shetj.base.ktx.launch
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 object WindowKit {
 
-
     enum class WindowSizeClass() { COMPACT, MEDIUM, EXPANDED }
-
 
     fun addView(activity: Activity, view: View, layoutParams: FrameLayout.LayoutParams) {
         if (view.parent != null) {
@@ -32,19 +28,18 @@ object WindowKit {
         windowContent?.addView(view, layoutParams)
     }
 
-
     fun windowSize(activity: Activity): Pair<WindowSizeClass, WindowSizeClass> {
         val metrics = WindowMetricsCalculator.getOrCreate()
             .computeCurrentWindowMetrics(activity)
         val widthDp = metrics.bounds.width() /
-                activity.resources.displayMetrics.density
+            activity.resources.displayMetrics.density
         val widthWindowSizeClass = when {
             widthDp < 600f -> WindowSizeClass.COMPACT
             widthDp < 840f -> WindowSizeClass.MEDIUM
             else -> WindowSizeClass.EXPANDED
         }
         val heightDp = metrics.bounds.height() /
-                activity.resources.displayMetrics.density
+            activity.resources.displayMetrics.density
         val heightWindowSizeClass = when {
             heightDp < 480f -> WindowSizeClass.COMPACT
             heightDp < 900f -> WindowSizeClass.MEDIUM
@@ -58,7 +53,6 @@ object WindowKit {
         contract { returns(true) implies (foldingFeature != null) }
         return foldingFeature?.state == FoldingFeature.State.HALF_OPENED && foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL
     }
-
 
     /**
      * Add split lisen

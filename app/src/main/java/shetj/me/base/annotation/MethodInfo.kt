@@ -21,7 +21,7 @@ class MethodInfo internal constructor() {
      */
     var cost: Long = 0 // 方法执行耗时
     private val mArgumentList // 方法参数列表
-            : MutableList<AgNode>
+        : MutableList<AgNode>
 
     init {
         mArgumentList = ArrayList()
@@ -39,6 +39,7 @@ class MethodInfo internal constructor() {
             mClassName = mClassName?.replace("/", ".")
             return mClassName
         }
+
         /**
          * @param className 设置类名
          */
@@ -50,13 +51,13 @@ class MethodInfo internal constructor() {
          * @return 返回方法名
          */
         get() = "$className.$mMethodName"
+
         /**
          * @param methodName 设置方法名
          */
         set(methodName) {
             mMethodName = methodName
         }
-
 
     fun getShowMethodName(): String {
         return "$className : $mMethodName"
@@ -90,9 +91,9 @@ class MethodInfo internal constructor() {
     class AgNode(private var type: String?, private var value: Any?) {
         override fun toString(): String {
             return "{" +
-                    "type='" + type + '\'' +
-                    ", value=" + value +
-                    '}'
+                "type='" + type + '\'' +
+                ", value=" + value +
+                '}'
         }
     }
 

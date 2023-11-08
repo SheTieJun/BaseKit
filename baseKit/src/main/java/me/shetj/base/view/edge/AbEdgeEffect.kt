@@ -11,7 +11,7 @@ import android.widget.EdgeEffect
  * 构造方法。在这个方法里会初始化阴影的颜色。阴影颜色默认为0.25透明度的主题颜色。所以如果想要修改边缘阴影的颜色，
  * 可以修改app或者页面theme的colorPrimary。
  */
-abstract class AbEdgeEffect(context: Context) : EdgeEffect(context) {
+open class AbEdgeEffect(context: Context) : EdgeEffect(context) {
 
     override fun onPull(deltaDistance: Float) {
         super.onPull(deltaDistance)

@@ -34,5 +34,5 @@ enum class CacheMode {
      *
      * 感觉有点没必要，可以后续处理，不需要再缓存进行处理
      */
-    CACHE_NET_DISTINCT;
+    CACHE_NET_DISTINCT
 }

@@ -71,12 +71,12 @@ class Share private constructor(builder: Builder) {
             if (forcedUseSystemChooser) {
                 shareIntent = Intent.createChooser(shareIntent, title)
             }
-            if (shareIntent!!.resolveActivity(activity!!.packageManager) != null) {
+            if (shareIntent?.resolveActivity(activity!!.packageManager) != null) {
                 try {
                     if (requestCode != -1) {
-                        activity.startActivityForResult(shareIntent, requestCode)
+                        activity?.startActivityForResult(shareIntent, requestCode)
                     } else {
-                        activity.startActivity(shareIntent)
+                        activity?.startActivity(shareIntent)
                     }
                 } catch (e: Exception) {
                     Timber.tag(TAG).e(Log.getStackTraceString(e))
@@ -86,8 +86,8 @@ class Share private constructor(builder: Builder) {
     }
 
     private fun createShareIntent(): Intent? {
-        var shareIntent: Intent? = Intent()
-        shareIntent!!.action = Intent.ACTION_SEND
+        val shareIntent: Intent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         shareIntent.addCategory("android.intent.category.DEFAULT")
         if (!TextUtils.isEmpty(componentPackageName) && !TextUtils.isEmpty(componentClassName)) {
@@ -109,8 +109,7 @@ class Share private constructor(builder: Builder) {
                 shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             else -> {
-                Timber.tag(TAG).e("$contentType is not support share type.")
-                shareIntent = null
+                return null
             }
         }
         return shareIntent
@@ -253,7 +252,9 @@ class Share private constructor(builder: Builder) {
         fun shareImage(activity: Activity, title: String = "Share Image", content: Uri) {
             Builder(activity)
                 .setContentType(ShareContentType.IMAGE)
-                .setShareFileUri(content) // .setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
+                .setShareFileUri(
+                    content
+                ) // .setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
                 .setTitle(title)
                 .build()
                 .shareBySystem()
