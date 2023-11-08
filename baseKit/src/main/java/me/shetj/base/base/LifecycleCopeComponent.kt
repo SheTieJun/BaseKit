@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
  *
  * * 自身[LifecycleOwner] + 自身[CoroutineScope]
  */
-abstract class AbLifecycleCopeComponent : LifecycleCopeComponent {
+open class AbLifecycleCopeComponent : LifecycleCopeComponent {
     init {
         initLifecycle()
     }

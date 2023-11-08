@@ -1,11 +1,11 @@
 package me.shetj.base.network_coroutine
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withTimeout
+import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
@@ -149,7 +149,7 @@ object KCHttpV3 {
             } catch (e: Exception) {
                 emit(HttpResult.failure<File>(ApiException.handleException(e)))
             }
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(DispatcherProvider.io())
             .collect {
                 it.fold(onFailure = { e ->
                     e?.let { it1 -> onError(it1) }

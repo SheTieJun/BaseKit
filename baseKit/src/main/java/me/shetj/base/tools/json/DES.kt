@@ -56,9 +56,9 @@ class DES {
             retByte = cipher.doFinal(source.toByteArray())
 
             return when (code) {
-                0 -> String(retByte!!, Charset.forName("ISO-8859-1"))
+                0 -> String(retByte, Charset.forName("ISO-8859-1"))
                 1 -> Base64.encodeToString(retByte, NO_WRAP)
-                else -> String(retByte!!)
+                else -> String(retByte)
             }
         } catch (e: Exception) {
             e.printStackTrace()

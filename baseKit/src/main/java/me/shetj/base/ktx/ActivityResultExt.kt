@@ -39,7 +39,6 @@ import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -56,13 +55,13 @@ fun <I, O> ComponentActivity.register(
     @NonNull callback: ActivityResultCallback<O>
 ): ActivityResultLauncher<I> {
     return activityResultRegistry.register(key, contract, callback).also {
-        lifecycle.addObserver(object : LifecycleEventObserver {
-            override fun onStateChanged(source: LifecycleOwner, event: Event) {
+        lifecycle.addObserver(
+            LifecycleEventObserver { _, event ->
                 if (event == Event.ON_DESTROY) {
                     it.unregister()
                 }
             }
-        })
+        )
     }
 }
 
@@ -244,13 +243,13 @@ fun <I, O> Fragment.register(
     callback: ActivityResultCallback<O>
 ): ActivityResultLauncher<I>? {
     return getActivityResultRegistry()?.register(key, contract, callback).also {
-        lifecycle.addObserver(object : LifecycleEventObserver {
-            override fun onStateChanged(source: LifecycleOwner, event: Event) {
+        lifecycle.addObserver(
+            LifecycleEventObserver { _, event ->
                 if (event == Event.ON_DESTROY) {
                     it?.unregister()
                 }
             }
-        })
+        )
     }
 }
 

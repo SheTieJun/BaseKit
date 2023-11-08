@@ -309,9 +309,7 @@ fun View?.layoutRationByWidth(parentW: Int, ratioW: Int, ratioH: Int) {
 
 @UiThread
 fun View?.use16And9() {
-    this?.apply {
-        layoutRationByWidth(ArmsUtils.getScreenWidth(), 16, 9)
-    }
+    this?.layoutRationByWidth(ArmsUtils.getScreenWidth(), 16, 9)
 }
 
 @UiThread

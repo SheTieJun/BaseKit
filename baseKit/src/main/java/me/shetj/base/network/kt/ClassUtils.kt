@@ -26,7 +26,7 @@ object ClassUtils {
      </R> */
     fun <R> findNeedType(cls: Class<R>): Type {
         val typeList = getMethodTypes(cls)
-        return if (typeList == null || typeList.isEmpty()) {
+        return if (typeList.isEmpty()) {
             RequestBody::class.java
         } else {
             typeList[0]
@@ -36,12 +36,11 @@ object ClassUtils {
     /**
      * MethodHandler
      */
-    fun <T> getMethodTypes(cls: Class<T>): List<Type>? {
+    fun <T> getMethodTypes(cls: Class<T>): List<Type> {
         val typeOri = cls.genericSuperclass
-        var needTypes: MutableList<Type>? = null
+        val needTypes: MutableList<Type> = ArrayList()
         // if Type is T
         if (typeOri is ParameterizedType) {
-            needTypes = ArrayList()
             val parenTypes = typeOri.actualTypeArguments
             for (childType in parenTypes) {
                 needTypes.add(childType)
@@ -113,8 +112,8 @@ object ClassUtils {
         }
     }
 
-    fun getGenericType(parameterizedType: ParameterizedType?, i: Int): Type {
-        return when (val genericType = parameterizedType!!.actualTypeArguments[i]) {
+    fun getGenericType(parameterizedType: ParameterizedType, i: Int): Type {
+        return when (val genericType = parameterizedType.actualTypeArguments[i]) {
             is ParameterizedType -> { // 处理多级泛型
                 genericType.rawType
             }
@@ -139,7 +138,7 @@ object ClassUtils {
     fun <T> findNeedClass(cls: Class<T>): Type {
         // 以下代码是通过泛型解析实际参数,泛型必须传
         val genType = cls.genericSuperclass // 获取父类
-        val params = (genType as ParameterizedType?)!!.actualTypeArguments // 获取<>
+        val params = (genType as ParameterizedType).actualTypeArguments // 获取<>
         val type = params[0] // date?
         val finalNeedType: Type = if (params.size > 1) { // 这个类似是：CacheResult<SkinTestResult> 2层
             check(type is ParameterizedType) { "没有填写泛型参数" }
@@ -156,6 +155,6 @@ object ClassUtils {
      */
     fun <T> findRawType(cls: Class<T>): Type {
         val genType = cls.genericSuperclass // getGenericSuperclass() 获得该类带有泛型的父类
-        return getGenericType(genType as ParameterizedType?, 0)
+        return getGenericType(genType as ParameterizedType, 0)
     }
 }

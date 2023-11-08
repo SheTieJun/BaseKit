@@ -93,9 +93,7 @@ fun Context.moveToFrontApp() {
 fun ActivityManager.moveToFrontApp(packageName: String) {
     this.appTasks?.first {
         it.taskInfo.baseIntent.component?.packageName == packageName
-    }?.apply {
-        moveToFront()
-    }
+    }?.moveToFront()
 }
 
 /**

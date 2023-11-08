@@ -3,7 +3,7 @@ package me.shetj.base.tools.file
 import me.shetj.base.BaseKit
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.util.Properties
+import java.util.*
 
 /**
  * 获取assent属性
@@ -12,7 +12,7 @@ object BaseProperties {
 
     private const val TRUE_STRING = "true"
 
-    private var properties = "base.properties"
+    private const val properties = "base.properties"
     private val p: Properties = Properties()
 
     init {

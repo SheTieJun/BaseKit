@@ -75,7 +75,7 @@ class ProcessUtils private constructor() {
                                 beginTime,
                                 endTime
                             )
-                            if (usageStatses == null || usageStatses.isEmpty()) {
+                            if (usageStatses.isNullOrEmpty()) {
                                 return null
                             }
                             var recentStats: UsageStats? = null

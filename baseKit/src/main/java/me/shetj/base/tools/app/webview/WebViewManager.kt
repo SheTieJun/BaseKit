@@ -204,7 +204,7 @@ class WebViewManager(private val webView: WebView) {
     }
 
     fun getUserAgentString(): String {
-        return webSettings.userAgentString ?: ""
+        return webSettings.userAgentString.orEmpty()
     }
 
     /**

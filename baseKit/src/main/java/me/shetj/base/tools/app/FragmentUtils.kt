@@ -30,11 +30,7 @@ class FragmentUtils private constructor() {
     class FragmentNode(internal var fragment: Fragment, internal var next: List<FragmentNode>?) {
 
         override fun toString(): String {
-            return (
-                fragment.javaClass.simpleName +
-                    "->" +
-                    if (next == null || next!!.isEmpty()) "no child" else next!!.toString()
-                )
+            return fragment.javaClass.simpleName + "->" + if (next.isNullOrEmpty()) "no child" else next.toString()
         }
     }
 
@@ -250,7 +246,7 @@ class FragmentUtils private constructor() {
          */
         fun show(show: Fragment) {
             putArgs(show, false)
-            operateNoAnim(show.fragmentManager!!, TYPE_SHOW_FRAGMENT, null, show)
+            operateNoAnim(show.fragmentManager, TYPE_SHOW_FRAGMENT, null, show)
         }
 
         /**
@@ -278,7 +274,7 @@ class FragmentUtils private constructor() {
          */
         fun hide(hide: Fragment) {
             putArgs(hide, true)
-            operateNoAnim(hide.fragmentManager!!, TYPE_HIDE_FRAGMENT, null, hide)
+            operateNoAnim(hide.fragmentManager, TYPE_HIDE_FRAGMENT, null, hide)
         }
 
         /**
@@ -320,7 +316,7 @@ class FragmentUtils private constructor() {
                 putArgs(fragment, fragment !== show)
             }
             operateNoAnim(
-                show.fragmentManager!!,
+                show.fragmentManager,
                 TYPE_SHOW_HIDE_FRAGMENT,
                 show,
                 *hide.toTypedArray()
@@ -347,7 +343,7 @@ class FragmentUtils private constructor() {
             for (fragment in hide) {
                 putArgs(fragment, fragment !== show)
             }
-            operateNoAnim(show.fragmentManager!!, TYPE_SHOW_HIDE_FRAGMENT, show, *hide)
+            operateNoAnim(show.fragmentManager, TYPE_SHOW_HIDE_FRAGMENT, show, *hide)
         }
 
         /**
@@ -362,7 +358,7 @@ class FragmentUtils private constructor() {
         ) {
             putArgs(show, false)
             putArgs(hide, true)
-            operateNoAnim(show.fragmentManager!!, TYPE_SHOW_HIDE_FRAGMENT, show, hide)
+            operateNoAnim(show.fragmentManager, TYPE_SHOW_HIDE_FRAGMENT, show, hide)
         }
 
         /**
@@ -740,7 +736,7 @@ class FragmentUtils private constructor() {
          * @param remove The fragment will be removed.
          */
         fun remove(remove: Fragment) {
-            operateNoAnim(remove.fragmentManager!!, TYPE_REMOVE_FRAGMENT, null, remove)
+            operateNoAnim(remove.fragmentManager, TYPE_REMOVE_FRAGMENT, null, remove)
         }
 
         /**
@@ -751,7 +747,7 @@ class FragmentUtils private constructor() {
          */
         fun removeTo(removeTo: Fragment, isIncludeSelf: Boolean) {
             operateNoAnim(
-                removeTo.fragmentManager!!,
+                removeTo.fragmentManager,
                 TYPE_REMOVE_TO_FRAGMENT,
                 if (isIncludeSelf) removeTo else null,
                 removeTo
@@ -796,20 +792,19 @@ class FragmentUtils private constructor() {
         private fun getArgs(fragment: Fragment): Args {
             val bundle = fragment.arguments
             return Args(
-                bundle!!.getInt(ARGS_ID, fragment.id),
-                bundle.getBoolean(ARGS_IS_HIDE),
-                bundle.getBoolean(ARGS_IS_ADD_STACK)
+                bundle?.getInt(ARGS_ID, fragment.id) ?: 0,
+                bundle?.getBoolean(ARGS_IS_HIDE) ?: false,
+                bundle?.getBoolean(ARGS_IS_ADD_STACK) ?: false
             )
         }
 
         private fun operateNoAnim(
-            fm: FragmentManager,
+            fm: FragmentManager?,
             type: Int,
             src: Fragment?,
             vararg dest: Fragment
         ) {
-            val ft = fm.beginTransaction()
-            operate(type, fm, ft, src, *dest)
+            fm?.let { operate(type, it, it.beginTransaction(), src, *dest) }
         }
 
         private fun operate(
@@ -833,16 +828,21 @@ class FragmentUtils private constructor() {
                     if (fragmentByTag != null && fragmentByTag.isAdded) {
                         ft.remove(fragmentByTag)
                     }
-                    ft.add(args!!.getInt(ARGS_ID), fragment, name)
-                    if (args.getBoolean(ARGS_IS_HIDE)) ft.hide(fragment)
-                    if (args.getBoolean(ARGS_IS_ADD_STACK)) ft.addToBackStack(name)
+                    args?.let {
+                        ft.add(it.getInt(ARGS_ID), fragment, name)
+                        if (it.getBoolean(ARGS_IS_HIDE)) ft.hide(fragment)
+                        if (it.getBoolean(ARGS_IS_ADD_STACK)) ft.addToBackStack(name)
+                    }
                 }
+
                 TYPE_HIDE_FRAGMENT -> for (fragment in dest) {
                     ft.hide(fragment)
                 }
+
                 TYPE_SHOW_FRAGMENT -> for (fragment in dest) {
                     ft.show(fragment)
                 }
+
                 TYPE_SHOW_HIDE_FRAGMENT -> {
                     ft.show(src!!)
                     for (fragment in dest) {
@@ -851,17 +851,20 @@ class FragmentUtils private constructor() {
                         }
                     }
                 }
+
                 TYPE_REPLACE_FRAGMENT -> {
                     name = dest[0].javaClass.name
                     args = dest[0].arguments
                     ft.replace(args!!.getInt(ARGS_ID), dest[0], name)
                     if (args.getBoolean(ARGS_IS_ADD_STACK)) ft.addToBackStack(name)
                 }
+
                 TYPE_REMOVE_FRAGMENT -> for (fragment in dest) {
                     if (fragment !== src) {
                         ft.remove(fragment)
                     }
                 }
+
                 TYPE_REMOVE_TO_FRAGMENT -> for (i in dest.indices.reversed()) {
                     val fragment = dest[i]
                     if (fragment === dest[0]) {
@@ -962,7 +965,7 @@ class FragmentUtils private constructor() {
                 val fragment = fragments[i]
                 if (fragment.isResumed && fragment.isVisible && fragment.userVisibleHint) {
                     if (isInStack) {
-                        if (fragment.arguments!!.getBoolean(ARGS_IS_ADD_STACK)) {
+                        if (fragment.arguments?.getBoolean(ARGS_IS_ADD_STACK) == true) {
                             return fragment
                         }
                     } else {
@@ -1084,13 +1087,11 @@ class FragmentUtils private constructor() {
          * @return `true`: the fragment consumes the back press<br></br>`false`: otherwise
          */
         fun dispatchBackPress(fragment: Fragment): Boolean {
-            return (
-                fragment.isResumed &&
-                    fragment.isVisible &&
-                    fragment.userVisibleHint &&
-                    fragment is OnBackClickListener &&
-                    (fragment as OnBackClickListener).onBackClick()
-                )
+            return fragment.isResumed &&
+                fragment.isVisible &&
+                fragment.userVisibleHint &&
+                fragment is OnBackClickListener &&
+                (fragment as OnBackClickListener).onBackClick()
         }
 
         /**

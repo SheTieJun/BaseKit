@@ -137,7 +137,7 @@ class RecyclerItemDecoration(spacing: Int, includeEdge: Boolean) : RecyclerView.
             is GridLayoutManager -> GRID
             is StaggeredGridLayoutManager -> STAGGERED_GRID
             else -> {
-                if (layoutManager!!.canScrollHorizontally()) HORIZONTAL else VERTICAL
+                if (layoutManager?.canScrollHorizontally() == true) HORIZONTAL else VERTICAL
             }
         }
     }

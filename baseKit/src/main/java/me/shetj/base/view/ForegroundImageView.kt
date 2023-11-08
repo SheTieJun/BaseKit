@@ -32,9 +32,9 @@ class ForegroundImageView @JvmOverloads constructor(context: Context, attrs: Att
         if (foregroundDraw === drawable) {
             return
         }
-        if (foregroundDraw != null) {
-            foregroundDraw!!.callback = null
-            unscheduleDrawable(foregroundDraw)
+        foregroundDraw?.let {
+            it.callback = null
+            unscheduleDrawable(it)
         }
         foregroundDraw = drawable
         if (drawable != null) {
@@ -53,37 +53,35 @@ class ForegroundImageView @JvmOverloads constructor(context: Context, attrs: Att
 
     override fun jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState()
-        if (foregroundDraw != null) foregroundDraw!!.jumpToCurrentState()
+        foregroundDraw?.jumpToCurrentState()
     }
 
     override fun drawableStateChanged() {
         super.drawableStateChanged()
-        if (foregroundDraw != null && foregroundDraw!!.isStateful) {
-            foregroundDraw!!.state = drawableState
+        if (foregroundDraw?.isStateful == true) {
+            foregroundDraw?.state = drawableState
         }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if (foregroundDraw != null) {
-            foregroundDraw!!.setBounds(0, 0, measuredWidth, measuredHeight)
+        foregroundDraw?.let {
+            it.setBounds(0, 0, measuredWidth, measuredHeight)
             invalidate()
         }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        if (foregroundDraw != null) {
-            foregroundDraw!!.setBounds(0, 0, w, h)
+        foregroundDraw?.let {
+            it.setBounds(0, 0, w, h)
             invalidate()
         }
     }
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
-        if (foregroundDraw != null) {
-            foregroundDraw!!.draw(canvas)
-        }
+        foregroundDraw?.draw(canvas)
     }
 
     init {

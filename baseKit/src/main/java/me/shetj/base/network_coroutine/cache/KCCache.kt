@@ -1,7 +1,7 @@
 package me.shetj.base.network_coroutine.cache
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.network_coroutine.HttpKit
 import me.shetj.base.network_coroutine.cache.KCCache.Companion.CACHE_NEVER_EXPIRE
 import org.koin.java.KoinJavaComponent
@@ -129,7 +129,7 @@ class KCCache {
  */
 suspend fun saveCache(key: String?, value: String?) {
     if (!key.isNullOrBlank()) {
-        withContext(Dispatchers.IO) {
+        withContext(DispatcherProvider.io()) {
             HttpKit.getKCCache().save(key, value)
         }
     }
@@ -145,7 +145,7 @@ suspend fun saveCache(key: String?, value: String?) {
  */
 suspend fun loadCache(key: String?, existTime: Long = CACHE_NEVER_EXPIRE): String? {
     return key?.let {
-        withContext(Dispatchers.IO) {
+        withContext(DispatcherProvider.io()) {
             HttpKit.getKCCache().load(it, existTime)
         }
     }
@@ -156,7 +156,7 @@ suspend fun loadCache(key: String?, existTime: Long = CACHE_NEVER_EXPIRE): Strin
  */
 suspend fun hasCached(key: String?): Boolean {
     return key?.let {
-        withContext(Dispatchers.IO) {
+        withContext(DispatcherProvider.io()) {
             HttpKit.getKCCache().containsKey(it)
         }
     } ?: false

@@ -28,7 +28,7 @@ import me.shetj.base.ktx.logUILife
  * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class AbBaseFragment : Fragment(), LifecycleEventObserver, BaseControllerFunctionsImpl {
+open class AbBaseFragment : Fragment(), LifecycleEventObserver, BaseControllerFunctionsImpl {
 
     protected val TAG: String = this::class.java.simpleName
 

@@ -82,10 +82,10 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
     fun requestAudioFocus() {
         if (mAudioManager == null) return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Android 8.0+
-            audioFocusRequest!!.acceptsDelayedFocusGain()
-            mAudioManager!!.requestAudioFocus(audioFocusRequest)
+            audioFocusRequest?.acceptsDelayedFocusGain()
+            audioFocusRequest?.let { mAudioManager?.requestAudioFocus(it) }
         } else {
-            mAudioManager!!.requestAudioFocus(
+            mAudioManager?.requestAudioFocus(
                 focusChangeListener,
                 AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN
@@ -99,11 +99,11 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
     fun abandonFocus(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val abandonAudioFocusRequest =
-                mAudioManager?.abandonAudioFocusRequest(audioFocusRequest!!)
+                audioFocusRequest?.let { mAudioManager?.abandonAudioFocusRequest(it) }
             abandonAudioFocusRequest == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
         } else {
             AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
-                mAudioManager!!.abandonAudioFocus(focusChangeListener)
+                mAudioManager?.abandonAudioFocus(focusChangeListener)
         }
     }
 

@@ -544,7 +544,7 @@ class AppUtils private constructor() {
                 val manager =
                     Utils.app.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
                 val info = manager.runningAppProcesses
-                if (info == null || info.size == 0) {
+                if (info.isNullOrEmpty()) {
                     return false
                 }
                 for (aInfo in info) {
@@ -686,7 +686,7 @@ class AppUtils private constructor() {
             isSuccess = isSuccess and CleanUtils.cleanInternalFiles()
             isSuccess = isSuccess and CleanUtils.cleanExternalCache()
             for (dir in dirs) {
-                isSuccess = isSuccess and CleanUtils.cleanCustomCache(dir!!)
+                isSuccess = isSuccess and (dir?.let { CleanUtils.cleanCustomCache(it) } ?: true)
             }
             return isSuccess
         }

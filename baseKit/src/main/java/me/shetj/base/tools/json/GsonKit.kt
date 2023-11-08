@@ -12,7 +12,7 @@ import timber.log.Timber
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
 
-fun getGson() = GsonBuilder()
+fun getGson(): Gson = GsonBuilder()
     .excludeFieldsWithModifiers(
         Modifier.TRANSIENT,
         Modifier.STATIC

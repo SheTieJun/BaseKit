@@ -65,8 +65,8 @@ object AppSigningUtils {
         }
         val mList = ArrayList<String>()
         try {
-            val signs = getSignatures(context, packageName)
-            for (sig in signs!!) {
+            val signs = getSignatures(context, packageName) ?: return null
+            for (sig in signs) {
                 var tmp = "error!"
                 if (MD5 == type) {
                     tmp = getSignatureByteString(sig, MD5, lowCase)

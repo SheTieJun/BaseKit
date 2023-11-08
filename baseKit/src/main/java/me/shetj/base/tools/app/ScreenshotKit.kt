@@ -19,7 +19,6 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import me.shetj.base.BaseKit
@@ -75,25 +74,25 @@ object ScreenshotKit {
                     Media.EXTERNAL_CONTENT_URI
                 )
             }
-            activity.lifecycle.addObserver(object : LifecycleEventObserver {
-                override fun onStateChanged(source: LifecycleOwner, event: Event) {
+            activity.lifecycle.addObserver(
+                LifecycleEventObserver { _, event ->
                     if (event == Event.ON_START) {
                         activity.registerScreenCaptureCallback(Dispatchers.Main.asExecutor(), screenshotListener)
                     } else if (event == Event.ON_STOP) {
                         activity.unregisterScreenCaptureCallback(screenshotListener)
                     }
                 }
-            })
+            )
         } else {
-            activity.lifecycle.addObserver(object : LifecycleEventObserver {
-                override fun onStateChanged(source: LifecycleOwner, event: Event) {
+            activity.lifecycle.addObserver(
+                LifecycleEventObserver { _, event ->
                     if (event == Event.ON_RESUME) {
                         initMediaContentObserver(activity)
                     } else if (event == Event.ON_PAUSE) {
                         unregisterMediaContentObserver(activity)
                     }
                 }
-            })
+            )
         }
     }
 
@@ -107,23 +106,28 @@ object ScreenshotKit {
         if (mInternalObserver == null) mInternalObserver = MediaContentObserver(Media.INTERNAL_CONTENT_URI, mUiHandler)
         if (mExternalObserver == null) mExternalObserver = MediaContentObserver(Media.EXTERNAL_CONTENT_URI, mUiHandler)
         // 注意 第二个boolean参数 要设置为true 不然有些机型（Android 11必须要true）由于多媒体文件层级不同 导致变化监听不到 所以设置后代文件夹发生了文件改变也要进行通知
-        context.contentResolver.registerContentObserver(
-            /* uri = */
-            Media.INTERNAL_CONTENT_URI, /* notifyForDescendants = */
-            true, /* observer = */
-            mInternalObserver!!
-        )
-        context.contentResolver.registerContentObserver(
-            /* uri = */
-            Media.EXTERNAL_CONTENT_URI, /* notifyForDescendants = */
-            true, /* observer = */
-            mExternalObserver!!
-        )
+
+        mInternalObserver?.let {
+            context.contentResolver.registerContentObserver(
+                /* uri = */
+                Media.INTERNAL_CONTENT_URI, /* notifyForDescendants = */
+                true, /* observer = */
+                it
+            )
+        }
+        mExternalObserver?.let {
+            context.contentResolver.registerContentObserver(
+                /* uri = */
+                Media.EXTERNAL_CONTENT_URI, /* notifyForDescendants = */
+                true, /* observer = */
+                it
+            )
+        }
     }
 
     private fun unregisterMediaContentObserver(context: Context) {
-        if (mInternalObserver != null) context.contentResolver.unregisterContentObserver(mInternalObserver!!)
-        if (mExternalObserver != null) context.contentResolver.unregisterContentObserver(mExternalObserver!!)
+        mInternalObserver?.let { context.contentResolver.unregisterContentObserver(it) }
+        mExternalObserver?.let { context.contentResolver.unregisterContentObserver(it) }
     }
 
     private class MediaContentObserver(
@@ -210,6 +214,7 @@ object ScreenshotKit {
                 ContentResolver.QUERY_ARG_SORT_COLUMNS,
                 arrayOf(MediaStore.Files.FileColumns.TITLE)
             )
+
             else -> putStringArray(
                 ContentResolver.QUERY_ARG_SORT_COLUMNS,
                 arrayOf(MediaStore.Files.FileColumns.DATE_ADDED)

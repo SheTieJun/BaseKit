@@ -37,7 +37,7 @@ class CropImageContract : ActivityResultContract<CropImage, Uri?>() {
             context.contentResolver
                 .insert(Media.EXTERNAL_CONTENT_URI, values)
         } else {
-            Uri.fromFile(File(context.externalCacheDir!!.absolutePath, imageName))
+            Uri.fromFile(File(context.externalCacheDir?.absolutePath, imageName))
         }
         context.grantUriPermission(context.packageName, mUriOutput, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

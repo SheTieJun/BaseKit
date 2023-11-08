@@ -17,7 +17,7 @@ import me.shetj.base.ktx.getClazz
  * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
+open class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
     protected val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 

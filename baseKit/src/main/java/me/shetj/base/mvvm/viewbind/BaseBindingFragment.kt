@@ -35,7 +35,7 @@ import me.shetj.base.tip.TipType.WARNING
  * if stop -> 到可见，需要start
  */
 @Keep
-abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBaseFragment(), Observer<ViewAction> {
+open class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBaseFragment(), Observer<ViewAction> {
 
     private var mFragmentProvider: ViewModelProvider? = null
     private var mActivityProvider: ViewModelProvider? = null

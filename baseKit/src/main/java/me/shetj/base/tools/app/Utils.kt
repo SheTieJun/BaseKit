@@ -1,6 +1,5 @@
 package me.shetj.base.tools.app
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
@@ -15,11 +14,10 @@ class Utils private constructor() {
 
     companion object {
 
-        @SuppressLint("StaticFieldLeak")
-        private var sApplication: Application? = null
+        private lateinit var sApplication: Application
 
         private var sTopActivityWeakRef: WeakReference<Activity>? = null
-        var sActivityList: MutableList<Activity> = LinkedList()
+        val sActivityList: MutableList<Activity> = LinkedList()
 
         private val mCallbacks = object : Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
@@ -68,10 +66,7 @@ class Utils private constructor() {
         @JvmStatic
         val app: Application
             get() {
-                if (sApplication != null) {
-                    return sApplication!!
-                }
-                throw NullPointerException("u should init first")
+                return sApplication
             }
 
         @JvmStatic

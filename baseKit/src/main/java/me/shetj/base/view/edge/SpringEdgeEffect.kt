@@ -40,7 +40,7 @@ class SpringEdgeEffect(private val recyclerView: RecyclerView, private val direc
     private fun RecyclerView.addEdgeAnim(velocity: Int) {
         val translationVelocity = level * velocity * FLING_TRANSLATION_MAGNITUDE
         findEachViewHolder<EdgeViewHolder> {
-            this?.apply {
+            this?.let {
                 animY.setStartVelocity(translationVelocity)
                     .start()
             }

@@ -85,7 +85,7 @@ object FileQUtils {
                 }
                 val selection = MediaColumns._ID + "=?"
                 val selectionArgs = arrayOf(split[1])
-                return getDataColumn(context, contentUri, selection, selectionArgs)
+                return contentUri?.let { getDataColumn(context, it, selection, selectionArgs) }
             }
         } // MediaStore (and general)
         if (VERSION.SDK_INT >= VERSION_CODES.Q) {
@@ -153,7 +153,7 @@ object FileQUtils {
 
     private fun getDataColumn(
         context: Context,
-        uri: Uri?,
+        uri: Uri,
         selection: String?,
         selectionArgs: Array<String>?
     ): String? {
@@ -161,7 +161,7 @@ object FileQUtils {
         val column = MediaColumns.DATA
         val projection = arrayOf(column)
         try {
-            cursor = context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
             if (cursor != null && cursor.moveToFirst()) {
                 val index = cursor.getColumnIndexOrThrow(column)
                 return cursor.getString(index)

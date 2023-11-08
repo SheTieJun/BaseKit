@@ -221,8 +221,8 @@ class ArmsUtils private constructor() {
             if (mToast == null) {
                 mToast = Toast.makeText(Utils.app, string, Toast.LENGTH_SHORT)
             }
-            mToast!!.setText(string)
-            mToast!!.show()
+            mToast?.setText(string)
+            mToast?.show()
         }
 
         /**
@@ -458,8 +458,8 @@ class ArmsUtils private constructor() {
         fun paste(context: Context): String? {
             val manager = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
             if (manager != null) {
-                if (manager.hasPrimaryClip() && manager.primaryClip!!.itemCount > 0) {
-                    val addedText = manager.primaryClip!!.getItemAt(0).text
+                if (manager.hasPrimaryClip() && (manager.primaryClip?.itemCount ?: 0) > 0) {
+                    val addedText = manager.primaryClip?.getItemAt(0)?.text
                     return addedText.toString()
                 }
             }

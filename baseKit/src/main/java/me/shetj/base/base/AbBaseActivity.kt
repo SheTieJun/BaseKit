@@ -25,7 +25,7 @@ import me.shetj.base.tools.app.WindowKit.WindowSizeClass
  * @author shetj
  */
 @Keep
-abstract class AbBaseActivity : AppCompatActivity() {
+open class AbBaseActivity : AppCompatActivity() {
 
     protected val TAG: String = this::class.java.simpleName
 

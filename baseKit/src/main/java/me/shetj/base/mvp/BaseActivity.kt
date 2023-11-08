@@ -16,7 +16,7 @@ import me.shetj.base.ktx.getClazz
  * @author shetj
  */
 @Keep
-abstract class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, LifecycleEventObserver {
+open class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, LifecycleEventObserver {
     protected val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
 

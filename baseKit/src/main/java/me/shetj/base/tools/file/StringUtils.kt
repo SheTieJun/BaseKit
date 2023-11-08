@@ -93,7 +93,7 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun null2Length0(s: String?): String {
-            return s ?: ""
+            return s.orEmpty()
         }
 
         /**

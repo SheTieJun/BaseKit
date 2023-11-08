@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.view.Window
 
 class SoftInputUtil {
-    private var softInputHeightChanged = false
     private var listener: ISoftInputChanged? = null
     private var isSoftInputShowing = false
     private var rootViewVisibleHeight = 0
@@ -39,7 +38,7 @@ class SoftInputUtil {
                 inputShow = false
             }
             rootViewVisibleHeight = visibleHeight
-            if (isSoftInputShowing != inputShow || inputShow && softInputHeightChanged) {
+            if (isSoftInputShowing != inputShow || inputShow) {
                 listener.onChanged(inputShow)
                 isSoftInputShowing = inputShow
             }

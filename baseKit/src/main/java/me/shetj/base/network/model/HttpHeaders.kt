@@ -12,61 +12,51 @@ import me.shetj.base.tools.app.Utils.Companion.app
 import java.io.Serializable
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
-import kotlin.collections.LinkedHashMap
+import java.util.*
 
 class HttpHeaders : Serializable {
-    var headersMap: LinkedHashMap<String, String>? = null
+    val headersMap: LinkedHashMap<String, String> = LinkedHashMap()
 
-    private fun init() {
-        headersMap = LinkedHashMap()
-    }
-
-    constructor() {
-        init()
-    }
+    constructor()
 
     constructor(key: String?, value: String?) {
-        init()
         put(key, value)
     }
 
     fun put(key: String?, value: String?) {
         if (key != null && value != null) {
-            headersMap!!.remove(key)
-            headersMap!![key] = value
+            headersMap.remove(key)
+            headersMap[key] = value
         }
     }
 
     fun put(headers: HttpHeaders?) {
         headers?.headersMap?.forEach {
-            headersMap?.remove(it.key)
-            headersMap?.put(it.key, it.value)
+            headersMap.remove(it.key)
+            headersMap.put(it.key, it.value)
         }
     }
 
     val isEmpty: Boolean
-        get() = headersMap!!.isEmpty()
+        get() = headersMap.isEmpty()
 
     operator fun get(key: String): String? {
-        return headersMap!![key]
+        return headersMap[key]
     }
 
     fun remove(key: String): String {
-        return headersMap!!.remove(key)!!
+        return headersMap.remove(key).orEmpty()
     }
 
     fun clear() {
-        headersMap!!.clear()
+        headersMap.clear()
     }
 
     val names: Set<String>
-        get() = headersMap!!.keys
+        get() = headersMap.keys
 
     fun toJSONString(): String {
-        return headersMap?.toJson() ?: ""
+        return headersMap.toJson().orEmpty()
     }
 
     override fun toString(): String {
@@ -108,7 +98,7 @@ class HttpHeaders : Serializable {
                 return checkNameAndValue(
                     String.format(
                         " SystemName/%s SystemVersion/%s %s/%s Device/%s NetType/%s " +
-                            "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
+                            "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s",
                         "Android",
                         Build.VERSION.RELEASE,
                         Build.MODEL,
@@ -118,9 +108,9 @@ class HttpHeaders : Serializable {
                         Locale.getDefault().language + "_" + Locale.getDefault().country,
                         checkNameAndValue(Build.MANUFACTURER),
                         Build.VERSION.SDK_INT,
-                        if (BaseKit.isDebug())"Debug" else "Release"
+                        if (BaseKit.isDebug()) "Debug" else "Release"
                     )
-                ) ?: userAgent ?: ""
+                ) ?: userAgent.orEmpty()
             }
 
         /**
@@ -165,7 +155,7 @@ class HttpHeaders : Serializable {
 
         fun getDate(gmtTime: String?): Long {
             return try {
-                parseGMTToMillis(gmtTime)
+                gmtTime?.let { parseGMTToMillis(it) } ?: 0
             } catch (e: ParseException) {
                 0
             }
@@ -177,7 +167,7 @@ class HttpHeaders : Serializable {
 
         fun getExpiration(expiresTime: String?): Long {
             return try {
-                parseGMTToMillis(expiresTime)
+                expiresTime?.let { parseGMTToMillis(it) } ?: -1
             } catch (e: ParseException) {
                 -1
             }
@@ -185,7 +175,7 @@ class HttpHeaders : Serializable {
 
         fun getLastModified(lastModified: String?): Long {
             return try {
-                parseGMTToMillis(lastModified)
+                lastModified?.let { parseGMTToMillis(it) } ?: 0
             } catch (e: ParseException) {
                 0
             }
@@ -197,11 +187,11 @@ class HttpHeaders : Serializable {
         }
 
         @Throws(ParseException::class)
-        fun parseGMTToMillis(gmtTime: String?): Long {
+        fun parseGMTToMillis(gmtTime: String): Long {
             if (TextUtils.isEmpty(gmtTime)) return 0
             val formatter = SimpleDateFormat(FORMAT_HTTP_DATA, Locale.US)
             formatter.timeZone = GMT_TIME_ZONE
-            val date = formatter.parse(gmtTime!!)
+            val date = formatter.parse(gmtTime)
             return date?.time ?: 0
         }
 

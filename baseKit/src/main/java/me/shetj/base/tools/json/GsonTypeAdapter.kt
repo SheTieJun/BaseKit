@@ -1,5 +1,3 @@
-
-
 package me.shetj.base.tools.json
 
 import com.google.gson.JsonArray
@@ -8,18 +6,14 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
 import com.google.gson.JsonPrimitive
-import me.shetj.base.ktx.logE
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.util.*
+import me.shetj.base.ktx.logE
 
 internal class BooleanTypeAdapter : JsonDeserializer<Boolean?> {
     @Throws(JsonParseException::class)
-    override fun deserialize(
-        json: JsonElement,
-        typeOfT: Type?,
-        context: JsonDeserializationContext?
-    ): Boolean? {
+    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Boolean {
         if ((json as JsonPrimitive).isBoolean) {
             return json.getAsBoolean()
         }
@@ -30,16 +24,16 @@ internal class BooleanTypeAdapter : JsonDeserializer<Boolean?> {
             } else if (jsonValue.equals("false", ignoreCase = true)) {
                 false
             } else {
-                null
+                false
             }
         }
         val code = json.getAsInt()
-        return if (code == 0) false else if (code == 1) true else null
+        return if (code == 0) false else code == 1
     }
 }
 
 internal class ListTypeAdapter : JsonDeserializer<List<*>> {
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): List<*> {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext): List<*> {
         json?.let {
             if (json.isJsonArray) {
                 val array: JsonArray = json.asJsonArray
@@ -47,7 +41,7 @@ internal class ListTypeAdapter : JsonDeserializer<List<*>> {
                 val list: MutableList<Any> = ArrayList<Any>()
                 for (i in 0 until array.size()) {
                     val element: JsonElement = array.get(i)
-                    val item: Any = context!!.deserialize(element, itemType)
+                    val item: Any = context.deserialize(element, itemType)
                     list.add(item)
                 }
                 return list
@@ -61,7 +55,7 @@ internal class ListTypeAdapter : JsonDeserializer<List<*>> {
 }
 
 internal class IntTypeAdapter : JsonDeserializer<Int> {
-    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): Int {
+    override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext): Int {
         json?.let {
             if (json.isJsonPrimitive) {
                 if ((json as JsonPrimitive).isNumber) {

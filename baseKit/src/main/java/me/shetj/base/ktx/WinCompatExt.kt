@@ -107,9 +107,7 @@ fun Activity.immerse(
                 controller.isAppearanceLightStatusBars = statusIsBlack
                 controller.isAppearanceLightNavigationBars = navigationIsBlack
             }
-            findViewById<FrameLayout>(android.R.id.content).apply {
-                setPadding(0, 0, 0, 0)
-            }
+            findViewById<FrameLayout>(android.R.id.content).setPadding(0, 0, 0, 0)
         }
         Type.statusBars() -> {
             WindowCompat.setDecorFitsSystemWindows(window, false)

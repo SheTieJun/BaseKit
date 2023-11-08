@@ -120,6 +120,8 @@ abstract class BaseFloatView : FrameLayout {
                 mYInView = event.y
                 mXInScreen = event.rawX
                 mYInScreen = event.rawY - topDistance
+                mXDownInScreen = event.rawX
+                mYDownInScreen = event.rawY - topDistance
             }
             MotionEvent.ACTION_MOVE -> {
                 mXInScreen = event.rawX

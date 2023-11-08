@@ -24,7 +24,7 @@ interface KtScopeComponent {
     }
 }
 
-abstract class ABKtScopeComponent : KtScopeComponent {
+open class ABKtScopeComponent : KtScopeComponent {
     override val ktScope: DefCoroutineScope by defScope()
 }
 

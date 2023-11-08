@@ -35,7 +35,7 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
             content = activity.findViewById(android.R.id.content)
         }
         getScrollView(content, activity)
-        content!!.setOnTouchListener { _, motionEvent ->
+        content?.setOnTouchListener { _, motionEvent ->
             dispatchTouchEvent(activity, motionEvent)
             false
         }

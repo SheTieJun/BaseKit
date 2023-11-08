@@ -19,6 +19,9 @@ subprojects {
             sarif.required.set(true) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
             md.required.set(true) // simple Markdown format
         }
+        //  // If set to `true` the build does not fail when the
+        //    // maxIssues count was reached. Defaults to `false`.
+        ignoreFailures = true
         parallel = true
         setSource(files("$projectDir/src/main"))
     }

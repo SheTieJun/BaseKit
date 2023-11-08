@@ -17,10 +17,10 @@ class ScrollableViewPager : ViewPager {
     var isScrollable = true
 
     /** 触摸时按下的点  */
-    private var downP = PointF()
+    private val downP = PointF()
 
     /** 触摸时当前的点  */
-    private var curP = PointF()
+    private val curP = PointF()
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 

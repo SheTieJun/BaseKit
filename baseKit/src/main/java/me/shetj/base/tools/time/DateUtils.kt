@@ -83,7 +83,7 @@ object DateUtils {
 
     var ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
-    private var calendar: Calendar? = null
+    private val calendar: Calendar by lazy { Calendar.getInstance() }
     private const val FORMAT = "yyyy-MM-dd HH:mm:ss"
 
     @JvmStatic
@@ -113,10 +113,10 @@ object DateUtils {
     @JvmOverloads
     fun str2Date(str: String?, format: String? = null): Date? {
         var formatClone = format
-        if (str == null || str.isEmpty()) {
+        if (str.isNullOrEmpty()) {
             return null
         }
-        if (formatClone == null || formatClone.isEmpty()) {
+        if (formatClone.isNullOrEmpty()) {
             formatClone = FORMAT
         }
         var date: Date? = null
@@ -157,7 +157,7 @@ object DateUtils {
         if (d == null) {
             return null
         }
-        if (formatClone == null || formatClone.isEmpty()) {
+        if (formatClone.isNullOrEmpty()) {
             formatClone = FORMAT
         }
         val sdf = SimpleDateFormat(formatClone)
@@ -258,9 +258,8 @@ object DateUtils {
      */
     @JvmStatic
     fun getMonth(date: Date): Int {
-        calendar = Calendar.getInstance()
-        calendar!!.time = date
-        return calendar!!.get(Calendar.MONTH) + 1
+        calendar.time = date
+        return calendar.get(Calendar.MONTH) + 1
     }
 
     /**
@@ -271,9 +270,8 @@ object DateUtils {
      */
     @JvmStatic
     fun getDay(date: Date): Int {
-        calendar = Calendar.getInstance()
-        calendar!!.time = date
-        return calendar!!.get(Calendar.DAY_OF_MONTH)
+        calendar.time = date
+        return calendar.get(Calendar.DAY_OF_MONTH)
     }
 
     /**
@@ -284,9 +282,8 @@ object DateUtils {
      */
     @JvmStatic
     fun getHour(date: Date): Int {
-        calendar = Calendar.getInstance()
-        calendar!!.time = date
-        return calendar!!.get(Calendar.HOUR_OF_DAY)
+        calendar.time = date
+        return calendar.get(Calendar.HOUR_OF_DAY)
     }
 
     /**
@@ -297,9 +294,8 @@ object DateUtils {
      */
     @JvmStatic
     fun getMinute(date: Date): Int {
-        calendar = Calendar.getInstance()
-        calendar!!.time = date
-        return calendar!!.get(Calendar.MINUTE)
+        calendar.time = date
+        return calendar.get(Calendar.MINUTE)
     }
 
     /**
@@ -310,10 +306,8 @@ object DateUtils {
      */
     @JvmStatic
     fun getSecond(date: Date): Int {
-        calendar = Calendar.getInstance()
-
-        calendar!!.time = date
-        return calendar!!.get(Calendar.SECOND)
+        calendar.time = date
+        return calendar.get(Calendar.SECOND)
     }
 
     /**
@@ -324,9 +318,8 @@ object DateUtils {
      */
     @JvmStatic
     fun getMillis(date: Date): Long {
-        calendar = Calendar.getInstance()
-        calendar!!.time = date
-        return calendar!!.timeInMillis
+        calendar.time = date
+        return calendar.timeInMillis
     }
 
     /**

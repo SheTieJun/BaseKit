@@ -46,7 +46,7 @@ object BaseKit {
     val isDebug = MutableLiveData(false)
 
     private var enableLogUI = true
-    private var dnsLocalMap = HashMap<String, String>()
+    private val dnsLocalMap = HashMap<String, String>()
 
     fun enableLogUILife(isLogUI: Boolean) {
         this.enableLogUI = isLogUI
@@ -71,7 +71,7 @@ object BaseKit {
      * 专门用来做不被取消的操作
      * 全局的
      */
-    val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default + Dispatchers.Main.immediate) + handler
+    val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate) + handler
 
     /**
      * ANDROID_ID的生成规则为：签名+设备信息+设备用户
@@ -101,9 +101,7 @@ object BaseKit {
             this.TAG = AppUtils.appName ?: "BaseKit"
             Tim.setLogAuto(isDebug)
             if (isDebug) {
-                DebugFunc.getInstance().apply {
-                    initContext(application)
-                }
+                DebugFunc.getInstance().initContext(application)
             }
             startKoin {
                 fragmentFactory()

@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -18,28 +17,24 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import me.shetj.base.coroutine.DispatcherProvider
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 suspend fun <T, O> T.withIO(action: suspend CoroutineScope.(t: T) -> O) =
-    withContext(Dispatchers.IO) {
-        return@withContext this.action(this@withIO)
+    withContext(DispatcherProvider.io()) {
+        return@withContext action(this@withIO)
     }
 
 suspend fun <T, O> T.withMain(action: suspend CoroutineScope.(t: T) -> O) =
-    withContext(Dispatchers.Main) {
+    withContext(DispatcherProvider.main()) {
         return@withContext action(this@withMain)
     }
 
 suspend fun <T, O> T.withDef(action: suspend CoroutineScope.(t: T) -> O) =
-    withContext(Dispatchers.Default) {
+    withContext(DispatcherProvider.default()) {
         return@withContext action(this@withDef)
-    }
-
-suspend fun <T, O> T.withUnconfined(action: suspend CoroutineScope.(t: T) -> O) =
-    withContext(Dispatchers.Unconfined) {
-        return@withContext action(this@withUnconfined)
     }
 
 fun ViewModel.launch(

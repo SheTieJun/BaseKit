@@ -24,8 +24,8 @@ inline fun ConstraintLayout?.reLayout(crossinline onLayout: ConstraintSet.() -> 
 
 fun ConstraintLayout?.toConstraintSet(): ConstraintSet? {
     return this?.let {
-        ConstraintSet().also {
-            it.clone(this)
+        ConstraintSet().also { conSet ->
+            conSet.clone(this)
         }
     }
 }
