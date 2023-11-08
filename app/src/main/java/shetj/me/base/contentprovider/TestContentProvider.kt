@@ -9,7 +9,6 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
 
-
 /**
  * 自定义ContentProvider的实现
  * ContentProvider主要用于在不同的应用程序之间共享数据,这也是官方推荐的方式.
@@ -26,9 +25,7 @@ import android.net.Uri
  *  content://me.shetj.base.testcontentprovider/person/#
  */*/
 
-
 class TestContentProvider : ContentProvider() {
-
 
     private var mSQLiteDatabaseOpenHelper: SQLiteDatabaseOpenHelper? = null
     private val AUTHORITY = "me.shetj.base.testcontentprovider"
@@ -54,7 +51,6 @@ class TestContentProvider : ContentProvider() {
         mSQLiteDatabaseOpenHelper = SQLiteDatabaseOpenHelper(context)
         return true
     }
-
 
     /**
      * 查询操作:
@@ -105,7 +101,7 @@ class TestContentProvider : ContentProvider() {
                     db?.query("person", projection, where, selectionArgs, null, null, sortOrder)
             }
             else -> {
-                throw   IllegalArgumentException("unknown uri$uri")
+                throw IllegalArgumentException("unknown uri$uri")
             }
         }
         return cursor
@@ -128,24 +124,23 @@ class TestContentProvider : ContentProvider() {
         }
     }
 
-
     /**
      * private void testInsert(Person person) {
-    ContentValues contentValues=new ContentValues();
-    contentValues.put("name", person.getName());
-    contentValues.put("phone", person.getPhone());
-    contentValues.put("salary",person.getSalary());
-    Uri insertUri=Uri.parse("content://me.shetj.base.testcontentprovider/person");
-    Uri returnUri=mContentResolver.insert(insertUri, contentValues);
-    System.out.println("新增数据:returnUri="+returnUri);
-    }
+     ContentValues contentValues=new ContentValues();
+     contentValues.put("name", person.getName());
+     contentValues.put("phone", person.getPhone());
+     contentValues.put("salary",person.getSalary());
+     Uri insertUri=Uri.parse("content://me.shetj.base.testcontentprovider/person");
+     Uri returnUri=mContentResolver.insert(insertUri, contentValues);
+     System.out.println("新增数据:returnUri="+returnUri);
+     }
      */
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         val db = mSQLiteDatabaseOpenHelper!!.writableDatabase
         return when (mUriMatcher!!.match(uri)) {
             PERSON_DIR -> {
                 val newId = db.insert("person", "name,phone,salary", values)
-                //向外界通知该ContentProvider里的数据发生了变化 ,以便ContentObserver作出相应
+                // 向外界通知该ContentProvider里的数据发生了变化 ,以便ContentObserver作出相应
                 context?.contentResolver?.notifyChange(uri, null)
                 ContentUris.withAppendedId(uri, newId)
             }
@@ -173,7 +168,7 @@ class TestContentProvider : ContentProvider() {
             }
             else -> throw IllegalArgumentException("unknown uri$uri")
         }
-        //向外界通知该ContentProvider里的数据发生了变化 ,以便ContentObserver作出相应
+        // 向外界通知该ContentProvider里的数据发生了变化 ,以便ContentObserver作出相应
         context!!.contentResolver.notifyChange(uri, null)
         return deletedNum
     }
@@ -206,7 +201,6 @@ class TestContentProvider : ContentProvider() {
             else -> {
                 throw IllegalArgumentException("unknown uri$uri")
             }
-
         }
         return updatedNum
     }

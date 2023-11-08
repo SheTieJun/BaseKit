@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.FileUtils
 import me.shetj.base.tools.file.FileUtils.copyFile
+import java.io.File
 
 //region Glide 加载
 
@@ -28,7 +28,6 @@ fun ImageView.loadImageBitmap(
         .load(url ?: rId)
         .into(this)
 }
-
 
 @JvmOverloads
 fun ImageView.loadImage(
@@ -136,7 +135,8 @@ suspend fun saveImage(
             )
         val targetFile = File(filePath)
         val resultIsSuccess = copyFile(
-            cacheFile, targetFile,
+            cacheFile,
+            targetFile,
             FileUtils.OnReplaceListener {
                 return@OnReplaceListener true
             }

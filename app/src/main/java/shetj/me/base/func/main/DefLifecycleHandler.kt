@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 
-
 /**
  * 绑定生命周期的Handler
  */
@@ -32,7 +31,8 @@ open class DefLifecycleHandler : Handler, LifecycleEventObserver {
 
     constructor(
         @NonNull owner: LifecycleOwner,
-        looper: Looper, callback: Callback
+        looper: Looper,
+        callback: Callback
     ) : super(looper, callback) {
         bindLifecycleOwner(owner)
     }

@@ -1,7 +1,6 @@
 package shetj.me.base.annotation
 
 import android.util.Log
-import java.util.*
 import me.shetj.base.BaseKit
 import me.shetj.base.ktx.logD
 import me.shetj.base.ktx.logE
@@ -9,6 +8,7 @@ import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.logV
 import me.shetj.base.ktx.logW
 import me.shetj.base.ktx.logWtf
+import java.util.*
 
 object Printer {
     private const val TOP_LEFT_CORNER = '┌'
@@ -63,34 +63,34 @@ object Printer {
                 append(String.format(Locale.CHINA, STACK_FORMAT, HORIZONTAL_LINE, "watchStack:") + "\n")
                 var isStart = false
                 Log.getStackTraceString(Throwable()).reader().readLines().forEach {
-                    if (it.contains(methodInfo.methodName)){
+                    if (it.contains(methodInfo.methodName)) {
                         isStart = true
                     }
-                    if (isStart){
+                    if (isStart) {
                         append(String.format(Locale.CHINA, STACK_FORMAT_2, HORIZONTAL_LINE, it) + "\n")
                     }
                 }
             }
             append(BOTTOM_BORDER)
         }.let {
-            val tag = tagName.ifEmpty { methodInfo.className }?:BaseKit.TAG
-            when(level){
-                Log.DEBUG ->{
+            val tag = tagName.ifEmpty { methodInfo.className } ?: BaseKit.TAG
+            when (level) {
+                Log.DEBUG -> {
                     it.logD(tag)
                 }
-                Log.INFO ->{
+                Log.INFO -> {
                     it.logI(tag)
                 }
-                Log.WARN ->{
+                Log.WARN -> {
                     it.logW(tag)
                 }
-                Log.ERROR ->{
+                Log.ERROR -> {
                     it.logE(tag)
                 }
-                Log.VERBOSE ->{
+                Log.VERBOSE -> {
                     it.logV(tag)
                 }
-                Log.ASSERT ->{
+                Log.ASSERT -> {
                     it.logWtf(tag)
                 }
             }

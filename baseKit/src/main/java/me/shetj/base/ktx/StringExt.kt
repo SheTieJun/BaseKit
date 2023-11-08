@@ -6,9 +6,6 @@ import android.text.Spanned
 import androidx.core.graphics.toColorInt
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.debug.DebugFunc
@@ -18,6 +15,9 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 fun String?.isPhone() = this?.let { StringUtils.isPhone(it) } ?: false
 
@@ -108,7 +108,6 @@ fun Throwable?.logW(tag: String = BaseKit.TAG) {
     Timber.tag(tag).w(this)
 }
 
-
 fun String?.logUILife() {
     if (BaseKit.isLogUILife()) {
         this.logD("UI-Life")
@@ -126,7 +125,7 @@ fun String?.logJson(tag: String = BaseKit.TAG) {
     val message: String = try {
         if (startsWith("{")) {
             val jsonObject = JSONObject(this)
-            jsonObject.toString(2)//最重要的方法，就一行，返回格式化的json字符串，其中的数字4是缩进字符数
+            jsonObject.toString(2) // 最重要的方法，就一行，返回格式化的json字符串，其中的数字4是缩进字符数
         } else if (startsWith("[")) {
             val jsonArray = JSONArray(this)
             jsonArray.toString(2)
@@ -139,7 +138,6 @@ fun String?.logJson(tag: String = BaseKit.TAG) {
     message.logI()
 }
 
-
 /**
  * Log chunked
  * 用于超长日志输出问题，分段打印日志
@@ -148,7 +146,7 @@ fun String?.logJson(tag: String = BaseKit.TAG) {
 fun String?.logChunked(size: Int = 200) {
     this?.let {
         if (it.length > size) {
-            //分开输出
+            // 分开输出
             it.chunked(size).joinToString("\n").logI()
         } else {
             it.logI()

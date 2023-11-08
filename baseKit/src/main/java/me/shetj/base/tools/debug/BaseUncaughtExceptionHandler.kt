@@ -1,8 +1,10 @@
 package me.shetj.base.tools.debug
 
-import android.os.Process
 import android.os.SystemClock
 import android.text.TextUtils
+import me.shetj.base.ktx.logE
+import me.shetj.base.tools.debug.DebugFunc.Companion.logFilePath
+import me.shetj.base.tools.time.DateUtils
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -12,10 +14,6 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
 import kotlin.system.exitProcess
-import me.shetj.base.ktx.logE
-import me.shetj.base.tools.debug.DebugFunc.Companion.logFilePath
-import me.shetj.base.tools.time.DateUtils
-import timber.log.Timber
 
 /**
  * 发现错误并输出

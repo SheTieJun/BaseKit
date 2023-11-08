@@ -3,6 +3,12 @@ package me.shetj.base.network.model
 import android.annotation.SuppressLint
 import android.os.Build
 import android.text.TextUtils
+import me.shetj.base.BaseKit
+import me.shetj.base.ktx.toJson
+import me.shetj.base.tools.app.AppUtils
+import me.shetj.base.tools.app.ArmsUtils.Companion.getString
+import me.shetj.base.tools.app.NetworkUtils
+import me.shetj.base.tools.app.Utils.Companion.app
 import java.io.Serializable
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -10,12 +16,6 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import kotlin.collections.LinkedHashMap
-import me.shetj.base.BaseKit
-import me.shetj.base.ktx.toJson
-import me.shetj.base.tools.app.AppUtils
-import me.shetj.base.tools.app.ArmsUtils.Companion.getString
-import me.shetj.base.tools.app.NetworkUtils
-import me.shetj.base.tools.app.Utils.Companion.app
 
 class HttpHeaders : Serializable {
     var headersMap: LinkedHashMap<String, String>? = null
@@ -103,24 +103,25 @@ class HttpHeaders : Serializable {
         const val HEAD_KEY_COOKIE = "Cookie"
         const val HEAD_KEY_SET_COOKIE = "Set-Cookie"
 
-        private val USER_AGENT:String
+        private val USER_AGENT: String
             get() {
-               return checkNameAndValue(String.format(
-                    " SystemName/%s SystemVersion/%s %s/%s Device/%s NetType/%s " +
+                return checkNameAndValue(
+                    String.format(
+                        " SystemName/%s SystemVersion/%s %s/%s Device/%s NetType/%s " +
                             "Language/%s DeviceName/%s SdkVersion/%d Flavor/%s ",
-                    "Android",
-                    Build.VERSION.RELEASE,
-                    Build.MODEL,
-                    AppUtils.appName?:"BaseKit",
-                    AppUtils.appVersionName?:"1.0.0",
-                    NetworkUtils.getPhoneType(app.applicationContext),
-                    Locale.getDefault().language + "_" + Locale.getDefault().country,
-                    checkNameAndValue(Build.MANUFACTURER),
-                    Build.VERSION.SDK_INT,
-                    if (BaseKit.isDebug())"Debug" else "Release"
-                ))?: userAgent?:""
+                        "Android",
+                        Build.VERSION.RELEASE,
+                        Build.MODEL,
+                        AppUtils.appName ?: "BaseKit",
+                        AppUtils.appVersionName ?: "1.0.0",
+                        NetworkUtils.getPhoneType(app.applicationContext),
+                        Locale.getDefault().language + "_" + Locale.getDefault().country,
+                        checkNameAndValue(Build.MANUFACTURER),
+                        Build.VERSION.SDK_INT,
+                        if (BaseKit.isDebug())"Debug" else "Release"
+                    )
+                ) ?: userAgent ?: ""
             }
-
 
         /**
          * Accept-Language: zh-CN,zh;q=0.8
@@ -132,8 +133,10 @@ class HttpHeaders : Serializable {
                     val language = locale.language
                     val country = locale.country
                     val acceptLanguageBuilder = StringBuilder(language)
-                    if (!TextUtils.isEmpty(country)) acceptLanguageBuilder.append('-')
-                        .append(country).append(',').append(language).append(";q=0.8")
+                    if (!TextUtils.isEmpty(country)) {
+                        acceptLanguageBuilder.append('-')
+                            .append(country).append(',').append(language).append(";q=0.8")
+                    }
                     field = acceptLanguageBuilder.toString()
                     return field
                 }

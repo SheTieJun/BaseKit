@@ -1,12 +1,12 @@
 package me.shetj.base.network.kt
 
+import okhttp3.RequestBody
 import java.lang.reflect.GenericArrayType
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import java.lang.reflect.TypeVariable
 import java.util.Collections
 import kotlin.collections.ArrayList
-import okhttp3.RequestBody
 
 /**
  * [Type] 父类
@@ -28,7 +28,9 @@ object ClassUtils {
         val typeList = getMethodTypes(cls)
         return if (typeList == null || typeList.isEmpty()) {
             RequestBody::class.java
-        } else typeList[0]
+        } else {
+            typeList[0]
+        }
     }
 
     /**

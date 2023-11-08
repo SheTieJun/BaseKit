@@ -3,13 +3,13 @@ package me.shetj.base.base
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import me.shetj.base.BaseKit
+import kotlin.coroutines.CoroutineContext
 
 /**
  * class: KtScopeComponent{
@@ -19,7 +19,7 @@ import me.shetj.base.BaseKit
 interface KtScopeComponent {
     val ktScope: CoroutineScope
 
-    fun onScopeDestroy(){
+    fun onScopeDestroy() {
         ktScope.cancel()
     }
 }
@@ -57,8 +57,6 @@ class CoroutineScopeImpl(
         }
     }
 }
-
-
 
 abstract class DefCoroutineScope : CoroutineScope {
     abstract fun register(lifecycle: Lifecycle)

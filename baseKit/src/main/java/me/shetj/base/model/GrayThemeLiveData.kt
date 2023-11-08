@@ -7,7 +7,6 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import androidx.lifecycle.MutableLiveData
 
-
 /**
  * Gray theme live data
  * 用来通知变成灰色主题
@@ -18,7 +17,7 @@ class GrayThemeLiveData : MutableLiveData<Boolean>() {
     private val mPaint = Paint()
     private val mColorMatrix = ColorMatrix()
 
-    fun getSatPaint(sat:Float = 1f): Paint {
+    fun getSatPaint(sat: Float = 1f): Paint {
         mColorMatrix.setSaturation(sat)
         mPaint.colorFilter = ColorMatrixColorFilter(mColorMatrix)
         return mPaint

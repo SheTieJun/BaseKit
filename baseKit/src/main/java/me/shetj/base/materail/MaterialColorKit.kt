@@ -57,11 +57,10 @@ fun Context.getColorOnPrimaryContainer(): Int {
 fun Context.getColorBackground(): Int {
     return MaterialColors.getColor(
         this,
-          android.R.attr.colorBackground,
+        android.R.attr.colorBackground,
         "colorOnPrimaryContainer"
     )
 }
-
 
 fun Context.getColorOnBackground(): Int {
     return MaterialColors.getColor(

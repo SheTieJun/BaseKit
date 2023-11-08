@@ -3,7 +3,7 @@ package me.shetj.base.model
 /**
  * 配合liveData对数据处理
  */
-sealed class ResultData<T>{
+sealed class ResultData<T> {
     // 完成：分页加载
     data class PageData<T>(val data: MutableList<T>, val isFirst: Boolean = true, val finish: Boolean = false) :
         ResultData<T>()
@@ -16,5 +16,3 @@ sealed class ResultData<T>{
      */
     object EmptyData : ResultData<Any>()
 }
-
-

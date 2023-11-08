@@ -28,7 +28,7 @@ import me.shetj.base.ktx.logUILife
  * 可见: [Lifecycle.Event.ON_PAUSE] -> [Lifecycle.Event.ON_RESUME]
  */
 @Keep
-abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControllerFunctionsImpl{
+abstract class AbBaseFragment : Fragment(), LifecycleEventObserver, BaseControllerFunctionsImpl {
 
     protected val TAG: String = this::class.java.simpleName
 
@@ -64,7 +64,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
     /**
      * 是否是导航的fragment
      */
-    open fun isNavigationF()  = true
+    open fun isNavigationF() = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -90,7 +90,7 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        //添加返回拦截，通过enabledOnBack = true 开启
+        // 添加返回拦截，通过enabledOnBack = true 开启
         onBackPressedCallback.isEnabled = enabledOnBack
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
@@ -115,11 +115,9 @@ abstract class AbBaseFragment : Fragment(), LifecycleEventObserver,BaseControlle
     open fun onInvisible() {
     }
 
-
     companion object {
         private const val STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN"
     }
-
 
     override fun onStart() {
         "$TAG : onStart".logUILife()

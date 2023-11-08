@@ -21,15 +21,14 @@ import java.io.File
  * @constructor Create empty Crop image contract
  */
 class CropImageContract : ActivityResultContract<CropImage, Uri?>() {
-    //裁剪后输出的图片文件Uri
+    // 裁剪后输出的图片文件Uri
     private var mUriOutput: Uri? = null
     override fun createIntent(context: Context, input: CropImage): Intent {
-
-        //把CropImageResult转换成裁剪图片的意图
+        // 把CropImageResult转换成裁剪图片的意图
         val intent = Intent("com.android.camera.action.CROP")
         val mimeType = context.contentResolver.getType(input.uri)
         val imageName = System.currentTimeMillis().toString() +
-                MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType) + ""
+            MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType) + ""
         mUriOutput = if (VERSION.SDK_INT >= VERSION_CODES.Q) {
             val values = ContentValues()
             values.put(MediaColumns.DISPLAY_NAME, imageName)
@@ -42,17 +41,17 @@ class CropImageContract : ActivityResultContract<CropImage, Uri?>() {
         }
         context.grantUriPermission(context.packageName, mUriOutput, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        //去除默认的人脸识别，否则和剪裁匡重叠
+        // 去除默认的人脸识别，否则和剪裁匡重叠
         intent.putExtra("noFaceDetection", true)
         intent.setDataAndType(input.uri, mimeType)
-        //crop=true 有这句才能出来最后的裁剪页面.
+        // crop=true 有这句才能出来最后的裁剪页面.
         intent.putExtra("crop", "true")
         intent.putExtra("output", mUriOutput)
-        //返回格式
+        // 返回格式
         intent.putExtra("outputFormat", "JPEG")
         intent.putExtra("return-data", false)
 
-        //配置裁剪图片的宽高比例
+        // 配置裁剪图片的宽高比例
         if (input.aspectX != 0 && input.aspectY != 0) {
             intent.putExtra("aspectX", input.aspectX)
             intent.putExtra("aspectY", input.aspectY)
@@ -71,7 +70,7 @@ class CropImageContract : ActivityResultContract<CropImage, Uri?>() {
 
 @Keep
 data class CropImage(
-    var uri: Uri, //裁剪框横向比例数值
-    var aspectX: Int, //裁剪框比例数值0，表示不限制
-    var aspectY: Int //裁剪框比例数值0，表示不限制
+    var uri: Uri, // 裁剪框横向比例数值
+    var aspectX: Int, // 裁剪框比例数值0，表示不限制
+    var aspectY: Int // 裁剪框比例数值0，表示不限制
 )

@@ -1,8 +1,8 @@
 package me.shetj.base.network.ohter
 
-import java.net.InetAddress
 import me.shetj.base.BaseKit
 import okhttp3.Dns
+import java.net.InetAddress
 
 /**
  * 本地dns 解析

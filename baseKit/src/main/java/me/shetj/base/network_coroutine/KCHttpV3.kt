@@ -1,26 +1,20 @@
 package me.shetj.base.network_coroutine
 
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import me.shetj.base.ktx.logD
 import me.shetj.base.ktx.toBean
 import me.shetj.base.network.exception.ApiException
-import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
 import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
-import me.shetj.base.network.exception.CacheException
 import me.shetj.base.network.kt.createJson
-import me.shetj.base.network_coroutine.RequestOption.Companion
-import me.shetj.base.network_coroutine.cache.CacheMode
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
+import java.io.BufferedInputStream
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * 协程 Http请求
@@ -42,7 +36,6 @@ object KCHttpV3 {
         }
     }
 
-
     suspend inline fun <reified T> post(
         url: String,
         maps: Map<String, String>
@@ -52,7 +45,6 @@ object KCHttpV3 {
         }
     }
 
-
     suspend inline fun <reified T> postJson(
         url: String,
         json: String,
@@ -61,7 +53,6 @@ object KCHttpV3 {
             doPostJson(url, json).convertToT()
         }
     }
-
 
     suspend inline fun <reified T> postBody(
         url: String,
@@ -81,6 +72,7 @@ object KCHttpV3 {
             apiService.post(url, maps).string()
         }
     }
+
     @JvmOverloads
     suspend fun doGet(
         url: String,
@@ -91,7 +83,6 @@ object KCHttpV3 {
         }
     }
 
-
     suspend fun doPostJson(
         url: String,
         json: String,
@@ -101,7 +92,6 @@ object KCHttpV3 {
         }
     }
 
-
     suspend fun doPostBody(
         url: String,
         body: RequestBody,
@@ -110,7 +100,6 @@ object KCHttpV3 {
             apiService.postBody(url, body).string()
         }
     }
-
 
     @JvmOverloads
     suspend fun download(
@@ -141,7 +130,7 @@ object KCHttpV3 {
                     outputStream.write(buffer, 0, readLength)
                     currentLength += readLength
                     val progress = currentLength.toFloat() / contentLength.toFloat()
-                    //每次超过%1才进行更新
+                    // 每次超过%1才进行更新
                     if (progress - emitProgress >= 0.01) {
                         emitProgress = progress
                         emit(
@@ -178,7 +167,6 @@ object KCHttpV3 {
         this as T
     }
 
-
     /**
      * 重试逻辑
      * @param repeatNum 重试次数
@@ -188,8 +176,8 @@ object KCHttpV3 {
      */
     suspend fun retryRequest(
         repeatNum: Int = 3,
-        initialDelay: Long = 1000,//1 second
-        timeout: Long = 10000,//10 second
+        initialDelay: Long = 1000, // 1 second
+        timeout: Long = 10000, // 10 second
         factor: Double = 2.0,
         block: suspend () -> String
     ): String {
@@ -229,5 +217,4 @@ object KCHttpV3 {
             }
         }
     }
-
 }

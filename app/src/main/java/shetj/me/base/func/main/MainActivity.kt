@@ -16,10 +16,8 @@ import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
-import java.util.*
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
-import me.shetj.base.ktx.hasPermission
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logE
 import me.shetj.base.ktx.logI
@@ -51,6 +49,7 @@ import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
 import timber.log.Timber
+import java.util.*
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
@@ -87,7 +86,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         if (VERSION.SDK_INT >= VERSION_CODES.R) {
             getSystemService(ActivityManager::class.java).getHistoricalProcessExitReasons(packageName, 0, 0)
                 .takeIf { it.isNotEmpty() }?.get(0)?.let {
-                    //上一次应用结束的原因说明
+                    // 上一次应用结束的原因说明
                     it.toString().logI("APP-Exit")
                 }
         }
@@ -108,14 +107,14 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         findViewById<View>(R.id.btn_select_image).setOnClickListener {
             selectFile {
-                "url = ${it.toString()}".logI()
-                ("url = ${
-                    it?.let { it1 ->
-                        FileQUtils.getFileAbsolutePath(this, it1)
-                    }
-                }").logI()
-
-
+                "url = $it".logI()
+                (
+                    "url = ${
+                        it?.let { it1 ->
+                            FileQUtils.getFileAbsolutePath(this, it1)
+                        }
+                    }"
+                    ).logI()
             }
         }
 
@@ -131,11 +130,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             start<Main2Activity>()
         }
 
-
         mContent.btnChangeTheme.setOnClickListener {
             MDThemeKit.showChangeThemeDialog(this)
         }
-
 
         findViewById<View>(R.id.fab).setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(mViewModel.getNightModel())
@@ -161,7 +158,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         mBinding.content.testLoading.setOnClickListener {
             TipKit.loading(this) {
-                 netTest()
+                netTest()
             }
         }
 
@@ -170,14 +167,12 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             GrayThemeLiveData.getInstance().postValue(mViewModel.isGrayTheme)
         }
 
-
         mBinding.content.changeLanguage.setOnClickListener {
             if (!isEn) {
                 LanguageKit.changeLanguage(this, Locale.ENGLISH)
             } else {
                 LanguageKit.changeLanguage(this, Locale.CHINA)
             }
-
         }
         mContent.startPower.setOnClickListener {
             startIgnoreBatteryOpt()
@@ -197,7 +192,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
 
         mContent.btnPerm.setOnClickListener {
-            FixPermission.checkHasExternalFile(this)
+            FixPermission.requestExternalFile(this)
         }
     }
 
@@ -244,7 +239,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             JankStats.createAndTrack(window) {
                 if (it.isJank) {
                     ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logE("JankStats")
-                }else{
+                } else {
                     it.toJson().logI("JankStats")
                 }
             }
@@ -275,10 +270,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         return true
     }
 
-    @Debug(level = Log.ERROR, enableTime = true,  watchStack = true)
-    suspend fun  netTest() {
+    @Debug(level = Log.ERROR, enableTime = true, watchStack = true)
+    suspend fun netTest() {
         mViewModel.getMusicV2()
 //        mViewModel.getMusicV3()
     }
-
 }

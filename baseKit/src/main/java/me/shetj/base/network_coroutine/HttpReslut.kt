@@ -4,8 +4,8 @@ package me.shetj.base.network_coroutine
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import java.io.File
 import me.shetj.base.network.exception.ApiException
+import java.io.File
 
 //region 下载状态相关
 typealias OnError = (ApiException) -> Unit
@@ -146,7 +146,6 @@ inline fun <R, T> HttpResult<T>.fold(
 // transformation
 
 inline fun <R, T> HttpResult<T>.map(transform: (value: T) -> R): HttpResult<R> {
-
     return when {
         isSuccess -> HttpResult.success(transform(value as T))
         else -> HttpResult(value)
@@ -163,7 +162,6 @@ inline fun <R, T> HttpResult<T>.mapCatching(transform: (value: T) -> R): HttpRes
 inline fun <R, T : R> HttpResult<T>.recover(
     transform: (exception: Throwable) -> R
 ): HttpResult<R?> {
-
     return when (val exception = exceptionOrNull()) {
         null -> this
         else -> HttpResult.success(transform(exception))

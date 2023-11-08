@@ -34,8 +34,8 @@ data class RequestOption(
      * repeatNum <= 0 表不处理； 重试请求次数
      */
     var repeatNum: Int = -1
-){
-    companion object{
+) {
+    companion object {
         val DEFAULT = RequestOption().apply {
             cacheKey = "default"
             cacheTime = 36_00
@@ -45,9 +45,6 @@ data class RequestOption(
         }
     }
 }
-
-
-
 
 /**
  * Get def req option

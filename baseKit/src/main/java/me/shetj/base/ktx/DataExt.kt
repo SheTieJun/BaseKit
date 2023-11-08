@@ -2,13 +2,13 @@ package me.shetj.base.ktx
 
 import android.os.Message
 import androidx.annotation.IntRange
-import kotlin.random.Random
 import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.datastore.dataStoreKit
 import timber.log.Timber
+import kotlin.random.Random
 
 @JvmOverloads
 fun Any?.toMessage(code: Int = 1): Message {

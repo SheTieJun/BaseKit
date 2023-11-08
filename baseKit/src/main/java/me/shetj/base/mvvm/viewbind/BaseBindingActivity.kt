@@ -23,7 +23,8 @@ import me.shetj.base.tip.TipType.WARNING
  * @author shetj
  */
 @Keep
-abstract class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> : AbBindingActivity<VB>(),
+abstract class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> :
+    AbBindingActivity<VB>(),
     Observer<ViewAction> {
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel
@@ -33,18 +34,18 @@ abstract class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> : AbBin
 
     override fun addObservers() {
         super.addObservers()
-        mViewModel.baseAction.observe(this,this)
+        mViewModel.baseAction.observe(this, this)
     }
 
     override fun onChanged(value: ViewAction) {
-        if (value is TipAction){
-           when(value.tipType){
-               DEFAULT -> TipKit.normal(this,value.msg)
-               INFO -> TipKit.info(this,value.msg)
-               ERROR -> TipKit.error(this,value.msg)
-               SUCCESS -> TipKit.success(this,value.msg)
-               WARNING -> TipKit.warn(this,value.msg)
-           }
+        if (value is TipAction) {
+            when (value.tipType) {
+                DEFAULT -> TipKit.normal(this, value.msg)
+                INFO -> TipKit.info(this, value.msg)
+                ERROR -> TipKit.error(this, value.msg)
+                SUCCESS -> TipKit.success(this, value.msg)
+                WARNING -> TipKit.warn(this, value.msg)
+            }
         }
     }
 

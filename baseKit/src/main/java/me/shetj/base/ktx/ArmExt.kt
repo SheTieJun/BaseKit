@@ -9,5 +9,5 @@ fun runOnMain(run: Runnable) {
 }
 
 fun runOnIo(run: Runnable) {
-    TaskExecutor.executeOnIO (run)
+    TaskExecutor.executeOnIO(run)
 }

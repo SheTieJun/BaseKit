@@ -10,9 +10,9 @@ import android.net.Uri
 import android.provider.CalendarContract
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
+import me.shetj.base.ktx.hasPermission
 import java.util.Calendar
 import java.util.TimeZone
-import me.shetj.base.ktx.hasPermission
 
 /**
  * AndroidManifest 中 对应activity加入
@@ -202,7 +202,6 @@ object CalendarReminderUtils {
         packageName: String? = null,
         scheme: String? = null
     ): Boolean {
-
         val mCalendar = Calendar.getInstance()
         mCalendar.timeInMillis = remindTime // 设置开始时间
         val start = mCalendar.time.time

@@ -265,7 +265,8 @@ class FragmentUtils private constructor() {
             }
             operateNoAnim(
                 fm,
-                TYPE_SHOW_FRAGMENT, null,
+                TYPE_SHOW_FRAGMENT,
+                null,
                 *fragments.toTypedArray()
             )
         }
@@ -292,7 +293,8 @@ class FragmentUtils private constructor() {
             }
             operateNoAnim(
                 fm,
-                TYPE_HIDE_FRAGMENT, null,
+                TYPE_HIDE_FRAGMENT,
+                null,
                 *fragments.toTypedArray()
             )
         }
@@ -318,7 +320,9 @@ class FragmentUtils private constructor() {
                 putArgs(fragment, fragment !== show)
             }
             operateNoAnim(
-                show.fragmentManager!!, TYPE_SHOW_HIDE_FRAGMENT, show,
+                show.fragmentManager!!,
+                TYPE_SHOW_HIDE_FRAGMENT,
+                show,
                 *hide.toTypedArray()
             )
         }
@@ -422,8 +426,13 @@ class FragmentUtils private constructor() {
             @AnimRes popExitAnim: Int
         ) {
             replace(
-                srcFragment, destFragment, false,
-                enterAnim, exitAnim, popEnterAnim, popExitAnim
+                srcFragment,
+                destFragment,
+                false,
+                enterAnim,
+                exitAnim,
+                popEnterAnim,
+                popExitAnim
             )
         }
 
@@ -456,8 +465,14 @@ class FragmentUtils private constructor() {
         ) {
             val args = getArgs(srcFragment)
             replace(
-                srcFragment.fragmentManager!!, destFragment, args.id, isAddStack,
-                enterAnim, exitAnim, popEnterAnim, popExitAnim
+                srcFragment.fragmentManager!!,
+                destFragment,
+                args.id,
+                isAddStack,
+                enterAnim,
+                exitAnim,
+                popEnterAnim,
+                popExitAnim
             )
         }
 
@@ -570,8 +585,14 @@ class FragmentUtils private constructor() {
             @AnimRes popExitAnim: Int
         ) {
             replace(
-                fm, fragment, containerId, false,
-                enterAnim, exitAnim, popEnterAnim, popExitAnim
+                fm,
+                fragment,
+                containerId,
+                false,
+                enterAnim,
+                exitAnim,
+                popEnterAnim,
+                popExitAnim
             )
         }
 
@@ -730,8 +751,10 @@ class FragmentUtils private constructor() {
          */
         fun removeTo(removeTo: Fragment, isIncludeSelf: Boolean) {
             operateNoAnim(
-                removeTo.fragmentManager!!, TYPE_REMOVE_TO_FRAGMENT,
-                if (isIncludeSelf) removeTo else null, removeTo
+                removeTo.fragmentManager!!,
+                TYPE_REMOVE_TO_FRAGMENT,
+                if (isIncludeSelf) removeTo else null,
+                removeTo
             )
         }
 
@@ -744,7 +767,8 @@ class FragmentUtils private constructor() {
             val fragments = getFragments(fm)
             operateNoAnim(
                 fm,
-                TYPE_REMOVE_FRAGMENT, null,
+                TYPE_REMOVE_FRAGMENT,
+                null,
                 *fragments.toTypedArray()
             )
         }

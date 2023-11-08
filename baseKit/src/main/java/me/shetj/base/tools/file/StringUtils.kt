@@ -1,9 +1,9 @@
 package me.shetj.base.tools.file
 
-import java.util.regex.Pattern
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.regex.Pattern
 
 /**
  * <pre>
@@ -115,8 +115,12 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun upperFirstLetter(s: String): String {
-            return if (isEmpty(s) || !Character.isLowerCase(s[0])) s else (s[0].code - 32).toChar()
-                .toString() + s.substring(1)
+            return if (isEmpty(s) || !Character.isLowerCase(s[0])) {
+                s
+            } else {
+                (s[0].code - 32).toChar()
+                    .toString() + s.substring(1)
+            }
         }
 
         /**
@@ -129,7 +133,9 @@ class StringUtils private constructor() {
         fun lowerFirstLetter(s: String): String {
             return if (isEmpty(s) || !Character.isUpperCase(s[0])) {
                 s
-            } else (s[0].code + 32).toChar().toString() + s.substring(1)
+            } else {
+                (s[0].code + 32).toChar().toString() + s.substring(1)
+            }
         }
 
         /**
@@ -222,7 +228,6 @@ class StringUtils private constructor() {
          */
         @JvmStatic
         fun str2HexStr(str: String): String {
-
             val chars = "0123456789ABCDEF".toCharArray()
             val sb = StringBuilder("")
             val bs = str.toByteArray()
@@ -289,7 +294,7 @@ class StringUtils private constructor() {
             val reg1 = "[0-9]{15}"
             val regex = "[0-9]{18}"
             return text.matches(regx.toRegex()) ||
-                    text.matches(reg1.toRegex()) || text.matches(regex.toRegex())
+                text.matches(reg1.toRegex()) || text.matches(regex.toRegex())
         }
 
         /** * 检测是否有emoji表情 * @param source * @return  */
@@ -312,12 +317,12 @@ class StringUtils private constructor() {
          */
         private fun isEmojiCharacter(codePoint: Char): Boolean {
             return (
-                    codePoint.code == 0x0 || codePoint.code == 0x9 ||
-                            codePoint.code == 0xA || codePoint.code == 0xD ||
-                            codePoint.code in 0x20..0xD7FF ||
-                            codePoint.code in 0xE000..0xFFFD ||
-                            codePoint.code in 0x10000..0x10FFFF
-                    )
+                codePoint.code == 0x0 || codePoint.code == 0x9 ||
+                    codePoint.code == 0xA || codePoint.code == 0xD ||
+                    codePoint.code in 0x20..0xD7FF ||
+                    codePoint.code in 0xE000..0xFFFD ||
+                    codePoint.code in 0x10000..0x10FFFF
+                )
         }
 
         @JvmStatic
@@ -349,21 +354,21 @@ class StringUtils private constructor() {
                     sd += getCH(intInput)
                     return sd
                 }
-                2 -> {// 十
+                2 -> { // 十
                     sd += if (si.substring(0, 1) == "1") "十" else getCH(intInput / 10) + "十"
                     sd += numberToCH(intInput % 10)
                 }
-                3 -> {// 百
+                3 -> { // 百
                     sd += getCH(intInput / 100) + "百"
                     if ((intInput % 100).toString().length < 2) sd += "零"
                     sd += numberToCH(intInput % 100)
                 }
-                4 -> {// 千
+                4 -> { // 千
                     sd += getCH(intInput / 1000) + "千"
                     if ((intInput % 1000).toString().length < 3) sd += "零"
                     sd += numberToCH(intInput % 1000)
                 }
-                5 -> {// 万
+                5 -> { // 万
                     sd += getCH(intInput / 10000) + "万"
                     if ((intInput % 10000).toString().length < 4) sd += "零"
                     sd += numberToCH(intInput % 10000)

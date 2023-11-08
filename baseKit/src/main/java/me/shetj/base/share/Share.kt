@@ -253,7 +253,9 @@ class Share private constructor(builder: Builder) {
         fun shareImage(activity: Activity, title: String = "Share Image", content: Uri) {
             Builder(activity)
                 .setContentType(ShareContentType.IMAGE)
-                .setShareFileUri(content) // .setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
+                .setShareFileUri(
+                    content
+                ) // .setShareToComponent("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI")
                 .setTitle(title)
                 .build()
                 .shareBySystem()

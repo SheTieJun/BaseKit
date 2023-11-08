@@ -3,14 +3,13 @@ package me.shetj.base.saver
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import me.shetj.base.base.BaseDao
 
 @Dao
-interface SaverDao :BaseDao<Saver>{
+interface SaverDao : BaseDao<Saver> {
 
     @Query("SELECT * FROM saver order by id")
     fun getAll(): Flow<List<Saver>>

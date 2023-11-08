@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.annotation.Keep
 import androidx.core.content.FileProvider
-import java.io.File
 import me.shetj.base.tools.file.FileUtils
+import java.io.File
 
 @Keep
 class IntentUtils private constructor() {
@@ -136,7 +136,9 @@ class IntentUtils private constructor() {
         fun getShareImageIntent(content: String, image: File?): Intent? {
             return if (!FileUtils.isFileExists(image)) {
                 null
-            } else getShareImageIntent(content, Uri.fromFile(image))
+            } else {
+                getShareImageIntent(content, Uri.fromFile(image))
+            }
         }
 
         /**

@@ -65,7 +65,9 @@ abstract class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBas
     open fun initBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
         return getClazz<VB>(this, 0).getMethod(
             "inflate",
-            LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
         )
             .invoke(null, inflater, container, false) as VB
     }

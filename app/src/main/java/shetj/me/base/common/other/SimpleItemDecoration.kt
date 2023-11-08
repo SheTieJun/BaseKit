@@ -163,20 +163,24 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
                 // 主色
                 c.drawRect(left.toFloat(), top, right.toFloat(), bottom, dividerMainPaint)
                 // 次色
-                if (dividerMarginLeft > 0) c.drawRect(
-                    0f,
-                    top,
-                    left.toFloat(),
-                    bottom,
-                    dividerSecondPaint
-                )
-                if (dividerMarginRight > 0) c.drawRect(
-                    right.toFloat(),
-                    top,
-                    childWidth.toFloat(),
-                    bottom,
-                    dividerSecondPaint
-                )
+                if (dividerMarginLeft > 0) {
+                    c.drawRect(
+                        0f,
+                        top,
+                        left.toFloat(),
+                        bottom,
+                        dividerSecondPaint
+                    )
+                }
+                if (dividerMarginRight > 0) {
+                    c.drawRect(
+                        right.toFloat(),
+                        top,
+                        childWidth.toFloat(),
+                        bottom,
+                        dividerSecondPaint
+                    )
+                }
             }
         } else {
             // 水平方向
@@ -236,20 +240,24 @@ class SimpleItemDecoration : RecyclerView.ItemDecoration {
                 // 主色
                 c.drawRect(left.toFloat(), top, right.toFloat(), bottom, dividerMainPaint)
                 // 次色
-                if (dividerMarginLeft > 0) c.drawRect(
-                    0f,
-                    top,
-                    left.toFloat(),
-                    bottom,
-                    dividerSecondPaint
-                )
-                if (dividerMarginRight > 0) c.drawRect(
-                    right.toFloat(),
-                    top,
-                    childWidth.toFloat(),
-                    bottom,
-                    dividerSecondPaint
-                )
+                if (dividerMarginLeft > 0) {
+                    c.drawRect(
+                        0f,
+                        top,
+                        left.toFloat(),
+                        bottom,
+                        dividerSecondPaint
+                    )
+                }
+                if (dividerMarginRight > 0) {
+                    c.drawRect(
+                        right.toFloat(),
+                        top,
+                        childWidth.toFloat(),
+                        bottom,
+                        dividerSecondPaint
+                    )
+                }
             }
         } else {
             // 水平方向

@@ -133,7 +133,6 @@ object DateUtils {
     @JvmStatic
     @JvmOverloads
     fun str2Calendar(str: String, format: String? = null): Calendar? {
-
         val date = str2Date(str, format) ?: return null
         val c = Calendar.getInstance()
         c.time = date
@@ -146,7 +145,9 @@ object DateUtils {
     fun date2Str(c: Calendar?, format: String? = null): String? {
         return if (c == null) {
             null
-        } else date2Str(c.time, format)
+        } else {
+            date2Str(c.time, format)
+        }
     }
 
     @JvmStatic
@@ -181,7 +182,6 @@ object DateUtils {
      */
     @JvmStatic
     fun getMillon(time: Long): String {
-
         return SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(time)
     }
 
@@ -192,7 +192,6 @@ object DateUtils {
      */
     @JvmStatic
     fun getDay(time: Long): String {
-
         return SimpleDateFormat("yyyy-MM-dd").format(time)
     }
 

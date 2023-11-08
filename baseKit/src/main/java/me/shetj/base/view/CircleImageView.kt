@@ -25,9 +25,9 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
-import kotlin.math.min
 import me.shetj.base.R
 import me.shetj.base.tools.app.ArmsUtils
+import kotlin.math.min
 
 /**
  * 圆形头像
@@ -100,6 +100,7 @@ open class CircleImageView : AppCompatImageView {
     var fillColor: Int
         @Deprecated("Use {@link #getCircleBackgroundColor()} instead.")
         get() = circleBackgroundColor
+
         @Deprecated("Use {@link #setCircleBackgroundColor(int)} instead.")
         set(@ColorInt color) {
             circleBackgroundColor = color

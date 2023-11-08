@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import java.lang.reflect.Field
-import me.shetj.base.R
 
 /**
  * startSmoothScroll(smoothScroller)
@@ -28,7 +26,6 @@ fun Context.getSmoothScroller(speedTime: Float = 150f): LinearSmoothScroller {
         }
     }
 }
-
 
 fun RecyclerView?.smoothToPosition(
     position: Int,

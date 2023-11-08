@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.webkit.WebView
 import me.shetj.base.ktx.showToast
 
-
 /**
  * 	 * 对于回调
  * 如果只是单纯禁止，则只提示授权失败，以后再去请求没问题；
@@ -24,7 +23,7 @@ fun Activity.onRequestPermissionsResult2(permissions: Array<String>, grantResult
     while (i < len) {
         if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
             badResults.add(permissions[i])
-            //有不在提示的
+            // 有不在提示的
             if (!shouldShowRequestPermissionRationale(permissions[i])) needJump2setting = true
         }
         i++
@@ -39,7 +38,6 @@ fun Activity.onRequestPermissionsResult2(permissions: Array<String>, grantResult
     val b = Bundle()
     b.putBoolean("jump2setting", true)
     b.putStringArray("giveAuthorizationBySelf", transformBadResults)
-
 }
 
 /**
@@ -48,11 +46,14 @@ fun Activity.onRequestPermissionsResult2(permissions: Array<String>, grantResult
  */
 private fun WebView.hideBottom() {
     try {
-        //定义javaScript方法
-        val javascript = ("javascript:function hideBottom() { "
-                + "document.getElementsByClassName('tvp_app_download_onpause')[0].style.display='none',"
-                + "document.getElementsByClassName('tvp_app_download_onpause').parentNode.removeChild(document.getElementsByClassName('tvp_app_download_onpause'))"
-                + "}")
+        // 定义javaScript方法
+        val javascript = (
+            "javascript:function hideBottom() { " +
+                "document.getElementsByClassName('tvp_app_download_onpause')[0].style.display='none'," +
+                "document.getElementsByClassName('tvp_app_download_onpause').parentNode" +
+                ".removeChild(document.getElementsByClassName('tvp_app_download_onpause'))" +
+                "}"
+            )
         loadUrl(javascript)
         loadUrl("javascript:hideBottom();")
     } catch (e: Exception) {

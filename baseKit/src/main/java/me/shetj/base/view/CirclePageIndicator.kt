@@ -52,7 +52,10 @@ class CirclePageIndicator @JvmOverloads constructor(
     init {
 
         val a = context.theme.obtainStyledAttributes(
-            attrs, R.styleable.CirclePageIndicator, 0, 0
+            attrs,
+            R.styleable.CirclePageIndicator,
+            0,
+            0
         )
         try {
             mIndicatorSpacing = a.getDimensionPixelSize(
@@ -75,7 +78,8 @@ class CirclePageIndicator @JvmOverloads constructor(
         orientation = HORIZONTAL
         if (layoutParams !is FrameLayout.LayoutParams) {
             val params = FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
             )
             params.gravity = Gravity.BOTTOM or Gravity.START
             layoutParams = params
@@ -165,7 +169,8 @@ class CirclePageIndicator @JvmOverloads constructor(
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
         if (mUserDefinedPageChangeListener != null) {
             mUserDefinedPageChangeListener!!.onPageScrolled(
-                position, positionOffset,
+                position,
+                positionOffset,
                 positionOffsetPixels
             )
         }

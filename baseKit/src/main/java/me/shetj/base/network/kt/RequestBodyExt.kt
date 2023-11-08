@@ -1,9 +1,9 @@
 package me.shetj.base.network.kt
 
-import java.io.File
 import okhttp3.MediaType
 import okhttp3.MultipartBody.Part
 import okhttp3.RequestBody
+import java.io.File
 
 fun String.toRequestBody(): RequestBody {
     return toRequestBody("application/json;charset=utf-8")

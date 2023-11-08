@@ -5,7 +5,6 @@ import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.content.res.Resources.Theme
-import android.os.Build.VERSION_CODES.S
 import android.os.Bundle
 import androidx.annotation.Keep
 import androidx.annotation.StyleRes
@@ -13,14 +12,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.NightMode
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.concurrent.atomic.AtomicBoolean
 import me.shetj.base.R
 import me.shetj.base.R.style
-import me.shetj.base.ktx.logD
-import me.shetj.base.ktx.toJson
 import me.shetj.base.model.SingleLiveEvent
 import me.shetj.base.tools.file.SPUtils
-
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * MD theme kit
@@ -34,10 +30,10 @@ object MDThemeKit {
 
     val isDark: Boolean
         get() {
-            return themeLiveData.value?.nightMode !=  AppCompatDelegate.MODE_NIGHT_YES
+            return themeLiveData.value?.nightMode != AppCompatDelegate.MODE_NIGHT_YES
         }
 
-    private const val SAVE_KEY = "AppCompatMD3Theme" //SP保持的key
+    private const val SAVE_KEY = "AppCompatMD3Theme" // SP保持的key
 
     @Keep
     data class ThemeBean(
@@ -63,7 +59,7 @@ object MDThemeKit {
      * @param styleList 主题style的资源id
      * @param context
      */
-    fun startInit(context: Context,styleList: List<ThemeBean> = defThemeBean) {
+    fun startInit(context: Context, styleList: List<ThemeBean> = defThemeBean) {
         if (isInit.compareAndSet(false, true)) {
             styleList.forEach {
                 addTheme(it)
@@ -98,7 +94,7 @@ object MDThemeKit {
                 selectPosition
             ) { dialog, which ->
                 SPUtils.put(context, SAVE_KEY, which)
-                themeLiveData.postValue( getThemeByWhich(which))
+                themeLiveData.postValue(getThemeByWhich(which))
                 dialog.dismiss()
             }
             .show()
@@ -151,12 +147,12 @@ object MDThemeKit {
     }
 
     fun updateTheme(theme: ThemeBean) {
-        updateTheme(theme.style,theme.name,theme.nightMode)
+        updateTheme(theme.style, theme.name, theme.nightMode)
     }
 
-    fun updateTheme(@StyleRes style: Int, name: String,@NightMode nightMode: Int = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY){
+    fun updateTheme(@StyleRes style: Int, name: String, @NightMode nightMode: Int = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY) {
         styleList.indexOfFirst { it.style == style && it.name == name && it.nightMode == nightMode }.let {
-            if (it == -1){
+            if (it == -1) {
                 val themeBean = ThemeBean(style, name, nightMode)
                 addTheme(themeBean)
                 updateThemeWithTheme(themeBean)
@@ -182,7 +178,7 @@ object MDThemeKit {
 
     private fun addTheme(theme: ThemeBean) {
         styleList.indexOfFirst { it.style == theme.style && it.name == theme.name && it.nightMode == theme.nightMode }.let {
-            if (it == -1){
+            if (it == -1) {
                 styleList.add(theme)
             }
         }
@@ -191,7 +187,7 @@ object MDThemeKit {
     private fun updateTheme(modeNightAutoBattery: Int) {
         val defaultNightMode = AppCompatDelegate.getDefaultNightMode()
         if (defaultNightMode != AppCompatDelegate.MODE_NIGHT_YES) {
-            //ActivityCompat recreate
+            // ActivityCompat recreate
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             AppCompatDelegate.setDefaultNightMode(modeNightAutoBattery)
             return
@@ -206,16 +202,16 @@ object MDThemeKit {
     class ColorsActivityLifecycleCallbacks(var rStyle: Int) :
         ActivityLifecycleCallbacks {
 
-
         override fun onActivityPreCreated(
-            activity: Activity, savedInstanceState: Bundle?
+            activity: Activity,
+            savedInstanceState: Bundle?
         ) {
             applyThemeOverlay(activity, rStyle)
-
         }
 
         override fun onActivityCreated(
-            activity: Activity, savedInstanceState: Bundle?
+            activity: Activity,
+            savedInstanceState: Bundle?
         ) {
         }
 
@@ -229,7 +225,7 @@ object MDThemeKit {
 
     fun applyThemeOverlay(context: Context, @StyleRes theme: Int) {
         // Use applyStyle() instead of setTheme() due to Force Dark issue.
-        context.theme.applyStyle(theme,  /* force= */true)
+        context.theme.applyStyle(theme, /* force= */true)
 
         // Make sure the theme overlay is applied to the Window decorView similar to Activity#setTheme,
         // to ensure that it will be applied to things like ContextMenu using the DecorContext.
@@ -237,7 +233,7 @@ object MDThemeKit {
             val windowDecorViewTheme = getWindowDecorViewTheme(
                 context
             )
-            windowDecorViewTheme?.applyStyle(theme,  /* force= */true)
+            windowDecorViewTheme?.applyStyle(theme, /* force= */true)
         }
     }
 
@@ -256,9 +252,3 @@ object MDThemeKit {
         return null
     }
 }
-
-
-
-
-
-

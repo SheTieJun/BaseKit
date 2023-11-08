@@ -30,8 +30,10 @@ class CircularRevealHelper
             val views = getViews(container)
             for (view in views) {
                 val anim = ViewAnimationUtils.createCircularReveal(
-                    view, view.width / 2,
-                    view.height / 2, 0f,
+                    view,
+                    view.width / 2,
+                    view.height / 2,
+                    0f,
                     hypot((view.height / 2).toDouble(), (view.width / 2).toDouble()).toFloat()
                 )
                 anim.duration = 3000

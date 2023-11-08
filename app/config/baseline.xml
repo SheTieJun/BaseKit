@@ -1,0 +1,86 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:Printer.kt$Printer$@JvmStatic @Synchronized fun printMethodInfo( methodInfo: MethodInfo, level: Int, enableTime: Boolean, tagName: String, fieldInfoNS: Vector&lt;FieldInfoN&gt;, watchStack: Boolean )</ID>
+    <ID>CyclomaticComplexMethod:SimpleItemDecoration.kt$SimpleItemDecoration$private fun handleNormalWithoutTop(c: Canvas, parent: RecyclerView)</ID>
+    <ID>EmptyFunctionBlock:CommentPopup.kt$CommentPopup.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:ConcurrentUtils.kt$ConcurrentUtils.&lt;no name provided&gt;${ }</ID>
+    <ID>EmptyFunctionBlock:ContainsEmojiEditText.kt$ContainsEmojiEditText.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:Main2Activity.kt$Main2Activity${ }</ID>
+    <ID>EmptyFunctionBlock:SQLiteDatabaseOpenHelper.kt$SQLiteDatabaseOpenHelper${ }</ID>
+    <ID>EmptyIfBlock:LoadingFragmentDialog.kt$LoadingFragmentDialog${ }</ID>
+    <ID>EqualsWithHashCodeExist:FieldInfoN.kt$FieldInfoN</ID>
+    <ID>ForbiddenComment:WidgetProvider.kt$WidgetProvider$// TODO:可以在这里做更多的逻辑操作，比如：数据处理、网络请求等。然后去显示数据</ID>
+    <ID>FunctionOnlyReturningConstant:DownloadWorker.kt$DownloadWorker$private fun getTitle(): String</ID>
+    <ID>LongMethod:MainActivity.kt$MainActivity$override fun setUpClicks()</ID>
+    <ID>LongMethod:SimpleItemDecoration.kt$SimpleItemDecoration$private fun handleNormal(c: Canvas, parent: RecyclerView)</ID>
+    <ID>LongMethod:SimpleItemDecoration.kt$SimpleItemDecoration$private fun handleNormalWithoutTop(c: Canvas, parent: RecyclerView)</ID>
+    <ID>LongParameterList:MediaItem.kt$( contentResolver: ContentResolver, collection: Uri, projection: Array&lt;String&gt;, whereCondition: String, selectionArgs: Array&lt;String&gt;, orderBy: String, orderAscending: Boolean, limit: Int = 20, offset: Int = 0 )</ID>
+    <ID>LongParameterList:MediaItem.kt$( whereCondition: String, selectionArgs: Array&lt;String&gt;, orderBy: String, orderAscending: Boolean, limit: Int = 20, offset: Int = 0 )</ID>
+    <ID>LongParameterList:Printer.kt$Printer$( methodInfo: MethodInfo, level: Int, enableTime: Boolean, tagName: String, fieldInfoNS: Vector&lt;FieldInfoN&gt;, watchStack: Boolean )</ID>
+    <ID>LongParameterList:ScreenshotKit.kt$ScreenshotKit$( contentResolver: ContentResolver, collection: Uri, projection: Array&lt;String&gt;, orderBy: String, orderAscending: Boolean, limit: Int = 20, offset: Int = 0 )</ID>
+    <ID>LongParameterList:ScreenshotKit.kt$ScreenshotKit$( context: Context, collection: Uri, orderBy: String, orderAscending: Boolean, limit: Int = 10, offset: Int = 0 )</ID>
+    <ID>MagicNumber:BaseCustomView.kt$BaseCustomView$88f</ID>
+    <ID>MagicNumber:CommentPopup.kt$CommentPopup$1000000</ID>
+    <ID>MagicNumber:CommentPopup.kt$CommentPopup$50</ID>
+    <ID>MagicNumber:ConcurrentUtils.kt$ConcurrentUtils$10</ID>
+    <ID>MagicNumber:ConcurrentUtils.kt$ConcurrentUtils$20</ID>
+    <ID>MagicNumber:ConcurrentUtils.kt$ConcurrentUtils$5</ID>
+    <ID>MagicNumber:DownloadWorker.kt$DownloadWorker$100</ID>
+    <ID>MagicNumber:FirstFragment.kt$FirstFragment$7</ID>
+    <ID>MagicNumber:GuavaKit.kt$GuavaKit$10</ID>
+    <ID>MagicNumber:GuavaKit.kt$GuavaKit$1000</ID>
+    <ID>MagicNumber:GuavaKit.kt$GuavaKit$10000</ID>
+    <ID>MagicNumber:GuavaKit.kt$GuavaKit$3</ID>
+    <ID>MagicNumber:GuavaKit.kt$GuavaKit$4</ID>
+    <ID>MagicNumber:GuavaKit.kt$GuavaKit$5</ID>
+    <ID>MagicNumber:HlsUtils.kt$HlsUtils$0xFF</ID>
+    <ID>MagicNumber:HlsUtils.kt$HlsUtils$16</ID>
+    <ID>MagicNumber:HlsUtils.kt$HlsUtils$24</ID>
+    <ID>MagicNumber:HlsUtils.kt$HlsUtils$8</ID>
+    <ID>MagicNumber:ItemDecorationOptions.kt$ItemDecorationOptions$10f</ID>
+    <ID>MagicNumber:ItemDecorationOptions.kt$ItemDecorationOptions$20</ID>
+    <ID>MagicNumber:MainActivity.kt$MainActivity$1000000</ID>
+    <ID>MagicNumber:MainViewModel.kt$MainViewModel$5</ID>
+    <ID>MagicNumber:ScreenshotKit.kt$ScreenshotKit$34</ID>
+    <ID>MagicNumber:ScreenshotKit.kt$ScreenshotKit$8000</ID>
+    <ID>MagicNumber:SlidingPaneActivity.kt$SlidingPaneActivity$7</ID>
+    <ID>MagicNumber:StreamUtils.kt$StreamUtils$1024</ID>
+    <ID>MagicNumber:WidgetService.kt$WidgetService$1000</ID>
+    <ID>MayBeConst:DownloadService.kt$DownloadService.Companion$private val APK_SUFFIX = "app-"</ID>
+    <ID>MayBeConst:DownloadService.kt$DownloadService.Companion$private val EXTRA_DOWNLOAD_APK_NAME = "com.shetj.me.DOWNLOAD_APK_NAME"</ID>
+    <ID>MayBeConst:DownloadService.kt$DownloadService.Companion$private val EXTRA_DOWNLOAD_APK_URL = "com.shetj.me.DOWNLOAD_APK_URL"</ID>
+    <ID>MayBeConst:DownloadService.kt$DownloadService.Companion$private val EXTRA_DOWNLOAD_VERSION = "com.shetj.me.DOWNLOAD_VERSION"</ID>
+    <ID>MemberNameEqualsClassName:Month.kt$Month$@Months val month: Int</ID>
+    <ID>NestedBlockDepth:DownloadService.kt$DownloadService.Companion$private fun cleanUpOldApkThan(newestVersion: String?)</ID>
+    <ID>NestedBlockDepth:HlsUtils.kt$HlsUtils$fun getWiFiIpAddress(context: Context): String</ID>
+    <ID>NestedBlockDepth:SimpleItemDecoration.kt$SimpleItemDecoration$private fun handleNormalWithoutTop(c: Canvas, parent: RecyclerView)</ID>
+    <ID>NoWildcardImports:TestKotlin.kt$import kotlinx.coroutines.flow.*</ID>
+    <ID>PrintStackTrace:FixUtils.kt$e</ID>
+    <ID>PrintStackTrace:ScreenshotKit.kt$ScreenshotKit$e</ID>
+    <ID>PrintStackTrace:StreamUtils.kt$StreamUtils$e</ID>
+    <ID>ReturnCount:DownloadWorker.kt$DownloadWorker$override suspend fun doWork(): Result</ID>
+    <ID>ReturnCount:MainViewModel.kt$MainViewModel$fun getNightModel(): Int</ID>
+    <ID>ReturnCount:ScreenshotKit.kt$ScreenshotKit$private fun fetchGalleryFirstImages( context: Context, collection: Uri, orderBy: String, orderAscending: Boolean, limit: Int = 10, offset: Int = 0 ): String?</ID>
+    <ID>ReturnCount:TestProxy.kt$TestProxy$fun getRawType(type: Type): Class&lt;*&gt;?</ID>
+    <ID>SpacingAroundColon:MethodInfo.kt$MethodInfo$:</ID>
+    <ID>SwallowedException:GuavaKit.kt$GuavaKit$e: ExecutionException</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:Printer.kt$Printer$Throwable()</ID>
+    <ID>TooGenericExceptionCaught:FixUtils.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ScreenshotKit.kt$ScreenshotKit$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:StreamUtils.kt$StreamUtils$e: Exception</ID>
+    <ID>TooManyFunctions:BaseCustomView.kt$BaseCustomView : View</ID>
+    <ID>TooManyFunctions:MonthAdapter.kt$MonthAdapter : Adapter</ID>
+    <ID>UnusedPrivateMember:FixUtils.kt$private fun WebView.hideBottom()</ID>
+    <ID>UnusedPrivateMember:MonthAdapter.kt$MonthAdapter$private fun isToday(date: Long): Boolean</ID>
+    <ID>UnusedPrivateProperty:MonthAdapter.kt$MonthAdapter.Companion$private const val NO_DAY_NUMBER = -1</ID>
+    <ID>UnusedPrivateProperty:TestKotlin.kt$TestKotlin.Companion$/** * [UIState] */ private val _uiState = MutableStateFlow&lt;UIState&gt;(UIState.Loading)</ID>
+    <ID>UnusedPrivateProperty:TestKotlin.kt$TestKotlin.Companion$private val _testStatus = MutableSharedFlow&lt;Int&gt;( replay = 1, // 至少1 onBufferOverflow = BufferOverflow.DROP_OLDEST )</ID>
+    <ID>UtilityClassWithPublicConstructor:TestProxy.kt$ProxyFactory</ID>
+    <ID>VariableNaming:TestContentProvider.kt$TestContentProvider$private val AUTHORITY = "me.shetj.base.testcontentprovider"</ID>
+    <ID>VariableNaming:TestContentProvider.kt$TestContentProvider$private val PERSON = 1</ID>
+    <ID>VariableNaming:TestContentProvider.kt$TestContentProvider$private val PERSON_DIR = 0</ID>
+    <ID>WildcardImport:TestKotlin.kt$import kotlinx.coroutines.flow.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

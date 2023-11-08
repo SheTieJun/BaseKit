@@ -9,7 +9,7 @@ import me.shetj.base.tools.app.PlugConfigs
  */
 class PlugLiveData private constructor() : MutableLiveData<Boolean>(false) {
 
-    private var plugConfigs: PlugConfigs ? = null
+    private var plugConfigs: PlugConfigs? = null
 
     override fun onActive() {
         super.onActive()

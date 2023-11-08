@@ -2,31 +2,30 @@ package shetj.me.base.day
 
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
-import android.os.Parcel
-import android.os.Parcelable
-import android.os.Parcelable.Creator
 import android.text.format.DateUtils
 import androidx.annotation.IntDef
 import java.util.*
 import kotlin.annotation.AnnotationRetention.SOURCE
-import me.shetj.base.ktx.logI
 
+@Suppress("DEPRECATION")
 open class Month private constructor(rawCalendar: Calendar) : Comparable<Month> {
     /** The acceptable int values for month when using [Month.create]  */
     @Retention(SOURCE)
     @IntDef(
-        value = [Calendar.JANUARY,
-        Calendar.FEBRUARY,
-        Calendar.MARCH,
-        Calendar.APRIL, Calendar.MAY,
-        Calendar.JUNE, Calendar.JULY,
-        Calendar.AUGUST, Calendar.SEPTEMBER,
-        Calendar.OCTOBER, Calendar.NOVEMBER,
-        Calendar.DECEMBER])
+        value = [
+            Calendar.JANUARY,
+            Calendar.FEBRUARY,
+            Calendar.MARCH,
+            Calendar.APRIL, Calendar.MAY,
+            Calendar.JUNE, Calendar.JULY,
+            Calendar.AUGUST, Calendar.SEPTEMBER,
+            Calendar.OCTOBER, Calendar.NOVEMBER,
+            Calendar.DECEMBER
+        ]
+    )
     annotation class Months
 
     private val firstOfMonth: Calendar
-
 
     @Months
     val month: Int
@@ -34,7 +33,6 @@ open class Month private constructor(rawCalendar: Calendar) : Comparable<Month> 
     val daysInWeek: Int
     val daysInMonth: Int
     val timeInMillis: Long
-
 
     var longName: String? = null
         /** Returns a localized String representation of the month name and year.  */
@@ -52,8 +50,10 @@ open class Month private constructor(rawCalendar: Calendar) : Comparable<Month> 
      * @return
      */
     fun daysFromStartOfWeekToFirstOfMonth(firstDayOfWeek: Int): Int {
-        var difference = (firstOfMonth[Calendar.DAY_OF_WEEK]
-                - if (firstDayOfWeek > 0) firstDayOfWeek else firstOfMonth.firstDayOfWeek)
+        var difference = (
+            firstOfMonth[Calendar.DAY_OF_WEEK] -
+                if (firstDayOfWeek > 0) firstDayOfWeek else firstOfMonth.firstDayOfWeek
+            )
         if (difference < 0) {
             difference += daysInWeek
         }
@@ -117,7 +117,7 @@ open class Month private constructor(rawCalendar: Calendar) : Comparable<Month> 
     init {
         rawCalendar[Calendar.DAY_OF_MONTH] = 1
         firstOfMonth = LocalDates.getDayCopy(rawCalendar)
-        firstOfMonth.firstDayOfWeek = 0 //设置成周一
+        firstOfMonth.firstDayOfWeek = 0 // 设置成周一
         month = firstOfMonth[Calendar.MONTH]
         year = firstOfMonth[Calendar.YEAR]
         daysInWeek = firstOfMonth.getMaximum(Calendar.DAY_OF_WEEK)
@@ -165,5 +165,4 @@ open class Month private constructor(rawCalendar: Calendar) : Comparable<Month> 
             return DateUtils.formatDateTime(null, timeInMillis, flags)
         }
     }
-
 }

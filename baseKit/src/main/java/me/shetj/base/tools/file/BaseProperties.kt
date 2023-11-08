@@ -1,9 +1,9 @@
 package me.shetj.base.tools.file
 
+import me.shetj.base.BaseKit
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.Properties
-import me.shetj.base.BaseKit
 
 /**
  * 获取assent属性

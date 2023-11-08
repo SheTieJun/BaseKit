@@ -52,7 +52,8 @@ class HighStringFormatUtil(
             @ColorRes color: Int = R.color.colorAccent
         ): SpannableStringBuilder {
             return HighStringFormatUtil(
-                wholeStr, highlightStr,
+                wholeStr,
+                highlightStr,
                 ContextCompat.getColor(context, color)
             ).fillColor()
         }

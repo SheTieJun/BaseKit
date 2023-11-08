@@ -99,6 +99,8 @@ object DependencyLibs {
 
         add(AndroidX.Navigation.navigation)
         add(AndroidX.Navigation.navigationUi)
+
+        add(AndroidX.concurrent)
     }
 
 
@@ -188,6 +190,7 @@ object DependencyLibs {
         const val dragAndDrop = "androidx.draganddrop:draganddrop:1.0.0"
         const val webKit = "androidx.webkit:webkit:1.8.0"
         const val window = "androidx.window:window:1.1.0"
+        const val concurrent = "androidx.concurrent:concurrent-futures-ktx:1.1.0"
 
         object Constraint {
             private const val constraintlayout = "2.1.4"

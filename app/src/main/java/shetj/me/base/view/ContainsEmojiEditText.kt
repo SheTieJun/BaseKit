@@ -15,13 +15,13 @@ import me.shetj.base.tools.file.StringUtils.Companion.containsEmoji
 
 @Keep
 class ContainsEmojiEditText : AppCompatEditText {
-    //输入表情前的光标位置
+    // 输入表情前的光标位置
     private var cursorPos = 0
 
-    //输入表情前EditText中的文本
+    // 输入表情前EditText中的文本
     private var inputAfterText: String? = null
 
-    //是否重置了EditText的内容
+    // 是否重置了EditText的内容
     private var resetText = false
     private var mContext: Context
 

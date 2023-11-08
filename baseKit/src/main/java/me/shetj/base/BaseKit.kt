@@ -1,8 +1,6 @@
 package me.shetj.base
 
 import android.app.Application
-import android.app.PendingIntent
-import android.os.Build
 import android.provider.Settings
 import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
@@ -30,7 +28,6 @@ import org.koin.core.module.Module
 import org.koin.mp.KoinPlatformTools
 import timber.log.Timber
 
-
 /**
  * Base kit
  * 工具初始化类
@@ -48,10 +45,8 @@ object BaseKit {
 
     val isDebug = MutableLiveData(false)
 
-
     private var enableLogUI = true
     private var dnsLocalMap = HashMap<String, String>()
-
 
     fun enableLogUILife(isLogUI: Boolean) {
         this.enableLogUI = isLogUI
@@ -89,7 +84,6 @@ object BaseKit {
                 Settings.Secure.ANDROID_ID
             )
         }
-
 
     /**
      * 初始化
@@ -132,6 +126,4 @@ object BaseKit {
     }
 
     fun isDebug() = isDebug.isTrue()
-
-
 }

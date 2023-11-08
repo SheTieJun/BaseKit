@@ -3,15 +3,13 @@ package me.shetj.base.base
 import android.os.Handler
 import android.os.Looper
 import androidx.core.os.HandlerCompat
+import me.shetj.base.ktx.isMainThread
 import java.util.concurrent.Executor
-import java.util.concurrent.Future
 import java.util.concurrent.LinkedBlockingDeque
-import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
-import me.shetj.base.ktx.isMainThread
 
 class TaskExecutor private constructor() {
     @Volatile
@@ -19,8 +17,10 @@ class TaskExecutor private constructor() {
 
     // 最大线程2，当不够时所有进入等待
     private val mDiskIO = ThreadPoolExecutor(
-        1, 2,
-        10L, TimeUnit.MILLISECONDS,
+        1,
+        2,
+        10L,
+        TimeUnit.MILLISECONDS,
         LinkedBlockingDeque(),
         object : ThreadFactory {
             private val THREAD_NAME_STEM = "base_thread_%d"
@@ -36,8 +36,6 @@ class TaskExecutor private constructor() {
     fun getExecutor(): Executor {
         return mDiskIO
     }
-
-
 
     fun executeOnDiskIO(runnable: Runnable) {
         mDiskIO.execute(runnable)

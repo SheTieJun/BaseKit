@@ -11,7 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
  * @constructor Create empty Multi swipe refresh layout
  */
 class MultiSwipeRefreshLayout : SwipeRefreshLayout {
-    private var mSwipeChildren: Array<View?>? =null
+    private var mSwipeChildren: Array<View?>? = null
 
     constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
@@ -28,6 +28,7 @@ class MultiSwipeRefreshLayout : SwipeRefreshLayout {
             mSwipeChildren!![i] = findViewById(ids[i])
         }
     }
+
     /**
      * This method controls when the swipe-to-refresh gesture is triggered. By returning false here
      * we are signifying that the view is in a state where a refresh gesture can start.

@@ -22,7 +22,7 @@ import me.shetj.base.tools.app.ArmsUtils
  */
 @Keep
 abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
-    BottomSheetDialogFragment() ,BaseControllerFunctionsImpl{
+    BottomSheetDialogFragment(), BaseControllerFunctionsImpl {
 
     protected lateinit var mBinding: VB
 
@@ -32,7 +32,7 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
         savedInstanceState: Bundle?
     ): View? {
         mBinding = initBinding(inflater, container)
-        if (mBinding is ViewDataBinding){
+        if (mBinding is ViewDataBinding) {
             (mBinding as ViewDataBinding).lifecycleOwner = this
         }
         return mBinding.root

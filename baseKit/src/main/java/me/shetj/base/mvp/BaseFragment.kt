@@ -1,17 +1,11 @@
 package me.shetj.base.mvp
 
-import android.annotation.SuppressLint
 import android.os.Message
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
-import me.shetj.base.BaseKit
 import me.shetj.base.base.AbBaseFragment
 import me.shetj.base.ktx.getClazz
-import me.shetj.base.ktx.isTrue
-import me.shetj.base.ktx.toJson
-import me.shetj.base.tools.json.EmptyUtils
-import timber.log.Timber
 
 /**
  * fragment基类

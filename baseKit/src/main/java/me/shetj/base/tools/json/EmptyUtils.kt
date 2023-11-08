@@ -6,8 +6,8 @@ import android.util.SparseBooleanArray
 import android.util.SparseIntArray
 import android.util.SparseLongArray
 import androidx.annotation.Keep
-import java.lang.reflect.Array
 import me.shetj.base.tools.app.ArmsUtils
+import java.lang.reflect.Array
 
 @Keep
 class EmptyUtils private constructor() {

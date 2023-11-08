@@ -14,7 +14,6 @@ sealed class UIState {
     class Error(val e: ErrorType) : UIState()
 }
 
-
 /**
  * * [SignedOut]:退出登录：当用户尚未登录时。
  * * [InProgress]:进行中：当您的应用目前正在尝试通过执行网络调用来让用户登录时。
@@ -28,22 +27,21 @@ sealed class LoginUiState {
     object SignIn : LoginUiState()
 }
 
-sealed class ErrorType{
+sealed class ErrorType {
 
     /**
      * 网络错误
      */
-    object NetError:ErrorType()
+    object NetError : ErrorType()
 
     /**
      * 接口错误
      */
-    class APIError(val msg:String):ErrorType()
+    class APIError(val msg: String) : ErrorType()
 
     /**
      * Other error
      * 其他错误
      */
-    class OtherError(val msg:String):ErrorType()
-
+    class OtherError(val msg: String) : ErrorType()
 }

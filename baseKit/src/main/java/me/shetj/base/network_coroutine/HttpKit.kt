@@ -6,7 +6,6 @@ import me.shetj.base.network.interceptor.ReceivedCookiesInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network_coroutine.cache.KCCache
 import me.shetj.base.tools.file.SPUtils
-import me.shetj.base.tools.json.GsonKit
 import okhttp3.OkHttpClient
 import org.koin.java.KoinJavaComponent
 import retrofit2.Retrofit
@@ -53,7 +52,6 @@ object HttpKit {
             .setEnable(enable)
     }
 
-
     fun addCookie(cookie: String) {
         headers.put(HttpHeaders.HEAD_KEY_COOKIE, cookie)
         saveCookie()
@@ -66,11 +64,9 @@ object HttpKit {
     fun loadCookie() {
         enableReceivedCookies(true)
         (SPUtils.get(BaseKit.app, HttpHeaders.HEAD_KEY_COOKIE, "") as? String)?.let {
-            if (it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 headers.put(HttpHeaders.HEAD_KEY_COOKIE, it)
             }
         }
     }
-
-
 }

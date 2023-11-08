@@ -64,10 +64,11 @@ object NetworkUtils {
      */
     fun isConnected(context: Context): Boolean {
         val info = getActiveNetworkInfo(context)
-        return info != null && (info.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                info.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
+        return info != null && (
+            info.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                info.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+            )
     }
-
 
     /**
      * 判断wifi是否连接状态

@@ -1,7 +1,5 @@
 package me.shetj.base.ktx
 
-import java.util.Timer
-import java.util.TimerTask
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +9,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
+import java.util.Timer
+import java.util.TimerTask
 
 fun <T> Flow<T>.throttleFirst(duration: Long = 1000L) = this.throttleFirstImpl(duration)
 

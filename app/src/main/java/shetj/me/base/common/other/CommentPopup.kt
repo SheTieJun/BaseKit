@@ -2,7 +2,6 @@
 
 package shetj.me.base.common.other
 
-
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
@@ -22,7 +21,6 @@ import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.SoftInputUtil
 import shetj.me.base.R
 
-
 class CommentPopup : BottomSheetDialogFragment() {
 
     private var root: View? = null
@@ -30,7 +28,6 @@ class CommentPopup : BottomSheetDialogFragment() {
     private var editContent: EditText? = null
     private var tvSend: View? = null
     private val softInputUtil by lazy { SoftInputUtil() }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,18 +60,21 @@ class CommentPopup : BottomSheetDialogFragment() {
             }
         }
 
-        softInputUtil.attachSoftInput(dialog?.window, object : SoftInputUtil.ISoftInputChanged {
-            override fun onChanged(isSoftInputShow: Boolean) {
-                if (!isSoftInputShow) {
-                    hierarchy.state?.putState("input","hide")
-                    dismissAllowingStateLoss()
+        softInputUtil.attachSoftInput(
+            dialog?.window,
+            object : SoftInputUtil.ISoftInputChanged {
+                override fun onChanged(isSoftInputShow: Boolean) {
+                    if (!isSoftInputShow) {
+                        hierarchy.state?.putState("input", "hide")
+                        dismissAllowingStateLoss()
+                    }
                 }
             }
-        })
+        )
 
         dialog?.setOnShowListener {
             editContent?.postDelayed({
-                hierarchy.state?.putState("input","show")
+                hierarchy.state?.putState("input", "show")
                 KeyboardUtil.focusEditShowKeyBoard(editContent!!)
             }, 50)
         }
@@ -89,9 +89,9 @@ class CommentPopup : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dialog?.window?.let {
-            JankStats.createAndTrack(it){
-                if (it.isJank){
-                    ((it.frameDurationUiNanos/1000000).toString()+"毫秒").logI("JankStats")
+            JankStats.createAndTrack(it) {
+                if (it.isJank) {
+                    ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logI("JankStats")
                 }
                 it.toJson().logI("JankStats")
             }

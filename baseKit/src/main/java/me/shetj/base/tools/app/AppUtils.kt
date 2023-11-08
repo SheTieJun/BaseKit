@@ -15,12 +15,12 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Process
 import androidx.annotation.Keep
+import me.shetj.base.ktx.drawableToBitmap
+import me.shetj.base.tools.file.FileUtils
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import kotlin.system.exitProcess
-import me.shetj.base.ktx.drawableToBitmap
-import me.shetj.base.tools.file.FileUtils
 
 @Keep
 class AppUtils private constructor() {
@@ -84,7 +84,7 @@ class AppUtils private constructor() {
             for (packageInfo in packages) {
                 // 判断系统/非系统应用
                 if (packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0)
-                // 非系统应用
+                    // 非系统应用
                     {
                         if (packageInfo.packageName.contains(name)) {
                             val myAppInfo = AppInfos()
@@ -653,7 +653,7 @@ class AppUtils private constructor() {
                 Utils.app.packageManager.getApplicationIcon(Utils.app.applicationContext.packageName)
             drawableToBitmap(drawableIcon) ?: throw PackageManager.NameNotFoundException()
         } catch (e: PackageManager.NameNotFoundException) {
-           null
+            null
         }
 
         /**
@@ -706,6 +706,10 @@ class AppUtils private constructor() {
             return true
         }
 
+        /**
+         * 通过文件获取当前进程
+         * 没有同意协议之前无法进行获取进程
+         */
         fun getCurrentProcessNameByFile(context: Context): String? {
             return try {
                 val file = File("/proc/" + Process.myPid() + "/cmdline")

@@ -13,7 +13,6 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 /**
  * 创建一条图片地址uri,用于保存拍照后的照片
  * 兼容核心就是这里
@@ -57,7 +56,6 @@ internal fun createImageUri(context: Context): Uri {
     ) ?: throw NullPointerException("create createImageUri fail")
 }
 
-
 fun createVideoPathUri(context: Context): Uri {
     return when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
@@ -77,8 +75,6 @@ fun createVideoPathUri(context: Context): Uri {
         }
     }
 }
-
-
 
 internal fun createVideoUri(context: Context): Uri {
     return context.contentResolver.insert(
@@ -100,8 +96,7 @@ internal fun getPath(root: String, packagePath: String): String {
     return path.toString()
 }
 
-
-internal fun createVideoPath(context:Context): String {
+internal fun createVideoPath(context: Context): String {
     val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
     val time = System.currentTimeMillis()
     val imageName = timeFormatter.format(Date(time))
@@ -110,7 +105,6 @@ internal fun createVideoPath(context:Context): String {
         packagePath = "video"
     ) + "/" + imageName + ".mp4"
 }
-
 
 /**
  * mnt/sdcard/Android/data/< package name >/files/type

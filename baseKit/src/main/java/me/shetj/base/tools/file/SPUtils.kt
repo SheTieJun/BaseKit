@@ -27,7 +27,6 @@ class SPUtils {
          */
         @JvmStatic
         fun put(context: Context, key: String, `object`: Any) {
-
             val sp = context.getSharedPreferences(
                 FILE_NAME,
                 Context.MODE_PRIVATE
@@ -140,13 +139,12 @@ class SPUtils {
          * @return
          */
         @JvmStatic
-        fun getAll(context: Context,spName:String): Map<String, *> {
+        fun getAll(context: Context, spName: String): Map<String, *> {
             val sp = context.getSharedPreferences(
                 spName,
                 Context.MODE_PRIVATE
             )
             return sp.all
         }
-
     }
 }

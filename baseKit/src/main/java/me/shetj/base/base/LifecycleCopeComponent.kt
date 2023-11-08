@@ -22,7 +22,7 @@ abstract class AbLifecycleCopeComponent : LifecycleCopeComponent {
 
     private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(getOwner()) }
 
-    override val ktScope: LifecycleCoroutineScope  = lifecycle.coroutineScope
+    override val ktScope: LifecycleCoroutineScope = lifecycle.coroutineScope
 
     private fun initLifecycle() {
         lifecycle.addObserver(

@@ -9,9 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
-import java.io.IOException
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +18,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import java.io.IOException
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 suspend fun <T, O> T.withIO(action: suspend CoroutineScope.(t: T) -> O) =
     withContext(Dispatchers.IO) {
@@ -41,7 +41,6 @@ suspend fun <T, O> T.withUnconfined(action: suspend CoroutineScope.(t: T) -> O) 
     withContext(Dispatchers.Unconfined) {
         return@withContext action(this@withUnconfined)
     }
-
 
 fun ViewModel.launch(
     context: CoroutineContext = EmptyCoroutineContext,
@@ -69,7 +68,6 @@ fun Fragment.launch(
         action()
     }
 }
-
 
 fun <T> Fragment.liveData(
     context: CoroutineContext = lifecycleScope.coroutineContext,

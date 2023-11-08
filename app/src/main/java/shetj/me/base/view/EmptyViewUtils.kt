@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import shetj.me.base.R
 
-
 /**
  * **@packageName：** shetj.me.base.utils<br></br>
  * **@author：** shetj<br></br>
@@ -31,7 +30,6 @@ object EmptyViewUtils {
     fun getLoadingView(context: Activity): View {
         return LayoutInflater.from(context).inflate(R.layout.base_dialog_loading, null)
     }
-
 
     /**
      * 空界面。空数据

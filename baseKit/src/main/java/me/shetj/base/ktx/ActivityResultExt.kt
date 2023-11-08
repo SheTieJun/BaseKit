@@ -87,7 +87,6 @@ fun ComponentActivity.startRequestPermissionLauncher(
     return register(key, ActivityResultContracts.RequestPermission(), callback)
 }
 
-
 //region Activity 部分
 /**
  * 获取多个权限
@@ -99,7 +98,6 @@ fun ComponentActivity.startRequestPermissions(
     return startRequestPermissionsLauncher("startRequestMultiplePermissions", callback).launch(permissions)
 }
 
-
 /**
  * 获取单个权限
  */
@@ -110,7 +108,6 @@ fun ComponentActivity.startRequestPermission(
     return startRequestPermissionLauncher("startRequestPermission", callback).launch(permission)
 }
 
-
 /**
  * startActivityResult
  */
@@ -120,7 +117,6 @@ fun ComponentActivity.startActivityResult(
 ) {
     return startActivityResultLauncher("startActivityResult", callback).launch(intent)
 }
-
 
 /**
  * 选择一个文件
@@ -150,7 +146,6 @@ fun ComponentActivity.searchFiles(type: Array<String>, callback: ActivityResultC
     register("OpenDocument", ActivityResultContracts.OpenMultipleDocuments(), callback).launch(type)
 }
 
-
 /**
  * 创建文件
  */
@@ -161,7 +156,6 @@ fun ComponentActivity.createFile(
 ) {
     register("CreateDocument", ActivityResultContracts.CreateDocument(mimeType), callback).launch(fileName)
 }
-
 
 /**
  * 拍照
@@ -187,7 +181,6 @@ fun ComponentActivity.takeVideo(callback: ActivityResultCallback<Uri?>) {
     }.launch(pathUri)
 }
 
-
 /**
  * 选择联系人
  */
@@ -201,7 +194,6 @@ fun ComponentActivity.pickContact(callback: ActivityResultCallback<Uri?>) {
 fun ComponentActivity.cropImage(imageResult: CropImage, callback: ActivityResultCallback<Uri?>) {
     register("cropImage", CropImageContract(), callback).launch(imageResult)
 }
-
 
 /**
  * Pick visual media
@@ -223,10 +215,12 @@ fun ComponentActivity.pickVisualMedia(inputType: VisualMediaType, callback: Acti
  *
  * @param inputType [PickVisualMediaRequest]
  */
-fun ComponentActivity.pickMultipleVisualMedia(inputType: PickVisualMediaRequest, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
+fun ComponentActivity.pickMultipleVisualMedia(
+    inputType: PickVisualMediaRequest,
+    callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>
+) {
     register("PickMultipleVisualMedia", ActivityResultContracts.PickMultipleVisualMedia(), callback).launch(inputType)
 }
-
 
 fun ComponentActivity.pickMultipleVisualMedia(inputType: VisualMediaType, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
     PickVisualMediaRequest.Builder().setMediaType(inputType).build().let {
@@ -281,7 +275,6 @@ fun Fragment.startRequestPermissionLauncher(
     return register(key, ActivityResultContracts.RequestPermission(), callback)
 }
 
-
 fun Fragment.startRequestPermissions(
     key: String = "startRequestMultiplePermissions" + mNextLocalRequestCode.getAndIncrement(),
     permissions: Array<String>,
@@ -290,7 +283,6 @@ fun Fragment.startRequestPermissions(
     startRequestPermissionsLauncher(key, callback)?.launch(permissions)
 }
 
-
 fun Fragment.startRequestPermission(
     key: String = "startRequestPermission" + mNextLocalRequestCode.getAndIncrement(),
     permission: String,
@@ -298,7 +290,6 @@ fun Fragment.startRequestPermission(
 ) {
     startRequestPermissionLauncher(key, callback)?.launch(permission)
 }
-
 
 /**
  * startActivityResult
@@ -332,7 +323,6 @@ fun Fragment.searchFile(type: Array<String>, callback: ActivityResultCallback<Ur
     register("OpenDocument", ActivityResultContracts.OpenDocument(), callback)?.launch(type)
 }
 
-
 fun Fragment.selectFileByDir(dir: Uri?, callback: ActivityResultCallback<Uri?>) {
     register("OpenDocumentTree", ActivityResultContracts.OpenDocumentTree(), callback)?.launch(dir)
 }
@@ -340,10 +330,9 @@ fun Fragment.selectFileByDir(dir: Uri?, callback: ActivityResultCallback<Uri?>) 
 /**
  * 创建文件
  */
-fun Fragment.createFile(fileName: String,fileType:String ="*/*", callback: ActivityResultCallback<Uri?>) {
+fun Fragment.createFile(fileName: String, fileType: String = "*/*", callback: ActivityResultCallback<Uri?>) {
     register("CreateDocument", ActivityResultContracts.CreateDocument(fileType), callback)?.launch(fileName)
 }
-
 
 /**
  * 拍照
@@ -373,14 +362,12 @@ fun Fragment.takeVideo(callback: ActivityResultCallback<Uri?>) {
     }?.launch(pathUri)
 }
 
-
 /**
  * 选择练习人
  */
 fun Fragment.pickContact(callback: ActivityResultCallback<Uri?>) {
     register("pickContact", ActivityResultContracts.PickContact(), callback)?.launch(null)
 }
-
 
 /**
  * Pick visual media
@@ -391,13 +378,15 @@ fun Fragment.pickVisualMedia(inputType: PickVisualMediaRequest, callback: Activi
     register("PickVisualMedia", ActivityResultContracts.PickVisualMedia(), callback)?.launch(inputType)
 }
 
-
 /**
  * Pick visual media
  *
  * @param inputType [PickVisualMediaRequest]
  */
-fun Fragment.pickMultipleVisualMedia(inputType: PickVisualMediaRequest, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
+fun Fragment.pickMultipleVisualMedia(
+    inputType: PickVisualMediaRequest,
+    callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>
+) {
     register("PickMultipleVisualMedia", ActivityResultContracts.PickMultipleVisualMedia(), callback)?.launch(inputType)
 }
 
@@ -416,5 +405,3 @@ fun <I, O> Any.register(
         else -> null
     }
 }
-
-

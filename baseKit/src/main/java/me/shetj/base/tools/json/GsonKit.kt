@@ -6,18 +6,17 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Modifier
-import java.lang.reflect.Type
 import me.shetj.base.ktx.list
 import me.shetj.base.ktx.map
 import timber.log.Timber
+import java.lang.reflect.Modifier
+import java.lang.reflect.Type
 
-
-fun getGson() =    GsonBuilder()
+fun getGson() = GsonBuilder()
     .excludeFieldsWithModifiers(
         Modifier.TRANSIENT,
         Modifier.STATIC
-    )   // 比如我们想排除私有字段不被序列化/反序列，默认
+    ) // 比如我们想排除私有字段不被序列化/反序列，默认
     .registerTypeAdapter(Int::class.java, IntTypeAdapter())
     .registerTypeAdapter(Float::class.java, FloatTypeAdapter())
     .registerTypeAdapter(Double::class.java, DoubleTypeAdapter())
@@ -154,4 +153,3 @@ object GsonKit {
         }.getOrNull()
     }
 }
-

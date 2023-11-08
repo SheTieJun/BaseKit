@@ -7,13 +7,9 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.ComponentActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import me.shetj.base.BaseKit
-
 
 /**
  * 获取上下文的 CoroutineContext
@@ -64,7 +60,6 @@ val Context.asActivity: Activity
         error("The passed Context is not an Activity.")
     }
 
-
 fun Context.getIdByName(className: String, resName: String): Int {
     val packageName = packageName
     return applicationContext.resources.getIdentifier(resName, className, packageName)
@@ -74,7 +69,6 @@ fun Context.openActivity(scheme: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scheme))
     startActivity(intent)
 }
-
 
 fun Context.openActivityByPackageName(ackageName: String) {
     val intent = packageManager.getLaunchIntentForPackage(ackageName)
@@ -90,7 +84,6 @@ fun Context.openActivityByPackageName(ackageName: String) {
 fun Context.moveToFrontApp() {
     (getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager)?.moveToFrontApp(packageName)
 }
-
 
 /**
  * - 通过包名，让APP到前台，前提是APP在后台了

@@ -26,6 +26,7 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import androidx.annotation.Keep
 import androidx.core.content.FileProvider.getUriForFile
+import me.shetj.base.tools.file.EnvironmentStorage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileDescriptor
@@ -33,7 +34,6 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import me.shetj.base.tools.file.EnvironmentStorage
 
 @Keep
 @Deprecated("使用ActivityResultLauncher更好", replaceWith = ReplaceWith("use ActivityResultExt.kt"))
@@ -199,8 +199,13 @@ class ImageUtils {
                     }.build()
             } else {
                 StaticLayout(
-                    des, textPaint,
-                    sourceBitmapWidth, Layout.Alignment.ALIGN_CENTER, 1f, 1f, true
+                    des,
+                    textPaint,
+                    sourceBitmapWidth,
+                    Layout.Alignment.ALIGN_CENTER,
+                    1f,
+                    1f,
+                    true
                 )
             }
 

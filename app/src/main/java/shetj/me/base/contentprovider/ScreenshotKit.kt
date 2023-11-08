@@ -16,18 +16,18 @@ import android.provider.MediaStore
 import android.provider.MediaStore.Images.ImageColumns
 import android.provider.MediaStore.Images.Media
 import androidx.annotation.RequiresApi
-import androidx.annotation.RequiresPermission
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import java.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
-import me.shetj.base.ktx.isTrue
+import shetj.me.base.contentprovider.ScreenshotKit.initActivity
+import shetj.me.base.contentprovider.ScreenshotKit.initMediaContentObserver
+import shetj.me.base.contentprovider.ScreenshotKit.unregisterMediaContentObserver
+import java.util.*
 
 /**
  * 用来监听用户是否截屏的工具类,在需要监听的页面调用[initActivity]方法即可
@@ -53,7 +53,6 @@ object ScreenshotKit {
     private var mUiHandler: Handler? = null
     private var mScreenshotListener: ScreenshotListener? = null
 
-
     /**
      * Set screenshot listener
      * 设置截屏监听
@@ -71,10 +70,14 @@ object ScreenshotKit {
      * @param isRequest 是否请求对应权限
      * @return
      */
-    fun initActivity(activity: FragmentActivity,isRequest:Boolean = true) {
+    fun initActivity(activity: FragmentActivity, isRequest: Boolean = true) {
         FixPermission.checkReadMediaFile(activity, isRequest)
         if (VERSION.SDK_INT >= 34) {
-            val screenshotListener = Activity.ScreenCaptureCallback { handleMediaContentChange(Media.EXTERNAL_CONTENT_URI) }
+            val screenshotListener = Activity.ScreenCaptureCallback {
+                handleMediaContentChange(
+                    Media.EXTERNAL_CONTENT_URI
+                )
+            }
             activity.lifecycle.addObserver(object : LifecycleEventObserver {
                 override fun onStateChanged(source: LifecycleOwner, event: Event) {
                     if (event == Event.ON_START) {
@@ -84,7 +87,6 @@ object ScreenshotKit {
                     }
                 }
             })
-
         } else {
             activity.lifecycle.addObserver(object : LifecycleEventObserver {
                 override fun onStateChanged(source: LifecycleOwner, event: Event) {
@@ -98,7 +100,6 @@ object ScreenshotKit {
         }
     }
 
-
     private fun initMediaContentObserver(context: Context) {
         // 运行在 UI 线程的 Handler, 用于运行监听器回调
         if (mUiHandler == null) {
@@ -110,10 +111,14 @@ object ScreenshotKit {
         if (mExternalObserver == null) mExternalObserver = MediaContentObserver(Media.EXTERNAL_CONTENT_URI, mUiHandler)
         // 注意 第二个boolean参数 要设置为true 不然有些机型（Android 11必须要true）由于多媒体文件层级不同 导致变化监听不到 所以设置后代文件夹发生了文件改变也要进行通知
         context.contentResolver.registerContentObserver(
-            Media.INTERNAL_CONTENT_URI, true, mInternalObserver!!
+            Media.INTERNAL_CONTENT_URI,
+            true,
+            mInternalObserver!!
         )
         context.contentResolver.registerContentObserver(
-            Media.EXTERNAL_CONTENT_URI, true, mExternalObserver!!
+            Media.EXTERNAL_CONTENT_URI,
+            true,
+            mExternalObserver!!
         )
     }
 
@@ -123,7 +128,8 @@ object ScreenshotKit {
     }
 
     private class MediaContentObserver(
-        private val mediaContentUri: Uri, handler: Handler?
+        private val mediaContentUri: Uri,
+        handler: Handler?
     ) : ContentObserver(handler) {
         // 处理媒体数据库反馈的数据变化
         override fun onChange(selfChange: Boolean) {
@@ -149,7 +155,6 @@ object ScreenshotKit {
         }
     }
 
-
     private fun fetchGalleryFirstImages(
         context: Context,
         collection: Uri,
@@ -172,7 +177,7 @@ object ScreenshotKit {
                 val dateTakenIndex = cursor.getColumnIndex(ImageColumns.DATE_TAKEN)
                 val dateTaken = cursor.getLong(dateTakenIndex) // 图片生成时间
 
-                //也会监听到截图删除的操作，判断最后一张图的时间和现在时，如果相差8s内，则认为是刚截图
+                // 也会监听到截图删除的操作，判断最后一张图的时间和现在时，如果相差8s内，则认为是刚截图
                 if (System.currentTimeMillis() - dateTaken > 8000) return null
                 val dataIndex = cursor.getColumnIndex(ImageColumns.DATA)
                 val data = cursor.getString(dataIndex) // 图片存储地址
@@ -217,8 +222,14 @@ object ScreenshotKit {
         putInt(ContentResolver.QUERY_ARG_LIMIT, limit)
         putInt(ContentResolver.QUERY_ARG_OFFSET, offset)
         when (orderBy) {
-            "ALPHABET" -> putStringArray(ContentResolver.QUERY_ARG_SORT_COLUMNS, arrayOf(MediaStore.Files.FileColumns.TITLE))
-            else -> putStringArray(ContentResolver.QUERY_ARG_SORT_COLUMNS, arrayOf(MediaStore.Files.FileColumns.DATE_ADDED))
+            "ALPHABET" -> putStringArray(
+                ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                arrayOf(MediaStore.Files.FileColumns.TITLE)
+            )
+            else -> putStringArray(
+                ContentResolver.QUERY_ARG_SORT_COLUMNS,
+                arrayOf(MediaStore.Files.FileColumns.DATE_ADDED)
+            )
         }
         val orderDirection =
             if (orderAscending) ContentResolver.QUERY_SORT_DIRECTION_ASCENDING else ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
@@ -252,5 +263,3 @@ object ScreenshotKit {
         fun onScreenShot(path: String?)
     }
 }
-
-

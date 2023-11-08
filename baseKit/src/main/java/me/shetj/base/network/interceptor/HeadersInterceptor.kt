@@ -1,11 +1,10 @@
 package me.shetj.base.network.interceptor
 
-import java.io.IOException
 import me.shetj.base.ktx.logE
 import me.shetj.base.network.model.HttpHeaders
 import okhttp3.Interceptor
 import okhttp3.Response
-import timber.log.Timber
+import java.io.IOException
 
 class HeadersInterceptor(private val headers: HttpHeaders) : Interceptor {
 

@@ -6,7 +6,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 open class InnerPagerAdapter : FragmentStateAdapter {
 
-
     private var fragments = ArrayList<Fragment>()
 
     constructor(fragmentActivity: FragmentActivity, fragments: ArrayList<Fragment>) : super(fragmentActivity) {

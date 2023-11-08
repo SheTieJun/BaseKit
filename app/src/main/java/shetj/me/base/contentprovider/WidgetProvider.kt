@@ -16,8 +16,6 @@ import androidx.lifecycle.LifecycleOwner
 import me.shetj.base.ktx.logI
 import shetj.me.base.R.id
 import shetj.me.base.R.layout
-import shetj.me.base.contentprovider.WidgetProvider.Companion.idsSet
-import shetj.me.base.contentprovider.WidgetProvider.Companion.mIndex
 import shetj.me.base.func.main.MainActivity
 
 /**
@@ -35,13 +33,9 @@ import shetj.me.base.func.main.MainActivity
  */
 const val ACTION_UPDATE_ALL = "com.shetj.widget.UPDATE_ALL"
 
-
 class WidgetProvider : AppWidgetProvider() {
 
-
-
     // 更新 widget 的广播对应的action
-
 
     /**
      * 接收窗口小部件点击时发送的广播
@@ -123,7 +117,12 @@ class WidgetProvider : AppWidgetProvider() {
     }
 
     // 当 widget 被初次添加 或者 当 widget 的大小被改变时，被调用
-    override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, newOptions: Bundle) {
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle
+    ) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
         "onAppWidgetOptionsChanged".logI("WidgetProvider")
     }
@@ -181,7 +180,7 @@ class WidgetProvider : AppWidgetProvider() {
             filter.addAction(ACTION_UPDATE_ALL)
             val provider = WidgetProvider()
             context.registerReceiver(provider, filter)
-            context.lifecycle.addObserver(object :LifecycleEventObserver{
+            context.lifecycle.addObserver(object : LifecycleEventObserver {
                 override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                     if (event == Lifecycle.Event.ON_DESTROY) {
                         context.unregisterReceiver(provider)
@@ -189,8 +188,5 @@ class WidgetProvider : AppWidgetProvider() {
                 }
             })
         }
-
-
-
     }
 }

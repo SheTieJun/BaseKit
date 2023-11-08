@@ -3,11 +3,13 @@ package me.shetj.base.base
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.annotation.MainThread
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import me.shetj.base.ktx.getWindowContent
@@ -53,7 +55,7 @@ abstract class AbBaseActivity : AppCompatActivity() {
         configWindow()
     }
 
-
+    @RequiresApi(VERSION_CODES.O)
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
         "$TAG : onMultiWindowModeChanged:$isInMultiWindowMode".logUILife()
@@ -84,11 +86,9 @@ abstract class AbBaseActivity : AppCompatActivity() {
     }
 
     open fun onWindowSizeChangeHeight(windowSizeH: WindowSizeClass) {
-
     }
 
     open fun onWindowSizeChangeWidth(windowSizeW: WindowSizeClass) {
-
     }
 
     protected fun computeWindowSizeClasses() {
@@ -100,7 +100,6 @@ abstract class AbBaseActivity : AppCompatActivity() {
      * 是否可以切换到灰色主题
      */
     open fun isEnableGrayTheme() = true
-
 
     open fun setTitle(title: String) {
         supportActionBar?.title = title
@@ -114,7 +113,6 @@ abstract class AbBaseActivity : AppCompatActivity() {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
-
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
