@@ -26,7 +26,7 @@ open class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
      * @return RxAppCompatActivity
      */
     override val rxContext: AppCompatActivity
-        get() = (requireActivity() as AppCompatActivity?)!!
+        get() = (requireActivity() as AppCompatActivity)
 
     /**
      * 抽象类不能反射

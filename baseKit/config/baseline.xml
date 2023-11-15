@@ -207,28 +207,28 @@
     <ID>NoConsecutiveBlankLines:BaseKit.kt$ </ID>
     <ID>NoConsecutiveBlankLines:BaseKit.kt$BaseKit$ </ID>
     <ID>NoUnusedImports:BaseKit.kt$me.shetj.base.BaseKit.kt</ID>
-    <ID>PackageName:CacheMode.kt$package me.shetj.base.network_coroutine.cache</ID>
-    <ID>PackageName:HttpKit.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageName:HttpReslut.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageName:IResultCache.kt$package me.shetj.base.network_coroutine.cache</ID>
-    <ID>PackageName:KCApiService.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageName:KCCache.kt$package me.shetj.base.network_coroutine.cache</ID>
-    <ID>PackageName:KCHttpV2.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageName:KCHttpV3.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageName:KCHttpV4.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageName:LruDiskCache.kt$package me.shetj.base.network_coroutine.cache</ID>
-    <ID>PackageName:RequestOption.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageNaming:CacheMode.kt$package me.shetj.base.network_coroutine.cache</ID>
-    <ID>PackageNaming:HttpKit.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageNaming:HttpReslut.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageNaming:IResultCache.kt$package me.shetj.base.network_coroutine.cache</ID>
-    <ID>PackageNaming:KCApiService.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageNaming:KCCache.kt$package me.shetj.base.network_coroutine.cache</ID>
-    <ID>PackageNaming:KCHttpV2.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageNaming:KCHttpV3.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageNaming:KCHttpV4.kt$package me.shetj.base.network_coroutine</ID>
-    <ID>PackageNaming:LruDiskCache.kt$package me.shetj.base.network_coroutine.cache</ID>
-    <ID>PackageNaming:RequestOption.kt$package me.shetj.base.network_coroutine</ID>
+    <ID>PackageName:CacheMode.kt$package me.shetj.base.netcoroutine.cache</ID>
+    <ID>PackageName:HttpKit.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageName:HttpReslut.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageName:IResultCache.kt$package me.shetj.base.netcoroutine.cache</ID>
+    <ID>PackageName:KCApiService.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageName:KCCache.kt$package me.shetj.base.netcoroutine.cache</ID>
+    <ID>PackageName:KCHttpV2.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageName:KCHttpV3.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageName:KCHttpV4.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageName:LruDiskCache.kt$package me.shetj.base.netcoroutine.cache</ID>
+    <ID>PackageName:RequestOption.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageNaming:CacheMode.kt$package me.shetj.base.netcoroutine.cache</ID>
+    <ID>PackageNaming:HttpKit.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageNaming:HttpReslut.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageNaming:IResultCache.kt$package me.shetj.base.netcoroutine.cache</ID>
+    <ID>PackageNaming:KCApiService.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageNaming:KCCache.kt$package me.shetj.base.netcoroutine.cache</ID>
+    <ID>PackageNaming:KCHttpV2.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageNaming:KCHttpV3.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageNaming:KCHttpV4.kt$package me.shetj.base.netcoroutine</ID>
+    <ID>PackageNaming:LruDiskCache.kt$package me.shetj.base.netcoroutine.cache</ID>
+    <ID>PackageNaming:RequestOption.kt$package me.shetj.base.netcoroutine</ID>
     <ID>PrintStackTrace:ActivityExt.kt$localException</ID>
     <ID>PrintStackTrace:AppSigningUtils.kt$AppSigningUtils$e</ID>
     <ID>PrintStackTrace:AppUtils.kt$AppUtils.Companion$e</ID>
@@ -363,7 +363,7 @@
     <ID>TooManyFunctions:DateUtils.kt$DateUtils</ID>
     <ID>TooManyFunctions:FileQUtils.kt$FileQUtils</ID>
     <ID>TooManyFunctions:FragmentUtils.kt$FragmentUtils$Companion</ID>
-    <ID>TooManyFunctions:HttpReslut.kt$me.shetj.base.network_coroutine.HttpReslut.kt</ID>
+    <ID>TooManyFunctions:HttpReslut.kt$me.shetj.base.netcoroutine.HttpReslut.kt</ID>
     <ID>TooManyFunctions:ImageUtils.kt$ImageUtils$Companion</ID>
     <ID>TooManyFunctions:IntentUtils.kt$IntentUtils$Companion</ID>
     <ID>TooManyFunctions:KCApiService.kt$KCApiService</ID>

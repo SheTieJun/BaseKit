@@ -102,12 +102,11 @@ class SPEncryptedUtils {
             editor?.apply()
         }
 
+        @Synchronized
         private fun getEditor(context: Context): SharedPreferences.Editor {
-            if (editor == null) {
-                val sharedPreferences = getSharePreference(context)
-                editor = sharedPreferences.edit()
+            return editor ?: getSharePreference(context).edit().also {
+                editor = it
             }
-            return editor!!
         }
 
         private fun getSharePreference(context: Context): SharedPreferences {

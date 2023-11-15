@@ -1,4 +1,4 @@
-package me.shetj.base.network_coroutine.cache
+package me.shetj.base.netcoroutine.cache
 
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException
@@ -16,7 +16,7 @@ import java.nio.charset.Charset
  * Source对应InputStream， Sink对应OutputStream
  */
 class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Long) :
-    IResultCache() {
+    IResultCache {
 
     private val charset: Charset = Charset.forName("UTF-8")
 

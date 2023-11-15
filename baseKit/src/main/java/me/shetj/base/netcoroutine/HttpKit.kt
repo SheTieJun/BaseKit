@@ -1,10 +1,10 @@
-package me.shetj.base.network_coroutine
+package me.shetj.base.netcoroutine
 
 import me.shetj.base.BaseKit
+import me.shetj.base.netcoroutine.cache.KCCache
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.interceptor.ReceivedCookiesInterceptor
 import me.shetj.base.network.model.HttpHeaders
-import me.shetj.base.network_coroutine.cache.KCCache
 import me.shetj.base.tools.file.SPUtils
 import okhttp3.OkHttpClient
 import org.koin.java.KoinJavaComponent

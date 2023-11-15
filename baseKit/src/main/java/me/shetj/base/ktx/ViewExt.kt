@@ -52,17 +52,17 @@ fun BottomNavigationView.clearToast(ids: MutableList<Int>) {
 /**
  * 设置textView 的 Drawable
  */
-fun TextView.setDrawables(
-    @DrawableRes resId: Int,
-    @Constant.GravityType gravity: Int = Gravity.TOP
-) {
+fun TextView.setDrawables(@DrawableRes resId: Int, @Constant.GravityType gravity: Int = Gravity.TOP) {
     ContextCompat.getDrawable(context, resId)?.apply {
         setBounds(0, 0, minimumWidth, minimumHeight)
     }?.let {
         when (gravity) {
             Gravity.START -> setCompoundDrawablesRelative(it, null, null, null)
+
             Gravity.TOP -> setCompoundDrawablesRelative(null, it, null, null)
+
             Gravity.END -> setCompoundDrawablesRelative(null, null, it, null)
+
             Gravity.BOTTOM -> setCompoundDrawablesRelative(null, null, null, it)
         }
     }
@@ -79,8 +79,7 @@ fun TextView.clearDrawables() {
 fun View.performHapticFeedback() {
     // HapticFeedbackConstants.CLOCK_TICK 是一个触觉反馈常量，用于指定时钟滴答的触觉反馈效果。它用于模拟时钟滴答的感觉，通常用于时钟应用程序或需要模拟时钟滴答的场景。
     // HapticFeedbackConstants.VIRTUAL_KEY 虚拟按键反馈效果。通常用于模拟按下虚拟按键时的触觉反馈。
-    val feedbackKey =
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) HapticFeedbackConstants.CLOCK_TICK else HapticFeedbackConstants.VIRTUAL_KEY
+    val feedbackKey = if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) HapticFeedbackConstants.CLOCK_TICK else HapticFeedbackConstants.VIRTUAL_KEY
     this.performHapticFeedback(feedbackKey)
 }
 
@@ -126,7 +125,6 @@ fun <T : View> ViewGroup.inflate(
 
 //region SwipeRefreshLayout
 
-@Suppress("UNCHECKED_CAST")
 @JvmOverloads
 fun SwipeRefreshLayout.setSwipeRefresh(
     @ColorRes color: Int = R.color.colorAccent,
@@ -147,26 +145,20 @@ fun <T : View> T?.updatePadding(
     right: Int = this?.paddingRight ?: 0,
     bottom: Int = this?.paddingBottom ?: 0
 ) {
-    if (this != null &&
-        left == this.paddingLeft &&
-        top == this.paddingTop &&
-        right == this.paddingRight &&
-        bottom == this.paddingBottom
-    ) {
+    if (this != null && left == this.paddingLeft && top == this.paddingTop && right == this.paddingRight && bottom == this.paddingBottom) {
         return
     }
     this?.setPadding(left, top, right, bottom)
 }
 
-inline fun <T : View> T?.waitForLayout(crossinline f: T.() -> Unit) =
-    this?.viewTreeObserver.apply {
-        this?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                removeOnGlobalLayoutListener(this)
-                this@waitForLayout?.f()
-            }
-        })
-    }
+inline fun <T : View> T?.waitForLayout(crossinline f: T.() -> Unit) = this?.viewTreeObserver.apply {
+    this?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            removeOnGlobalLayoutListener(this)
+            this@waitForLayout?.f()
+        }
+    })
+}
 
 fun <T : View> T.isRtl() = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 //endregion 泛型
@@ -207,11 +199,9 @@ fun EditText.hidePassword() {
 fun View?.setClicksAnimate() {
     this?.setOnTouchListener { _, event ->
         when (event.action) {
-            MotionEvent.ACTION_UP -> animate().scaleX(1.15f).scaleY(1.15f).setDuration(150)
-                .withEndAction {
-                    animate().scaleX(1f).scaleY(1f).setDuration(150).start()
-                }
-                .start()
+            MotionEvent.ACTION_UP -> animate().scaleX(1.15f).scaleY(1.15f).setDuration(150).withEndAction {
+                animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+            }.start()
         }
         false
     }
@@ -224,16 +214,13 @@ fun View?.setClicksAnimate2() {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 isDown = true
-                animate().scaleX(0.8f).scaleY(0.8f).setDuration(150)
-                    .withStartAction {
-                        isDownAnimEnd = false
-                    }
-                    .withEndAction {
-                        isDownAnimEnd = true
-                        if (isDown) return@withEndAction
-                        animate().scaleX(1f).scaleY(1f).setDuration(150).start()
-                    }
-                    .start()
+                animate().scaleX(0.8f).scaleY(0.8f).setDuration(150).withStartAction {
+                    isDownAnimEnd = false
+                }.withEndAction {
+                    isDownAnimEnd = true
+                    if (isDown) return@withEndAction
+                    animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+                }.start()
             }
 
             MotionEvent.ACTION_UP -> {
@@ -332,8 +319,7 @@ fun EditText?.requestFocusEdit() {
         isFocusable = true
         isFocusableInTouchMode = true
         requestFocus()
-        val inputManager =
-            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         setSelection(text.length)
         inputManager.showSoftInput(this, 0)
     }
@@ -365,11 +351,7 @@ fun View.clipRound(radius: Float = ArmsUtils.dp2px(10f).toFloat()) {
         outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
                 outline.setRoundRect(
-                    0,
-                    0,
-                    view.width,
-                    view.height,
-                    radius
+                    0, 0, view.width, view.height, radius
                 )
             }
         }

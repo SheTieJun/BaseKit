@@ -56,6 +56,7 @@ inline fun <reified T> String?.toBean() = this?.let { GsonKit.jsonToBean(it, T::
 
 inline fun <reified T> String?.toList() = this?.let { GsonKit.jsonToList(it, T::class.java) }
 
+@Suppress("UnsafeCallOnNullableType")
 inline fun <reified T> String.convertToT() = if (T::class.java != String::class.java) {
     this.toBean()!!
 } else {

@@ -175,6 +175,6 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
     }
 
     init {
-        message = throwable.message!!
+        message = throwable.message
     }
 }

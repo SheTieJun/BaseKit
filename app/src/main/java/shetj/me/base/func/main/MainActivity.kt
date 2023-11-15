@@ -33,7 +33,7 @@ import me.shetj.base.ktx.windowInsets
 import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.mvvm.viewbind.BaseBindingActivity
-import me.shetj.base.network_coroutine.observeChange
+import me.shetj.base.netcoroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.LanguageKit

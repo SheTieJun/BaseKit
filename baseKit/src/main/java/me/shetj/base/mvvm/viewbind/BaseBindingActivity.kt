@@ -63,6 +63,9 @@ open class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> :
         if (mAcProvider == null) {
             mAcProvider = ViewModelProvider(this)
         }
-        return mAcProvider!![modelClass]
+        return mAcProvider?.get(modelClass) ?: ViewModelProvider(this)
+            .also {
+                mAcProvider = it
+            }[modelClass]
     }
 }

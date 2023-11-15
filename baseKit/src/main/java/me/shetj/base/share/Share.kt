@@ -71,12 +71,12 @@ class Share private constructor(builder: Builder) {
             if (forcedUseSystemChooser) {
                 shareIntent = Intent.createChooser(shareIntent, title)
             }
-            if (shareIntent?.resolveActivity(activity!!.packageManager) != null) {
+            if (activity?.packageManager?.let { shareIntent?.resolveActivity(it) } != null) {
                 try {
                     if (requestCode != -1) {
-                        activity?.startActivityForResult(shareIntent, requestCode)
+                        activity.startActivityForResult(shareIntent, requestCode)
                     } else {
-                        activity?.startActivity(shareIntent)
+                        activity.startActivity(shareIntent)
                     }
                 } catch (e: Exception) {
                     Timber.tag(TAG).e(Log.getStackTraceString(e))
@@ -85,6 +85,7 @@ class Share private constructor(builder: Builder) {
         }
     }
 
+    @Suppress("UnsafeCallOnNullableType")
     private fun createShareIntent(): Intent? {
         val shareIntent: Intent = Intent()
         shareIntent.action = Intent.ACTION_SEND

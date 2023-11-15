@@ -321,40 +321,36 @@ open class CircleImageView : AppCompatImageView {
         if (width == 0 && height == 0) {
             return
         }
+        mBitmap?.let { bitmap ->
+            mBitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
 
-        if (mBitmap == null) {
-            invalidate()
-            return
+            mBitmapPaint.isAntiAlias = true
+            mBitmapPaint.shader = mBitmapShader
+
+            mBorderPaint.style = Paint.Style.STROKE
+            mBorderPaint.isAntiAlias = true
+            mBorderPaint.color = mBorderColor
+            mBorderPaint.strokeWidth = mBorderWidth.toFloat()
+
+            mCircleBackgroundPaint.style = Paint.Style.FILL
+            mCircleBackgroundPaint.isAntiAlias = true
+            mCircleBackgroundPaint.color = mCircleBackgroundColor
+
+            mBitmapHeight = bitmap.height
+            mBitmapWidth = bitmap.width
+
+            mBorderRect.set(calculateBounds())
+            mBorderRadius = min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f)
+
+            mDrawableRect.set(mBorderRect)
+            if (!mBorderOverlay && mBorderWidth > 0) {
+                mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f)
+            }
+            mDrawableRadius = min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f)
+
+            applyColorFilter()
+            updateShaderMatrix()
         }
-
-        mBitmapShader = BitmapShader(mBitmap!!, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-
-        mBitmapPaint.isAntiAlias = true
-        mBitmapPaint.shader = mBitmapShader
-
-        mBorderPaint.style = Paint.Style.STROKE
-        mBorderPaint.isAntiAlias = true
-        mBorderPaint.color = mBorderColor
-        mBorderPaint.strokeWidth = mBorderWidth.toFloat()
-
-        mCircleBackgroundPaint.style = Paint.Style.FILL
-        mCircleBackgroundPaint.isAntiAlias = true
-        mCircleBackgroundPaint.color = mCircleBackgroundColor
-
-        mBitmapHeight = mBitmap!!.height
-        mBitmapWidth = mBitmap!!.width
-
-        mBorderRect.set(calculateBounds())
-        mBorderRadius = min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f)
-
-        mDrawableRect.set(mBorderRect)
-        if (!mBorderOverlay && mBorderWidth > 0) {
-            mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f)
-        }
-        mDrawableRadius = min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f)
-
-        applyColorFilter()
-        updateShaderMatrix()
         invalidate()
     }
 
@@ -388,7 +384,7 @@ open class CircleImageView : AppCompatImageView {
         mShaderMatrix.setScale(scale, scale)
         mShaderMatrix.postTranslate((dx + 0.5f).toInt() + mDrawableRect.left, (dy + 0.5f).toInt() + mDrawableRect.top)
 
-        mBitmapShader!!.setLocalMatrix(mShaderMatrix)
+        mBitmapShader?.setLocalMatrix(mShaderMatrix)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

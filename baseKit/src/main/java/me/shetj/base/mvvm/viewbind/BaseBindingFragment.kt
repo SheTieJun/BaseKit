@@ -120,13 +120,19 @@ open class BaseBindingFragment<VB : ViewBinding, VM : BaseViewModel> : AbBaseFra
         if (mFragmentProvider == null) {
             mFragmentProvider = ViewModelProvider(this)
         }
-        return mFragmentProvider!![modelClass]
+        return mFragmentProvider?.get(modelClass) ?: ViewModelProvider(this)
+            .also {
+                mFragmentProvider = it
+            }[modelClass]
     }
 
     protected open fun getActivityViewModel(@NonNull modelClass: Class<VM>): VM {
         if (mActivityProvider == null) {
             mActivityProvider = ViewModelProvider(requireActivity())
         }
-        return mActivityProvider!![modelClass]
+        return mActivityProvider?.get(modelClass) ?: ViewModelProvider(requireActivity())
+            .also {
+                mActivityProvider = it
+            }[modelClass]
     }
 }

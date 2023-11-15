@@ -1,6 +1,5 @@
-package me.shetj.base.network_coroutine
+package me.shetj.base.netcoroutine
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -10,12 +9,12 @@ import kotlinx.coroutines.withTimeout
 import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.ktx.convertToT
 import me.shetj.base.ktx.logD
+import me.shetj.base.netcoroutine.cache.CacheMode
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
 import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
 import me.shetj.base.network.exception.CacheException
 import me.shetj.base.network.kt.createJson
-import me.shetj.base.network_coroutine.cache.CacheMode
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
 import java.io.BufferedInputStream
@@ -25,7 +24,7 @@ import java.io.FileOutputStream
 /**
  * 协程 Http请求
  * - 感觉可能用的不多，所以就只写这几个方法了
- * - [me.shetj.base.network_coroutine.RequestOption]控制缓存
+ * - [me.shetj.base.netcoroutine.RequestOption]控制缓存
  */
 object KCHttpV4 {
 
@@ -381,11 +380,11 @@ object KCHttpV4 {
     }
 
     /**
-     * use by [me.shetj.base.network_coroutine.KCHttpV4]
+     * use by [me.shetj.base.netcoroutine.KCHttpV4]
      */
     suspend fun saveCache(requestOption: RequestOption?, data: String) {
         if (!requestOption?.cacheKey.isNullOrBlank()) {
-            withContext(Dispatchers.IO) {
+            withContext(DispatcherProvider.io()) {
                 HttpKit.getKCCache().save(requestOption?.cacheKey, data)
             }
         }

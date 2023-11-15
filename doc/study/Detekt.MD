@@ -21,4 +21,6 @@ detekt.yml ：
 | style          | 统一团队的代码风格，也包括一些由 Detekt 定义的格式化问题 |
 
 
-
+## 忽略规则
+1.在类名或者方法名前添加诸如@Suppress("LargeClass")这样的注解，可以有针对性地忽略这个文件中的某些告警。
+2.在文件头添加@file:Suppress("TooManyFunctions"),则可以直接告诉detekt不扫描这个文件中的这类问题。

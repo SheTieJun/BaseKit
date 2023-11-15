@@ -1,7 +1,7 @@
 package me.shetj.base.network.interceptor
 
+import me.shetj.base.netcoroutine.HttpKit
 import me.shetj.base.network.model.HttpHeaders
-import me.shetj.base.network_coroutine.HttpKit
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response

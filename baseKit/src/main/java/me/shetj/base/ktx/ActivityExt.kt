@@ -185,6 +185,23 @@ fun Activity.hasPermission(
     return false
 }
 
+fun Activity.needPermissionTip(@NonNull permissions: String): Boolean {
+    /**
+     * 从来没有申请过:
+     * ActivityCompat.shouldShowRequestPermissionRationale=false;
+     *
+     * 第一次请求权限被禁止，但未选择【不再提醒】
+     * ActivityCompat.shouldShowRequestPermissionRationale = true;
+     *
+     * 允许权限后
+     * ActivityCompat.shouldShowRequestPermissionRationale=false;
+     *
+     * 禁止权限，并选中【禁止后不再询问】
+     * ActivityCompat.shouldShowRequestPermissionRationale=false；
+     */
+    return ActivityCompat.shouldShowRequestPermissionRationale(this, permissions)
+}
+
 fun AppCompatActivity.onRequestPermissionsResultImpl(
     @NonNull permissions: Array<String>,
     @NonNull grantResults: IntArray

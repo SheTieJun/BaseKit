@@ -73,7 +73,7 @@ class Utils private constructor() {
         fun getTopActivity() = sTopActivityWeakRef?.get()
 
         private fun setTopActivityWeakRef(activity: Activity) {
-            if (sTopActivityWeakRef == null || activity != sTopActivityWeakRef!!.get()) {
+            if (activity != sTopActivityWeakRef?.get()) {
                 sTopActivityWeakRef = WeakReference(activity)
             }
         }

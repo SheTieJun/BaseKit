@@ -1,16 +1,13 @@
 package me.shetj.base.ktx
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
-import java.util.Timer
-import java.util.TimerTask
+import java.util.*
 
 fun <T> Flow<T>.throttleFirst(duration: Long = 1000L) = this.throttleFirstImpl(duration)
 
@@ -30,10 +27,9 @@ internal fun <T> Flow<T>.throttleFirstImpl(periodMillis: Long): Flow<T> {
     }
 }
 
-@ExperimentalCoroutinesApi
 fun <T> Flow<T>.throttleLatest(duration: Long = 1000L) = this.throttleLatestImpl(duration)
 
-@ExperimentalCoroutinesApi
+@SuppressWarnings("IgnoredReturnValue")
 internal fun <T> Flow<T>.throttleLatestImpl(periodMillis: Long): Flow<T> {
     return channelFlow {
         var lastValue: T?

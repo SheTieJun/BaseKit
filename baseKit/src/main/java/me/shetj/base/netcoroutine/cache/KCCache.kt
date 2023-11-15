@@ -1,9 +1,9 @@
-package me.shetj.base.network_coroutine.cache
+package me.shetj.base.netcoroutine.cache
 
 import kotlinx.coroutines.withContext
 import me.shetj.base.coroutine.DispatcherProvider
-import me.shetj.base.network_coroutine.HttpKit
-import me.shetj.base.network_coroutine.cache.KCCache.Companion.CACHE_NEVER_EXPIRE
+import me.shetj.base.netcoroutine.HttpKit
+import me.shetj.base.netcoroutine.cache.KCCache.Companion.CACHE_NEVER_EXPIRE
 import org.koin.java.KoinJavaComponent
 import java.util.concurrent.locks.ReadWriteLock
 import java.util.concurrent.locks.ReentrantReadWriteLock

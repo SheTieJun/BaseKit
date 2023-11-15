@@ -1,3 +1,5 @@
+@file:Suppress("IgnoredReturnValue")
+
 package me.shetj.base.ktx
 
 import android.content.Context

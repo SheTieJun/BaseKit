@@ -105,7 +105,7 @@ class HttpLoggingInterceptor : Interceptor {
                 val headers = request.headers()
                 log(headers.toString())
                 if (logBody && hasRequestBody) {
-                    if (isPlaintext(requestBody!!.contentType())) {
+                    if (isPlaintext(requestBody?.contentType())) {
                         bodyToString(request)
                     } else {
                         log("\tbody: maybe [file part] , too large too print , ignored!")
@@ -132,10 +132,10 @@ class HttpLoggingInterceptor : Interceptor {
             )
             if (logHeaders) {
                 if (logBody && HttpHeaders.hasBody(clone)) {
-                    if (isPlaintext(responseBody!!.contentType())) {
-                        val body = responseBody.string()
+                    if (isPlaintext(responseBody?.contentType())) {
+                        val body = responseBody?.string().orEmpty()
                         log(body)
-                        responseBody = ResponseBody.create(responseBody.contentType(), body)
+                        responseBody = ResponseBody.create(responseBody?.contentType(), body)
                         return response.newBuilder().body(responseBody).build()
                     } else {
                         log("\tbody: maybe [file part] , too large too print , ignored!")
@@ -153,9 +153,9 @@ class HttpLoggingInterceptor : Interceptor {
         try {
             val copy = request.newBuilder().build()
             val buffer = Buffer()
-            copy.body()!!.writeTo(buffer)
+            copy.body()?.writeTo(buffer)
             var charset = UTF8
-            val contentType = copy.body()!!.contentType()
+            val contentType = copy.body()?.contentType()
             if (contentType != null) {
                 charset = contentType.charset(UTF8)
             }

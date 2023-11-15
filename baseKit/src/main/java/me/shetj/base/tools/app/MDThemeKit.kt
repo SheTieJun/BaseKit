@@ -225,7 +225,12 @@ object MDThemeKit {
 
     fun applyThemeOverlay(context: Context, @StyleRes theme: Int) {
         // Use applyStyle() instead of setTheme() due to Force Dark issue.
-        context.theme.applyStyle(theme, /* force= */true)
+        context.theme.applyStyle(
+            /* resId = */
+            theme,
+            /* force = */
+            true
+        )
 
         // Make sure the theme overlay is applied to the Window decorView similar to Activity#setTheme,
         // to ensure that it will be applied to things like ContextMenu using the DecorContext.
@@ -233,7 +238,12 @@ object MDThemeKit {
             val windowDecorViewTheme = getWindowDecorViewTheme(
                 context
             )
-            windowDecorViewTheme?.applyStyle(theme, /* force= */true)
+            windowDecorViewTheme?.applyStyle(
+                /* resId = */
+                theme,
+                /* force = */
+                true
+            )
         }
     }
 

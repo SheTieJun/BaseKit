@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import me.shetj.base.mvvm.viewbind.BaseViewModel
-import me.shetj.base.network_coroutine.HttpResult
-import me.shetj.base.network_coroutine.KCHttpV2
+import me.shetj.base.netcoroutine.HttpResult
+import me.shetj.base.netcoroutine.KCHttpV2
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.time.CalendarReminderUtils
 import shetj.me.base.bean.ResultMusic

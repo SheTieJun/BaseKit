@@ -1,9 +1,9 @@
-package me.shetj.base.network_coroutine
+package me.shetj.base.netcoroutine
 
 import androidx.annotation.Keep
 import me.shetj.base.ktx.md5
-import me.shetj.base.network_coroutine.cache.CacheMode
-import me.shetj.base.network_coroutine.cache.KCCache.Companion.CACHE_NEVER_EXPIRE
+import me.shetj.base.netcoroutine.cache.CacheMode
+import me.shetj.base.netcoroutine.cache.KCCache.Companion.CACHE_NEVER_EXPIRE
 
 /**
  * 请求选项选项

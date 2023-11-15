@@ -1,6 +1,6 @@
-@file:Suppress("UNCHECKED_CAST")
+@file:Suppress("UNCHECKED_CAST", "TooManyFunctions")
 
-package me.shetj.base.network_coroutine
+package me.shetj.base.netcoroutine
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -8,7 +8,6 @@ import me.shetj.base.network.exception.ApiException
 import java.io.File
 
 //region 下载状态相关
-typealias OnError = (ApiException) -> Unit
 typealias download_error = suspend (Throwable) -> Unit
 typealias download_process = suspend (downloadedSize: Long, length: Long, progress: Float) -> Unit
 typealias download_success = suspend (uri: File) -> Unit
@@ -80,6 +79,7 @@ fun HttpResult<*>.throwOnFailure() {
     if (value is HttpResult.Failure) throw value.exception
 }
 
+@Suppress("TooGenericExceptionCaught")
 inline fun <R> runCatching(block: () -> R): HttpResult<R> {
     return try {
         HttpResult.success(block())
@@ -88,6 +88,7 @@ inline fun <R> runCatching(block: () -> R): HttpResult<R> {
     }
 }
 
+@Suppress("TooGenericExceptionCaught")
 inline fun <T, R> T.runCatching(block: T.() -> R): HttpResult<R> {
     return try {
         HttpResult.success(block())

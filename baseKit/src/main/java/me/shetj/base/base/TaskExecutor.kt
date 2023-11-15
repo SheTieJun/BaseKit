@@ -53,7 +53,7 @@ class TaskExecutor private constructor() {
                     }
                 }
             }
-            mMainHandler!!.post(runnable)
+            mMainHandler?.post(runnable)
         }
     }
 

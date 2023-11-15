@@ -95,7 +95,7 @@ class DES {
                 else -> encrypted.toByteArray()
             }
             retByte = cipher.doFinal(retByte)
-            return String(retByte!!, Charset.forName("UTF-8"))
+            return String(retByte, Charset.forName("UTF-8"))
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -1,4 +1,4 @@
-package me.shetj.base.network_coroutine
+package me.shetj.base.netcoroutine
 
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withTimeout
 import me.shetj.base.coroutine.DispatcherProvider
-import me.shetj.base.ktx.toBean
+import me.shetj.base.ktx.convertToT
 import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
 import me.shetj.base.network.kt.createJson
@@ -25,7 +25,7 @@ object KCHttpV3 {
 
     const val TAG = "KCHttpV3"
 
-    val apiService: KCApiService = get(KCApiService::class.java)
+    private val apiService: KCApiService = get(KCApiService::class.java)
 
     suspend inline fun <reified T> get(
         url: String,
@@ -159,12 +159,6 @@ object KCHttpV3 {
                     onProcess(progress.currentLength, progress.length, progress.process)
                 })
             }
-    }
-
-    inline fun <reified T> String.convertToT() = if (T::class.java != String::class.java) {
-        this.toBean()!!
-    } else {
-        this as T
     }
 
     /**

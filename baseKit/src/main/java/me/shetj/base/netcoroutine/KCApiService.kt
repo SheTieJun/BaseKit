@@ -1,4 +1,4 @@
-package me.shetj.base.network_coroutine
+package me.shetj.base.netcoroutine
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

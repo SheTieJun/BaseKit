@@ -1,15 +1,15 @@
 package me.shetj.base.di
 
 import me.shetj.base.BaseKit
+import me.shetj.base.netcoroutine.KCApiService
+import me.shetj.base.netcoroutine.cache.KCCache
+import me.shetj.base.netcoroutine.cache.LruDiskCache
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.interceptor.ReceivedCookiesInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.ohter.OkHttpDns
-import me.shetj.base.network_coroutine.KCApiService
-import me.shetj.base.network_coroutine.cache.KCCache
-import me.shetj.base.network_coroutine.cache.LruDiskCache
 import me.shetj.base.saver.SaverDatabase
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.file.EnvironmentStorage

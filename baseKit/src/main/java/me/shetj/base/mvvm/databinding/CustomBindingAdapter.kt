@@ -1,3 +1,5 @@
+@file:Suppress("IgnoredReturnValue")
+
 package me.shetj.base.mvvm.databinding
 
 import android.graphics.Paint

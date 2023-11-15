@@ -7,7 +7,7 @@ import androidx.startup.Initializer
 import me.shetj.base.BaseKit
 import me.shetj.base.BuildConfig
 import me.shetj.base.model.NetWorkLiveDate
-import me.shetj.base.network_coroutine.HttpKit
+import me.shetj.base.netcoroutine.HttpKit
 
 /**
  * 初始化PhotoLife

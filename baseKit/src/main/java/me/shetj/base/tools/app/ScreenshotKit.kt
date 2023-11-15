@@ -110,16 +110,20 @@ object ScreenshotKit {
         mInternalObserver?.let {
             context.contentResolver.registerContentObserver(
                 /* uri = */
-                Media.INTERNAL_CONTENT_URI, /* notifyForDescendants = */
-                true, /* observer = */
+                Media.INTERNAL_CONTENT_URI,
+                /* notifyForDescendants = */
+                true,
+                /* observer = */
                 it
             )
         }
         mExternalObserver?.let {
             context.contentResolver.registerContentObserver(
                 /* uri = */
-                Media.EXTERNAL_CONTENT_URI, /* notifyForDescendants = */
-                true, /* observer = */
+                Media.EXTERNAL_CONTENT_URI,
+                /* notifyForDescendants = */
+                true,
+                /* observer = */
                 it
             )
         }

@@ -73,6 +73,7 @@ class ImageUtils {
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
                     createImageUri(context)
                 }
+
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
                     val file = File(createImagePath())
                     getUriForFile(
@@ -81,6 +82,7 @@ class ImageUtils {
                         file
                     )
                 }
+
                 else -> {
                     val file = File(createImagePath())
                     Uri.fromFile(file)
@@ -246,30 +248,36 @@ class ImageUtils {
             }
 
             when (requestCode) {
-                GET_IMAGE_BY_CAMERA -> if (imageUriFromCamera != null) {
-                    if (callBack?.isNeedCut() == true) {
-                        // 对图片进行裁剪
-                        cropImage(context, imageUriFromCamera)
-                    } else {
-                        callBack?.onSuccess(imageUriFromCamera!!)
+                GET_IMAGE_BY_CAMERA -> {
+                    imageUriFromCamera?.let { uri ->
+                        if (callBack?.isNeedCut() == true) {
+                            // 对图片进行裁剪
+                            cropImage(context, uri)
+                        } else {
+                            callBack?.onSuccess(uri)
+                        }
                     }
                 }
-                GET_IMAGE_FROM_PHONE -> if (data != null && data.data != null) {
-                    if (callBack?.isNeedCut() == true) {
-                        // 对图片进行裁剪
-                        cropImage(context, data.data)
-                    } else {
-                        callBack?.onSuccess(data.data!!)
+
+                GET_IMAGE_FROM_PHONE -> {
+                    data?.data?.let { uri ->
+                        if (callBack?.isNeedCut() == true) {
+                            // 对图片进行裁剪
+                            cropImage(context, uri)
+                        } else {
+                            callBack?.onSuccess(uri)
+                        }
                     }
                 }
+
                 GET_IMAGE_FROM_PHONE_NO_CUT -> {
-                    callBack?.onSuccess(data!!.data!!)
+                    data?.data?.let { callBack?.onSuccess(it) }
                 }
+
                 CROP_IMAGE -> {
-                    if (cropImageUri != null) {
-                        callBack?.onSuccess(cropImageUri!!)
-                    }
+                    cropImageUri?.let { callBack?.onSuccess(it) }
                 }
+
                 else -> callBack?.onFail()
             }
         }
@@ -394,7 +402,8 @@ class ImageUtils {
          * @return `true`: 是<br></br>`false`: 否
          */
         private fun isEmptyBitmap(src: Bitmap?): Boolean {
-            return src == null || src.width == 0 || src.height == 0
+            if (src == null) return true
+            return src.width == 0 || src.height == 0
         }
 
         /******************************~~~~~~~~~ 下方和压缩有关 ~~~~~~~~~ */

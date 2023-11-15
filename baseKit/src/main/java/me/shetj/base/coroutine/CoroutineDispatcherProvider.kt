@@ -1,3 +1,5 @@
+@file:Suppress("InjectDispatcher")
+
 package me.shetj.base.coroutine
 
 import kotlinx.coroutines.CoroutineDispatcher

@@ -17,7 +17,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import me.shetj.base.ktx.logI
-import me.shetj.base.network_coroutine.KCHttpV3
+import me.shetj.base.netcoroutine.KCHttpV3
 import shetj.me.base.R
 import java.util.*
 

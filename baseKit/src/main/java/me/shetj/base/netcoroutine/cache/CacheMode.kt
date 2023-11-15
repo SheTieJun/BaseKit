@@ -1,4 +1,4 @@
-package me.shetj.base.network_coroutine.cache
+package me.shetj.base.netcoroutine.cache
 
 enum class CacheMode {
 
