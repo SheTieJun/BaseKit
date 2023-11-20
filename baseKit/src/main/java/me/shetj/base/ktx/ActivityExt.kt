@@ -185,6 +185,12 @@ fun Activity.hasPermission(
     return false
 }
 
+/**
+ * Need permission tip
+ *
+ * @param permissions
+ * @return true:需要提示
+ */
 fun Activity.needPermissionTip(@NonNull permissions: String): Boolean {
     /**
      * 从来没有申请过:

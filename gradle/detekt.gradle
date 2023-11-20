@@ -21,7 +21,7 @@ subprojects {
         }
         //  // If set to `true` the build does not fail when the
         //    // maxIssues count was reached. Defaults to `false`.
-        ignoreFailures = true
+        //ignoreFailures = true
         parallel = true
         setSource(files("$projectDir/src/main"))
     }

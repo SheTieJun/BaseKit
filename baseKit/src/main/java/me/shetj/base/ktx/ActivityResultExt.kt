@@ -261,33 +261,37 @@ fun Fragment.startActivityResultLauncher(
 }
 
 fun Fragment.startRequestPermissionsLauncher(
-    key: String = "startRequestMultiplePermissions" + mNextLocalRequestCode.getAndIncrement(),
     callback: ActivityResultCallback<Map<String, Boolean>>
 ): ActivityResultLauncher<Array<String>>? {
-    return register(key, ActivityResultContracts.RequestMultiplePermissions(), callback)
+    return register(
+        "startRequestMultiplePermissions" + mNextLocalRequestCode.getAndIncrement(),
+        ActivityResultContracts.RequestMultiplePermissions(),
+        callback
+    )
 }
 
 fun Fragment.startRequestPermissionLauncher(
-    key: String = "startRequestPermission" + mNextLocalRequestCode.getAndIncrement(),
     callback: ActivityResultCallback<Boolean>
 ): ActivityResultLauncher<String>? {
-    return register(key, ActivityResultContracts.RequestPermission(), callback)
+    return register(
+        "startRequestPermission" + mNextLocalRequestCode.getAndIncrement(),
+        ActivityResultContracts.RequestPermission(),
+        callback
+    )
 }
 
 fun Fragment.startRequestPermissions(
-    key: String = "startRequestMultiplePermissions" + mNextLocalRequestCode.getAndIncrement(),
     permissions: Array<String>,
     callback: ActivityResultCallback<Map<String, Boolean>>
 ) {
-    startRequestPermissionsLauncher(key, callback)?.launch(permissions)
+    startRequestPermissionsLauncher(callback)?.launch(permissions)
 }
 
 fun Fragment.startRequestPermission(
-    key: String = "startRequestPermission" + mNextLocalRequestCode.getAndIncrement(),
     permission: String,
     callback: ActivityResultCallback<Boolean>
 ) {
-    startRequestPermissionLauncher(key, callback)?.launch(permission)
+    startRequestPermissionLauncher(callback)?.launch(permission)
 }
 
 /**
@@ -390,17 +394,3 @@ fun Fragment.pickMultipleVisualMedia(
 }
 
 //endregion
-
-/***************************************************Context 部分*******************************************************/
-
-fun <I, O> Any.register(
-    key: String,
-    contract: ActivityResultContract<I, O>,
-    callback: ActivityResultCallback<O>
-): ActivityResultLauncher<I>? {
-    return when (this) {
-        is ComponentActivity -> this.register(key, contract, callback)
-        is Fragment -> this.register(key, contract, callback)
-        else -> null
-    }
-}

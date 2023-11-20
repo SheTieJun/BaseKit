@@ -23,4 +23,4 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: DeteKt Code Check
-        run: ./gradlew detektDebug
+        run: ./gradlew baseKit:detektDebug

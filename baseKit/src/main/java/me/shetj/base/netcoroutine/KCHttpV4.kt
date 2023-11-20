@@ -2,6 +2,7 @@ package me.shetj.base.netcoroutine
 
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -317,6 +318,7 @@ object KCHttpV4 {
                 emit(HttpResult.failure<File>(ApiException.handleException(e)))
             }
         }.flowOn(DispatcherProvider.io())
+            .buffer()
             .collect {
                 it.fold(onFailure = { e ->
                     e?.let { it1 -> onError(it1) }

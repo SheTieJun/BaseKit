@@ -40,7 +40,7 @@ fun createImagePathUri(context: Context): Uri {
 }
 
 internal fun createImagePath(context: Context): String {
-    val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
+    val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
     val time = System.currentTimeMillis()
     val imageName = timeFormatter.format(Date(time))
     return getPath(
@@ -97,7 +97,7 @@ internal fun getPath(root: String, packagePath: String): String {
 }
 
 internal fun createVideoPath(context: Context): String {
-    val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA)
+    val timeFormatter = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
     val time = System.currentTimeMillis()
     val imageName = timeFormatter.format(Date(time))
     return getPath(

@@ -27,7 +27,7 @@ class BaseInitialize : ABBaseInitialize() {
         Tim.setLogAuto(true)
         // 这里需要安装另外一个demo(专门用来接收日志的),服务APP,最好开启自启动
 //        SLogMessenger.getInstance().bindService(context, "me.shetj.logkit.demo")
-        BaseKit.versionName.logD("")
+        BaseKit.SDKVersionName.logD()
 //        SLogMessenger.getInstance().autoHide(context,false)
 //        SLogMessenger.getInstance().bindService(context,"me.shetj.beloved")
 //        Timber.plant(SLogMessengerTree())

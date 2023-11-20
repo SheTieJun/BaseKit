@@ -17,9 +17,9 @@ class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
     MutableLiveData<NetWorkLiveDate.NetWorkInfo>(netWorkInfo) {
 
     sealed class NetType() {
-        object WIFI : NetType()
-        object PHONE : NetType()
-        object NONE : NetType() // 初始化，或者没有网络
+        data object WIFI : NetType()
+        data object PHONE : NetType()
+        data object NONE : NetType() // 初始化，或者没有网络
     }
 
     private val isStarted: AtomicBoolean = AtomicBoolean(false)

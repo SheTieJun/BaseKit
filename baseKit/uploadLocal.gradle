@@ -1,8 +1,19 @@
 apply plugin: 'maven-publish'
 
-task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    archiveClassifier = "sources"
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        from android.sourceSets.main.java.srcDirs
+        from android.sourceSets.main.kotlin.srcDirs
+    } else {
+        // For pure Kotlin libraries, in case you have them
+        from sourceSets.main.java.srcDirs
+        from sourceSets.main.kotlin.srcDirs
+    }
+}
+
+artifacts {
+    archives androidSourcesJar
 }
 
 afterEvaluate {
@@ -10,10 +21,9 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 groupId "com.github.SheTieJun"
-                artifact sourceJar
                 from components.release
                 artifactId = "base"
-                version = '1.1.38'
+                version = '1.2.0'
             }
         }
     }

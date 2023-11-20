@@ -55,7 +55,7 @@ object WindowKit {
     }
 
     /**
-     * Add split lisen
+     * Add split listener
      *
      * @param activity
      * @param listener

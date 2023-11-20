@@ -5,13 +5,13 @@ package me.shetj.base.coroutine
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
+typealias DispatcherProvider = CoroutineDispatcherProviderImpl
+
 interface CoroutineDispatcherProvider {
     fun io(): CoroutineDispatcher
     fun default(): CoroutineDispatcher
     fun main(): CoroutineDispatcher
 }
-
-typealias DispatcherProvider = CoroutineDispatcherProviderImpl
 
 object CoroutineDispatcherProviderImpl : CoroutineDispatcherProvider {
     override fun io(): CoroutineDispatcher = Dispatchers.IO

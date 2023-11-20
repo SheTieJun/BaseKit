@@ -48,8 +48,7 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
 - 使用`Navigation`代替`ARouter`
 - 用`start_up`代替`Application`中初始化
   - 隐私政策，可以分阶段初始化，比如登录后才初始化
-- 可视化日志，用自己写的[LogKit](https://github.com/SheTieJun/LogKit)
-  - 拦截网页的请求，或者动态添加vConsole
+- 拦截网页的请求，或者动态添加vConsole
 - 注解+ASM 
 ---------------------
 ## 模块类型

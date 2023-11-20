@@ -15,14 +15,14 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = (findProperty("android.compileSdk") as String).toInt()
     namespace = "me.shetj.base"
     resourcePrefix = "base_"
     defaultConfig {
         aarMetadata {
-            this.minCompileSdk = 34
+            this.minCompileSdk = (findProperty("android.minCompileSdk") as String).toInt()
         }
-        minSdk = (24)
+        minSdk = (findProperty("android.minSdk") as String).toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFile("consumer-rules.pro")
     }
@@ -61,6 +61,8 @@ android {
 
 
     packaging {
+        //pickFirst "**/xxx.so" //告诉Gradle包装时只选一个，否则你会得到冲突。
+        resources.merges.add("../LICENSE")
         resources.excludes += "DebugProbesKt.bin"
     }
 
@@ -79,4 +81,4 @@ dependencies {
 }
 
 apply(from = "uploadLocal.gradle")
-apply(from = "../spotless.gradle")
+apply(from = "../gradle/spotless.gradle")

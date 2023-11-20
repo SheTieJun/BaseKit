@@ -6,10 +6,9 @@ import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.plus
-import me.shetj.base.base.TaskExecutor
+import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.di.getDBModule
 import me.shetj.base.di.getHttpModule
 import me.shetj.base.ktx.isTrue
@@ -71,7 +70,7 @@ object BaseKit {
      * 专门用来做不被取消的操作
      * 全局的
      */
-    val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate) + handler
+    val applicationScope = CoroutineScope(SupervisorJob() + DispatcherProvider.main()) + handler
 
     /**
      * ANDROID_ID的生成规则为：签名+设备信息+设备用户
@@ -97,26 +96,24 @@ object BaseKit {
         this.isDebug.postValue(isDebug)
         this.baseUrl = baseUrl
         Utils.init(application)
-        TaskExecutor.executeOnMain {
-            this.TAG = AppUtils.appName ?: "BaseKit"
-            Tim.setLogAuto(isDebug)
-            if (isDebug) {
-                DebugFunc.getInstance().initContext(application)
+        this.TAG = AppUtils.appName ?: "BaseKit"
+        Tim.setLogAuto(isDebug)
+        if (isDebug) {
+            DebugFunc.getInstance().initContext(application)
+        }
+        startKoin {
+            fragmentFactory()
+            if (BaseKit.isDebug.isTrue()) {
+                androidLogger(Level.ERROR)
             }
-            startKoin {
-                fragmentFactory()
-                if (BaseKit.isDebug.isTrue()) {
-                    androidLogger(Level.ERROR)
-                }
-                androidContext(application)
-                androidFileProperties("base.properties")
-                modules(getDBModule())
-                modules(getHttpModule())
-            }
+            androidContext(application)
+            androidFileProperties("base.properties")
+            modules(getDBModule())
+            modules(getHttpModule())
         }
     }
 
-    val versionName by lazy { "Version：" + KoinPlatformTools.defaultContext().get().getProperty("version") }
+    val SDKVersionName by lazy { "Version：" + KoinPlatformTools.defaultContext().get().getProperty("version") }
 
     @JvmStatic
     fun initKoin(modules: List<Module>) {

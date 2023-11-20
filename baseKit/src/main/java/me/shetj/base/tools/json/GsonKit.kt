@@ -6,8 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import me.shetj.base.ktx.list
-import me.shetj.base.ktx.map
+import me.shetj.base.ktx.GsonExt
 import timber.log.Timber
 import java.lang.reflect.Modifier
 import java.lang.reflect.Type
@@ -68,7 +67,7 @@ object GsonKit {
     @JvmStatic
     fun <T> jsonToList(@NonNull json: String, cls: Class<T>): List<T>? {
         return runCatching<List<T>> {
-            gson.fromJson(json, list(cls))
+            gson.fromJson(json, GsonExt.list(cls))
         }.onFailure {
             Timber.e(it)
         }.getOrNull()
@@ -77,7 +76,7 @@ object GsonKit {
     @JvmStatic
     fun <T> jsonToList2(@NonNull json: String, cls: Class<T>): List<T>? {
         return runCatching<List<T>> {
-            gson.fromJson(json, list(cls))
+            gson.fromJson(json, GsonExt.list(cls))
         }.onFailure {
             Timber.e(it)
         }.getOrNull()
@@ -91,7 +90,7 @@ object GsonKit {
         return runCatching<Map<String, Any>> {
             gson.fromJson(
                 gsonString,
-                map(String::class.java, Any::class.java)
+                GsonExt.map(String::class.java, Any::class.java)
             )
         }.onFailure {
             Timber.e(it)
@@ -106,7 +105,7 @@ object GsonKit {
         return runCatching {
             gson.fromJson<Map<String, String>>(
                 gsonString,
-                map(String::class.java, String::class.java)
+                GsonExt.map(String::class.java, String::class.java)
             )
         }.onFailure {
             Timber.e(it)

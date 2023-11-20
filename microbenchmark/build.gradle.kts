@@ -1,5 +1,3 @@
-
-
 plugins {
     id("com.android.library")
     id("androidx.benchmark")

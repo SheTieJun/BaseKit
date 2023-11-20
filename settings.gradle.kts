@@ -22,7 +22,7 @@ include(":benchmark")
 include(":microbenchmark")
 
 //apply(from="https://gist.githubusercontent.com/SheTieJun/f4cb1bd33997c2b46d9e3df40b95a02e/raw/888fd1f95857f1ae278dbafc0428e4c2b0d05ccf/config-maven-privacy-check.gradle")
-//apply(from="private-maven.gradle")
+//apply(from="gradle/private-maven.gradle")
 
 val list = ArrayList<String>()
 //初始化阶段开始时间

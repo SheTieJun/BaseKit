@@ -12,6 +12,7 @@ import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.ohter.OkHttpDns
 import me.shetj.base.saver.SaverDatabase
 import me.shetj.base.tools.app.AppUtils
+import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.json.GsonKit
 import okhttp3.Cache
@@ -62,7 +63,8 @@ internal fun getHttpModule(): Module {
                 val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
                 sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 addInterceptor(get(HttpLoggingInterceptor::class.java))
-                cache(Cache(File(EnvironmentStorage.getPath(packagePath = ".unKnow")), 1024 * 1024 * 12))
+                val path = EnvironmentStorage.getPath(root = Utils.app.cacheDir.absolutePath, packagePath = ".unKnow")
+                cache(Cache(File(path), 1024 * 1024 * 12))
                 dns(OkHttpDns.getInstance())
             }
         }

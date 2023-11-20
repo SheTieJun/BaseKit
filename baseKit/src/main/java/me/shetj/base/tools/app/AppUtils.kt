@@ -13,6 +13,7 @@ import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Process
 import androidx.annotation.Keep
 import me.shetj.base.ktx.drawableToBitmap
@@ -434,7 +435,11 @@ class AppUtils private constructor() {
             return try {
                 val pm = Utils.app.packageManager
                 val pi = pm.getPackageInfo(packageName, 0)
-                pi?.versionCode ?: -1
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    pi?.longVersionCode?.toInt() ?: -1
+                } else {
+                    pi?.versionCode ?: -1
+                }
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
                 -1
@@ -525,7 +530,7 @@ class AppUtils private constructor() {
                 val pm = Utils.app.packageManager
 
                 @SuppressLint("PackageManagerGetSignatures")
-                val pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+                val pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
                 pi?.signatures
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
@@ -535,7 +540,7 @@ class AppUtils private constructor() {
 
         /**
          * 判断App是否处于前台
-         *
+         * 可能触发隐私协议
          * @return `true`: 是<br></br>`false`: 否
          */
         @JvmStatic

@@ -5,9 +5,9 @@ import androidx.annotation.CallSuper
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
+import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.ktx.getObjByClassArg
 import me.shetj.base.ktx.toMessage
 import kotlin.coroutines.CoroutineContext
@@ -23,7 +23,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : CoroutineSc
     protected val model: T by lazy { initModel() }
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + SupervisorJob()
+        get() = DispatcherProvider.main() + SupervisorJob()
 
     internal val rxContext: AppCompatActivity
         get() = view.rxContext

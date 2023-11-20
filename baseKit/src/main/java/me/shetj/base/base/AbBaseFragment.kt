@@ -39,7 +39,7 @@ open class AbBaseFragment : Fragment(), LifecycleEventObserver, BaseControllerFu
         }
 
     // 拦截activity的onBack，默认不拦截
-    protected val onBackPressedCallback = object : OnBackPressedCallback(false) {
+    private val onBackPressedCallback = object : OnBackPressedCallback(enabledOnBack) {
         override fun handleOnBackPressed() {
             onBack()
         }
@@ -62,7 +62,8 @@ open class AbBaseFragment : Fragment(), LifecycleEventObserver, BaseControllerFu
     }
 
     /**
-     * 是否是导航的fragment
+     * 是否是导航Navigation的fragment
+     * Navigation 自身有实现保存状态
      */
     open fun isNavigationF() = true
 

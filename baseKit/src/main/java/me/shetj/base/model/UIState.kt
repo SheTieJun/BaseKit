@@ -5,10 +5,10 @@ package me.shetj.base.model
  */
 sealed class UIState {
     // 正在加载
-    object Loading : UIState()
+    data object Loading : UIState()
 
     // 加载完成
-    object End : UIState()
+    data object End : UIState()
 
     // 错误状态
     class Error(val e: ErrorType) : UIState()
@@ -21,10 +21,10 @@ sealed class UIState {
  * * [SignIn]:登录成功：用户登录后。
  */
 sealed class LoginUiState {
-    object SignedOut : LoginUiState()
-    object InProgress : LoginUiState()
-    object Error : LoginUiState()
-    object SignIn : LoginUiState()
+    data object SignedOut : LoginUiState()
+    data object InProgress : LoginUiState()
+    data object Error : LoginUiState()
+    data object SignIn : LoginUiState()
 }
 
 sealed class ErrorType {
@@ -32,7 +32,7 @@ sealed class ErrorType {
     /**
      * 网络错误
      */
-    object NetError : ErrorType()
+    data object NetError : ErrorType()
 
     /**
      * 接口错误

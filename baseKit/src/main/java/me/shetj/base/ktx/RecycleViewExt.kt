@@ -94,6 +94,7 @@ fun RecyclerView?.isCompleteVisibleShow(position: Int): Int {
 
 /**
  * viewPager2是必须通过代码设置
+ *
  */
 fun ViewPager2.overNever() {
     val child: View = getChildAt(0)

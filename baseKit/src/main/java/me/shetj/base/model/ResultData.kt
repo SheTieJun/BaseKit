@@ -14,5 +14,5 @@ sealed class ResultData<T> {
     /**
      * 没有数据
      */
-    object EmptyData : ResultData<Any>()
+    data object EmptyData : ResultData<Any>()
 }
