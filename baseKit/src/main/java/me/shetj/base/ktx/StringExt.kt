@@ -18,6 +18,7 @@ import timber.log.Timber
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import kotlin.contracts.contract
 
 fun String?.isPhone() = this?.let { StringUtils.isPhone(it) } ?: false
 
@@ -75,6 +76,19 @@ fun String?.copy(context: Context, action: (() -> Unit) = {}) {
         action.invoke()
     }
 }
+
+/**
+ * Check no empty
+ */
+inline fun <T : Any> checkNoEmpty(value: T?, lazyMessage: () -> Any): T {
+    if (value == null|| value.isEmpty()) {
+        val message = lazyMessage()
+        throw IllegalStateException(message.toString())
+    } else {
+        return value
+    }
+}
+
 
 //region log 相关
 fun String?.logI(tag: String = BaseKit.TAG) {
@@ -152,6 +166,16 @@ fun String?.logChunked(size: Int = 200) {
         } else {
             it.logI()
         }
+    }
+}
+
+
+inline fun  requireNotNullOrEmpty(value: String?, lazyMessage: () -> Any): String {
+    if (value.isNullOrEmpty()) {
+        val message = lazyMessage()
+        throw IllegalArgumentException(message.toString())
+    } else {
+        return value
     }
 }
 

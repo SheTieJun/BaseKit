@@ -1,9 +1,14 @@
 package me.shetj.base.tools.app
 
+import android.app.LocaleConfig
+import android.app.LocaleManager
 import android.content.Context
+import android.os.Build
 import android.os.LocaleList
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.LocaleManagerCompat
+import androidx.core.content.getSystemService
 import me.shetj.base.tools.file.SPUtils
 import java.util.*
 
@@ -38,14 +43,18 @@ object LanguageKit {
      */
     @Suppress("DEPRECATION")
     private fun setAppLanguage(context: Context, locale: Locale) {
-        val resources = context.resources
-        val metrics = resources.displayMetrics
-        val configuration = resources.configuration
-        configuration.setLocale(locale)
-        configuration.setLocales(LocaleList(locale))
-        context.createConfigurationContext(configuration)
-        // 实测，updateConfiguration这个方法虽然很多博主说是版本不适用
-        resources.updateConfiguration(configuration, metrics)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            context.getSystemService<LocaleManager>()?.overrideLocaleConfig = LocaleConfig(LocaleList(locale))
+        } else {
+            val resources = context.resources
+            val metrics = resources.displayMetrics
+            val configuration = resources.configuration
+            configuration.setLocale(locale)
+            configuration.setLocales(LocaleList(locale))
+            context.createConfigurationContext(configuration)
+            resources.updateConfiguration(configuration, metrics)
+        }
+
     }
 
     /**

@@ -16,6 +16,15 @@ import me.shetj.base.ktx.launch
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
+/**
+ * Window kit
+ *FoldingFeature 是一种 DisplayFeature，它提供了有关可折叠设备显示屏的信息，其中包括：
+ *
+ * - state：设备的折叠状态，即 FLAT 或 HALF_OPENED
+ * - orientation：折叠边或合页的方向，即 HORIZONTAL 或 VERTICAL
+ * - occlusionType：折叠边或合页是否遮住了显示屏的一部分，即 NONE 或 FULL
+ * - isSeparating：折叠边或合页是否创建了两个逻辑显示区域，即 true 或 false
+ */
 object WindowKit {
 
     enum class WindowSizeClass() { COMPACT, MEDIUM, EXPANDED }
@@ -48,10 +57,42 @@ object WindowKit {
         return widthWindowSizeClass to heightWindowSizeClass
     }
 
+    /**
+     *桌面模式
+     */
     @OptIn(ExperimentalContracts::class)
     fun isTableTopPosture(foldingFeature: FoldingFeature?): Boolean {
         contract { returns(true) implies (foldingFeature != null) }
         return foldingFeature?.state == FoldingFeature.State.HALF_OPENED && foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL
+    }
+
+    /**
+     * 图书模式
+     */
+    @OptIn(ExperimentalContracts::class)
+    fun isBookPosture(foldFeature : FoldingFeature?) : Boolean {
+        contract { returns(true) implies (foldFeature != null) }
+        return foldFeature?.state == FoldingFeature.State.HALF_OPENED &&
+                foldFeature.orientation == FoldingFeature.Orientation.VERTICAL
+    }
+
+    /**
+     * Is separating
+     * ```
+     *
+     *                             if (foldingFeature.orientation == HORIZONTAL) {
+     *                                 enterTabletopMode(foldingFeature)
+     *                             } else {
+     *                                 enterBookMode(foldingFeature)
+     *                             }
+     *                             else ->
+     *                                 enterNormalMode()
+     * ```
+     */
+    @OptIn(ExperimentalContracts::class)
+    fun isSeparating(foldFeature : FoldingFeature?) : Boolean {
+        contract { returns(true) implies (foldFeature != null) }
+        return foldFeature?.state == FoldingFeature.State.FLAT && foldFeature.isSeparating
     }
 
     /**

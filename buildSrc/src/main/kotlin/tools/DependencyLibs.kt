@@ -82,11 +82,13 @@ object DependencyLibs {
         add(AndroidX.cryptoSp)
         add(AndroidX.activityKtx)
         add(Mine.dataStoreLib)
-//        add(Mine.activityLib)
+
         add(AndroidX.datastoreCore)
         add(AndroidX.dragAndDrop)
         add(AndroidX.webKit)
         add(AndroidX.window)
+        add(AndroidX.concurrent)
+//        add(AndroidX.browser) //国内手机自带的浏览器效果很差
 
         add(Lifecycle.livedata)
         add(Lifecycle.viewmodel)
@@ -100,7 +102,7 @@ object DependencyLibs {
         add(AndroidX.Navigation.navigation)
         add(AndroidX.Navigation.navigationUi)
 
-        add(AndroidX.concurrent)
+        //        add(Mine.activityLib) //base 已经实现了
     }
 
 
@@ -181,15 +183,16 @@ object DependencyLibs {
         const val material = "com.google.android.material:material:1.9.0"
         const val animationCore = "androidx.core:core-animation:1.0.0-rc01"
         const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.6.1"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.6.2"
         const val startup = "androidx.startup:startup-runtime:1.1.1"
         const val cryptoSp = "androidx.security:security-crypto:1.1.0-alpha04"
-        const val activityKtx = "androidx.activity:activity-ktx:1.7.2"
+        const val activityKtx = "androidx.activity:activity-ktx:1.8.1"
         const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
         const val datastoreCore = "androidx.datastore:datastore-core:1.0.0"
         const val dragAndDrop = "androidx.draganddrop:draganddrop:1.0.0"
         const val webKit = "androidx.webkit:webkit:1.8.0"
         const val window = "androidx.window:window:1.1.0"
+        const val browser = "androidx.browser:browser:1.7.0"
         const val concurrent = "androidx.concurrent:concurrent-futures-ktx:1.1.0"
 
         object Constraint {

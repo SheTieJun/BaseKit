@@ -59,7 +59,7 @@ internal fun getHttpModule(): Module {
                 writeTimeout(timeout, TimeUnit.MILLISECONDS)
                 addInterceptor(HeadersInterceptor(get(HttpHeaders::class.java)))
                 addInterceptor(get(ReceivedCookiesInterceptor::class.java))
-                hostnameVerifier { _, _ -> true } // 主机验证
+                hostnameVerifier { _, _ -> true } // 主机验证,默认都是通过的
                 val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
                 sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 addInterceptor(get(HttpLoggingInterceptor::class.java))
@@ -80,7 +80,7 @@ internal fun getHttpModule(): Module {
             get<Retrofit.Builder>().apply {
                 // 创建具体的ApiService的时候，才复制具体的client 和base 以及其他的变更
                 client(get())
-                baseUrl(BaseKit.baseUrl ?: "https://github.com/")
+                baseUrl(BaseKit.baseUrl ?: "https://x.com/")
             }.build().create(KCApiService::class.java)
         }
 

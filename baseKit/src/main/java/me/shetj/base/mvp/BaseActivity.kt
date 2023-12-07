@@ -59,11 +59,6 @@ open class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, Lifecyc
     open fun initData() {
     }
 
-    override fun onDestroy() {
-        onActivityDestroy()
-        super.onDestroy()
-    }
-
     /**
      * 默认通过反射创建 T：BasePresenter
      * 可以重新 返回对应的实例 或者单例

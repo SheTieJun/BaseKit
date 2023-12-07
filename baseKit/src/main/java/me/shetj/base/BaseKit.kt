@@ -113,7 +113,7 @@ object BaseKit {
         }
     }
 
-    val SDKVersionName by lazy { "Version：" + KoinPlatformTools.defaultContext().get().getProperty("version") }
+    val SDKVersionName by lazy { "Version：" + KoinPlatformTools.defaultContext().get().getProperty<String>("version").toString() }
 
     @JvmStatic
     fun initKoin(modules: List<Module>) {

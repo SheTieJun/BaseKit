@@ -12,10 +12,6 @@ task androidSourcesJar(type: Jar) {
     }
 }
 
-artifacts {
-    archives androidSourcesJar
-}
-
 afterEvaluate {
     publishing {
         publications {
@@ -23,7 +19,7 @@ afterEvaluate {
                 groupId "com.github.SheTieJun"
                 from components.release
                 artifactId = "base"
-                version = '1.2.0'
+                version = '1.2.1'
             }
         }
     }

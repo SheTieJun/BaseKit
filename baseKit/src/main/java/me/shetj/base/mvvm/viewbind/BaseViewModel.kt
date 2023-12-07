@@ -16,6 +16,8 @@ open class BaseViewModel : ViewModel() {
 
 sealed class ViewAction
 
-class TipAction(val tipType: TipType, val msg: String) : ViewAction()
+data class TipAction(val tipType: TipType, val msg: String) : ViewAction()
 
-class NetErrorAction(val msg: String) : ViewAction()
+data class NetErrorAction(val msg: String) : ViewAction()
+
+data class LoadingAction(val msg: String) : ViewAction()

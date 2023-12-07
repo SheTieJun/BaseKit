@@ -78,11 +78,7 @@ class WebViewManager(private val webView: WebView) {
     }
 
     /**
-     * 这段js函数的功能就是，
-     * 遍历所有的img节点，
-     * 并添加onclick函数，
-     * 函数的功能是在图片点击的时候调用本地java接口并传递url过去
-     * onPageFinish 调用才有用
+
      */
     fun addImageClick() {
         webView.loadUrl(
@@ -97,6 +93,30 @@ class WebViewManager(private val webView: WebView) {
                 "}" +
                 "})()"
         )
+    }
+
+    /**
+     * * 这段js函数的功能就是，
+     *      * 遍历所有的img节点，
+     *      * 并添加onclick函数，
+     *      * 函数的功能是在图片点击的时候调用本地java接口并传递url过去
+     *      * onPageFinish 调用才有用
+     *
+     * @param jsName Webview.addJavascriptInterface(xxx,jsName)
+     */
+    fun addImageClick(jsName:String) {
+        webView.loadUrl("""javascript:(function() { " +
+                "var imgList = document.getElementsByTagName('img');" +
+                "var imgSrcList = [];" +
+                "for (var i = 0; i < imgList.length; i++) {" +
+                "    imgSrcList.push(imgList[i].src);" +
+                "    imgList[i].onclick=function()  " +
+                "    {  " +
+                "        window.$jsName.openImage(this.src);  " +
+                "    }  " +
+                "}" +
+                "window.$jsName.onImageListReceived(JSON.stringify(imgSrcList));" +
+                "})()""");
     }
 
     /**

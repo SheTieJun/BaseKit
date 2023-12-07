@@ -10,6 +10,7 @@ import android.os.health.SystemHealthManager
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.util.lruCache
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.metrics.performance.JankStats
@@ -39,7 +40,6 @@ import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.app.MDThemeKit
 import me.shetj.base.tools.file.FileQUtils
-import shetj.me.base.R
 import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.ScreenshotKit
@@ -49,7 +49,8 @@ import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
 import timber.log.Timber
-import java.util.*
+import java.util.Locale
+
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var mContent: ContentMainBinding
@@ -98,6 +99,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         })
         WidgetProvider.registerReceiver(this)
+        val lruCache = lruCache<String, String>(100) // lruCache
     }
 
     override fun setUpClicks() {
@@ -105,16 +107,16 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         val hierarchy = addJankStats()
         hierarchy.state?.putState("Activity", javaClass.simpleName)
 
-        findViewById<View>(R.id.btn_select_image).setOnClickListener {
+        findViewById<View>(shetj.me.base.R.id.btn_select_image).setOnClickListener {
             selectFile {
                 "url = $it".logI()
                 (
-                    "url = ${
-                        it?.let { it1 ->
-                            FileQUtils.getFileAbsolutePath(this, it1)
-                        }
-                    }"
-                    ).logI()
+                        "url = ${
+                            it?.let { it1 ->
+                                FileQUtils.getFileAbsolutePath(this, it1)
+                            }
+                        }"
+                        ).logI()
             }
         }
 
@@ -134,7 +136,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             MDThemeKit.showChangeThemeDialog(this)
         }
 
-        findViewById<View>(R.id.fab).setOnClickListener {
+        findViewById<View>(shetj.me.base.R.id.fab).setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(mViewModel.getNightModel())
         }
 
@@ -179,7 +181,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
         mContent.showSideDialog.setOnClickListener {
             val sideSheetDialog = SideSheetDialog(this)
-            sideSheetDialog.setContentView(R.layout.fragment_first)
+            sideSheetDialog.setContentView(shetj.me.base.R.layout.fragment_first)
             sideSheetDialog.setOnShowListener {
                 sideSheetDialog.window?.let {
                     WindowCompat.setDecorFitsSystemWindows(it, false)

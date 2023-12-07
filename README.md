@@ -64,6 +64,7 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
 ### 界面层相关记录
 1. 展开界面元素（界面逻辑）和界面操作元素（业务逻辑）
 2. 定义UIState，例如：`TracksUIState`,`TrackItemUIState`
+   ![](/doc/img/UI_state_and_logic.webp)
 
 ### 数据层相关记录
 1. DataStore 非常适合存储键值对，例如用户设置，具体示例可能包括时间格式、通知偏好设置，以及是显示还是隐藏用户已阅读的新闻报道。DataStore 还可以使用协议缓冲区来存储类型化对象。
