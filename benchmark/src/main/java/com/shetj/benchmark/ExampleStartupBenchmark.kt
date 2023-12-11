@@ -45,7 +45,8 @@ class ExampleStartupBenchmark {
      */
     @Test
     fun startup() = benchmarkRule.measureRepeated(
-        packageName = "shetj.me.base.dev.demo",
+//        packageName = "shetj.me.base.dev.demo",
+        packageName = "shetj.me.base",
         metrics = listOf(
             StartupTimingMetric(),
             FrameTimingMetric()

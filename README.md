@@ -82,3 +82,5 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
 ### 代码检测
 1. [detekt](https://github.com/detekt/detekt):Detekt 是一种静态代码分析工具，用于检测 Kotlin 代码中的潜在问题和不规范的编码实践。它是为 Kotlin 语言开发的，并且可以帮助开发者发现可能导致错误、性能问题或代码可维护性下降的代码片段。
 2. [spotless](https://github.com/diffplug/spotless):Spotless 是一个开源的代码格式化和风格检查工具，可以帮助开发团队维持一致的代码风格和格式。
+
+### Android版本行为变更:[https://developer.android.com/about/versions?hl=zh-cn](https://developer.android.com/about/versions?hl=zh-cn)

@@ -62,21 +62,19 @@ open class AbBaseActivity : AppCompatActivity() {
     }
 
     private fun configWindow() {
-        if (WindowKit.isSplitAvailable(this)) {
-            WindowKit.addSplitListener(this) {
+        WindowKit.addSplitListener(this) {
+            computeWindowSizeClasses()
+        }
+        getWindowContent()?.addView(object : View(this) {
+            override fun onConfigurationChanged(newConfig: Configuration?) {
+                super.onConfigurationChanged(newConfig)
                 computeWindowSizeClasses()
             }
-            getWindowContent()?.addView(object : View(this) {
-                override fun onConfigurationChanged(newConfig: Configuration?) {
-                    super.onConfigurationChanged(newConfig)
-                    computeWindowSizeClasses()
-                }
-            })
-            computeWindowSizeClasses()
-            windowSizeStream.observe(this) {
-                "$TAG onWindowSizeChange : widthWindowSizeClass = ${it.first},heightWindowSizeClass = ${it.second}".logUILife()
-                onWindowSizeChange(it)
-            }
+        })
+        computeWindowSizeClasses()
+        windowSizeStream.observe(this) {
+            "$TAG onWindowSizeChange : widthWindowSizeClass = ${it.first},heightWindowSizeClass = ${it.second}".logUILife()
+            onWindowSizeChange(it)
         }
     }
 

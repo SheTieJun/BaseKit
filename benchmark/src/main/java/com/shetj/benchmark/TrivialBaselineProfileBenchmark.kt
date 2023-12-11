@@ -19,7 +19,8 @@ class TrivialBaselineProfileBenchmark {
 
     @Test
     fun startup() = baselineProfileRule.collectBaselineProfile(
-        packageName = "shetj.me.base.dev.demo",
+//        packageName = "shetj.me.base.dev.demo",
+        packageName = "shetj.me.base",
         profileBlock = {
             startActivityAndWait()
         }

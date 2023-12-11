@@ -21,8 +21,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 /**
  * MD theme kit
  * MD 主题切换
- *
- * @constructor Create empty M d3theme kit
  */
 object MDThemeKit {
 

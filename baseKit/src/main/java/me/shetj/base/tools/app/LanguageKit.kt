@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.LocaleList
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.LocaleManagerCompat
 import androidx.core.content.getSystemService
 import me.shetj.base.tools.file.SPUtils
 import java.util.*
@@ -54,7 +53,6 @@ object LanguageKit {
             context.createConfigurationContext(configuration)
             resources.updateConfiguration(configuration, metrics)
         }
-
     }
 
     /**

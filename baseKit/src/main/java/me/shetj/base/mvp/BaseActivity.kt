@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.os.Message
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.AppLaunchChecker.onActivityCreate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import me.shetj.base.base.AbBaseActivity
 import me.shetj.base.ktx.getClazz
+import me.shetj.base.tools.app.ArmsUtils
 
 /**
  * 基础类  view 层
@@ -19,13 +19,14 @@ import me.shetj.base.ktx.getClazz
 open class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, LifecycleEventObserver {
     protected val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
-
+    protected val saveStateMap: MutableMap<String, Any> by lazy { mutableMapOf() }
     override val rxContext: AppCompatActivity
         get() = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(this)
+        updateValuesFromBundle(savedInstanceState)
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -40,6 +41,32 @@ open class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, Lifecyc
 
             else -> {}
         }
+    }
+
+    protected fun <T> keepSaveState(map: MutableMap<String, Any>, isClear: Boolean = false) {
+        if (isClear) {
+            saveStateMap.clear()
+        }
+        saveStateMap.putAll(map)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        saveSate(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun saveSate(outState: Bundle) {
+        ArmsUtils.saveStateToBundle(saveStateMap,outState)
+    }
+
+    protected fun updateValuesFromBundle(savedInstanceState: Bundle?) {
+        savedInstanceState ?: return
+        //    /Update the value from the Bundle.
+        //    if (savedInstanceState.keySet().contains(REQUESTING_KEY)) {
+        //        requestingUpdates = savedInstanceState.getBoolean(
+        //                REQUESTING_KEY)
+        //    }
+        //    //Update UI to match restored state
     }
 
     open fun onActivityCreate() {

@@ -41,7 +41,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : CoroutineSc
 
     /**
      * //解除订阅
-     * [BaseActivity.onDestroy] 调用[IPresenter.onDestroy]
+     * [BaseActivity.onDestroy] 调用[Presenter.onDestroy]
      */
     @CallSuper
     fun onDestroy() {

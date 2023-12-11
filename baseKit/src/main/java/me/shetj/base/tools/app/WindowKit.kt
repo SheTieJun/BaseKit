@@ -7,12 +7,21 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.window.embedding.SplitController
+import androidx.window.layout.DisplayFeature
 import androidx.window.layout.FoldingFeature
+import androidx.window.layout.WindowInfoTracker
+import androidx.window.layout.WindowLayoutInfo
 import androidx.window.layout.WindowMetricsCalculator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.launch
 import me.shetj.base.ktx.getWindowContent
 import me.shetj.base.ktx.launch
+import me.shetj.base.ktx.logI
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -57,6 +66,44 @@ object WindowKit {
         return widthWindowSizeClass to heightWindowSizeClass
     }
 
+
+    fun addWinLayoutListener(activity: FragmentActivity, collector: FlowCollector<WindowLayoutInfo> = logPostureCollector()){
+        activity.lifecycleScope.launch(Dispatchers.Main) {
+            activity.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                WindowInfoTracker.getOrCreate(activity)
+                    .windowLayoutInfo(activity)
+                    .collect(collector)
+            }
+        }
+    }
+
+    /**
+     * Log posture collector
+     * 打印折叠屏的状态
+     * @return
+     */
+    fun logPostureCollector(): FlowCollector<WindowLayoutInfo> {
+          return FlowCollector {
+              val foldingFeature = it.displayFeatures
+                  .filterIsInstance<FoldingFeature>()
+                  .firstOrNull()
+              when{
+                  isTableTopPosture(foldingFeature) -> "isTableTopPosture:桌面模式".logI()
+                  isBookPosture(foldingFeature)-> "isBookPosture:图书模式".logI()
+                  isSeparating(foldingFeature)->{
+                      if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) {
+                          "isTableTopPosture:桌面模式".logI()
+                      } else {
+                          "isBookPosture:图书模式".logI()
+                      }
+                  }
+                  else ->{
+                      "NormalMode：正常模式".logI()
+                  }
+              }
+          }
+    }
+
     /**
      *桌面模式
      */
@@ -70,14 +117,14 @@ object WindowKit {
      * 图书模式
      */
     @OptIn(ExperimentalContracts::class)
-    fun isBookPosture(foldFeature : FoldingFeature?) : Boolean {
+    fun isBookPosture(foldFeature: FoldingFeature?): Boolean {
         contract { returns(true) implies (foldFeature != null) }
         return foldFeature?.state == FoldingFeature.State.HALF_OPENED &&
-                foldFeature.orientation == FoldingFeature.Orientation.VERTICAL
+            foldFeature.orientation == FoldingFeature.Orientation.VERTICAL
     }
 
     /**
-     * Is separating
+     * Is separating 在双屏设备上始终为 true
      * ```
      *
      *                             if (foldingFeature.orientation == HORIZONTAL) {
@@ -85,12 +132,10 @@ object WindowKit {
      *                             } else {
      *                                 enterBookMode(foldingFeature)
      *                             }
-     *                             else ->
-     *                                 enterNormalMode()
      * ```
      */
     @OptIn(ExperimentalContracts::class)
-    fun isSeparating(foldFeature : FoldingFeature?) : Boolean {
+    fun isSeparating(foldFeature: FoldingFeature?): Boolean {
         contract { returns(true) implies (foldFeature != null) }
         return foldFeature?.state == FoldingFeature.State.FLAT && foldFeature.isSeparating
     }

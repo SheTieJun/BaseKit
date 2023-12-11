@@ -104,8 +104,9 @@ class WebViewManager(private val webView: WebView) {
      *
      * @param jsName Webview.addJavascriptInterface(xxx,jsName)
      */
-    fun addImageClick(jsName:String) {
-        webView.loadUrl("""javascript:(function() { " +
+    fun addImageClick(jsName: String) {
+        webView.loadUrl(
+            """javascript:(function() { " +
                 "var imgList = document.getElementsByTagName('img');" +
                 "var imgSrcList = [];" +
                 "for (var i = 0; i < imgList.length; i++) {" +
@@ -116,7 +117,8 @@ class WebViewManager(private val webView: WebView) {
                 "    }  " +
                 "}" +
                 "window.$jsName.onImageListReceived(JSON.stringify(imgSrcList));" +
-                "})()""");
+                "})()"""
+        )
     }
 
     /**

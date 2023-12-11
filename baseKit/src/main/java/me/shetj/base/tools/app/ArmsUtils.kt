@@ -9,8 +9,10 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import android.os.Message
+import android.os.Parcelable
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,7 @@ import androidx.core.util.TypedValueCompat
 import androidx.core.view.WindowCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import me.shetj.base.BaseKit
+import me.shetj.base.ktx.logW
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
@@ -316,6 +319,115 @@ class ArmsUtils private constructor() {
             val parent = view.parent
             if (parent is ViewGroup) {
                 parent.removeView(view)
+            }
+        }
+
+        @JvmStatic
+        fun saveStateToBundle(saveStateMap: MutableMap<String,Any>, outState: Bundle){
+            saveStateMap.forEach {
+                val key = it.key
+                when (val value = it.value) {
+                    is String -> {
+                        outState.putString(key, value)
+                    }
+
+                    is Int -> {
+                        outState.putInt(key, value)
+                    }
+
+                    is Boolean -> {
+                        outState.putBoolean(key, value)
+                    }
+
+                    is Float -> {
+                        outState.putFloat(key, value)
+                    }
+
+                    is Long -> {
+                        outState.putLong(key, value)
+                    }
+
+                    is Double -> {
+                        outState.putDouble(key, value)
+                    }
+
+                    is Short -> {
+                        outState.putShort(key, value)
+                    }
+
+                    is Byte -> {
+                        outState.putByte(key, value)
+                    }
+
+                    is Char -> {
+                        outState.putChar(key, value)
+                    }
+
+                    is CharSequence -> {
+                        outState.putCharSequence(key, value)
+                    }
+
+                    is Bundle -> {
+                        outState.putBundle(key, value)
+                    }
+                    is ArrayList<*> -> {
+                        when {
+                            value.isEmpty() -> {}
+                            value[0] is Int -> {
+                                outState.putIntegerArrayList(key, value as ArrayList<Int>)
+                            }
+
+                            value[0] is String -> {
+                                outState.putStringArrayList(key, value as ArrayList<String>)
+                            }
+
+                            value[0] is CharSequence -> {
+                                outState.putCharSequenceArrayList(key, value as ArrayList<CharSequence>)
+                            }
+
+                            value[0] is Parcelable -> {
+                                outState.putParcelableArrayList(key, value as ArrayList<Parcelable>)
+                            }
+
+                            else -> {
+                                "Unsupported bundle component (${value.javaClass})".logW()
+                            }
+                        }
+                    }
+                    is Array<*> -> {
+                        when {
+                            value.isArrayOf<CharSequence>() -> {
+                                outState.putCharSequenceArray(key, value as Array<out CharSequence>)
+                            }
+
+                            value.isArrayOf<String>() -> {
+                                outState.putStringArray(key, value as Array<out String>)
+                            }
+
+                            value.isArrayOf<Parcelable>() -> {
+                                outState.putParcelableArray(key, value as Array<out Parcelable>)
+                            }
+
+                            else -> {
+                                "Unsupported bundle component (${value.javaClass})".logW()
+                            }
+                        }
+                    }
+
+                    is Parcelable -> {
+                        outState.putParcelable(key, value)
+                    }
+
+                    is java.io.Serializable -> {
+                        outState.putSerializable(key, value)
+                    }
+
+
+
+                    else -> {
+                        "Unsupported bundle component (${value.javaClass})".logW()
+                    }
+                }
             }
         }
 

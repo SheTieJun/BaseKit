@@ -1,5 +1,3 @@
-
-
 plugins {
     id("com.android.test")
     id("org.jetbrains.kotlin.android")
@@ -7,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.shetj.benchmark"
-    compileSdk = 33
+    compileSdk = (findProperty("android.compileSdk") as String).toInt()
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -19,8 +17,8 @@ android {
     }
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 33
+        minSdk == (findProperty("android.minSdk") as String).toInt()
+        targetSdk = (findProperty("android.targetSdk") as String).toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

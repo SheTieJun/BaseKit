@@ -39,6 +39,7 @@ import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.app.MDThemeKit
+import me.shetj.base.tools.app.WindowKit
 import me.shetj.base.tools.file.FileQUtils
 import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
@@ -100,6 +101,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         })
         WidgetProvider.registerReceiver(this)
         val lruCache = lruCache<String, String>(100) // lruCache
+
+        WindowKit.addWinLayoutListener(this)
     }
 
     override fun setUpClicks() {

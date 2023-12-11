@@ -19,11 +19,9 @@ abstract class WebKitJs(activity: Activity) {
     }
 
     @JavascriptInterface
-    fun openImage(url: String){
-        openImage(urls?: emptyList(), urls?.indexOf(url)?:0)
+    fun openImage(url: String) {
+        openImage(urls.orEmpty(), urls?.indexOf(url) ?: 0)
     }
-
 
     abstract fun openImage(urls: List<String>, position: Int)
 }
-

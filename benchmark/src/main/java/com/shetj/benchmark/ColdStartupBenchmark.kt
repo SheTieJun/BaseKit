@@ -1,5 +1,3 @@
-
-
 package com.shetj.benchmark
 
 import androidx.benchmark.macro.BaselineProfileMode
@@ -38,7 +36,8 @@ abstract class AbstractStartupBenchmark(private val startupMode: StartupMode) {
     fun startupFullCompilation() = startup(CompilationMode.Full())
 
     private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
-        packageName = "shetj.me.base.dev.demo",
+//        packageName = "shetj.me.base.dev.demo",
+        packageName = "shetj.me.base",
         metrics = listOf(StartupTimingMetric()),
         compilationMode = compilationMode,
         iterations = 10,

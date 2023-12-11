@@ -1,3 +1,8 @@
+## 适配Android 11 
+
+## 存储
+如果应用以 Android 11 为目标平台，那么 WRITE_EXTERNAL_STORAGE 权限和 WRITE_MEDIA_STORAGE 特许权限将不再提供任何其他访问权限。
+
 ### 导航栏，状态栏高度和状态 11
 ```
 content.setOnApplyWindowInsetsListener { view, windowInsets ->
@@ -37,29 +42,6 @@ content.setOnApplyWindowInsetsListener { view, windowInsets ->
 ```
 
 ```kotlin
-if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager()) {
-    // 有权限,把老的文件移到新的目录
-} else {
-    OrangeWeikeDialog.Builder(context)
-        .title("温馨提示")
-        .content("因为应用市场要求强制兼容Android11，需要您手动授权获取应用外部存储权限，否则会丢失您以前的录音")
-        .positiveText("去获取")
-        .onPositive { _, _ ->
-            try {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                intent.addCategory("android.intent.category.DEFAULT")
-                intent.data = Uri.parse(java.lang.String.format("package:%s", context.packageName))
-                context.startActivity(intent)
-            } catch (e: Exception) {
-                val intent = Intent()
-                intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
-                context.startActivity(intent)
-            }
-        }
-        .show()
-    return true
-}
-
 /**
  *  读取外部存储的权限
  */
