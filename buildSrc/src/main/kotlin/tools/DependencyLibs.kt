@@ -1,5 +1,3 @@
-
-
 package tools
 
 import org.gradle.api.Action
@@ -12,6 +10,7 @@ import tools.DependencyLibs.AndroidX.Paging
 import tools.DependencyLibs.AndroidX.Room
 import tools.DependencyLibs.AndroidX.WorkManager
 import tools.DependencyLibs.Guava
+import tools.DependencyLibs.navLib
 
 
 object DependencyLibs {
@@ -56,7 +55,6 @@ object DependencyLibs {
 
 
     }
-
 
     val retrofit2Lib = mutableListOf<String>().apply {
         add(Retrofit2.gson)
@@ -120,19 +118,20 @@ object DependencyLibs {
         add(Third.BRV)
         add(Third.glide)
         add(Third.timber)
+        add(Mine.QMUI)
     }
 
-    val coroutines = mutableListOf<String>().apply {
+    val coroutinesLib = mutableListOf<String>().apply {
         add(Coroutines.android)
         add(Coroutines.core)
     }
 
-    val nav = mutableListOf<String>().apply {
+    val navLib = mutableListOf<String>().apply {
         add(AndroidX.Navigation.navigation)
         add(AndroidX.Navigation.navigationUi)
     }
 
-    val proInstaller = mutableListOf<String>().apply {
+    val proInstallerLib = mutableListOf<String>().apply {
         add(AndroidX.Benchmark.profileinstaller)
     }
 
@@ -157,7 +156,6 @@ object DependencyLibs {
     object Third {
         const val BRV = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.11"
         const val gson = "com.google.code.gson:gson:2.10.1"
-
         //图片加载
         const val glide = "com.github.bumptech.glide:glide:4.13.1"
         const val timber = "com.jakewharton.timber:timber:5.0.1"
@@ -240,11 +238,13 @@ object DependencyLibs {
 
     object Mine {
         private const val libVersion = "1.1.0"
-        const val dataStoreLib = "com.github.SheTieJun.androidx-ktx:datastore:$libVersion"
-        const val activityLib = "com.github.SheTieJun.androidx-ktx:activity:$libVersion"
+        const val dataStoreLib  = "com.github.SheTieJun.androidx-ktx:datastore:$libVersion"
+        const val activityLib   = "com.github.SheTieJun.androidx-ktx:activity:$libVersion"
+        const val QMUI          = "com.github.SheTieJun:SimQUMI:0.0.1"
     }
 
     private const val guavaVersion = "32.1.2-android"
+
     enum class Guava(val value: String) {
         guava("com.google.guava:guava:$guavaVersion")
     }
@@ -340,7 +340,7 @@ fun DependencyHandler.addOther(dependencyConfiguration: Action<ExternalModuleDep
 }
 
 fun DependencyHandler.addCoroutines(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
-    DependencyLibs.coroutines.forEach { depName ->
+    DependencyLibs.coroutinesLib.forEach { depName ->
         addDependencyTo(
             this, "api", depName, dependencyConfiguration
         )
@@ -354,7 +354,7 @@ fun DependencyHandler.addPaging(dependencyConfiguration: Action<ExternalModuleDe
 }
 
 fun DependencyHandler.addNav(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
-    DependencyLibs.nav.forEach { depName ->
+    navLib.forEach { depName ->
         addDependencyTo(
             this, "api", depName, dependencyConfiguration
         )
@@ -362,14 +362,14 @@ fun DependencyHandler.addNav(dependencyConfiguration: Action<ExternalModuleDepen
 }
 
 fun DependencyHandler.addProInstaller(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
-    DependencyLibs.proInstaller.forEach { depName ->
+    DependencyLibs.proInstallerLib.forEach { depName ->
         addDependencyTo(
             this, "api", depName, dependencyConfiguration
         )
     }
 }
 
-fun DependencyHandler.addGuava(dependencyConfiguration: Action<ExternalModuleDependency> = defAction){
+fun DependencyHandler.addGuava(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
     Guava.values().forEach { depName ->
         addDependencyTo(
             this, "api", depName.value, dependencyConfiguration

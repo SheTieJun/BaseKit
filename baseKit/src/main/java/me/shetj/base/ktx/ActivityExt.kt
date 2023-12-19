@@ -6,6 +6,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.media.MediaScannerConnection
 import android.net.ConnectivityManager
 import android.net.Network
@@ -35,7 +37,6 @@ import androidx.core.content.PermissionChecker
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import me.shetj.base.R
@@ -44,6 +45,8 @@ import me.shetj.base.model.NetWorkLiveDate
 import me.shetj.base.tools.app.ArmsUtils
 import java.io.File
 import java.lang.reflect.Method
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * 用来防止重新进入的时候多次展示 Splash
@@ -65,16 +68,9 @@ inline fun <reified T : Activity> Context.start(isFinish: Boolean = false) {
     }
 }
 
-@JvmOverloads
-fun Context.start(intent: Intent, isFinish: Boolean = false) {
-    ArmsUtils.startActivity(this as AppCompatActivity, intent)
-    if (isFinish) {
-        finish()
-    }
-}
-
-inline fun <reified T : Activity> Context.intentFrom(): Intent {
-    return Intent(this, T::class.java)
+inline fun <reified T : Activity> Context.launchActivity(func: (Intent.() -> Unit) = {}) {
+    val intent = Intent(this, T::class.java).apply(func)
+    startActivity(intent)
 }
 
 fun FragmentActivity.grayThemChange(isGrayTheme: Boolean) {
@@ -91,6 +87,35 @@ fun FragmentActivity.grayThemChange(isGrayTheme: Boolean) {
     }
 }
 
+fun isPad(context: Context): Boolean {
+    val isPad = (context.resources.configuration.screenLayout
+            and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
+    val dm = Resources.getSystem().displayMetrics
+    val x = (dm.widthPixels / dm.xdpi).toDouble().pow(2.0)
+    val y = (dm.heightPixels / dm.ydpi).toDouble().pow(2.0)
+    val screenInches = sqrt(x + y) // 屏幕尺寸
+    return isPad || screenInches >= 7.0
+}
+
+
+fun View?.setLayer(isMourn:Boolean){
+    this?:return
+    val isCurMourn = (getTag(R.id.isGrayTheme) as? Boolean) ?: false
+    if (isMourn!= isCurMourn) {
+        if (isMourn) {
+            setTag(R.id.isGrayTheme, true)
+            setLayerType(View.LAYER_TYPE_HARDWARE, GrayThemeLiveData.getInstance().getSatPaint(0f))
+        } else {
+            setTag(R.id.isGrayTheme, false)
+            setLayerType(View.LAYER_TYPE_NONE, null)
+        }
+    }
+}
+
+/**
+ * Disable secure
+ * 禁止录屏
+ */
 fun FragmentActivity.disableSecure() {
     window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
 }
@@ -131,21 +156,20 @@ fun <T : View> T.animator() = ViewCompat.animate(this)
 @MainThread
 fun String.showToast() = ArmsUtils.makeText(this)
 
+
+/**
+ * Show toast to do
+ * 用来记录需要完成的功能，点击时候打印日志出来
+ */
+inline fun <reified T> String.showToDoToast(){
+    (T::class.java.simpleName+":"+this).logI("TODO")
+    ArmsUtils.makeText(T::class.java.simpleName+":"+this)
+}
+
 @JvmOverloads
 fun Activity.showSnack(msg: String, view: View? = null) {
     Snackbar.make(view ?: findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT).show()
 }
-
-/**
- * 判断是否是当前状态
- */
-fun AppCompatActivity.isAtLeast(@NonNull state: Lifecycle.State) =
-    lifecycle.currentState.isAtLeast(state)
-
-/**
- * 获取Activity的高度
- */
-fun AppCompatActivity.getHeight() = ArmsUtils.getActivityHeight(this)
 
 /**
  * 关闭手机的通知管理界面

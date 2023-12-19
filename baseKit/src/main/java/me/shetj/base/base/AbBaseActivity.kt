@@ -32,7 +32,7 @@ open class AbBaseActivity : AppCompatActivity() {
     protected val windowSizeStream: MutableLiveData<Pair<WindowSizeClass, WindowSizeClass>> =
         MutableLiveData<Pair<WindowSizeClass, WindowSizeClass>>()
 
-    protected var enabledOnBack: Boolean = false
+    protected var enabledOnBack: Boolean = true
         set(value) {
             field = value
             onBackPressedCallback.isEnabled = value

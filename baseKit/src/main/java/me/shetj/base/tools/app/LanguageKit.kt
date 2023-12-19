@@ -52,6 +52,7 @@ object LanguageKit {
             configuration.setLocales(LocaleList(locale))
             context.createConfigurationContext(configuration)
             resources.updateConfiguration(configuration, metrics)
+//            AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(locale)) //也可以，但是会黑屏一下
         }
     }
 

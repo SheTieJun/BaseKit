@@ -10,13 +10,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.window.embedding.SplitController
-import androidx.window.layout.DisplayFeature
 import androidx.window.layout.FoldingFeature
 import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowLayoutInfo
 import androidx.window.layout.WindowMetricsCalculator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import me.shetj.base.ktx.getWindowContent
@@ -66,8 +64,7 @@ object WindowKit {
         return widthWindowSizeClass to heightWindowSizeClass
     }
 
-
-    fun addWinLayoutListener(activity: FragmentActivity, collector: FlowCollector<WindowLayoutInfo> = logPostureCollector()){
+    fun addWinLayoutListener(activity: FragmentActivity, collector: FlowCollector<WindowLayoutInfo> = logPostureCollector()) {
         activity.lifecycleScope.launch(Dispatchers.Main) {
             activity.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 WindowInfoTracker.getOrCreate(activity)
@@ -83,25 +80,26 @@ object WindowKit {
      * @return
      */
     fun logPostureCollector(): FlowCollector<WindowLayoutInfo> {
-          return FlowCollector {
-              val foldingFeature = it.displayFeatures
-                  .filterIsInstance<FoldingFeature>()
-                  .firstOrNull()
-              when{
-                  isTableTopPosture(foldingFeature) -> "isTableTopPosture:桌面模式".logI()
-                  isBookPosture(foldingFeature)-> "isBookPosture:图书模式".logI()
-                  isSeparating(foldingFeature)->{
-                      if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) {
-                          "isTableTopPosture:桌面模式".logI()
-                      } else {
-                          "isBookPosture:图书模式".logI()
-                      }
-                  }
-                  else ->{
-                      "NormalMode：正常模式".logI()
-                  }
-              }
-          }
+        return FlowCollector {
+            val foldingFeature = it.displayFeatures
+                .filterIsInstance<FoldingFeature>()
+                .firstOrNull()
+            when {
+                isTableTopPosture(foldingFeature) -> "isTableTopPosture:桌面模式".logI()
+                isBookPosture(foldingFeature) -> "isBookPosture:图书模式".logI()
+                isSeparating(foldingFeature) -> {
+                    if (foldingFeature.orientation == FoldingFeature.Orientation.HORIZONTAL) {
+                        "isTableTopPosture:桌面模式".logI()
+                    } else {
+                        "isBookPosture:图书模式".logI()
+                    }
+                }
+
+                else -> {
+                    "NormalMode：正常模式".logI()
+                }
+            }
+        }
     }
 
     /**

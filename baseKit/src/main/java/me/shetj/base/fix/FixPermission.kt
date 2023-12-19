@@ -52,7 +52,7 @@ object FixPermission {
     }
 
     /**
-     * 获取读写权限
+     * 获取外部文件读写权限
      */
     fun requestExternalFile(context: Activity) {
         if (VERSION.SDK_INT < VERSION_CODES.R) {

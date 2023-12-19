@@ -80,6 +80,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 //        })
 
         super.onCreate(savedInstanceState)
+        enabledOnBack = true
 
         KeyboardUtil.init(this)
         val healthStats = getSystemService(SystemHealthManager::class.java).takeMyUidSnapshot()

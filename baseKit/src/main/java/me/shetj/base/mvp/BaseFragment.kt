@@ -24,6 +24,7 @@ open class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
     protected val lazyPresenter = lazy { initPresenter() }
     protected val mPresenter: T by lazyPresenter
     protected val saveStateMap: MutableMap<String, Any> by lazy { mutableMapOf() }
+
     /**
      * 返回当前的activity
      * @return RxAppCompatActivity
@@ -76,7 +77,7 @@ open class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
     }
 
     private fun saveSate(outState: Bundle) {
-        ArmsUtils.saveStateToBundle(saveStateMap,outState)
+        ArmsUtils.saveStateToBundle(saveStateMap, outState)
     }
 
     protected fun updateValuesFromBundle(savedInstanceState: Bundle?) {
@@ -89,5 +90,4 @@ open class BaseFragment<T : BasePresenter<*>> : AbBaseFragment(), IView {
         //    }
         //    //Update UI to match restored state
     }
-
 }

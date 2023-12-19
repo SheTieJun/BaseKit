@@ -142,7 +142,7 @@ fun ComponentActivity.searchFile(
 }
 
 fun ComponentActivity.searchFiles(type: Array<String>, callback: ActivityResultCallback<List<@JvmSuppressWildcards Uri>>) {
-    register("OpenDocument", ActivityResultContracts.OpenMultipleDocuments(), callback).launch(type)
+    register("OpenDocuments", ActivityResultContracts.OpenMultipleDocuments(), callback).launch(type)
 }
 
 /**

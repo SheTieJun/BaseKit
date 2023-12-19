@@ -38,242 +38,250 @@ import me.shetj.base.R
 
 /**----------------------------------------------------------------------**/
 
-fun Context.getColorPrimary(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorPrimaryContainer,
-        "colorPrimary"
-    )
-}
+/**
+ * Material color kit
+ * 换一下调用方式，方便使用，以前总是点不出来
+ */
+@SuppressWarnings("TooManyFunctions")
+object MaterialColorKit {
 
-fun Context.getColorOnPrimaryContainer(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnPrimaryContainer,
-        "colorOnPrimaryContainer"
-    )
-}
+    fun getColorPrimary(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorPrimaryContainer,
+            "colorPrimary"
+        )
+    }
 
-fun Context.getColorBackground(): Int {
-    return MaterialColors.getColor(
-        this,
-        android.R.attr.colorBackground,
-        "colorOnPrimaryContainer"
-    )
-}
+    fun getColorOnPrimaryContainer(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnPrimaryContainer,
+            "colorOnPrimaryContainer"
+        )
+    }
 
-fun Context.getColorOnBackground(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnBackground,
-        "colorOnPrimaryContainer"
-    )
-}
+    fun getColorBackground(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            android.R.attr.colorBackground,
+            "colorOnPrimaryContainer"
+        )
+    }
 
-fun Context.getColorOnSurface(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnSurface,
-        "colorOnSurface"
-    )
-}
+    fun getColorOnBackground(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnBackground,
+            "colorOnPrimaryContainer"
+        )
+    }
 
-fun Context.getColorOnSurfaceInverse(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnSurfaceInverse,
-        "colorOnSurfaceInverse"
-    )
-}
+    fun getColorOnSurface(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnSurface,
+            "colorOnSurface"
+        )
+    }
 
-fun Context.getColorOnSurfaceVariant(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnSurfaceVariant,
-        "colorOnSurfaceVariant"
-    )
-}
+    fun getColorOnSurfaceInverse(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnSurfaceInverse,
+            "colorOnSurfaceInverse"
+        )
+    }
 
-fun Context.getColorOnPrimary(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnPrimary,
-        "colorOnPrimary"
-    )
-}
+    fun getColorOnSurfaceVariant(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnSurfaceVariant,
+            "colorOnSurfaceVariant"
+        )
+    }
 
-fun Context.getColorOnPrimarySurface(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnPrimarySurface,
-        "colorOnPrimarySurface"
-    )
-}
+    fun getColorOnPrimary(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnPrimary,
+            "colorOnPrimary"
+        )
+    }
 
-fun Context.getColorOnSecondary(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnSecondary,
-        "colorOnSecondary"
-    )
-}
+    fun getColorOnPrimarySurface(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnPrimarySurface,
+            "colorOnPrimarySurface"
+        )
+    }
 
-fun Context.getColorOnSecondaryContainer(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnSecondaryContainer,
-        "colorOnSecondaryContainer"
-    )
-}
+    fun getColorOnSecondary(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnSecondary,
+            "colorOnSecondary"
+        )
+    }
 
-fun Context.getColorOnTertiary(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnTertiary,
-        "colorOnTertiary"
-    )
-}
+    fun getColorOnSecondaryContainer(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnSecondaryContainer,
+            "colorOnSecondaryContainer"
+        )
+    }
 
-fun Context.getColorOnTertiaryContainer(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnTertiaryContainer,
-        "colorOnTertiaryContainer"
-    )
-}
+    fun getColorOnTertiary(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnTertiary,
+            "colorOnTertiary"
+        )
+    }
 
-fun Context.getColorOnContainer(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnContainer,
-        "colorOnContainer"
-    )
-}
+    fun getColorOnTertiaryContainer(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnTertiaryContainer,
+            "colorOnTertiaryContainer"
+        )
+    }
 
-fun Context.getColorOnContainerUnchecked(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnContainerUnchecked,
-        "colorOnContainerUnchecked"
-    )
-}
+    fun getColorOnContainer(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnContainer,
+            "colorOnContainer"
+        )
+    }
 
-fun Context.getColorOnError(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnError,
-        "colorOnError"
-    )
-}
+    fun getColorOnContainerUnchecked(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnContainerUnchecked,
+            "colorOnContainerUnchecked"
+        )
+    }
 
-fun Context.getColorOnErrorContainer(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOnErrorContainer,
-        "colorOnErrorContainer"
-    )
-}
+    fun getColorOnError(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnError,
+            "colorOnError"
+        )
+    }
 
-fun Context.getColorOutline(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOutline,
-        "colorOutline"
-    )
-}
+    fun getColorOnErrorContainer(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnErrorContainer,
+            "colorOnErrorContainer"
+        )
+    }
 
-fun Context.getColorOutlineVariant(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorOutlineVariant,
-        "colorOutlineVariant"
-    )
-}
+    fun getColorOutline(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOutline,
+            "colorOutline"
+        )
+    }
 
-fun Context.getColorPrimaryContainer(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorPrimaryContainer,
-        "colorPrimaryContainer"
-    )
-}
+    fun getColorOutlineVariant(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOutlineVariant,
+            "colorOutlineVariant"
+        )
+    }
 
-fun Context.getColorPrimaryInverse(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorPrimaryInverse,
-        "colorPrimaryInverse"
-    )
-}
+    fun getColorPrimaryContainer(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorPrimaryContainer,
+            "colorPrimaryContainer"
+        )
+    }
 
-fun Context.getColorPrimarySurface(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorPrimarySurface,
-        "colorPrimarySurface"
-    )
-}
+    fun getColorPrimaryInverse(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorPrimaryInverse,
+            "colorPrimaryInverse"
+        )
+    }
 
-fun Context.getColorPrimaryVariant(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorPrimaryVariant,
-        "colorPrimaryVariant"
-    )
-}
+    fun getColorPrimarySurface(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorPrimarySurface,
+            "colorPrimarySurface"
+        )
+    }
 
-fun Context.getColorSecondary(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorSecondary,
-        "colorSecondary"
-    )
-}
+    fun getColorPrimaryVariant(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorPrimaryVariant,
+            "colorPrimaryVariant"
+        )
+    }
 
-fun Context.getColorSecondaryContainer(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorSecondaryContainer,
-        "colorSecondaryContainer"
-    )
-}
+    fun getColorSecondary(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorSecondary,
+            "colorSecondary"
+        )
+    }
 
-fun Context.getColorSecondaryVariant(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorSecondaryVariant,
-        "colorSecondaryVariant"
-    )
-}
+    fun getColorSecondaryContainer(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorSecondaryContainer,
+            "colorSecondaryContainer"
+        )
+    }
 
-fun Context.getColorSurface(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorSurface,
-        "colorSurface"
-    )
-}
+    fun getColorSecondaryVariant(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorSecondaryVariant,
+            "colorSecondaryVariant"
+        )
+    }
 
-fun Context.getColorSurfaceInverse(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorSurfaceInverse,
-        "colorSurfaceInverse"
-    )
-}
+    fun getColorSurface(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorSurface,
+            "colorSurface"
+        )
+    }
 
-fun Context.getColorSurfaceVariant(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorSurfaceVariant,
-        "colorSurfaceVariant"
-    )
-}
+    fun getColorSurfaceInverse(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorSurfaceInverse,
+            "colorSurfaceInverse"
+        )
+    }
 
-fun Context.getColorTertiary(): Int {
-    return MaterialColors.getColor(
-        this,
-        com.google.android.material.R.attr.colorTertiary,
-        "colorTertiary"
-    )
+    fun getColorSurfaceVariant(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorSurfaceVariant,
+            "colorSurfaceVariant"
+        )
+    }
+
+    fun getColorTertiary(context: Context): Int {
+        return MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorTertiary,
+            "colorTertiary"
+        )
+    }
 }

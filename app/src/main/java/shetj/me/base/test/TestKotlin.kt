@@ -8,6 +8,8 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import me.shetj.base.ktx.renderType
 import me.shetj.base.model.UIState
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -62,6 +64,24 @@ class TestKotlin {
         fun main(args: Array<String>) {
             println(System.currentTimeMillis().toInt())
         }
+
+        @OptIn(ExperimentalContracts::class)
+        fun test() {
+            var strObject: String
+            initStr {
+                strObject = "This field must be initialized"
+            }
+            strObject.length // 编译错误，编译器不知道 strObject 是否有被初始化
+        }
+
+
+        @ExperimentalContracts
+        fun initStr(block: () -> Unit) {
+            //至少执行一次
+            contract { callsInPlace(block, kotlin.contracts.InvocationKind.AT_LEAST_ONCE) }
+            block()
+        }
+
 
         /**
          *@[测试]

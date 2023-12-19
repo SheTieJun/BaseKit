@@ -56,7 +56,7 @@ open class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, Lifecyc
     }
 
     private fun saveSate(outState: Bundle) {
-        ArmsUtils.saveStateToBundle(saveStateMap,outState)
+        ArmsUtils.saveStateToBundle(saveStateMap, outState)
     }
 
     protected fun updateValuesFromBundle(savedInstanceState: Bundle?) {
@@ -69,21 +69,12 @@ open class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, Lifecyc
         //    //Update UI to match restored state
     }
 
-    open fun onActivityCreate() {
-        initView()
-        initData()
-    }
+    open fun onActivityCreate() {}
 
     open fun onActivityDestroy() {
         if (lazyPresenter.isInitialized()) {
             mPresenter.onDestroy()
         }
-    }
-
-    open fun initView() {
-    }
-
-    open fun initData() {
     }
 
     /**

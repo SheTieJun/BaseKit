@@ -23,6 +23,7 @@
     </declare-styleable>
 
     <declare-styleable name="MediumBoldTextView">
+<!--        Bold*strokeWidth（0~1）-->
         <attr name="strokeWidth" format="dimension" />
     </declare-styleable>
 </resources>

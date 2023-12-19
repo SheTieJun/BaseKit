@@ -1,5 +1,6 @@
 package me.shetj.base.ktx
 
+import me.shetj.base.tools.time.DateUtils
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -270,6 +271,10 @@ fun Long.convertToMillisTime(): String {
         (seconds.toInt() / 60).convertTwoDecimals() + ":" +
             (seconds.toInt() % 60).convertTwoDecimals()
         ) + "." + (millis.toInt() / 10).convertTwoDecimals()
+}
+
+fun Long.convertToTime(format: String = DateUtils.FORMAT_YMD): String {
+    return SimpleDateFormat(format, Locale.getDefault()).format(Date(this))
 }
 
 fun Int.convertTwoDecimals(): String {

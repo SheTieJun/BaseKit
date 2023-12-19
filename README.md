@@ -12,7 +12,9 @@
 ### 框架
 - MVC/MVP/MVVM
 
-MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData 
+MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
+
+ 
 
 ### Libraries
 

@@ -32,7 +32,6 @@ import me.shetj.base.ktx.setClicksAnimate
 import me.shetj.base.ktx.setSwipeRefresh
 import me.shetj.base.ktx.toMessage
 import me.shetj.base.tools.file.EnvironmentStorage
-import me.shetj.base.tools.qmui.QMUINotchHelper
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -52,14 +51,6 @@ class ArmsUtils private constructor() {
     companion object {
         var mToast: Toast? = null
 
-        /**
-         * 全面屏幕检查
-         * @param activity
-         */
-        @JvmStatic
-        fun checkIsNotchScreen(activity: Activity): Boolean {
-            return QMUINotchHelper.needFixLandscapeNotchFitSystemWindow(activity.window.decorView)
-        }
 
         /**
          * 为 View 添加点击态
@@ -322,54 +313,23 @@ class ArmsUtils private constructor() {
             }
         }
 
+        @Suppress("UNCHECKED_CAST", "CyclomaticComplexMethod")
         @JvmStatic
-        fun saveStateToBundle(saveStateMap: MutableMap<String,Any>, outState: Bundle){
+        fun saveStateToBundle(saveStateMap: MutableMap<String, Any>, outState: Bundle) {
             saveStateMap.forEach {
                 val key = it.key
                 when (val value = it.value) {
-                    is String -> {
-                        outState.putString(key, value)
-                    }
-
-                    is Int -> {
-                        outState.putInt(key, value)
-                    }
-
-                    is Boolean -> {
-                        outState.putBoolean(key, value)
-                    }
-
-                    is Float -> {
-                        outState.putFloat(key, value)
-                    }
-
-                    is Long -> {
-                        outState.putLong(key, value)
-                    }
-
-                    is Double -> {
-                        outState.putDouble(key, value)
-                    }
-
-                    is Short -> {
-                        outState.putShort(key, value)
-                    }
-
-                    is Byte -> {
-                        outState.putByte(key, value)
-                    }
-
-                    is Char -> {
-                        outState.putChar(key, value)
-                    }
-
-                    is CharSequence -> {
-                        outState.putCharSequence(key, value)
-                    }
-
-                    is Bundle -> {
-                        outState.putBundle(key, value)
-                    }
+                    is String -> outState.putString(key, value)
+                    is Int -> outState.putInt(key, value)
+                    is Boolean -> outState.putBoolean(key, value)
+                    is Float -> outState.putFloat(key, value)
+                    is Long -> outState.putLong(key, value)
+                    is Double -> outState.putDouble(key, value)
+                    is Short -> outState.putShort(key, value)
+                    is Byte -> outState.putByte(key, value)
+                    is Char -> outState.putChar(key, value)
+                    is CharSequence -> outState.putCharSequence(key, value)
+                    is Bundle -> outState.putBundle(key, value)
                     is ArrayList<*> -> {
                         when {
                             value.isEmpty() -> {}
@@ -389,44 +349,31 @@ class ArmsUtils private constructor() {
                                 outState.putParcelableArrayList(key, value as ArrayList<Parcelable>)
                             }
 
-                            else -> {
-                                "Unsupported bundle component (${value.javaClass})".logW()
-                            }
+                            else -> "Unsupported bundle component (${value.javaClass})".logW()
                         }
                     }
+
                     is Array<*> -> {
                         when {
-                            value.isArrayOf<CharSequence>() -> {
-                                outState.putCharSequenceArray(key, value as Array<out CharSequence>)
-                            }
+                            value.isEmpty() -> {}
+                            value.isArrayOf<CharSequence>() -> outState.putCharSequenceArray(
+                                key,
+                                value as Array<out CharSequence>
+                            )
 
-                            value.isArrayOf<String>() -> {
-                                outState.putStringArray(key, value as Array<out String>)
-                            }
+                            value.isArrayOf<String>() -> outState.putStringArray(key, value as Array<out String>)
+                            value.isArrayOf<Parcelable>() -> outState.putParcelableArray(
+                                key,
+                                value as Array<out Parcelable>
+                            )
 
-                            value.isArrayOf<Parcelable>() -> {
-                                outState.putParcelableArray(key, value as Array<out Parcelable>)
-                            }
-
-                            else -> {
-                                "Unsupported bundle component (${value.javaClass})".logW()
-                            }
+                            else -> "Unsupported bundle component (${value.javaClass})".logW()
                         }
                     }
 
-                    is Parcelable -> {
-                        outState.putParcelable(key, value)
-                    }
-
-                    is java.io.Serializable -> {
-                        outState.putSerializable(key, value)
-                    }
-
-
-
-                    else -> {
-                        "Unsupported bundle component (${value.javaClass})".logW()
-                    }
+                    is Parcelable -> outState.putParcelable(key, value)
+                    is java.io.Serializable -> outState.putSerializable(key, value)
+                    else -> "Unsupported bundle component (${value.javaClass})".logW()
                 }
             }
         }

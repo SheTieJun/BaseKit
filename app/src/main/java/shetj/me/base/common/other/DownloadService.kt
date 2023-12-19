@@ -25,7 +25,7 @@ import java.io.File
  * ** @author shetj<br></br>
  * Tips:后面的版本有问题
  */
-class DownloadService : Service() {
+class  DownloadService : Service() {
     private var mReceiver: BroadcastReceiver? = null
     private var mDownLoadAPKId: Long = -1
     private var mVersionName: String? = null

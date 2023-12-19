@@ -141,13 +141,13 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
     interface OnAudioFocusChange {
 
         /**
-         * 获得了Audio Focus；
+         * 失去了Audio Focus，并将会持续很长的时间。这里因为可能会停掉很长时间，所以不仅仅要停止Audio的播放，最好直接释放掉Media资源。
          */
         fun onLoss() {
         }
 
         /**
-         * 失去了Audio Focus，并将会持续很长的时间。这里因为可能会停掉很长时间，所以不仅仅要停止Audio的播放，最好直接释放掉Media资源。
+         * 获得了Audio Focus；
          */
         fun onGain() {
         }

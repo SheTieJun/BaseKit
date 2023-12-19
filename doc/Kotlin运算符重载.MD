@@ -23,11 +23,11 @@
 - 逻辑非：not 或 !
 
 ## 位运算符：
-- 位左移：shl 或 shl
-- 位右移：shr 或 shr
-- 位与：and 或 and
-- 位或：or 或 or
-- 位异或：xor 或 xor
+- 位左移：shl  
+- 位右移：shr  
+- 位与：and  
+- 位或：or  
+- 位异或：xor  
 
 ## 赋值运算符：
 - 加法赋值：plusAssign 或 +=

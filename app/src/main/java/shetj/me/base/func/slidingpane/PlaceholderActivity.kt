@@ -1,7 +1,6 @@
 package shetj.me.base.func.slidingpane
 
 import android.os.Bundle
-import me.shetj.base.ktx.takeVideo
 import me.shetj.base.mvvm.viewbind.BaseBindingActivity
 import me.shetj.base.mvvm.viewbind.BaseViewModel
 import shetj.me.base.databinding.ActivityPlaceholderBinding

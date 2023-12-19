@@ -133,8 +133,8 @@ dependencies {
     implementation("com.airbnb.android:lottie:5.2.0")
     //图片预览 https://github.com/iielse/ImageWatcher
     implementation("com.github.iielse:ImageWatcher:1.1.5")
-    val qmuiversionShetj = "79920f62d5"
-    implementation("com.github.SheTieJun.QMUI_Android:qmui:$qmuiversionShetj")
+//    val qmuiversionShetj = "79920f62d5"
+//    implementation("com.github.SheTieJun.QMUI_Android:qmui:$qmuiversionShetj")
     implementation("androidx.core:core-splashscreen:1.0.0")//启动图
     implementation("androidx.draganddrop:draganddrop:1.0.0") //拖动
     implementation("androidx.metrics:metrics-performance:1.0.0-alpha04") // 指标

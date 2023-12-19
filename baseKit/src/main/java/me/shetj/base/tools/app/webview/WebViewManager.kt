@@ -1,21 +1,26 @@
-
 package me.shetj.base.tools.app.webview
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
+import android.telecom.VideoProfile.isVideo
 import android.util.Base64
 import android.webkit.CookieManager
+import android.webkit.PermissionRequest
 import android.webkit.ValueCallback
 import android.webkit.WebBackForwardList
 import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.fragment.app.FragmentActivity
+import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.searchFiles
+import me.shetj.base.ktx.startRequestPermission
+import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 import java.io.InputStream
@@ -51,14 +56,14 @@ class WebViewManager(private val webView: WebView) {
     fun imgReset() {
         webView.loadUrl(
             "javascript:(function(){" +
-                "var objs = document.getElementsByTagName('img'); " +
-                "for(var i=0;i<objs.length;i++)  " +
-                "{" +
-                "var img = objs[i];   " +
-                "    img.style.maxWidth = '100%';" +
-                "    img.style.height = 'auto';  " +
-                "}" +
-                "})()"
+                    "var objs = document.getElementsByTagName('img'); " +
+                    "for(var i=0;i<objs.length;i++)  " +
+                    "{" +
+                    "var img = objs[i];   " +
+                    "    img.style.maxWidth = '100%';" +
+                    "    img.style.height = 'auto';  " +
+                    "}" +
+                    "})()"
         )
     }
 
@@ -77,21 +82,58 @@ class WebViewManager(private val webView: WebView) {
         webView.loadDataWithBaseURL(null, html, "text/html", "utf-8", null)
     }
 
+    private fun isVideo(resources: Array<String>): Boolean {
+        val strings = listOf(*resources)
+        return strings.contains(PermissionRequest.RESOURCE_VIDEO_CAPTURE)
+    }
+
+    private fun isOnlyAudio(resources: Array<String>): Boolean {
+        val strings = listOf(*resources)
+        return !strings.contains(PermissionRequest.RESOURCE_VIDEO_CAPTURE) && strings.contains(PermissionRequest.RESOURCE_AUDIO_CAPTURE)
+    }
+
+    /**
+     * 处理权限的获取：相机和录音
+     */
+    fun onPermissionRequest(activity: FragmentActivity, request: PermissionRequest?) {
+        request?.let {
+            if (isVideo(request.resources)) {
+                activity.startRequestPermissions(permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)) {
+                    if (it.filter { !it.value }.isEmpty()) {
+                        request.grant(request.resources)
+                        request.origin
+                    } else {
+                        request.deny()
+                    }
+                }
+            } else if (isOnlyAudio(request.resources)) {
+                activity.startRequestPermission(permission = Manifest.permission.RECORD_AUDIO) {
+                    if (it) {
+                        request.grant(request.resources)
+                        request.origin
+                    } else {
+                        request.deny()
+                    }
+                }
+            }
+        }
+    }
+
     /**
 
      */
     fun addImageClick() {
         webView.loadUrl(
             "javascript:(function(){" +
-                "var objs = document.getElementsByTagName(\"img\"); " +
-                "for(var i=0;i<objs.length;i++)  " +
-                "{" +
-                "    objs[i].onclick=function()  " +
-                "    {  " +
-                "        window.App.openImage(this.src);  " +
-                "    }  " +
-                "}" +
-                "})()"
+                    "var objs = document.getElementsByTagName(\"img\"); " +
+                    "for(var i=0;i<objs.length;i++)  " +
+                    "{" +
+                    "    objs[i].onclick=function()  " +
+                    "    {  " +
+                    "        window.App.openImage(this.src);  " +
+                    "    }  " +
+                    "}" +
+                    "})()"
         )
     }
 
@@ -106,18 +148,18 @@ class WebViewManager(private val webView: WebView) {
      */
     fun addImageClick(jsName: String) {
         webView.loadUrl(
-            """javascript:(function() { " +
-                "var imgList = document.getElementsByTagName('img');" +
-                "var imgSrcList = [];" +
-                "for (var i = 0; i < imgList.length; i++) {" +
-                "    imgSrcList.push(imgList[i].src);" +
-                "    imgList[i].onclick=function()  " +
-                "    {  " +
-                "        window.$jsName.openImage(this.src);  " +
-                "    }  " +
-                "}" +
-                "window.$jsName.onImageListReceived(JSON.stringify(imgSrcList));" +
-                "})()"""
+            "javascript:(function() { " +
+                    "var imgList = document.getElementsByTagName('img');" +
+                    "var imgSrcList = [];" +
+                    "for (var i = 0; i < imgList.length; i++) {" +
+                    "    imgSrcList.push(imgList[i].src);" +
+                    "    imgList[i].onclick=function()  " +
+                    "    {  " +
+                    "        window.$jsName.openImage(this.src);  " +
+                    "    }  " +
+                    "}" +
+                    "window.$jsName.onImageListReceived(JSON.stringify(imgSrcList));" +
+                    "})()"
         )
     }
 
@@ -133,15 +175,17 @@ class WebViewManager(private val webView: WebView) {
             inputStream.close()
             val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP)
             webView.loadUrl(
-                "javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var scriptConsole = document.createElement('script');" +
-                    "scriptConsole.innerHTML = window.atob('$encoded');" +
-                    "parent.appendChild(scriptConsole);" +
-                    "var scriptAdd = document.createElement('script');" +
-                    "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
-                    "parent.appendChild(scriptAdd);" +
-                    "})()"
+                """
+                    javascript:(function() {   
+                        var parent = document.getElementsByTagName('head').item(0);   
+                        var scriptConsole = document.createElement('script');   
+                        scriptConsole.innerHTML = window.atob('$encoded');   
+                        parent.appendChild(scriptConsole);   
+                        var scriptAdd = document.createElement('script');   
+                        scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';   
+                        parent.appendChild(scriptAdd);   
+                     })()    
+                """.trimIndent()
             )
         }
     }
@@ -152,14 +196,14 @@ class WebViewManager(private val webView: WebView) {
     fun addConsole2() {
         webView.loadUrl(
             "javascript:(function() {" +
-                "var parent = document.getElementsByTagName('head').item(0);" +
-                "var scriptConsole = document.createElement('script');" +
-                "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
-                "parent.appendChild(scriptConsole);" +
-                "var scriptAdd = document.createElement('script');" +
-                "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
-                "parent.appendChild(scriptAdd);" +
-                "})()"
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var scriptConsole = document.createElement('script');" +
+                    "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
+                    "parent.appendChild(scriptConsole);" +
+                    "var scriptAdd = document.createElement('script');" +
+                    "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
+                    "parent.appendChild(scriptAdd);" +
+                    "})()"
         )
     }
 
