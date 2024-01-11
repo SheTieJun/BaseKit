@@ -132,30 +132,6 @@ class ArmsUtils private constructor() {
         }
 
         /**
-         * 获取随机数字
-         */
-        @JvmStatic
-        fun getRandomString(): String {
-            var linkNo = ""
-            // 用字符数组的方式随机
-            val model = "0aAbBc1CdDeE2fFgGh3HiIjJ4kKlLm5MnNoO6pPqQr7RsStT8uUvVw9WxXyY0zZ"
-            val m = model.toCharArray()
-            var j = 0
-            while (j < 9) {
-                val c = m[(Math.random() * 62).toInt()]
-                // 随机数之间没有重复的
-                if (linkNo.contains(c.toString())) {
-                    j--
-                    j++
-                    continue
-                }
-                linkNo += c
-                j++
-            }
-            return linkNo
-        }
-
-        /**
          * findview
          *
          * @param view

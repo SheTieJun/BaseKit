@@ -94,7 +94,7 @@ fun ConstraintSet?.topToBottom(
     targetView: View? = null,
     margin: Int = 0
 ) {
-    if (this == null || viewId == 0) {
+    if (this == null) {
         return
     }
     this.connect(
@@ -113,7 +113,7 @@ fun ConstraintSet?.bottomToBottom(
     targetView: View? = null,
     margin: Int = 0
 ) {
-    if (this == null || viewId == 0) {
+    if (this == null) {
         return
     }
     this.connect(
@@ -132,7 +132,7 @@ fun ConstraintSet?.bottomToTOP(
     targetView: View? = null,
     margin: Int = 0
 ) {
-    if (this == null || viewId == 0) {
+    if (this == null) {
         return
     }
     this.connect(
@@ -151,7 +151,7 @@ fun ConstraintSet?.startToStart(
     targetView: View? = null,
     margin: Int = 0
 ) {
-    if (this == null || viewId == 0) {
+    if (this == null) {
         return
     }
     this.connect(
@@ -170,7 +170,7 @@ fun ConstraintSet?.startToEnd(
     targetView: View? = null,
     margin: Int = 0
 ) {
-    if (this == null || viewId == 0) {
+    if (this == null) {
         return
     }
     this.connect(
@@ -189,7 +189,7 @@ fun ConstraintSet?.endToEnd(
     targetView: View? = null,
     margin: Int = 0
 ) {
-    if (this == null || viewId == 0) {
+    if (this == null) {
         return
     }
     this.connect(
@@ -208,7 +208,7 @@ fun ConstraintSet?.endToStart(
     targetView: View? = null,
     margin: Int = 0
 ) {
-    if (this == null || viewId == 0) {
+    if (this == null) {
         return
     }
     this.connect(

@@ -35,7 +35,6 @@ object DependencyLibs {
         add(AndroidX.swiperefreshlayout)
         add(AndroidX.fragmentKtx)
         add(AndroidX.startup)
-        add(AndroidX.cryptoSp)
         add(AndroidX.activityKtx)
 
         add(Koin.koinAndroid)
@@ -77,7 +76,6 @@ object DependencyLibs {
         add(AndroidX.swiperefreshlayout)
         add(AndroidX.fragmentKtx)
         add(AndroidX.startup)
-        add(AndroidX.cryptoSp)
         add(AndroidX.activityKtx)
         add(Mine.dataStoreLib)
 
@@ -183,7 +181,6 @@ object DependencyLibs {
         const val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
         const val fragmentKtx = "androidx.fragment:fragment-ktx:1.6.2"
         const val startup = "androidx.startup:startup-runtime:1.1.1"
-        const val cryptoSp = "androidx.security:security-crypto:1.1.0-alpha04"
         const val activityKtx = "androidx.activity:activity-ktx:1.8.1"
         const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
         const val datastoreCore = "androidx.datastore:datastore-core:1.0.0"

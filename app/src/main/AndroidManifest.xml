@@ -6,7 +6,9 @@
         <package android:name="me.shetj.beloved" />
         <package android:name="me.shetj.logkit.demo" />
     </queries>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -16,9 +18,12 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 截屏监听 -->
     <uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
@@ -34,7 +39,8 @@
         android:theme="@style/BaseTheme.MD3"
         tools:targetApi="tiramisu">
 
-        <activity android:name=".func.SplashActivity"
+        <activity
+            android:name=".func.SplashActivity"
             android:theme="@style/App.SplashScreen"
             android:exported="true">
             <intent-filter>
@@ -57,8 +63,9 @@
             android:value="false" />
 
 
-        <activity android:name=".func.slidingpane.PlaceholderActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".func.slidingpane.PlaceholderActivity"
+            android:exported="false" />
         <activity
             android:name=".func.slidingpane.SlidingPaneActivity"
             android:exported="false" />

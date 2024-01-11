@@ -126,7 +126,17 @@
             android:layout_height="wrap_content"
             android:text="外部存储权限"/>
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/btn_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WX"/>
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/KeyStore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KeyStore"/>
     </com.google.android.material.chip.ChipGroup>
 
 

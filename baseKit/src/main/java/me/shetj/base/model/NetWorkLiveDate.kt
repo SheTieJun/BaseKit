@@ -19,7 +19,7 @@ class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
     sealed class NetType() {
         data object WIFI : NetType()
         data object PHONE : NetType()
-        data object NONE : NetType() // 初始化，或者没有网络
+        data object UNKNOWN : NetType() // 初始化，或者没有网络
     }
 
     private val isStarted: AtomicBoolean = AtomicBoolean(false)
@@ -56,7 +56,7 @@ class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
 
     internal fun onLost() {
         if (value?.hasNet == false) return
-        postValue(value?.copy(hasNet = false, netType = NetType.NONE))
+        postValue(value?.copy(hasNet = false, netType = NetType.UNKNOWN))
     }
 
     internal fun setNetType(netType: NetType) {
@@ -81,6 +81,6 @@ class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
 
     data class NetWorkInfo(
         var hasNet: Boolean = NetworkUtils.isAvailable(BaseKit.app),
-        var netType: NetType = NetType.NONE
+        var netType: NetType = NetType.UNKNOWN
     )
 }

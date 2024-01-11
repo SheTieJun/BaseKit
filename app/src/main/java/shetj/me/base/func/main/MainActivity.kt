@@ -17,11 +17,13 @@ import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
+import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logE
 import me.shetj.base.ktx.logI
+import me.shetj.base.ktx.openActivity
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.setAppearance
@@ -39,17 +41,20 @@ import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
 import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.app.MDThemeKit
+import me.shetj.base.tools.app.ScreenshotKit
 import me.shetj.base.tools.app.WindowKit
 import me.shetj.base.tools.file.FileQUtils
 import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
-import shetj.me.base.contentprovider.ScreenshotKit
 import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
+import shetj.me.base.utils.BiometricAuthenticationKit
+import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
+import java.net.URLDecoder
 import java.util.Locale
 
 
@@ -102,8 +107,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         })
         WidgetProvider.registerReceiver(this)
         val lruCache = lruCache<String, String>(100) // lruCache
-
+        BaseKit.androidID.logI("androidID")
         WindowKit.addWinLayoutListener(this)
+
     }
 
     override fun setUpClicks() {
@@ -124,6 +130,18 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
+        mContent.KeyStore.setOnClickListener {
+            val originalText = "Hello, World!"
+            val encryptedText = KeyStoreKit.encryptWithKeyStore(originalText)
+            if (encryptedText == null) {
+                "加密失败".showToast()
+                return@setOnClickListener
+            }
+            "加密后的数据：${encryptedText.first.toString(Charsets.UTF_8)}".logI("KeyStore")
+            val decryptedText = KeyStoreKit.decryptWithKeyStore(encryptedText)
+            "解密后的数据：$decryptedText".logI("KeyStore")
+            ("originalText: $originalText,  ${originalText == decryptedText}").logI("KeyStore")
+        }
         mContent.btnDoc.setOnClickListener {
             selectFile("*/*") {}
         }
@@ -200,6 +218,11 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         mContent.btnPerm.setOnClickListener {
             FixPermission.requestExternalFile(this)
         }
+        mContent.btnWx.setOnClickListener {
+            val url = "https://work.weixin.qq.com/ca/cawcde90037d684659?customer_channel=hk_link:1879332828252678"
+            val scheme = "weixin://biz/ww/profile/${URLDecoder.decode(url, "UTF-8")}"
+            openActivity(scheme)
+        }
     }
 
     override fun onInitialized() {
@@ -211,7 +234,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         super.addObservers()
         NetWorkLiveDate.getInstance().observe(this) {
             when (it?.netType) {
-                NetWorkLiveDate.NetType.NONE -> ("hasNet = ${it.hasNet},netType = NONE").logI()
+                NetWorkLiveDate.NetType.UNKNOWN -> ("hasNet = ${it.hasNet},netType = NONE").logI()
                 NetWorkLiveDate.NetType.PHONE -> ("hasNet = ${it.hasNet},netType = PHONE").logI()
                 NetWorkLiveDate.NetType.WIFI -> ("hasNet = ${it.hasNet},netType = WIFI").logI()
                 else -> {}

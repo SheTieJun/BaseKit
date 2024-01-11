@@ -94,25 +94,24 @@ class WebViewManager(private val webView: WebView) {
 
     /**
      * 处理权限的获取：相机和录音
+     * 录音需要权限` <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>`
      */
     fun onPermissionRequest(activity: FragmentActivity, request: PermissionRequest?) {
         request?.let {
-            if (isVideo(request.resources)) {
-                activity.startRequestPermissions(permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)) {
-                    if (it.filter { !it.value }.isEmpty()) {
-                        request.grant(request.resources)
-                        request.origin
-                    } else {
-                        request.deny()
+            kotlin.runCatching {
+                if (isVideo(request.resources)) {
+                    activity.startRequestPermissions(permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)) {
+                        if (it.filter { !it.value }.isEmpty()) {
+                            request.grant(request.resources)
+                            request.origin
+                        }
                     }
-                }
-            } else if (isOnlyAudio(request.resources)) {
-                activity.startRequestPermission(permission = Manifest.permission.RECORD_AUDIO) {
-                    if (it) {
-                        request.grant(request.resources)
-                        request.origin
-                    } else {
-                        request.deny()
+                } else if (isOnlyAudio(request.resources)) {
+                    activity.startRequestPermission(permission = Manifest.permission.RECORD_AUDIO) {
+                        if (it) {
+                            request.grant(request.resources)
+                            request.origin
+                        }
                     }
                 }
             }

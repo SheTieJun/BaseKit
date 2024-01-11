@@ -58,4 +58,6 @@
     <string name="test_thread">Test thread</string>
     <string name="test_cla">Calendar</string>
     <string name="ig_power">Ignoring Power</string>
+    <string name="Authentication">Authentication</string>
+    <string name="Authentication_Tip">After successful authentication, you can use the APP</string>
 </resources>

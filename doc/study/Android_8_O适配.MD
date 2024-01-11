@@ -4,7 +4,6 @@
 ```
 ANSWER_PHONE_CALLS：允许您的应用通过编程方式接听呼入电话。要在您的应用中处理呼入电话，您可以使用 acceptRingingCall() 函数。
 READ_PHONE_NUMBERS ：权限允许您的应用读取设备中存储的电话号码。
-
 ```
 
 2. 通知适配

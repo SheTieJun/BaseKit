@@ -12,8 +12,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.NightMode
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import me.shetj.base.BaseKit
 import me.shetj.base.R
 import me.shetj.base.R.style
+import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.model.SingleLiveEvent
 import me.shetj.base.tools.file.SPUtils
 import java.util.concurrent.atomic.AtomicBoolean
@@ -31,7 +35,7 @@ object MDThemeKit {
             return themeLiveData.value?.nightMode != AppCompatDelegate.MODE_NIGHT_YES
         }
 
-    private const val SAVE_KEY = "AppCompatMD3Theme" // SP保持的key
+    private const val SAVE_KEY = "MD_AppCompatTheme" // SP保持的key
 
     @Keep
     data class ThemeBean(
@@ -66,10 +70,12 @@ object MDThemeKit {
             val theme = getThemeByWhich(which)
             colorCallBacks.rStyle = theme.style
             (context.applicationContext as Application).registerActivityLifecycleCallbacks(colorCallBacks)
-            themeLiveData.observeForever {
-                updateThemeWithTheme(it)
+            BaseKit.applicationScope.launch(DispatcherProvider.main()){
+                themeLiveData.observeForever {
+                    updateThemeWithTheme(it)
+                }
+                themeLiveData.value = (theme)
             }
-            themeLiveData.value = (theme)
         }
     }
     //endregion

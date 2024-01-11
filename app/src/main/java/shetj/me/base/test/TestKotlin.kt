@@ -8,6 +8,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import me.shetj.base.ktx.renderType
 import me.shetj.base.model.UIState
+import shetj.me.base.utils.KeyStoreKit
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlin.time.DurationUnit
@@ -62,7 +63,7 @@ class TestKotlin {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            println(System.currentTimeMillis().toInt())
+
         }
 
         @OptIn(ExperimentalContracts::class)
@@ -120,6 +121,12 @@ class TestKotlin {
         fun typeofTest() {
             val string = renderType<String>()
             print(string)
+        }
+
+
+        class Site(map: MutableMap<String, Any?>) {
+            val name: String by map
+            val url: String by map
         }
     }
 

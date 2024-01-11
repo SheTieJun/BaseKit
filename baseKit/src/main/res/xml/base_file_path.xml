@@ -6,6 +6,8 @@
     <cache-path
         name="cache-path"
         path="." />
+    <!--    使用 <files-path> 元素：如果应用程序需要访问内部存储的文件，可以使用 <files-path> 元素配置内部存储的访问路径。-->
+<!--    使用‘.’表示全部，可以单独设置-->
     <files-path
         name="files-path"
         path="." />
@@ -15,7 +17,9 @@
     <external-cache-path
         name="external-cache-path"
         path="." />
-    <root-path
-        name="root-path"
-        path="." />
+<!--    <root-path> 对应于设备的根目录 (/)。如果在配置中使用此元素，他人便可以随意访问文件和文件夹，包括应用的沙盒和 /sdcard 目录，这会向攻击者提供非常广的攻击面。-->
+<!--    <root-path-->
+<!--        name="root-path"-->
+<!--        path="." />-->
+
 </paths>

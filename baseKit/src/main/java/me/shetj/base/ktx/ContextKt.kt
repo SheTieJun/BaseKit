@@ -67,6 +67,7 @@ fun Context.getIdByName(className: String, resName: String): Int {
 
 fun Context.openActivity(scheme: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scheme))
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(intent)
 }
 

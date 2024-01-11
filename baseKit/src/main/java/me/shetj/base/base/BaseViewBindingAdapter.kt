@@ -17,12 +17,12 @@ abstract class BaseViewBindingAdapter<T, BD : ViewBinding>
     data: MutableList<T>? = null
 ) : BaseQuickAdapter<T, BaseViewHolder>(layoutResId, data) {
 
-    private val clazz = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<*>
+    private val clazz by lazy { (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<*> }
+    private val method by lazy { clazz.getMethod("inflate", View::class.java) }
 
     @Suppress("UNCHECKED_CAST")
     private fun getBinding(view: View): BD {
-        return clazz.getMethod("bind", View::class.java)
-            .invoke(null, view) as BD
+        return method.invoke(null, view) as BD
     }
 
     override fun convert(holder: BaseViewHolder, item: T) {

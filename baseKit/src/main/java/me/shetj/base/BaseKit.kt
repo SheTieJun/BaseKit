@@ -44,7 +44,7 @@ object BaseKit {
 
     val isDebug = MutableLiveData(false)
 
-    private var enableLogUI = true
+    private var enableLogUI = BuildConfig.DEBUG
     private val dnsLocalMap = HashMap<String, String>()
 
     fun enableLogUILife(isLogUI: Boolean) {

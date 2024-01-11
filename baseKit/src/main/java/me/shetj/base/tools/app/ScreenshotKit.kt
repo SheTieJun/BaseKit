@@ -61,18 +61,18 @@ object ScreenshotKit {
     /**
      * Get screenshot listener
      * 获取截屏监听
-     * Android >=33    @RequiresPermission("android.permission.READ_MEDIA_IMAGES")
+     * Android >=33    @RequiresPermission("android.permission.READ_MEDIA_IMAGES") && android.permission.DETECT_SCREEN_CAPTURE"
      * Android <33    @RequiresPermission("android.permission.READ_EXTERNAL_STORAGE")
+     * @Per
      * @param isRequestPermission 是否请求对应权限
      * @return
      */
     fun initActivity(activity: FragmentActivity, isRequestPermission: Boolean = true) {
         FixPermission.checkReadMediaFile(context = activity, isRequest = isRequestPermission)
         if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            /*<uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />*/
             val screenshotListener = Activity.ScreenCaptureCallback {
-                handleMediaContentChange(
-                    Media.EXTERNAL_CONTENT_URI
-                )
+                handleMediaContentChange(Media.EXTERNAL_CONTENT_URI)
             }
             activity.lifecycle.addObserver(
                 LifecycleEventObserver { _, event ->

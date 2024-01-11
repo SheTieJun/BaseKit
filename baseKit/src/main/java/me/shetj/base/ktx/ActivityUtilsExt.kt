@@ -110,12 +110,11 @@ fun Activity.startNewActivity(options: ActivityOptionsCompat, activityClass: Cla
 }
 
 /**
- * @param slideTransition  = explode(),slide()(),fade
+ * @param transition  = explode(),slide()(),fade
  * @param shareTransition  share view 的transition  一般为changeBound
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun Fragment.setEnterTransition(slideTransition: Transition, shareTransition: Transition) {
-    enterTransition = slideTransition
+fun Fragment.setEnterTransition(transition: Transition, shareTransition: Transition) {
+    enterTransition = transition
     allowEnterTransitionOverlap = true
     allowReturnTransitionOverlap = true
     sharedElementEnterTransition = shareTransition

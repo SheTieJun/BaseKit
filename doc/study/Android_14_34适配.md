@@ -27,3 +27,8 @@
       </service>
     </application>
 ```
+
+## 监听截图
+```kotlin
+android.permission.DETECT_SCREEN_CAPTURE
+```

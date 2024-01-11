@@ -322,6 +322,7 @@ inline fun <reified VB : ViewBinding> Context.createSimDialog(
 
 /**
  * 获取网络状态监听回调
+ * - tip:调用次数不宜过多，部分高版本手机会崩溃
  */
 @RequiresPermission(allOf = ["android.permission.CHANGE_NETWORK_STATE"])
 internal fun Context.requestNetWork() {
@@ -338,15 +339,21 @@ internal fun Context.requestNetWork() {
 
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
+                NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.UNKNOWN)
             }
 
             override fun onUnavailable() {
                 super.onUnavailable()
-                NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
+                NetWorkLiveDate.getInstance().onLost()
             }
 
             override fun onLost(network: Network) {
                 super.onLost(network)
+                NetWorkLiveDate.getInstance().onLost()
+            }
+
+            override fun onLosing(network: Network, maxMsToLive: Int) {
+                super.onLosing(network, maxMsToLive)
                 NetWorkLiveDate.getInstance().onLost()
             }
 
@@ -363,7 +370,7 @@ internal fun Context.requestNetWork() {
                         }
 
                         else -> {
-                            NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.NONE)
+                            NetWorkLiveDate.getInstance().setNetType(NetWorkLiveDate.NetType.UNKNOWN)
                         }
                     }
                 }

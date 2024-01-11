@@ -147,6 +147,7 @@ dependencies {
     addProInstaller()
     //https://github.com/SheTieJun/LogKit
     implementation("com.github.SheTieJun.LogKit:logkit-messenger:1.7")
+    implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")  //指纹识别
 }
 
 androidComponents {

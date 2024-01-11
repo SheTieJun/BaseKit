@@ -16,7 +16,6 @@ afterEvaluate {
                 from components.release
                 artifactId = "sdk"
                 version = '1.1.1'
-                // 这是demo穿件pom
                 pom.withXml {
                     asNode().children().last() + {
                         resolveStrategy = DELEGATE_FIRST
