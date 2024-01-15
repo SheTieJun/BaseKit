@@ -379,7 +379,7 @@ internal fun Context.requestNetWork() {
     )
 }
 
-fun Context.getFileProvider(): String {
+fun Context.getFileProviderAuthority(): String {
     return "$packageName.FileProvider"
 }
 

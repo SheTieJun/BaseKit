@@ -20,6 +20,8 @@ import android.provider.MediaStore.Video
 import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
 import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
+import me.shetj.base.ktx.getFileProviderAuthority
 import me.shetj.base.ktx.md5
 import java.io.File
 import java.io.FileOutputStream
@@ -285,6 +287,10 @@ object FileQUtils {
         val flag: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         context.contentResolver.takePersistableUriPermission(uri, flag)
+    }
+
+    fun getUriForFile(context: Context, file: File): Uri? {
+       return FileProvider.getUriForFile(context, context.getFileProviderAuthority(), file)
     }
 }
 

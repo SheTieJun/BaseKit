@@ -1,7 +1,9 @@
 package me.shetj.base
 
 import android.app.Application
+import android.os.Build
 import android.provider.Settings
+import android.webkit.WebView
 import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -12,9 +14,11 @@ import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.di.getDBModule
 import me.shetj.base.di.getHttpModule
 import me.shetj.base.ktx.isTrue
+import me.shetj.base.ktx.logI
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.app.Utils
+import me.shetj.base.tools.app.webview.WebViewManager
 import me.shetj.base.tools.debug.DebugFunc
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
@@ -111,6 +115,7 @@ object BaseKit {
             modules(getDBModule())
             modules(getHttpModule())
         }
+        WebViewManager.startSafeBrowsing()
     }
 
     val SDKVersionName by lazy {

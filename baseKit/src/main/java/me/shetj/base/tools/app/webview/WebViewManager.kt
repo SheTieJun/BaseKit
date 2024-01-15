@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
+import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.telecom.VideoProfile.isVideo
@@ -17,13 +18,23 @@ import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.fragment.app.FragmentActivity
+import androidx.webkit.JavaScriptReplyProxy
+import androidx.webkit.ProxyConfig
+import androidx.webkit.ProxyController
+import androidx.webkit.WebMessageCompat
+import androidx.webkit.WebViewCompat
+import androidx.webkit.WebViewFeature
+import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
+import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.searchFiles
 import me.shetj.base.ktx.startRequestPermission
 import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 import java.io.InputStream
+import java.util.Arrays
+import java.util.concurrent.Executor
 
 /**
  * WebView管理器，提供常用设置
@@ -49,6 +60,69 @@ class WebViewManager(private val webView: WebView) {
         // 5.0以上允许加载http和https混合的页面(5.0以下默认允许，5.0+默认禁止)
         webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
     }
+
+    companion object {
+
+        /**
+         * Start safe browsing
+         * 用于启动安全浏览服务。这个服务可以帮助 WebView 防止用户访问被认为是恶意的网站
+         */
+        fun startSafeBrowsing() {
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.START_SAFE_BROWSING)) {
+                WebViewCompat.startSafeBrowsing(BaseKit.app) {
+                    ("WebView.startSafeBrowsing isSuccess = $it").logI()
+                }
+            }
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_RESPONSE_BACK_TO_SAFETY)) {
+
+            }
+        }
+
+        /**
+         * Set web contents debugging enabled
+         * @param enabled
+         */
+        fun setWebContentsDebuggingEnabled(enabled: Boolean) {
+            if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+                WebView.setWebContentsDebuggingEnabled(enabled)
+            }
+        }
+
+    }
+
+//    /**
+//     * Add hybird
+//     *
+//     * @param jsObjectName Webpage 的js对象名
+//     * @param allowedRules 允许的规则
+//     */
+//    fun addHybird(jsObjectName:String,allowedRules: Set<String>? = null) {
+//        val myListener = object : WebViewCompat.WebMessageListener {
+//
+//            /**
+//             * On post message
+//             *
+//             * @param view WebView
+//             * @param message js代码发送的消息,TYPE_STRING, TYPE_ARRAY_BUFFER
+//             * @param sourceOrigin 发送消息的网页地址
+//             * @param isMainFrame 是否是主页面，iFrame中的页面为false
+//             * @param replyProxy 回复消息的代理
+//             */
+//            override fun onPostMessage(view: WebView, message: WebMessageCompat, sourceOrigin: Uri, isMainFrame: Boolean, replyProxy: JavaScriptReplyProxy) {
+//                // do something about view, message, sourceOrigin and isMainFrame.
+//
+//                message.type
+//            }
+//        }
+//        val allowedOriginRules = allowedRules ?: setOf()
+//        WebViewCompat.addWebMessageListener(
+//            /* webView = */ webView,
+//            /* jsObjectName = */jsObjectName,
+//            /* allowedOriginRules = */ allowedOriginRules,
+//            /* listener = */myListener
+//        );
+//    }
+
 
     /**
      * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放
@@ -289,7 +363,7 @@ class WebViewManager(private val webView: WebView) {
 
     /**
      * Is enable auto load image
-     * 自动价值图片
+     * 自动加载图片
      * @param enabled
      */
     fun isEnableAutoLoadImage(enabled: Boolean) {

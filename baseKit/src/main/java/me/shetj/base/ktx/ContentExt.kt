@@ -28,7 +28,7 @@ fun createImagePathUri(context: Context): Uri {
             val file = File(createImagePath(context))
             FileProvider.getUriForFile(
                 context.applicationContext,
-                context.getFileProvider(),
+                context.getFileProviderAuthority(),
                 file
             )
         }
