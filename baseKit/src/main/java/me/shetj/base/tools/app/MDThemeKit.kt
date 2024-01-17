@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.NightMode
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.shetj.base.BaseKit
 import me.shetj.base.R
@@ -70,7 +69,7 @@ object MDThemeKit {
             val theme = getThemeByWhich(which)
             colorCallBacks.rStyle = theme.style
             (context.applicationContext as Application).registerActivityLifecycleCallbacks(colorCallBacks)
-            BaseKit.applicationScope.launch(DispatcherProvider.main()){
+            BaseKit.applicationScope.launch(DispatcherProvider.main()) {
                 themeLiveData.observeForever {
                     updateThemeWithTheme(it)
                 }

@@ -2,13 +2,11 @@ package me.shetj.base.ktx
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.transition.Transition
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair

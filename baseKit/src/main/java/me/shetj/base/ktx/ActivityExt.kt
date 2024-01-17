@@ -88,8 +88,10 @@ fun FragmentActivity.grayThemChange(isGrayTheme: Boolean) {
 }
 
 fun isPad(context: Context): Boolean {
-    val isPad = (context.resources.configuration.screenLayout
-            and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
+    val isPad = (
+        context.resources.configuration.screenLayout
+            and Configuration.SCREENLAYOUT_SIZE_MASK
+        ) >= Configuration.SCREENLAYOUT_SIZE_LARGE
     val dm = Resources.getSystem().displayMetrics
     val x = (dm.widthPixels / dm.xdpi).toDouble().pow(2.0)
     val y = (dm.heightPixels / dm.ydpi).toDouble().pow(2.0)
@@ -97,11 +99,10 @@ fun isPad(context: Context): Boolean {
     return isPad || screenInches >= 7.0
 }
 
-
-fun View?.setLayer(isMourn:Boolean){
-    this?:return
+fun View?.setLayer(isMourn: Boolean) {
+    this ?: return
     val isCurMourn = (getTag(R.id.isGrayTheme) as? Boolean) ?: false
-    if (isMourn!= isCurMourn) {
+    if (isMourn != isCurMourn) {
         if (isMourn) {
             setTag(R.id.isGrayTheme, true)
             setLayerType(View.LAYER_TYPE_HARDWARE, GrayThemeLiveData.getInstance().getSatPaint(0f))
@@ -156,14 +157,13 @@ fun <T : View> T.animator() = ViewCompat.animate(this)
 @MainThread
 fun String.showToast() = ArmsUtils.makeText(this)
 
-
 /**
  * Show toast to do
  * 用来记录需要完成的功能，点击时候打印日志出来
  */
-inline fun <reified T> String.showToDoToast(){
-    (T::class.java.simpleName+":"+this).logI("TODO")
-    ArmsUtils.makeText(T::class.java.simpleName+":"+this)
+inline fun <reified T> String.showToDoToast() {
+    (T::class.java.simpleName + ":" + this).logI("TODO")
+    ArmsUtils.makeText(T::class.java.simpleName + ":" + this)
 }
 
 @JvmOverloads

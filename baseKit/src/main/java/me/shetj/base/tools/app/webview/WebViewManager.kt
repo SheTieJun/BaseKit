@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
-import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.telecom.VideoProfile.isVideo
@@ -18,14 +17,9 @@ import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.fragment.app.FragmentActivity
-import androidx.webkit.JavaScriptReplyProxy
-import androidx.webkit.ProxyConfig
-import androidx.webkit.ProxyController
-import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import me.shetj.base.BaseKit
-import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.searchFiles
 import me.shetj.base.ktx.startRequestPermission
@@ -33,8 +27,6 @@ import me.shetj.base.ktx.startRequestPermissions
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.tools.json.EmptyUtils.Companion.isNotEmpty
 import java.io.InputStream
-import java.util.Arrays
-import java.util.concurrent.Executor
 
 /**
  * WebView管理器，提供常用设置
@@ -73,9 +65,8 @@ class WebViewManager(private val webView: WebView) {
                     ("WebView.startSafeBrowsing isSuccess = $it").logI()
                 }
             }
-            if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_RESPONSE_BACK_TO_SAFETY)) {
-
-            }
+//            if (WebViewFeature.isFeatureSupported(WebViewFeature.SAFE_BROWSING_RESPONSE_BACK_TO_SAFETY)) {
+//            }
         }
 
         /**
@@ -87,7 +78,6 @@ class WebViewManager(private val webView: WebView) {
                 WebView.setWebContentsDebuggingEnabled(enabled)
             }
         }
-
     }
 
 //    /**
@@ -123,21 +113,20 @@ class WebViewManager(private val webView: WebView) {
 //        );
 //    }
 
-
     /**
      * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放
      */
     fun imgReset() {
         webView.loadUrl(
             "javascript:(function(){" +
-                    "var objs = document.getElementsByTagName('img'); " +
-                    "for(var i=0;i<objs.length;i++)  " +
-                    "{" +
-                    "var img = objs[i];   " +
-                    "    img.style.maxWidth = '100%';" +
-                    "    img.style.height = 'auto';  " +
-                    "}" +
-                    "})()"
+                "var objs = document.getElementsByTagName('img'); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{" +
+                "var img = objs[i];   " +
+                "    img.style.maxWidth = '100%';" +
+                "    img.style.height = 'auto';  " +
+                "}" +
+                "})()"
         )
     }
 
@@ -157,13 +146,11 @@ class WebViewManager(private val webView: WebView) {
     }
 
     private fun isVideo(resources: Array<String>): Boolean {
-        val strings = listOf(*resources)
-        return strings.contains(PermissionRequest.RESOURCE_VIDEO_CAPTURE)
+        return resources.contains(PermissionRequest.RESOURCE_VIDEO_CAPTURE)
     }
 
     private fun isOnlyAudio(resources: Array<String>): Boolean {
-        val strings = listOf(*resources)
-        return !strings.contains(PermissionRequest.RESOURCE_VIDEO_CAPTURE) && strings.contains(PermissionRequest.RESOURCE_AUDIO_CAPTURE)
+        return !resources.contains(PermissionRequest.RESOURCE_VIDEO_CAPTURE) && resources.contains(PermissionRequest.RESOURCE_AUDIO_CAPTURE)
     }
 
     /**
@@ -174,8 +161,10 @@ class WebViewManager(private val webView: WebView) {
         request?.let {
             kotlin.runCatching {
                 if (isVideo(request.resources)) {
-                    activity.startRequestPermissions(permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)) {
-                        if (it.filter { !it.value }.isEmpty()) {
+                    activity.startRequestPermissions(
+                        permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+                    ) {
+                        if (it.filter { m -> !m.value }.isEmpty()) {
                             request.grant(request.resources)
                             request.origin
                         }
@@ -198,15 +187,15 @@ class WebViewManager(private val webView: WebView) {
     fun addImageClick() {
         webView.loadUrl(
             "javascript:(function(){" +
-                    "var objs = document.getElementsByTagName(\"img\"); " +
-                    "for(var i=0;i<objs.length;i++)  " +
-                    "{" +
-                    "    objs[i].onclick=function()  " +
-                    "    {  " +
-                    "        window.App.openImage(this.src);  " +
-                    "    }  " +
-                    "}" +
-                    "})()"
+                "var objs = document.getElementsByTagName(\"img\"); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{" +
+                "    objs[i].onclick=function()  " +
+                "    {  " +
+                "        window.App.openImage(this.src);  " +
+                "    }  " +
+                "}" +
+                "})()"
         )
     }
 
@@ -222,17 +211,17 @@ class WebViewManager(private val webView: WebView) {
     fun addImageClick(jsName: String) {
         webView.loadUrl(
             "javascript:(function() { " +
-                    "var imgList = document.getElementsByTagName('img');" +
-                    "var imgSrcList = [];" +
-                    "for (var i = 0; i < imgList.length; i++) {" +
-                    "    imgSrcList.push(imgList[i].src);" +
-                    "    imgList[i].onclick=function()  " +
-                    "    {  " +
-                    "        window.$jsName.openImage(this.src);  " +
-                    "    }  " +
-                    "}" +
-                    "window.$jsName.onImageListReceived(JSON.stringify(imgSrcList));" +
-                    "})()"
+                "var imgList = document.getElementsByTagName('img');" +
+                "var imgSrcList = [];" +
+                "for (var i = 0; i < imgList.length; i++) {" +
+                "    imgSrcList.push(imgList[i].src);" +
+                "    imgList[i].onclick=function()  " +
+                "    {  " +
+                "        window.$jsName.openImage(this.src);  " +
+                "    }  " +
+                "}" +
+                "window.$jsName.onImageListReceived(JSON.stringify(imgSrcList));" +
+                "})()"
         )
     }
 
@@ -269,14 +258,14 @@ class WebViewManager(private val webView: WebView) {
     fun addConsole2() {
         webView.loadUrl(
             "javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var scriptConsole = document.createElement('script');" +
-                    "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
-                    "parent.appendChild(scriptConsole);" +
-                    "var scriptAdd = document.createElement('script');" +
-                    "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
-                    "parent.appendChild(scriptAdd);" +
-                    "})()"
+                "var parent = document.getElementsByTagName('head').item(0);" +
+                "var scriptConsole = document.createElement('script');" +
+                "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
+                "parent.appendChild(scriptConsole);" +
+                "var scriptAdd = document.createElement('script');" +
+                "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
+                "parent.appendChild(scriptAdd);" +
+                "})()"
         )
     }
 

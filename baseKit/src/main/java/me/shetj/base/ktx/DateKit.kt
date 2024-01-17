@@ -11,7 +11,6 @@ import kotlin.collections.ArrayList
 
 object DateKit {
 
-
     /**
      * 获取当前日期几月几号
      */
@@ -26,7 +25,7 @@ object DateKit {
     fun getStringData(): String {
         val c = Calendar.getInstance(Locale.getDefault())
         return c[Calendar.YEAR].toString() + "-" + (c[Calendar.MONTH] + 1).toString() +
-                "-" + c[Calendar.DAY_OF_MONTH].toString()
+            "-" + c[Calendar.DAY_OF_MONTH].toString()
     }
 
     /**
@@ -86,7 +85,7 @@ object DateKit {
         try {
             c.time = format.parse(time)!!
         } catch (e: ParseException) {
-            e.printStackTrace()
+            e.message.logE()
         }
         if (c[Calendar.DAY_OF_WEEK] == Calendar.SUNDAY) {
             week += "周日"
@@ -116,36 +115,36 @@ object DateKit {
      * 根据当前日期获得是星期几
      */
     fun getDayWeek(time: String): Int {
+        var day = 0
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val c = Calendar.getInstance()
         try {
             c.time = format.parse(time)!!
         } catch (e: ParseException) {
-            e.printStackTrace()
+            e.message.logE()
         }
         if (c[Calendar.DAY_OF_WEEK] == Calendar.SUNDAY) {
-            return 0
+            day = 0
         }
         if (c[Calendar.DAY_OF_WEEK] == Calendar.MONDAY) {
-            return 1
+            day = 1
         }
         if (c[Calendar.DAY_OF_WEEK] == Calendar.TUESDAY) {
-            return 2
+            day = 2
         }
         if (c[Calendar.DAY_OF_WEEK] == Calendar.WEDNESDAY) {
-            return 3
+            day = 3
         }
         if (c[Calendar.DAY_OF_WEEK] == Calendar.THURSDAY) {
-            return 4
+            day = 4
         }
         if (c[Calendar.DAY_OF_WEEK] == Calendar.FRIDAY) {
-            return 5
+            day = 5
         }
-        return if (c[Calendar.DAY_OF_WEEK] == Calendar.SATURDAY) {
-            6
-        } else {
-            0
+        if (c[Calendar.DAY_OF_WEEK] == Calendar.SATURDAY) {
+            day = 6
         }
+        return day
     }
 
     /**
@@ -173,10 +172,10 @@ object DateKit {
         val dates: MutableList<String> = ArrayList()
         val c = Calendar.getInstance()
         c.timeZone = TimeZone.getTimeZone("GMT+8:00")
-        for (i in 0..6) {
+        for (i in 0.rangeTo(6)) {
             val date: String =
                 (c[Calendar.MONTH] + 1).toString() + "月" +
-                        (c[Calendar.DAY_OF_MONTH] + i).toString() + "日"
+                    (c[Calendar.DAY_OF_MONTH] + i).toString() + "日"
             dates.add(date)
         }
         return dates
@@ -186,7 +185,7 @@ object DateKit {
         val dates: MutableList<String> = ArrayList()
         val c = Calendar.getInstance()
         c.timeZone = TimeZone.getTimeZone("GMT+8:00")
-        for (i in 0..6) {
+        for (i in 0.rangeTo(6)) {
             // 获取当前月份
             c.add(Calendar.DAY_OF_MONTH, 1)
             // 获取当前日份的日期号码
@@ -235,7 +234,6 @@ object DateKit {
     }
 }
 
-
 fun Date?.getWeekOfDate(
     aLocale: Locale = Locale.getDefault(),
     weekDaysName: Array<String> = arrayOf("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")
@@ -272,9 +270,9 @@ fun Long.convertToMillisTime(): String {
     val millis = this % 1000
     val seconds = this / 1000
     return (
-            (seconds.toInt() / 60).convertTwoDecimals() + ":" +
-                    (seconds.toInt() % 60).convertTwoDecimals()
-            ) + "." + (millis.toInt() / 10).convertTwoDecimals()
+        (seconds.toInt() / 60).convertTwoDecimals() + ":" +
+            (seconds.toInt() % 60).convertTwoDecimals()
+        ) + "." + (millis.toInt() / 10).convertTwoDecimals()
 }
 
 fun Long.convertToTime(format: String = DateUtils.FORMAT_YMD): String {

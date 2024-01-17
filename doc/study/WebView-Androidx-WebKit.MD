@@ -1,4 +1,7 @@
 # WebView-Androidx-WebKit
+```kotlin
+implementation("androidx.webkit:webkit:1.8.0")
+```
 
 这里是WebKit对于的 WebView 的使用方法
 

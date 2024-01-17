@@ -51,7 +51,6 @@ class ArmsUtils private constructor() {
     companion object {
         var mToast: Toast? = null
 
-
         /**
          * 为 View 添加点击态
          * @param view

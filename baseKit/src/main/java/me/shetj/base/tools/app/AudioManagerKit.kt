@@ -7,12 +7,9 @@ package me.shetj.base.tools.app
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioFocusRequest
-import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioManager.OnAudioFocusChangeListener
-import android.media.AudioRecord
 import android.os.Build
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
@@ -122,7 +119,7 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
         )
     }
 
-    //获取最佳采样率
+    // 获取最佳采样率
     fun getBestSampleRate(): Int {
         val sampleRateStr: String? = mAudioManager?.getProperty(AudioManager.PROPERTY_OUTPUT_SAMPLE_RATE)
         val sampleRate: Int = sampleRateStr?.let { str ->
@@ -131,8 +128,7 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
         return sampleRate
     }
 
-
-    //获取最佳缓冲大小
+    // 获取最佳缓冲大小
     fun getBestBufferSize(): Int {
         val bufferSizeStr: String? = mAudioManager?.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER)
         val bufferSize: Int = bufferSizeStr?.let { str ->
@@ -140,7 +136,6 @@ class AudioManagerKit(context: Context, private val lifecycleOwner: LifecycleOwn
         } ?: 256 // Use a default value if property not found
         return bufferSize
     }
-
 
     private fun init(context: Context) {
         mAudioManager = context.applicationContext.getSystemService()

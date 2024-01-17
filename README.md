@@ -32,6 +32,10 @@ MVVM = (ViewBinding/DataBinding)+ViewModel+LiveData
 6. Material Design Components - Google's latest Material Components.
    - https://material.io/develop/android
 
+## 使用 Android SDK 升级助理
+Android SDK 升级助理是 Android Studio 中的一款工具，可帮助您升级 targetSdkVersion（即应用的目标 API 级别）。请务必及时更新您的 targetSdkVersion，以便使用该平台的最新功能。Android Studio Giraffe 及更高版本中提供了 Android SDK 升级助理。
+https://developer.android.com/build/sdk-upgrade-assistant?hl=zh-cn
+
 ---------------------
 
 ## 文章

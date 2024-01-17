@@ -290,7 +290,7 @@ object FileQUtils {
     }
 
     fun getUriForFile(context: Context, file: File): Uri? {
-       return FileProvider.getUriForFile(context, context.getFileProviderAuthority(), file)
+        return FileProvider.getUriForFile(context, context.getFileProviderAuthority(), file)
     }
 }
 
