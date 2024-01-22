@@ -1,5 +1,7 @@
 package com.shetj.benchmark
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.benchmark.macro.BaselineProfileMode
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupMode
@@ -17,9 +19,12 @@ abstract class AbstractStartupBenchmark(private val startupMode: StartupMode) {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @Test
     fun startupNoCompilation() = startup(CompilationMode.None())
 
+
+    @RequiresApi(Build.VERSION_CODES.N)
     @Test
     fun startupPartialCompilation() = startup(
         CompilationMode.Partial(
@@ -28,6 +33,7 @@ abstract class AbstractStartupBenchmark(private val startupMode: StartupMode) {
         )
     )
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @Test
     fun startupPartialWithBaselineProfiles() =
         startup(CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Require))

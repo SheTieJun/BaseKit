@@ -3,8 +3,13 @@
 buildscript {
     repositories {
         gradlePluginPortal()
+        maven {
+            url = uri("https://storage.googleapis.com/r8-releases/raw")
+        }
     }
-    dependencies {}
+    dependencies {
+        classpath("com.android.tools:r8:8.2.26") //FIX com.android.tools.r8.internal.nc: Sealed classes are not supported as program classes( Java 17 导致的问题)
+    }
 }
 
 //https://developer.android.com/reference/tools/gradle-api
