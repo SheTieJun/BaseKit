@@ -1,9 +1,9 @@
 ## Detekt
 
 ## 相关命令
-`./gradlew detektBaseline` 来生成一个 baseline.xml 基线文件。
-`./gradlew detektGenerateConfig` 会生成 config/detekt/detekt.yml 文件
-`./gradlew detekt` 会执行检查，如果有问题会输出到控制台。
+- `./gradlew detektBaseline` 来生成一个 baseline.xml 基线文件。
+- `./gradlew detektGenerateConfig` 会生成 config/detekt/detekt.yml 文件
+- `./gradlew  detekt` 会执行检查，如果有问题会输出到控制台。
 
 detekt.yml ：
 
