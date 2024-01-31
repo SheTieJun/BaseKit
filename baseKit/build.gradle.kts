@@ -5,6 +5,9 @@ import tools.addKoin
 import tools.addOther
 import tools.addRetrofit2
 import tools.addRoom
+import tools.compileSdk
+import tools.minCompileSdk
+import tools.minSdk
 
 plugins {
     id("kotlin-kapt")
@@ -15,14 +18,14 @@ plugins {
 }
 
 android {
-    compileSdk = (findProperty("android.compileSdk") as String).toInt()
+    compileSdk = project.compileSdk
     namespace = "me.shetj.base"
     resourcePrefix = "base_"
     defaultConfig {
         aarMetadata {
-            this.minCompileSdk = (findProperty("android.minCompileSdk") as String).toInt()
+            this.minCompileSdk = project.minCompileSdk
         }
-        minSdk = (findProperty("android.minSdk") as String).toInt()
+        minSdk = project.minSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFile("consumer-rules.pro")
     }
@@ -65,7 +68,6 @@ android {
         resources.merges.add("../LICENSE")
         resources.excludes += "DebugProbesKt.bin"
     }
-
     //    ./gradlew printProjectStructure
     tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
 }

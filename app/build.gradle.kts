@@ -7,6 +7,11 @@ import tools.addGuava
 import tools.addProInstaller
 import tools.addNav
 import tools.addPaging
+import tools.compileSdk
+import tools.minSdk
+import tools.targetSdk
+import tools.versionCode
+import tools.versionName
 
 
 plugins {
@@ -16,15 +21,17 @@ plugins {
     kotlin("android")
 }
 
+
+
 android {
-    compileSdk = 34
+    compileSdk = project.compileSdk
     namespace = "shetj.me.base"
     defaultConfig {
         applicationId = "shetj.me.base"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = project.minSdk
+        targetSdk = project.targetSdk
+        versionCode = project.versionCode
+        versionName = project.versionName
         ndk {
             this.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64", "x86"))
         }
@@ -120,25 +127,23 @@ android {
 
 dependencies {
     //    implementation fileTree (include: ["*.jar"], dir: "libs")
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit)
     val androidx = "1.0.0"
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    implementation("androidx.legacy:legacy-support-v4:$androidx")
-    androidTestImplementation("androidx.test:runner:1.4.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.legacy.support.v4)
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation(project(":baseKit"))
-//    implementation("com.github.SheTieJun:base:1.1.38")
-//    implementation("com.github.ybq:Android-SpinKit:1.4.0")
-    implementation("com.airbnb.android:lottie:5.2.0")
+    implementation(libs.lottie)
     //图片预览 https://github.com/iielse/ImageWatcher
-    implementation("com.github.iielse:ImageWatcher:1.1.5")
+    implementation(libs.imagewatcher)
 //    val qmuiversionShetj = "79920f62d5"
 //    implementation("com.github.SheTieJun.QMUI_Android:qmui:$qmuiversionShetj")
-    implementation("androidx.core:core-splashscreen:1.0.0")//启动图
-    implementation("androidx.draganddrop:draganddrop:1.0.0") //拖动
-    implementation("androidx.metrics:metrics-performance:1.0.0-alpha04") // 指标
-    implementation("androidx.tracing:tracing-ktx:1.1.0")//将跟踪事件写入系统跟踪缓冲区。
+    implementation(libs.androidx.core.splashscreen)//启动图
+    implementation(libs.androidx.draganddrop) //拖动
+    implementation(libs.androidx.metrics.performance) // 指标
+    implementation(libs.androidx.tracing.ktx)//将跟踪事件写入系统跟踪缓冲区。
 
     implementation("com.github.SheTieJun:RoundedProgressBar:550a631d74")
     addPaging()
@@ -146,8 +151,8 @@ dependencies {
     addGuava()//大部分功能kotlin都有了
     addProInstaller()
     //https://github.com/SheTieJun/LogKit
-    implementation("com.github.SheTieJun.LogKit:logkit-messenger:1.7")
-    implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")  //指纹识别
+    implementation(libs.logkit.messenger)
+    implementation(libs.androidx.biometric.ktx)  //指纹识别
 }
 
 androidComponents {

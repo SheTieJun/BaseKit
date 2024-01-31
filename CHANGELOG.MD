@@ -1,5 +1,18 @@
 ## CHANGELOG
 
+# 2024年1月30日
+- [ProjectUtils.kt](buildSrc/src/main/kotlin/tools/ProjectUtils.kt):用于读取`gradle.properties`中的配置
+- [buildSrc](buildSrc):用于管理`build.gradle`中的依赖版本号
+- Coroutines : 1.7.3 -> 1.8.0-RC2
+- Lifecycle : 2.5.1 -> 2.7.0
+- Navigation : 2.6.0 -> 2.7.6
+- Room : 2.6.0 -> 2.6.1
+- material : 1.9.0-> 1.11.0
+
+# 2024年1月22日
+- Gradle : 7.4 -> 8.0
+- [遇到的问题](doc/gradle/Gradle7-8.MD)
+
 # 2023年9月21日
 - add androidx.window
 
