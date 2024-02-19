@@ -20,7 +20,7 @@ plugins {
     alias(libs.plugins.spotless)
     alias(libs.plugins.android.benchmark) apply false
     id("maven-publish")
-    id("io.gitlab.arturbosch.detekt") version "1.23.3"
+    id("io.gitlab.arturbosch.detekt") version "1.23.5"
 }
 
 //apply(from = "https://gist.githubusercontent.com/SheTieJun/f4cb1bd33997c2b46d9e3df40b95a02e/raw/c4b826d3ca4415071097b1642c9b80e50f3f1ad0/subprojects-maven-publishing.gradle")
