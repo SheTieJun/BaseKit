@@ -2,9 +2,9 @@ name: DeteKt Code Check
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "DeteKt" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "DeteKt" ]
 
 jobs:
   detekt-code-check:

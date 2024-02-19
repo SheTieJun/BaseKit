@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.util.lruCache
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
+import androidx.lifecycle.asLiveData
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
@@ -109,6 +110,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         val lruCache = lruCache<String, String>(100) // lruCache
         BaseKit.androidID.logI("androidID")
         WindowKit.addWinLayoutListener(this)
+        defDataStore.get<String>(":").asLiveData()
 
     }
 

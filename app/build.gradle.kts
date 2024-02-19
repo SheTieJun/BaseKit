@@ -5,7 +5,6 @@ import com.android.build.api.instrumentation.InstrumentationParameters.None
 import org.objectweb.asm.ClassVisitor
 import tools.addGuava
 import tools.addProInstaller
-import tools.addNav
 import tools.addPaging
 import tools.compileSdk
 import tools.minSdk
@@ -41,6 +40,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 
 
@@ -128,28 +128,27 @@ android {
 dependencies {
     //    implementation fileTree (include: ["*.jar"], dir: "libs")
     testImplementation(libs.junit)
-    val androidx = "1.0.0"
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation(libs.legacy.support.v4)
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.espresso.core)
     implementation(project(":baseKit"))
     implementation(libs.lottie)
-    //图片预览 https://github.com/iielse/ImageWatcher
-    implementation(libs.imagewatcher)
-//    val qmuiversionShetj = "79920f62d5"
-//    implementation("com.github.SheTieJun.QMUI_Android:qmui:$qmuiversionShetj")
-    implementation(libs.androidx.core.splashscreen)//启动图
-    implementation(libs.androidx.draganddrop) //拖动
+//    //图片预览 https://github.com/iielse/ImageWatcher
+//    implementation(libs.imagewatcher)
+//    implementation(libs.androidx.core.splashscreen)//启动图
+    implementation(libs.androidx.dragAndDrop) //拖动
     implementation(libs.androidx.metrics.performance) // 指标
     implementation(libs.androidx.tracing.ktx)//将跟踪事件写入系统跟踪缓冲区。
 
-    implementation("com.github.SheTieJun:RoundedProgressBar:550a631d74")
+    implementation(libs.roundedProgressBar)
     addPaging()
-    addNav()
+
     addGuava()//大部分功能kotlin都有了
     addProInstaller()
+
+    implementation(libs.androidx.navigation)
+    implementation(libs.androidx.navigation.ui)
+
     //https://github.com/SheTieJun/LogKit
     implementation(libs.logkit.messenger)
     implementation(libs.androidx.biometric.ktx)  //指纹识别

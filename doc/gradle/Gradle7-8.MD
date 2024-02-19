@@ -32,3 +32,9 @@ buildFeatures {
     aidl = true
 }
 ```
+6. 8.0之后的版本，需要手动开启buildConfig支持,否则会找不到对应的类`BuildConfig`
+```kotlin
+buildFeatures {
+    buildConfig = true
+}
+```
