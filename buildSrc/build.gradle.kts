@@ -13,9 +13,9 @@ repositories {
 
 dependencies {
     compileOnly("com.android.tools.build:gradle:8.1.0")
-    implementation("org.ow2.asm:asm:9.2")
-    implementation("org.ow2.asm:asm-util:9.2")
-    implementation("org.ow2.asm:asm-commons:9.2")
+    implementation("org.ow2.asm:asm:9.6")
+    implementation("org.ow2.asm:asm-util:9.6")
+    implementation("org.ow2.asm:asm-commons:9.6")
     implementation("javax.mail:mail:1.4.5")
 }
 
