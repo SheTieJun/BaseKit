@@ -1,6 +1,4 @@
-import tools.compileSdk
-import tools.minCompileSdk
-import tools.minSdk
+import tools.androidLibrary
 
 plugins {
     id("kotlin-kapt")
@@ -10,20 +8,8 @@ plugins {
     kotlin("android")
 }
 
-android {
-    compileSdk = project.compileSdk
-    namespace = "me.shetj.base"
+androidLibrary("me.shetj.base",config = true){
     resourcePrefix = "base_"
-    defaultConfig {
-        aarMetadata {
-            this.minCompileSdk = project.minCompileSdk
-        }
-        minSdk = project.minSdk
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFile("consumer-rules.pro")
-    }
-
-
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -34,28 +20,11 @@ android {
             )
         }
     }
-
-    buildFeatures {
-        viewBinding = true
-        dataBinding = true
-        buildConfig = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
     lint {
         abortOnError = true
         checkDependencies = true
         checkOnly.addAll(setOf("NewApi", "HandlerLeak"))
     }
-
 
     packaging {
         //pickFirst "**/xxx.so" //告诉Gradle包装时只选一个，否则你会得到冲突。

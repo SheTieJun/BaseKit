@@ -55,7 +55,8 @@ android-benchmark = { id = "androidx.benchmark", version.ref = "benchmark" }
 [libraries]
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
-gradlePlugin-android = "com.android.tools.build:gradle:8.2.2"
+gradlePlugin-android = { module = "com.android.tools.build:gradle" ,version.ref = "androidGradlePlugin" }
+gradlePlugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradlePlugin-atomicFu = "org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.23.2"
 androidx-biometric-ktx = { module = "androidx.biometric:biometric-ktx", version.ref = "biometricKtx" }
 androidx-tracing-ktx = { module = "androidx.tracing:tracing-ktx", version.ref = "tracingKtx" }
@@ -134,6 +135,8 @@ lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy" }
 junit = { module = "junit:junit", version.ref = "junit" }
 roundedProgressBar = { module = "com.github.SheTieJun:RoundedProgressBar", version.ref = "roundedProgressBar" }
+
+# Compose
 
 
 

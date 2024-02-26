@@ -15,7 +15,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.gradlePlugin.android)
+    implementation(libs.gradlePlugin.android)
+    implementation(libs.gradlePlugin.kotlin)
     implementation(libs.asm)
     implementation(libs.asm.util)
     implementation(libs.asm.commons)

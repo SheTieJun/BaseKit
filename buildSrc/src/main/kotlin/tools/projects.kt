@@ -1,3 +1,5 @@
+package tools
+
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.Lint
 import com.android.build.gradle.BaseExtension
@@ -6,19 +8,23 @@ import com.android.build.gradle.TestExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import tools.compileSdk
-import tools.minSdk
-import tools.targetSdk
-import tools.versionCode
-import tools.versionName
+import org.gradle.kotlin.dsl.withType
 
 fun Project.androidLibrary(
     name: String,
     config: Boolean = false,
     action: LibraryExtension.() -> Unit = {},
 ) = androidBase<LibraryExtension>(name) {
+    defaultConfig {
+        aarMetadata {
+            this.minCompileSdk = project.minCompileSdk
+        }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFile("consumer-rules.pro")
+    }
     buildFeatures {
         buildConfig = config
+        aidl = true
         viewBinding = true
         dataBinding = true
     }
@@ -34,42 +40,18 @@ fun Project.androidApplication(
         applicationId = name
         versionCode = project.versionCode
         versionName = project.versionName
-        resourceConfigurations += "en"
         vectorDrawables.useSupportLibrary = true
     }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+        }
+    }
     buildFeatures {
+        aidl = true
         viewBinding = true
         dataBinding = true
-        aidl = true
-    }
-    signingConfigs {
-        create("release") {
-            enableV1Signing = true
-            enableV2Signing = true
-            enableV3Signing = true
-            enableV4Signing = true
-            keyAlias = "shetj"
-            keyPassword = "123456"
-            storeFile = file("test.jks")
-            storePassword = "123456"
-        }
-    }
-    buildTypes {
-        release {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
-        }
-        debug {
-            isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("release")
-        }
-        create("benchmark") {
-            initWith(getByName("release"))
-            matchingFallbacks += listOf("release")
-            signingConfig = signingConfigs.getByName("debug")
-            isDebuggable = false
-        }
+        buildConfig = true
     }
     action()
 }
@@ -83,7 +65,6 @@ fun Project.androidTest(
         buildConfig = config
     }
     defaultConfig {
-        resourceConfigurations += "en"
         vectorDrawables.useSupportLibrary = true
     }
     action()
@@ -112,18 +93,18 @@ private fun <T : BaseExtension> Project.androidBase(
             unitTests.isIncludeAndroidResources = true
         }
         lint {
-            abortOnError = true
-            checkDependencies = true
-            checkOnly.addAll(setOf("NewApi", "HandlerLeak"))
+            warningsAsErrors = true
         }
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         }
+        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+            kotlinOptions.jvmTarget = findProperty("kotlin.jvmTarget") as String
+        }
         action()
     }
 }
-
 
 private fun <T : BaseExtension> Project.android(action: T.() -> Unit) {
     extensions.configure("android", action)
