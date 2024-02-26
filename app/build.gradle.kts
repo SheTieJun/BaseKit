@@ -2,15 +2,12 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters.None
+import org.gradle.internal.impldep.bsh.commands.dir
 import org.objectweb.asm.ClassVisitor
 import tools.addGuava
 import tools.addProInstaller
 import tools.addPaging
-import tools.compileSdk
-import tools.minSdk
-import tools.targetSdk
-import tools.versionCode
-import tools.versionName
+import tools.androidApplication
 
 
 plugins {
@@ -21,55 +18,13 @@ plugins {
 }
 
 
-
-android {
-    compileSdk = project.compileSdk
-    namespace = "shetj.me.base"
+androidApplication("shetj.me.base"){
     defaultConfig {
-        applicationId = "shetj.me.base"
-        minSdk = project.minSdk
-        targetSdk = project.targetSdk
-        versionCode = project.versionCode
-        versionName = project.versionName
         ndk {
             this.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64", "x86"))
         }
         setProperty("archivesBaseName", "Base-$versionName") //修改Apk的输出名字
     }
-
-    buildFeatures {
-        viewBinding = true
-        dataBinding = true
-        buildConfig = true
-    }
-
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
-    //产品变种组,
-    flavorDimensions += (listOf("dev", "demo"))
-
-//    productFlavors {
-//        this.create("dev") {
-//            dimension = "dev"
-//            versionNameSuffix = "-dev"
-//            applicationIdSuffix = ".dev"
-//        }
-//        this.create("demo") {
-//            dimension = "demo"
-//            versionNameSuffix = "-demo"
-//            applicationIdSuffix = ".demo"
-//            minSdk = 24
-//        }
-//    }
-
     signingConfigs {
         create("release") {
             enableV1Signing = true
@@ -85,8 +40,6 @@ android {
 
     buildTypes {
         release {
-            buildConfigField("boolean", "LOG_DEBUG", "false")
-            buildConfigField("boolean", "USE_CANARY", "false")
             isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true // 移除无用的resource文件
@@ -95,8 +48,6 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
         debug {
-            buildConfigField("boolean", "LOG_DEBUG", "true")
-            buildConfigField("boolean", "USE_CANARY", "true")
             isDebuggable = true
             isMinifyEnabled = false
             isShrinkResources = false // 移除无用的resource文件
@@ -116,26 +67,17 @@ android {
         checkDependencies = true
     }
 }
-//
-//// 优化编译速度 如果有用到kapt添加如下配置
-//kapt {
-//    useBuildCache = true
-//    javacOptions {
-//        option("-Xmaxerrs", 500)
-//    }
-//}
 
 dependencies {
-    //    implementation fileTree (include: ["*.jar"], dir: "libs")
+    implementation(fileTree("libs") {
+        include("*.jar","*.aar")
+    })
     testImplementation(libs.junit)
     implementation(libs.legacy.support.v4)
     androidTestImplementation(libs.androidx.runner)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(project(":baseKit"))
     implementation(libs.lottie)
-//    //图片预览 https://github.com/iielse/ImageWatcher
-//    implementation(libs.imagewatcher)
-//    implementation(libs.androidx.core.splashscreen)//启动图
     implementation(libs.androidx.dragAndDrop) //拖动
     implementation(libs.androidx.metrics.performance) // 指标
     implementation(libs.androidx.tracing.ktx)//将跟踪事件写入系统跟踪缓冲区。
