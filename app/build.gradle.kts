@@ -2,7 +2,6 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters.None
-import org.gradle.internal.impldep.bsh.commands.dir
 import org.objectweb.asm.ClassVisitor
 import tools.addGuava
 import tools.addProInstaller
@@ -94,6 +93,9 @@ dependencies {
     //https://github.com/SheTieJun/LogKit
     implementation(libs.logkit.messenger)
     implementation(libs.androidx.biometric.ktx)  //指纹识别
+
+    // Kotlin
+    implementation(libs.androidx.preference)
 }
 
 androidComponents {

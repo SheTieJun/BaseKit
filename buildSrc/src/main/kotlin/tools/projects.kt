@@ -9,6 +9,7 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 fun Project.androidLibrary(
     name: String,
@@ -100,7 +101,7 @@ private fun <T : BaseExtension> Project.androidBase(
             targetCompatibility = JavaVersion.VERSION_17
         }
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions.jvmTarget = findProperty("kotlin.jvmTarget") as String
+            kotlinOptions.jvmTarget = JvmTarget.JVM_17.target
         }
         action()
     }
