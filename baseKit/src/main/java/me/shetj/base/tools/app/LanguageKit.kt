@@ -8,6 +8,7 @@ import android.os.LocaleList
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
+import androidx.core.os.LocaleListCompat
 import me.shetj.base.tools.file.SPUtils
 import java.util.*
 
@@ -42,6 +43,7 @@ object LanguageKit {
      */
     @Suppress("DEPRECATION")
     private fun setAppLanguage(context: Context, locale: Locale) {
+        //      AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(locale.language)) //会黑一下
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             context.getSystemService<LocaleManager>()?.overrideLocaleConfig = LocaleConfig(LocaleList(locale))
         } else {
@@ -52,7 +54,6 @@ object LanguageKit {
             configuration.setLocales(LocaleList(locale))
             context.createConfigurationContext(configuration)
             resources.updateConfiguration(configuration, metrics)
-//            AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(locale)) //也可以，但是会黑屏一下
         }
     }
 

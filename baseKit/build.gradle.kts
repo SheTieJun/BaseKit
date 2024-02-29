@@ -101,13 +101,16 @@ fun DependencyHandler.addAndroid(){
     api(libs.androidx.animationCore)
     api(libs.androidx.datastoreCore)
     api(libs.androidx.datastore.preferences)
+
     api(libs.androidx.concurrent)
 
-    api(libs.androidx.work.runtime)
+    api(libs.androidx.work.runtime) //workManager后台工作组件
     api(libs.androidx.work.multiprocess)
 
     api(libs.androidx.navigation)
     api(libs.androidx.navigation.ui)
+
+    api(libs.androidx.preference) //设置组件
 }
 
 apply(from = "uploadLocal.gradle")

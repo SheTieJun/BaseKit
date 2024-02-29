@@ -137,6 +137,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="KeyStore"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Preference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preference"/>
     </com.google.android.material.chip.ChipGroup>
 
 

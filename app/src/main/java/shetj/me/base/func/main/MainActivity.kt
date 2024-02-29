@@ -7,6 +7,7 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
@@ -51,6 +52,7 @@ import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.md3.Main2Activity
+import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
 import shetj.me.base.utils.BiometricAuthenticationKit
 import shetj.me.base.utils.KeyStoreKit
@@ -115,6 +117,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun setUpClicks() {
+        PreferenceManager.getDefaultSharedPreferences(this)
         mContent = mBinding.content
         val hierarchy = addJankStats()
         hierarchy.state?.putState("Activity", javaClass.simpleName)
@@ -146,6 +149,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
         mContent.btnDoc.setOnClickListener {
             selectFile("*/*") {}
+        }
+        mContent.Preference.setOnClickListener {
+            start<SettingActivity>()
         }
 
         mContent.btnSetting.setOnClickListener {
