@@ -42,6 +42,33 @@ dependencies {
     addCoroutines()
     addOther()
     addRoom()
+    addCompose()
+    addPage()
+}
+
+fun DependencyHandler.addPage(){
+    api(libs.androidx.paging)
+    api(libs.compose.paging)
+}
+
+fun DependencyHandler.addCompose() {
+    api(platform(libs.compose.bom))
+    api(libs.compose.material3)
+    api(libs.compose.foundation)
+    api(libs.ui)
+    api(libs.ui.graphics)
+    api(libs.ui.tooling.preview)
+    api(libs.compose.material.iconsCore)
+    api(libs.compose.material.iconsExt)
+    api(libs.compose.material3.windowSize)
+    api(libs.activity.compose)
+    api(libs.compose.livedata)
+    api(libs.compose.lifecycle.viewmodel)
+    api(libs.compose.constraintlayout)
+
+    debugApi(libs.ui.tooling)
+    androidTestApi(libs.ui.test.junit4)
+    debugApi(libs.ui.test.manifest)
 }
 
 fun DependencyHandler.addKoin(){

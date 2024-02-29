@@ -2,6 +2,7 @@ package shetj.me.base.func.preference
 
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import me.shetj.base.ktx.logI
 import me.shetj.base.mvvm.viewbind.BaseBindingActivity
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivitySettingBinding
@@ -31,10 +32,16 @@ class SettingActivity:BaseBindingActivity<ActivitySettingBinding,SettingViewMode
         val  sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
         val  name = sharedPreferences.getString("signature", "");
+        name.logI("name")
 
 
         sharedPreferences.registerOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             // do something
+            when(key){
+                "signature" ->{
+                    sharedPreferences.getString("signature", "").logI("name")
+                }
+            }
         })
     }
 }

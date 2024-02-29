@@ -5,8 +5,8 @@ import com.android.build.api.instrumentation.InstrumentationParameters.None
 import org.objectweb.asm.ClassVisitor
 import tools.addGuava
 import tools.addProInstaller
-import tools.addPaging
 import tools.androidApplication
+import tools.composeCompilerVer
 
 
 plugins {
@@ -71,6 +71,10 @@ dependencies {
     implementation(fileTree("libs") {
         include("*.jar","*.aar")
     })
+    implementation(platform(libs.compose.bom))
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.ui.tooling.preview)
+    androidTestImplementation(libs.ui.test.junit4)
     testImplementation(libs.junit)
     implementation(libs.legacy.support.v4)
     androidTestImplementation(libs.androidx.runner)
@@ -80,10 +84,7 @@ dependencies {
     implementation(libs.androidx.dragAndDrop) //拖动
     implementation(libs.androidx.metrics.performance) // 指标
     implementation(libs.androidx.tracing.ktx)//将跟踪事件写入系统跟踪缓冲区。
-
     implementation(libs.roundedProgressBar)
-    addPaging()
-
     addGuava()//大部分功能kotlin都有了
     addProInstaller()
 

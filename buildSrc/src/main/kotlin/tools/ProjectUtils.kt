@@ -22,6 +22,9 @@ val Project.compileSdk: Int
 val Project.versionName: String
     get() = stringProperty("appVersionName")
 
+val Project.composeCompilerVer: String
+    get() = stringProperty("compose.compiler")
+
 val Project.versionCode: Int
     get() = versionName
         .takeWhile { it.isDigit() || it == '.' }

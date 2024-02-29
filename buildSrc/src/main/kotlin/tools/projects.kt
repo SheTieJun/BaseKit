@@ -53,6 +53,16 @@ fun Project.androidApplication(
         viewBinding = true
         dataBinding = true
         buildConfig = true
+        compose = true
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    composeOptions{
+        //https://developer.android.google.cn/jetpack/androidx/releases/compose-kotlin?hl=zh-cn
+        kotlinCompilerExtensionVersion = project.composeCompilerVer
     }
     action()
 }

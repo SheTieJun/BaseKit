@@ -43,6 +43,9 @@ benchmark = "1.2.3"
 tracingKtx = "1.1.0"
 koin-version = "3.4.3"
 retrofit = "2.9.0"
+activity-compose = "1.8.2"
+compose-bom = "2024.02.01"
+pagingVersion = "3.2.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -59,7 +62,6 @@ androidx-preference = { module = "androidx.preference:preference-ktx", version.r
 androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 gradlePlugin-android = { module = "com.android.tools.build:gradle" ,version.ref = "androidGradlePlugin" }
 gradlePlugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-gradlePlugin-atomicFu = "org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.23.2"
 androidx-biometric-ktx = { module = "androidx.biometric:biometric-ktx", version.ref = "biometricKtx" }
 androidx-tracing-ktx = { module = "androidx.tracing:tracing-ktx", version.ref = "tracingKtx" }
 androidx-metrics-performance = { module = "androidx.metrics:metrics-performance", version.ref = "metricsPerformance" }
@@ -101,7 +103,7 @@ androidx-lifecycle-viewmodel = {  module = "androidx.lifecycle:lifecycle-viewmod
 androidx-lifecycle-livedata = {  module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidx-lifecycle" }
 
 # Paging
-androidx-paging = { module = "androidx.paging:paging-runtime", version = "3.2.0" }
+androidx-paging = { module = "androidx.paging:paging-runtime", version.ref = "pagingVersion" }
 
 # Koin
 koinAndroid = { module = "io.insert-koin:koin-android", version.ref = "koin-version" }
@@ -138,7 +140,25 @@ legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref 
 junit = { module = "junit:junit", version.ref = "junit" }
 roundedProgressBar = { module = "com.github.SheTieJun:RoundedProgressBar", version.ref = "roundedProgressBar" }
 
-# Compose
+## Compose
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-foundation = { group = "androidx.compose.foundation",name = "foundation" }
+compose-material-iconsCore = { group = "androidx.compose.material", name = "material-icons-core" }
+compose-material-iconsExt = { group = "androidx.compose.material", name = "material-icons-extended" }
+compose-material3-windowSize = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
+compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.0.1" }
+compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.7.0" }
+compose-paging = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingVersion" }
+
 
 
 

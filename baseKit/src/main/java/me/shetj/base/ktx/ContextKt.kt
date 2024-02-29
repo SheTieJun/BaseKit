@@ -60,8 +60,20 @@ val Context.asActivity: Activity
         error("The passed Context is not an Activity.")
     }
 
+
+fun Context.asComponentActivity(): ComponentActivity {
+    if (this is ComponentActivity) {
+        return this
+    }
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is ComponentActivity) return context
+        context = context.baseContext
+    }
+    error("u should be called in the context of an Activity")
+}
+
 fun Context.getIdByName(className: String, resName: String): Int {
-    val packageName = packageName
     return applicationContext.resources.getIdentifier(resName, className, packageName)
 }
 

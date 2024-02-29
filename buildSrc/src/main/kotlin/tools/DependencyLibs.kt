@@ -4,7 +4,6 @@ import org.gradle.api.Action
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.accessors.runtime.addDependencyTo
-import tools.DependencyLibs.AndroidX.Paging
 import tools.DependencyLibs.Guava
 
 
@@ -17,11 +16,6 @@ object DependencyLibs {
 
     object AndroidX {
 
-
-        object Paging {
-            private const val pagingVersion = "3.2.0"
-            const val paging = "androidx.paging:paging-runtime:$pagingVersion"
-        }
 
 
         object Benchmark {
@@ -76,12 +70,6 @@ val defAction = Action<ExternalModuleDependency> {
 }
 
 //region 具体库
-
-fun DependencyHandler.addPaging(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
-    addDependencyTo(
-        this, "api", Paging.paging, dependencyConfiguration
-    )
-}
 
 
 fun DependencyHandler.addProInstaller(dependencyConfiguration: Action<ExternalModuleDependency> = defAction) {
