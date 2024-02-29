@@ -67,8 +67,7 @@ open class Month private constructor(rawCalendar: Calendar) : Comparable<Month> 
         if (o !is Month) {
             return false
         }
-        val that = o
-        return month == that.month && year == that.year
+        return month == o.month && year == o.year
     }
 
     override fun hashCode(): Int {

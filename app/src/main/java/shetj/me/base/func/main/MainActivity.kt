@@ -7,7 +7,6 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
@@ -51,6 +50,7 @@ import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
+import shetj.me.base.func.compose.ComposeTestActivity
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
@@ -117,7 +117,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun setUpClicks() {
-        PreferenceManager.getDefaultSharedPreferences(this)
         mContent = mBinding.content
         val hierarchy = addJankStats()
         hierarchy.state?.putState("Activity", javaClass.simpleName)
@@ -231,6 +230,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             val scheme = "weixin://biz/ww/profile/${URLDecoder.decode(url, "UTF-8")}"
             openActivity(scheme)
         }
+        mContent.Compose.setOnClickListener {
+            start<ComposeTestActivity>()
+        }
+
     }
 
     override fun onInitialized() {

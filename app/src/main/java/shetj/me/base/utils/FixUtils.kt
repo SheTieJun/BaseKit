@@ -15,7 +15,6 @@ import me.shetj.base.ktx.showToast
  * 把刚才所有被禁止的权限都告诉用户，让用户手动打开
  */
 fun Activity.onRequestPermissionsResult2(permissions: Array<String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     val badResults = ArrayList<String>()
     var needJump2setting = false
     var i = 0

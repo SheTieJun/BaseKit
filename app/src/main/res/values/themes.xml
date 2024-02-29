@@ -1,5 +1,3 @@
-
-
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.BaseTheme.MD3" parent="Theme.Material3.DayNight.NoActionBar">
