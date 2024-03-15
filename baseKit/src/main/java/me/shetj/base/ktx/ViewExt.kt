@@ -48,6 +48,11 @@ fun BottomNavigationView.clearToast(ids: MutableList<Int>) {
     }
 }
 
+fun BottomNavigationView.clearTintAndSetItemTextColor(@ColorRes color: Int){
+    this.itemIconTintList = null
+    this.itemTextColor = ContextCompat.getColorStateList(context,color)
+}
+
 //region TextView
 /**
  * 设置textView 的 Drawable

@@ -5,20 +5,17 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Keep
 import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
-import me.shetj.base.ktx.getWindowContent
 import me.shetj.base.ktx.grayThemChange
 import me.shetj.base.ktx.logUILife
 import me.shetj.base.model.GrayThemeLiveData
 import me.shetj.base.tools.app.LanguageKit
-import me.shetj.base.tools.app.WindowKit
-import me.shetj.base.tools.app.WindowKit.WindowSizeClass
+import me.shetj.base.tools.app.WindowKit.WindowSizeT
 
 /**
  * 基础类  view 层
@@ -29,8 +26,8 @@ open class AbBaseActivity : AppCompatActivity() {
 
     protected val TAG: String = this::class.java.simpleName
 
-    protected val windowSizeStream: MutableLiveData<Pair<WindowSizeClass, WindowSizeClass>> =
-        MutableLiveData<Pair<WindowSizeClass, WindowSizeClass>>()
+    protected val windowSizeStream: MutableLiveData<Pair<WindowSizeT, WindowSizeT>> =
+        MutableLiveData<Pair<WindowSizeT, WindowSizeT>>()
 
     protected var enabledOnBack: Boolean = true
         set(value) {
@@ -52,50 +49,12 @@ open class AbBaseActivity : AppCompatActivity() {
             GrayThemeLiveData.getInstance().observe(this, this::grayThemChange)
         }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-        configWindow()
     }
 
     @RequiresApi(VERSION_CODES.O)
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
         "$TAG : onMultiWindowModeChanged:$isInMultiWindowMode".logUILife()
-    }
-
-    private fun configWindow() {
-        WindowKit.addSplitListener(this) {
-            computeWindowSizeClasses()
-        }
-        getWindowContent()?.addView(object : View(this) {
-            override fun onConfigurationChanged(newConfig: Configuration?) {
-                super.onConfigurationChanged(newConfig)
-                computeWindowSizeClasses()
-            }
-        })
-        computeWindowSizeClasses()
-        windowSizeStream.observe(this) {
-            "$TAG onWindowSizeChange : widthWindowSizeClass = ${it.first},heightWindowSizeClass = ${it.second}".logUILife()
-            onWindowSizeChange(it)
-        }
-    }
-
-    /**
-     * On window size change
-     * 当activity界面屏幕大小改变的时候
-     * @param windowSizeWH
-     */
-    open fun onWindowSizeChange(windowSizeWH: Pair<WindowSizeClass, WindowSizeClass>) {
-        onWindowSizeChangeWidth(windowSizeWH.first)
-        onWindowSizeChangeHeight(windowSizeWH.second)
-    }
-
-    open fun onWindowSizeChangeHeight(windowSizeH: WindowSizeClass) {
-    }
-
-    open fun onWindowSizeChangeWidth(windowSizeW: WindowSizeClass) {
-    }
-
-    protected fun computeWindowSizeClasses() {
-        windowSizeStream.postValue(WindowKit.windowSize(this@AbBaseActivity))
     }
 
     /**
@@ -152,7 +111,6 @@ open class AbBaseActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        computeWindowSizeClasses()
         LanguageKit.attachBaseContext(this)
     }
 

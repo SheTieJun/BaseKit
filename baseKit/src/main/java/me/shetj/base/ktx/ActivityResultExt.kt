@@ -55,13 +55,11 @@ fun <I, O> ComponentActivity.register(
     @NonNull callback: ActivityResultCallback<O>
 ): ActivityResultLauncher<I> {
     return activityResultRegistry.register(key, contract, callback).also {
-        lifecycle.addObserver(
-            LifecycleEventObserver { _, event ->
-                if (event == Event.ON_DESTROY) {
-                    it.unregister()
-                }
+        lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Event.ON_DESTROY) {
+                it.unregister()
             }
-        )
+        })
     }
 }
 
@@ -242,11 +240,11 @@ fun <I, O> Fragment.register(
     contract: ActivityResultContract<I, O>,
     callback: ActivityResultCallback<O>
 ): ActivityResultLauncher<I>? {
-    return getActivityResultRegistry()?.register(key, contract, callback).also {
+    return getActivityResultRegistry()?.register(key, contract, callback)?.also {
         lifecycle.addObserver(
             LifecycleEventObserver { _, event ->
                 if (event == Event.ON_DESTROY) {
-                    it?.unregister()
+                    it.unregister()
                 }
             }
         )

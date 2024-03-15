@@ -20,7 +20,7 @@ import javax.crypto.spec.IvParameterSpec
  * <b>@describe</b>  <br>
  */
 object KeyStoreKit {
-    private const val ANDROID_KEY_STORE_PROVIDER = "AndroidKeyStore"
+    private const val ANDROID_KEY_STORE_PROVIDER = "Android_Key_Store"
     private const val ANDROID_KEY_STORE_ALIAS = "AES_KEY_BASE_KIT"
 
     private const val type = "AES/CBC/PKCS7Padding"
@@ -45,7 +45,8 @@ object KeyStoreKit {
         InvalidAlgorithmParameterException::class
     )
     private fun createAndStoreSecretKey() {
-        val keySpec: KeyGenParameterSpec =    KeyGenParameterSpec.Builder(ANDROID_KEY_STORE_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+        //"AES/CBC/PKCS7Padding"
+        val keySpec: KeyGenParameterSpec = KeyGenParameterSpec.Builder(ANDROID_KEY_STORE_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
             .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
             .build()
@@ -60,7 +61,7 @@ object KeyStoreKit {
      * Encrypt with key store
      * 加密
      */
-    fun encryptWithKeyStore(plainText: String): Pair<ByteArray,ByteArray>? {
+    fun encryptWithKeyStore(plainText: String): Pair<ByteArray, ByteArray>? {
         return kotlin.runCatching {
             // Initialize KeyStore
             val keyStore: KeyStore = KeyStore.getInstance(ANDROID_KEY_STORE_PROVIDER)
@@ -84,7 +85,7 @@ object KeyStoreKit {
      * Decrypt with key store
      * 解密
      */
-    fun decryptWithKeyStore(enInfo:Pair<ByteArray,ByteArray>): String? {
+    fun decryptWithKeyStore(enInfo: Pair<ByteArray, ByteArray>): String? {
         return kotlin.runCatching {
             // Initialize KeyStore
             val keyStore: KeyStore = KeyStore.getInstance(ANDROID_KEY_STORE_PROVIDER)

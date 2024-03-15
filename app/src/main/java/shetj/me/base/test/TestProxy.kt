@@ -48,7 +48,6 @@ class TestProxy<T> : InvocationHandler {
     }
 
     fun getRawType(type: Type): Class<*>? {
-        Objects.requireNonNull(type, "type == null")
         if (type is Class<*>) {
             // Type is a normal class.
             return type

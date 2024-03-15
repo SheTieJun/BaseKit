@@ -6,7 +6,6 @@ import org.objectweb.asm.ClassVisitor
 import tools.addGuava
 import tools.addProInstaller
 import tools.androidApplication
-import tools.composeCompilerVer
 
 
 plugins {
@@ -94,8 +93,6 @@ dependencies {
     //https://github.com/SheTieJun/LogKit
     implementation(libs.logkit.messenger)
     implementation(libs.androidx.biometric.ktx)  //指纹识别
-
-    // Kotlin
     implementation(libs.androidx.preference)
 }
 

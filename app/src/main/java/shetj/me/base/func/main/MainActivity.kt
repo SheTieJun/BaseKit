@@ -22,9 +22,9 @@ import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.launch
+import me.shetj.base.ktx.launchActivity
 import me.shetj.base.ktx.logE
 import me.shetj.base.ktx.logI
-import me.shetj.base.ktx.openActivity
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.setAppearance
@@ -44,6 +44,7 @@ import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.app.MDThemeKit
 import me.shetj.base.tools.app.ScreenshotKit
 import me.shetj.base.tools.app.WindowKit
+import me.shetj.base.tools.app.WindowKit.posturesCollector
 import me.shetj.base.tools.file.FileQUtils
 import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
@@ -54,10 +55,8 @@ import shetj.me.base.func.compose.ComposeTestActivity
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
-import shetj.me.base.utils.BiometricAuthenticationKit
 import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
-import java.net.URLDecoder
 import java.util.Locale
 
 
@@ -111,7 +110,17 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         WidgetProvider.registerReceiver(this)
         val lruCache = lruCache<String, String>(100) // lruCache
         BaseKit.androidID.logI("androidID")
-        WindowKit.addWinLayoutListener(this)
+        //只有没有android:configChanges="orientation|keyboardHidden|screenSize" 才会多次触发
+        WindowKit.addWinLayoutListener(this,posturesCollector(onTable = {
+            "onTable".logI("WinLayout")
+        }, onBook = {
+            "onBook".logI("WinLayout")
+        }, onNormal ={
+            "onNormal".logI("WinLayout")
+        }))
+        WindowKit.windowSizeStream(this).observe(this) {
+            it.toJson().logI("windowSizeStream")
+        }
         defDataStore.get<String>(":").asLiveData()
 
     }
@@ -225,13 +234,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         mContent.btnPerm.setOnClickListener {
             FixPermission.requestExternalFile(this)
         }
-        mContent.btnWx.setOnClickListener {
-            val url = "https://work.weixin.qq.com/ca/cawcde90037d684659?customer_channel=hk_link:1879332828252678"
-            val scheme = "weixin://biz/ww/profile/${URLDecoder.decode(url, "UTF-8")}"
-            openActivity(scheme)
-        }
         mContent.Compose.setOnClickListener {
-            start<ComposeTestActivity>()
+            launchActivity<ComposeTestActivity> {
+                putExtra("name","shetj")
+            }
         }
 
     }

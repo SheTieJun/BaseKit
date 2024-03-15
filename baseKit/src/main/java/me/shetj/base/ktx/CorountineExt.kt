@@ -1,7 +1,7 @@
 package me.shetj.base.ktx
 
+import androidx.core.app.ComponentActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataScope
@@ -46,7 +46,7 @@ fun ViewModel.launch(
     }
 }
 
-fun FragmentActivity.launch(
+fun ComponentActivity.launch(
     context: CoroutineContext = EmptyCoroutineContext,
     action: suspend CoroutineScope.() -> Unit
 ): Job {
@@ -72,7 +72,7 @@ fun <T> Fragment.liveData(
     return androidx.lifecycle.liveData(context, timeoutInMs, block)
 }
 
-fun <T> FragmentActivity.liveData(
+fun <T> ComponentActivity.liveData(
     context: CoroutineContext = lifecycleScope.coroutineContext,
     timeoutInMs: Long = 5000L,
     block: suspend LiveDataScope<T>.() -> Unit

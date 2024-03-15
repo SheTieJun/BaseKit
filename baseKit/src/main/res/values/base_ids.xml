@@ -2,4 +2,5 @@
 <resources>
     <item name="viewpager2_rv" type="id"/>
     <item name="isGrayTheme" type="id"/>
+    <item name="window_livedate" type="id"/>
 </resources>

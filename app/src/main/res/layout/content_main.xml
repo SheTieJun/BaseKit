@@ -12,7 +12,8 @@
         android:id="@+id/group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
 
 
         <com.google.android.material.chip.Chip
@@ -112,46 +113,45 @@
             android:id="@+id/btn_change_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MDThemeKit"/>
+            android:layout_marginStart="8dp"
+            android:text="MDThemeKit" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_SlidingPane"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SlidingPane"/>
+            android:layout_marginStart="8dp"
+            android:text="SlidingPane" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/btn_perm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="外部存储权限"/>
+            android:layout_marginStart="8dp"
+            android:text="外部存储权限" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/btn_wx"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="WX"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/KeyStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="KeyStore"/>
+            android:layout_marginStart="8dp"
+            android:text="KeyStore" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/Preference"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preference"/>
+            android:layout_marginStart="8dp"
+            android:text="Preference" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/Compose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Compose"/>
+            android:layout_marginStart="8dp"
+            android:text="Compose" />
     </com.google.android.material.chip.ChipGroup>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

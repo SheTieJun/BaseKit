@@ -35,7 +35,7 @@ fun defScope() = lazy { CoroutineScopeImpl(coroutineContext()) }
 
 class CoroutineScopeImpl(
     override val coroutineContext: CoroutineContext
-) : DefCoroutineScope(), LifecycleEventObserver {
+) : DefCoroutineScope, LifecycleEventObserver {
 
     override fun register(lifecycle: Lifecycle) {
         launch(Dispatchers.Main.immediate) {
@@ -58,8 +58,8 @@ class CoroutineScopeImpl(
     }
 }
 
-abstract class DefCoroutineScope : CoroutineScope {
-    abstract fun register(lifecycle: Lifecycle)
+interface DefCoroutineScope : CoroutineScope {
+    fun register(lifecycle: Lifecycle)
 }
 
 private fun coroutineContext() = SupervisorJob() + Dispatchers.Main.immediate + BaseKit.handler
