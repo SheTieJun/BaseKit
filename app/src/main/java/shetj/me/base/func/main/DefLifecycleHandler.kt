@@ -14,23 +14,23 @@ import androidx.lifecycle.LifecycleOwner
  */
 open class DefLifecycleHandler : Handler, LifecycleEventObserver {
 
-    constructor(@NonNull owner: LifecycleOwner) : super(Looper.getMainLooper()) {
+    constructor(owner: LifecycleOwner) : super(Looper.getMainLooper()) {
         bindLifecycleOwner(owner)
     }
 
     constructor(
-        @NonNull owner: LifecycleOwner,
+        owner: LifecycleOwner,
         callback: Callback
     ) : super(Looper.getMainLooper(), callback) {
         bindLifecycleOwner(owner)
     }
 
-    constructor(@NonNull owner: LifecycleOwner, looper: Looper) : super(looper) {
+    constructor(owner: LifecycleOwner, looper: Looper) : super(looper) {
         bindLifecycleOwner(owner)
     }
 
     constructor(
-        @NonNull owner: LifecycleOwner,
+        owner: LifecycleOwner,
         looper: Looper,
         callback: Callback
     ) : super(looper, callback) {

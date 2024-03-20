@@ -8,7 +8,6 @@ import android.os.LocaleList
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
-import androidx.core.os.LocaleListCompat
 import me.shetj.base.tools.file.SPUtils
 import java.util.*
 

@@ -40,7 +40,6 @@ object WindowKit {
 
     data class WindowSize(val widthDp: Float, val widthSizeT: WindowSizeT, val heightDp: Float, val heightSizeT: WindowSizeT)
 
-
     /**
      * Window size type 窗口大小类型
      * COMPACT：窄屏
@@ -61,14 +60,14 @@ object WindowKit {
         val metrics = WindowMetricsCalculator.getOrCreate()
             .computeCurrentWindowMetrics(activity)
         val widthDp = metrics.bounds.width() /
-                activity.resources.displayMetrics.density
+            activity.resources.displayMetrics.density
         val widthWindowSizeT = when {
             widthDp < 600f -> WindowSizeT.COMPACT
             widthDp < 840f -> WindowSizeT.MEDIUM
             else -> WindowSizeT.EXPANDED
         }
         val heightDp = metrics.bounds.height() /
-                activity.resources.displayMetrics.density
+            activity.resources.displayMetrics.density
         val heightWindowSizeT = when {
             heightDp < 480f -> WindowSizeT.COMPACT
             heightDp < 900f -> WindowSizeT.MEDIUM
@@ -79,9 +78,12 @@ object WindowKit {
 
     /**
      * Add win layout listener
-     * 如果设置了   android:configChanges="orientation|keyboardHidden|screenSize" 会导致不会多长触发
+     * 如果设置了   android:configChanges="orientation|keyboardHidden|screenSize" 会导致不会多次触发
      */
-    fun addWinLayoutListener(activity: FragmentActivity, collector: FlowCollector<WindowLayoutInfo> = logPostureCollector()) {
+    fun addWinLayoutListener(
+        activity: FragmentActivity,
+        collector: FlowCollector<WindowLayoutInfo> = logPostureCollector()
+    ) {
         activity.lifecycleScope.launch(Dispatchers.Main) {
             activity.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 WindowInfoTracker.getOrCreate(activity)
@@ -178,7 +180,7 @@ object WindowKit {
     fun isBookPosture(foldFeature: FoldingFeature?): Boolean {
         contract { returns(true) implies (foldFeature != null) }
         return foldFeature?.state == FoldingFeature.State.HALF_OPENED &&
-                foldFeature.orientation == FoldingFeature.Orientation.VERTICAL
+            foldFeature.orientation == FoldingFeature.Orientation.VERTICAL
     }
 
     /**

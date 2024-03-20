@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  detekt-code-check:
+  pull-request-build-test:
 
     runs-on: ubuntu-latest
 
@@ -21,4 +21,4 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build
-        run: ./gradlew baseKit:build
+        run: ./gradlew baseKit:assembleRelease

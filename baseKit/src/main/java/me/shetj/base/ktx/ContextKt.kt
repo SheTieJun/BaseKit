@@ -60,7 +60,6 @@ val Context.asActivity: Activity
         error("The passed Context is not an Activity.")
     }
 
-
 fun Context.asComponentActivity(): ComponentActivity {
     if (this is ComponentActivity) {
         return this
