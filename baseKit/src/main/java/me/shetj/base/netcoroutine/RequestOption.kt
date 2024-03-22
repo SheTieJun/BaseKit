@@ -38,7 +38,7 @@ data class RequestOption(
     companion object {
         val DEFAULT = RequestOption().apply {
             cacheKey = "default"
-            cacheTime = 36_00
+            cacheTime = 36_000
             cacheMode = CacheMode.FIRST_NET
             repeatNum = 3
             timeout = 10_000L

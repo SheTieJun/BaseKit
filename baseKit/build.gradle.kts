@@ -28,7 +28,8 @@ androidLibrary("me.shetj.base",config = true){
 
     packaging {
         //pickFirst "**/xxx.so" //告诉Gradle包装时只选一个，否则你会得到冲突。
-        resources.merges.add("../LICENSE")
+
+        resources.excludes.add("../LICENSE")
         resources.excludes += "DebugProbesKt.bin"
     }
     //    ./gradlew printProjectStructure
@@ -83,7 +84,7 @@ fun DependencyHandler.addOther(){
     api(libs.third.timber)
     api(libs.shetj.datastore)
     api(libs.shetj.qmui)
-    api(libs.shetj.activity)
+//    api(libs.shetj.activity) 功能重复了
 }
 
 

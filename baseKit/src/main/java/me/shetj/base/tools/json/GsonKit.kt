@@ -14,7 +14,8 @@ import java.lang.reflect.Type
 fun getGson(): Gson = GsonBuilder()
     .excludeFieldsWithModifiers(
         Modifier.TRANSIENT,
-        Modifier.STATIC
+        Modifier.STATIC,
+        Modifier.NATIVE
     ) // 比如我们想排除私有字段不被序列化/反序列，默认
     .registerTypeAdapter(Int::class.java, IntTypeAdapter())
     .registerTypeAdapter(Float::class.java, FloatTypeAdapter())

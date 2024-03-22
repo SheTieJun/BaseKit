@@ -93,6 +93,7 @@ object WindowKit {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun windowSizeStream(activity: ComponentActivity): MutableLiveData<WindowSize> {
         val content = activity.getWindowContent() ?: return MutableLiveData<WindowSize>()
         content.getTag(R.id.window_livedate)?.let {
