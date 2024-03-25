@@ -4,8 +4,8 @@ spotless {
         target '**/*.kt'
         targetExclude("${getLayout().getBuildDirectory()}/**/*.kt")
         targetExclude('bin/**/*.kt')
-        ktlint().userData(['android'        : 'true', 'color': 'true',
-                           'max_line_length': '160', 'reporter': 'checkstyle'])
+//        ktlint().userData(['android'        : 'true', 'color': 'true',
+//                           'max_line_length': '160', 'reporter': 'checkstyle'])
 
 //        licenseHeaderFile rootProject.file('../spotless/copyright.kt')
     }

@@ -28,8 +28,6 @@ androidLibrary("me.shetj.base",config = true){
 
     packaging {
         //pickFirst "**/xxx.so" //告诉Gradle包装时只选一个，否则你会得到冲突。
-
-        resources.excludes.add("../LICENSE")
         resources.excludes += "DebugProbesKt.bin"
     }
     //    ./gradlew printProjectStructure
@@ -142,4 +140,4 @@ fun DependencyHandler.addAndroid(){
 }
 
 apply(from = "uploadLocal.gradle")
-apply(from = "../gradle/spotless.gradle")
+//apply(from = "../gradle/spotless.gradle")
