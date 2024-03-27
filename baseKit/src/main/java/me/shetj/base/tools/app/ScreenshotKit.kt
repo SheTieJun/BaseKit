@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
+import me.shetj.base.fix.FixPermission.getCollectionUri
 import java.util.*
 
 /**
@@ -72,7 +73,7 @@ object ScreenshotKit {
         if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
             /*<uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />*/
             val screenshotListener = Activity.ScreenCaptureCallback {
-                handleMediaContentChange(Media.EXTERNAL_CONTENT_URI)
+                handleMediaContentChange(getCollectionUri())
             }
             activity.lifecycle.addObserver(
                 LifecycleEventObserver { _, event ->

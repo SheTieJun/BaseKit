@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Environment
+import android.provider.MediaStore
 import android.provider.Settings
 import androidx.fragment.app.FragmentActivity
 import me.shetj.base.ktx.hasPermission
@@ -20,10 +21,18 @@ import me.shetj.base.ktx.hasPermission
 object FixPermission {
 
     /**
-     * 读取媒体权限权限,兼容Android 33
+     * 读取媒体权限权限,兼容Android 34
      */
     fun checkReadMediaFile(context: FragmentActivity, isRequest: Boolean = true): Boolean {
-        val hasPermission = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+        val hasPermission = if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            //兼容34
+            context.hasPermission(
+                permission.READ_MEDIA_IMAGES,
+                permission.READ_MEDIA_VIDEO,
+                permission.READ_MEDIA_VISUAL_USER_SELECTED, isRequest = isRequest
+            )
+        } else if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+            //兼容33
             context.hasPermission(
                 permission.READ_MEDIA_VIDEO,
                 permission.READ_MEDIA_IMAGES,
@@ -70,6 +79,16 @@ object FixPermission {
                     context.startActivity(intent)
                 }
             }
+        }
+    }
+
+
+    fun getCollectionUri(): Uri {
+        return if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+            // Query all the device storage volumes instead of the primary only
+            MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+        } else {
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         }
     }
 }

@@ -79,6 +79,7 @@ fun Context.getIdByName(className: String, resName: String): Int {
 fun Context.openActivity(scheme: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(scheme))
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.`package` = packageName
     startActivity(intent)
 }
 
@@ -101,6 +102,7 @@ fun Context.moveToFrontApp() {
  * - 通过包名，让APP到前台，前提是APP在后台了
  * - 如果代码无效，可能是因为APP被判定在前台
  * - Android 11 可以 Android 12 不行了
+ *   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
  */
 fun ActivityManager.moveToFrontApp(packageName: String) {
     this.appTasks?.first {
