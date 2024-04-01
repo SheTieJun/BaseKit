@@ -131,7 +131,7 @@ asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 
 #  Mine
 shetj-datastore = { module = "com.github.SheTieJun.androidx-ktx:datastore", version = "1.1.0" }
-shetj-activity = { module = "com.github.SheTieJun.androidx-ktx:activity", version = "1.1.0" }
+shetj-activity = { module = "com.github.SheTieJun.androidx-ktx:activity", version = "1.1.1" }
 shetj-QMUI = { module = "com.github.SheTieJun:SimQUMI", version = "0.0.1" }
 
 javax-mail = { module = "javax.mail:mail", version.ref = "mailVersion" }
