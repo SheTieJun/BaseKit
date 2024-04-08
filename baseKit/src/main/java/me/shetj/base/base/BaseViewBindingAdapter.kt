@@ -18,7 +18,7 @@ abstract class BaseViewBindingAdapter<T, BD : ViewBinding>
 ) : BaseQuickAdapter<T, BaseViewHolder>(layoutResId, data) {
 
     private val clazz by lazy { (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<*> }
-    private val method by lazy { clazz.getMethod("inflate", View::class.java) }
+    private val method by lazy { clazz.getMethod("bind", View::class.java) }
 
     @Suppress("UNCHECKED_CAST")
     private fun getBinding(view: View): BD {
