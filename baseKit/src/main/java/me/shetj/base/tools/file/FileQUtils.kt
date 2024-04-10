@@ -258,6 +258,8 @@ object FileQUtils {
     private fun getFileName(context: Context, uri: Uri, filename10IsTemp: Boolean = true): String {
         var fileName: String? = null
         val contentResolver = context.contentResolver
+        val mimeType = MimeTypeMap.getSingleton()
+            .getExtensionFromMimeType(contentResolver.getType(uri)) ?: ""
         if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
             val cursor = contentResolver.query(uri, null, null, null, null)
             cursor.use { cu ->
@@ -267,25 +269,28 @@ object FileQUtils {
             }
         }
         if (fileName == null) {
-            fileName = uri.lastPathSegment
+            fileName = uri.lastPathSegment + ".$mimeType"
         }
-        if (!filename10IsTemp && fileName != null) {
+        if (!filename10IsTemp) {
             fileName = System.currentTimeMillis().toString() + fileName
         }
-        return fileName ?: "${uri.toString().md5}.${
-            MimeTypeMap.getSingleton()
-                .getExtensionFromMimeType(contentResolver.getType(uri))
-        }"
+        // 如果文件名不包含后缀名，就加上后缀名
+        if (fileName?.contains(mimeType) != true) {
+            fileName = "$fileName.$mimeType"
+        }
+        return fileName ?: "${uri.toString().md5}.$mimeType"
     }
 
     /**
      * Take file permission
      * 获取长时间的文件读取权限
-     * @param uri
+     * @param uri 这个Uri也必须是`Intent.flag = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION` 获取到的uri
+     * 如果不是会报异常SecurityException
      */
+    @Throws(SecurityException::class)
     fun takeFilePermission(context: Context, uri: Uri) {
         val flag: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
-            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         context.contentResolver.takePersistableUriPermission(uri, flag)
     }
 
