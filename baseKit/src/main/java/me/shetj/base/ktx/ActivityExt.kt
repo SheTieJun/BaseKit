@@ -305,21 +305,21 @@ inline fun Context.createSimDialog(
 }
 
 inline fun <reified VB : ViewBinding> Context.createSimDialog(
-    crossinline viewListener: ((mVB: VB) -> Unit) = { },
-    crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
-        it?.setLayout(ArmsUtils.dp2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
+    crossinline onViewCreated: ((mVB: VB,dialog: AlertDialog) -> Unit) = {_,_-> },
+    crossinline setWindowSizeChange: ((dialog: AlertDialog, window: Window?) -> Unit) = { _, window ->
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
     }
 ): AlertDialog? {
     val mVB = VB::class.java.getMethod("inflate", LayoutInflater::class.java)
         .invoke(null, LayoutInflater.from(this)) as VB
-    viewListener.invoke(mVB)
     return AlertDialog.Builder(this)
         .setView(mVB.root)
         .show()?.apply {
-            setWindowSizeChange.invoke(window)
+            onViewCreated.invoke(mVB,this)
+            setWindowSizeChange.invoke(this, this.window)
         }
 }
-
 /**
  * 获取网络状态监听回调
  * - tip:调用次数不宜过多，部分高版本手机会崩溃

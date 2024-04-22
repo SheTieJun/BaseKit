@@ -19,12 +19,15 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import me.shetj.base.BaseKit
+import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.fix.FixPermission.getCollectionUri
-import java.util.*
+import me.shetj.base.tools.app.ScreenshotKit.initActivity
+import me.shetj.base.tools.app.ScreenshotKit.initMediaContentObserver
+import me.shetj.base.tools.app.ScreenshotKit.unregisterMediaContentObserver
+import java.util.Locale
 
 /**
  * 用来监听用户是否截屏的工具类,在需要监听的页面调用[initActivity]方法即可
@@ -78,7 +81,7 @@ object ScreenshotKit {
             activity.lifecycle.addObserver(
                 LifecycleEventObserver { _, event ->
                     if (event == Event.ON_START) {
-                        activity.registerScreenCaptureCallback(Dispatchers.Main.asExecutor(), screenshotListener)
+                        activity.registerScreenCaptureCallback(DispatcherProvider.main().asExecutor(), screenshotListener)
                     } else if (event == Event.ON_STOP) {
                         activity.unregisterScreenCaptureCallback(screenshotListener)
                     }

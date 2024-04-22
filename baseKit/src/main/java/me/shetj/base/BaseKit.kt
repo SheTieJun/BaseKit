@@ -4,6 +4,7 @@ import android.app.Application
 import android.provider.Settings
 import androidx.annotation.Keep
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ProcessLifecycleOwner
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -98,9 +99,11 @@ object BaseKit {
         this.baseUrl = baseUrl
         Utils.init(application)
         this.TAG = AppUtils.appName ?: "BaseKit"
-        Tim.setLogAuto(isDebug)
-        if (isDebug) {
-            DebugFunc.getInstance().initContext(application)
+        this.isDebug.observe(ProcessLifecycleOwner.get()) { t ->
+            if (t) {
+                DebugFunc.getInstance().initContext(application)
+            }
+            Tim.setLogAuto(isDebug)
         }
         startKoin {
             fragmentFactory()
