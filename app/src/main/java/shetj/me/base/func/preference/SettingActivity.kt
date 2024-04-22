@@ -1,6 +1,5 @@
 package shetj.me.base.func.preference
 
-import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import me.shetj.base.ktx.logI
 import me.shetj.base.mvvm.viewbind.BaseBindingActivity
@@ -35,13 +34,13 @@ class SettingActivity:BaseBindingActivity<ActivitySettingBinding,SettingViewMode
         name.logI("name")
 
 
-        sharedPreferences.registerOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+        sharedPreferences.registerOnSharedPreferenceChangeListener { preferences, key ->
             // do something
-            when(key){
-                "signature" ->{
-                    sharedPreferences.getString("signature", "").logI("name")
+            when (key) {
+                "signature" -> {
+                    preferences.getString("signature", "").logI("name")
                 }
             }
-        })
+        }
     }
 }

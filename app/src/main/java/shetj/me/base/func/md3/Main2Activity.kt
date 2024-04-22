@@ -8,7 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import me.shetj.base.base.AbBindingActivity
+import me.shetj.base.base.AbBaseBindingActivity
 import shetj.me.base.R
 import shetj.me.base.databinding.ActivityMain2Binding
 import shetj.me.base.jankstats.JankStatsAggregator
@@ -17,7 +17,7 @@ import timber.log.Timber
 /**
  * ActivityMain2Binding : ViewDataBinding
  */
-class Main2Activity : AbBindingActivity<ActivityMain2Binding>() {
+class Main2Activity : AbBaseBindingActivity<ActivityMain2Binding>() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val main2TestVM: Main2TestVM by viewModels()

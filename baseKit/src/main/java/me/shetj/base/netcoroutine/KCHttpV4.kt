@@ -26,7 +26,7 @@ import java.io.FileOutputStream
  * 协程 Http请求
  * - 感觉可能用的不多，所以就只写这几个方法了
  * - [me.shetj.base.netcoroutine.RequestOption]控制缓存
- * aar 情况下不能使用，很奇怪像是打包的bug
+ * 打包后 aar 情况下不能使用，很奇怪像是打包的bug，后续观察一下
  */
 object KCHttpV4 {
 

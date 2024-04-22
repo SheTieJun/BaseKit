@@ -40,53 +40,18 @@ suspend fun <T, O> T.withDef(action: suspend CoroutineScope.(t: T) -> O) =
 fun ViewModel.launch(
     context: CoroutineContext = EmptyCoroutineContext,
     action: suspend CoroutineScope.() -> Unit
-): Job {
-    return viewModelScope.launch(context) {
-        action()
-    }
-}
+) = viewModelScope.launch(context, block = action)
 
 fun ComponentActivity.launch(
     context: CoroutineContext = EmptyCoroutineContext,
     action: suspend CoroutineScope.() -> Unit
-): Job {
-    return lifecycleScope.launch(context) {
-        action()
-    }
-}
+) = lifecycleScope.launch(context, block = action)
 
 fun Fragment.launch(
     context: CoroutineContext = EmptyCoroutineContext,
     action: suspend CoroutineScope.() -> Unit
-): Job {
-    return lifecycleScope.launch(context) {
-        action()
-    }
-}
+) = lifecycleScope.launch(context, block = action)
 
-fun <T> Fragment.liveData(
-    context: CoroutineContext = lifecycleScope.coroutineContext,
-    timeoutInMs: Long = 5000L,
-    block: suspend LiveDataScope<T>.() -> Unit
-): LiveData<T> {
-    return androidx.lifecycle.liveData(context, timeoutInMs, block)
-}
-
-fun <T> ComponentActivity.liveData(
-    context: CoroutineContext = lifecycleScope.coroutineContext,
-    timeoutInMs: Long = 5000L,
-    block: suspend LiveDataScope<T>.() -> Unit
-): LiveData<T> {
-    return androidx.lifecycle.liveData(context, timeoutInMs, block)
-}
-
-fun <T> ViewModel.liveData(
-    context: CoroutineContext = viewModelScope.coroutineContext,
-    timeoutInMs: Long = 5000L,
-    block: suspend LiveDataScope<T>.() -> Unit
-): LiveData<T> {
-    return androidx.lifecycle.liveData(context, timeoutInMs, block)
-}
 
 /**
  * 重试机制

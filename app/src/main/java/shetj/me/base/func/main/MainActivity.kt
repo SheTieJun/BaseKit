@@ -10,6 +10,8 @@ import android.os.health.SystemHealthManager
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.net.toFile
+import androidx.core.net.toUri
 import androidx.core.util.lruCache
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
@@ -18,6 +20,7 @@ import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import com.google.android.material.sidesheet.SideSheetDialog
+import kotlinx.coroutines.flow.collectLatest
 import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
@@ -57,6 +60,8 @@ import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
 import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
+import java.io.File
+import java.net.URI
 import java.util.Locale
 
 
@@ -131,15 +136,29 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         hierarchy.state?.putState("Activity", javaClass.simpleName)
 
         findViewById<View>(shetj.me.base.R.id.btn_select_image).setOnClickListener {
-            selectFile {
-                "url = $it".logI()
-                (
-                        "url = ${
-                            it?.let { it1 ->
-                                FileQUtils.getFileAbsolutePath(this, it1)
-                            }
-                        }"
-                        ).logI()
+
+            launch {
+                defDataStore.getFirstBlock<String>("TestPath","").also { path ->
+                    if (path.isNullOrEmpty()){
+                        "path = $path".logI()
+                        path.toUri().toFile().readBytes()
+                    }else{
+                        selectFile {
+                            "url = $it".logI()
+                            (
+                                    "url = ${
+                                        it?.let { it1 ->
+                                            FileQUtils.getFileAbsolutePath(this@MainActivity, it1)?.also {p->
+                                                launch {
+                                                    defDataStore.save("TestPath", p)
+                                                }
+                                            }
+                                        }
+                                    }"
+                                    ).logI()
+                        }
+                    }
+                }
             }
         }
 

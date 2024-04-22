@@ -1,10 +1,17 @@
 package me.shetj.base.ktx
 
 import android.os.Looper
+import androidx.core.app.ComponentActivity
 import androidx.core.os.HandlerCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataScope
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.coroutines.CoroutineContext
 
 /****************************************** LiveData ***************************************/
 /*** @Author stj
@@ -99,3 +106,22 @@ fun <T> LiveData<T>.debounce(duration: Long = 1000L) = MediatorLiveData<T>().als
 }
 
 fun LiveData<Boolean>.isTrue() = value == true
+
+fun <T> Fragment.liveData(
+    context: CoroutineContext = lifecycleScope.coroutineContext,
+    timeoutInMs: Long = 5000L,
+    block: suspend LiveDataScope<T>.() -> Unit
+) = androidx.lifecycle.liveData(context, timeoutInMs, block)
+
+fun <T> ComponentActivity.liveData(
+    context: CoroutineContext = lifecycleScope.coroutineContext,
+    timeoutInMs: Long = 5000L,
+    block: suspend LiveDataScope<T>.() -> Unit
+) = androidx.lifecycle.liveData(context, timeoutInMs, block)
+
+fun <T> ViewModel.liveData(
+    context: CoroutineContext = viewModelScope.coroutineContext,
+    timeoutInMs: Long = 5000L,
+    block: suspend LiveDataScope<T>.() -> Unit
+) = androidx.lifecycle.liveData(context, timeoutInMs, block)
+

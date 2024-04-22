@@ -5,7 +5,7 @@ import androidx.annotation.NonNull
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
-import me.shetj.base.base.AbBindingActivity
+import me.shetj.base.base.AbBaseBindingActivity
 import me.shetj.base.ktx.getClazz
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tip.TipType.DEFAULT
@@ -24,7 +24,7 @@ import me.shetj.base.tip.TipType.WARNING
  */
 @Keep
 open class BaseBindingActivity<VB : ViewBinding, VM : BaseViewModel> :
-    AbBindingActivity<VB>(),
+    AbBaseBindingActivity<VB>(),
     Observer<ViewAction> {
     private val lazyViewModel = lazy { initViewModel() }
     protected val mViewModel by lazyViewModel

@@ -35,7 +35,7 @@ open class AbBaseActivity : AppCompatActivity() {
             onBackPressedCallback.isEnabled = value
         }
 
-    protected val onBackPressedCallback = object : OnBackPressedCallback(false) {
+    protected val onBackPressedCallback = object : OnBackPressedCallback(enabledOnBack) {
         override fun handleOnBackPressed() {
             onBack()
         }

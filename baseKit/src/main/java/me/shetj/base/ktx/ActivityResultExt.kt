@@ -52,38 +52,30 @@ fun <I, O> ComponentActivity.register(
     key: String,
     contract: ActivityResultContract<I, O>,
     callback: ActivityResultCallback<O>
-): ActivityResultLauncher<I> {
-    return activityResultRegistry.register(key, contract, callback).also {
-        lifecycle.addObserver(
-            LifecycleEventObserver { _, event ->
-                if (event == Event.ON_DESTROY) {
-                    it.unregister()
-                }
+) = activityResultRegistry.register(key, contract, callback).also {
+    lifecycle.addObserver(
+        LifecycleEventObserver { _, event ->
+            if (event == Event.ON_DESTROY) {
+                it.unregister()
             }
-        )
-    }
+        }
+    )
 }
 
 fun ComponentActivity.startActivityResultLauncher(
     key: String = "startActivityResult",
     callback: ActivityResultCallback<ActivityResult>
-): ActivityResultLauncher<Intent> {
-    return register(key, ActivityResultContracts.StartActivityForResult(), callback)
-}
+) = register(key, ActivityResultContracts.StartActivityForResult(), callback)
 
 fun ComponentActivity.startRequestPermissionsLauncher(
     key: String = "startRequestMultiplePermissions",
     callback: ActivityResultCallback<Map<String, Boolean>>
-): ActivityResultLauncher<Array<String>> {
-    return register(key, ActivityResultContracts.RequestMultiplePermissions(), callback)
-}
+) = register(key, ActivityResultContracts.RequestMultiplePermissions(), callback)
 
 fun ComponentActivity.startRequestPermissionLauncher(
     key: String = "startRequestPermission",
     callback: ActivityResultCallback<Boolean>
-): ActivityResultLauncher<String> {
-    return register(key, ActivityResultContracts.RequestPermission(), callback)
-}
+) = register(key, ActivityResultContracts.RequestPermission(), callback)
 
 //region Activity 部分
 /**
@@ -93,6 +85,10 @@ fun ComponentActivity.startRequestPermissions(
     permissions: Array<String>,
     callback: ActivityResultCallback<Map<String, Boolean>>
 ) {
+    if (hasPermission(*permissions)) {
+        callback.onActivityResult(permissions.associateWith { true })
+        return
+    }
     return startRequestPermissionsLauncher("startRequestMultiplePermissions", callback).launch(permissions)
 }
 
@@ -103,6 +99,10 @@ fun ComponentActivity.startRequestPermission(
     permission: String,
     callback: ActivityResultCallback<Boolean>
 ) {
+    if(hasPermission(permission)){
+        callback.onActivityResult(true)
+        return
+    }
     return startRequestPermissionLauncher("startRequestPermission", callback).launch(permission)
 }
 
