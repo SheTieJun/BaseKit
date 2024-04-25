@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class RVAdapterHelper {
 
-    private val concatAdapter = ConcatAdapter() //合并的adapter
+    private val concatAdapter = ConcatAdapter() //连接的adapter
     private val headAdapters = mutableListOf<Adapter<*>>() //头部的adapter
     private val footAdapters = mutableListOf<Adapter<*>>() //尾部的adapter
     private var emptyAdapter: Adapter<*>? = null//空的adapter

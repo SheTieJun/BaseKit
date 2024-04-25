@@ -5,9 +5,6 @@ import me.shetj.base.network.kt.createJson
 import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
 
-/**
- * 不使用缓存缓存
- */
 object KCHttpV2 {
 
     val apiService: KCApiService = get(KCApiService::class.java)

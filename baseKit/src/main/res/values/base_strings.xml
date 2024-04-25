@@ -4,4 +4,13 @@
     <string name="base_select_file">选择文件</string>
     <string name="base_please_install_file_manager">请先安装文件管理器</string>
     <string name="Themes">主题</string>
+
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="clear">Clear</string>
+    <string name="notification_content_title">Playback cannot be resumed</string>
+    <string name="notification_content_text">Press on the play button on the media notification if it
+    is still present, otherwise please open the app to start the playback and re-connect the session
+    to the controller</string>
+    <string name="notification_channel_name">Playback cannot be resumed</string>
 </resources>

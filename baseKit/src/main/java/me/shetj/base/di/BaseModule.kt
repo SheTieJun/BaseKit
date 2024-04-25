@@ -2,8 +2,6 @@ package me.shetj.base.di
 
 import me.shetj.base.BaseKit
 import me.shetj.base.netcoroutine.KCApiService
-import me.shetj.base.netcoroutine.cache.KCCache
-import me.shetj.base.netcoroutine.cache.LruDiskCache
 import me.shetj.base.network.https.HttpsUtils
 import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
@@ -11,7 +9,6 @@ import me.shetj.base.network.interceptor.ReceivedCookiesInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.ohter.OkHttpDns
 import me.shetj.base.saver.SaverDatabase
-import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.json.GsonKit
@@ -53,16 +50,18 @@ internal fun getHttpModule(): Module {
         single {
             val timeout = 20000L // 默认的超时时间20秒
 
+
+
             OkHttpClient.Builder().apply {
                 connectTimeout(timeout, TimeUnit.MILLISECONDS)
                 readTimeout(timeout, TimeUnit.MILLISECONDS)
                 writeTimeout(timeout, TimeUnit.MILLISECONDS)
                 addInterceptor(HeadersInterceptor(get(HttpHeaders::class.java)))
-                addInterceptor(get(ReceivedCookiesInterceptor::class.java))
+                addInterceptor(get<ReceivedCookiesInterceptor>(ReceivedCookiesInterceptor::class.java))
                 hostnameVerifier { _, _ -> true } // 主机验证,默认都是通过的
                 val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
                 sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
-                addInterceptor(get(HttpLoggingInterceptor::class.java))
+                addInterceptor(get<HttpLoggingInterceptor>(HttpLoggingInterceptor::class.java))
                 val path = EnvironmentStorage.getPath(root = Utils.app.cacheDir.absolutePath, packagePath = ".unKnow")
                 cache(Cache(File(path), 1024 * 1024 * 12))
                 dns(OkHttpDns.getInstance())
@@ -82,14 +81,6 @@ internal fun getHttpModule(): Module {
                 client(get())
                 baseUrl(BaseKit.baseUrl ?: "https://x.com/")
             }.build().create(KCApiService::class.java)
-        }
-
-        single {
-            LruDiskCache(BaseKit.app.getExternalFilesDir("cacheFile"), AppUtils.appVersionCode, 1024 * 1024 * 100)
-        }
-
-        single {
-            KCCache()
         }
     }
 }

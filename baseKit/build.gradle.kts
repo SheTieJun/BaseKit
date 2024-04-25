@@ -34,7 +34,14 @@ androidLibrary("me.shetj.base",config = true){
     tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
 }
 
+
+apply(from = "uploadLocal.gradle")
+//apply(from = "../gradle/spotless.gradle")
+
 dependencies {
+    implementation(fileTree("libs") {
+        include("*.jar", "*.aar")
+    })
     addAndroid()
     addRetrofit2()
     addKoin()
@@ -43,6 +50,7 @@ dependencies {
     addRoom()
     addCompose()
     addPage()
+    addMedia3()
 }
 
 fun DependencyHandler.addPage(){
@@ -139,5 +147,23 @@ fun DependencyHandler.addAndroid(){
     api(libs.androidx.preference) //设置组件
 }
 
-apply(from = "uploadLocal.gradle")
-//apply(from = "../gradle/spotless.gradle")
+fun DependencyHandler.addMedia3() {
+    api(libs.androidx.media3.exoplayer)
+    // For DASH playback support with ExoPlayer
+    api(libs.androidx.media3.exoplayer.dash)
+    // For HLS playback support with ExoPlayer
+    api(libs.androidx.media3.exoplayer.hls)
+    // For RTSP playback support with ExoPlayer
+    api(libs.androidx.media3.exoplayer.rtsp)
+    // For loading data using the Cronet network stack
+    api(libs.androidx.media3.datasource.cronet)
+    // For loading data using the OkHttp network stack
+    api(libs.androidx.media3.datasource.okhttp)
+    // For loading data using librtmp
+    api(libs.androidx.media3.datasource.rtmp)
+    // For building media playback UIs
+    api(libs.androidx.media3.ui)
+    // For exposing and controlling media sessions
+    api(libs.androidx.media3.session)
+}
+

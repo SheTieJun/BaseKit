@@ -34,6 +34,9 @@ object MDThemeKit {
             return themeLiveData.value?.nightMode != AppCompatDelegate.MODE_NIGHT_YES
         }
 
+    //过滤的Activity
+    private val filterActivity = mutableListOf<String>()
+
     private const val SAVE_KEY = "MD_AppCompatTheme" // SP保持的key
 
     @Keep
@@ -209,6 +212,8 @@ object MDThemeKit {
             activity: Activity,
             savedInstanceState: Bundle?
         ) {
+            //如果是过滤的类，需要进行过滤
+            if (filterActivity.contains(activity::class.java.name)) return
             applyThemeOverlay(activity, rStyle)
         }
 

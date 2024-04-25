@@ -2,10 +2,10 @@ package me.shetj.base.network.body
 
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import okhttp3.internal.Util
+import okhttp3.internal.closeQuietly
 import okio.BufferedSink
-import okio.Okio
 import okio.Source
+import okio.source
 import java.io.IOException
 import java.io.InputStream
 
@@ -28,10 +28,10 @@ object RequestBodyUtils {
             override fun writeTo(sink: BufferedSink) {
                 var source: Source? = null
                 try {
-                    source = Okio.source(inputStream)
-                    source?.let { sink.writeAll(it) }
+                    source = inputStream.source()
+                    sink.writeAll(source)
                 } finally {
-                    Util.closeQuietly(source)
+                    source?.closeQuietly()
                 }
             }
         }

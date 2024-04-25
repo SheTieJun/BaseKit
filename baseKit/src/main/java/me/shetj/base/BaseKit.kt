@@ -112,8 +112,8 @@ object BaseKit {
             }
             androidContext(application)
             androidFileProperties("base.properties")
-            modules(getDBModule())
-            modules(getHttpModule())
+            modules(getDBModule()) //数据库
+            modules(getHttpModule()) //网络
         }
         WebViewManager.startSafeBrowsing()
     }

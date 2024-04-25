@@ -1,7 +1,6 @@
 package me.shetj.base.netcoroutine
 
 import me.shetj.base.BaseKit
-import me.shetj.base.netcoroutine.cache.KCCache
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.interceptor.ReceivedCookiesInterceptor
 import me.shetj.base.network.model.HttpHeaders
@@ -37,10 +36,6 @@ object HttpKit {
     fun debugHttp(isPrintLog: Boolean) {
         KoinJavaComponent.get<HttpLoggingInterceptor>(HttpLoggingInterceptor::class.java)
             .setLogEnable(isPrintLog)
-    }
-
-    fun getKCCache(): KCCache {
-        return KoinJavaComponent.get(KCCache::class.java)
     }
 
     private fun getHttHeaders(): HttpHeaders {

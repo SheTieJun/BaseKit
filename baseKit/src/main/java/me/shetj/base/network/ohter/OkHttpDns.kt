@@ -32,7 +32,7 @@ class OkHttpDns : Dns {
         ip?.let {
             return InetAddress.getAllByName(ip).asList().toMutableList()
         }
-        return Dns.SYSTEM.lookup(hostname)
+        return Dns.SYSTEM.lookup(hostname).toMutableList()
     }
 
     private fun getIpByHost(hostname: String): String? {

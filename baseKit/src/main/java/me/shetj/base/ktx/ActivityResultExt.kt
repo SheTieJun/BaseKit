@@ -31,6 +31,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
@@ -224,6 +225,17 @@ fun ComponentActivity.pickMultipleVisualMedia(inputType: VisualMediaType, callba
     PickVisualMediaRequest.Builder().setMediaType(inputType).build().let {
         register("PickMultipleVisualMedia", ActivityResultContracts.PickMultipleVisualMedia(), callback).launch(it)
     }
+}
+
+/**
+ * Start intent sender for result
+ * 主要用于启动其他应用程序的活动或服务。
+ * @param intent
+ * @param callback
+ */
+fun ComponentActivity.startIntentSenderForResult(intent: IntentSenderRequest,callback: ActivityResultCallback<ActivityResult>){
+    register("startIntentSenderForResult", ActivityResultContracts.StartIntentSenderForResult(), callback).launch(intent)
+
 }
 
 //endregion

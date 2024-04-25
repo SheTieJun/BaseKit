@@ -19,7 +19,7 @@ import java.io.FileOutputStream
 /**
  * 协程 Http请求
  * - 感觉可能用的不多，所以就只写这几个方法了
- * 带重试
+ * 比V2多了重试功能
  */
 object KCHttpV3 {
 
