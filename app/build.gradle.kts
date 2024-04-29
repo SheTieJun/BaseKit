@@ -116,14 +116,14 @@ abstract class DebugAsmFactory : AsmClassVisitorFactory<None> {
     }
 }
 
-
-abstract class PrivacyCheckFactory : AsmClassVisitorFactory<None> {
-
-    override fun createClassVisitor(classContext: ClassContext, nextClassVisitor: ClassVisitor): ClassVisitor {
-        return asm.PrivacyClassVisitor(nextClassVisitor)
-    }
-
-    override fun isInstrumentable(classData: ClassData): Boolean {
-        return true
-    }
-}
+//
+//abstract class PrivacyCheckFactory : AsmClassVisitorFactory<None> {
+//
+//    override fun createClassVisitor(classContext: ClassContext, nextClassVisitor: ClassVisitor): ClassVisitor {
+//        return asm.PrivacyClassVisitor(nextClassVisitor)
+//    }
+//
+//    override fun isInstrumentable(classData: ClassData): Boolean {
+//        return true
+//    }
+//}
