@@ -43,7 +43,7 @@ benchmark = "1.2.3"
 tracingKtx = "1.1.0"
 koin-version = "3.4.3"
 retrofit = "2.11.0"
-activity-compose = "1.8.2"
+activity-compose = "1.9.0"
 compose-bom = "2024.04.01"
 pagingVersion = "3.2.1"
 
