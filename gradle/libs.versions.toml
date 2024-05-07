@@ -85,7 +85,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-datastoreCore = { module = "androidx.datastore:datastore-core", version.ref = "androidx-datastore" }
 androidx-dragAndDrop = { module = "androidx.draganddrop:draganddrop", version.ref = "androidx-draganddrop" }
 androidx-concurrent = { module = "androidx.concurrent:concurrent-futures-ktx", version.ref = "androidx-concurrent" }
-
+androidx-legacy-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy" }
 #navigation
 androidx-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
@@ -132,12 +132,11 @@ asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 #  Mine
 shetj-datastore = { module = "com.github.SheTieJun.androidx-ktx:datastore", version = "1.1.0" }
 shetj-activity = { module = "com.github.SheTieJun.androidx-ktx:activity", version = "1.1.0" }
-shetj-QMUI = { module = "com.github.SheTieJun:SimQUMI", version = "0.0.1" }
+shetj-qmui = { module = "com.github.SheTieJun:SimQUMI", version = "0.0.1" }
 
 javax-mail = { module = "javax.mail:mail", version.ref = "mailVersion" }
 logkit-messenger = { module = "com.github.SheTieJun.LogKit:logkit-messenger", version.ref = "logkitMessenger" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy" }
 junit = { module = "junit:junit", version.ref = "junit" }
 roundedProgressBar = { module = "com.github.SheTieJun:RoundedProgressBar", version.ref = "roundedProgressBar" }
 

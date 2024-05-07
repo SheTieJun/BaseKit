@@ -19,6 +19,7 @@ import androidx.lifecycle.asLiveData
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
+import androidx.tracing.trace
 import com.google.android.material.sidesheet.SideSheetDialog
 import kotlinx.coroutines.flow.collectLatest
 import me.shetj.base.BaseKit
@@ -237,14 +238,16 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             startIgnoreBatteryOpt()
         }
         mContent.showSideDialog.setOnClickListener {
-            val sideSheetDialog = SideSheetDialog(this)
-            sideSheetDialog.setContentView(shetj.me.base.R.layout.fragment_first)
-            sideSheetDialog.setOnShowListener {
-                sideSheetDialog.window?.let {
-                    WindowCompat.setDecorFitsSystemWindows(it, false)
+            trace("showSideDialog"){
+                val sideSheetDialog = SideSheetDialog(this)
+                sideSheetDialog.setContentView(shetj.me.base.R.layout.fragment_first)
+                sideSheetDialog.setOnShowListener {
+                    sideSheetDialog.window?.let {
+                        WindowCompat.setDecorFitsSystemWindows(it, false)
+                    }
                 }
+                sideSheetDialog.show()
             }
-            sideSheetDialog.show()
         }
         mContent.btnSlidingPane.setOnClickListener {
             start<SlidingPaneActivity>()

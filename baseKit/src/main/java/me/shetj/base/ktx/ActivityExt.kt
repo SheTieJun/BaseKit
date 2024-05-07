@@ -68,7 +68,7 @@ inline fun <reified T : Activity> Context.start(isFinish: Boolean = false) {
     }
 }
 
-inline fun <reified T : Activity> Context.launchActivity(func: (Intent.() -> Unit) = {}) {
+inline fun <reified T : Activity> Context.launchActivity(crossinline func: (Intent.() -> Unit) = {}) {
     val intent = Intent(this, T::class.java).apply(func)
     startActivity(intent)
 }
@@ -145,11 +145,6 @@ fun AppCompatActivity.addKeepScreenOn() {
 fun AppCompatActivity.clearKeepScreenOn() {
     window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 }
-
-/**
- * 动画兼容
- */
-fun <T : View> T.animator() = ViewCompat.animate(this)
 
 /**
  * 展示toast

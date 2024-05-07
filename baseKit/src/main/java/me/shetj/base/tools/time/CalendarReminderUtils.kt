@@ -224,20 +224,16 @@ object CalendarReminderUtils {
             val rowNum = context.contentResolver.update(updateUri, values, null, null)
             if (rowNum <= 0) {
                 /*更新event不成功，说明用户在日历中删除了提醒事件，重新添加*/
-                if (addCalendarEvent(
-                        context,
-                        title,
-                        des,
-                        remindTime,
-                        endTime,
-                        previousTime,
-                        packageName,
-                        scheme
-                    ) != -1L
-                ) {
-                    return true
-                }
-                return false
+                return addCalendarEvent(
+                    context = context,
+                    title = title,
+                    des = des,
+                    remindTime = remindTime,
+                    endTime = endTime,
+                    previousTime = previousTime,
+                    packageName = packageName,
+                    scheme = scheme
+                ) != -1L
             } else {
                 val reminderValues = ContentValues()
                 reminderValues.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前提醒

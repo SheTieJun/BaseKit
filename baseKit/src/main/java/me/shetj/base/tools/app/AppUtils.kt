@@ -16,8 +16,9 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Process
 import androidx.annotation.Keep
-import me.shetj.base.ktx.drawableToBitmap
+import androidx.core.graphics.drawable.toBitmapOrNull
 import me.shetj.base.tools.file.FileUtils
+import me.shetj.qmui.util.QMUIDrawableHelper.drawableToBitmap
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -656,7 +657,7 @@ class AppUtils private constructor() {
         val appIconBitmap: Bitmap? = try {
             val drawableIcon =
                 Utils.app.packageManager.getApplicationIcon(Utils.app.applicationContext.packageName)
-            drawableToBitmap(drawableIcon) ?: throw PackageManager.NameNotFoundException()
+            drawableIcon.toBitmapOrNull()?: throw PackageManager.NameNotFoundException()
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }

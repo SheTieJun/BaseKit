@@ -40,16 +40,12 @@ androidApplication("shetj.me.base"){
         release {
             isDebuggable = false
             isMinifyEnabled = true
-            isShrinkResources = true // 移除无用的resource文件
-            multiDexEnabled = true //ex突破65535的限制
+            isShrinkResources = true  //删除无用资源
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isDebuggable = true
-            isMinifyEnabled = false
-            isShrinkResources = false // 移除无用的resource文件
-            multiDexEnabled = true //ex突破65535的限制
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
@@ -75,7 +71,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     androidTestImplementation(libs.ui.test.junit4)
     testImplementation(libs.junit)
-    implementation(libs.legacy.support.v4)
+    implementation(libs.androidx.legacy.v4)
     androidTestImplementation(libs.androidx.runner)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(project(":baseKit"))
@@ -92,7 +88,6 @@ dependencies {
 
     //https://github.com/SheTieJun/LogKit
     implementation(libs.logkit.messenger)
-    implementation(libs.androidx.biometric.ktx)  //指纹识别
     implementation(libs.androidx.preference)
 }
 
