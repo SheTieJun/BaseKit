@@ -1,6 +1,6 @@
 [versions]
 androidx-activity = "1.9.0"
-androidx-core= "1.13.0"
+androidx-core= "1.13.1"
 androidx-benchmark = "1.2.3"
 androidx-lifecycle = "2.7.0"
 androidx-cardview = "1.0.0"
