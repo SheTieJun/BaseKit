@@ -283,6 +283,10 @@ fun Fragment.startRequestPermissions(
     permissions: Array<String>,
     callback: ActivityResultCallback<Map<String, Boolean>>
 ) {
+    if (requireActivity().hasPermission(*permissions)) {
+        callback.onActivityResult(permissions.associateWith { true })
+        return
+    }
     startRequestPermissionsLauncher(callback)?.launch(permissions)
 }
 
@@ -290,6 +294,10 @@ fun Fragment.startRequestPermission(
     permission: String,
     callback: ActivityResultCallback<Boolean>
 ) {
+    if (requireActivity().hasPermission(permission)){
+        callback.onActivityResult(true)
+        return
+    }
     startRequestPermissionLauncher(callback)?.launch(permission)
 }
 

@@ -6,6 +6,7 @@ plugins {
     id("kotlin-parcelize")
     id("maven-publish")
     kotlin("android")
+    alias(libs.plugins.compose.compiler)
 }
 
 androidLibrary("me.shetj.base",config = true){
@@ -43,6 +44,12 @@ dependencies {
     addRoom()
     addCompose()
     addPage()
+}
+
+composeCompiler {
+    enableStrongSkippingMode = true
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+//    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 fun DependencyHandler.addPage(){

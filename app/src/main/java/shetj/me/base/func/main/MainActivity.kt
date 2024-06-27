@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.health.SystemHealthManager
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toFile
 import androidx.core.net.toUri
@@ -21,7 +22,6 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import androidx.tracing.trace
 import com.google.android.material.sidesheet.SideSheetDialog
-import kotlinx.coroutines.flow.collectLatest
 import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
@@ -127,7 +127,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         WindowKit.windowSizeStream(this).observe(this) {
             it.toJson().logI("windowSizeStream")
         }
-        defDataStore.get<String>(":").asLiveData()
+        defDataStore.get<String>(":").asLiveData().observe(this){
+
+        }
+
 
     }
 
@@ -137,29 +140,19 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         hierarchy.state?.putState("Activity", javaClass.simpleName)
 
         findViewById<View>(shetj.me.base.R.id.btn_select_image).setOnClickListener {
-
-            launch {
-                defDataStore.getFirstBlock<String>("TestPath","").also { path ->
-                    if (path.isNullOrEmpty()){
-                        "path = $path".logI()
-                        path.toUri().toFile().readBytes()
-                    }else{
-                        selectFile {
-                            "url = $it".logI()
-                            (
-                                    "url = ${
-                                        it?.let { it1 ->
-                                            FileQUtils.getFileAbsolutePath(this@MainActivity, it1)?.also {p->
-                                                launch {
-                                                    defDataStore.save("TestPath", p)
-                                                }
-                                            }
-                                        }
-                                    }"
-                                    ).logI()
-                        }
-                    }
-                }
+            selectFile {
+                "url = $it".logI()
+                (
+                        "url = ${
+                            it?.let { it1 ->
+                                FileQUtils.getFileAbsolutePath(this@MainActivity, it1)?.also {p->
+                                    launch {
+                                        defDataStore.save("TestPath", p)
+                                    }
+                                }
+                            }
+                        }"
+                        ).logI()
             }
         }
 
@@ -338,7 +331,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         return true
     }
 
-    @Debug(level = Log.ERROR, enableTime = true, watchStack = true)
+    /**
+     * 输出执行时间，执行站
+     */
+    @Debug(level = Log.DEBUG, enableTime = true, watchStack = true)
     suspend fun netTest() {
         mViewModel.getMusicV2()
 //        mViewModel.getMusicV3()

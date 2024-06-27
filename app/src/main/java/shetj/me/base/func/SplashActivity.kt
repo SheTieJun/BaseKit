@@ -12,7 +12,8 @@ class SplashActivity : AbBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().setOnExitAnimationListener { _ ->
-            start<MainActivity>(isFinish = true)
+            start<MainActivity>()
+            finish()
         }
     }
 }

@@ -60,15 +60,12 @@ fun AppCompatActivity.isRoot(): Boolean {
     return false
 }
 
-@JvmOverloads
-inline fun <reified T : Activity> Context.start(isFinish: Boolean = false) {
+inline fun <reified T : Activity> Context.start() {
     ArmsUtils.startActivity(this as AppCompatActivity, T::class.java)
-    if (isFinish) {
-        finish()
-    }
 }
 
-inline fun <reified T : Activity> Context.launchActivity(crossinline func: (Intent.() -> Unit) = {}) {
+// 内联，不能使用默认参数，否则会编译错误
+inline fun <reified T : Activity> Context.launchActivity(crossinline func: (Intent.() -> Unit)) {
     val intent = Intent(this, T::class.java).apply(func)
     startActivity(intent)
 }
@@ -259,7 +256,7 @@ fun Context.getScaledTouch() = ViewConfiguration.get(this).scaledTouchSlop
 inline fun onBackKeyUp(
     keyCode: Int,
     @NonNull event: KeyEvent,
-    crossinline onBack: () -> Boolean = { true }
+    crossinline onBack: () -> Boolean
 ): Boolean {
     if ((keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE) &&
         event.isTracking &&
@@ -283,34 +280,17 @@ fun FragmentActivity.onBackGoHome() {
     }
 }
 
-inline fun Context.createSimDialog(
-    @LayoutRes layoutId: Int,
-    crossinline viewListener: ((view: View) -> Unit) = {},
-    crossinline setWindowSizeChange: ((win: Window?) -> Unit) = {
-        it?.setLayout(ArmsUtils.dp2px(300f), LinearLayout.LayoutParams.WRAP_CONTENT)
-    }
-): AlertDialog {
-    val view = LayoutInflater.from(this).inflate(layoutId, null)
-    viewListener.invoke(view)
-    return AlertDialog.Builder(this)
-        .setView(view)
-        .show().apply {
-            setWindowSizeChange.invoke(window)
-        }
-}
-
 inline fun <reified VB : ViewBinding> Context.createSimDialog(
-    crossinline onViewCreated: ((mVB: VB,dialog: AlertDialog) -> Unit) = {_,_-> },
-    crossinline setWindowSizeChange: ((dialog: AlertDialog, window: Window?) -> Unit) = { _, window ->
-        window?.setBackgroundDrawableResource(android.R.color.transparent)
-        window?.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-    }
+    crossinline onViewCreated: ((mVB: VB,dialog: AlertDialog) -> Unit),
+    crossinline setWindowSizeChange: ((dialog: AlertDialog, window: Window?) -> Unit)
 ): AlertDialog? {
     val mVB = VB::class.java.getMethod("inflate", LayoutInflater::class.java)
         .invoke(null, LayoutInflater.from(this)) as VB
     return AlertDialog.Builder(this)
         .setView(mVB.root)
         .show()?.apply {
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
+            window?.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             onViewCreated.invoke(mVB,this)
             setWindowSizeChange.invoke(this, this.window)
         }

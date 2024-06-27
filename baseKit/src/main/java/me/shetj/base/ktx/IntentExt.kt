@@ -25,6 +25,17 @@ fun Intent?.getQueryParameter(key: String): String? {
 }
 
 fun Context.openMarket() {
+    /**
+     * 小米：'mimarket://details?id=com.lizhiweike’
+     *
+     * 华为：'appmarket://details?id=xx’
+     *
+     * oppo:  'oppomarket://details?id=xxx’
+     *
+     * vivi ：  'vivomarket://details?id=xx’
+     *
+     * 荣耀**：'honormarket://details?id=待下载应用包名。
+     */
     val uri: Uri = Uri.parse("market://details?id=$packageName")
     val intent = Intent(Intent.ACTION_VIEW, uri)
     startActivity(intent)

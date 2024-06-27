@@ -2,6 +2,7 @@ package shetj.me.base.func.compose.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import me.shetj.base.ktx.setAppearance
 import shetj.me.base.BuildConfig
 
 private val DarkColorScheme = darkColorScheme(
@@ -56,9 +58,8 @@ fun BaseKitTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            val window = (view.context as ComponentActivity)
+            window.setAppearance(!darkTheme,colorScheme.primary.toArgb())
         }
     }
 

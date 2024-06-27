@@ -13,10 +13,14 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-kapt")
     kotlin("android")
+    alias(libs.plugins.compose.compiler)
 }
 
 
 androidApplication("shetj.me.base"){
+
+    compileSdkPreview = "VanillaIceCream"
+
     defaultConfig {
         ndk {
             this.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64", "x86"))
@@ -60,6 +64,13 @@ androidApplication("shetj.me.base"){
     lint {
         checkDependencies = true
     }
+}
+
+
+composeCompiler {
+    enableStrongSkippingMode = true
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+//    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 dependencies {
