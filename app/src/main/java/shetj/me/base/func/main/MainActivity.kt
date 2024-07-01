@@ -300,8 +300,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             JankStats.createAndTrack(window) {
                 if (it.isJank) {
                     ((it.frameDurationUiNanos / 1000000).toString() + "毫秒").logE("JankStats")
-                } else {
-                    it.toJson().logI("JankStats")
                 }
             }
             mViewModel.isAddJankStats = true
