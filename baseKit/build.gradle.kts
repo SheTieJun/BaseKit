@@ -73,7 +73,7 @@ fun DependencyHandler.addCompose() {
     api(libs.compose.constraintlayout)
 
     debugApi(libs.ui.tooling)
-    androidTestApi(libs.ui.test.junit4)
+//    androidTestApi(libs.ui.test.junit4)
     debugApi(libs.ui.test.manifest)
 }
 

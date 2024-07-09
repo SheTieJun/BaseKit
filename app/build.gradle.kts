@@ -80,7 +80,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.ui.tooling.preview)
-    androidTestImplementation(libs.ui.test.junit4)
+//    androidTestImplementation(libs.ui.test.junit4)
     testImplementation(libs.junit)
     implementation(libs.androidx.legacy.v4)
     androidTestImplementation(libs.androidx.runner)
