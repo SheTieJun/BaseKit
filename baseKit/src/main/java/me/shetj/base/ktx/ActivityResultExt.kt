@@ -85,7 +85,7 @@ fun ComponentActivity.startRequestPermissions(
     permissions: Array<String>,
     callback: ActivityResultCallback<Map<String, Boolean>>
 ) {
-    if (hasPermission(*permissions)) {
+    if (hasPermission(*permissions,isRequest = false)) {
         callback.onActivityResult(permissions.associateWith { true })
         return
     }
@@ -99,7 +99,7 @@ fun ComponentActivity.startRequestPermission(
     permission: String,
     callback: ActivityResultCallback<Boolean>
 ) {
-    if(hasPermission(permission)){
+    if(hasPermission(permission, isRequest = false)){
         callback.onActivityResult(true)
         return
     }
@@ -283,7 +283,7 @@ fun Fragment.startRequestPermissions(
     permissions: Array<String>,
     callback: ActivityResultCallback<Map<String, Boolean>>
 ) {
-    if (requireActivity().hasPermission(*permissions)) {
+    if (requireActivity().hasPermission(*permissions, isRequest = false)) {
         callback.onActivityResult(permissions.associateWith { true })
         return
     }
@@ -294,7 +294,7 @@ fun Fragment.startRequestPermission(
     permission: String,
     callback: ActivityResultCallback<Boolean>
 ) {
-    if (requireActivity().hasPermission(permission)){
+    if (requireActivity().hasPermission(permission, isRequest = false)){
         callback.onActivityResult(true)
         return
     }
