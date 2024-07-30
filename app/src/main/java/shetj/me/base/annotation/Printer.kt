@@ -13,7 +13,7 @@ import java.util.*
 object Printer {
     private const val TOP_LEFT_CORNER = '┌'
     private const val BOTTOM_LEFT_CORNER = '└'
-    private const val HORIZONTAL_LINE = '│'
+    private const val HORIZONTAL_LINE = '├'
     private const val DOUBLE_DIVIDER = "─────────────────────────────────────────────────────────────"
     private const val TOP_BORDER = TOP_LEFT_CORNER.toString() + DOUBLE_DIVIDER + DOUBLE_DIVIDER
     private const val BOTTOM_BORDER = BOTTOM_LEFT_CORNER.toString() + DOUBLE_DIVIDER + DOUBLE_DIVIDER

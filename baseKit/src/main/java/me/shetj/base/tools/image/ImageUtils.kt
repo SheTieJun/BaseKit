@@ -181,7 +181,7 @@ class ImageUtils {
          */
         @JvmStatic
         fun getShareingBitmap(imageBitmap: Bitmap, des: String, textSize: Int): Bitmap {
-            val config = imageBitmap.config
+            val config = imageBitmap.config ?:Bitmap.Config.ARGB_8888
             val sourceBitmapHeight = imageBitmap.height
             val sourceBitmapWidth = imageBitmap.width
             val paint = Paint()

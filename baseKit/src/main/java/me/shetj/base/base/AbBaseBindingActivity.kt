@@ -34,12 +34,21 @@ open class AbBaseBindingActivity<VB : ViewBinding> : AbBaseActivity(), BaseContr
 
     override fun initBaseView() {
         findViewById<MaterialToolbar>(R.id.toolbar)?.apply {
-            setSupportActionBar(this)
+            if (enableSupportActionBar) {
+                setSupportActionBar(this)
+            }
             setNavigationOnClickListener {
                 back()
             }
         }
     }
+
+    /**
+     * Enable support action bar
+     * 默认true,防止老项目
+     */
+    open val enableSupportActionBar
+        get() = true
 
     @Suppress("UNCHECKED_CAST")
     open fun initBinding(): VB {

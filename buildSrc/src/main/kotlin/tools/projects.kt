@@ -8,8 +8,6 @@ import com.android.build.gradle.TestExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 fun Project.androidLibrary(
     name: String,
@@ -60,10 +58,6 @@ fun Project.androidApplication(
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    composeOptions{
-        //https://developer.android.google.cn/jetpack/androidx/releases/compose-kotlin?hl=zh-cn
-        kotlinCompilerExtensionVersion = project.composeCompilerVer
-    }
     action()
 }
 
@@ -110,10 +104,6 @@ private fun <T : BaseExtension> Project.androidBase(
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         }
-        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions.jvmTarget = JvmTarget.JVM_17.target
-        }
-
         action()
     }
 }

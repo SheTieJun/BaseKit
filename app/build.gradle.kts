@@ -29,10 +29,6 @@ androidApplication("shetj.me.base"){
     }
     signingConfigs {
         create("release") {
-            enableV1Signing = true
-            enableV2Signing = true
-            enableV3Signing = true
-            enableV4Signing = true
             keyAlias = "shetj"
             keyPassword = "123456"
             storeFile = file("test.jks")
@@ -71,6 +67,13 @@ composeCompiler {
     enableStrongSkippingMode = true
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 //    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
+}
+
+
+kotlin{
+    compilerOptions {
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+    }
 }
 
 dependencies {

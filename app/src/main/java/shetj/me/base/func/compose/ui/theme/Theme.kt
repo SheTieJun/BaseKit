@@ -1,6 +1,5 @@
 package shetj.me.base.func.compose.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -14,7 +13,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import me.shetj.base.ktx.setAppearance
 import shetj.me.base.BuildConfig
 

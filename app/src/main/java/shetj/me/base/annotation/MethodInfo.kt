@@ -21,11 +21,7 @@ class MethodInfo internal constructor() {
      */
     var cost: Long = 0 // 方法执行耗时
     private val mArgumentList // 方法参数列表
-        : MutableList<AgNode>
-
-    init {
-        mArgumentList = ArrayList()
-    }
+        : MutableList<AgNode> = ArrayList()
 
     override fun toString(): String {
         return String.format(Locale.CHINA, OUTPUT_FORMAT, methodName, cost) + result

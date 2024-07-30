@@ -1,5 +1,6 @@
 package shetj.me.base.func.md3
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import me.shetj.base.mvvm.viewbind.BaseBindingFragment
@@ -10,6 +11,7 @@ import shetj.me.base.databinding.FragmentSecondBinding
  */
 class SecondFragment : BaseBindingFragment<FragmentSecondBinding, Main2TestVM>() {
 
+    @SuppressLint("SetTextI18n")
     override fun setUpClicks() {
         mBinding.buttonSecond.setOnClickListener {
             findNavController().popBackStack()

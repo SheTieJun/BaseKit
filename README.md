@@ -94,3 +94,4 @@ https://developer.android.com/build/sdk-upgrade-assistant?hl=zh-cn
 2. [spotless](https://github.com/diffplug/spotless):Spotless 是一个开源的代码格式化和风格检查工具，可以帮助开发团队维持一致的代码风格和格式。
 
 ### Android版本行为变更:[https://developer.android.com/about/versions?hl=zh-cn](https://developer.android.com/about/versions?hl=zh-cn)
+### AGP版本:[https://developer.android.com/build/releases/gradle-plugin](https://developer.android.com/build/releases/gradle-plugin)

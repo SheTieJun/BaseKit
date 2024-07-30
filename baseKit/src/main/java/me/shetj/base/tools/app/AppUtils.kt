@@ -85,7 +85,7 @@ class AppUtils private constructor() {
             val packages = packageManager.getInstalledPackages(0)
             for (packageInfo in packages) {
                 // 判断系统/非系统应用
-                if (packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0)
+                if ((packageInfo.applicationInfo?.flags ?: 0) and ApplicationInfo.FLAG_SYSTEM == 0)
                     // 非系统应用
                     {
                         if (packageInfo.packageName.contains(name)) {
@@ -619,12 +619,12 @@ class AppUtils private constructor() {
             if (pm == null || pi == null) {
                 return null
             }
-            val ai = pi.applicationInfo
+            val ai = pi.applicationInfo?:return null
             val packageName = pi.packageName
             val name = ai.loadLabel(pm).toString()
             val icon = ai.loadIcon(pm)
             val packagePath = ai.sourceDir
-            val versionName = pi.versionName
+            val versionName = pi.versionName?:""
             val versionCode = pi.versionCode
             val isSystem = ApplicationInfo.FLAG_SYSTEM and ai.flags != 0
             return AppInfo(packageName, name, icon, packagePath, versionName, versionCode, isSystem)

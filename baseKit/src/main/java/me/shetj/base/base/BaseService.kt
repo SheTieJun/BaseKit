@@ -43,6 +43,13 @@ abstract class BaseService : Service(), KtScopeComponent {
         onScopeDestroy()
     }
 
+    //户关闭应用时
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+
+    }
+
+
     open fun needNotification(): Boolean {
         return false
     }
