@@ -1,17 +1,22 @@
 @file:JvmName("WinCompat")
 
 package me.shetj.base.ktx
+
 import android.app.Activity
+import android.content.res.Configuration
 import android.graphics.Color
-import android.os.Build
-import android.widget.FrameLayout
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
+import me.shetj.base.R
 
 val Activity.windowInsets: WindowInsetsCompat?
     get() = ViewCompat.getRootWindowInsets(findViewById(android.R.id.content))
@@ -29,7 +34,7 @@ val Fragment.windowInsetsCompat: WindowInsetsCompat?
 fun Activity.hasNavigationBars(): Boolean {
     val windowInsetsCompat = windowInsets ?: return false
     return windowInsetsCompat.isVisible(Type.navigationBars()) &&
-        windowInsetsCompat.getInsets(Type.navigationBars()).bottom > 0
+            windowInsetsCompat.getInsets(Type.navigationBars()).bottom > 0
 }
 
 /**
@@ -93,44 +98,51 @@ fun Activity.hideSystemUI() {
  * @param color
  */
 @JvmOverloads
-fun Activity.immerse(
+fun AppCompatActivity.immerse(
     @Type.InsetsType type: Int = Type.systemBars(),
-    statusIsBlack: Boolean = true,
+    statusIsBlack: Boolean = isNeedBlackText ,
     navigationIsBlack: Boolean = true,
     @ColorInt color: Int = Color.TRANSPARENT
 ) {
+
+    enableEdgeToEdge(
+        statusBarStyle = SystemBarStyle.auto(color, color, detectDarkMode = { _ ->
+            !statusIsBlack
+        }),
+        navigationBarStyle = SystemBarStyle.auto(Color.argb(0xe6, 0xFF, 0xFF, 0xFF),
+            Color.argb(0x80, 0x1b, 0x1b, 0x1b), detectDarkMode = { _ ->
+                !navigationIsBlack
+            })
+    )
+
     when (type) {
         Type.systemBars() -> {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-            updateSystemUIColor(color)
-            windowInsetsController.let { controller ->
-                controller.isAppearanceLightStatusBars = statusIsBlack
-                controller.isAppearanceLightNavigationBars = navigationIsBlack
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+                v.setPadding(0, 0, 0, 0)
+                insets
             }
-            findViewById<FrameLayout>(android.R.id.content).setPadding(0, 0, 0, 0)
         }
+
         Type.statusBars() -> {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-            window.statusBarColor = color
-            windowInsetsController.isAppearanceLightStatusBars = statusIsBlack
-            findViewById<FrameLayout>(android.R.id.content).apply {
-                post {
-                    setPadding(0, 0, 0, getNavigationBarsHeight())
-                }
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+                v.setPadding(0, 0, 0, insets.getInsets(Type.navigationBars()).bottom)
+                insets
             }
         }
+
         Type.navigationBars() -> {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-            window.navigationBarColor = color
-            windowInsetsController.isAppearanceLightNavigationBars = statusIsBlack
-            findViewById<FrameLayout>(android.R.id.content).apply {
-                post {
-                    setPadding(0, getStatusBarsHeight(), 0, 0)
-                }
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+                v.setPadding(0, insets.getInsets(Type.statusBars()).top, 0, 0)
+                insets
             }
         }
+
         else -> {
-            // no work
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            }
         }
     }
 }
@@ -143,24 +155,27 @@ fun Activity.showSystemUI() {
     windowInsetsController.show(Type.systemBars())
 }
 
+
+val ComponentActivity.isNeedBlackText:Boolean
+    get() = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) !=
+            Configuration.UI_MODE_NIGHT_YES
+
 /**
  * 不沉侵，只修改状态栏的颜色,导航栏不修改
  */
-fun Activity.setAppearance(
-    isBlack: Boolean,
+fun ComponentActivity.setAppearance(
+    isBlack: Boolean = isNeedBlackText,
     @ColorInt color: Int = Color.TRANSPARENT
 ) {
-    window.statusBarColor = color
-    windowInsetsController.isAppearanceLightStatusBars = isBlack
-}
-
-/**
- * 修改状态栏、底部的导航栏的颜色
- */
-fun Activity.updateSystemUIColor(@ColorInt color: Int = Color.TRANSPARENT) {
-    window.statusBarColor = color
-    window.navigationBarColor = color
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        window.navigationBarDividerColor = color
+    enableEdgeToEdge(
+        statusBarStyle = SystemBarStyle.auto(color, color, detectDarkMode = { _ ->
+            !isBlack
+        }),
+    )
+    ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+        insets
     }
 }
+

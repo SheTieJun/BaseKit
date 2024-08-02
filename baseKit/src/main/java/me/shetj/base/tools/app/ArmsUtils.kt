@@ -17,6 +17,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.annotation.AttrRes
 import androidx.annotation.Keep
 import androidx.annotation.MainThread
@@ -388,7 +389,7 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         @JvmOverloads
-        fun statuInScreen2(activity: Activity, isBlack: Boolean = false) {
+        fun statuInScreen2(activity: ComponentActivity, isBlack: Boolean = false) {
             activity.statuInScreen(isBlack)
         }
 
@@ -397,7 +398,7 @@ class ArmsUtils private constructor() {
          */
         @JvmStatic
         @JvmOverloads
-        fun Activity.statuInScreen(isBlack: Boolean = false) {
+        fun ComponentActivity.statuInScreen(isBlack: Boolean = false) {
             // 关键代码
             WindowCompat.setDecorFitsSystemWindows(window, false)
             setAppearance(isBlack)

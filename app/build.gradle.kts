@@ -19,7 +19,6 @@ plugins {
 
 androidApplication("shetj.me.base"){
 
-    compileSdkPreview = "VanillaIceCream"
 
     defaultConfig {
         ndk {
@@ -83,6 +82,10 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.ui.tooling.preview)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.material)
+    implementation(libs.activity)
+    implementation(libs.androidx.constraintlayout)
 //    androidTestImplementation(libs.ui.test.junit4)
     testImplementation(libs.junit)
     implementation(libs.androidx.legacy.v4)

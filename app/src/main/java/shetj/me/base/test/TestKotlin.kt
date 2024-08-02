@@ -88,9 +88,7 @@ class TestKotlin {
          *@[测试]
          */
         fun testBuild() {
-            // 1.6.0
-            buildList<String> {
-            }.isEmpty()
+
 
             buildMap<String, String> {
             }
@@ -114,7 +112,7 @@ class TestKotlin {
         }
 
         fun testLiveData() {
-            liveDataA.map { }
+
         }
 
         @ExperimentalStdlibApi

@@ -10,7 +10,6 @@ buildscript {
     }
 }
 
-@Suppress("DSL_SCOPE_VIOLATION") //fix libs error
 plugins {
     id(libs.plugins.android.application.get().pluginId) apply false
     id(libs.plugins.android.library.get().pluginId) apply false
@@ -21,6 +20,7 @@ plugins {
     id("maven-publish")
     id("io.gitlab.arturbosch.detekt") version "1.23.3"
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.kotlin.ksp)
 }
 
 //apply(from = "https://gist.githubusercontent.com/SheTieJun/f4cb1bd33997c2b46d9e3df40b95a02e/raw/c4b826d3ca4415071097b1642c9b80e50f3f1ad0/subprojects-maven-publishing.gradle")

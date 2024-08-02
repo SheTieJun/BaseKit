@@ -1,12 +1,12 @@
 import tools.androidLibrary
 
 plugins {
-    id("kotlin-kapt")
     id("com.android.library")
     id("kotlin-parcelize")
     id("maven-publish")
     kotlin("android")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 androidLibrary("me.shetj.base",config = true){
@@ -101,7 +101,7 @@ fun DependencyHandler.addRetrofit2(){
 fun DependencyHandler.addRoom(){
     api(libs.androidx.room.runtime)
     api(libs.androidx.room.ktx)
-    add("kapt", libs.androidx.room.compiler)
+    add("ksp", libs.androidx.room.compiler)
 }
 
 fun DependencyHandler.addCoroutines(){
