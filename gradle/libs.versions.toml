@@ -46,7 +46,7 @@ retrofit = "2.11.0"
 activity-compose = "1.9.0"
 compose-bom = "2024.06.00"
 pagingVersion = "3.3.1"
-activity = "1.8.0"
+activity = "1.9.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
