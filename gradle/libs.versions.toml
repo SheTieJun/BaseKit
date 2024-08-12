@@ -56,7 +56,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 android-benchmark = { id = "androidx.benchmark", version.ref = "benchmark" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-ksp = { id = "com.google.devtools.ksp", version = "2.0.0-1.0.24" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version = "2.0.10-1.0.24" }
 
 [libraries]
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
