@@ -45,7 +45,7 @@ koin-version = "3.5.6"
 retrofit = "2.11.0"
 activity-compose = "1.9.1"
 compose-bom = "2024.06.00"
-pagingVersion = "3.3.1"
+pagingVersion = "3.3.2"
 activity = "1.9.1"
 
 [plugins]
