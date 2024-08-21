@@ -25,6 +25,7 @@ import com.google.android.material.sidesheet.SideSheetDialog
 import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
+import me.shetj.base.ktx.hasPermission
 import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.launchActivity
 import me.shetj.base.ktx.logE
@@ -113,6 +114,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 "截屏了:$path".logI()
             }
         })
+
+        hasPermission("android.permission.POST_NOTIFICATIONS")
         WidgetProvider.registerReceiver(this)
         val lruCache = lruCache<String, String>(100) // lruCache
         BaseKit.androidID.logI("androidID")

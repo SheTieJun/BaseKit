@@ -14,9 +14,6 @@
         android:theme="@style/BaseTheme.MD3"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".func.md3.MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".func.compose.ComposeTestActivity"
             android:exported="false"
             android:label="@string/title_activity_compose_test"
@@ -150,6 +147,8 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />

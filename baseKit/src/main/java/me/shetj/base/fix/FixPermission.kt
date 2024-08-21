@@ -2,6 +2,8 @@ package me.shetj.base.fix
 
 import android.Manifest.permission
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Build.VERSION
@@ -9,6 +11,8 @@ import android.os.Build.VERSION_CODES
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentActivity
 import me.shetj.base.ktx.hasPermission
 import me.shetj.base.ktx.startRequestPermissions
@@ -18,8 +22,60 @@ import me.shetj.base.ktx.startRequestPermissions
  * 1. 读写权限：
  *  1. >= 30 是需要去权限设置页面获取完整的读写权限
  *  2. 大于11如果只是获取媒体相关的权限，
+ *  3. 目标版本相关的请求读写权限
  */
 object FixPermission {
+
+    /**
+     * Check notification enable
+     * 检测通知权限
+     * @param isRequest 是否发起请求权限
+     */
+    fun checkNotificationEnable(context: FragmentActivity, isRequest: Boolean = true): Boolean {
+        if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            return true
+        }
+        if (isRequest) {
+            //如果目标版本是低于12
+            if (context.applicationInfo.targetSdkVersion < VERSION_CODES.TIRAMISU) {
+                //但是手机>= 13
+                if (VERSION.SDK_INT >= 33) {
+                    //是否已经创建了渠道，这里是利用创建渠道来创建通知
+                    val channel = NotificationManagerCompat.from(context).notificationChannels.find { it.id == "活动通知" }
+                    if (channel == null) {
+                        val channelId = "活动通知"
+                        val channelName: CharSequence = "活动通知"
+                        val channelDescription = "用于消息通知"
+                        val channelImportance = NotificationManager.IMPORTANCE_HIGH
+                        val notificationChannel = NotificationChannel(channelId, channelName, channelImportance)
+                        notificationChannel.description = channelDescription
+                        notificationChannel.enableVibration(false)
+                        notificationChannel.lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
+                        notificationChannel.setSound(null, null)
+                        notificationChannel.enableLights(false)
+                        NotificationManagerCompat.from(context).createNotificationChannel(notificationChannel)
+                    } else {
+                        goSettingNotification(context)
+                    }
+                } else {
+                    goSettingNotification(context)
+                }
+            } else {
+                if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                    context.hasPermission(permissions = arrayOf(permission.POST_NOTIFICATIONS))
+                } else {
+                    goSettingNotification(context)
+                }
+            }
+        }
+        return false
+    }
+
+    private fun goSettingNotification(context: FragmentActivity) {
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+        context.startActivity(intent)
+    }
 
     fun checkReadMediaPermission(context: FragmentActivity, action: ((Boolean) -> Unit)? = null) {
         if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {

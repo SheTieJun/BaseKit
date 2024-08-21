@@ -8,6 +8,7 @@ import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.EmptyUtils
 import me.shetj.datastore.dataStoreKit
 import timber.log.Timber
+import java.util.Locale
 import kotlin.random.Random
 
 @JvmOverloads
@@ -114,3 +115,8 @@ fun getTagThread(tag: String, run: Runnable): Thread {
  * DataStore 还可以使用协议缓冲区来存储类型化对象。
  */
 val defDataStore by lazy { BaseKit.app.dataStoreKit() }
+
+/**
+ * float 转成rmb
+ */
+fun Float.formatRMB() = String.format(Locale.getDefault(), "￥%.2f", this).replace(".00", "")

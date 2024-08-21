@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
-import me.shetj.base.R
 
 val Activity.windowInsets: WindowInsetsCompat?
     get() = ViewCompat.getRootWindowInsets(findViewById(android.R.id.content))
