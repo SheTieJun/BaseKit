@@ -99,21 +99,33 @@ fun Activity.hideSystemUI() {
 @JvmOverloads
 fun AppCompatActivity.immerse(
     @Type.InsetsType type: Int = Type.systemBars(),
-    statusIsBlack: Boolean = isNeedBlackText ,
-    navigationIsBlack: Boolean = true,
+    statusIsBlackText: Boolean = isNeedBlackText,
+    navigationIsBlackLine: Boolean = true,
     @ColorInt color: Int = Color.TRANSPARENT
 ) {
 
-    enableEdgeToEdge(
-        statusBarStyle = SystemBarStyle.auto(color, color, detectDarkMode = { _ ->
-            !statusIsBlack
-        }),
-        navigationBarStyle = SystemBarStyle.auto(Color.argb(0xe6, 0xFF, 0xFF, 0xFF),
-            Color.argb(0x80, 0x1b, 0x1b, 0x1b), detectDarkMode = { _ ->
-                !navigationIsBlack
+    if (color != Color.TRANSPARENT) {
+        if (statusIsBlackText) {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.light(color, color),
+                navigationBarStyle = SystemBarStyle.light(color, color)
+            )
+        } else {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.dark(color),
+                navigationBarStyle = SystemBarStyle.dark(color)
+            )
+        }
+    } else {
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(color, color, detectDarkMode = { _ ->
+                !statusIsBlackText
+            }),
+            navigationBarStyle = SystemBarStyle.auto(color, color, detectDarkMode = { _ ->
+                !navigationIsBlackLine
             })
-    )
-
+        )
+    }
     when (type) {
         Type.systemBars() -> {
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
@@ -138,7 +150,7 @@ fun AppCompatActivity.immerse(
 
         else -> {
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                val systemBars = insets.getInsets(Type.systemBars())
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
                 insets
             }
@@ -155,7 +167,7 @@ fun Activity.showSystemUI() {
 }
 
 
-val ComponentActivity.isNeedBlackText:Boolean
+val ComponentActivity.isNeedBlackText: Boolean
     get() = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) !=
             Configuration.UI_MODE_NIGHT_YES
 
@@ -166,15 +178,27 @@ fun ComponentActivity.setAppearance(
     isBlack: Boolean = isNeedBlackText,
     @ColorInt color: Int = Color.TRANSPARENT
 ) {
-    enableEdgeToEdge(
-        statusBarStyle = SystemBarStyle.auto(color, color, detectDarkMode = { _ ->
-            !isBlack
-        }),
-    )
+
+    if (color != Color.TRANSPARENT) {
+        if (isBlack) {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.light(color, color),
+            )
+        } else {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.dark(color),
+            )
+        }
+    } else {
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(color, color, detectDarkMode = { _ ->
+                !isBlack
+            })
+        )
+    }
     ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
-        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        val systemBars = insets.getInsets(Type.systemBars())
         v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
         insets
     }
 }
-

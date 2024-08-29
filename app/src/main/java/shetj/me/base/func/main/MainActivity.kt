@@ -9,10 +9,7 @@ import android.os.Bundle
 import android.os.health.SystemHealthManager
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.net.toFile
-import androidx.core.net.toUri
 import androidx.core.util.lruCache
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
@@ -62,8 +59,6 @@ import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
 import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
-import java.io.File
-import java.net.URI
 import java.util.Locale
 
 
@@ -286,7 +281,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun initBaseView() {
         super.initBaseView()
-        setAppearance(isBlack = true, Color.TRANSPARENT)
+        setAppearance(isBlackText = true, Color.BLUE)
         mBinding.root.post {
             windowInsets?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
             windowInsets?.getInsets(Type.statusBars()).toJson().logI("statusBars")
