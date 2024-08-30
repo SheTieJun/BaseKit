@@ -175,12 +175,12 @@ val ComponentActivity.isNeedBlackText: Boolean
  * 不沉侵，只修改状态栏的颜色,导航栏不修改
  */
 fun ComponentActivity.setAppearance(
-    isBlack: Boolean = isNeedBlackText,
+    isBlackText: Boolean = isNeedBlackText,
     @ColorInt color: Int = Color.TRANSPARENT
 ) {
 
     if (color != Color.TRANSPARENT) {
-        if (isBlack) {
+        if (isBlackText) {
             enableEdgeToEdge(
                 statusBarStyle = SystemBarStyle.light(color, color),
             )
@@ -192,7 +192,7 @@ fun ComponentActivity.setAppearance(
     } else {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(color, color, detectDarkMode = { _ ->
-                !isBlack
+                !isBlackText
             })
         )
     }

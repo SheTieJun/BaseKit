@@ -281,7 +281,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun initBaseView() {
         super.initBaseView()
-        setAppearance(isBlackText = true, Color.BLUE)
+        setAppearance(isBlackText = true, Color.TRANSPARENT)
         mBinding.root.post {
             windowInsets?.getInsets(Type.navigationBars()).toJson().logI("navigationBars")
             windowInsets?.getInsets(Type.statusBars()).toJson().logI("statusBars")
