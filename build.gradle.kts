@@ -18,7 +18,7 @@ plugins {
     id(libs.plugins.spotless.get().pluginId) version (libs.versions.spotless)
     id(libs.plugins.android.benchmark.get().pluginId) version (libs.versions.benchmark) apply false
     id("maven-publish")
-    id("io.gitlab.arturbosch.detekt") version "1.23.3"
+    id("io.gitlab.arturbosch.detekt") version "1.23.7"
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.kotlin.ksp)
 }
