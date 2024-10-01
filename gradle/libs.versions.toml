@@ -160,7 +160,7 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.0.1" }
-compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.8.4" }
+compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.8.6" }
 compose-paging = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingVersion" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 
