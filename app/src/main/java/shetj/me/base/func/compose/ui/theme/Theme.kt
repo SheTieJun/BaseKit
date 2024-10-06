@@ -13,6 +13,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import me.shetj.base.ktx.immerse
 import me.shetj.base.ktx.setAppearance
 import shetj.me.base.BuildConfig
 
@@ -57,7 +58,7 @@ fun BaseKitTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as ComponentActivity)
-            window.setAppearance(!darkTheme,colorScheme.primary.toArgb())
+            window.immerse()
         }
     }
 

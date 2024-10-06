@@ -17,6 +17,7 @@ import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.fragment.app.FragmentActivity
+import androidx.webkit.CookieManagerCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import me.shetj.base.BaseKit
@@ -78,6 +79,10 @@ class WebViewManager(private val webView: WebView) {
                 WebView.setWebContentsDebuggingEnabled(enabled)
             }
         }
+
+        fun getCookieInfo(url: String): MutableList<String> {
+            return CookieManagerCompat.getCookieInfo(CookieManager.getInstance(), url)
+        }
     }
 
 //    /**
@@ -113,20 +118,29 @@ class WebViewManager(private val webView: WebView) {
 //        );
 //    }
 
+
+    fun muteAudio(isMute: Boolean) {
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.MUTE_AUDIO)) {
+            WebViewCompat.setAudioMuted(webView, isMute)
+        }
+    }
+
+
+
     /**
      * 对图片进行重置大小，宽度就是手机屏幕宽度，高度根据宽度比便自动缩放
      */
     fun imgReset() {
         webView.loadUrl(
             "javascript:(function(){" +
-                "var objs = document.getElementsByTagName('img'); " +
-                "for(var i=0;i<objs.length;i++)  " +
-                "{" +
-                "var img = objs[i];   " +
-                "    img.style.maxWidth = '100%';" +
-                "    img.style.height = 'auto';  " +
-                "}" +
-                "})()"
+                    "var objs = document.getElementsByTagName('img'); " +
+                    "for(var i=0;i<objs.length;i++)  " +
+                    "{" +
+                    "var img = objs[i];   " +
+                    "    img.style.maxWidth = '100%';" +
+                    "    img.style.height = 'auto';  " +
+                    "}" +
+                    "})()"
         )
     }
 
@@ -187,15 +201,15 @@ class WebViewManager(private val webView: WebView) {
     fun addImageClick() {
         webView.loadUrl(
             "javascript:(function(){" +
-                "var objs = document.getElementsByTagName(\"img\"); " +
-                "for(var i=0;i<objs.length;i++)  " +
-                "{" +
-                "    objs[i].onclick=function()  " +
-                "    {  " +
-                "        window.App.openImage(this.src);  " +
-                "    }  " +
-                "}" +
-                "})()"
+                    "var objs = document.getElementsByTagName(\"img\"); " +
+                    "for(var i=0;i<objs.length;i++)  " +
+                    "{" +
+                    "    objs[i].onclick=function()  " +
+                    "    {  " +
+                    "        window.App.openImage(this.src);  " +
+                    "    }  " +
+                    "}" +
+                    "})()"
         )
     }
 
@@ -211,17 +225,17 @@ class WebViewManager(private val webView: WebView) {
     fun addImageClick(jsName: String) {
         webView.loadUrl(
             "javascript:(function() { " +
-                "var imgList = document.getElementsByTagName('img');" +
-                "var imgSrcList = [];" +
-                "for (var i = 0; i < imgList.length; i++) {" +
-                "    imgSrcList.push(imgList[i].src);" +
-                "    imgList[i].onclick=function()  " +
-                "    {  " +
-                "        window.$jsName.openImage(this.src);  " +
-                "    }  " +
-                "}" +
-                "window.$jsName.onImageListReceived(JSON.stringify(imgSrcList));" +
-                "})()"
+                    "var imgList = document.getElementsByTagName('img');" +
+                    "var imgSrcList = [];" +
+                    "for (var i = 0; i < imgList.length; i++) {" +
+                    "    imgSrcList.push(imgList[i].src);" +
+                    "    imgList[i].onclick=function()  " +
+                    "    {  " +
+                    "        window.$jsName.openImage(this.src);  " +
+                    "    }  " +
+                    "}" +
+                    "window.$jsName.onImageListReceived(JSON.stringify(imgSrcList));" +
+                    "})()"
         )
     }
 
@@ -258,14 +272,14 @@ class WebViewManager(private val webView: WebView) {
     fun addConsole2() {
         webView.loadUrl(
             "javascript:(function() {" +
-                "var parent = document.getElementsByTagName('head').item(0);" +
-                "var scriptConsole = document.createElement('script');" +
-                "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
-                "parent.appendChild(scriptConsole);" +
-                "var scriptAdd = document.createElement('script');" +
-                "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
-                "parent.appendChild(scriptAdd);" +
-                "})()"
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var scriptConsole = document.createElement('script');" +
+                    "scriptConsole.src = 'https://unpkg.com/vconsole@latest/dist/vconsole.min.js';" +
+                    "parent.appendChild(scriptConsole);" +
+                    "var scriptAdd = document.createElement('script');" +
+                    "scriptAdd.innerHTML = 'var vConsole = new window.VConsole();';" +
+                    "parent.appendChild(scriptAdd);" +
+                    "})()"
         )
     }
 

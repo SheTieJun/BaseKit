@@ -87,7 +87,7 @@ class Share private constructor(builder: Builder) {
 
     @Suppress("UnsafeCallOnNullableType")
     private fun createShareIntent(): Intent? {
-        val shareIntent: Intent = Intent()
+        val shareIntent = Intent()
         shareIntent.action = Intent.ACTION_SEND
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         shareIntent.addCategory("android.intent.category.DEFAULT")

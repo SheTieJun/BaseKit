@@ -89,15 +89,15 @@ fun Activity.hideSystemUI() {
 }
 
 /**
- * Immerse 沉浸。设置沉浸的方式
+ * Immerse 沉浸。设置沉浸的方式 不可以和setAppearance 一起使用
  *
  * @param type Type.systemBars(),Type.statusBars(),Type.navigationBars()
- * @param statusIsBlack 专栏文字 true 黑色,false 白色
- * @param navigationIsBlack 导航栏按钮 true 黑色,false 白色
+ * @param statusIsBlackText 专栏文字 true 黑色,false 白色
+ * @param navigationIsBlackLine 导航栏按钮 true 黑色,false 白色
  * @param color
  */
 @JvmOverloads
-fun AppCompatActivity.immerse(
+fun ComponentActivity.immerse(
     @Type.InsetsType type: Int = Type.systemBars(),
     statusIsBlackText: Boolean = isNeedBlackText,
     navigationIsBlackLine: Boolean = true,

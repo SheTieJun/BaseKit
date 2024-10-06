@@ -91,17 +91,21 @@ internal class DebugMethodAdapter(
         if (hasTraceLog || logAll) {
             //保存处理一下field类型的参数值
             handleFieldInfos()
-            if (opcode == RETURN) {
-                visitInsn(ACONST_NULL)
-            } else if (opcode == ARETURN || opcode == ATHROW) {
-                dup()
-            } else {
-                if (opcode == LRETURN || opcode == DRETURN) {
-                    dup2()
-                } else {
+            when (opcode) {
+                RETURN -> {
+                    visitInsn(ACONST_NULL)
+                }
+                ARETURN, ATHROW -> {
                     dup()
                 }
-                box(Type.getReturnType(methodDesc))
+                else -> {
+                    if (opcode == LRETURN || opcode == DRETURN) {
+                        dup2()
+                    } else {
+                        dup()
+                    }
+                    box(Type.getReturnType(methodDesc))
+                }
             }
             mv.visitLdcInsn(className)
             mv.visitLdcInsn(methodName)

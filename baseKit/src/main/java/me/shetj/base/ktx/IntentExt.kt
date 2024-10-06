@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
+import me.shetj.base.fix.FixPermission
 import java.io.File
 
 fun Context.openUri(uri: String) {
@@ -26,7 +27,7 @@ fun Intent?.getQueryParameter(key: String): String? {
 
 fun Context.openMarket() {
     /**
-     * 小米：'mimarket://details?id=com.lizhiweike’
+     * 小米：'mimarket://details?id=xxxx’
      *
      * 华为：'appmarket://details?id=xx’
      *

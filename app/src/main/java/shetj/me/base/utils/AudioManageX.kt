@@ -4,16 +4,15 @@ package shetj.me.base.utils
 
 import android.content.Context
 import android.media.AudioAttributes
+import android.media.AudioDeviceInfo
 import android.media.AudioFocusRequest
+import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioManager.OnAudioFocusChangeListener
 import android.os.Build
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle.Event
-import androidx.lifecycle.Lifecycle.Event.ON_CREATE
-import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
+import me.shetj.base.ktx.logD
+import me.shetj.base.ktx.showToast
 
 /**
  *
@@ -26,7 +25,7 @@ import androidx.lifecycle.LifecycleOwner
  * * [setOnAudioFocusChangeListener] 监听焦点变化
  */
 
-class AudioManagerKit(context: Context, val isPlayIng: () -> Boolean) {
+class AudioManageX(context: Context) {
 
     private var onAudioFocusChangeListener: OnAudioFocusChange? = null
 
@@ -52,7 +51,7 @@ class AudioManagerKit(context: Context, val isPlayIng: () -> Boolean) {
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                     synchronized(focusLock) {
                         // only resume if playback is being interrupted
-                        resumeOnFocusGain = isPlayIng()
+                        resumeOnFocusGain = false
                         playbackDelayed = false
                     }
                     // 短暂性丢失焦点，当其他应用申请AUDIOFOCUS_GAIN_TRANSIENT或AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE时，
@@ -177,8 +176,143 @@ class AudioManagerKit(context: Context, val isPlayIng: () -> Boolean) {
         return bufferSize
     }
 
+
     private fun init(context: Context) {
         mAudioManager = ContextCompat.getSystemService(context.applicationContext, AudioManager::class.java) as AudioManager
+
+        checkDevice()
+    }
+
+
+
+    fun checkDevice(): StringBuilder {
+        val deviceTypeMap = mutableMapOf<Int,String>()
+        deviceTypeMap[AudioDeviceInfo.TYPE_WIRED_HEADPHONES] = "有线耳机麦克风";
+        deviceTypeMap[AudioDeviceInfo.TYPE_BLUETOOTH_SCO] = "蓝牙麦克风";
+        deviceTypeMap[AudioDeviceInfo.TYPE_TELEPHONY] = "通话麦克风音频输入";
+        deviceTypeMap[AudioDeviceInfo.TYPE_BUILTIN_MIC] = "内置麦克风";
+        deviceTypeMap[AudioDeviceInfo.TYPE_FM_TUNER] = "FM收音机设备";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            deviceTypeMap.put(AudioDeviceInfo.TYPE_REMOTE_SUBMIX, "虚拟混音设备")
+        };
+        val devices = mAudioManager?.getDevices(AudioManager.GET_DEVICES_INPUTS)
+
+        val deviceInfoString = StringBuilder()
+        devices?.forEach { device ->
+            if (device == null) {
+                return@forEach
+            }
+
+
+            deviceInfoString.append("\n\n产品名称：\t")
+            deviceInfoString.append(device.getProductName())
+
+
+            deviceInfoString.append("\n\n是否Source：\t")
+            deviceInfoString.append(device.isSource)
+
+            deviceInfoString.append("\n设备类型：\t")
+            deviceInfoString.append(deviceTypeMap[device.type]?:device.type)
+
+            deviceInfoString.append("\n设备ID：\t")
+            deviceInfoString.append(device.id)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                deviceInfoString.append("\n设备位置：\t")
+                deviceInfoString.append(device.address)
+            }
+
+            deviceInfoString.append("\n支持采样率：\t")
+            deviceInfoString.append(device.sampleRates.joinToString(prefix = "[", postfix = "]", separator = ","))
+
+            deviceInfoString.append("\n支持Channel数量：\t")
+            deviceInfoString.append(device.getChannelCounts().joinToString(prefix = "[", postfix = "]", separator = ","))
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                deviceInfoString.append("\n支持metadata封装类型：\t")
+                deviceInfoString.append(device.encapsulationModes.joinToString(prefix = "[", postfix = "]", separator = ","))
+            }
+
+            deviceInfoString.append("\n支持Encoding类型：")
+            deviceInfoString.append(device.encodings.joinToString(prefix = "[", postfix = "]", separator = ",", transform = {
+                toLogFriendlyEncoding(it)
+            }))
+        }
+        deviceInfoString.append("\n\n---------------------------------------------------------\t")
+        mAudioManager?.activeRecordingConfigurations?.forEach {  audioRecordingConfiguration ->
+            val device = audioRecordingConfiguration.audioDevice ?: return@forEach
+            deviceInfoString.append("\n\n产品名称：\t")
+            deviceInfoString.append(device.getProductName())
+
+
+            deviceInfoString.append("\n\n是否Source：\t")
+            deviceInfoString.append(device.isSource)
+
+            deviceInfoString.append("\n设备类型：\t")
+            deviceInfoString.append(deviceTypeMap[device.type]?:device.type)
+
+            deviceInfoString.append("\n设备ID：\t")
+            deviceInfoString.append(device.id)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                deviceInfoString.append("\n设备位置：\t")
+                deviceInfoString.append(device.address)
+            }
+
+            deviceInfoString.append("\n支持采样率：\t")
+            deviceInfoString.append(device.sampleRates.joinToString(prefix = "[", postfix = "]", separator = ","))
+
+            deviceInfoString.append("\n支持Channel数量：\t")
+            deviceInfoString.append(device.getChannelCounts().joinToString(prefix = "[", postfix = "]", separator = ","))
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                deviceInfoString.append("\n支持metadata封装类型：\t")
+                deviceInfoString.append(device.encapsulationModes.joinToString(prefix = "[", postfix = "]", separator = ","))
+            }
+
+            deviceInfoString.append("\n支持Encoding类型：")
+            deviceInfoString.append(device.encodings.joinToString(prefix = "[", postfix = "]", separator = ",", transform = {
+                toLogFriendlyEncoding(it)
+            }))
+        }
+        return deviceInfoString
+    }
+
+    fun toLogFriendlyEncoding(enc: Int): String {
+        return when (enc) {
+            AudioFormat.ENCODING_INVALID -> "ENCODING_INVALID"
+            AudioFormat.ENCODING_PCM_16BIT -> "ENCODING_PCM_16BIT"
+            AudioFormat.ENCODING_PCM_8BIT -> "ENCODING_PCM_8BIT"
+            AudioFormat.ENCODING_PCM_FLOAT -> "ENCODING_PCM_FLOAT"
+            AudioFormat.ENCODING_AC3 -> "ENCODING_AC3"
+            AudioFormat.ENCODING_E_AC3 -> "ENCODING_E_AC3"
+            AudioFormat.ENCODING_DTS -> "ENCODING_DTS"
+            AudioFormat.ENCODING_DTS_HD -> "ENCODING_DTS_HD"
+            AudioFormat.ENCODING_MP3 -> "ENCODING_MP3"
+            AudioFormat.ENCODING_AAC_LC -> "ENCODING_AAC_LC"
+            AudioFormat.ENCODING_AAC_HE_V1 -> "ENCODING_AAC_HE_V1"
+            AudioFormat.ENCODING_AAC_HE_V2 -> "ENCODING_AAC_HE_V2"
+            AudioFormat.ENCODING_IEC61937 -> "ENCODING_IEC61937"
+            AudioFormat.ENCODING_DOLBY_TRUEHD -> "ENCODING_DOLBY_TRUEHD"
+            AudioFormat.ENCODING_AAC_ELD -> "ENCODING_AAC_ELD"
+            AudioFormat.ENCODING_AAC_XHE -> "ENCODING_AAC_XHE"
+            AudioFormat.ENCODING_AC4 -> "ENCODING_AC4"
+            AudioFormat.ENCODING_E_AC3_JOC -> "ENCODING_E_AC3_JOC"
+            AudioFormat.ENCODING_DOLBY_MAT -> "ENCODING_DOLBY_MAT"
+            AudioFormat.ENCODING_OPUS -> "ENCODING_OPUS"
+            AudioFormat.ENCODING_PCM_24BIT_PACKED -> "ENCODING_PCM_24BIT_PACKED"
+            AudioFormat.ENCODING_PCM_32BIT -> "ENCODING_PCM_32BIT"
+            AudioFormat.ENCODING_MPEGH_BL_L3 -> "ENCODING_MPEGH_BL_L3"
+            AudioFormat.ENCODING_MPEGH_BL_L4 -> "ENCODING_MPEGH_BL_L4"
+            AudioFormat.ENCODING_MPEGH_LC_L3 -> "ENCODING_MPEGH_LC_L3"
+            AudioFormat.ENCODING_MPEGH_LC_L4 -> "ENCODING_MPEGH_LC_L4"
+            AudioFormat.ENCODING_DTS_UHD_P1 -> "ENCODING_DTS_UHD_P1"
+            AudioFormat.ENCODING_DRA -> "ENCODING_DRA"
+            AudioFormat.ENCODING_DTS_HD_MA -> "ENCODING_DTS_HD_MA"
+            AudioFormat.ENCODING_DTS_UHD_P2 -> "ENCODING_DTS_UHD_P2"
+            AudioFormat.ENCODING_DSD -> "ENCODING_DSD"
+            else -> "invalid encoding $enc"
+        }
     }
 
     fun onDestroy() {

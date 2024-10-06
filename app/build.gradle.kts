@@ -11,7 +11,6 @@ import tools.androidApplication
 plugins {
     id("com.android.application")
     id("kotlin-parcelize")
-    id("kotlin-kapt")
     kotlin("android")
     alias(libs.plugins.compose.compiler)
 }

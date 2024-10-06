@@ -65,7 +65,7 @@ inline fun <reified T : Activity> Context.start() {
 }
 
 // 内联，不能使用默认参数，否则会编译错误
-inline fun <reified T : Activity> Context.launchActivity(crossinline func: (Intent.() -> Unit)) {
+inline fun <reified T : Activity> Context.launchActivity(func: (Intent.() -> Unit)) {
     val intent = Intent(this, T::class.java).apply(func)
     startActivity(intent)
 }
@@ -205,22 +205,9 @@ fun Activity.hasPermission(
  * Need permission tip
  *
  * @param permissions
- * @return true:需要提示
+ * @return true:需要进行弹窗提示
  */
 fun Activity.needPermissionTip(@NonNull permissions: String): Boolean {
-    /**
-     * 从来没有申请过:
-     * ActivityCompat.shouldShowRequestPermissionRationale=false;
-     *
-     * 第一次请求权限被禁止，但未选择【不再提醒】
-     * ActivityCompat.shouldShowRequestPermissionRationale = true;
-     *
-     * 允许权限后
-     * ActivityCompat.shouldShowRequestPermissionRationale=false;
-     *
-     * 禁止权限，并选中【禁止后不再询问】
-     * ActivityCompat.shouldShowRequestPermissionRationale=false；
-     */
     return ActivityCompat.shouldShowRequestPermissionRationale(this, permissions)
 }
 
@@ -231,6 +218,7 @@ fun AppCompatActivity.onRequestPermissionsResultImpl(
     val sb = StringBuilder()
     for (i in grantResults.indices) {
         if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+            //用户已经拒绝了
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
                 when (permissions[i]) {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE -> sb.append("\n · 读写存储  ")
@@ -293,7 +281,7 @@ inline fun <reified VB : ViewBinding> Context.createSimDialog(
         .invoke(null, LayoutInflater.from(this)) as VB
     return AlertDialog.Builder(this)
         .setView(mVB.root).create().apply {
-            onBeforeShow.invoke(mVB, this) //can  dialog.setOnShowListener
+            onBeforeShow.invoke(mVB, this) //can add dialog.setOnShowListener
             this.show()
             onViewCreated.invoke(mVB, this)
             setWindowSizeChange.invoke(this, this.window)
@@ -359,7 +347,7 @@ internal fun Context.requestNetWork() {
 }
 
 fun Context.getFileProviderAuthority(): String {
-    return "$packageName.FileProvider"
+    return "$packageName.BaseFileProvider"
 }
 
 fun Activity.getWindowContent(): FrameLayout? {
@@ -371,6 +359,7 @@ fun Activity.getWindowContent(): FrameLayout? {
  * Works with file:// URIs from primary storage
  * Not works with file:// URIs from secondary storage (such as removable storage)
  * Not works with any content:// URI
+ *  = 注意这里的 MimeType 是一定要填写的，并且不能写通配符 * 或 null，否则会导致刷新失败，通常我们保存的是一个图片的话，只需要传递 image/jpeg 即可。
  */
 fun refreshAlbum(context: Context, fileUri: String) {
     val file = File(fileUri)
@@ -383,6 +372,10 @@ fun refreshAlbum(context: Context, fileUri: String) {
     }
 }
 
+/**
+ * Start ignore battery opt
+ * 去开启电池优化的界面
+ */
 fun Context.startIgnoreBatteryOpt() {
     val i = Intent()
     i.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS

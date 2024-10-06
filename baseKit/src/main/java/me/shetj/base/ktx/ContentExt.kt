@@ -65,7 +65,7 @@ fun createVideoPathUri(context: Context): Uri {
             val file = File(createVideoPath(context))
             FileProvider.getUriForFile(
                 context.applicationContext,
-                context.packageName + ".FileProvider",
+                context.getFileProviderAuthority(),
                 file
             )
         }

@@ -40,6 +40,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/button_second"
                 android:src="@drawable/icon_test" />
 
@@ -51,7 +52,24 @@
                 android:onClick="@{()->vm.changeThem()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_testImage" />
+                app:layout_constraintTop_toBottomOf="@id/button_second" />
+
+
+            <shetj.me.base.wheel.WheelView
+                android:id="@+id/wheelview"
+                app:layout_constraintTop_toBottomOf="@id/button_change_theme"
+                app:wheelGradient="true"
+                app:wheelCurtainEnabled="true"
+                app:wheelCurtainColor="#F4F4F4"
+                app:wheelCurtainRadius="6dp"
+                app:wheelTextCenterColor="#2B2B3A"
+                app:wheelTextColor="#C9C9C9"
+                app:wheelItemSize="46dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:wheelItemCount="4"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

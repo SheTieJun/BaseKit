@@ -2,13 +2,17 @@ package shetj.me.base.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.OverScroller;
+
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.google.android.material.appbar.AppBarLayout;
+
 import java.lang.reflect.Field;
+
+import timber.log.Timber;
 
 /**
  * 用来解决滑动冲突的
@@ -224,7 +228,7 @@ public class CustomBehavior extends AppBarLayout.Behavior {
 
     private static class LogUtil {
         static void d(String tag, String string) {
-            Log.d(tag, string);
+            Timber.tag(tag).d(string);
         }
     }
 

@@ -4,8 +4,11 @@ import android.Manifest.permission
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Environment
@@ -23,6 +26,7 @@ import me.shetj.base.ktx.startRequestPermissions
  *  1. >= 30 是需要去权限设置页面获取完整的读写权限
  *  2. 大于11如果只是获取媒体相关的权限，
  *  3. 目标版本相关的请求读写权限
+ *  4. 通知权限
  */
 object FixPermission {
 
@@ -36,8 +40,8 @@ object FixPermission {
             return true
         }
         if (isRequest) {
-            //如果目标版本是低于12
-            if (context.applicationInfo.targetSdkVersion < VERSION_CODES.TIRAMISU) {
+            //如果目标版本是低于12,写33是为了方便测试
+            if (context.applicationInfo.targetSdkVersion < 33) {
                 //但是手机>= 13
                 if (VERSION.SDK_INT >= 33) {
                     //是否已经创建了渠道，这里是利用创建渠道来创建通知
@@ -61,7 +65,7 @@ object FixPermission {
                     goSettingNotification(context)
                 }
             } else {
-                if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                if (VERSION.SDK_INT >= 33) {
                     context.hasPermission(permissions = arrayOf(permission.POST_NOTIFICATIONS))
                 } else {
                     goSettingNotification(context)
@@ -71,10 +75,39 @@ object FixPermission {
         return false
     }
 
-    private fun goSettingNotification(context: FragmentActivity) {
-        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-            .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-        context.startActivity(intent)
+    fun goSettingNotification(context: FragmentActivity) {
+        context.invokeSystemNotificationSetting()
+    }
+
+
+    private fun Context.invokeSystemNotificationSetting() {
+        try {
+            startActivity(Intent().apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+                    putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                    putExtra(Settings.EXTRA_CHANNEL_ID, applicationInfo.uid)
+                } else {
+                    putExtra("app_package", packageName)
+                    putExtra("app_uid", applicationInfo.uid)
+                }
+            })
+        } catch (e: Exception) {
+            this.invokeSystemSetting()
+        }
+    }
+
+    private fun Context.invokeSystemSetting() {
+        try {
+            val intent = Intent()
+            intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
+            intent.data = Uri.fromParts("package", this.packageName, null)
+            if (this.packageManager?.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+                startActivity(intent)
+            }
+        } catch (e: Exception) {
+        }
+
     }
 
     fun checkReadMediaPermission(context: FragmentActivity, action: ((Boolean) -> Unit)? = null) {
@@ -141,7 +174,7 @@ object FixPermission {
      * 获取外部文件读写权限
      * 1. 30 以上需要去权限设置页面获取完整的读写权限
      * 2. 30 以下直接获取WRITE_EXTERNAL_STORAGE，READ_EXTERNAL_STORAGE
-     * 3. 30 以以上如果是读写非应用自身的文件夹，不需要权限
+     * 3. 30 以以上如果是读写应用自身的文件夹，不需要权限
      *
      * Environment.getExternalStorageDirectory() 使用 context.getExternalFilesDir() 代替；
      */

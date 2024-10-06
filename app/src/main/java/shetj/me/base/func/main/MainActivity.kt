@@ -30,6 +30,7 @@ import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.setAppearance
+import me.shetj.base.ktx.showToDoToast
 import me.shetj.base.ktx.showToast
 import me.shetj.base.ktx.start
 import me.shetj.base.ktx.startIgnoreBatteryOpt
@@ -48,7 +49,6 @@ import me.shetj.base.tools.app.ScreenshotKit
 import me.shetj.base.tools.app.WindowKit
 import me.shetj.base.tools.app.WindowKit.posturesCollector
 import me.shetj.base.tools.file.FileQUtils
-import shetj.me.base.annotation.Debug
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
@@ -57,6 +57,7 @@ import shetj.me.base.func.compose.ComposeTestActivity
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
+import shetj.me.base.utils.AudioManageX
 import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
 import java.util.Locale
@@ -128,8 +129,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         defDataStore.get<String>(":").asLiveData().observe(this){
 
         }
-
-
     }
 
     override fun setUpClicks() {
@@ -313,7 +312,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-    @Debug
+//    @Debug
     private fun dataStoreKit() {
         launch {
             defDataStore.get("Test", -1)
@@ -330,7 +329,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     /**
      * 输出执行时间，执行站
      */
-    @Debug(level = Log.DEBUG, enableTime = true, watchStack = true)
+//    @Debug(level = Log.DEBUG, enableTime = true, watchStack = true)
     suspend fun netTest() {
         mViewModel.getMusicV2()
 //        mViewModel.getMusicV3()

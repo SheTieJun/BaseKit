@@ -1,6 +1,7 @@
 package me.shetj.base.ktx
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.DisplayMetrics
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -100,5 +101,79 @@ fun ViewPager2.overNever() {
     val child: View = getChildAt(0)
     if (child is RecyclerView) {
         child.setOverScrollMode(View.OVER_SCROLL_NEVER)
+    }
+}
+
+
+fun RecyclerView.addHItemDecoration(size: Int,isNeedStart: Boolean = false, isNeedEnd: Boolean = false,startDecoration: Int = 0, endDecoration: Int = 0) {
+    if (itemDecorationCount == 0) {
+        val itemDecoration = object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                super.getItemOffsets(outRect, view, parent, state)
+                val position = getChildAdapterPosition(view)
+                if (isNeedEnd && position == childCount - 1){
+                    if ( endDecoration != 0){
+                        outRect.right = endDecoration
+                    }else{
+                        outRect.right = size
+                    }
+                }
+
+                if (isNeedStart && position == 0){
+                    if (startDecoration !=0){
+                        outRect.left = startDecoration
+                    }else{
+                        outRect.left = size
+                    }
+                }
+
+                if (position != childCount - 1 && position != 0 ){
+                    outRect.right = size
+                }
+            }
+        }
+        addItemDecoration(itemDecoration)
+    }
+}
+
+
+fun RecyclerView.addItemDecoration(size: Int,isNeedStart: Boolean = false, isNeedEnd: Boolean = false,startDecoration: Int = 0, endDecoration: Int = 0) {
+    if (itemDecorationCount == 0) {
+        val itemDecoration = object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                super.getItemOffsets(outRect, view, parent, state)
+                val position = getChildAdapterPosition(view)
+                if (isNeedEnd && position == childCount - 1){
+                    if ( endDecoration != 0){
+                        outRect.bottom = endDecoration
+                    }else{
+                        outRect.bottom = size
+                    }
+                }
+
+                if (isNeedStart && position == 0){
+                    if (startDecoration !=0){
+                        outRect.top = startDecoration
+                    }else{
+                        outRect.top = size
+                    }
+                }
+
+                if (position != childCount - 1 && position != 0 ){
+                    outRect.bottom = size
+                }
+            }
+        }
+        addItemDecoration(itemDecoration)
     }
 }

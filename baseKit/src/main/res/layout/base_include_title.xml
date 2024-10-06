@@ -7,6 +7,7 @@
     android:layout_height="?attr/actionBarSize"
     app:elevation="1dp"
     app:contentInsetStart="0dp"
+    app:titleCentered="true"
     app:navigationIcon="@drawable/ic_baseline_close_24"
     >
 

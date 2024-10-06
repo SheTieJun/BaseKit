@@ -146,6 +146,8 @@ fun DependencyHandler.addAndroid(){
     api(libs.androidx.preference) //设置组件
 
     api(libs.androidx.biometric.ktx)  //指纹识别
+
+//    api(libs.androidx.pdf) // pdf预览
 }
 
 apply(from = "uploadLocal.gradle")
