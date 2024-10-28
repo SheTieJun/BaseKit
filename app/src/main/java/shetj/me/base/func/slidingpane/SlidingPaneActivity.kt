@@ -1,5 +1,8 @@
 package shetj.me.base.func.slidingpane
 
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.GridLayoutManager
 import me.shetj.base.ktx.logI
 import me.shetj.base.mvvm.viewbind.BaseBindingActivity
@@ -8,6 +11,8 @@ import shetj.me.base.BuildConfig
 import shetj.me.base.databinding.ActivitySlidingPaneBinding
 import shetj.me.base.day.Month
 import shetj.me.base.day.MonthAdapter
+import shetj.me.base.rv.MyItemDetailsLookup
+import shetj.me.base.rv.MySelectionPredicate
 
 class SlidingPaneActivity : BaseBindingActivity<ActivitySlidingPaneBinding, BaseViewModel>() {
 
@@ -27,6 +32,19 @@ class SlidingPaneActivity : BaseBindingActivity<ActivitySlidingPaneBinding, Base
             |daysInWeek:${current.daysInWeek}
         """.trimMargin().logI()
         mBinding.recyclerView.layoutManager = GridLayoutManager(this, 7)
-        mBinding.recyclerView.adapter = MonthAdapter(current)
+
+        val myAdapter = MonthAdapter(current)
+        val tracker = SelectionTracker.Builder<Long>(
+            "mySelection",
+            mBinding.recyclerView,
+            StableIdKeyProvider(mBinding.recyclerView),
+            MyItemDetailsLookup(mBinding.recyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(MySelectionPredicate()).build()
+        myAdapter.setSelectionTracker(tracker)
+        tracker.selection.forEach { id ->
+
+        }
+
     }
 }

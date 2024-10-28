@@ -1,14 +1,16 @@
 package me.shetj.base.tools.app.webview
 
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.webkit.JavascriptInterface
 import me.shetj.base.tools.json.GsonKit
 import java.lang.ref.WeakReference
 
-abstract class WebKitJs(activity: Activity) {
+class WebKitJs(activity: Activity) {
 
     private var weekActivity: WeakReference<Activity>? = null
     private var urls: List<String>? = null
+
     init {
         weekActivity = WeakReference(activity)
     }
@@ -23,5 +25,16 @@ abstract class WebKitJs(activity: Activity) {
         openImage(urls.orEmpty(), urls?.indexOf(url) ?: 0)
     }
 
-    abstract fun openImage(urls: List<String>, position: Int)
+    @JavascriptInterface
+    fun setOrientation(landscape: Boolean) {
+        weekActivity?.get()?.requestedOrientation = if (landscape) {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+    }
+
+    @JavascriptInterface
+    fun openImage(urls: List<String>, position: Int) {
+    }
 }

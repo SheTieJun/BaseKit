@@ -54,6 +54,7 @@ class FirstFragment : Fragment() {
                 LanguageKit.changeLanguage(requireContext(), Locale.CHINA)
             }
         }
+        binding.arcProgressView.value = 50f
 
         launch {
             lifecycle.withResumed {

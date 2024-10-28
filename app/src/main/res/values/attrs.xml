@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- 圆形进度条 -->
+    <declare-styleable name="ArcProgressView">
+        <attr name="antiAlias" format="boolean"/>
+        <attr name="startAngle"  format="float"/>
+        <attr name="sweepAngle"  format="float"/>
+        <attr name="animTime" format="integer" />
+        <attr name="maxValue"  format="float"/>
+        <attr name="value"  format="float"/>
+        <attr name="precision"  format="integer"/>
+        <attr name="valueSize"  format="dimension"/>
+        <attr name="valueColor" format="color" />
+        <attr name="textOffsetPercentInRadius"  format="float"/>
+        <!-- 绘制内容相应的提示语 -->
+        <attr name="hint" format="string"/>
+        <attr name="hintSize"  format="dimension"/>
+        <attr name="hintColor" format="color"/>
+        <!-- 绘制内容的单位 -->
+        <attr name="unit" format="string"/>
+        <attr name="unitSize"  format="dimension"/>
+        <attr name="unitColor" format="color"/>
+        <!-- 圆弧宽度 -->
+        <attr name="mStrokeWith" format="dimension" />
+        <!--<attr name="arcWidth" />-->
+<!--        <attr name="arcColors" format="reference" />-->
+        <!-- 背景圆弧颜色 -->
+        <attr name="bgArcColor" format="color" />
+        <!-- 背景圆弧宽度 -->
+        <!--<attr name="bgArcWidth" format="dimension" />-->
+    </declare-styleable>
+
+    <declare-styleable name="ColorArcProgressBar">
+        <attr name="back_color" format="color"/>
+        <attr name="front_color1" format="color"/>
+        <attr name="front_color2" format="color"/>
+        <attr name="front_color3" format="color"/>
+        <attr name="back_width" format="dimension"/>
+        <attr name="front_width" format="dimension"/>
+        <attr name="is_need_title" format="boolean"/>
+        <attr name="is_need_content" format="boolean"/>
+        <attr name="is_need_unit" format="boolean"/>
+        <attr name="is_need_dial" format="boolean"/>
+        <attr name="string_title" format="string"/>
+        <attr name="string_unit" format="string"/>
+        <attr name="total_angle" format="integer"/>
+        <attr name="current_value" format="float"/>
+        <attr name="max_value" format="float"/>
+
+    </declare-styleable>
+
     <declare-styleable name="SwipeBackLayout">
         <attr name="edge_flag">
             <enum name="left" value="0" />

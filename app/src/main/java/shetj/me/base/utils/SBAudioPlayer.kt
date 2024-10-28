@@ -451,19 +451,16 @@ class SBAudioPlayer :
     }
 
     fun setPlaySpeed(speed: Float): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.speed = speed
-            if (isPlayingMusic){
-                mediaPlayer?.let {
-                    val params = mediaPlayer!!.playbackParams
-                    params.setSpeed(speed)
-                    mediaPlayer!!.playbackParams = params
-                }
+        this.speed = speed
+        if (isPlayingMusic){
+            mediaPlayer?.let {
+                val params = mediaPlayer!!.playbackParams
+                params.setSpeed(speed)
+                mediaPlayer!!.playbackParams = params
             }
-            handler.sendEmptyMessage(HANDLER_SPEED)
-            return true
         }
-        return false
+        handler.sendEmptyMessage(HANDLER_SPEED)
+        return true
     }
 
     /**

@@ -121,6 +121,7 @@ fun DependencyHandler.addAndroid(){
     api(libs.androidx.lifecycle.viewmodel)
 
     api(libs.androidx.recyclerview)
+    api(libs.androidx.recyclerview.selection)
     api(libs.androidx.cardview)
     api(libs.androidx.constraintlayout)
     api(libs.androidx.swiperefreshlayout)

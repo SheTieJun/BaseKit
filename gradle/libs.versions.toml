@@ -77,6 +77,7 @@ androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-palette = { module = "androidx.palette:palette", version.ref = "androidx-palette" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-recyclerview-selection = {module = "androidx.recyclerview:recyclerview-selection", version="1.1.0"}
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidx-cardview" }
 androidx-material = { module = "com.google.android.material:material", version.ref = "material" }
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup" }

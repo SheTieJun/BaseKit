@@ -50,4 +50,12 @@ hendrerit id金龟子，金龟子，金龟子，金龟子。Cras eu结果
     <string name="Authentication">身份验证</string>
     <string name="Authentication_Tip">身份验证成功后可以使用APP</string>
     <string name="title_activity_compose_test">ComposeTestActivity</string>
+
+    <string-array name="business_state_bgColor">
+        <item>#9c71fe</item>
+        <item>#9c71fe</item>
+        <item>#9c71fe</item>
+    </string-array>
+
+
 </resources>

@@ -11,8 +11,6 @@ import android.media.AudioManager
 import android.media.AudioManager.OnAudioFocusChangeListener
 import android.os.Build
 import androidx.core.content.ContextCompat
-import me.shetj.base.ktx.logD
-import me.shetj.base.ktx.showToast
 
 /**
  *
@@ -193,7 +191,7 @@ class AudioManageX(context: Context) {
         deviceTypeMap[AudioDeviceInfo.TYPE_BUILTIN_MIC] = "内置麦克风";
         deviceTypeMap[AudioDeviceInfo.TYPE_FM_TUNER] = "FM收音机设备";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            deviceTypeMap.put(AudioDeviceInfo.TYPE_REMOTE_SUBMIX, "虚拟混音设备")
+            deviceTypeMap[AudioDeviceInfo.TYPE_REMOTE_SUBMIX] = "虚拟混音设备"
         };
         val devices = mAudioManager?.getDevices(AudioManager.GET_DEVICES_INPUTS)
 

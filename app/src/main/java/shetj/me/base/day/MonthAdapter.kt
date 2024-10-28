@@ -4,19 +4,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import shetj.me.base.databinding.LMtrlCalendarDayBinding
+import shetj.me.base.rv.TBaseViewHolder
 import java.util.*
 
 @Suppress("DEPRECATION")
-class MonthAdapter(private val month: Month) : RecyclerView.Adapter<BaseViewHolder>() {
+class MonthAdapter(private val month: Month) : RecyclerView.Adapter<TBaseViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return BaseViewHolder(LMtrlCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false).root)
+    private var tracker: SelectionTracker<Long>? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TBaseViewHolder {
+        return TBaseViewHolder(LMtrlCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false).root)
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TBaseViewHolder, position: Int) {
         val offsetPosition: Int = position - firstPositionInMonth()
         val dayNumber: Int
         if (offsetPosition < 0 || offsetPosition >= month.daysInMonth) {
@@ -31,6 +35,11 @@ class MonthAdapter(private val month: Month) : RecyclerView.Adapter<BaseViewHold
             holder.itemView.isEnabled = true
             (holder.itemView as TextView).text = String.format(locale, "%d", dayNumber)
         }
+
+        this.tracker?.let {
+            holder.itemView.isSelected = it.isSelected(getItemId(position))
+        }
+
     }
 
     override fun getItemId(position: Int): Long {
@@ -104,6 +113,10 @@ class MonthAdapter(private val month: Month) : RecyclerView.Adapter<BaseViewHold
      */
     fun isLastInRow(position: Int): Boolean {
         return (position + 1) % month.daysInWeek == 0
+    }
+
+    fun setSelectionTracker(tracker: SelectionTracker<Long>) {
+        this.tracker = tracker
     }
 
     companion object {

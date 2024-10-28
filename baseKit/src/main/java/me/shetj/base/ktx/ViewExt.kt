@@ -2,6 +2,7 @@ package me.shetj.base.ktx
 
 import android.content.Context
 import android.graphics.Outline
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Build.VERSION
@@ -362,4 +363,16 @@ fun View.clipRound(radius: Float = ArmsUtils.dp2px(10f).toFloat()) {
         }
         clipToOutline = true
     }
+}
+
+fun View.isHalfCompletelyVisible(view: View): Boolean {
+    val rect = Rect()
+    val isVisible = view.getGlobalVisibleRect(rect)
+    return isVisible && (rect.bottom - rect.top > view.height / 2)
+}
+
+fun View.isCompletelyVisible(view: View): Boolean {
+    val rect = Rect()
+    val isVisible = view.getGlobalVisibleRect(rect)
+    return isVisible && (rect.bottom - rect.top > view.height)
 }
