@@ -14,7 +14,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
-import me.shetj.base.base.ABKtScopeComponent
+import me.shetj.base.lifecycle.ABKtScopeComponent
 import java.lang.ref.WeakReference
 
 /**

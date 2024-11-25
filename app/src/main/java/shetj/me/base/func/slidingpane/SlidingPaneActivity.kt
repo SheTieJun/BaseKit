@@ -34,6 +34,8 @@ class SlidingPaneActivity : BaseBindingActivity<ActivitySlidingPaneBinding, Base
         mBinding.recyclerView.layoutManager = GridLayoutManager(this, 7)
 
         val myAdapter = MonthAdapter(current)
+        mBinding.recyclerView.adapter = myAdapter
+
         val tracker = SelectionTracker.Builder<Long>(
             "mySelection",
             mBinding.recyclerView,
@@ -41,6 +43,7 @@ class SlidingPaneActivity : BaseBindingActivity<ActivitySlidingPaneBinding, Base
             MyItemDetailsLookup(mBinding.recyclerView),
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(MySelectionPredicate()).build()
+
         myAdapter.setSelectionTracker(tracker)
         tracker.selection.forEach { id ->
 

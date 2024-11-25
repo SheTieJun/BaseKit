@@ -78,6 +78,7 @@ open class AbBaseActivity : AppCompatActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
+        // 隐藏系统UI
         // true - 界面加载成功的时候
     }
 
@@ -145,6 +146,9 @@ open class AbBaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        if (isEnableGrayTheme()) {
+            GrayThemeLiveData.getInstance().removeObservers(this)
+        }
         "$TAG : onDestroy".logUILife()
         super.onDestroy()
     }

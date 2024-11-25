@@ -49,7 +49,6 @@ class Main2Activity : AbBaseBindingActivity<ActivityMain2Binding>() {
         // Initialize JankStats with an aggregator for the current window.
         jankStatsAggregator = JankStatsAggregator(window, jankReportListener)
         mBinding.vm = main2TestVM
-        enabledOnBack = true // 启动拦截事件
     }
 
     override fun onPause() {

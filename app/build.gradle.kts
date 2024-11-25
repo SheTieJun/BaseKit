@@ -2,6 +2,7 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.ClassData
 import com.android.build.api.instrumentation.InstrumentationParameters.None
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.objectweb.asm.ClassVisitor
 import tools.addGuava
 import tools.addProInstaller
@@ -62,7 +63,7 @@ androidApplication("shetj.me.base"){
 
 
 composeCompiler {
-    enableStrongSkippingMode = true
+    featureFlags.add(ComposeFeatureFlag.StrongSkipping)
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 //    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
@@ -105,6 +106,22 @@ dependencies {
     //https://github.com/SheTieJun/LogKit
     implementation(libs.logkit.messenger)
     implementation(libs.androidx.preference)
+    implementation(libs.shetj.record.core)
+    implementation(libs.shetj.record.mix)
+
+
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation(libs.androidx.camera.lifecycle)
+    // If you want to additionally use the CameraX VideoCapture library
+    implementation(libs.androidx.camera.video)
+    // If you want to additionally use the CameraX View class
+    implementation(libs.androidx.camera.view)
+    // If you want to additionally add CameraX ML Kit Vision Integration
+    implementation(libs.androidx.camera.mlkit.vision)
+    // If you want to additionally use the CameraX Extensions library
+    implementation(libs.androidx.camera.extensions)
 }
 
 androidComponents {
@@ -116,6 +133,7 @@ androidComponents {
     }
 }
 
+// 配合注解，输出调用栈
 abstract class DebugAsmFactory : AsmClassVisitorFactory<None> {
 
     override fun createClassVisitor(classContext: ClassContext, nextClassVisitor: ClassVisitor): ClassVisitor {

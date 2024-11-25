@@ -17,12 +17,12 @@ class TaskExecutor private constructor() {
 
     // 最大线程2，当不够时所有进入等待
     private val mDiskIO = ThreadPoolExecutor(
-        1,
-        2,
-        10L,
-        TimeUnit.MILLISECONDS,
-        LinkedBlockingDeque(),
-        object : ThreadFactory {
+        /* corePoolSize = */ 1,
+        /* maximumPoolSize = */ 2,
+        /* keepAliveTime = */ 10L,
+        /* unit = */ TimeUnit.MILLISECONDS,
+        /* workQueue = */ LinkedBlockingDeque(),
+        /* threadFactory = */ object : ThreadFactory {
             private val THREAD_NAME_STEM = "base_thread_%d"
             private val mThreadId = AtomicInteger(0)
             override fun newThread(r: Runnable): Thread {

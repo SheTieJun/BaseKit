@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.shetj.base.base.ABKtScopeComponent
+import me.shetj.base.lifecycle.ABKtScopeComponent
 
 @Keep
 class CodeUtil : ABKtScopeComponent {

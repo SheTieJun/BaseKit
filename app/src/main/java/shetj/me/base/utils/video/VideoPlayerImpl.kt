@@ -18,10 +18,6 @@ class VideoPlayerImpl(private val mActivity: Activity?, private val mWebView: We
     private var mCallback: CustomViewCallback? = null
     private var mListener: VideoWebListener? = null
 
-    /**
-     * 设置是否使用该自定义视频，默认使用
-     */
-    private var isShowCustomVideo = true
 
     fun setListener(mListener: VideoWebListener?) {
         this.mListener = mListener
@@ -29,7 +25,6 @@ class VideoPlayerImpl(private val mActivity: Activity?, private val mWebView: We
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
-        if (isShowCustomVideo) {
             if (!isActivityAlive(mActivity)) {
                 return
             }
@@ -54,7 +49,6 @@ class VideoPlayerImpl(private val mActivity: Activity?, private val mWebView: We
             if (mListener != null) {
                 mListener!!.showVideoFullView()
             }
-        }
     }
 
     private fun isLFullVideo() {
@@ -62,18 +56,19 @@ class VideoPlayerImpl(private val mActivity: Activity?, private val mWebView: We
             try {
                 //定义javaScript方法
                 val javascript = """javascript:function getFullscreenVideoOrientation() {
-                                    let element = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-                                    console.log('========isLFullVideo========', element); 
-                                    if (!element) {
-                                      return;
-                                    }
-                                    if (element.tagName !== 'VIDEO') {
-                                      window.LHAPP.isHorizontally(true);
-                                      return;
-                                    }
-                                    let videoWidth = element.videoWidth;
-                                    let videoHeight = element.videoHeight;    
-                                    window.AndroidAPP.isHorizontally(videoWidth > videoHeight);
+                                        let element = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+                                        console.log('========isLFullVideo========', element); 
+                                        if (!element) {
+                                            return;
+                                        }
+                                        if (element.tagName !== 'VIDEO') {
+                                            // 这里可能是要处理直播
+                                            window.AndroidAPP.setHorizontally(true);
+                                            return;
+                                        }
+                                        let videoWidth = element.videoWidth;
+                                        let videoHeight = element.videoHeight;    
+                                        window.AndroidAPP.setHorizontally(videoWidth > videoHeight);
                                     }"""
                 mWebView.loadUrl(javascript)
                 mWebView.loadUrl("javascript:getFullscreenVideoOrientation();")
@@ -90,6 +85,7 @@ class VideoPlayerImpl(private val mActivity: Activity?, private val mWebView: We
      */
     private fun fullViewAddView(view: View?) {
         if (mMovieParentView == null) {
+            // 不能放在decorView，因为如果放在decorView，如果有节目resize的操作就会无效
             val mDecorView = mActivity!!.window.decorView.findViewById<FrameLayout>(android.R.id.content)
             mMovieParentView = FullscreenHolder(mActivity)
             "--Video-----onShowCustomView----添加view到decorView容齐中---".logI()
@@ -102,7 +98,6 @@ class VideoPlayerImpl(private val mActivity: Activity?, private val mWebView: We
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onHideCustomView() {
-        if (isShowCustomVideo) {
             if (mMovieView == null || mActivity == null) {
                 // 不是全屏播放状态
                 return
@@ -132,7 +127,6 @@ class VideoPlayerImpl(private val mActivity: Activity?, private val mWebView: We
                     mListener!!.showWebView()
                 }
             }
-        }
     }
 
     override fun getVideoLoadingProgressView(): View {
@@ -166,15 +160,6 @@ class VideoPlayerImpl(private val mActivity: Activity?, private val mWebView: We
         if (mMovieView != null) {
             mMovieParentView!!.removeAllViews()
         }
-    }
-
-    /**
-     * 设置是否使用自定义视频视图
-     *
-     * @param showCustomVideo 是否使用自定义视频视图
-     */
-    fun setShowCustomVideo(showCustomVideo: Boolean) {
-        this.isShowCustomVideo = showCustomVideo
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package me.shetj.base.base
+package me.shetj.base.lifecycle
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver

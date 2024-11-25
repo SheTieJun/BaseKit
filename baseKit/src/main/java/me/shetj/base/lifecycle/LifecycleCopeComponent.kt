@@ -1,4 +1,4 @@
-package me.shetj.base.base
+package me.shetj.base.lifecycle
 
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
@@ -16,13 +16,17 @@ import kotlinx.coroutines.CoroutineScope
  * * 自身[LifecycleOwner] + 自身[CoroutineScope]
  */
 open class AbLifecycleCopeComponent : LifecycleCopeComponent {
+
+    private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(getOwner())
+
     init {
         initLifecycle()
     }
 
-    private val lifecycleRegistry: LifecycleRegistry by lazy { LifecycleRegistry(getOwner()) }
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
 
-    override val ktScope: LifecycleCoroutineScope = lifecycle.coroutineScope
+    override val ktScope: LifecycleCoroutineScope = lifecycleRegistry.coroutineScope
 
     private fun initLifecycle() {
         lifecycle.addObserver(
@@ -34,9 +38,6 @@ open class AbLifecycleCopeComponent : LifecycleCopeComponent {
         )
     }
 
-    override val lifecycle: Lifecycle
-        get() = lifecycleRegistry
-
     private fun getOwner(): LifecycleOwner {
         return this
     }
@@ -47,22 +48,32 @@ open class AbLifecycleCopeComponent : LifecycleCopeComponent {
 
     @CallSuper
     override fun onCreate() {
-        lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
     }
 
     @CallSuper
     override fun onStart() {
-        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+    }
+
+    @CallSuper
+    override fun onPause() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    }
+
+    @CallSuper
+    override fun onStop() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
     }
 
     @CallSuper
     override fun onResume() {
-        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
     }
 
     @CallSuper
     override fun onDeStory() {
-        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
 }
 
@@ -82,6 +93,12 @@ interface LifecycleCopeComponent : KtScopeComponent, LifecycleOwner {
 
     @MainThread
     fun onResume()
+
+    @MainThread
+    fun onPause()
+
+    @MainThread
+    fun onStop()
 
     @MainThread
     fun onDeStory()

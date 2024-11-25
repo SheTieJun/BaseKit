@@ -14,7 +14,7 @@ class VideoChromeClient(context: Context, webView: WebView) : WebChromeClient() 
      * 需要加：android:configChanges="orientation|screenSize"
      * 非必须：android:hardwareAccelerated="true"
      */
-    private val mIVideo: InterVideo?
+    private val mIVideo: InterVideo
     private val video: VideoPlayerImpl = VideoPlayerImpl(context as Activity, webView)
 
     /**
@@ -36,15 +36,6 @@ class VideoChromeClient(context: Context, webView: WebView) : WebChromeClient() 
     }
 
     /**
-     * 设置是否使用
-     *
-     * @param showCustomVideo 是否使用自定义视频视图
-     */
-    fun setCustomVideo(showCustomVideo: Boolean) {
-        video.setShowCustomVideo(showCustomVideo)
-    }
-
-    /**
      * 通知应用当前页进入了全屏模式，此时应用必须显示一个包含网页内容的自定义View
      * 播放网络视频时全屏会被调用的方法，播放视频切换为横屏
      *
@@ -52,11 +43,7 @@ class VideoChromeClient(context: Context, webView: WebView) : WebChromeClient() 
      * @param customViewCallback callback
      */
     override fun onShowCustomView(view: View, customViewCallback: CustomViewCallback) {
-        if (mIVideo != null) {
-            mIVideo.onShowCustomView(view, customViewCallback)
-        } else {
-            super.onShowCustomView(view, customViewCallback)
-        }
+        mIVideo.onShowCustomView(view, customViewCallback)
     }
 
     /**
@@ -64,11 +51,7 @@ class VideoChromeClient(context: Context, webView: WebView) : WebChromeClient() 
      * 视频播放退出全屏会被调用的
      */
     override fun onHideCustomView() {
-        if (mIVideo != null) {
-            mIVideo.onHideCustomView()
-        } else {
-            super.onHideCustomView()
-        }
+        mIVideo.onHideCustomView()
     }
 
     /**
@@ -76,11 +59,7 @@ class VideoChromeClient(context: Context, webView: WebView) : WebChromeClient() 
      * 视频加载时进程loading
      */
     override fun getVideoLoadingProgressView(): View? {
-        return if (mIVideo != null) {
-            mIVideo.getVideoLoadingProgressView()
-        } else {
-            super.getVideoLoadingProgressView()
-        }
+        return mIVideo.getVideoLoadingProgressView()
     }
 
     /**
@@ -105,7 +84,7 @@ class VideoChromeClient(context: Context, webView: WebView) : WebChromeClient() 
      * 全屏时按返加键执行退出全屏方法
      */
     fun hideCustomView() {
-        val event = video!!.event()
+        val event = video.event()
         if (event) {
             "-----hideVideo-----隐藏视频----".logI()
         }

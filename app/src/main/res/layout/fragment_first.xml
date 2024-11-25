@@ -56,28 +56,12 @@
             app:layout_constraintTop_toBottomOf="@id/button_change" />
 
 
-        <shetj.me.base.view.ColorArcProgressBar
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            app:layout_constraintTop_toBottomOf="@id/button_change"
-            android:id="@+id/bar1"
-            app:is_need_content="true"
-            app:front_color1="#9c71fe"
-            app:max_value="100"
-            app:back_width="10dp"
-            app:front_width="10dp"
-            app:total_angle="90"
-            app:current_value="60"
-            app:is_need_unit="true"
-            app:string_unit="百分比%"
-            app:back_color="#dfd8f7"
-            />
 
         <shetj.me.base.view.ArcProgressView
             android:id="@+id/arcProgressView"
             android:layout_width="252dp"
             android:layout_height="200dp"
-            app:layout_constraintTop_toBottomOf="@id/bar1"
+            app:layout_constraintTop_toBottomOf="@id/group_layout"
             android:layout_gravity="center_horizontal"
             app:antiAlias="true"
             app:bgArcColor="#dfd8f7"

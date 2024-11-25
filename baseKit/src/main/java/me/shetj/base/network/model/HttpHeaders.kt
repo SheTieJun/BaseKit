@@ -60,7 +60,7 @@ class HttpHeaders : Serializable {
     }
 
     override fun toString(): String {
-        return "HttpHeaders{headersMap=$headersMap}"
+        return "HttpHeaders{headersMap=${headersMap.toJson()}}"
     }
 
     companion object {

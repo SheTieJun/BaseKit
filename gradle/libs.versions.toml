@@ -20,13 +20,14 @@ androidx-constraintlayout = "2.2.0"
 androidx-navigation = "2.8.1"
 androidx-room = "2.6.1"
 androidx-work = "2.9.1"
+androidx-camerax = "1.4.0"
 espressoCore = "3.5.1"
 junitVersion = "1.1.5"
 material = "1.12.0"
 preferenceVersion = "1.2.1"
 recyclerview = "1.3.2"
-androidGradlePlugin = "8.5.1"
 asm = "9.7.1"
+androidGradlePlugin = "8.7.1"
 biometricKtx = "1.2.0-alpha05"
 androidx-splashscreen = "1.0.1"
 legacy = "1.0.0"
@@ -83,7 +84,7 @@ androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-palette = { module = "androidx.palette:palette", version.ref = "androidx-palette" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
-androidx-recyclerview-selection = {module = "androidx.recyclerview:recyclerview-selection", version="1.1.0"}
+androidx-recyclerview-selection = { module = "androidx.recyclerview:recyclerview-selection", version = "1.1.0" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidx-cardview" }
 androidx-material = { module = "com.google.android.material:material", version.ref = "material" }
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup" }
@@ -117,6 +118,15 @@ androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata-
 # Paging
 androidx-paging = { module = "androidx.paging:paging-runtime", version.ref = "pagingVersion" }
 
+#cameraX
+androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "androidx-camerax" }
+androidx-camera-video = { module = "androidx.camera:camera-video", version.ref = "androidx-camerax" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "androidx-camerax" }
+androidx-camera-mlkit-vision = { module = "androidx.camera:camera-mlkit-vision", version.ref = "androidx-camerax" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "androidx-camerax" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "androidx-camerax" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "androidx-camerax" }
+
 # Koin
 koinAndroid = { module = "io.insert-koin:koin-android", version.ref = "koin-version" }
 koinWorkManager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-version" }
@@ -144,9 +154,12 @@ asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 shetj-datastore = { module = "com.github.SheTieJun.androidx-ktx:datastore", version = "1.1.0" }
 shetj-activity = { module = "com.github.SheTieJun.androidx-ktx:activity", version = "1.1.0" }
 shetj-qmui = { module = "com.github.SheTieJun:SimQUMI", version = "0.0.1" }
+shetj-record-core = { module = "com.github.SheTieJun.Mp3Recorder:recorder-core", version = "1.9.1" }
+shetj-record-sim = { module = "com.github.SheTieJun.Mp3Recorder:recorder-sim", version = "1.9.1" }
+shetj-record-mix = { module = "com.github.SheTieJun.Mp3Recorder:recorder-mix", version = "1.9.1" }
+logkit-messenger = { module = "com.github.SheTieJun.LogKit:logkit-messenger", version.ref = "logkitMessenger" }
 
 javax-mail = { module = "javax.mail:mail", version.ref = "mailVersion" }
-logkit-messenger = { module = "com.github.SheTieJun.LogKit:logkit-messenger", version.ref = "logkitMessenger" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 junit = { module = "junit:junit", version.ref = "junit" }
 roundedProgressBar = { module = "com.github.SheTieJun:RoundedProgressBar", version.ref = "roundedProgressBar" }

@@ -6,8 +6,8 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import me.shetj.base.base.DefCoroutineScope
-import me.shetj.base.base.defScope
+import me.shetj.base.lifecycle.DefCoroutineScope
+import me.shetj.base.lifecycle.defScope
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.toBean
 import me.shetj.base.ktx.toJson

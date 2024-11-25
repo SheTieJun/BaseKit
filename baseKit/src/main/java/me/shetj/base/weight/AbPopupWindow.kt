@@ -12,9 +12,9 @@ import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import me.shetj.base.base.DefCoroutineScope
-import me.shetj.base.base.KtScopeComponent
-import me.shetj.base.base.defScope
+import me.shetj.base.lifecycle.DefCoroutineScope
+import me.shetj.base.lifecycle.KtScopeComponent
+import me.shetj.base.lifecycle.defScope
 import me.shetj.base.ktx.getClazz
 
 /**
