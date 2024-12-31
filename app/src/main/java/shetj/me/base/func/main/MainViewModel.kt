@@ -51,11 +51,7 @@ class MainViewModel(private val savedStateHandle: SavedStateHandle) : BaseViewMo
         return AppCompatDelegate.MODE_NIGHT_YES
     }
 
-    private val testUrl = "https://ban-image-1253442168.cosgz.myqcloud.com/static/app_config/an_music.json"
 
-    suspend fun getMusicV2() {
-        KCHttpV2.get<ResultMusic>(testUrl, HashMap()) // 有错误待修复
-    }
 
     fun addEvent(context: AppCompatActivity) {
         val id = CalendarReminderUtils.addCalendarEvent(

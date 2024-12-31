@@ -8,6 +8,7 @@ import android.os.LocaleList
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
+import androidx.core.os.LocaleListCompat
 import me.shetj.base.tools.file.SPUtils
 import java.util.*
 
@@ -33,6 +34,8 @@ object LanguageKit {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             AppCompatDelegate.setDefaultNightMode(defaultNightMode)
         }
+        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(newLocale.toLanguageTag())
+        AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
     /**

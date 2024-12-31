@@ -25,9 +25,9 @@ import java.util.TimeZone
 </intent-filter>
  */
 object CalendarReminderUtils {
-    private const val CALENDER_URL = "content://com.android.calendar/calendars"
-    private const val CALENDER_EVENT_URL = "content://com.android.calendar/events"
-    private const val CALENDER_REMINDER_URL = "content://com.android.calendar/reminders"
+    private val CALENDER_URL = CalendarContract.Calendars.CONTENT_URI
+    private val CALENDER_EVENT_URL = CalendarContract.Events.CONTENT_URI
+    private  val CALENDER_REMINDER_URL = CalendarContract.Reminders.CONTENT_URI
     private const val CALENDARS_NAME = "JUN"
     private const val CALENDARS_ACCOUNT_NAME = "375105540@qq.com"
     private const val CALENDARS_ACCOUNT_TYPE = "com.android.shetj"
@@ -64,7 +64,7 @@ object CalendarReminderUtils {
      */
     private fun checkCalendarAccount(context: Context): Int {
         val userCursor =
-            context.contentResolver.query(Uri.parse(CALENDER_URL), null, null, null, null)
+            context.contentResolver.query(CALENDER_URL, null, null, null, null)
         return userCursor.use { cursor ->
             if (cursor == null) { // 查询返回空值
                 return -1
@@ -99,7 +99,7 @@ object CalendarReminderUtils {
         value.put(CalendarContract.Calendars.CALENDAR_TIME_ZONE, timeZone.id)
         value.put(CalendarContract.Calendars.OWNER_ACCOUNT, CALENDARS_ACCOUNT_NAME)
         value.put(CalendarContract.Calendars.CAN_ORGANIZER_RESPOND, 0)
-        var calendarUri = Uri.parse(CALENDER_URL)
+        var calendarUri = CALENDER_URL
         calendarUri = calendarUri.buildUpon()
             .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
             .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, CALENDARS_ACCOUNT_NAME)
@@ -171,7 +171,7 @@ object CalendarReminderUtils {
         ) // 这个是时区，必须有
         event.put(CalendarContract.Events.CUSTOM_APP_PACKAGE, packageName)
         event.put(CalendarContract.Events.CUSTOM_APP_URI, scheme)
-        val newEvent = context.contentResolver.insert(Uri.parse(CALENDER_EVENT_URL), event)
+        val newEvent = context.contentResolver.insert(CALENDER_EVENT_URL, event)
             ?: // 添加日历事件失败直接返回
             return -1 // 添加事件
 
@@ -181,7 +181,7 @@ object CalendarReminderUtils {
         values.put(CalendarContract.Reminders.EVENT_ID, eventID)
         values.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前previousDate分钟有提醒
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
-        context.contentResolver.insert(Uri.parse(CALENDER_REMINDER_URL), values)
+        context.contentResolver.insert(CALENDER_REMINDER_URL, values)
             ?: // 添加事件提醒失败直接返回
             return -1
         return eventID
@@ -220,7 +220,7 @@ object CalendarReminderUtils {
             values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_DEFAULT)
             values.put(CalendarContract.Events.EVENT_LOCATION, tz.displayName)
             values.put(CalendarContract.Events.EVENT_TIMEZONE, tz.id)
-            val updateUri = ContentUris.withAppendedId(Uri.parse(CALENDER_REMINDER_URL), eventId)
+            val updateUri = ContentUris.withAppendedId(CALENDER_REMINDER_URL, eventId)
             val rowNum = context.contentResolver.update(updateUri, values, null, null)
             if (rowNum <= 0) {
                 /*更新event不成功，说明用户在日历中删除了提醒事件，重新添加*/
@@ -237,7 +237,7 @@ object CalendarReminderUtils {
             } else {
                 val reminderValues = ContentValues()
                 reminderValues.put(CalendarContract.Reminders.MINUTES, previousTime) // 提前提醒
-                val rUri = Uri.parse(CALENDER_REMINDER_URL)
+                val rUri = CALENDER_REMINDER_URL
                 context.contentResolver.update(
                     rUri,
                     reminderValues,
@@ -260,7 +260,7 @@ object CalendarReminderUtils {
             return
         }
         val eventCursor =
-            context.contentResolver.query(Uri.parse(CALENDER_EVENT_URL), null, null, null, null)
+            context.contentResolver.query(CALENDER_EVENT_URL, null, null, null, null)
         eventCursor.use { cursor ->
             if (cursor == null) { // 查询返回空值
                 return
@@ -274,7 +274,7 @@ object CalendarReminderUtils {
                         val id =
                             cursor.getInt(cursor.getColumnIndex(CalendarContract.Calendars._ID)) // 取得id
                         val deleteUri =
-                            ContentUris.withAppendedId(Uri.parse(CALENDER_EVENT_URL), id.toLong())
+                            ContentUris.withAppendedId(CALENDER_EVENT_URL, id.toLong())
                         val rows = context.contentResolver.delete(deleteUri, null, null)
                         if (rows == -1) { // 事件删除失败
                             return
@@ -290,7 +290,7 @@ object CalendarReminderUtils {
      * 小于0 修改失败
      */
     fun deleteCalendarEvent(context: Context, id: Long): Int {
-        val deleteUri = ContentUris.withAppendedId(Uri.parse(CALENDER_EVENT_URL), id)
+        val deleteUri = ContentUris.withAppendedId(CALENDER_EVENT_URL, id)
         return context.contentResolver.delete(deleteUri, null, null)
     }
 

@@ -103,13 +103,11 @@ object BaseKit {
             if (t) {
                 DebugFunc.getInstance().initContext(application)
             }
-            Tim.setLogAuto(isDebug)
+            Tim.setLogAuto(t)
         }
         startKoin {
             fragmentFactory()
-            if (BaseKit.isDebug.isTrue()) {
-                androidLogger(Level.ERROR)
-            }
+            androidLogger(Level.ERROR)
             androidContext(application)
             androidFileProperties("base.properties")
             modules(getDBModule())

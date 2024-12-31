@@ -7,7 +7,6 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.util.lruCache
@@ -30,7 +29,6 @@ import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.setAppearance
-import me.shetj.base.ktx.showToDoToast
 import me.shetj.base.ktx.showToast
 import me.shetj.base.ktx.start
 import me.shetj.base.ktx.startIgnoreBatteryOpt
@@ -251,6 +249,13 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 putExtra("name","shetj")
             }
         }
+        mContent.Debug.setOnClickListener {
+            if (BaseKit.isDebug()){
+                BaseKit.isDebug.postValue(false)
+            }else{
+                BaseKit.isDebug.postValue(true)
+            }
+        }
 
     }
 
@@ -331,7 +336,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
      */
 //    @Debug(level = Log.DEBUG, enableTime = true, watchStack = true)
     suspend fun netTest() {
-        mViewModel.getMusicV2()
 //        mViewModel.getMusicV3()
     }
 }

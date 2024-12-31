@@ -24,6 +24,8 @@ import me.shetj.base.ktx.logE
  */
 object BiometricAuthKit {
 
+    const val RE_AUTH__TIME = 5 * 1000 * 60
+
     var isAuth: Boolean = false
 
     private val processLifecycleOwner = ProcessLifecycleOwner.get()
@@ -45,7 +47,7 @@ object BiometricAuthKit {
                     backTs = System.currentTimeMillis()
                 } else if (event == Lifecycle.Event.ON_START) {
                     //如果是后台超过5分钟，就重新验证
-                    if ((System.currentTimeMillis() - backTs > 5 * 1000 * 60 || !isAuth) && isEnable) {
+                    if ((System.currentTimeMillis() - backTs > RE_AUTH__TIME || !isAuth) && isEnable) {
                         startBiometric(context, crypto)
                     }
                 }

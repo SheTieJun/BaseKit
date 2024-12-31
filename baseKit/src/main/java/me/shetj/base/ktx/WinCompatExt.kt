@@ -98,7 +98,7 @@ fun Activity.hideSystemUI() {
  */
 @JvmOverloads
 fun ComponentActivity.immerse(
-    @Type.InsetsType type: Int = Type.systemBars(),
+    @Type.InsetsType type: Int = Type.statusBars(),
     statusIsBlackText: Boolean = isNeedBlackText,
     navigationIsBlackLine: Boolean = true,
     @ColorInt color: Int = Color.TRANSPARENT

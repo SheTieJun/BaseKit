@@ -17,7 +17,7 @@
             android:name=".func.compose.ComposeTestActivity"
             android:exported="false"
             android:label="@string/title_activity_compose_test"
-            android:theme="@style/BaseTheme.MD3" /> <!-- Let AndroidX handle auto-store locales for pre-T devices to hold the user's selected locale -->
+            android:theme="@style/BaseTheme.MD3" />
         <activity android:name=".func.preference.SettingActivity" />
         <activity
             android:name=".func.SplashActivity"
@@ -125,23 +125,22 @@
         <package android:name="me.shetj.beloved" />
         <package android:name="me.shetj.logkit.demo" />
     </queries>
-
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 截屏监听 -->
-    <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" /> <!-- 屏幕检测 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 截屏监听 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" /> <!-- 屏幕检测 -->
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <!--
  To handle the reselection within the app on devices running Android 14
      or higher if your app targets Android 14 (API level 34) or higher.
     -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />

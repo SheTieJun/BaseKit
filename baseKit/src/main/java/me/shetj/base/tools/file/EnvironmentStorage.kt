@@ -72,6 +72,9 @@ class EnvironmentStorage private constructor() {
         val isSDCardEnable: Boolean
             get() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
 
+        /**
+         *   ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION 是一个特殊的权限，允许应用访问设备上的所有文件。
+         */
         @RequiresApi(Build.VERSION_CODES.R)
         fun requestFileAccess(context: Context): Boolean {
             val isHasStoragePermission = Environment.isExternalStorageManager()

@@ -5,6 +5,7 @@ task sourceJar(type: Jar) {
     archiveClassifier = "sources"
 }
 
+//https://docs.gradle.org/8.5/userguide/java_platform_plugin.html
 afterEvaluate {
     publishing {
         publications {
