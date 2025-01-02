@@ -43,7 +43,7 @@ dependencies {
     implementation(libs.androidx.junit)
     implementation(libs.androidx.espresso.core)
     implementation("androidx.test.uiautomator:uiautomator:2.3.0")
-    implementation("androidx.benchmark:benchmark-macro-junit4:1.2.4")
+    implementation("androidx.benchmark:benchmark-macro-junit4:1.3.3")
 }
 
 androidComponents {
