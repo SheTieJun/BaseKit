@@ -61,7 +61,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 android-benchmark = { id = "androidx.benchmark", version.ref = "benchmark" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-ksp = { id = "com.google.devtools.ksp", version = "2.0.21-1.0.26" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version = "2.1.10-1.0.29" }
 # ./gradlew generateChangelog 用于更新日志
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
 
