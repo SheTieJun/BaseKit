@@ -4,72 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
-        <import type="shetj.me.base.func.md3.Main2TestVM"/>
+        <import type="shetj.me.base.func.md3.Main2TestVM" />
 
         <variable
             name="vm"
             type="Main2TestVM" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="shetj.me.base.func.md3.SecondFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_bg_foreground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#B3000000" />
 
-            <Button
-                android:id="@+id/button_second"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/previous"
-                app:layout_constraintBottom_toTopOf="@id/iv_testImage"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_testImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/button_second"
-                android:src="@drawable/icon_test" />
-
-            <Button
-                android:id="@+id/button_change_theme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{vm.themInfo,default=正常模式}"
-                android:onClick="@{()->vm.changeThem()}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/button_second" />
+        <Button
+            android:id="@+id/button_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/previous"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-            <shetj.me.base.wheel.WheelView
-                android:id="@+id/wheelview"
-                app:layout_constraintTop_toBottomOf="@id/button_change_theme"
-                app:wheelGradient="true"
-                app:wheelCurtainEnabled="true"
-                app:wheelCurtainColor="#F4F4F4"
-                app:wheelCurtainRadius="6dp"
-                app:wheelTextCenterColor="#2B2B3A"
-                app:wheelTextColor="#C9C9C9"
-                app:wheelItemSize="46dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:wheelItemCount="4"
-                />
+        <Button
+            android:id="@+id/button_change_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{vm.themInfo,default=正常模式}"
+            android:onClick="@{()->vm.changeThem()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_second" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+
+        <shetj.me.base.view.LrcView
+            android:id="@+id/lrc_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_change_theme"
+            app:lrcAnimationDuration="1000"
+            app:lrcCurrentTextColor="#FFF"
+            app:lrcDividerHeight="5dp"
+            app:lrcLabel="找不到歌词(@_@)"
+            app:lrcNormalTextColor="#66FFFFFF"
+            app:lrcNormalTextSize="16sp"
+            app:lrcPadding="10dp"
+            app:lrcTextGravity="center"
+            app:lrcTextSize="20sp"
+            app:lrcTimeTextSize="16sp"
+            app:lrcTimeTextColor="#BDBDBD"
+            app:lrcTimelineColor="#80BDBDBD"
+            app:lrcTimelineTextColor="#9FA8DA" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
