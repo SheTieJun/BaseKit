@@ -10,7 +10,11 @@
 
     <color name="lihua_title_color_85">#D93E3F4F</color>
 
+    <color name="circle_color">#0D8257D9</color>
 
+    <color name="c_1">#4D8257D9</color>
+    <color name="c_2">#338257D9</color>
+    <color name="c_3">#8257D9</color>
 
     <color name="green_md_theme_light_primary">#006B5E</color>
     <color name="green_md_theme_light_onPrimary">#FFFFFF</color>

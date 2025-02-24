@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="BaseTheme.MD3" parent="Theme.Material3.Dark.NoActionBar">
-
+        <item name="android:windowActivityTransitions">true</item>
         <!--        &lt;!&ndash; Original AppCompat attributes. &ndash;&gt;-->
         <!--        <item name="colorPrimary">@color/my_app_primary</item>-->
         <!--        <item name="colorPrimaryDark">@color/my_app_primary_dark</item>-->
@@ -57,8 +57,7 @@
     </style>
 
     <style name="BaseTheme.MD" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-
-
+        <item name="android:windowActivityTransitions">true</item>
         <!--        &lt;!&ndash; Original AppCompat attributes. &ndash;&gt;-->
         <!--        <item name="colorPrimary">@color/my_app_primary</item>-->
         <!--        <item name="colorPrimaryDark">@color/my_app_primary_dark</item>-->

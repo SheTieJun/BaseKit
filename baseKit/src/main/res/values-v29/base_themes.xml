@@ -3,7 +3,7 @@
 <resources>
 
     <style name="BaseTheme.MD3" parent="Theme.Material3.Light.NoActionBar">
-
+        <item name="android:windowActivityTransitions">true</item>
 
         <!--        &lt;!&ndash; Original AppCompat attributes. &ndash;&gt;-->
         <!--        <item name="colorPrimary">@color/my_app_primary</item>-->

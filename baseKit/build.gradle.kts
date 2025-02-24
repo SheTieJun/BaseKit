@@ -88,15 +88,14 @@ fun DependencyHandler.addOther(){
     api(libs.third.glide)
     api(libs.third.brv)
     api(libs.third.timber)
-    api(libs.shetj.datastore)
     api(libs.shetj.qmui)
-//    api(libs.shetj.activity) 功能重复了
 }
 
 
 fun DependencyHandler.addRetrofit2(){
     api(libs.retrofit)
     api(libs.retrofit.gson)
+    api(libs.okhttp.sse)
 }
 
 fun DependencyHandler.addRoom(){

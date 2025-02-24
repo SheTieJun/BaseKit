@@ -104,7 +104,7 @@ fun Activity.getActivityOptions(vararg arg1: Pair<View, String>): ActivityOption
 fun Activity.startNewActivity(options: ActivityOptionsCompat, activityClass: Class<*>) {
     val intent = Intent(this, activityClass)
     intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-    ActivityCompat.startActivity(this, intent, options.toBundle())
+    startActivity(intent, options.toBundle())
 }
 
 /**

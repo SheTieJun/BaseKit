@@ -6,7 +6,7 @@ import me.shetj.base.ktx.md5
 import me.shetj.base.tools.file.CloseUtils
 import okhttp3.internal.cache.DiskLruCache
 import okhttp3.internal.io.FileSystem
-import okio.Okio
+import okio.buffer
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -28,7 +28,7 @@ class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Lon
         }
         try {
             val edit = mDiskLruCache?.edit(key.md5) ?: return null
-            val source = Okio.buffer(edit.newSource(0))
+            val source = edit.newSource(0).buffer()
             var value: String? = null
             if (source != null) {
                 try {
@@ -62,7 +62,7 @@ class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Lon
         }
         try {
             val edit = mDiskLruCache?.edit(key.md5) ?: return false
-            val sink = Okio.buffer(edit.newSink(0))
+            val sink = edit.newSink(0).buffer()
             try {
                 sink.writeString(value, charset)
                 sink.flush()

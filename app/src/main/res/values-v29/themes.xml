@@ -2,10 +2,10 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BaseTheme.MD3" parent="Base.BaseTheme.MD3">
-        <!-- Transparent system bars for edge-to-edge. -->
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
-    </style>
+<!--    <style name="BaseTheme.MD3" parent="Base.BaseTheme.MD3">-->
+<!--        &lt;!&ndash; Transparent system bars for edge-to-edge. &ndash;&gt;-->
+<!--        <item name="android:navigationBarColor">@android:color/transparent</item>-->
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+<!--        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>-->
+<!--    </style>-->
 </resources>

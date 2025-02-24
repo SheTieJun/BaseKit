@@ -44,7 +44,6 @@ open class AbBaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         "$TAG : onCreate".logUILife()
-        startAnimation()
         if (isEnableGrayTheme()) {
             GrayThemeLiveData.getInstance().observe(this, this::grayThemChange)
         }
@@ -81,16 +80,6 @@ open class AbBaseActivity : AppCompatActivity() {
         // 隐藏系统UI
         // true - 界面加载成功的时候
     }
-
-    /**
-     * 界面开始动画 (此处输入方法执行任务.)
-     */
-    open fun startAnimation() {}
-
-    /**
-     * 界面回退动画 (此处输入方法执行任务.)
-     */
-    open fun endAnimation() {}
 
     /**
      * 用来替换 [finish] 返回

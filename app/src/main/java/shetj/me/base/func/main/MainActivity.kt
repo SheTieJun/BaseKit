@@ -8,6 +8,7 @@ import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
 import android.view.View
+import android.view.Window
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.util.lruCache
 import androidx.core.view.WindowCompat
@@ -18,6 +19,7 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import androidx.tracing.trace
 import com.google.android.material.sidesheet.SideSheetDialog
+import com.google.android.material.transition.platform.MaterialFadeThrough
 import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
@@ -33,6 +35,7 @@ import me.shetj.base.ktx.showToast
 import me.shetj.base.ktx.start
 import me.shetj.base.ktx.startIgnoreBatteryOpt
 import me.shetj.base.ktx.startRequestPermissions
+import me.shetj.base.ktx.startWithTransition
 import me.shetj.base.ktx.toJson
 import me.shetj.base.ktx.windowInsets
 import me.shetj.base.model.GrayThemeLiveData
@@ -47,6 +50,7 @@ import me.shetj.base.tools.app.ScreenshotKit
 import me.shetj.base.tools.app.WindowKit
 import me.shetj.base.tools.app.WindowKit.posturesCollector
 import me.shetj.base.tools.file.FileQUtils
+import shetj.me.base.R
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
@@ -55,7 +59,6 @@ import shetj.me.base.func.compose.ComposeTestActivity
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
-import shetj.me.base.utils.AudioManageX
 import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
 import java.util.Locale
@@ -86,7 +89,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 //                return null
 //            }
 //        })
-
         super.onCreate(savedInstanceState)
         enabledOnBack = true
 
@@ -245,9 +247,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             FixPermission.requestExternalFile(this)
         }
         mContent.Compose.setOnClickListener {
-            launchActivity<ComposeTestActivity> {
-                putExtra("name","shetj")
-            }
+            startWithTransition<ComposeTestActivity>()
         }
         mContent.Debug.setOnClickListener {
             if (BaseKit.isDebug()){

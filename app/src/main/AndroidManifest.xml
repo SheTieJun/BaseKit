@@ -63,7 +63,8 @@
             android:name=".func.main.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/BaseTheme.MD3"/>
 
         <profileable
             android:shell="true"

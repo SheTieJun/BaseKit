@@ -3,6 +3,7 @@ package me.shetj.base.ktx
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -63,6 +64,12 @@ fun AppCompatActivity.isRoot(): Boolean {
 inline fun <reified T : Activity> Context.start() {
     ArmsUtils.startActivity(this as AppCompatActivity, T::class.java)
 }
+
+inline fun <reified T : Activity> Activity.startWithTransition() {
+    val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+    startActivity(Intent(this, T::class.java), bundle)
+}
+
 
 // 内联，不能使用默认参数，否则会编译错误
 inline fun <reified T : Activity> Context.launchActivity(func: (Intent.() -> Unit)) {

@@ -20,7 +20,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="16dp">
 
             <Button
@@ -28,7 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/previous"
-                app:layout_constraintBottom_toTopOf="@id/iv_testImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -65,10 +64,42 @@
                 app:wheelTextCenterColor="#2B2B3A"
                 app:wheelTextColor="#C9C9C9"
                 app:wheelItemSize="46dp"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:wheelItemCount="4"
                 />
+
+            <shetj.me.base.view.RadarChartView
+                android:id="@+id/r_1"
+                app:layout_constraintTop_toBottomOf="@id/wheelview"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                />
+
+            <shetj.me.base.view.RadarView
+                android:id="@+id/r_2"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/r_1"
+                android:layout_width="match_parent"
+                android:layout_height="290dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:background="@color/green_md_theme_light_error"
+                app:layout_constraintStart_toStartOf="@id/g_image"
+                app:layout_constraintEnd_toEndOf="@id/g_image"
+                app:layout_constraintTop_toTopOf="@id/g_image"
+                app:layout_constraintBottom_toBottomOf="@id/g_image"
+                />
+
+            <shetj.me.base.view.GradientImageView
+                android:id="@+id/g_image"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/r_2"
+                android:layout_height="200dp"
+                android:src="@drawable/icon_test"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

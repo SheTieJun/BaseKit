@@ -4,9 +4,9 @@ import android.os.Message
 import androidx.annotation.IntRange
 import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
+import me.shetj.base.tools.app.dataStoreKit
 import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.EmptyUtils
-import me.shetj.datastore.dataStoreKit
 import timber.log.Timber
 import java.util.Locale
 import kotlin.random.Random

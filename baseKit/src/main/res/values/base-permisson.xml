@@ -2,7 +2,7 @@
 <resources>
     <string name="READ_PHONE_STATE">获取手机状态，网络情况等</string>
     <string name="STORAGE">用户存储文件</string>
-    <string name="MICROPHONE">"用于录音"</string>
-    <string name="CAMERA">"用于照相"</string>
-    <string name="CALENDAR">"用于添加行程"</string>
+    <string name="MICROPHONE">用于录音</string>
+    <string name="CAMERA">用于照相</string>
+    <string name="CALENDAR">用于添加行程</string>
 </resources>
