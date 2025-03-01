@@ -10,7 +10,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath("com.android.tools:r8:8.2.26") //FIX com.android.tools.r8.internal.nc: Sealed classes are not supported as program classes( Java 17 导致的问题)
+        classpath("com.android.tools:r8:8.7.18") //FIX com.android.tools.r8.internal.nc: Sealed classes are not supported as program classes( Java 17 导致的问题)
     }
 }
 
