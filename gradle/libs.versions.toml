@@ -183,7 +183,7 @@ compose-material3-windowSize = { group = "androidx.compose.material3", name = "m
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
-compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.1.0" }
+compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.1.1" }
 compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.8.7" }
 compose-paging = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingVersion" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
