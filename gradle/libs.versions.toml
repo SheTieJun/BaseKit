@@ -46,7 +46,7 @@ tracingKtx = "1.1.0"
 koin-version = "4.0.2"
 retrofit = "2.11.0"
 activity-compose = "1.9.3"
-compose-bom = "2025.01.01"
+compose-bom = "2025.03.01"
 pagingVersion = "3.3.5"
 activity = "1.10.1"
 
