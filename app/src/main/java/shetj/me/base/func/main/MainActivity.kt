@@ -8,9 +8,14 @@ import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
 import android.view.View
+import android.view.View.OnAttachStateChangeListener
 import android.view.Window
+import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.collection.lruCache
 import androidx.core.util.lruCache
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.lifecycle.asLiveData
@@ -19,13 +24,11 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import androidx.tracing.trace
 import com.google.android.material.sidesheet.SideSheetDialog
-import com.google.android.material.transition.platform.MaterialFadeThrough
 import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
 import me.shetj.base.ktx.hasPermission
 import me.shetj.base.ktx.launch
-import me.shetj.base.ktx.launchActivity
 import me.shetj.base.ktx.logE
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
@@ -50,7 +53,6 @@ import me.shetj.base.tools.app.ScreenshotKit
 import me.shetj.base.tools.app.WindowKit
 import me.shetj.base.tools.app.WindowKit.posturesCollector
 import me.shetj.base.tools.file.FileQUtils
-import shetj.me.base.R
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
@@ -62,6 +64,7 @@ import shetj.me.base.func.slidingpane.SlidingPaneActivity
 import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
 import java.util.Locale
+import java.util.function.Consumer
 
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
@@ -113,20 +116,19 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         hasPermission("android.permission.POST_NOTIFICATIONS")
         WidgetProvider.registerReceiver(this)
-        val lruCache = lruCache<String, String>(100) // lruCache
         BaseKit.androidID.logI("androidID")
         //只有没有android:configChanges="orientation|keyboardHidden|screenSize" 才会多次触发
-        WindowKit.addWinLayoutListener(this,posturesCollector(onTable = {
+        WindowKit.addWinLayoutListener(this, posturesCollector(onTable = {
             "onTable".logI("WinLayout")
         }, onBook = {
             "onBook".logI("WinLayout")
-        }, onNormal ={
+        }, onNormal = {
             "onNormal".logI("WinLayout")
         }))
         WindowKit.windowSizeStream(this).observe(this) {
             it.toJson().logI("windowSizeStream")
         }
-        defDataStore.get<String>(":").asLiveData().observe(this){
+        defDataStore.get<String>(":").asLiveData().observe(this) {
 
         }
     }
@@ -142,7 +144,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 (
                         "url = ${
                             it?.let { it1 ->
-                                FileQUtils.getFileAbsolutePath(this@MainActivity, it1)?.also {p->
+                                FileQUtils.getFileAbsolutePath(this@MainActivity, it1)?.also { p ->
                                     launch {
                                         defDataStore.save("TestPath", p)
                                     }
@@ -228,8 +230,31 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             startIgnoreBatteryOpt()
         }
         mContent.showSideDialog.setOnClickListener {
-            trace("showSideDialog"){
+            trace("showSideDialog") {
                 val sideSheetDialog = SideSheetDialog(this)
+                if (VERSION.SDK_INT >= VERSION_CODES.S) {
+                    sideSheetDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                    sideSheetDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                    val windowBlurEnabledListener: Consumer<Boolean> = object : Consumer<Boolean> {
+                        override fun accept(t: Boolean) {
+                            sideSheetDialog.window?.let { it1 -> updateWindowForBlurs(it1, t) }
+                        }
+                    }
+                    sideSheetDialog.window?.decorView?.addOnAttachStateChangeListener(
+                        object : OnAttachStateChangeListener {
+                            override fun onViewAttachedToWindow(v: View) {
+                                windowManager.addCrossWindowBlurEnabledListener(
+                                    windowBlurEnabledListener
+                                )
+                            }
+
+                            override fun onViewDetachedFromWindow(v: View) {
+                                windowManager.removeCrossWindowBlurEnabledListener(
+                                    windowBlurEnabledListener
+                                )
+                            }
+                        })
+                }
                 sideSheetDialog.setContentView(shetj.me.base.R.layout.fragment_first)
                 sideSheetDialog.setOnShowListener {
                     sideSheetDialog.window?.let {
@@ -250,13 +275,39 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             startWithTransition<ComposeTestActivity>()
         }
         mContent.Debug.setOnClickListener {
-            if (BaseKit.isDebug()){
+            if (BaseKit.isDebug()) {
                 BaseKit.isDebug.postValue(false)
-            }else{
+            } else {
                 BaseKit.isDebug.postValue(true)
             }
         }
 
+    }
+
+
+    /**
+     * 弹窗背景高斯模糊
+     */
+    private fun updateWindowForBlurs(window: Window, blursEnabled: Boolean) {
+        val mBackgroundBlurRadius = 80
+        val mBlurBehindRadius = 20
+
+
+        // We set a different dim amount depending on whether window blur is enabled or disabled
+        val mDimAmountWithBlur = 0.1f
+        val mDimAmountNoBlur = 0.4f
+        window.setDimAmount(if (blursEnabled && mBlurBehindRadius > 0) mDimAmountWithBlur else mDimAmountNoBlur)
+
+        if (buildIsAtLeastS()) {
+            // Set the window background blur and blur behind radii
+            window.setBackgroundBlurRadius(mBackgroundBlurRadius)
+            window.attributes.blurBehindRadius = mBlurBehindRadius
+            window.attributes = window.attributes
+        }
+    }
+
+    private fun buildIsAtLeastS(): Boolean {
+        return VERSION.SDK_INT >= VERSION_CODES.S
     }
 
     override fun onInitialized() {
@@ -317,7 +368,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-//    @Debug
+    //    @Debug
     private fun dataStoreKit() {
         launch {
             defDataStore.get("Test", -1)
