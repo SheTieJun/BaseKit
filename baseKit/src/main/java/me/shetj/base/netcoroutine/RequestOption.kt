@@ -54,12 +54,12 @@ data class RequestOption(
  */
 @Keep
 fun String.getDefReqOption(): RequestOption {
-    return RequestOption().also {
-        it.cacheKey = this.md5
-        it.cacheTime = 36_00
-        it.cacheMode = CacheMode.FIRST_NET
-        it.repeatNum = 3
-        it.timeout = 10_000L
+    return buildRequest {
+        cacheKey = this@getDefReqOption.md5
+        cacheTime = 36_00
+        cacheMode = CacheMode.FIRST_NET
+        repeatNum = 3
+        timeout = 10_000L
     }
 }
 

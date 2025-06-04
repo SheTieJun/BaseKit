@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.switchMap
 import me.shetj.base.mvvm.viewbind.BaseViewModel
+import me.shetj.base.mvvm.viewbind.SaveStateViewModel
 import me.shetj.base.netcoroutine.HttpResult
 import me.shetj.base.netcoroutine.KCHttpV2
 import me.shetj.base.tip.TipKit
@@ -24,17 +25,8 @@ import java.util.concurrent.TimeUnit
  * **@email：** 375105540@qq.com<br></br>
  * **@describe**<br></br>
  */
-class MainViewModel(private val savedStateHandle: SavedStateHandle) : BaseViewModel() {
+class MainViewModel(private val savedStateHandle: SavedStateHandle) : SaveStateViewModel(savedStateHandle) {
 
-    val filteredData: LiveData<List<String>> =
-        savedStateHandle.getLiveData<String>("query").switchMap { query ->
-           MutableLiveData<List<String>>()
-        }
-
-
-    fun setQuery(query: String) {
-        savedStateHandle["query"] = query
-    }
 
     var isGrayTheme = false
     var isAddJankStats: Boolean = false

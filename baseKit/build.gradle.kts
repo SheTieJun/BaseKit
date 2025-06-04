@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import tools.androidLibrary
 
 plugins {
@@ -48,9 +47,6 @@ dependencies {
 }
 
 composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.StrongSkipping)
-    reportsDestination = layout.buildDirectory.dir("compose_compiler")
-//    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 fun DependencyHandler.addPage(){

@@ -2,7 +2,7 @@ package me.shetj.base.network.body
 
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import okhttp3.internal.Util
+import okhttp3.internal.closeQuietly
 import okio.BufferedSink
 import okio.Source
 import okio.source
@@ -31,7 +31,7 @@ object RequestBodyUtils {
                     source = inputStream.source()
                     sink.writeAll(source)
                 } finally {
-                    Util.closeQuietly(source)
+                    source?.closeQuietly()
                 }
             }
         }

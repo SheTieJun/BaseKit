@@ -186,10 +186,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             MDThemeKit.showChangeThemeDialog(this)
         }
 
-        findViewById<View>(shetj.me.base.R.id.fab).setOnClickListener {
-            AppCompatDelegate.setDefaultNightMode(mViewModel.getNightModel())
-        }
-
         mContent.btnTestKeybord.setOnClickListener {
             hierarchy.state?.putState("CommentPopup", "show")
             CommentPopup.newInstance().show(supportFragmentManager)

@@ -15,7 +15,9 @@
  */
 
 //copy一份用于后面升级，这个类被改成包内使用了
-package shetj.me.base.utils;
+package me.shetj.base.netcoroutine.cache;
+
+import androidx.annotation.Nullable;
 
 import java.io.Closeable;
 import java.io.EOFException;
@@ -34,17 +36,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
+
 import okhttp3.internal.Util;
+import okhttp3.internal.cache.FaultHidingSink;
 import okhttp3.internal.io.FileSystem;
-import okhttp3.internal.platform.Platform;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 import okio.Sink;
 import okio.Source;
 
-import static okhttp3.internal.platform.Platform.WARN;
 
 /**
  * A cache that uses a bounded amount of space on a filesystem. Each cache entry has a string key
@@ -86,7 +87,7 @@ import static okhttp3.internal.platform.Platform.WARN;
  * value, the edit will fail silently. Callers should handle other problems by catching {@code
  * IOException} and responding appropriately.
  */
-public final class DiskLruCache implements Closeable, Flushable {
+final class DiskLruCache implements Closeable, Flushable {
   static final String JOURNAL_FILE = "journal";
   static final String JOURNAL_FILE_TEMP = "journal.tmp";
   static final String JOURNAL_FILE_BACKUP = "journal.bkp";
@@ -232,8 +233,7 @@ public final class DiskLruCache implements Closeable, Flushable {
         initialized = true;
         return;
       } catch (IOException journalIsCorrupt) {
-        Platform.get().log(WARN, "DiskLruCache " + directory + " is corrupt: "
-            + journalIsCorrupt.getMessage() + ", removing", journalIsCorrupt);
+     
       }
 
       // The cache is corrupted, attempt to delete the contents of the directory. This can throw and
@@ -312,12 +312,11 @@ public final class DiskLruCache implements Closeable, Flushable {
 
   private BufferedSink newJournalWriter() throws FileNotFoundException {
     Sink fileSink = fileSystem.appendingSink(journalFile);
-    Sink faultHidingSink = new FaultHidingSink(fileSink) {
-      @Override protected void onException(IOException e) {
-        assert (Thread.holdsLock(DiskLruCache.this));
-        hasJournalErrors = true;
-      }
-    };
+    Sink faultHidingSink = new FaultHidingSink(fileSink, e -> {
+      assert (Thread.holdsLock(DiskLruCache.this));
+      hasJournalErrors = true;
+      return null;
+    }) ;
     return Okio.buffer(faultHidingSink);
   }
 
@@ -897,13 +896,12 @@ public final class DiskLruCache implements Closeable, Flushable {
         } catch (FileNotFoundException e) {
           return Okio.blackhole();
         }
-        return new FaultHidingSink(sink) {
-          @Override protected void onException(IOException e) {
+        return new FaultHidingSink(sink,e ->{
             synchronized (DiskLruCache.this) {
               detach();
             }
-          }
-        };
+            return null;
+          });
       }
     }
 

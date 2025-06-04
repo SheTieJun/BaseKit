@@ -2,7 +2,7 @@
 
 package me.shetj.base.ktx
 
-import com.google.gson.internal.`$Gson$Types`
+import com.google.gson.internal.GsonTypes
 import java.lang.reflect.GenericArrayType
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
@@ -42,9 +42,9 @@ fun <T> getObjByClassArg(obj: Any, position: Int = 0): T {
     return getClazz<T>(obj, position).getDeclaredConstructor().newInstance()
 }
 
-fun getParameterizedType(type: Type, typeArguments: Type): ParameterizedType? {
+fun getParameterizedType(type: Class<*>, typeArguments: Type): ParameterizedType? {
     // Type type = com.google.gson.internal.$Gson$Types.newParameterizedTypeWithOwner(null, ArrayList.class, clazz); = ArrayList<clazz>
-    return `$Gson$Types`.newParameterizedTypeWithOwner(null, type, typeArguments)
+    return GsonTypes.newParameterizedTypeWithOwner(null, type, typeArguments)
 }
 
 fun getRawType(type: Type): Class<*>? {

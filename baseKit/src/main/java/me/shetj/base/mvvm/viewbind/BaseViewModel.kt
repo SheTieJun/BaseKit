@@ -29,7 +29,7 @@ open class SaveStateViewModel(private val savedStateHandle: SavedStateHandle):Ba
     fun <T> filteredData(key: String) = savedStateHandle.get<T>(key)
 
     fun <T> setQuery(key: String,value: T) {
-        savedStateHandle["query"] = value
+        savedStateHandle[key] = value
     }
 
 }

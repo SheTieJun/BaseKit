@@ -17,7 +17,6 @@ import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.json.GsonKit
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 import org.koin.core.scope.get
 import org.koin.dsl.module
@@ -58,11 +57,11 @@ internal fun getHttpModule(): Module {
                 readTimeout(timeout, TimeUnit.MILLISECONDS)
                 writeTimeout(timeout, TimeUnit.MILLISECONDS)
                 addInterceptor(HeadersInterceptor(get(HttpHeaders::class.java)))
-                addInterceptor(get(ReceivedCookiesInterceptor::class.java))
+                addInterceptor(get<ReceivedCookiesInterceptor>())
                 hostnameVerifier { _, _ -> true } // 主机验证,默认都是通过的
                 val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
                 sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
-                addInterceptor(get(HttpLoggingInterceptor::class.java))
+                addInterceptor(get<HttpLoggingInterceptor>())
                 val path = EnvironmentStorage.getPath(root = Utils.app.cacheDir.absolutePath, packagePath = ".unKnow")
                 cache(Cache(File(path), 1024 * 1024 * 12))
                 dns(OkHttpDns.getInstance())
@@ -96,7 +95,7 @@ internal fun getHttpModule(): Module {
 
 internal fun getDBModule(): Module {
     return module {
-        single(createdAtStart = false) { SaverDatabase.getInstance(androidApplication()) }
+        single(createdAtStart = false) { SaverDatabase.getInstance(BaseKit.app) }
 
         // try to override existing definition. 覆盖其他实例
         // (override = true) -> FIX:Please use override option or check for definition '[Single:'me.shetj.base.saver.SaverDao']'

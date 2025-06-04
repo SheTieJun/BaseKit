@@ -25,7 +25,7 @@ class CacheInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
-        var cacheControl = request.cacheControl().toString()
+        var cacheControl = request.cacheControl.toString()
 
         val availableNet = NetworkUtils.isAvailable(Utils.app)
 

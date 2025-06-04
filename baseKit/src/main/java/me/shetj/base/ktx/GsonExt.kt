@@ -1,6 +1,6 @@
 package me.shetj.base.ktx
 
-import com.google.gson.internal.`$Gson$Types`
+import com.google.gson.internal.GsonTypes
 import java.lang.reflect.Type
 
 object GsonExt {
@@ -9,7 +9,7 @@ object GsonExt {
      */
     @JvmStatic
     fun list(type: Type?): Type {
-        return `$Gson$Types`.newParameterizedTypeWithOwner(null, MutableList::class.java, type)
+        return GsonTypes.newParameterizedTypeWithOwner(null, MutableList::class.java, type)
     }
 
     /**
@@ -17,7 +17,7 @@ object GsonExt {
      */
     @JvmStatic
     fun set(type: Type?): Type {
-        return `$Gson$Types`.newParameterizedTypeWithOwner(null, MutableSet::class.java, type)
+        return GsonTypes.newParameterizedTypeWithOwner(null, MutableSet::class.java, type)
     }
 
     /**
@@ -25,7 +25,7 @@ object GsonExt {
      */
     @JvmStatic
     fun hashMap(type: Type?, type2: Type?): Type {
-        return `$Gson$Types`.newParameterizedTypeWithOwner(null, HashMap::class.java, type, type2)
+        return GsonTypes.newParameterizedTypeWithOwner(null, HashMap::class.java, type, type2)
     }
 
     /**
@@ -33,15 +33,15 @@ object GsonExt {
      */
     @JvmStatic
     fun map(type: Type?, type2: Type?): Type {
-        return `$Gson$Types`.newParameterizedTypeWithOwner(null, MutableMap::class.java, type, type2)
+        return GsonTypes.newParameterizedTypeWithOwner(null, MutableMap::class.java, type, type2)
     }
 
     /**
      * ownerType.rawType<typeArguments>
      */
     @JvmStatic
-    fun parameterized(ownerType: Type?, rawType: Type?, vararg typeArguments: Type?): Type {
-        return `$Gson$Types`.newParameterizedTypeWithOwner(ownerType, rawType, *typeArguments)
+    fun parameterized(ownerType: Type?, rawClass: Class<*>?, vararg typeArguments: Type?): Type {
+        return GsonTypes.newParameterizedTypeWithOwner(ownerType, rawClass, *typeArguments)
     }
 
     /**
@@ -49,7 +49,7 @@ object GsonExt {
      */
     @JvmStatic
     fun array(type: Type?): Type {
-        return `$Gson$Types`.arrayOf(type)
+        return GsonTypes.arrayOf(type)
     }
 
     /**
@@ -57,7 +57,7 @@ object GsonExt {
      */
     @JvmStatic
     fun subtypeOf(type: Type?): Type {
-        return `$Gson$Types`.subtypeOf(type)
+        return GsonTypes.subtypeOf(type)
     }
 
     /**
@@ -65,6 +65,6 @@ object GsonExt {
      */
     @JvmStatic
     fun supertypeOf(type: Type?): Type {
-        return `$Gson$Types`.supertypeOf(type)
+        return GsonTypes.supertypeOf(type)
     }
 }

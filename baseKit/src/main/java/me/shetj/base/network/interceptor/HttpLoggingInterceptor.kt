@@ -9,7 +9,6 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
-import okhttp3.internal.http.HttpHeaders
 import okio.Buffer
 import java.io.IOException
 import java.net.URLDecoder
@@ -91,18 +90,18 @@ class HttpLoggingInterceptor : Interceptor {
         log("-------------------------------request-------------------------------")
         val logBody = level == Level.BODY
         val logHeaders = level == Level.BODY || level == Level.HEADERS
-        val requestBody = request.body()
+        val requestBody = request.body
         val hasRequestBody = requestBody != null
         val protocol = connection?.protocol() ?: Protocol.HTTP_1_1
         try {
-            val requestStartMessage = "--> " + request.method() +
+            val requestStartMessage = "--> " + request.method +
                 ' ' + URLDecoder.decode(
-                    request.url().url().toString(),
+                    request.url.toString(),
                     UTF8.name()
                 ) + ' ' + protocol
             log(requestStartMessage)
             if (logHeaders) {
-                val headers = request.headers()
+                val headers = request.headers
                 log(headers.toString())
                 if (logBody && hasRequestBody) {
                     if (isPlaintext(requestBody?.contentType())) {
@@ -121,17 +120,17 @@ class HttpLoggingInterceptor : Interceptor {
         log("-------------------------------response-------------------------------")
         val builder = response.newBuilder()
         val clone = builder.build()
-        var responseBody = clone.body()
+        var responseBody = clone.body
         val logBody = level == Level.BODY
         val logHeaders = level == Level.BODY || level == Level.HEADERS
         try {
             log(
-                "<-- " + clone.code() + ' ' + clone.message() + ' ' + URLDecoder.decode(
-                    clone.request().url().url().toString(), UTF8.name()
+                "<-- " + clone.code + ' ' + clone.message + ' ' + URLDecoder.decode(
+                    clone.request.url.toString(), UTF8.name()
                 ) + " (" + tookMs + "ms）"
             )
             if (logHeaders) {
-                if (logBody && HttpHeaders.hasBody(clone)) {
+                if (logBody &&  clone.body != null) {
                     if (isPlaintext(responseBody?.contentType())) {
                         val body = responseBody?.string().orEmpty()
                         log(body)
@@ -153,9 +152,9 @@ class HttpLoggingInterceptor : Interceptor {
         try {
             val copy = request.newBuilder().build()
             val buffer = Buffer()
-            copy.body()?.writeTo(buffer)
+            copy.body?.writeTo(buffer)
             var charset = UTF8
-            val contentType = copy.body()?.contentType()
+            val contentType = copy.body?.contentType()
             if (contentType != null) {
                 charset = contentType.charset(UTF8)
             }
@@ -178,10 +177,10 @@ class HttpLoggingInterceptor : Interceptor {
          */
         fun isPlaintext(mediaType: MediaType?): Boolean {
             if (mediaType == null) return false
-            if (mediaType.type() == "text") {
+            if (mediaType.type == "text") {
                 return true
             }
-            var subtype = mediaType.subtype()
+            var subtype = mediaType.subtype
             subtype = subtype.lowercase()
             if (subtype.contains("x-www-form-urlencoded") ||
                 subtype.contains("json") ||

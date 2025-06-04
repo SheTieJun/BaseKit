@@ -27,10 +27,10 @@ class OkHttpDns : Dns {
         }
     }
 
-    override fun lookup(hostname: String): MutableList<InetAddress> {
+    override fun lookup(hostname: String): List<InetAddress> {
         val ip = getIpByHost(hostname)
         ip?.let {
-            return InetAddress.getAllByName(ip).asList().toMutableList()
+            return InetAddress.getAllByName(ip).asList()
         }
         return Dns.SYSTEM.lookup(hostname)
     }

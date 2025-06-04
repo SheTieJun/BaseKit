@@ -19,7 +19,6 @@ plugins {
     id(libs.plugins.android.library.get().pluginId) apply false
     id(libs.plugins.android.test.get().pluginId) apply false
     id(libs.plugins.kotlin.android.get().pluginId) apply false
-    id(libs.plugins.spotless.get().pluginId) version (libs.versions.spotless)
     id(libs.plugins.android.benchmark.get().pluginId) version (libs.versions.benchmark) apply false
     id("maven-publish")
     id("io.gitlab.arturbosch.detekt") version "1.23.3"
