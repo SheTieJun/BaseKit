@@ -9,7 +9,7 @@ import java.lang.reflect.ParameterizedType
 
 /**
  * Base view binding adapter
- * 当只有ViewBinding的时候，可以使用这个
+ * 当只有ViewBinding的时候，可以使用这个,注意 ViewBinding 不能被混淆
  */
 abstract class BaseViewBindingAdapter<T, BD : ViewBinding>
 @JvmOverloads constructor(

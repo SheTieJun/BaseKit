@@ -74,6 +74,12 @@
             app:unitSize="15sp"
             app:valueSize="20sp" />
 
+        <ImageView
+            android:id="@+id/img"
+            app:layout_constraintTop_toBottomOf="@id/arcProgressView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

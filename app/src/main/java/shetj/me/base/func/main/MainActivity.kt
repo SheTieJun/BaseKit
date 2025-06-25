@@ -1,16 +1,23 @@
 package shetj.me.base.func.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnAttachStateChangeListener
 import android.view.Window
 import android.view.WindowManager
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.collection.lruCache
@@ -53,6 +60,7 @@ import me.shetj.base.tools.app.ScreenshotKit
 import me.shetj.base.tools.app.WindowKit
 import me.shetj.base.tools.app.WindowKit.posturesCollector
 import me.shetj.base.tools.file.FileQUtils
+import shetj.me.base.R
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
@@ -138,7 +146,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         val hierarchy = addJankStats()
         hierarchy.state?.putState("Activity", javaClass.simpleName)
 
-        findViewById<View>(shetj.me.base.R.id.btn_select_image).setOnClickListener {
+        findViewById<View>(R.id.btn_select_image).setOnClickListener {
             selectFile {
                 "url = $it".logI()
                 (
@@ -229,8 +237,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             trace("showSideDialog") {
                 val sideSheetDialog = SideSheetDialog(this)
                 if (VERSION.SDK_INT >= VERSION_CODES.S) {
-                    sideSheetDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-                    sideSheetDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                    sideSheetDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+                    sideSheetDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
                     val windowBlurEnabledListener: Consumer<Boolean> = object : Consumer<Boolean> {
                         override fun accept(t: Boolean) {
                             sideSheetDialog.window?.let { it1 -> updateWindowForBlurs(it1, t) }
@@ -251,7 +259,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                             }
                         })
                 }
-                sideSheetDialog.setContentView(shetj.me.base.R.layout.fragment_first)
+                sideSheetDialog.setContentView(R.layout.fragment_first)
                 sideSheetDialog.setOnShowListener {
                     sideSheetDialog.window?.let {
                         WindowCompat.setDecorFitsSystemWindows(it, false)
@@ -378,11 +386,46 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         return true
     }
 
+    private var popupWindow: PopupWindow? = null
+
+    @SuppressLint("InflateParams")
+    private fun showBlurredPopupWindow() {
+        //popupwindow 不可以实现
+//        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = layoutInflater.inflate(R.layout.popupwindow_comment, null) // 假设你的PopupWindow布局是 popup_layout.xml
+
+        val width = LinearLayout.LayoutParams.WRAP_CONTENT
+        val height = LinearLayout.LayoutParams.WRAP_CONTENT
+        val focusable = true // 设置为可获取焦点，这样点击外部可以 dismiss
+
+        popupWindow = PopupWindow(popupView, width, height, focusable)
+        // **关键点 1：设置 PopupWindow 的背景为透明，才能透过它看到后面被模糊的内容**
+        // 否则 PopupWindow 自身的背景会遮挡住 Activity 的模糊效果
+        popupWindow?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        popupWindow?.isOutsideTouchable = true // 允许点击外部关闭
+
+        // 设置 PopupWindow 的显示位置
+        popupWindow?.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0)
+
+        // **关键点 2：在 PopupWindow 显示后，对其下方的 Activity 的 Window 设置模糊效果**
+        if (VERSION.SDK_INT >= VERSION_CODES.S) { // Android 12 (API 31) 及更高版本
+            this.window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+            this.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            updateWindowForBlurs(this.window, true)
+        }
+
+        // **关键点 3：设置 PopupWindow 关闭时的监听器，以便恢复 Activity 的背景状态**
+        popupWindow?.setOnDismissListener {
+            // 恢复 Activity 的背景模糊状态
+            updateWindowForBlurs(this.window, false)
+            popupWindow = null // 清除引用，避免内存泄漏
+        }
+    }
+
     /**
      * 输出执行时间，执行站
      */
 //    @Debug(level = Log.DEBUG, enableTime = true, watchStack = true)
     suspend fun netTest() {
-//        mViewModel.getMusicV3()
     }
 }

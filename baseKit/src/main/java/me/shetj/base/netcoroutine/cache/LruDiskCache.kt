@@ -27,7 +27,7 @@ class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Lon
         }
         try {
             val edit = mDiskLruCache?.edit(key.md5) ?: return null
-            val source = edit.newSource(0).buffer()
+            val source = edit.newSource(0)?.buffer()
             var value: String? = null
             if (source != null) {
                 try {
@@ -61,10 +61,10 @@ class LruDiskCache constructor(diskDir: File?, appVersion: Int, diskMaxSize: Lon
         }
         try {
             val edit = mDiskLruCache?.edit(key.md5) ?: return false
-            val sink = edit.newSink(0).buffer()
+            val sink = edit.newSink(0)?.buffer()
             try {
-                sink.writeString(value, charset)
-                sink.flush()
+                sink?.writeString(value, charset)
+                sink?.flush()
                 edit.commit()
                 return true
             } catch (e: JsonIOException) {

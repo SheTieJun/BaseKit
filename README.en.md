@@ -90,7 +90,7 @@ The Android SDK Upgrade Assistant is a tool in Android Studio that helps you upg
 ### Interface layer related records
 
 1.  Expand interface elements (interface logic) and interface operation elements (business logic)
-2.  Define UIState, for example:`TracksUIState`,`TrackItemUIState`![](/doc/img/UI_state_and_logic.webp)
+2.  Define UIState, for example:`TracksUIState`,`TrackItemUIState`![](/doc/img/MVVM.webp)
 
 ### Data layer related records
 

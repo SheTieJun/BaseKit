@@ -9,6 +9,7 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 import java.io.IOException
 import java.net.URLDecoder
@@ -134,7 +135,7 @@ class HttpLoggingInterceptor : Interceptor {
                     if (isPlaintext(responseBody?.contentType())) {
                         val body = responseBody?.string().orEmpty()
                         log(body)
-                        responseBody = ResponseBody.create(responseBody?.contentType(), body)
+                        responseBody = body.toResponseBody(responseBody?.contentType())
                         return response.newBuilder().body(responseBody).build()
                     } else {
                         log("\tbody: maybe [file part] , too large too print , ignored!")

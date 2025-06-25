@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/no_select">
+
+    <target
+        android:name="no_select_group"
+        android:animation="@animator/fade_out" />
+
+    <target
+        android:name="select_group"
+        android:animation="@animator/fade_in" />
+</animated-vector>

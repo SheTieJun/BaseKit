@@ -144,6 +144,8 @@ fun DependencyHandler.addAndroid(){
 
     api(libs.androidx.biometric.ktx)  //指纹识别
 
+//    api(libs.androidx.asynclayoutinflater) //异步膨胀布局以避免界面出现卡顿。
+
 //    api(libs.androidx.pdf) // pdf预览
 }
 

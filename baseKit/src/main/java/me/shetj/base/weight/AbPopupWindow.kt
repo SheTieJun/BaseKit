@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import kotlinx.coroutines.cancel
 import me.shetj.base.lifecycle.DefCoroutineScope
 import me.shetj.base.lifecycle.KtScopeComponent
 import me.shetj.base.lifecycle.defScope
@@ -46,7 +47,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
     private fun initData() {
         setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         mContext.lifecycle.addObserver(this)
-        ktScope.register(mContext.lifecycle)
     }
 
     @Suppress("UNCHECKED_CAST")

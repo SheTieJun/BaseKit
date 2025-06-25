@@ -33,7 +33,7 @@ class HttpHeaders : Serializable {
     fun put(headers: HttpHeaders?) {
         headers?.headersMap?.forEach {
             headersMap.remove(it.key)
-            headersMap.put(it.key, it.value)
+            headersMap[it.key] = it.value
         }
     }
 

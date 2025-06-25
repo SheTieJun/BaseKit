@@ -40,8 +40,12 @@ class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
         ) {
             return
         }
-        if (isStarted.compareAndSet(false, true)) {
-            context.applicationContext.requestNetWork()
+        try {
+            if (isStarted.compareAndSet(false, true)) {
+                context.applicationContext.requestNetWork()
+            }
+        }catch (e:Exception){
+            isStarted.set(false)
         }
     }
 

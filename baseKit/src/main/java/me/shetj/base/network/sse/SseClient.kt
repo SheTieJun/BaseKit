@@ -13,7 +13,7 @@ import okhttp3.sse.EventSources
 object SseClient {
 
 
-    val shareFlow = MutableSharedFlow<String>()
+    val shareFlow = MutableSharedFlow<String>(replay = 0, extraBufferCapacity = Int.MAX_VALUE)
 
     private var source: EventSource? = null
 

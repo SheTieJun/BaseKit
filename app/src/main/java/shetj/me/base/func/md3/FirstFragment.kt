@@ -1,6 +1,11 @@
 package shetj.me.base.func.md3
 
+import android.graphics.drawable.AnimatedStateListDrawable
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +35,7 @@ class FirstFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
+    private var isChecked = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,6 +67,21 @@ class FirstFragment : Fragment() {
             }
         }
         addMonthAdapter()
+
+        binding.img.let  {imageView ->
+            imageView.setImageResource(R.drawable.select_anim)
+            // 设置点击监听
+            imageView.setOnClickListener {
+//                isChecked = !isChecked
+//                imageView.isActivated = isChecked
+                (imageView.drawable as AnimatedVectorDrawable).start()
+//                // 延迟重置状态
+//                Handler(Looper.getMainLooper()).postDelayed({
+//                    isChecked = !isChecked
+//                    imageView.isActivated = isChecked
+//                }, 3000) // 3秒后切换回原始状态
+            }
+        }
     }
 
     private fun addMonthAdapter() {

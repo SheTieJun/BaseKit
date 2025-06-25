@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/svg_select">
+    <target
+        android:name="select_group_1"
+        android:animation="@animator/path_anim" />
+    <target
+        android:name="select_group_2"
+        android:animation="@animator/path_anim" />
+    <target
+        android:name="select_group_3"
+        android:animation="@animator/path_anim" />
+    <target
+        android:name="select_group_4"
+        android:animation="@animator/path_anim" />
+
+</animated-vector>

@@ -193,3 +193,7 @@
 
 
 -dontwarn com.google.android.material.R$attr
+#keep 类名和类成员都不会被移除和混淆
+-keep class * implements androidx.viewbinding.ViewBinding {
+    *;
+}
