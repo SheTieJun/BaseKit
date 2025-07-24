@@ -23,6 +23,10 @@ dependencies {
     implementation(libs.javax.mail)
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 
 tasks.withType<KotlinJvmCompile>().configureEach {
     compilerOptions.jvmTarget = JvmTarget.JVM_17

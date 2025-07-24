@@ -48,12 +48,12 @@ androidApplication("shetj.me.base"){
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
-        create("benchmark") {
-            initWith(getByName("release"))
-            matchingFallbacks += listOf("release")
-            signingConfig = signingConfigs.getByName("debug")
-            isDebuggable = false
-        }
+//        create("benchmark") {
+//            initWith(getByName("release"))
+//            matchingFallbacks += listOf("release")
+//            signingConfig = signingConfigs.getByName("debug")
+//            isDebuggable = false
+//        }
     }
 
     lint {

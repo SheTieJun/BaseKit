@@ -1,5 +1,3 @@
-
-
 package shetj.me.base.view
 
 import android.content.Context
@@ -8,6 +6,14 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.coroutineScope
+import me.shetj.base.lifecycle.ABKtScopeComponent
+import me.shetj.base.lifecycle.LifecycleCopeComponent
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.time.DateUtils
 import timber.log.Timber
@@ -15,8 +21,33 @@ import timber.log.Timber
 open class BaseCustomView
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
-    View(context, attrs, defStyle) {
+    View(context, attrs, defStyle) , LifecycleCopeComponent {
     protected val defaultSize = ArmsUtils.dp2px(88f)
+
+    override var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
+
+    init {
+        initLifecycle()
+    }
+
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
+
+    override val ktScope: LifecycleCoroutineScope = lifecycleRegistry.coroutineScope
+
+    private fun initLifecycle() {
+        lifecycle.addObserver(
+            LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_DESTROY) {
+                    onClear()
+                }
+            }
+        )
+    }
+
+    init {
+        onCreate()
+    }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         Timber.i("onLayout($changed,$left,$top,$right,$bottom)")
@@ -34,11 +65,13 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     override fun onDetachedFromWindow() {
         Timber.i("onDetachedFromWindow ${DateUtils.timeString}")
         super.onDetachedFromWindow()
+        onStop()
     }
 
     override fun onAttachedToWindow() {
         Timber.i("onAttachedToWindow ${DateUtils.timeString}")
         super.onAttachedToWindow()
+        onResume()
     }
 
     override fun onAnimationStart() {
@@ -125,9 +158,6 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
         Timber.i("widthMeasureSpec = $widthMeasureSpec \n heightMeasureSpec = $heightMeasureSpec")
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
-    }
 }
 
 /**
