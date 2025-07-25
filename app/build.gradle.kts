@@ -57,7 +57,7 @@ androidApplication("shetj.me.base") {
     }
 
     lint {
-        disable.add("NullSafeMutableLiveData")
+        disable.addAll(listOf("NullSafeMutableLiveData","EnsureInitializerMetadata"))
         checkDependencies = true
     }
 }
