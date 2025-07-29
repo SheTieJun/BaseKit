@@ -49,6 +49,9 @@ dependencies {
 composeCompiler {
 }
 
+kotlin {
+    jvmToolchain(17)
+}
 fun DependencyHandler.addPage(){
     api(libs.androidx.paging)
     api(libs.compose.paging)

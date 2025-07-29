@@ -1,6 +1,5 @@
 package me.shetj.base.lifecycle
 
-import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -17,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
  */
 open class AbLifecycleCopeComponent : LifecycleCopeComponent {
 
-    private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(getOwner())
+    override var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(getOwner())
 
     init {
         initLifecycle()
@@ -42,64 +41,47 @@ open class AbLifecycleCopeComponent : LifecycleCopeComponent {
         return this
     }
 
-    @CallSuper
-    override fun onClear() {
-    }
 
-    @CallSuper
-    override fun onCreate() {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    }
-
-    @CallSuper
-    override fun onStart() {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-    }
-
-    @CallSuper
-    override fun onPause() {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    }
-
-    @CallSuper
-    override fun onStop() {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-    }
-
-    @CallSuper
-    override fun onResume() {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    }
-
-    @CallSuper
-    override fun onDeStory() {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    }
 }
 
 interface LifecycleCopeComponent : KtScopeComponent, LifecycleOwner {
-
-    @MainThread
-    fun onCreate()
+    val lifecycleRegistry: LifecycleRegistry
 
     /**
      * when LifecycleEvent == [Lifecycle.Event.ON_DESTROY]
      */
-    @MainThread
-    fun onClear()
 
     @MainThread
-    fun onStart()
+    fun onClear() {
+    }
 
     @MainThread
-    fun onResume()
+    fun onCreate() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    }
 
     @MainThread
-    fun onPause()
+    fun onStart() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+    }
 
     @MainThread
-    fun onStop()
+    fun onPause() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    }
 
     @MainThread
-    fun onDeStory()
+    fun onStop() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+    }
+
+    @MainThread
+    fun onResume() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    }
+
+
+    fun onDeStory() {
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    }
 }

@@ -17,7 +17,7 @@ plugins {
 }
 
 
-androidApplication("shetj.me.base"){
+androidApplication("shetj.me.base") {
 
 
     defaultConfig {
@@ -48,15 +48,16 @@ androidApplication("shetj.me.base"){
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
-        create("benchmark") {
-            initWith(getByName("release"))
-            matchingFallbacks += listOf("release")
-            signingConfig = signingConfigs.getByName("debug")
-            isDebuggable = false
-        }
+//        create("benchmark") {
+//            initWith(getByName("release"))
+//            matchingFallbacks += listOf("release")
+//            signingConfig = signingConfigs.getByName("debug")
+//            isDebuggable = false
+//        }
     }
 
     lint {
+        disable.addAll(listOf("NullSafeMutableLiveData","EnsureInitializerMetadata"))
         checkDependencies = true
     }
 }
@@ -69,7 +70,7 @@ composeCompiler {
 }
 
 
-kotlin{
+kotlin {
     compilerOptions {
         apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
     }
@@ -77,7 +78,7 @@ kotlin{
 
 dependencies {
     implementation(fileTree("libs") {
-        include("*.jar","*.aar")
+        include("*.jar", "*.aar")
     })
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.lifecycle.runtime)
@@ -126,7 +127,7 @@ dependencies {
 
 androidComponents {
     onVariants {
-        if (it.name.contains("debug",true)){
+        if (it.name.contains("debug", true)) {
             it.instrumentation.transformClassesWith(DebugAsmFactory::class.java, com.android.build.api.instrumentation.InstrumentationScope.PROJECT) {}
 //            it.instrumentation.transformClassesWith(PrivacyCheckFactory::class.java, com.android.build.api.instrumentation.InstrumentationScope.ALL) {}
         }

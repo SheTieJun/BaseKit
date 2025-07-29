@@ -381,7 +381,7 @@ public final class WheelView extends ViewGroup {
     public static abstract class ItemPainter {
         WheelParams wheelParams;
 
-        @CallSuper
+
         protected void setWheelParams(@NonNull WheelParams params) {
             this.wheelParams = params;
         }
@@ -423,7 +423,7 @@ public final class WheelView extends ViewGroup {
         //中心位置
         int centerItemPosition = IDLE_POSITION;
 
-        @CallSuper
+
         protected void setWheelParams(@NonNull WheelParams params) {
             params.setItemShowOrder(getShowOrder());
             this.wheelParams = params;
@@ -432,7 +432,7 @@ public final class WheelView extends ViewGroup {
             }
         }
 
-        @CallSuper
+
         void setItemPainter(@NonNull ItemPainter itemPainter) {
             if (this.wheelParams != null) {
                 itemPainter.setWheelParams(wheelParams);

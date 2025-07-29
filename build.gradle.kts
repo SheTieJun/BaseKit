@@ -29,7 +29,7 @@ plugins {
 
 //apply(from = "https://gist.githubusercontent.com/SheTieJun/f4cb1bd33997c2b46d9e3df40b95a02e/raw/c4b826d3ca4415071097b1642c9b80e50f3f1ad0/subprojects-maven-publishing.gradle")
 
-apply(from = "gradle/detekt.gradle")
+//apply(from = "gradle/detekt.gradle")
 
 tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
 
