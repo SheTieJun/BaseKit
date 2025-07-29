@@ -2,6 +2,49 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <queries>
+        <package android:name="me.shetj.beloved" />
+        <package android:name="me.shetj.logkit.demo" />
+        <intent>
+            <action android:name="android. speech. RecognitionService" />
+        </intent>
+    </queries>
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 截屏监听 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 屏幕检测 -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--
+ To handle the reselection within the app on devices running Android 14
+     or higher if your app targets Android 14 (API level 34) or higher.
+    -->
+    <uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <!-- 语音识别所需权限 -->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
     <application
         android:allowBackup="true"
         android:enableOnBackInvokedCallback="true"
@@ -63,19 +106,45 @@
             android:name=".func.main.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/BaseTheme.MD3"/>
+            android:theme="@style/BaseTheme.MD3"
+            android:windowSoftInputMode="adjustResize" />
 
+        <!-- 语音识别相关Activity -->
+        <activity
+            android:name=".func.speech.SpeechRecognitionEntryActivity"
+            android:exported="true"
+            android:label="语音识别功能"
+            android:theme="@style/BaseTheme.MD3" />
+
+        <activity
+            android:name=".func.speech.SpeechRecognizerActivity"
+            android:exported="false"
+            android:label="语音识别"
+            android:theme="@style/BaseTheme.MD3" />
+
+        <activity
+            android:name=".func.speech.SimpleSpeechActivity"
+            android:exported="false"
+            android:label="简易语音识别"
+            android:theme="@style/BaseTheme.MD3" />
+
+        <activity
+            android:name=".func.speech.ContinuousSpeechActivity"
+            android:exported="false"
+            android:label="持续语音识别"
+            android:theme="@style/BaseTheme.MD3" />
+
+        <!-- 语音识别服务 -->
         <profileable
             android:shell="true"
-            tools:targetApi="29" /> <!-- 基准优化 -->
+            tools:targetApi="29" />
+
         <property
             android:name="android.window.PROPERTY_ACTIVITY_EMBEDDING_SPLITS_ENABLED"
-            android:value="true" />
+            android:value="true" /> <!-- 基准优化 -->
         <property
             android:name="android.window.PROPERTY_ACTIVITY_EMBEDDING_ALLOW_SYSTEM_OVERRIDE"
             android:value="false" />
-
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -103,7 +172,12 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget" />
-        </receiver> <!-- 声明widget对应的AppWidgetProvider -->
+        </receiver>
+
+        <service
+            android:name=".func.speech.SpeechRecognitionService"
+            android:exported="false"
+            android:foregroundServiceType="microphone" /> <!-- 声明widget对应的AppWidgetProvider -->
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false">
@@ -122,38 +196,5 @@
         </service>
     </application>
 
-    <queries>
-        <package android:name="me.shetj.beloved" />
-        <package android:name="me.shetj.logkit.demo" />
-    </queries>
-    <uses-permission
-        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 截屏监听 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_CALENDAR" /> <!-- 屏幕检测 -->
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />
-    <!--
- To handle the reselection within the app on devices running Android 14
-     or higher if your app targets Android 14 (API level 34) or higher.
-    -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-
-    <uses-permission
-        android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
 
 </manifest>

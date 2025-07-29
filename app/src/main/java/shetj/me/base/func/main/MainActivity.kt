@@ -285,6 +285,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 BaseKit.isDebug.postValue(true)
             }
         }
+        
+        mContent.btnSpeechRecognition.setOnClickListener {
+            start<shetj.me.base.func.speech.SpeechRecognitionEntryActivity>()
+        }
 
     }
 
