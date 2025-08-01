@@ -160,9 +160,9 @@ asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 #  Mine
 shetj-activity = { module = "com.github.SheTieJun.androidx-ktx:activity", version = "1.1.0" }
 shetj-qmui = { module = "com.github.SheTieJun:SimQUMI", version = "0.0.1" }
-shetj-record-core = { module = "com.github.SheTieJun.Mp3Recorder:recorder-core", version = "1.9.2" }
-shetj-record-sim = { module = "com.github.SheTieJun.Mp3Recorder:recorder-sim", version = "1.9.2" }
-shetj-record-mix = { module = "com.github.SheTieJun.Mp3Recorder:recorder-mix", version = "1.9.2" }
+shetj-record-core = { module = "com.github.SheTieJun.Mp3Recorder:recorder-core", version = "1.9.3" }
+shetj-record-sim = { module = "com.github.SheTieJun.Mp3Recorder:recorder-sim", version = "1.9.3" }
+shetj-record-mix = { module = "com.github.SheTieJun.Mp3Recorder:recorder-mix", version = "1.9.3" }
 logkit-messenger = { module = "com.github.SheTieJun.LogKit:logkit-messenger", version.ref = "logkitMessenger" }
 
 javax-mail = { module = "javax.mail:mail", version.ref = "mailVersion" }
