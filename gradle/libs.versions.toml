@@ -140,7 +140,7 @@ koinAndroidComposeNavigation = { module = "io.insert-koin:koin-androidx-navigati
 # Third
 third-brv = { module = "com.github.CymChad:BaseRecyclerViewAdapterHelper", version = "3.0.11" }
 third-gson = { module = "com.google.code.gson:gson", version = "2.13.1" }
-third-glide = { module = "com.github.bumptech.glide:glide", version = "4.16.0" }
+third-glide = { module = "com.github.bumptech.glide:glide", version = "5.0.5" }
 third-timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
 # Retrofit2
