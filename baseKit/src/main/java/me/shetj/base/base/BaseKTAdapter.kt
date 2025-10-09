@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-abstract class BaseKTAdapter<T, K : BaseViewHolder>
+abstract class BaseKTAdapter<T, K : TackerBaseViewHolder>
 @JvmOverloads constructor(
     owner: Lifecycle,
     @LayoutRes layoutResId: Int,

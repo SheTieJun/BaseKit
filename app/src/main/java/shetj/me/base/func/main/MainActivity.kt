@@ -289,6 +289,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         mContent.btnSpeechRecognition.setOnClickListener {
             start<shetj.me.base.func.speech.SpeechRecognitionEntryActivity>()
         }
+        
+        mContent.btnSelectTrackerTest.setOnClickListener {
+            start<shetj.me.base.func.SelectTrackerTestActivity>()
+        }
 
     }
 

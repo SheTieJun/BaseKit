@@ -4,12 +4,21 @@ import android.content.Context
 import android.graphics.Rect
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.annotation.NonNull
+import androidx.recyclerview.selection.ItemKeyProvider
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.SelectionTracker.SelectionPredicate
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import me.shetj.base.base.TrackerBaseItemDetailsLookup
+
 
 /**
  * startSmoothScroll(smoothScroller)
@@ -105,7 +114,20 @@ fun ViewPager2.overNever() {
 }
 
 
-fun RecyclerView.addHItemDecoration(size: Int,isNeedStart: Boolean = false, isNeedEnd: Boolean = false,startDecoration: Int = 0, endDecoration: Int = 0) {
+
+fun RecyclerView.createSelectTracker(selectionId: String,isMulti: Boolean): SelectionTracker<Long?> {
+
+    return SelectionTracker.Builder<Long>(
+        selectionId,
+        this,
+        StableIdKeyProvider(this),
+        TrackerBaseItemDetailsLookup(this),
+        StorageStrategy.createLongStorage()
+    ).withSelectionPredicate(if (isMulti) SelectionPredicates.createSelectAnything() else SelectionPredicates.createSelectSingleAnything())
+        .build()
+}
+
+fun RecyclerView.addHItemDecoration(size: Int, isNeedStart: Boolean = false, isNeedEnd: Boolean = false, startDecoration: Int = 0, endDecoration: Int = 0) {
     if (itemDecorationCount == 0) {
         val itemDecoration = object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
@@ -116,23 +138,23 @@ fun RecyclerView.addHItemDecoration(size: Int,isNeedStart: Boolean = false, isNe
             ) {
                 super.getItemOffsets(outRect, view, parent, state)
                 val position = getChildAdapterPosition(view)
-                if (isNeedEnd && position == childCount - 1){
-                    if ( endDecoration != 0){
+                if (isNeedEnd && position == childCount - 1) {
+                    if (endDecoration != 0) {
                         outRect.right = endDecoration
-                    }else{
+                    } else {
                         outRect.right = size
                     }
                 }
 
-                if (isNeedStart && position == 0){
-                    if (startDecoration !=0){
+                if (isNeedStart && position == 0) {
+                    if (startDecoration != 0) {
                         outRect.left = startDecoration
-                    }else{
+                    } else {
                         outRect.left = size
                     }
                 }
 
-                if (position != childCount - 1 && position != 0 ){
+                if (position != childCount - 1 && position != 0) {
                     outRect.right = size
                 }
             }
@@ -142,7 +164,7 @@ fun RecyclerView.addHItemDecoration(size: Int,isNeedStart: Boolean = false, isNe
 }
 
 
-fun RecyclerView.addItemDecoration(size: Int,isNeedStart: Boolean = false, isNeedEnd: Boolean = false,startDecoration: Int = 0, endDecoration: Int = 0) {
+fun RecyclerView.addItemDecoration(size: Int, isNeedStart: Boolean = false, isNeedEnd: Boolean = false, startDecoration: Int = 0, endDecoration: Int = 0) {
     if (itemDecorationCount == 0) {
         val itemDecoration = object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
@@ -153,23 +175,23 @@ fun RecyclerView.addItemDecoration(size: Int,isNeedStart: Boolean = false, isNee
             ) {
                 super.getItemOffsets(outRect, view, parent, state)
                 val position = getChildAdapterPosition(view)
-                if (isNeedEnd && position == childCount - 1){
-                    if ( endDecoration != 0){
+                if (isNeedEnd && position == childCount - 1) {
+                    if (endDecoration != 0) {
                         outRect.bottom = endDecoration
-                    }else{
+                    } else {
                         outRect.bottom = size
                     }
                 }
 
-                if (isNeedStart && position == 0){
-                    if (startDecoration !=0){
+                if (isNeedStart && position == 0) {
+                    if (startDecoration != 0) {
                         outRect.top = startDecoration
-                    }else{
+                    } else {
                         outRect.top = size
                     }
                 }
 
-                if (position != childCount - 1 && position != 0 ){
+                if (position != childCount - 1 && position != 0) {
                     outRect.bottom = size
                 }
             }

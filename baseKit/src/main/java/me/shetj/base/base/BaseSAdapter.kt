@@ -8,14 +8,39 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import me.shetj.base.ktx.createSelectTracker
+import java.util.UUID
 
-abstract class BaseSAdapter<T, K : BaseViewHolder>
+abstract class BaseSAdapter<T, K : TackerBaseViewHolder>
 @JvmOverloads constructor(
     @LayoutRes layoutResId: Int,
     data: MutableList<T>? = null
 ) : BaseQuickAdapter<T, K>(layoutResId, data) {
+
+    //初始化的时候就要变根
+    open val isMulti = false
+
+    protected var mSelectTracker: SelectionTracker<Long?>? = null
+
+
+    fun getSelectTracker() = mSelectTracker
+
+    /**
+     * 设置 SelectionTracker
+     */
+    fun setSelectionTracker(tracker: SelectionTracker<Long?>) {
+        this.mSelectTracker = tracker
+    }
+
+    /**
+     * 清除所有选择
+     */
+    fun clearSelection() {
+        getSelectTracker()?.clearSelection()
+    }
 
     protected fun getString(@StringRes resId: Int): String {
         return context.getString(resId)

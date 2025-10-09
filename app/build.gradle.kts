@@ -71,6 +71,7 @@ composeCompiler {
 
 
 kotlin {
+    jvmToolchain(17)
     compilerOptions {
         apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
     }
@@ -85,7 +86,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
-    implementation(libs.activity)
+    implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 //    androidTestImplementation(libs.ui.test.junit4)
     testImplementation(libs.junit)

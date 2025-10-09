@@ -56,6 +56,9 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme.MD3"
         tools:targetApi="tiramisu">
+
+        <activity android:name=".func.SelectTrackerTestActivity"/>
+
         <activity
             android:name=".func.compose.ComposeTestActivity"
             android:exported="false"

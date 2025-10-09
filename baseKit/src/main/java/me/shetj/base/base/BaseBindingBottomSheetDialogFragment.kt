@@ -85,8 +85,14 @@ abstract class BaseBindingBottomSheetDialogFragment<VB : ViewBinding> :
 
     fun tryShow(fragmentManager: FragmentManager, tag: String) {
         runCatching {
-            // 防止动画没有结束，fragment又被点击了，然后导致的崩溃
             fragmentManager.executePendingTransactions()
+            if (this.isAdded) {
+                val fragment = fragmentManager.findFragmentByTag(tag)
+                if (fragment != null && fragment.isHidden) {
+                    fragmentManager.beginTransaction().show(fragment).commitAllowingStateLoss()
+                }
+                return
+            }
             show(fragmentManager, tag)
         }
     }
