@@ -9,12 +9,10 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import me.shetj.base.ktx.createSelectTracker
-import java.util.UUID
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-abstract class BaseSAdapter<T, K : TackerBaseViewHolder>
+abstract class BaseSAdapter<T, K : BaseViewHolder>
 @JvmOverloads constructor(
     @LayoutRes layoutResId: Int,
     data: MutableList<T>? = null
