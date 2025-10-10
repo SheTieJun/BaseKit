@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 class TrackerBaseItemDetailsLookup(private val recyclerView: RecyclerView) : ItemDetailsLookup<Long>() {
 
 
+    //点击空白的地方时，会清空
     override fun getItemDetails(event: MotionEvent): ItemDetails<Long>? {
         val view = recyclerView.findChildViewUnder(event.x, event.y)
         if (view != null) {

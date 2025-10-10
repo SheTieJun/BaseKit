@@ -1,6 +1,8 @@
 package me.shetj.base.base
 
+import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.recyclerview.selection.ItemDetailsLookup
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 

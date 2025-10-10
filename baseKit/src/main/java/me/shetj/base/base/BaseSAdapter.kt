@@ -20,7 +20,7 @@ abstract class BaseSAdapter<T, K : TackerBaseViewHolder>
     data: MutableList<T>? = null
 ) : BaseQuickAdapter<T, K>(layoutResId, data) {
 
-    //初始化的时候就要变根
+    //是否是多选
     open val isMulti = false
 
     protected var mSelectTracker: SelectionTracker<Long?>? = null

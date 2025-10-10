@@ -14,7 +14,7 @@ import shetj.me.base.databinding.ActivitySelectTrackerTestBinding
  */
 class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestBinding, BaseViewModel>() {
 
-    private lateinit var adapter: SelectTrackerTestAdapter
+    private lateinit var mAdapter: SelectTrackerTestAdapter
     private lateinit var selectionTracker: SelectionTracker<Long?>
     private var isMultiSelectMode = false
     private val testData = TestItem.createTestData().toMutableList()
@@ -45,11 +45,10 @@ class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestB
      * 设置 RecyclerView
      */
     private fun setupRecyclerView() {
-        adapter = SelectTrackerTestAdapter(testData, isMultiSelectMode)
-        
+        mAdapter = SelectTrackerTestAdapter(testData, isMultiSelectMode)
         mBinding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@SelectTrackerTestActivity)
-            adapter = this@SelectTrackerTestActivity.adapter
+            adapter = this@SelectTrackerTestActivity.mAdapter
             setHasFixedSize(true)
         }
 
@@ -65,7 +64,18 @@ class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestB
             "select_tracker_test",
             isMultiSelectMode
         )
-        adapter.setSelectionTracker(selectionTracker)
+        mAdapter.setSelectionTracker(selectionTracker)
+        mAdapter.setOnItemClickListener{ adapter, view, position ->
+            val id = mAdapter.getItem(position).id
+
+            if (selectionTracker.isSelected(id)) {
+                // 如果已选中，则取消选择
+                selectionTracker.deselect(id)
+            } else {
+                // 如果未选中，则选择
+                selectionTracker.select(id)
+            }
+        }
     }
 
     /**
@@ -132,9 +142,9 @@ class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestB
         selectionTracker.clearSelection()
         
         // 重新创建适配器和选择追踪器
-        adapter = SelectTrackerTestAdapter(testData, isMultiSelectMode)
-        adapter.setHasStableIds(true)
-        mBinding.recyclerView.adapter = adapter
+        mAdapter = SelectTrackerTestAdapter(testData, isMultiSelectMode)
+        mAdapter.setHasStableIds(true)
+        mBinding.recyclerView.adapter = mAdapter
         
         createSelectionTracker()
         setupSelectionObserver()
@@ -193,7 +203,7 @@ class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestB
      * 显示选中项目详情
      */
     private fun showSelectedItems() {
-        val selectedItems = adapter.getSelectedItems()
+        val selectedItems = mAdapter.getSelectedItems()
         if (selectedItems.isEmpty()) {
             mBinding.tvResult.text = "结果：未选择任何项目"
             return
@@ -220,7 +230,7 @@ class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestB
         )
         
         testData.add(newItem)
-        adapter.notifyItemInserted(testData.size - 1)
+        mAdapter.notifyItemInserted(testData.size - 1)
         updateSelectionInfo()
     }
 
@@ -228,7 +238,7 @@ class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestB
      * 移除选中的项目
      */
     private fun removeSelectedItems() {
-        val selectedItems = adapter.getSelectedItems()
+        val selectedItems = mAdapter.getSelectedItems()
         if (selectedItems.isEmpty()) {
             mBinding.tvResult.text = "结果：没有选中的项目可以移除"
             return
@@ -242,12 +252,12 @@ class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestB
             val index = testData.indexOf(item)
             if (index != -1) {
                 testData.removeAt(index)
-                adapter.notifyItemRemoved(index)
+                mAdapter.notifyItemRemoved(index)
             }
         }
         
         // 刷新整个列表以确保位置正确
-        adapter.notifyDataSetChanged()
+        mAdapter.notifyDataSetChanged()
         
         mBinding.tvResult.text = "结果：已移除 ${selectedItems.size} 个项目"
         updateSelectionInfo()

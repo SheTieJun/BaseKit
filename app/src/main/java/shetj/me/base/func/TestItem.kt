@@ -29,6 +29,7 @@ data class TestItem(
          */
         fun createTestData(): List<TestItem> {
             return listOf(
+                TestItem(0L, "测试项目 1", "这是第一个测试项目，用于验证基本选择功能", ItemType.NORMAL),
                 TestItem(1L, "测试项目 1", "这是第一个测试项目，用于验证基本选择功能", ItemType.NORMAL),
                 TestItem(2L, "重要任务", "这是一个重要的任务项目，需要特别关注", ItemType.IMPORTANT),
                 TestItem(3L, "紧急处理", "紧急需要处理的项目，优先级最高", ItemType.URGENT),

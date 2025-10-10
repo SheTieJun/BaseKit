@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import me.shetj.base.base.BaseSAdapter
 import me.shetj.base.base.TackerBaseViewHolder
+import me.shetj.base.ktx.logI
 import shetj.me.base.R
 import shetj.me.base.databinding.ItemSelectTrackerTestBinding
 
@@ -23,14 +24,14 @@ class SelectTrackerTestAdapter(
 
     override val isMulti: Boolean = isMultiSelect
 
-
-
     override fun convert(holder: TestViewHolder, item: TestItem) {
+        "convert def".logI("SelectTracker")
         holder.bind(item, getSelectTracker()?.isSelected(item.id) == true)
     }
 
     override fun convert(holder: TestViewHolder, item: TestItem, payloads: List<Any>) {
         super.convert(holder, item, payloads)
+        "convert payloads ${holder.bindingAdapterPosition}".logI("SelectTracker")
         holder.bind(item, getSelectTracker()?.isSelected(item.id) == true)
     }
 
@@ -42,14 +43,13 @@ class SelectTrackerTestAdapter(
             parent,
             false
         )
-        return TestViewHolder(binding)
+        val holder = TestViewHolder(binding)
+        return holder
     }
 
     override fun getItemId(position: Int): Long {
         return getItem(position).id
     }
-
-
 
     /**
      * 获取当前选中的项目
@@ -66,25 +66,17 @@ class SelectTrackerTestAdapter(
 
 
 
-    /**
-     * 选择所有项目（仅多选模式）
-     */
-    fun selectAll() {
-        if (isMulti) {
-            getSelectTracker()?.let { tracker ->
-                data.forEach { item ->
-                    tracker.select(item.id)
-                }
-            }
-        }
-    }
+
 
     /**
      * ViewHolder 类
      */
     class TestViewHolder(private val binding: ItemSelectTrackerTestBinding) : TackerBaseViewHolder(binding.root) {
 
+          var item: TestItem ?=null
+
         fun bind(item: TestItem, isSelected: Boolean) {
+            this.item = item
             binding.apply {
                 // 设置基本信息
                 tvTitle.text = item.title
@@ -108,16 +100,12 @@ class SelectTrackerTestAdapter(
                         ContextCompat.getColor(root.context, R.color.design_default_color_primary_variant)
                     )
                     cardView.alpha = 0.8f
-                    root.scaleX = 0.95f
-                    root.scaleY = 0.95f
                 } else {
                     // 未选中状态：恢复默认样式
                     cardView.setCardBackgroundColor(
                         ContextCompat.getColor(root.context, android.R.color.white)
                     )
                     cardView.alpha = 1.0f
-                    root.scaleX = 1.0f
-                    root.scaleY = 1.0f
                 }
             }
         }
