@@ -1,9 +1,11 @@
 package shetj.me.base.func
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.LinearLayoutManager
 import me.shetj.base.ktx.createSelectTracker
+import me.shetj.base.ktx.setAppearance
 import me.shetj.base.mvvm.viewbind.BaseBindingActivity
 import me.shetj.base.mvvm.viewbind.BaseViewModel
 import shetj.me.base.databinding.ActivitySelectTrackerTestBinding
@@ -31,6 +33,7 @@ class SelectTrackerTestActivity : BaseBindingActivity<ActivitySelectTrackerTestB
      * 设置工具栏
      */
     private fun setupToolbar() {
+        setAppearance(true, Color.WHITE)
         setSupportActionBar(mBinding.toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)

@@ -33,13 +33,6 @@ class NetWorkLiveDate private constructor(netWorkInfo: NetWorkInfo) :
     }
 
     fun start(context: Context) {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CHANGE_NETWORK_STATE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
         try {
             if (isStarted.compareAndSet(false, true)) {
                 context.applicationContext.requestNetWork()

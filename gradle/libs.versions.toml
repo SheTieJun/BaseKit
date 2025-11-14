@@ -24,7 +24,7 @@ androidx-camerax = "1.5.1"
 androidx-asynclayoutinflater = "1.1.0"
 espressoCore = "3.5.1"
 junitVersion = "1.1.5"
-material = "1.12.0"
+material = "1.13.0"
 preferenceVersion = "1.2.1"
 recyclerview = "1.4.0"
 asm = "9.8"
@@ -45,6 +45,7 @@ coroutines = "1.10.2"
 benchmark = "1.4.0"
 tracingKtx = "1.3.0"
 koin-version = "4.1.1"
+koin-annotations = "2.0.0"
 retrofit = "3.0.0"
 activity-compose = "1.10.1"
 compose-bom = "2025.08.00"
@@ -135,6 +136,8 @@ koinWorkManager = { module = "io.insert-koin:koin-androidx-workmanager", version
 koinAndroidCompat = { module = "io.insert-koin:koin-android-compat", version.ref = "koin-version" }
 koinAndroidcompose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-version" }
 koinAndroidComposeNavigation = { module = "io.insert-koin:koin-androidx-navigation", version.ref = "koin-version" }
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annotations" }
+koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annotations" }
 
 # Third
 third-brv = { module = "com.github.CymChad:BaseRecyclerViewAdapterHelper", version = "3.0.11" }
@@ -185,5 +188,5 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version = "1.1.1" }
-compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.9.2" }
+compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.9.4" }
 compose-paging = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingVersion" }

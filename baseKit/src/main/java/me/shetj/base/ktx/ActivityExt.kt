@@ -298,7 +298,6 @@ inline fun <reified VB : ViewBinding> Context.createSimDialog(
  * 获取网络状态监听回调
  * - tip:调用次数不宜过多，部分高版本手机会崩溃
  */
-@RequiresPermission(allOf = ["android.permission.CHANGE_NETWORK_STATE"])
 internal fun Context.requestNetWork() {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val builder = NetworkRequest.Builder()
@@ -307,7 +306,7 @@ internal fun Context.requestNetWork() {
         .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .build()
 
-    cm.requestNetwork(
+    cm.registerNetworkCallback(
         request,
         object : ConnectivityManager.NetworkCallback() {
 
