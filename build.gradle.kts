@@ -21,7 +21,7 @@ plugins {
     id(libs.plugins.kotlin.android.get().pluginId) apply false
     id(libs.plugins.android.benchmark.get().pluginId) version (libs.versions.benchmark) apply false
     id("maven-publish")
-    id("io.gitlab.arturbosch.detekt") version "1.23.3"
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.changelog)
