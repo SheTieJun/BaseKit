@@ -33,8 +33,8 @@ class EdgeHandoffNestedScrollView @JvmOverloads constructor(
 
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        when (ev?.actionMasked) {
+    override fun onTouchEvent(ev: MotionEvent): Boolean {
+        when (ev.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 lastY = ev.y
                 startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL, ViewCompat.TYPE_TOUCH)
@@ -50,13 +50,16 @@ class EdgeHandoffNestedScrollView @JvmOverloads constructor(
                 val maxScroll = (contentHeight - height).coerceAtLeast(0)
                 val atTop = scrollY <= 0
                 val atBottom = scrollY >= maxScroll
-                parent.requestDisallowInterceptTouchEvent(!(atTop && dyWanted < 0) && !(atBottom && dyWanted > 0))
-                val oldY = scrollY
-//                scrollBy(0, dyWanted)//不需要连带滚动，体感很差
-                val myConsumed = scrollY - oldY
-                val unconsumed = dyWanted - myConsumed
-                dispatchNestedScroll(0, myConsumed, 0, unconsumed, offset, ViewCompat.TYPE_TOUCH)
-                lastY = y - offset[1]
+                val isDisallow = !(atTop && dyWanted < 0) && !(atBottom && dyWanted > 0)
+                parent.requestDisallowInterceptTouchEvent(isDisallow)
+                if (!isDisallow){
+                    val oldY = scrollY
+                    scrollBy(0, dyWanted)
+                    val myConsumed = scrollY - oldY
+                    val unconsumed = dyWanted - myConsumed
+                    dispatchNestedScroll(0, myConsumed, 0, unconsumed, offset, ViewCompat.TYPE_TOUCH)
+                    lastY = y - offset[1]
+                }
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 stopNestedScroll(ViewCompat.TYPE_TOUCH)
