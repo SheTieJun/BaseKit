@@ -52,7 +52,7 @@ compose-bom = "2025.08.00"
 pagingVersion = "3.3.6"
 
 #plugins
-changelog = "2.2.1"
+changelog = "2.5.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
