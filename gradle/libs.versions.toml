@@ -148,7 +148,7 @@ third-timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 # Retrofit2
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
-okhttp-sse = { module = "com.squareup.okhttp3:okhttp-sse", version = "5.1.0" }
+okhttp-sse = { module = "com.squareup.okhttp3:okhttp-sse", version = "5.3.2" }
 
 # Coroutines
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
