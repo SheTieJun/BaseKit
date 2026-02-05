@@ -332,7 +332,9 @@ class WebViewManager(private val webView: WebView) {
         val cookieManager: CookieManager = CookieManager.getInstance()
         cookieManager.setAcceptCookie(true)
         map.onEach { entry ->
-            cookieManager.setCookie(entry.key, entry.value)
+            cookieManager.setCookie(entry.key, entry.value){
+                "setCookie: success = $it".logI("webview")
+            }
         }
         cookieManager.flush()
     }
