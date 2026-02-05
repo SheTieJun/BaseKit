@@ -1,6 +1,6 @@
 ---
-name: "qmui-helper"
-description: "Provides guidance on using QMUI Android library, specifically for layouts and shadows. Invoke when user asks about QMUI usage, shadow configuration, or QMUILayout attributes."
+name: "shadow-layout"
+description: "provides powerful layout components (like `QMUILinearLayout`, `QMUIFrameLayout`, `QMUIRelativeLayout`, `QMUIConstraintLayout`) that support shadows, borders, and dividers without needing extra drawables."
 ---
 
 # QMUI Usage Guide
