@@ -13,7 +13,7 @@ description: 根据当前项目或选中文件生成/更新 README 或技术文�
 - 使用示例（可包含代码片段）
 - 常见问题（可选）
 ## 信息来源
-- 优先从 package.json / pom.xml / requirements.txt 提取依赖
+- 优先从 build.gradle 或者build.gradle.kts /libs.versions.toml 提取依赖
 - 从项目主要入口文件提取关键 API 和使用方式
 - 如已有 README，则在原有基础上增量更新，不覆盖已有手动内容
 ## 输出方式

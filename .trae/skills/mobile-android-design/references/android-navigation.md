@@ -1,71 +1,30 @@
----
-name: compose-navigation
-description: Implement navigation in Jetpack Compose using Navigation Compose. Use when asked to set up navigation, pass arguments between screens, handle deep links, or structure multi-screen apps.
----
+# Android Navigation Patterns
 
-# Compose Navigation
+## Navigation Compose Basics
 
-## Overview
-
-Implement type-safe navigation in Jetpack Compose applications using the Navigation Compose library. This skill covers NavHost setup, argument passing, deep links, nested graphs, adaptive navigation, and testing.
-
-## Setup
-
-Add the Navigation Compose dependency:
+### Setup and Dependencies
 
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("androidx.navigation:navigation-compose:2.8.5")
-    
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     // For type-safe navigation (recommended)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-}
-
-// Enable serialization plugin
-plugins {
-    kotlin("plugin.serialization") version "2.0.21"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }
 ```
 
----
-
-## Core Concepts
-
-### 1. Define Routes (Type-Safe)
-
-Use `@Serializable` data classes/objects for type-safe routes:
+### Basic Navigation
 
 ```kotlin
-import kotlinx.serialization.Serializable
-
-// Simple screen (no arguments)
 @Serializable
 object Home
 
-// Screen with required argument
 @Serializable
 data class Detail(val itemId: String)
 
-// Screen with multiple arguments
 @Serializable
-data class ProductDetail(
-    val productId: String,
-    val category: String,
-    val fromSearch: Boolean = false
-)
+object Settings
 
-@Serializable
-data class UserProfile(val userId: Long)
-
-// Screen with optional argument
-@Serializable
-data class Settings(val section: String? = null)
-```
-
-### 2. Create NavHost & Basic Navigation
-
-```kotlin
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -80,7 +39,7 @@ fun AppNavigation() {
                     navController.navigate(Detail(itemId))
                 },
                 onSettingsClick = {
-                    navController.navigate(Settings())
+                    navController.navigate(Settings)
                 }
             )
         }
@@ -102,13 +61,22 @@ fun AppNavigation() {
 }
 ```
 
----
-
-## Navigation Patterns
-
 ### Navigation with Arguments
 
 ```kotlin
+// Type-safe routes with arguments
+@Serializable
+data class ProductDetail(
+    val productId: String,
+    val category: String,
+    val fromSearch: Boolean = false
+)
+
+@Serializable
+data class UserProfile(
+    val userId: Long
+)
+
 @Composable
 fun NavigationWithArgs() {
     val navController = rememberNavController()
@@ -145,7 +113,9 @@ fun NavigationWithArgs() {
 }
 ```
 
-### Bottom Navigation
+## Bottom Navigation
+
+### Standard Implementation
 
 ```kotlin
 enum class BottomNavDestination(
@@ -238,12 +208,35 @@ fun BottomNavWithBadges(
             selected = false,
             onClick = { }
         )
-        // ... more items
+
+        NavigationBarItem(
+            icon = {
+                BadgedBox(
+                    badge = {
+                        if (notificationCount > 0) {
+                            Badge {
+                                Text(
+                                    if (notificationCount > 99) "99+"
+                                    else "$notificationCount"
+                                )
+                            }
+                        }
+                    }
+                ) {
+                    Icon(Icons.Default.Notifications, null)
+                }
+            },
+            label = { Text("Alerts") },
+            selected = false,
+            onClick = { }
+        )
     }
 }
 ```
 
-### Navigation Drawer (Modal)
+## Navigation Drawer
+
+### Modal Navigation Drawer
 
 ```kotlin
 @Composable
@@ -251,14 +244,48 @@ fun ModalDrawerNavigation() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var selectedItem by remember { mutableStateOf(0) }
-    
-    // ... items setup
+
+    val items = listOf(
+        DrawerItem(Icons.Default.Home, "Home"),
+        DrawerItem(Icons.Default.Settings, "Settings"),
+        DrawerItem(Icons.Default.Info, "About"),
+        DrawerItem(Icons.Default.Help, "Help")
+    )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                // Header...
+                // Header
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.BottomStart
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        AsyncImage(
+                            model = "avatar_url",
+                            contentDescription = "Profile",
+                            modifier = Modifier
+                                .size(64.dp)
+                                .clip(CircleShape)
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            "John Doe",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            "john@example.com",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(12.dp))
+
                 // Navigation items
                 items.forEachIndexed { index, item ->
                     NavigationDrawerItem(
@@ -272,7 +299,19 @@ fun ModalDrawerNavigation() {
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
                 }
-                // Footer...
+
+                Spacer(Modifier.weight(1f))
+
+                // Footer
+                HorizontalDivider()
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Default.Logout, null) },
+                    label = { Text("Sign Out") },
+                    selected = false,
+                    onClick = { },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                )
+                Spacer(Modifier.height(12.dp))
             }
         }
     ) {
@@ -292,12 +331,49 @@ fun ModalDrawerNavigation() {
         }
     }
 }
+
+data class DrawerItem(val icon: ImageVector, val label: String)
 ```
 
-### Adaptive Navigation (Rail/Drawer)
+### Permanent Navigation Drawer (Tablets)
 
 ```kotlin
-// Navigation Rail
+@Composable
+fun PermanentDrawerLayout() {
+    PermanentNavigationDrawer(
+        drawerContent = {
+            PermanentDrawerSheet(
+                modifier = Modifier.width(240.dp)
+            ) {
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    "App Name",
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.titleLarge
+                )
+                HorizontalDivider()
+
+                drawerItems.forEach { item ->
+                    NavigationDrawerItem(
+                        icon = { Icon(item.icon, null) },
+                        label = { Text(item.label) },
+                        selected = item == selectedItem,
+                        onClick = { selectedItem = item },
+                        modifier = Modifier.padding(horizontal = 12.dp)
+                    )
+                }
+            }
+        }
+    ) {
+        // Main content takes remaining space
+        MainContent()
+    }
+}
+```
+
+## Navigation Rail
+
+```kotlin
 @Composable
 fun NavigationRailLayout() {
     var selectedItem by remember { mutableStateOf(0) }
@@ -305,10 +381,16 @@ fun NavigationRailLayout() {
     Row(modifier = Modifier.fillMaxSize()) {
         NavigationRail(
             header = {
-                 FloatingActionButton(onClick = { }) { Icon(Icons.Default.Add, "Create") }
+                FloatingActionButton(
+                    onClick = { },
+                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                ) {
+                    Icon(Icons.Default.Add, "Create")
+                }
             }
         ) {
             Spacer(Modifier.weight(1f))
+
             railItems.forEachIndexed { index, item ->
                 NavigationRailItem(
                     icon = { Icon(item.icon, null) },
@@ -317,51 +399,75 @@ fun NavigationRailLayout() {
                     onClick = { selectedItem = index }
                 )
             }
+
             Spacer(Modifier.weight(1f))
         }
 
         // Main content
-        Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
-             // Content switching logic
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+        ) {
+            when (selectedItem) {
+                0 -> HomeContent()
+                1 -> SearchContent()
+                2 -> ProfileContent()
+            }
         }
     }
 }
 ```
 
----
-
 ## Deep Linking
 
 ### Basic Deep Link Setup
 
-**AndroidManifest.xml**:
-```xml
-<intent-filter>
-    <action android:name="android.intent.action.VIEW" />
-    <category android:name="android.intent.category.DEFAULT" />
-    <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="myapp" />
-    <data android:scheme="https" android:host="myapp.com" />
-</intent-filter>
-```
-
-**Composable Setup**:
 ```kotlin
+// In AndroidManifest.xml
+// <intent-filter>
+//     <action android:name="android.intent.action.VIEW" />
+//     <category android:name="android.intent.category.DEFAULT" />
+//     <category android:name="android.intent.category.BROWSABLE" />
+//     <data android:scheme="myapp" />
+//     <data android:scheme="https" android:host="myapp.com" />
+// </intent-filter>
+
 @Composable
 fun DeepLinkNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Home) {
-        composable<Home> { HomeScreen() }
+    NavHost(
+        navController = navController,
+        startDestination = Home
+    ) {
+        composable<Home> {
+            HomeScreen()
+        }
 
         composable<ProductDetail>(
             deepLinks = listOf(
-                navDeepLink<ProductDetail>(basePath = "https://myapp.com/product"),
-                navDeepLink<ProductDetail>(basePath = "myapp://product")
+                navDeepLink<ProductDetail>(
+                    basePath = "https://myapp.com/product"
+                ),
+                navDeepLink<ProductDetail>(
+                    basePath = "myapp://product"
+                )
             )
         ) { backStackEntry ->
             val args: ProductDetail = backStackEntry.toRoute()
             ProductDetailScreen(productId = args.productId)
+        }
+
+        composable<UserProfile>(
+            deepLinks = listOf(
+                navDeepLink<UserProfile>(
+                    basePath = "https://myapp.com/user"
+                )
+            )
+        ) { backStackEntry ->
+            val args: UserProfile = backStackEntry.toRoute()
+            UserProfileScreen(userId = args.userId)
         }
     }
 }
@@ -373,13 +479,18 @@ fun DeepLinkNavigation() {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             AppTheme {
                 val navController = rememberNavController()
+
                 // Handle deep link from intent
                 LaunchedEffect(Unit) {
-                    intent?.data?.let { uri -> navController.handleDeepLink(intent) }
+                    intent?.data?.let { uri ->
+                        navController.handleDeepLink(intent)
+                    }
                 }
+
                 AppNavigation(navController = navController)
             }
         }
@@ -387,12 +498,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        // Handle new intents when activity is already running
         setIntent(intent)
     }
 }
 ```
-
----
 
 ## Nested Navigation
 
@@ -405,11 +515,15 @@ fun NestedNavigation() {
         // Main graph with bottom navigation
         navigation<MainGraph>(startDestination = Home) {
             composable<Home> {
-                HomeScreen(onItemClick = { navController.navigate(Detail(it)) })
+                HomeScreen(
+                    onItemClick = { navController.navigate(Detail(it)) }
+                )
             }
             composable<Search> { SearchScreen() }
             composable<Profile> {
-                ProfileScreen(onSettingsClick = { navController.navigate(SettingsGraph) })
+                ProfileScreen(
+                    onSettingsClick = { navController.navigate(SettingsGraph) }
+                )
             }
         }
 
@@ -419,7 +533,7 @@ fun NestedNavigation() {
             DetailScreen(itemId = args.itemId)
         }
 
-        // Separate settings graph
+        // Separate settings graph (full screen, no bottom nav)
         navigation<SettingsGraph>(startDestination = SettingsMain) {
             composable<SettingsMain> {
                 SettingsScreen(
@@ -433,7 +547,6 @@ fun NestedNavigation() {
     }
 }
 
-// Graph Routes
 @Serializable object MainGraph
 @Serializable object SettingsGraph
 @Serializable object SettingsMain
@@ -441,9 +554,7 @@ fun NestedNavigation() {
 @Serializable object NotificationSettings
 ```
 
----
-
-## State Management & Animation
+## Navigation State Management
 
 ### ViewModel Integration
 
@@ -461,15 +572,33 @@ class NavigationViewModel @Inject constructor(
             _navigationEvents.emit(NavigationEvent.NavigateToDetail(itemId))
         }
     }
+
+    fun navigateBack() {
+        viewModelScope.launch {
+            _navigationEvents.emit(NavigationEvent.NavigateBack)
+        }
+    }
+}
+
+sealed class NavigationEvent {
+    data class NavigateToDetail(val itemId: String) : NavigationEvent()
+    object NavigateBack : NavigationEvent()
 }
 
 @Composable
-fun NavigationHandler(navController: NavHostController, viewModel: NavigationViewModel = hiltViewModel()) {
+fun NavigationHandler(
+    navController: NavHostController,
+    viewModel: NavigationViewModel = hiltViewModel()
+) {
     LaunchedEffect(Unit) {
         viewModel.navigationEvents.collect { event ->
             when (event) {
-                is NavigationEvent.NavigateToDetail -> navController.navigate(Detail(event.itemId))
-                NavigationEvent.NavigateBack -> navController.popBackStack()
+                is NavigationEvent.NavigateToDetail -> {
+                    navController.navigate(Detail(event.itemId))
+                }
+                NavigationEvent.NavigateBack -> {
+                    navController.popBackStack()
+                }
             }
         }
     }
@@ -480,113 +609,90 @@ fun NavigationHandler(navController: NavHostController, viewModel: NavigationVie
 
 ```kotlin
 @Composable
-fun ScreenWithBackHandler(onBack: () -> Unit) {
+fun ScreenWithBackHandler(
+    onBack: () -> Unit
+) {
     var showExitDialog by remember { mutableStateOf(false) }
 
     // Intercept back press
-    BackHandler { showExitDialog = true }
+    BackHandler {
+        showExitDialog = true
+    }
 
     if (showExitDialog) {
         AlertDialog(
             onDismissRequest = { showExitDialog = false },
             title = { Text("Exit App?") },
             text = { Text("Are you sure you want to exit?") },
-            confirmButton = { TextButton(onClick = onBack) { Text("Exit") } },
-            dismissButton = { TextButton(onClick = { showExitDialog = false }) { Text("Cancel") } }
+            confirmButton = {
+                TextButton(onClick = onBack) {
+                    Text("Exit")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showExitDialog = false }) {
+                    Text("Cancel")
+                }
+            }
         )
     }
-    // Screen content...
+
+    // Screen content
+    Content()
 }
 ```
 
-### Navigation Animations
+## Navigation Animations
 
 ```kotlin
-NavHost(
-    navController = navController,
-    startDestination = Home,
-    enterTransition = {
-        slideIntoContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Left,
-            animationSpec = tween(300)
-        )
-    },
-    exitTransition = {
-        slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Left,
-            animationSpec = tween(300)
-        )
-    },
-    popEnterTransition = {
-        slideIntoContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Right,
-            animationSpec = tween(300)
-        )
-    },
-    popExitTransition = {
-        slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Right,
-            animationSpec = tween(300)
-        )
-    }
-) {
-    // ... destinations
-}
-```
+@Composable
+fun AnimatedNavigation() {
+    val navController = rememberNavController()
 
----
+    NavHost(
+        navController = navController,
+        startDestination = Home,
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(300)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(300)
+            )
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(300)
+            )
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(300)
+            )
+        }
+    ) {
+        composable<Home> {
+            HomeScreen()
+        }
 
-## Testing
-
-### Setup
-
-```kotlin
-// build.gradle.kts
-androidTestImplementation("androidx.navigation:navigation-testing:2.8.5")
-```
-
-### Test Navigation
-
-```kotlin
-class NavigationTest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
-    
-    private lateinit var navController: TestNavHostController
-    
-    @Before
-    fun setup() {
-        composeTestRule.setContent {
-            navController = TestNavHostController(LocalContext.current)
-            navController.navigatorProvider.addNavigator(ComposeNavigator())
-            AppNavHost(navController = navController)
+        composable<Detail>(
+            // Custom transition for specific route
+            enterTransition = {
+                fadeIn(animationSpec = tween(500)) +
+                    scaleIn(initialScale = 0.9f, animationSpec = tween(500))
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(500))
+            }
+        ) {
+            DetailScreen()
         }
     }
-    
-    @Test
-    fun verifyStartDestination() {
-        composeTestRule
-            .onNodeWithText("Welcome")
-            .assertIsDisplayed()
-    }
 }
 ```
-
----
-
-## Critical Rules
-
-### DO
-- Use `@Serializable` routes for type safety
-- Pass only IDs/primitives as arguments
-- Use `popUpTo` with `launchSingleTop` for bottom navigation
-- Extract `NavHost` to a separate composable for testability
-- Use `SavedStateHandle.toRoute<T>()` in ViewModels
-
-### DON'T
-- Pass complex objects as navigation arguments
-- Create `NavController` inside `NavHost`
-- Navigate in `LaunchedEffect` without proper keys
-- Forget `FLAG_IMMUTABLE` for PendingIntents (Android 12+)
-- Use string-based routes (legacy pattern)
-
