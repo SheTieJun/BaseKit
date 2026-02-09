@@ -4,14 +4,10 @@ package shetj.me.base.func.main
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.switchMap
-import me.shetj.base.mvvm.viewbind.BaseViewModel
 import me.shetj.base.mvvm.viewbind.SaveStateViewModel
 import me.shetj.base.netcoroutine.HttpResult
-import me.shetj.base.netcoroutine.KCHttpV2
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.time.CalendarReminderUtils
 import shetj.me.base.bean.ResultMusic

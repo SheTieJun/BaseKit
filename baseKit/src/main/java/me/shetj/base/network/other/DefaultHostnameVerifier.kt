@@ -1,4 +1,4 @@
-package me.shetj.base.network.ohter
+package me.shetj.base.network.other
 
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSession

@@ -36,7 +36,7 @@ import java.util.Date
 import java.util.Locale
 
 @Keep
-@Deprecated("使用ActivityResultLauncher更好", replaceWith = ReplaceWith("use ActivityResultExt.kt"))
+
 class ImageUtils {
 
     /**
@@ -112,6 +112,7 @@ class ImageUtils {
         /**
          * 文档图片
          */
+        @Deprecated("使用ActivityResultLauncher更好", replaceWith = ReplaceWith("use ActivityResultExt.kt"))
         @JvmStatic
         fun selectLocalImage(activity: Activity) {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -129,6 +130,7 @@ class ImageUtils {
         /**
          * 通过相机进行照相
          */
+        @Deprecated("使用ActivityResultLauncher更好", replaceWith = ReplaceWith("use ActivityResultExt.kt"))
         @JvmStatic
         fun openCameraImage(activity: Activity) {
             imageUriFromCamera = createImagePathUri(activity)
@@ -140,6 +142,7 @@ class ImageUtils {
         /**
          * 相册获取图片
          */
+        @Deprecated("使用ActivityResultLauncher更好", replaceWith = ReplaceWith("use ActivityResultExt.kt"))
         @JvmStatic
         fun openLocalImage(activity: Activity) {
             val intent = Intent(Intent.ACTION_PICK)
@@ -150,6 +153,7 @@ class ImageUtils {
         /**
          * 进行图片1：1剪切
          */
+        @Deprecated("使用ActivityResultLauncher更好", replaceWith = ReplaceWith("use ActivityResultExt.kt"))
         @JvmStatic
         fun cropImage(activity: Activity, srcUri: Uri?) {
             cropImageUri = createImagePathUri(activity)

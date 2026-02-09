@@ -1,4 +1,4 @@
-package me.shetj.base.network.ohter
+package me.shetj.base.network.other
 
 import me.shetj.base.BaseKit
 import okhttp3.Dns

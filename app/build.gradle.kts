@@ -60,6 +60,12 @@ androidApplication("shetj.me.base") {
         disable.addAll(listOf("NullSafeMutableLiveData","EnsureInitializerMetadata"))
         checkDependencies = true
     }
+
+    packaging {
+        resources {
+            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+        }
+    }
 }
 
 

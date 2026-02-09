@@ -164,8 +164,7 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
                         insets: WindowInsets,
                         animations: MutableList<WindowInsetsAnimation>
                     ): WindowInsets {
-                        posBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom +
-                            insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+                        posBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
                         onAction.invoke(posBottom)
                         return insets
                     }
@@ -173,8 +172,7 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
                 view.setWindowInsetsAnimationCallback(cb)
             } else {
                 ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
-                    posBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom +
-                        insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+                    posBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
                     onAction.invoke(posBottom)
                     insets
                 }

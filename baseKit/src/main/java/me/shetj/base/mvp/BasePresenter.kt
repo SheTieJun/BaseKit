@@ -6,6 +6,7 @@ import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.ktx.getObjByClassArg
@@ -45,7 +46,7 @@ open class BasePresenter<T : BaseModel>(protected var view: IView) : CoroutineSc
      */
 
     fun onDestroy() {
-        coroutineContext.cancelChildren()
+        coroutineContext.cancel()
         model.onDestroy()
     }
 

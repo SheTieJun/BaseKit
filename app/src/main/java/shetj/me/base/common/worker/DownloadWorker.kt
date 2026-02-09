@@ -17,7 +17,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import me.shetj.base.ktx.logI
-import me.shetj.base.netcoroutine.KCHttpV3
+import me.shetj.base.netcoroutine.KCHttp
 import shetj.me.base.R
 import java.util.*
 
@@ -41,7 +41,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
     }
 
     private suspend fun download(downloadUrl: String, outputFile: String, fileName: String) {
-        KCHttpV3.download(
+        KCHttp.download(
             downloadUrl,
             "$outputFile/$fileName",
             onProcess = { _, _, process ->

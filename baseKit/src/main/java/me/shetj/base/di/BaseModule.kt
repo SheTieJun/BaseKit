@@ -9,7 +9,7 @@ import me.shetj.base.network.interceptor.HeadersInterceptor
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
 import me.shetj.base.network.interceptor.ReceivedCookiesInterceptor
 import me.shetj.base.network.model.HttpHeaders
-import me.shetj.base.network.ohter.OkHttpDns
+import me.shetj.base.network.other.OkHttpDns
 import me.shetj.base.saver.SaverDatabase
 import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.Utils
@@ -60,7 +60,7 @@ internal fun getHttpModule(): Module {
                 addInterceptor(get<ReceivedCookiesInterceptor>())
                 hostnameVerifier { _, _ -> true } // 主机验证,默认都是通过的
                 val sslParams: HttpsUtils.SSLParams = HttpsUtils.getSslSocketFactory(null, null, null)
-                sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                sslParams.trustManager?.let { trustManager -> sslParams.sSLSocketFactory?.let { it1 -> sslSocketFactory(it1, trustManager) } }
                 addInterceptor(get<HttpLoggingInterceptor>())
                 val path = EnvironmentStorage.getPath(root = Utils.app.cacheDir.absolutePath, packagePath = ".unKnow")
                 cache(Cache(File(path), 1024 * 1024 * 12))

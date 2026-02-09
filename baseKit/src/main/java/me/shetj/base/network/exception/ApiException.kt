@@ -103,73 +103,67 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
         const val UNKNOWN = 1000
         const val PARSE_ERROR = 1001
         fun handleException(e: Throwable): ApiException {
-            val ex: ApiException
-            return if (e is HttpException) {
-                ex = ApiException(e, e.code())
-                /*switch (httpException.code()) {
-                case BADREQUEST:
-                case UNAUTHORIZED:
-                case FORBIDDEN:
-                case NOT_FOUND:
-                case REQUEST_TIMEOUT:
-                case GATEWAY_TIMEOUT:
-                case INTERNAL_SERVER_ERROR:
-                case BAD_GATEWAY:
-                case SERVICE_UNAVAILABLE:
-                default:
-                    ex.message = "网络错误,Code:"+httpException.code()+" ,err:"+httpException.getMessage();
-                    break;
-            }*/
-                ex.message = e.message
-                ex
-            } else if (e is ServerException) {
-                ex = ApiException(e, e.errCode)
-                ex.message = e.message
-                ex
-            } else if (e is CacheException) {
-                ex = ApiException(e, ERROR.OK_CACHE_EXCEPTION)
-                ex.message = "缓存处理异常：" + e.message
-                ex
-            } else if (e is JsonParseException ||
-                e is JSONException ||
-                e is JsonSyntaxException ||
-                e is JsonSerializer<*> ||
-                e is NotSerializableException ||
-                e is ParseException
-            ) {
-                ex = ApiException(e, ERROR.PARSE_ERROR)
-                ex.message = "解析错误"
-                ex
-            } else if (e is ClassCastException) {
-                ex = ApiException(e, ERROR.CAST_ERROR)
-                ex.message = "类型转换错误"
-                ex
-            } else if (e is ConnectException) {
-                ex = ApiException(e, ERROR.NETWORD_ERROR)
-                ex.message = "连接失败"
-                ex
-            } else if (e is SSLHandshakeException) {
-                ex = ApiException(e, ERROR.SSL_ERROR)
-                ex.message = "证书验证失败"
-                ex
-            } else if (e is SocketTimeoutException) {
-                ex = ApiException(e, ERROR.TIMEOUT_ERROR)
-                ex.message = "连接超时"
-                ex
-            } else if (e is UnknownHostException) {
-                ex = ApiException(e, ERROR.UNKNOWNHOST_ERROR)
-                ex.message = "无法解析该域名"
-                ex
-            } else if (e is NullPointerException) {
-                ex = ApiException(e, ERROR.NULLPOINTER_EXCEPTION)
-                ex.message = "NullPointerException"
-                ex
-            } else if (e is ApiException) {
-                return e
-            } else {
-                ex = ApiException(e, ERROR.UNKNOWN)
-                ex.message = "未知错误:${e.message}"
-                ex
+            return when (e) {
+                is HttpException -> {
+                    ApiException(e, e.code()).apply {
+                        message = e.message
+                    }
+                }
+                is ServerException -> {
+                    ApiException(e, e.errCode).apply {
+                        message = e.message
+                    }
+                }
+                is CacheException -> {
+                    ApiException(e, ERROR.OK_CACHE_EXCEPTION).apply {
+                        message = "缓存处理异常：" + e.message
+                    }
+                }
+                is JsonParseException,
+                is JSONException,
+                is JsonSyntaxException,
+                is NotSerializableException,
+                is ParseException -> {
+                    ApiException(e, ERROR.PARSE_ERROR).apply {
+                        message = "解析错误"
+                    }
+                }
+                is ClassCastException -> {
+                    ApiException(e, ERROR.CAST_ERROR).apply {
+                        message = "类型转换错误"
+                    }
+                }
+                is ConnectException -> {
+                    ApiException(e, ERROR.NETWORD_ERROR).apply {
+                        message = "连接失败"
+                    }
+                }
+                is SSLHandshakeException -> {
+                    ApiException(e, ERROR.SSL_ERROR).apply {
+                        message = "证书验证失败"
+                    }
+                }
+                is SocketTimeoutException -> {
+                    ApiException(e, ERROR.TIMEOUT_ERROR).apply {
+                        message = "连接超时"
+                    }
+                }
+                is UnknownHostException -> {
+                    ApiException(e, ERROR.UNKNOWNHOST_ERROR).apply {
+                        message = "无法解析该域名"
+                    }
+                }
+                is NullPointerException -> {
+                    ApiException(e, ERROR.NULLPOINTER_EXCEPTION).apply {
+                        message = "NullPointerException"
+                    }
+                }
+                is ApiException -> e
+                else -> {
+                    ApiException(e, ERROR.UNKNOWN).apply {
+                        message = "未知错误:${e.message}"
+                    }
+                }
             }
         }
     }
