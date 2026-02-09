@@ -176,6 +176,24 @@ class KeyboardUtil private constructor(activity: Activity, private var content: 
                     onAction.invoke(posBottom)
                     insets
                 }
+                /*
+                 * ```
+                 *      view.viewTreeObserver.addOnGlobalLayoutListener {
+                 *                     val rect = Rect()
+                 *                     view.getWindowVisibleDisplayFrame(rect)
+                 *
+                 *                     val screenHeight = view.height
+                 *                     val keyboardHeight = screenHeight - rect.bottom
+                 *
+                 *                     val navBarHeight = ScreenUtil.getNavBarHeight()
+                 *                     val actualHeight = keyboardHeight - navBarHeight
+                 *                     // 减去导航栏高度
+                 *                     val isShow = actualHeight > 100
+                 *                     LogUtil.i("KeyboardUtil","addKeyBordHeightChangeCallBack 3 :$actualHeight,${ScreenUtil.getNavBarHeight()}")
+                 *                     onAction(if (isShow) actualHeight else 0 )
+                 *                 }
+                 * ```
+                 */
             }
         }
     }

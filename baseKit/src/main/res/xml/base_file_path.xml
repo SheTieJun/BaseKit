@@ -1,25 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-path
-        name="base_external_path"
-        path="base/" />
-    <cache-path
-        name="cache-path"
-        path="." />
-    <!--    使用 <files-path> 元素：如果应用程序需要访问内部存储的文件，可以使用 <files-path> 元素配置内部存储的访问路径。-->
-<!--    使用‘.’表示全部，可以单独设置-->
+    <!-- ========================================================= -->
+    <!-- 内部存储 (Internal Storage) -->
+    <!-- 安全性高，应用私有。卸载应用后数据清除。 -->
+    <!-- ========================================================= -->
+
+    <!-- 1. 应用内部文件目录: Context.getFilesDir() -->
+    <!-- 建议：仅将需要分享的文件放入 "shared" 子目录，避免暴露所有私有文件 -->
     <files-path
-        name="files-path"
+        name="internal_shared"
+        path="shared/" />
+    <!-- 兼容性配置：允许访问 files 根目录 (使用时需谨慎) -->
+    <files-path
+        name="internal_root"
         path="." />
+
+    <!-- 2. 应用内部缓存目录: Context.getCacheDir() -->
+    <cache-path
+        name="internal_cache"
+        path="." />
+
+    <!-- ========================================================= -->
+    <!-- 外部存储 (External Storage - App Private) -->
+    <!-- 卸载应用后数据清除。 -->
+    <!-- ========================================================= -->
+
+    <!-- 3. 外部私有文件目录: Context.getExternalFilesDir(null) -->
+    <!-- 常用路径：Download, Pictures, DCIM, Documents -->
     <external-files-path
-        name="external-files-path"
+        name="external_files"
         path="." />
+    
+    <!-- 4. 外部私有缓存目录: Context.getExternalCacheDir() -->
     <external-cache-path
-        name="external-cache-path"
+        name="external_cache"
         path="." />
-<!--    <root-path> 对应于设备的根目录 (/)。如果在配置中使用此元素，他人便可以随意访问文件和文件夹，包括应用的沙盒和 /sdcard 目录，这会向攻击者提供非常广的攻击面。-->
-<!--    <root-path-->
-<!--        name="root-path"-->
-<!--        path="." />-->
+
+    <!-- 5. 外部媒体目录: Context.getExternalMediaDirs() -->
+    <external-media-path 
+        name="external_media" 
+        path="." />
+
+    <!-- ========================================================= -->
+    <!-- 外部存储 (External Storage - Public) -->
+    <!-- 共享空间，卸载应用后数据保留。Android 10+ 分区存储限制下访问受限。 -->
+    <!-- ========================================================= -->
+
+    <!-- 6. SD卡根目录: Environment.getExternalStorageDirectory() -->
+    <!-- 极其危险，尽量避免使用。仅为兼容旧版本或特定下载场景保留。 -->
+    <!-- 限制只暴露常用公共目录，提高安全性 -->
+    <external-path
+        name="external_download"
+        path="Download/" />
+    <external-path
+        name="external_pictures"
+        path="Pictures/" />
+    <external-path
+        name="external_dcim"
+        path="DCIM/" />
+    <external-path
+        name="external_movies"
+        path="Movies/" />
+    <external-path
+        name="external_documents"
+        path="Documents/" />
+    <!-- 兼容性配置：暴露 SD 卡根目录 (不推荐，但为通用性保留) -->
+    <external-path
+        name="external_root"
+        path="." />
 
 </paths>

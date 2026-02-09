@@ -16,6 +16,7 @@ description: 根据当前项目或选中文件生成/更新 README 或技术文�
 - 优先从 build.gradle 或者build.gradle.kts /libs.versions.toml 提取依赖
 - 从项目主要入口文件提取关键 API 和使用方式
 - 如已有 README，则在原有基础上增量更新，不覆盖已有手动内容
+- 需要保留文章中的总结内容
 ## 输出方式
 - 默认输出为 Markdown
 - 如目标文件存在，采用「更新模式」：新增段落前给出对比摘要

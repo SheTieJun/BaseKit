@@ -11,7 +11,6 @@ import me.shetj.base.network.interceptor.ReceivedCookiesInterceptor
 import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.network.other.OkHttpDns
 import me.shetj.base.saver.SaverDatabase
-import me.shetj.base.tools.app.AppUtils
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.json.GsonKit
@@ -84,7 +83,7 @@ internal fun getHttpModule(): Module {
         }
 
         single {
-            LruDiskCache(BaseKit.app.getExternalFilesDir("cacheFile"), AppUtils.appVersionCode, 1024 * 1024 * 100)
+            LruDiskCache(BaseKit.app.getExternalFilesDir("cacheFile"), 1024 * 1024 * 100)
         }
 
         single {
