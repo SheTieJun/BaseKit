@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
@@ -60,6 +61,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 
 class LogViewerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,6 +107,8 @@ fun LogViewerScreen() {
     // UI State
     var showSearch by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showStatsDialog by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
     
     // Display Options
     var displayOptions by remember { mutableStateOf(LogDisplayOptions()) }
@@ -153,6 +161,85 @@ fun LogViewerScreen() {
                 }
             }
         )
+    }
+
+    // Stats Bottom Sheet
+    if (showStatsDialog) {
+        val keywords = searchQuery.split("|").filter { it.isNotBlank() }
+        val stats = remember(logContent, searchQuery) {
+            keywords.associateWith { keyword ->
+                logContent.count { it.contains(keyword, ignoreCase = true) }
+            }
+        }
+        val totalLogs = logContent.size
+        
+        ModalBottomSheet(
+            onDismissRequest = { showStatsDialog = false },
+            sheetState = sheetState
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "Search Statistics",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                
+                Text(
+                    text = "Total Logs: $totalLogs",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                if (keywords.isNotEmpty()) {
+                    Text(
+                        text = "Keyword Matches:",
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    
+                    LazyColumn {
+                        items(keywords) { keyword ->
+                            val count = stats[keyword] ?: 0
+                            val progress = if (totalLogs > 0) count.toFloat() / totalLogs else 0f
+                            
+                            Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = keyword,
+                                        modifier = Modifier.weight(1f),
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                    Text(
+                                        text = "$count",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+                                LinearProgressIndicator(
+                                    progress = progress,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(4.dp)
+                                        .padding(top = 4.dp)
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    Text("No keywords entered.", style = MaterialTheme.typography.bodyMedium)
+                }
+                
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+        }
     }
 
     val filteredLogs = remember(logContent, searchQuery, selectedLevel) {
@@ -254,7 +341,14 @@ fun LogViewerScreen() {
                     label = { Text("Search logs (use '|' for multiple)") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
+                        .padding(8.dp),
+                    trailingIcon = {
+                        if (searchQuery.isNotEmpty()) {
+                            IconButton(onClick = { showStatsDialog = true }) {
+                                Icon(Icons.Default.Info, contentDescription = "Stats")
+                            }
+                        }
+                    }
                 )
             }
 

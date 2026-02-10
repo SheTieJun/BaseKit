@@ -54,3 +54,4 @@ base/lint.xml
 /*/proguardMapping.txt
 .idea
 /app/release/
+/.trae/documents/
