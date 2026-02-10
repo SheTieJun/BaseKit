@@ -100,9 +100,6 @@ object BaseKit {
         Utils.init(application)
         this.TAG = AppUtils.appName ?: "BaseKit"
         this.isDebug.observe(ProcessLifecycleOwner.get()) { t ->
-            if (t) {
-                DebugFunc.getInstance().initContext(application)
-            }
             Tim.setLogAuto(t)
         }
         startKoin {

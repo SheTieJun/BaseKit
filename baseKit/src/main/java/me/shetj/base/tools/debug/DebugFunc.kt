@@ -1,41 +1,26 @@
 package me.shetj.base.tools.debug
 
 import android.content.Context
-import android.os.Environment
 import me.shetj.base.BuildConfig
-import me.shetj.base.base.TaskExecutor
 import me.shetj.base.constant.Constant.Companion.KEY_IS_OUTPUT_HTTP
-import me.shetj.base.tools.file.EnvironmentStorage
 import me.shetj.base.tools.file.FileUtils
 import me.shetj.base.tools.file.SPUtils
-import timber.log.Timber
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
 
 /**
- * debug 功能扩展 必须开启debug的情况下
+ * debug 功能扩展
  * 1. 对一些日志进行特殊的保留
  * 2. 对http请求日志进行文件输出
+ * 3. 现已全面升级为 [LogManager] 的门面，建议直接使用 [LogManager]
  */
 class DebugFunc private constructor() {
 
     private var mContext: Context? = null
+    private var _isOutputHttp: Boolean = false
 
-    var isOutputHttp = mContext?.let { SPUtils.get(it, KEY_IS_OUTPUT_HTTP, BuildConfig.DEBUG) as Boolean }
-        ?: false
+    val isOutputHttp: Boolean
+        get() = _isOutputHttp
 
     companion object {
-        val saveLogFile =
-            EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
-                File.separatorChar + "BaseDebug.text"
-        val saveHttpFile =
-            EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
-                File.separatorChar + "HttpDebug.text"
-        val logFilePath =
-            EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
-                File.separator + "crashLog"
-
         @Volatile
         private var mDebugFunc: DebugFunc? = null
 
@@ -47,58 +32,64 @@ class DebugFunc private constructor() {
         }
     }
 
-    //region 必须设置
     fun initContext(context: Context) {
         mContext = context.applicationContext
-    }
-    //endregion
+        _isOutputHttp = SPUtils.get(context, KEY_IS_OUTPUT_HTTP, BuildConfig.DEBUG) as Boolean
 
-    //region httpSetting
+        // 初始化日志管理器
+        LogManager.init {
+            isEnable = true
+            isPrintToConsole = BuildConfig.DEBUG
+            // 可以在这里根据需要配置 logDir 等
+        }
+    }
+
     fun saveHttpToFile(info: String?) {
-        if (!isOutputHttp) return
-        outputToFile(info, saveHttpFile)
+        if (_isOutputHttp && !info.isNullOrEmpty()) {
+            LogManager.log(LogLevel.HTTP, "HTTP", info)
+        }
     }
 
     fun getHttpSetting(): Boolean {
-        return isOutputHttp
+        return _isOutputHttp
     }
 
     fun setIsOutputHttp(isOutput: Boolean) {
-        isOutputHttp = isOutput
+        _isOutputHttp = isOutput
         mContext?.let {
             SPUtils.put(it, KEY_IS_OUTPUT_HTTP, isOutput)
         }
     }
-    //endregion httpSetting
-
-    //region logSetting
 
     fun saveLogToFile(info: String?) {
-        outputToFile(info, saveLogFile)
-    }
-    //endregion logSetting
-
-    fun outputToFile(info: String?, path: String? = saveLogFile) {
-        TaskExecutor.executeOnIO {
-            if (info.isNullOrEmpty()) return@executeOnIO
-            if (path.isNullOrEmpty()) return@executeOnIO
-            try {
-                val fw = BufferedWriter(FileWriter(path, true))
-                fw.write("$info \n\n")
-                fw.close()
-                Timber.tag("error").e("写入本地文件成功：%s", path)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        if (!info.isNullOrEmpty()) {
+            LogManager.log(LogLevel.INFO, "Log", info)
         }
     }
 
+    /**
+     * 记录用户行为日志
+     */
+    fun logBehavior(tag: String, msg: String) {
+        LogManager.log(LogLevel.BEHAVIOR, tag, msg)
+    }
+
     fun clearAll() {
-        FileUtils.deleteFile(saveHttpFile)
-        FileUtils.deleteFile(saveLogFile)
-        FileUtils.deleteDir(
-            EnvironmentStorage.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
-                File.separator + "crashLog"
-        )
+        val dir = LogManager.getConfig().logDir
+        FileUtils.deleteDir(dir)
+    }
+
+    /**
+     * 打开调试设置界面
+     */
+    fun openDebugSettings(context: Context) {
+        DebugSettingsActivity.start(context)
+    }
+
+    /**
+     * 打开日志查看界面
+     */
+    fun openLogViewer(context: Context) {
+        LogViewerActivity.start(context)
     }
 }

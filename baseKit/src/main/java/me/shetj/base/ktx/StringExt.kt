@@ -9,6 +9,8 @@ import androidx.core.text.parseAsHtml
 import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.ArmsUtils
 import me.shetj.base.tools.debug.DebugFunc
+import me.shetj.base.tools.debug.LogLevel
+import me.shetj.base.tools.debug.LogManager
 import me.shetj.base.tools.file.StringUtils
 import me.shetj.base.tools.json.GsonKit
 import org.json.JSONArray
@@ -121,9 +123,9 @@ fun Throwable?.logW(tag: String = BaseKit.TAG) {
     Timber.tag(tag).w(this)
 }
 
-fun String?.logUILife() {
+fun String.logUILife() {
     if (BaseKit.isLogUILife()) {
-        this.logD("UI-Life")
+        LogManager.log(LogLevel.BEHAVIOR,"UI-Life",this)
     }
 }
 
@@ -174,13 +176,6 @@ inline fun requireNotNullOrEmpty(value: String?, lazyMessage: () -> Any): String
     } else {
         return value
     }
-}
-
-/**
- * 输出到文件
- */
-fun String?.logOutPut() {
-    DebugFunc.getInstance().saveLogToFile(this)
 }
 
 //endregion

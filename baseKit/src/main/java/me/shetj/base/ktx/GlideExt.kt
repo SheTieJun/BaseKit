@@ -139,8 +139,10 @@ suspend fun saveImage(
         val resultIsSuccess = copyFile(
             cacheFile,
             targetFile,
-            FileUtils.OnReplaceListener {
-                return@OnReplaceListener true
+            object :FileUtils.OnReplaceListener {
+                override fun onReplace(): Boolean {
+                    return true
+                }
             }
         )
         if (resultIsSuccess) {

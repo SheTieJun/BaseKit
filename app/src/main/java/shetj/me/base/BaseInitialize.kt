@@ -6,6 +6,7 @@ import android.content.Context
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatDelegate
 import me.shetj.base.BaseKit
+import me.shetj.base.BuildConfig
 import me.shetj.base.init.ABBaseInitialize
 import me.shetj.base.ktx.logD
 import me.shetj.base.netcoroutine.HttpKit
@@ -13,6 +14,7 @@ import me.shetj.base.tools.app.MDThemeKit
 import me.shetj.base.tools.app.MDThemeKit.ThemeBean
 import me.shetj.base.tools.app.Tim
 import me.shetj.base.tools.debug.BaseUncaughtExceptionHandler
+import me.shetj.base.tools.debug.LogManager
 
 /**
  * 用start_up 代替application
@@ -41,5 +43,10 @@ class BaseInitialize : ABBaseInitialize() {
                 ThemeBean(R.style.Base_Theme_LF_RED, "红红火火(RED)", AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
             )
         )
+
+        LogManager.init {
+            isEnable = true
+            isPrintToConsole = BuildConfig.DEBUG
+        }
     }
 }

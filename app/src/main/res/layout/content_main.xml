@@ -172,6 +172,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="SelectTracker测试" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/btn_debug_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="调试设置" />
     </com.google.android.material.chip.ChipGroup>
 
 

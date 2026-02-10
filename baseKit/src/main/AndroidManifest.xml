@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:networkSecurityConfig="@xml/base_network_security_config"
@@ -24,9 +26,12 @@
                 android:name="me.shetj.base.init.CommonInitialize"
                 android:value="androidx.startup" />
         </provider>
-    </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+        <activity android:name=".tools.debug.DebugSettingsActivity"/>
+        <activity android:name=".tools.debug.LogViewerActivity"/>
+    </application>
+
+
+
 
 </manifest>

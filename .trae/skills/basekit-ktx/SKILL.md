@@ -212,9 +212,6 @@ JSON 解析、字符串处理、日志打印、数据流操作等。
   // 打印超长日志（分段）
   longString.logChunked()
   
-  // 输出到文件
-  logString.logOutPut()
-  
   // UI 生命周期日志
   "onResume".logUILife()
   ```
@@ -356,6 +353,35 @@ Intent、Navigation、Glide、Uri、Saver 等工具集成。
   val cache = EnvironmentStorage.cache
   ```
 
+### 6. 日志与调试 (Debug Tools)
+位于 `me.shetj.base.tools.debug` 包下，提供高性能的日志管理系统。
+
+- **LogManager**: 核心日志管理器，支持缓冲写入、文件分割、Crash 保护。
+  ```kotlin
+  // 初始化 (通常在 Application 中)
+  LogManager.init {
+      isEnable = true
+      isPrintToConsole = BuildConfig.DEBUG
+      logDir = "..." // 自定义日志路径
+      bufferSize = 50 // 缓冲条数
+  }
+  
+  // 记录日志
+  LogManager.log(LogLevel.INFO, "Tag", "Message")
+  LogManager.log(LogLevel.ERROR, "Tag", "Error Message")
+  
+  // 强制刷新 (Crash 时自动调用)
+  LogManager.flushSync()
+  ```
+
+- **DebugFunc**: 旧版兼容入口，现作为 LogManager 的门面。
+  ```kotlin
+  DebugFunc.getInstance().initContext(context)
+  DebugFunc.getInstance().logBehavior("UserAction", "Click Button")
+  ```
+
+- **BaseUncaughtExceptionHandler**: 全局异常捕获，自动保存 Crash 堆栈到日志文件。
+
 ## 目录结构
 - **ktx/**
   - `ActivityResultExt.kt`: ActivityResultLauncher 封装。
@@ -382,3 +408,8 @@ Intent、Navigation、Glide、Uri、Saver 等工具集成。
   - `SPUtils.kt`: SharedPreferences 工具。
   - `StringUtils.kt`: 字符串工具。
   - `EnvironmentStorage.kt`: 存储路径工具。
+- **tools/debug/**
+  - `LogManager.kt`: 日志管理核心。
+  - `LogConfig.kt`: 日志配置。
+  - `DebugFunc.kt`: 调试工具门面。
+  - `BaseUncaughtExceptionHandler.kt`: Crash 捕获。

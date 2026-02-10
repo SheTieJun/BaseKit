@@ -11,7 +11,7 @@ import android.util.AttributeSet
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.widget.AppCompatEditText
-import me.shetj.base.tools.file.StringUtils.Companion.containsEmoji
+import me.shetj.base.tools.file.StringUtils.containsEmoji
 
 @Keep
 class ContainsEmojiEditText : AppCompatEditText {

@@ -59,6 +59,7 @@ import me.shetj.base.tools.app.MDThemeKit
 import me.shetj.base.tools.app.ScreenshotKit
 import me.shetj.base.tools.app.WindowKit
 import me.shetj.base.tools.app.WindowKit.posturesCollector
+import me.shetj.base.tools.debug.DebugFunc
 import me.shetj.base.tools.file.FileQUtils
 import shetj.me.base.R
 import shetj.me.base.common.other.CommentPopup
@@ -294,6 +295,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             start<shetj.me.base.func.SelectTrackerTestActivity>()
         }
 
+        mContent.btnDebugSettings.setOnClickListener {
+            DebugFunc.getInstance().openDebugSettings(this)
+        }
     }
 
 

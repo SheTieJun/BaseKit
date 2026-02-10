@@ -37,10 +37,7 @@ class HttpLoggingInterceptor : Interceptor {
 
     fun log(message: String?) {
         if (!isLogEnable) return
-        message.logJson(tag)
-        if (DebugFunc.getInstance().isOutputHttp) {
-            DebugFunc.getInstance().saveHttpToFile(message)
-        }
+        DebugFunc.getInstance().saveHttpToFile(message)
     }
 
     constructor(tag: String) {
