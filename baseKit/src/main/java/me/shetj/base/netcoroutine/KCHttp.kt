@@ -386,7 +386,7 @@ object KCHttp {
     suspend fun saveCache(requestOption: RequestOption?, data: String) {
         if (!requestOption?.cacheKey.isNullOrBlank()) {
             withContext(DispatcherProvider.io()) {
-                HttpKit.getKCCache().save(requestOption?.cacheKey, data)
+                HttpKit.getKCCache().save(requestOption.cacheKey, data)
             }
         }
     }

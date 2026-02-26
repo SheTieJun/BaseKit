@@ -90,7 +90,6 @@ object BaseKit {
      * 初始化
      * @param application 初始
      * @param isDebug 是否是Debug
-     * @param baseUrl if not null will init http
      */
     @JvmOverloads
     @JvmStatic

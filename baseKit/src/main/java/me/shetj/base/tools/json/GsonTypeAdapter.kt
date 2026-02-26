@@ -33,7 +33,7 @@ internal class BooleanTypeAdapter : JsonDeserializer<Boolean?> {
             }
 
             else -> {
-                val code = json.getAsInt()
+                val code = json.asInt
                 if (code == 0) false else code == 1
             }
         }
@@ -72,12 +72,12 @@ internal class IntTypeAdapter : JsonDeserializer<Int> {
                 try {
                     Integer.valueOf(json.getAsString())
                 } catch (e: NumberFormatException) {
-                    e.logE("IntTypeAdapter Fixed")
+//                    e.logE("IntTypeAdapter Fixed")
                     0
                 }
             }
 
-            else -> json.getAsInt()
+            else -> json.asInt
         }
     }
 }
@@ -103,7 +103,7 @@ internal class FloatTypeAdapter : JsonDeserializer<Float> {
                 try {
                     java.lang.Float.valueOf(json.getAsString())
                 } catch (e: NumberFormatException) {
-                    e.logE("FloatTypeAdapter Fixed")
+//                    e.logE("FloatTypeAdapter Fixed")
                     0f
                 }
             }
@@ -130,7 +130,7 @@ internal class DoubleTypeAdapter : JsonDeserializer<Double> {
                 try {
                     java.lang.Double.valueOf(json.getAsString())
                 } catch (e: NumberFormatException) {
-                    e.logE("DoubleTypeAdapter Fixed")
+//                    e.logE("DoubleTypeAdapter Fixed")
                     0.0
                 }
             }

@@ -59,7 +59,7 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
         if (event == Event.ON_STOP) {
             dismissStop()
         } else if (source.lifecycle.currentState <= Lifecycle.State.DESTROYED) {
-            dismissOnDestroy()
+            dismissStop()
         }
     }
 
@@ -76,14 +76,6 @@ abstract class AbPopupWindow<VB : ViewBinding>(private val mContext: AppCompatAc
         try {
             dismiss()
         } catch (ignored: Exception) {
-            // 暴力解决，可能的崩溃
-        }
-    }
-
-    open fun dismissOnDestroy() {
-        try {
-            dismiss()
-        } catch (_: Exception) {
             // 暴力解决，可能的崩溃
         }
     }

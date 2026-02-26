@@ -46,8 +46,7 @@ dependencies {
     addPage()
 }
 
-composeCompiler {
-}
+composeCompiler {}
 
 kotlin {
     jvmToolchain(17)
