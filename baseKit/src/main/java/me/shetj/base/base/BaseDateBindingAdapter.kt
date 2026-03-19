@@ -1,5 +1,6 @@
 package me.shetj.base.base
 
+import androidx.annotation.Keep
 import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -9,6 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
  * Base date binding adapter
  * 有dataBinding的时候，可以使用这个
  */
+@Keep
 abstract class BaseDateBindingAdapter<T, BD : ViewDataBinding>
 @JvmOverloads constructor(
     @LayoutRes layoutResId: Int,

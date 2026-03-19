@@ -53,9 +53,9 @@ open class AbBaseFragment : Fragment(), LifecycleEventObserver, BaseControllerFu
             val flag = savedInstanceState.getBoolean(STATE_SAVE_IS_HIDDEN)
             val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
             if (flag) {
-                transaction.show(this)
-            } else {
                 transaction.hide(this)
+            } else {
+                transaction.show(this)
             }
             transaction.commit()
         }

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-<!--    还是应该支持http,经常会用到构建本地服务器-->
-    <base-config cleartextTrafficPermitted="true">
-    </base-config>
+
+<!--    <base-config cleartextTrafficPermitted="true">-->
+<!--    </base-config>-->
+    <!--    还是应该支持http,经常会用到构建本地服务器-->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">127.0.0.1</domain>
+    </domain-config>
     <debug-overrides>
         <trust-anchors>
             <certificates
