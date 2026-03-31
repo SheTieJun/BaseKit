@@ -128,3 +128,23 @@ kotlin {
     jvmToolchain(17)
 }
 ```
+
+## 5. R8 "Sealed classes are not supported as program classes"
+
+**Error Pattern**:
+- `Sealed classes are not supported as program classes` during minification/obfuscation.
+
+**Cause**:
+When using newer Kotlin versions (like 2.0+) with sealed classes and running on Java 17, older versions of the R8 compiler (bundled with older AGP) may crash when processing the bytecode.
+
+**Solution**:
+Force an upgrade to the R8 compiler version in the root `build.gradle.kts` buildscript block.
+
+```kotlin
+buildscript {
+    dependencies {
+        // Upgrade R8 to fix Sealed class issues with Java 17 / Kotlin 2.x
+        classpath("com.android.tools:r8:8.9.35")
+    }
+}
+```

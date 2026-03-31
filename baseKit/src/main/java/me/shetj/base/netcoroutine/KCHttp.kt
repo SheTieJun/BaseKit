@@ -191,7 +191,7 @@ object KCHttp {
         if (requestOption?.cacheKey.isNullOrEmpty()) {
             return fromNetworkValue().convertToT()
         }
-        return when (requestOption?.cacheMode) {
+        return when (requestOption.cacheMode) {
             CacheMode.DEFAULT -> {
                 // 不使用自定义缓存,默认缓存规则，走OKhttp的Cache缓存
                 fromNetworkValue()

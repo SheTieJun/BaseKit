@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("androidx.benchmark")
-    id("org.jetbrains.kotlin.android")
 }
 
 android {

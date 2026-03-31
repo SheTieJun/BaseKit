@@ -3,10 +3,10 @@ import tools.androidLibrary
 plugins {
     id("com.android.library")
     id("kotlin-parcelize")
-    id("maven-publish")
-    kotlin("android")
+//    id("maven-publish")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 androidLibrary("me.shetj.base",config = true){
@@ -30,6 +30,12 @@ androidLibrary("me.shetj.base",config = true){
     packaging {
         //pickFirst "**/xxx.so" //告诉Gradle包装时只选一个，否则你会得到冲突。
         resources.excludes += "DebugProbesKt.bin"
+    }
+    publishing {
+        singleVariant("release") {
+            // withSourcesJar()
+            // withJavadocJar()
+        }
     }
     //    ./gradlew printProjectStructure
     tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
@@ -70,6 +76,12 @@ fun DependencyHandler.addCompose() {
     api(libs.compose.livedata)
     api(libs.compose.lifecycle.viewmodel)
     api(libs.compose.constraintlayout)
+    api(libs.androidx.navigation3.runtime)
+    api(libs.androidx.navigation3.ui)
+    api(libs.androidx.lifecycle.viewmodel.navigation3)
+    api(libs.kotlinx.serialization.core)
+    api(libs.kotlinx.serialization.json)
+    api(libs.androidx.material3.adaptive.navigation3)
 
     debugApi(libs.ui.tooling)
 //    androidTestApi(libs.ui.test.junit4)
@@ -89,10 +101,10 @@ fun DependencyHandler.addOther(){
     api(libs.shetj.qmui)
 }
 
-
 fun DependencyHandler.addRetrofit2(){
     api(libs.retrofit)
     api(libs.retrofit.gson)
+    api(libs.retrofit.kotlinx.serialization)
     api(libs.okhttp.sse)
 }
 
@@ -117,6 +129,7 @@ fun DependencyHandler.addAndroid(){
     api(libs.androidx.lifecycle.runtime)
     api(libs.androidx.lifecycle.livedata)
     api(libs.androidx.lifecycle.viewmodel)
+    api(libs.androidx.lifecycle.process)
 
     api(libs.androidx.recyclerview)
     api(libs.androidx.recyclerview.selection)
@@ -151,5 +164,19 @@ fun DependencyHandler.addAndroid(){
 //    api(libs.androidx.pdf) // pdf预览
 }
 
-apply(from = "uploadLocal.gradle")
+// afterEvaluate {
+//     publishing {
+//         publications {
+//             create<MavenPublication>("release") {
+//                 groupId = "com.github.SheTieJun"
+//                 artifactId = "base"
+//                 version = "1.2.1"
+//                 afterEvaluate {
+//                     from(components["release"])
+//                 }
+//             }
+//         }
+//     }
+// }
+
 //apply(from = "../gradle/spotless.gradle")

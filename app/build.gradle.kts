@@ -7,15 +7,16 @@ import org.objectweb.asm.ClassVisitor
 import tools.addGuava
 import tools.addProInstaller
 import tools.androidApplication
-
+import tools.versionName
 
 plugins {
     id("com.android.application")
     id("kotlin-parcelize")
-    kotlin("android")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.ksp)
 }
 
+base.archivesName.set("Base-${project.versionName}")
 
 androidApplication("shetj.me.base") {
 
@@ -24,7 +25,6 @@ androidApplication("shetj.me.base") {
         ndk {
             this.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64", "x86"))
         }
-        setProperty("archivesBaseName", "Base-$versionName") //修改Apk的输出名字
     }
     signingConfigs {
         create("release") {
@@ -70,7 +70,6 @@ androidApplication("shetj.me.base") {
 
 
 composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.StrongSkipping)
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
 //    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }

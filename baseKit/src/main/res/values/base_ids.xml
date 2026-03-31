@@ -4,4 +4,5 @@
     <item name="isGrayTheme" type="id"/>
     <item name="window_livedate" type="id"/>
     <item name="tracker_rv" type="id"/>
+    <item name="tag_view_binding" type="id"/>
 </resources>

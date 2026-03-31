@@ -117,14 +117,14 @@ class RadarView @JvmOverloads constructor(
 
         for (i in 0 until circleCount) {
             val circleRadius = radius - i * circleSpacing
-            canvas.drawCircle(centerX.toFloat(), centerY, circleRadius.toFloat(), circlePaint)
+            canvas.drawCircle(centerX, centerY, circleRadius, circlePaint)
         }
 
 
         // 画从圆心到每个顶点的线条
         paint.color = ContextCompat.getColor(context, R.color.c_2)
         points.forEachIndexed { index, point ->
-            canvas.drawLine(centerX.toFloat(), centerY.toFloat(), point.x, point.y, paint)
+            canvas.drawLine(centerX, centerY, point.x, point.y, paint)
         }
 
 

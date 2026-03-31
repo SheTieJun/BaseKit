@@ -7,6 +7,14 @@ description: Expert guidance on setting up scalable Gradle build logic using Con
 
 This skill helps you configure a scalable, maintainable build system for Android apps using **Gradle Convention Plugins** and **Version Catalogs**, following the "Now in Android" (NiA) architecture.
 
+## Recent Upgrades & Context (2026/03)
+The project has recently undergone significant upgrades to keep pace with the latest Android build ecosystem:
+- **Gradle Wrapper**: Upgraded to **9.3.1**.
+- **Android Gradle Plugin (AGP)**: Upgraded to **9.0.0**.
+- **Kotlin Version**: Upgraded to **2.3.20** with explicit `apiVersion = KOTLIN_2_0` configurations.
+- **Android SDK**: `compileSdk` and `targetSdk` upgraded to **36** (Android 16).
+- **R8 Compiler**: Explicitly added `com.android.tools:r8:8.9.35` in root `build.gradle.kts` to fix `Sealed classes are not supported as program classes` issues on Java 17.
+
 ## Goal
 Stop copy-pasting code between `build.gradle.kts` files. Centralize build logic (Compose setup, Kotlin options, Hilt, etc.) in reusable plugins.
 

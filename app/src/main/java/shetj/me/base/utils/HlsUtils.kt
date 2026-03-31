@@ -46,8 +46,8 @@ object HlsUtils {
 
                 var line: String?
                 while (reader.readLine().also { line = it } != null) {
-                    if (line?.startsWith("#EXT-X-KEY:") == true && line?.contains("METHOD=AES-128") == true) {
-                        val keyAttributes = line?.substringAfter("#EXT-X-KEY:")!!.split(",")
+                    if (line?.startsWith("#EXT-X-KEY:") == true && line.contains("METHOD=AES-128")) {
+                        val keyAttributes = line.substringAfter("#EXT-X-KEY:").split(",")
                         val uri = keyAttributes.firstOrNull {
                             it.startsWith(
                                 "URI="
@@ -65,7 +65,7 @@ object HlsUtils {
                         writer.newLine()
                     } else if (line?.startsWith("#EXTINF:") == true) {
                         // 提取持续时间
-                        val duration = line!!.substringAfter("#EXTINF:").substringBefore(",")
+                        val duration = line.substringAfter("#EXTINF:").substringBefore(",")
                         // 提取媒体文件名
                         val filename = reader.readLine()
                         // 拼接线上 URL

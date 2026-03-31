@@ -1,10 +1,8 @@
 package me.shetj.base.base
 
-import android.view.MotionEvent
 import android.view.View
-import androidx.annotation.IdRes
 import androidx.recyclerview.selection.ItemDetailsLookup
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.chad.library.adapter4.viewholder.QuickViewHolder
 
 /**
  *
@@ -13,7 +11,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b>  <br>
  */
-open class TackerBaseViewHolder(view:View) :BaseViewHolder(view){
+open class TackerBaseViewHolder(view:View) :QuickViewHolder(view){
     private lateinit var itemDetails: ItemDetailsLookup.ItemDetails<Long>
 
     fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> {

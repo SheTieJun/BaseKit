@@ -74,6 +74,7 @@ import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
 import java.util.Locale
 import java.util.function.Consumer
+import androidx.core.graphics.drawable.toDrawable
 
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
@@ -270,7 +271,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
         mContent.btnSlidingPane.setOnClickListener {
-            start<SlidingPaneActivity>()
+//            start<SlidingPaneActivity>()
         }
 
         mContent.btnPerm.setOnClickListener {
@@ -413,7 +414,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         popupWindow = PopupWindow(popupView, width, height, focusable)
         // **关键点 1：设置 PopupWindow 的背景为透明，才能透过它看到后面被模糊的内容**
         // 否则 PopupWindow 自身的背景会遮挡住 Activity 的模糊效果
-        popupWindow?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        popupWindow?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         popupWindow?.isOutsideTouchable = true // 允许点击外部关闭
 
         // 设置 PopupWindow 的显示位置

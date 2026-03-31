@@ -1,26 +1,22 @@
 package me.shetj.base.base
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
-import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.selection.SelectionTracker
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.chad.library.adapter4.BaseQuickAdapter
+import com.chad.library.adapter4.viewholder.QuickViewHolder
 
-abstract class BaseSAdapter<T, K : BaseViewHolder>
-@JvmOverloads constructor(
-    @LayoutRes layoutResId: Int,
-    data: MutableList<T>? = null
-) : BaseQuickAdapter<T, K>(layoutResId, data) {
+abstract class BaseSAdapter<T : Any, VH : QuickViewHolder>(
+    items: List<T> = emptyList()
+) : BaseQuickAdapter<T, VH>(items) {
 
-    //是否是多选
-    open val isMulti = false
-
+    open val isMulti: Boolean = false
     protected var mSelectTracker: SelectionTracker<Long?>? = null
 
 
@@ -40,28 +36,28 @@ abstract class BaseSAdapter<T, K : BaseViewHolder>
         getSelectTracker()?.clearSelection()
     }
 
-    protected fun getString(@StringRes resId: Int): String {
+    protected fun getString(context: Context, @StringRes resId: Int): String {
         return context.getString(resId)
     }
 
-    protected fun getString(@StringRes id: Int, vararg formatArgs: Any?): String {
-        return context.getString(id, formatArgs)
+    protected fun getString(context: Context, @StringRes id: Int, vararg formatArgs: Any?): String {
+        return context.getString(id, *formatArgs)
     }
 
     @ColorInt
-    protected fun getColor(@ColorRes id: Int): Int {
+    protected fun getColor(context: Context, @ColorRes id: Int): Int {
         return ContextCompat.getColor(context, id)
     }
 
-    protected fun getDrawable(@DrawableRes id: Int): Drawable? {
+    protected fun getDrawable(context: Context, @DrawableRes id: Int): Drawable? {
         return ContextCompat.getDrawable(context, id)
     }
 
-    protected fun getDimension(@DimenRes id: Int): Float {
+    protected fun getDimension(context: Context, @DimenRes id: Int): Float {
         return context.resources.getDimension(id)
     }
 
-    protected fun getDimensionPixelSize(@DimenRes id: Int): Int {
+    protected fun getDimensionPixelSize(context: Context, @DimenRes id: Int): Int {
         return context.resources.getDimensionPixelSize(id)
     }
 }

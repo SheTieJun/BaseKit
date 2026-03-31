@@ -55,3 +55,4 @@ base/lint.xml
 .idea
 /app/release/
 /.trae/documents/
+/buildSrc/.kotlin/

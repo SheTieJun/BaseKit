@@ -1,6 +1,14 @@
 ## gradle相关
 > 记录一下gradle的一些用法
 
+### 2026年3月 Gradle生态升级记录 (Gradle 9.x + AGP 9.x)
+- **Gradle Wrapper**: 升级至 **9.3.1**
+- **Android Gradle Plugin (AGP)**: 升级至 **9.0.0**
+- **Kotlin**: 升级至 **2.3.20**，配置中显式声明 `apiVersion = KOTLIN_2_0`，启用 JVM Toolchain 17。
+- **Android SDK**: `compileSdk` 和 `targetSdk` 升级至 **36** (Android 16)。
+- **R8 Compiler**: 为修复 Java 17 环境下新版 Kotlin 编译引发的 `Sealed classes are not supported as program classes` 错误，在根目录的 `build.gradle.kts` 中强制指定 `classpath("com.android.tools:r8:8.9.35")`。
+- **Version Catalogs**: 全面推进并更新了大量的依赖，包括 `compose-bom: 2026.03.01`、`ksp: 2.3.6`、`koin: 4.2.0`、`retrofit: 3.0.0` 等。
+
 ###  Gradle加载优先级
 ```
 buildTypes > productFlavors > Main > dependencies

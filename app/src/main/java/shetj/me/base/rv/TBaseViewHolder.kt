@@ -2,7 +2,7 @@ package shetj.me.base.rv
 
 import android.view.View
 import androidx.recyclerview.selection.ItemDetailsLookup
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.chad.library.adapter4.viewholder.QuickViewHolder
 
 /**
  *
@@ -11,7 +11,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
  * <b>@email：</b> 375105540@qq.com<br>
  * <b>@describe</b>  <br>
  */
-class TBaseViewHolder(view:View) :BaseViewHolder(view){
+class TBaseViewHolder(view:View) :QuickViewHolder(view){
     private lateinit var itemDetails: ItemDetailsLookup.ItemDetails<Long>
 
     fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> {

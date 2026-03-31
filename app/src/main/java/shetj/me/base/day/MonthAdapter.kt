@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import shetj.me.base.databinding.LMtrlCalendarDayBinding
+import shetj.me.base.R
 import shetj.me.base.rv.TBaseViewHolder
 import java.util.*
 
@@ -17,7 +16,11 @@ class MonthAdapter(private val month: Month) : RecyclerView.Adapter<TBaseViewHol
     private var tracker: SelectionTracker<Long>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TBaseViewHolder {
-        return TBaseViewHolder(LMtrlCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false).root)
+        val context = parent.context
+        val view = LayoutInflater.from(context).inflate(R.layout.l_mtrl_calendar_day, parent, false)
+        return TBaseViewHolder(view).apply {
+            itemView.setTag(me.shetj.base.R.id.tag_view_binding, null)
+        }
     }
 
     override fun onBindViewHolder(holder: TBaseViewHolder, position: Int) {

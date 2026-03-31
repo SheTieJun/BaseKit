@@ -13,14 +13,15 @@ import me.shetj.base.network.other.OkHttpDns
 import me.shetj.base.saver.SaverDatabase
 import me.shetj.base.tools.app.Utils
 import me.shetj.base.tools.file.EnvironmentStorage
-import me.shetj.base.tools.json.GsonKit
+import me.shetj.base.tools.json.JsonKit
 import okhttp3.Cache
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import org.koin.core.module.Module
 import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -68,8 +69,9 @@ internal fun getHttpModule(): Module {
         }
 
         single {
+            val contentType = "application/json; charset=utf-8".toMediaType()
             Retrofit.Builder().apply {
-                addConverterFactory(GsonConverterFactory.create(GsonKit.gson))
+                addConverterFactory(JsonKit.json.asConverterFactory(contentType))
                 validateEagerly(BaseKit.isDebug()) // 在开始的时候直接开始检测所有的方法
             }
         }

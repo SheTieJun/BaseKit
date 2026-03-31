@@ -1,11 +1,11 @@
 package shetj.me.base.func
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import me.shetj.base.base.BaseSAdapter
 import me.shetj.base.base.TackerBaseViewHolder
-import me.shetj.base.ktx.logI
 import shetj.me.base.R
 import shetj.me.base.databinding.ItemSelectTrackerTestBinding
 
@@ -14,9 +14,9 @@ import shetj.me.base.databinding.ItemSelectTrackerTestBinding
  * 继承自 BaseSAdapter，支持选择状态的视觉变化
  */
 class SelectTrackerTestAdapter(
-    data: MutableList<TestItem>? = null,
+    data: MutableList<TestItem> = mutableListOf(),
     private val isMultiSelect: Boolean = false
-) : BaseSAdapter<TestItem, SelectTrackerTestAdapter.TestViewHolder>(R.layout.item_select_tracker_test, data) {
+) : BaseSAdapter<TestItem, SelectTrackerTestAdapter.TestViewHolder>(  data) {
 
     init {
         setHasStableIds(true)
@@ -24,20 +24,11 @@ class SelectTrackerTestAdapter(
 
     override val isMulti: Boolean = isMultiSelect
 
-    override fun convert(holder: TestViewHolder, item: TestItem) {
-        "convert def".logI("SelectTracker")
-        holder.bind(item, getSelectTracker()?.isSelected(item.id) == true)
-    }
-
-    override fun convert(holder: TestViewHolder, item: TestItem, payloads: List<Any>) {
-        super.convert(holder, item, payloads)
-        "convert payloads ${holder.bindingAdapterPosition}".logI("SelectTracker")
-        holder.bind(item, getSelectTracker()?.isSelected(item.id) == true)
-    }
-
-
-
-    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): TestViewHolder {
+    override fun onCreateViewHolder(
+        context: Context,
+        parent: ViewGroup,
+        viewType: Int
+    ): TestViewHolder {
         val binding = ItemSelectTrackerTestBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -45,6 +36,15 @@ class SelectTrackerTestAdapter(
         )
         val holder = TestViewHolder(binding)
         return holder
+    }
+
+    override fun onBindViewHolder(
+        holder: TestViewHolder,
+        position: Int,
+        item: TestItem?
+    ) {
+        if (item == null) return
+        holder.bind(item, getSelectTracker()?.isSelected(item.id) == true)
     }
 
     override fun getItemId(position: Int): Long {
@@ -57,16 +57,12 @@ class SelectTrackerTestAdapter(
     fun getSelectedItems(): List<TestItem> {
         val selectedItems = mutableListOf<TestItem>()
         getSelectTracker()?.selection?.forEach { selectedId ->
-            data.find { it.id == selectedId }?.let { item ->
+            items.find { it.id == selectedId }?.let { item ->
                 selectedItems.add(item)
             }
         }
         return selectedItems
     }
-
-
-
-
 
     /**
      * ViewHolder 类

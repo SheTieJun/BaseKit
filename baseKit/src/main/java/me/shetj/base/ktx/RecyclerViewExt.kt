@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.chad.library.adapter4.viewholder.QuickViewHolder
 import me.shetj.base.base.TrackerBaseItemDetailsLookup
 
 
@@ -48,58 +47,10 @@ fun RecyclerView?.smoothToPosition(
     } ?: this.smoothScrollToPosition(position)
 }
 
-inline fun <reified T : BaseViewHolder> RecyclerView.findEachViewHolder(action: T?.() -> Unit) {
+inline fun <reified T : QuickViewHolder> RecyclerView.findEachViewHolder(action: T?.() -> Unit) {
     for (i in 0 until childCount) {
         action((getChildViewHolder(getChildAt(i)) as? T))
     }
-}
-
-/**
- * 目标 item 是否完全可见
- * 仅适用 [LinearLayoutManager]
- */
-fun RecyclerView?.isCompleteVisibleScreen(position: Int): Boolean {
-    if (this == null || this.adapter == null || this.layoutManager == null ||
-        this.layoutManager !is LinearLayoutManager
-    ) {
-        return false
-    }
-    var finalPos = position
-    if (this.adapter is BaseQuickAdapter<*, *>) {
-        finalPos += (adapter as BaseQuickAdapter<*, *>).headerLayoutCount
-    }
-    val firstCompleteVisibleItemPosition: Int =
-        (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-    val lastCompleteVisibleItemPosition: Int =
-        (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-    return finalPos in firstCompleteVisibleItemPosition..lastCompleteVisibleItemPosition
-}
-
-fun RecyclerView?.isCompleteVisibleShow(position: Int): Int {
-    if (this == null || this.adapter == null || this.layoutManager == null ||
-        this.layoutManager !is LinearLayoutManager
-    ) {
-        return position
-    }
-    var finalPos = position
-    if (this.adapter is BaseQuickAdapter<*, *>) {
-        finalPos += (adapter as BaseQuickAdapter<*, *>).headerLayoutCount
-    }
-    val firstCompleteVisibleItemPosition: Int =
-        (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-    val lastCompleteVisibleItemPosition: Int =
-        (layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-    val mCount = (lastCompleteVisibleItemPosition - firstCompleteVisibleItemPosition) / 2
-    if (finalPos < firstCompleteVisibleItemPosition) {
-        return finalPos - 1
-    }
-    if (finalPos > lastCompleteVisibleItemPosition) {
-        return finalPos + mCount + 1
-    }
-    if (finalPos in firstCompleteVisibleItemPosition..lastCompleteVisibleItemPosition) {
-        return finalPos + mCount
-    }
-    return finalPos + 1
 }
 
 /**
