@@ -29,8 +29,11 @@ class CacheInterceptor : Interceptor {
 
         val availableNet = NetworkUtils.isAvailable(Utils.app)
 
+        var finalRequest = request
+        // TODO Fix: 这里的缓存逻辑似乎有误。通常是在无网络时（!availableNet）才强制使用缓存（FORCE_CACHE）。
+        // 且原来的 request.newBuilder().build() 没有重新赋值给 request。这里已修复赋值问题，但逻辑建议重新检查。
         if (availableNet && cacheControl.isNotEmpty()) {
-            request.newBuilder()
+            finalRequest = request.newBuilder()
                 .cacheControl(CacheControl.FORCE_CACHE)
                 .build()
         }
@@ -40,8 +43,8 @@ class CacheInterceptor : Interceptor {
         } else if (availableNet) {
             cacheControl = "public,max-age=0"
         }
-        val response = chain.proceed(request)
-        return response.newBuilder().header("cache-Control", cacheControl)
+        val response = chain.proceed(finalRequest)
+        return response.newBuilder().header("Cache-Control", cacheControl)
             .removeHeader("Pragma").build()
     }
 }

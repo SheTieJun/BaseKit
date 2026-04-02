@@ -13,8 +13,8 @@ class HeadersInterceptor(private val headers: HttpHeaders) : Interceptor {
         val builder = chain.request().newBuilder()
         if (headers.headersMap.isEmpty()) return chain.proceed(builder.build())
         try {
-            headers.headersMap.forEach {
-                builder.header(it.key, it.value).build()
+            headers.headersMap.forEach { (key, value) ->
+                builder.header(key, value)
             }
         } catch (e: Exception) {
             e.logE()

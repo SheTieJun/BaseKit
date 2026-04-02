@@ -20,11 +20,12 @@ class ReceivedCookiesInterceptor(private var enable: Boolean = false) : Intercep
     @Throws(IOException::class)
     override fun intercept(chain: Chain): Response {
         val originalResponse = chain.proceed(chain.request())
-        if (originalResponse.headers(HttpHeaders.HEAD_KEY_SET_COOKIE).isNotEmpty() && enable) {
-            val cookies = HashSet<String>()
-            for (header in originalResponse.headers("Set-Cookie")) {
-                cookies.add(header)
-                HttpKit.addCookie(header)
+        if (enable) {
+            val cookies = originalResponse.headers(HttpHeaders.HEAD_KEY_SET_COOKIE)
+            if (cookies.isNotEmpty()) {
+                for (header in cookies) {
+                    HttpKit.addCookie(header)
+                }
             }
         }
         return originalResponse

@@ -92,11 +92,8 @@ class HttpLoggingInterceptor : Interceptor {
         val hasRequestBody = requestBody != null
         val protocol = connection?.protocol() ?: Protocol.HTTP_1_1
         try {
-            val requestStartMessage = "--> " + request.method +
-                ' ' + URLDecoder.decode(
-                    request.url.toString(),
-                    UTF8.name()
-                ) + ' ' + protocol
+            val url = URLDecoder.decode(request.url.toString(), UTF8.name())
+            val requestStartMessage = "--> ${request.method} $url $protocol"
             log(requestStartMessage)
             if (logHeaders) {
                 val headers = request.headers
@@ -116,23 +113,18 @@ class HttpLoggingInterceptor : Interceptor {
 
     private fun logForResponse(response: Response, tookMs: Long): Response {
         log("-------------------------------response-------------------------------")
-        val builder = response.newBuilder()
-        val clone = builder.build()
-        var responseBody = clone.body
+        var responseBody = response.body
         val logBody = level == Level.BODY
         val logHeaders = level == Level.BODY || level == Level.HEADERS
         try {
-            log(
-                "<-- " + clone.code + ' ' + clone.message + ' ' + URLDecoder.decode(
-                    clone.request.url.toString(), UTF8.name()
-                ) + " (" + tookMs + "ms）"
-            )
+            val url = URLDecoder.decode(response.request.url.toString(), UTF8.name())
+            log("<-- ${response.code} ${response.message} $url (${tookMs}ms)")
             if (logHeaders) {
-                if (logBody &&  clone.body != null) {
-                    if (isPlaintext(responseBody?.contentType())) {
-                        val body = responseBody?.string().orEmpty()
+                if (logBody && responseBody != null) {
+                    if (isPlaintext(responseBody.contentType())) {
+                        val body = responseBody.string()
                         log(body)
-                        responseBody = body.toResponseBody(responseBody?.contentType())
+                        responseBody = body.toResponseBody(responseBody.contentType())
                         return response.newBuilder().body(responseBody).build()
                     } else {
                         log("\tbody: maybe [file part] , too large too print , ignored!")

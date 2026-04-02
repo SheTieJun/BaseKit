@@ -2,7 +2,6 @@ package me.shetj.base.network.exception
 
 import android.net.ParseException
 import com.google.gson.JsonParseException
-import com.google.gson.JsonSerializer
 import com.google.gson.JsonSyntaxException
 import org.json.JSONException
 import retrofit2.HttpException
