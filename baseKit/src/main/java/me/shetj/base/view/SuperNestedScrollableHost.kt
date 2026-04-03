@@ -76,14 +76,12 @@ class SuperNestedScrollableHost @JvmOverloads constructor(
         val orientation = parent.orientation
         val isHorizontal = orientation == ViewPager2.ORIENTATION_HORIZONTAL
 
-        // TODO Fix: 建议使用 actionMasked 以兼容多指触控，防止由于额外手指按下导致的坐标剧烈跳变
+        // 建议使用 actionMasked 以兼容多指触控，防止由于额外手指按下导致的坐标剧烈跳变
         when (e.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 initialX = e.x
                 initialY = e.y
                 parent.requestDisallowInterceptTouchEvent(true)
-                // TODO Fix: 不建议频繁修改 isUserInputEnabled，它会重置内部状态机甚至打断现有动画。嵌套滑动应当完全由 requestDisallowInterceptTouchEvent 来控制拦截权。
-                // parent.isUserInputEnabled = false
                 childScrollLocked = false
             }
             MotionEvent.ACTION_MOVE -> {
@@ -92,7 +90,7 @@ class SuperNestedScrollableHost @JvmOverloads constructor(
                 val scaledDx = dx.absoluteValue
                 val scaledDy = dy.absoluteValue
                 
-                // TODO Fix: 将硬编码的 4 替换为系统规范的 touchSlop，提升在不同分辨率设备上的滑动体验一致性
+                // 将硬编码的 4 替换为系统规范的 touchSlop，提升在不同分辨率设备上的滑动体验一致性
                 val sameOrientation = if (isHorizontal) scaledDx > (scaledDy + touchSlop) else scaledDy > (scaledDx + touchSlop)
                 if (sameOrientation) {
                     val delta = if (isHorizontal) dx else dy
@@ -101,20 +99,16 @@ class SuperNestedScrollableHost @JvmOverloads constructor(
                     if (childCanScroll || !parentCanScroll || childScrollLocked) {
                         childScrollLocked = true
                         parent.requestDisallowInterceptTouchEvent(true)
-                        // parent.isUserInputEnabled = false
                     } else {
                         childScrollLocked = false
                         parent.requestDisallowInterceptTouchEvent(false)
-                        // parent.isUserInputEnabled = true
                     }
                 } else {
                     childScrollLocked = false
                     parent.requestDisallowInterceptTouchEvent(true)
-                    // parent.isUserInputEnabled = true
                 }
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                // parent.isUserInputEnabled = true
                 parent.requestDisallowInterceptTouchEvent(false)
                 childScrollLocked = false
             }
