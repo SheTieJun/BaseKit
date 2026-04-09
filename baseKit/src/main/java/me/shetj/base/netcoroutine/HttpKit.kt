@@ -1,5 +1,6 @@
 package me.shetj.base.netcoroutine
 
+import io.ktor.client.HttpClient
 import me.shetj.base.BaseKit
 import me.shetj.base.netcoroutine.cache.KCCache
 import me.shetj.base.network.interceptor.HttpLoggingInterceptor
@@ -8,7 +9,6 @@ import me.shetj.base.network.model.HttpHeaders
 import me.shetj.base.tools.file.SPUtils
 import okhttp3.OkHttpClient
 import org.koin.java.KoinJavaComponent
-import retrofit2.Retrofit
 
 /**
  * @author stj
@@ -25,9 +25,9 @@ object HttpKit {
         return KoinJavaComponent.get(OkHttpClient.Builder::class.java)
     }
 
-    // 对外暴露 Retrofit,方便自定义
-    fun getRetrofitBuilder(): Retrofit.Builder {
-        return KoinJavaComponent.get(Retrofit.Builder::class.java)
+    // 对外暴露 HttpClient,方便自定义
+    fun getHttpClient(): HttpClient {
+        return KoinJavaComponent.get(HttpClient::class.java)
     }
 
     fun getOkHttpClient(): OkHttpClient {

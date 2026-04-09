@@ -4,7 +4,7 @@ import android.net.ParseException
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import org.json.JSONException
-import retrofit2.HttpException
+import io.ktor.client.plugins.ResponseException
 import java.io.NotSerializableException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -103,8 +103,8 @@ class ApiException(throwable: Throwable, val code: Int) : Exception(throwable) {
         const val PARSE_ERROR = 1001
         fun handleException(e: Throwable): ApiException {
             return when (e) {
-                is HttpException -> {
-                    ApiException(e, e.code()).apply {
+                is ResponseException -> {
+                    ApiException(e, e.response.status.value).apply {
                         message = e.message
                     }
                 }

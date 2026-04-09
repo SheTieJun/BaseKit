@@ -1,5 +1,24 @@
 package me.shetj.base.netcoroutine
 
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.put
+import io.ktor.client.request.delete
+import io.ktor.client.request.setBody
+import io.ktor.client.request.parameter
+import io.ktor.client.request.url
+import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.bodyAsChannel
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.forms.FormDataContent
+import io.ktor.http.Parameters
+import io.ktor.http.contentLength
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.buffer
@@ -15,8 +34,6 @@ import me.shetj.base.network.exception.ApiException
 import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
 import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
 import me.shetj.base.network.exception.CacheException
-import me.shetj.base.network.kt.createJson
-import okhttp3.RequestBody
 import org.koin.java.KoinJavaComponent.get
 import java.io.BufferedInputStream
 import java.io.File
@@ -30,7 +47,7 @@ object KCHttp {
 
     const val TAG = "KCHttp"
 
-    private val apiService: KCApiService = get(KCApiService::class.java)
+    private val httpClient: HttpClient = get(HttpClient::class.java)
 
     suspend inline fun <reified T> get(
         url: String,
@@ -72,16 +89,6 @@ object KCHttp {
         }
     }
 
-    suspend inline fun <reified T> postBody(
-        url: String,
-        body: RequestBody,
-        requestOption: RequestOption
-    ): HttpResult<T> {
-        return runCatching<T> {
-            doPostBodyCache(url, body, requestOption).convertToT()
-        }
-    }
-
     suspend fun doGetCache(
         url: String,
         maps: Map<String, String> = HashMap(),
@@ -95,12 +102,15 @@ object KCHttp {
         maps: Map<String, String>? = HashMap(),
         requestOption: RequestOption? = null
     ): String {
+        val requestBlock: suspend () -> String = {
+            httpClient.get(url) {
+                maps?.forEach { (k, v) -> parameter(k, v) }
+            }.bodyAsText()
+        }
         return if (requestOption == null) {
-            apiService.get(url, maps).string()
+            requestBlock()
         } else {
-            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
-                apiService.get(url, maps).string()
-            }
+            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum, block = requestBlock)
         }
     }
 
@@ -117,12 +127,18 @@ object KCHttp {
         maps: Map<String, String>? = HashMap(),
         requestOption: RequestOption? = null
     ): String {
+        val requestBlock: suspend () -> String = {
+            httpClient.post(url) {
+                val params = Parameters.build {
+                    maps?.forEach { (k, v) -> append(k, v) }
+                }
+                setBody(FormDataContent(params))
+            }.bodyAsText()
+        }
         return if (requestOption == null) {
-            apiService.post(url, maps).string()
+            requestBlock()
         } else {
-            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
-                apiService.post(url, maps).string()
-            }
+            retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum, block = requestBlock)
         }
     }
 
@@ -139,9 +155,13 @@ object KCHttp {
         json: String,
         requestOption: RequestOption
     ): String {
-        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
-            apiService.postJson(url, json.createJson()).string()
+        val requestBlock: suspend () -> String = {
+            httpClient.post(url) {
+                contentType(ContentType.Application.Json)
+                setBody(json)
+            }.bodyAsText()
         }
+        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum, block = requestBlock)
     }
 
     suspend fun doPostBodyCache(
@@ -157,27 +177,12 @@ object KCHttp {
         body: Any,
         requestOption: RequestOption
     ): String {
-        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
-            apiService.postBody(url, body).string()
+        val requestBlock: suspend () -> String = {
+            httpClient.post(url) {
+                setBody(body)
+            }.bodyAsText()
         }
-    }
-
-    suspend fun doPostBodyCache(
-        url: String,
-        body: RequestBody,
-        requestOption: RequestOption = url.getDefReqOption()
-    ): String {
-        return getDataFromApiOrCache(requestOption, fromNetworkValue = { doPostBodyRetry(url, body, requestOption) })
-    }
-
-    suspend fun doPostBodyRetry(
-        url: String,
-        body: RequestBody,
-        requestOption: RequestOption
-    ): String {
-        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum) {
-            apiService.postBody(url, body).string()
-        }
+        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum, block = requestBlock)
     }
 
     /**
@@ -278,40 +283,32 @@ object KCHttp {
     ) {
         flow {
             try {
-                val body = apiService.downloadFile(url)
-                val contentLength = body.contentLength()
-                val inputStream = body.byteStream()
+                val response: HttpResponse = httpClient.get(url)
+                val contentLength = response.contentLength() ?: 0L
+                val channel: ByteReadChannel = response.bodyAsChannel()
                 val file = File(outputFile)
                 val outputStream = FileOutputStream(file)
 
-                var currentLength = 0
+                var currentLength = 0L
                 var emitProgress = 0f
 
                 val bufferSize = 1024 * 8
                 val buffer = ByteArray(bufferSize)
-                val bufferedInputStream = BufferedInputStream(inputStream, bufferSize)
-                var readLength: Int
-                while (bufferedInputStream.read(buffer, 0, bufferSize)
-                        .also { readLength = it } != -1
-                ) {
-                    outputStream.write(buffer, 0, readLength)
-                    currentLength += readLength
-                    val progress = currentLength.toFloat() / contentLength.toFloat()
-                    // 每次超过%1才进行更新
-                    if (progress - emitProgress >= 0.01) {
-                        emitProgress = progress
-                        emit(
-                            HttpResult.progress(
-                                currentLength.toLong(),
-                                contentLength,
-                                emitProgress
-                            )
-                        )
+                
+                while (!channel.isClosedForRead) {
+                    val readLength = channel.readAvailable(buffer, 0, bufferSize)
+                    if (readLength > 0) {
+                        outputStream.write(buffer, 0, readLength)
+                        currentLength += readLength
+                        val progress = if (contentLength > 0) currentLength.toFloat() / contentLength.toFloat() else 0f
+                        // 每次超过%1才进行更新
+                        if (progress - emitProgress >= 0.01f || progress == 1f) {
+                            emitProgress = progress
+                            emit(HttpResult.progress(currentLength, contentLength, emitProgress))
+                        }
                     }
                 }
-                bufferedInputStream.close()
                 outputStream.close()
-                inputStream.close()
                 emit(HttpResult.success(file))
             } catch (e: Exception) {
                 emit(HttpResult.failure<File>(ApiException.handleException(e)))

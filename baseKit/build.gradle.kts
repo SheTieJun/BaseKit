@@ -102,9 +102,15 @@ fun DependencyHandler.addOther(){
 }
 
 fun DependencyHandler.addRetrofit2(){
-    api(libs.retrofit)
-    api(libs.retrofit.gson)
-    api(libs.retrofit.kotlinx.serialization)
+    api(libs.ktor.client.core)
+    api(libs.ktor.client.okhttp)
+    api(libs.ktor.client.content.negotiation)
+    api(libs.ktor.server.core)
+    api(libs.ktor.server.netty)
+    api(libs.ktor.server.cors)
+    api(libs.ktor.server.content.negotiation)
+    api(libs.ktor.serialization.gson)
+    api(libs.ktor.serialization.kotlinx.json)
     api(libs.okhttp.sse)
 }
 

@@ -9,7 +9,7 @@ description: "Complete guide for BaseKit Network module, including Coroutines su
 BaseKit 的网络层由 `me.shetj.base.network`（基础组件）和 `me.shetj.base.netcoroutine`（协程封装）两个核心模块组成。它提供了从底层配置到上层业务调用的完整解决方案。
 
 ## Part 1: 协程网络请求 (KCHttp)
-`me.shetj.base.netcoroutine` 模块是基于 Kotlin 协程和 Retrofit 的高级封装，是日常开发中的主要入口。
+`me.shetj.base.netcoroutine` 模块是基于 Kotlin 协程和 Ktor Client 的高级封装，是日常开发中的主要入口。
 
 ### 1. 统一请求入口 (`KCHttp`)
 `KCHttp` 单例对象提供了 GET、POST (Form/Json/Body) 等常用方法。

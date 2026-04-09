@@ -13,8 +13,7 @@
 | 组件 | 说明 | 配置详情 |
 | :--- | :--- | :--- |
 | **OkHttpClient** | HTTP 客户端核心 | - **超时时间**: 20秒 (连接/读取/写入)<br>- **拦截器**: `HeadersInterceptor`, `ReceivedCookiesInterceptor`, `HttpLoggingInterceptor`<br>- **SSL/主机验证**: 信任所有证书和主机 (开发模式配置)<br>- **缓存**: 12MB, 路径为 `cacheDir/.unKnow`<br>- **DNS**: 使用 `OkHttpDns` |
-| **Retrofit** | REST 客户端构建器 | - **Converter**: `GsonConverterFactory`<br>- **BaseUrl**: 默认为 `https://x.com/`，可通过 `BaseKit.baseUrl` 配置<br>- **Eager Validation**: Debug 模式下开启 |
-| **KCApiService** | 通用 API 接口服务 | 基于配置好的 Retrofit 实例创建 |
+| **HttpClient** | Ktor 客户端构建器 | - **Engine**: `OkHttp`<br>- **Converter**: `kotlinx.serialization`<br>- **BaseUrl**: 默认为 `https://x.com/`，可通过 `BaseKit.baseUrl` 配置 |
 | **HttpLoggingInterceptor** | 日志拦截器 | - **Level**: BODY (打印请求和响应体)<br>- **Enable**: true |
 | **HttpHeaders** | 全局 HTTP 头 | 包含 `User-Agent` 和 `Accept-Language` |
 
@@ -53,6 +52,6 @@ startKoin {
 
 ```kotlin
 // 在 Activity/Fragment 或其他 Koin Component 中
-val apiService: KCApiService by inject()
+val httpClient: HttpClient by inject()
 val saverDao: SaverDao by inject()
 ```
