@@ -127,7 +127,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         mContent = mBinding.content
         val hierarchy = addJankStats()
         hierarchy.state?.putState("Activity", javaClass.simpleName)
-
+        mContent.btnTestGecko.setOnClickListener {
+            start<GeckoBrowserActivity>()
+        }
         mBinding.content.btnSelectImage.setOnClickListener {
             selectFile {
                 "url = $it".logI()
@@ -338,9 +340,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             windowInsets?.isVisible(Type.navigationBars()).toJson().logI("navigationBars")
             windowInsets?.isVisible(Type.statusBars()).toJson().logI("statusBars")
             windowInsets?.isVisible(Type.captionBar()).toJson().logI("captionBar")
-        }
-        mContent.btnTestGecko.setOnClickListener {
-            start<GeckoBrowserActivity>()
         }
         dataStoreKit()
     }

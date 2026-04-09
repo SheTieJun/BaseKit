@@ -26,3 +26,19 @@
 
 #---------------------------------基本指令区----------------------------------
 -keep class java.io.PrintStream { *; }
+
+# --- Ktor / Netty 缺失的依赖类处理 ---
+-dontwarn com.aayushatharva.brotli4j.**
+-dontwarn com.github.luben.zstd.**
+-dontwarn com.jcraft.jzlib.**
+-dontwarn com.ning.compress.**
+-dontwarn com.oracle.svm.core.annotate.TargetClass
+-dontwarn io.netty.internal.tcnative.**
+-dontwarn java.lang.management.**
+-dontwarn jdk.jfr.**
+-dontwarn lzma.sdk.**
+-dontwarn net.jpountz.**
+-dontwarn org.apache.log4j.**
+-dontwarn org.apache.logging.log4j.**
+-dontwarn org.osgi.annotation.bundle.Export
+-dontwarn reactor.blockhound.integration.BlockHoundIntegration
