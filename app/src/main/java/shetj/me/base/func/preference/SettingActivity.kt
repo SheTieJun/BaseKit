@@ -1,5 +1,6 @@
 package shetj.me.base.func.preference
 
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import me.shetj.base.ktx.logI
 import me.shetj.base.mvvm.viewbind.BaseBindingActivity
@@ -28,6 +29,15 @@ class SettingActivity : BaseBindingActivity<ActivitySettingBinding, SettingViewM
     }
 
 
+    private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { preferences, key ->
+        // do something
+        when (key) {
+            "signature" -> {
+                preferences.getString("signature", "").logI("name")
+            }
+        }
+    }
+
     override fun addObservers() {
         super.addObservers()
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
@@ -35,14 +45,8 @@ class SettingActivity : BaseBindingActivity<ActivitySettingBinding, SettingViewM
         name.logI("name")
 
 
-        sharedPreferences.registerOnSharedPreferenceChangeListener { preferences, key ->
-            // do something
-            when (key) {
-                "signature" -> {
-                    preferences.getString("signature", "").logI("name")
-                }
-            }
-        }
+        // TODO Fix: 必须使用强引用保持 OnSharedPreferenceChangeListener，否则会被 WeakHashMap 回收导致监听失效
+        sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
     }
 
     override fun onDestroy() {

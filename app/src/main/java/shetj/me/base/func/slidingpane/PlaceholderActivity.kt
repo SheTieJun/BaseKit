@@ -10,9 +10,6 @@ import shetj.me.base.databinding.ActivityPlaceholderBinding
  * <b>@author：</b> shetj<br>
  * <b>@createTime：</b> 2023/9/21<br>
  */
-class PlaceholderActivity : BaseBindingActivity<ActivityPlaceholderBinding, BaseViewModel>(){
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+class PlaceholderActivity : BaseBindingActivity<ActivityPlaceholderBinding, BaseViewModel>() {
+    // 作为分屏占位符，无需特别实现
 }

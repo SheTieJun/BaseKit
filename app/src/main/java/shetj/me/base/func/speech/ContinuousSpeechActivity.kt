@@ -224,34 +224,4 @@ class ContinuousSpeechActivity : AppCompatActivity(), SpeechRecognitionService.O
             commandsRecyclerView.scrollToPosition(0)
         }
     }
-
-    /**
-     * 命令项数据类
-     */
-    data class CommandItem(val command: String, val time: String)
-
-    /**
-     * 命令列表适配器
-     */
-    inner class CommandsAdapter(private val commands: List<CommandItem>) : 
-        RecyclerView.Adapter<CommandsAdapter.ViewHolder>() {
-
-        inner class ViewHolder(view: android.view.View) : RecyclerView.ViewHolder(view) {
-            val commandTextView: TextView = view.findViewById(R.id.commandTextView)
-            val timeTextView: TextView = view.findViewById(R.id.timeTextView)
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = layoutInflater.inflate(R.layout.item_command, parent, false)
-            return ViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = commands[position]
-            holder.commandTextView.text = item.command
-            holder.timeTextView.text = item.time
-        }
-
-        override fun getItemCount() = commands.size
-    }
 }

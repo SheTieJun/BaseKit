@@ -382,16 +382,6 @@ class ArmsUtils private constructor() {
             return hex.toString()
         }
 
-        /**
-         * 全屏,并且
-         * @param activity
-         * @param isBlack 是否是黑色的字体和icon
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun statuInScreen2(activity: ComponentActivity, isBlack: Boolean = false) {
-            activity.statuInScreen(isBlack)
-        }
 
         /**
          * 沉侵式状态栏

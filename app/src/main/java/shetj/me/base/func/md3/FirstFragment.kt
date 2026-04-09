@@ -54,9 +54,9 @@ class FirstFragment : Fragment() {
 
         binding.buttonChange.setOnClickListener {
             if (!isEn) {
-                LanguageKit.changeLanguage(requireContext(), Locale.ENGLISH)
+                LanguageKit.changeLanguage(requireActivity(), Locale.ENGLISH)
             } else {
-                LanguageKit.changeLanguage(requireContext(), Locale.CHINA)
+                LanguageKit.changeLanguage(requireActivity(), Locale.CHINA)
             }
         }
         binding.arcProgressView.value = 50f
@@ -72,14 +72,7 @@ class FirstFragment : Fragment() {
             imageView.setImageResource(R.drawable.select_anim)
             // 设置点击监听
             imageView.setOnClickListener {
-//                isChecked = !isChecked
-//                imageView.isActivated = isChecked
                 (imageView.drawable as AnimatedVectorDrawable).start()
-//                // 延迟重置状态
-//                Handler(Looper.getMainLooper()).postDelayed({
-//                    isChecked = !isChecked
-//                    imageView.isActivated = isChecked
-//                }, 3000) // 3秒后切换回原始状态
             }
         }
     }

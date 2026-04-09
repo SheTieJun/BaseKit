@@ -45,9 +45,5 @@ class SlidingPaneActivity : BaseBindingActivity<ActivitySlidingPaneBinding, Base
         ).withSelectionPredicate(MySelectionPredicate()).build()
 
         myAdapter.setSelectionTracker(tracker)
-        tracker.selection.forEach { id ->
-
-        }
-
     }
 }
