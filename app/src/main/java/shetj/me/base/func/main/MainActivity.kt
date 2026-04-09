@@ -339,6 +339,9 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
             windowInsets?.isVisible(Type.statusBars()).toJson().logI("statusBars")
             windowInsets?.isVisible(Type.captionBar()).toJson().logI("captionBar")
         }
+        mContent.btnTestGecko.setOnClickListener {
+            start<GeckoBrowserActivity>()
+        }
         dataStoreKit()
     }
 
@@ -372,10 +375,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-        mContent.btnTestGecko.setOnClickListener {
-            start<GeckoBrowserActivity>()
-        }
-    }
 
     override fun isEnableGrayTheme(): Boolean {
         return true

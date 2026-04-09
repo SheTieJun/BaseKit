@@ -47,15 +47,15 @@ tracingKtx = "1.3.0"
 koin-version = "4.2.0"
 koin-annotations = "4.2.0"
 retrofit = "3.0.0"
-ktor = "3.1.1"
+ktor = "3.4.2"
 
-# Mozilla GeckoView
-geckoview = "136.0.20250211213459"
+# Mozilla GeckoView https://maven.mozilla.org/?prefix=maven2/org/mozilla/geckoview/geckoview-nightly/
+geckoview = "147.0.20251110211328"
 
 activity-compose = "1.13.0"
 compose-bom = "2026.03.01"
 pagingVersion = "3.4.2"
-navigation3 = "1.1.0-rc01"
+navigation3 = "1.1.0"
 lifecycleViewmodelNav3 = "2.11.0-alpha03"
 kotlinSerialization = "2.3.20"
 kotlinxSerializationCore = "1.10.0"

@@ -14,6 +14,7 @@ pluginManagement {
                 includeGroupByRegex("com\\.github.*")
             }
         }
+        maven("https://maven.mozilla.org/maven2/")
     }
 }
 dependencyResolutionManagement {
