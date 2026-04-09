@@ -199,6 +199,11 @@
                 <action android:name="android.appwidget.action.APP_WIDGET_SERVICE" />
             </intent-filter>
         </service>
+        <activity
+            android:name=".func.browser.GeckoBrowserActivity"
+            android:exported="false"
+            android:label="GeckoView Test" />
+
     </application>
 
 

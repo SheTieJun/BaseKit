@@ -49,6 +49,9 @@ koin-annotations = "4.2.0"
 retrofit = "3.0.0"
 ktor = "3.1.1"
 
+# Mozilla GeckoView
+geckoview = "136.0.20250211213459"
+
 activity-compose = "1.13.0"
 compose-bom = "2026.03.01"
 pagingVersion = "3.4.2"
@@ -175,6 +178,9 @@ ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-serialization-gson = { module = "io.ktor:ktor-serialization-gson", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# Mozilla GeckoView
+geckoview-nightly = { module = "org.mozilla.geckoview:geckoview-nightly", version.ref = "geckoview" }
 
 # Coroutines
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }

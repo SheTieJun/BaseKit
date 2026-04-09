@@ -67,6 +67,7 @@ import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
 import shetj.me.base.func.compose.ComposeTestActivity
+import shetj.me.base.func.browser.GeckoBrowserActivity
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.func.slidingpane.SlidingPaneActivity
@@ -368,6 +369,11 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                 .collect {
                     it.toString().logI("DataStoreKit")
                 }
+        }
+    }
+
+        mContent.btnTestGecko.setOnClickListener {
+            start<GeckoBrowserActivity>()
         }
     }
 

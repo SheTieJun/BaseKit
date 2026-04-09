@@ -99,6 +99,7 @@ dependencies {
     androidTestImplementation(libs.androidx.runner)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(project(":baseKit"))
+    implementation(libs.geckoview.nightly)
     implementation(libs.lottie)
     implementation(libs.androidx.dragAndDrop) //拖动
     implementation(libs.androidx.metrics.performance) // 指标

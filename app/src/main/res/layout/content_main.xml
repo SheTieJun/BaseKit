@@ -179,7 +179,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="调试设置" />
-    </com.google.android.material.chip.ChipGroup>
+    <com.google.android.material.chip.Chip
+                android:id="@+id/btn_test_gecko"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试 GeckoView" />
+
+        </com.google.android.material.chip.ChipGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
