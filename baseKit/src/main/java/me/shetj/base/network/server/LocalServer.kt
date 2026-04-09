@@ -6,7 +6,8 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.http.content.staticFiles
+import java.io.File
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
@@ -35,9 +36,9 @@ object LocalServer {
     /**
      * 启动本地服务器
      * @param port 端口号，默认 8080
-     * @param configureRoutes 路由配置闭包
+     * @param localDirPath 需要对外提供访问的本地文件夹绝对路径
      */
-    fun start(port: Int = 8080, configureRoutes: Application.() -> Unit = { defaultRoutes() }) {
+    fun start(port: Int = 8080, localDirPath: String? = null) {
         if (engine != null) {
             "LocalServer is already running on port $port".logI("LocalServer")
             return
@@ -61,7 +62,33 @@ object LocalServer {
                     }
 
                     // 配置路由
-                    configureRoutes()
+                    routing {
+                        // 简单的状态检查接口
+                        get("/ping") {
+                            call.respond(mapOf("status" to "ok", "message" to "pong"))
+                        }
+
+                        // 如果传入了本地文件夹路径，则配置静态文件服务
+                        if (!localDirPath.isNullOrEmpty()) {
+                            val localDir = File(localDirPath)
+                            if (localDir.exists() && localDir.isDirectory) {
+                                // 将根路径 "/" 映射到传入的本地文件夹
+                                // 访问 http://localhost:8080/filename 即可下载该文件夹下的文件
+                                staticFiles("/", localDir) {
+                                    // 默认返回 index.html（如果存在）
+                                    default("index.html")
+                                }
+                                "Serving static files from: ${localDir.absolutePath}".logI("LocalServer")
+                            } else {
+                                "Warning: Local directory '$localDirPath' does not exist or is not a directory".logI("LocalServer")
+                            }
+                        } else {
+                            // 默认路由
+                            get("/") {
+                                call.respondText("Hello from Ktor Local Server running on Android!")
+                            }
+                        }
+                    }
                 }.start(wait = false)
                 
                 "LocalServer started successfully on http://localhost:$port".logI("LocalServer")
@@ -79,27 +106,5 @@ object LocalServer {
         engine?.stop(1000, 2000)
         engine = null
         "LocalServer stopped".logI("LocalServer")
-    }
-
-    /**
-     * 默认的基础路由配置示例
-     */
-    private fun Application.defaultRoutes() {
-        routing {
-            // 简单的 GET 接口
-            get("/") {
-                call.respondText("Hello from Ktor Local Server running on Android!")
-            }
-
-            get("/ping") {
-                call.respond(mapOf("status" to "ok", "message" to "pong"))
-            }
-
-            // 简单的 POST 接口示例
-            post("/echo") {
-                val receiveText = call.receiveText()
-                call.respondText("Server received: $receiveText", status = HttpStatusCode.OK)
-            }
-        }
     }
 }
