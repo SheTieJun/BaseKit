@@ -1,6 +1,7 @@
 package me.shetj.base.network.interceptor
 
 import okhttp3.FormBody
+import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -10,10 +11,10 @@ import okio.Buffer
 import org.json.JSONObject
 
 /**
- * 统一参数修改拦截器
- * 用于动态修改 GET 请求的 query 参数，或 POST 请求的 body 参数
+ * 统一参数修改拦截器基类
+ * 适用于底层库，允许外部业务方继承并实现自己的参数追加逻辑
  */
-class ParameterInterceptor : Interceptor {
+open class ParameterInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
@@ -30,16 +31,45 @@ class ParameterInterceptor : Interceptor {
     }
 
     /**
+     * 子类重写此方法，用于向 GET 请求追加 Query 参数
+     */
+    protected open fun addGetParams(builder: HttpUrl.Builder) {
+        // Example: builder.addQueryParameter("common_param", "value")
+    }
+
+    /**
+     * 子类重写此方法，用于向 POST 表单追加参数
+     */
+    protected open fun addPostFormParams(builder: FormBody.Builder) {
+        // Example: builder.add("common_param", "value")
+    }
+
+    /**
+     * 子类重写此方法，用于向 POST JSON 追加参数
+     */
+    protected open fun addPostJsonParams(jsonObject: JSONObject) {
+        // Example: jsonObject.put("common_param", "value")
+    }
+
+    /**
+     * 判断某个 MediaType 是否允许被作为 JSON 读取和修改。
+     * 默认仅拦截 application/json。子类可重写以支持更多文本类型的 JSON 格式。
+     */
+    protected open fun isSupportedJsonType(mediaType: String?): Boolean {
+        return mediaType?.contains("application/json", ignoreCase = true) == true
+    }
+
+    /**
      * 修改 GET 请求：通过 HttpUrl.Builder 动态追加查询参数
      */
     private fun modifyGetRequest(request: Request): Request {
-        val modifiedUrl = request.url.newBuilder()
-            // 在这里添加你需要的通用 GET 参数
-            // .addQueryParameter("common_param", "value")
-            .build()
+        val urlBuilder = request.url.newBuilder()
+        
+        // 留给子类实现参数追加
+        addGetParams(urlBuilder)
 
         return request.newBuilder()
-            .url(modifiedUrl)
+            .url(urlBuilder.build())
             .build()
     }
 
@@ -67,8 +97,8 @@ class ParameterInterceptor : Interceptor {
             formBuilder.add(body.name(i), body.value(i))
         }
 
-        // 在这里追加新的表单参数
-        // formBuilder.add("common_param", "value")
+        // 留给子类实现参数追加
+        addPostFormParams(formBuilder)
 
         return request.newBuilder()
             .post(formBuilder.build())
@@ -81,9 +111,8 @@ class ParameterInterceptor : Interceptor {
     private fun modifyJsonBody(request: Request, body: RequestBody): Request {
         val mediaType = body.contentType()
         
-        // 安全检查：只拦截 application/json，避免读取文件上传等大体积二进制流导致 OOM
-        val isJson = mediaType?.toString()?.contains("application/json", ignoreCase = true) == true
-        if (!isJson) {
+        // 安全检查：避免读取文件上传等大体积二进制流导致 OOM
+        if (!isSupportedJsonType(mediaType?.toString())) {
             return request
         }
 
@@ -100,8 +129,8 @@ class ParameterInterceptor : Interceptor {
                 JSONObject()
             }
 
-            // 在这里注入你的通用 JSON 参数
-            // jsonObject.put("common_param", "value")
+            // 留给子类实现参数追加
+            addPostJsonParams(jsonObject)
 
             // 将修改后的 JSON 重新转为 RequestBody
             val modifiedBody = jsonObject.toString().toRequestBody(mediaType)
