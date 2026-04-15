@@ -42,6 +42,11 @@ class DebugFunc private constructor() {
             isPrintToConsole = BuildConfig.DEBUG
             // 可以在这里根据需要配置 logDir 等
         }
+        
+        // 调试悬浮窗初始化
+        if (BuildConfig.DEBUG && context.applicationContext is android.app.Application) {
+            DebugFloatManager.init(context.applicationContext as android.app.Application)
+        }
     }
 
     fun saveHttpToFile(info: String?) {

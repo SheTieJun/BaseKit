@@ -128,6 +128,18 @@ fun DebugSettingsScreen() {
                 )
             }
 
+            // Debug Float Window Switch
+            var isFloatWindowEnabled by remember { mutableStateOf(DebugFloatManager.isShow) }
+            DebugOptionItem(title = "Enable Debug Float Window") {
+                Switch(
+                    checked = isFloatWindowEnabled,
+                    onCheckedChange = {
+                        isFloatWindowEnabled = it
+                        DebugFloatManager.isShow = it
+                    }
+                )
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Log Config Settings",
