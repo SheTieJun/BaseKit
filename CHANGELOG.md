@@ -25,3 +25,11 @@ My awesome project that provides a lot of useful features, like:
 ### Fixed
 
 ### Security
+
+## [2026-04-16]
+
+### Added
+- 新增 `TimeCostKit`，提供 `timedAsync` / `timedAsyncIO` 用于统计协程代码块耗时并输出日志。
+
+### Changed
+- 增强 `TimeCostKit`：新增 `timedAsyncCost` / `timedAsyncCostIO` 支持返回耗时（毫秒）。

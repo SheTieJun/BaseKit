@@ -88,6 +88,9 @@ object DebugFloatManager : Application.ActivityLifecycleCallbacks {
                     lastTranslationX = x
                     lastTranslationY = y
                 }
+                onCloseListener = {
+                    isShow = false
+                }
             }
         }
 

@@ -22,6 +22,7 @@ class DebugFloatView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    private val tvClose: TextView
     private val tvVersion: TextView
     private val tvActivity: TextView
     private val tvCustomInfo: TextView
@@ -32,6 +33,7 @@ class DebugFloatView @JvmOverloads constructor(
     private var lastY = 0f
     
     var onDragListener: ((x: Float, y: Float) -> Unit)? = null
+    var onCloseListener: (() -> Unit)? = null
 
     init {
         setBackgroundColor(Color.parseColor("#80000000")) // 半透明黑色背景
@@ -39,6 +41,14 @@ class DebugFloatView @JvmOverloads constructor(
         
         val layout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
+        }
+
+        tvClose = TextView(context).apply {
+            text = "×"
+            textSize = 14f
+            setTextColor(Color.WHITE)
+            setPadding(6.dp2px, 0, 6.dp2px, 0)
+            setOnClickListener { onCloseListener?.invoke() }
         }
 
         tvVersion = createTextView()
@@ -50,6 +60,13 @@ class DebugFloatView @JvmOverloads constructor(
         layout.addView(tvCustomInfo)
 
         addView(layout, LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+
+        addView(
+            tvClose,
+            LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                gravity = Gravity.END or Gravity.TOP
+            }
+        )
     }
 
     private fun createTextView(): TextView {

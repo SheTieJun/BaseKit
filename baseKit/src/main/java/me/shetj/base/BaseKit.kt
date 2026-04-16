@@ -97,6 +97,9 @@ object BaseKit {
         this.isDebug.postValue(isDebug)
         this.baseUrl = baseUrl
         Utils.init(application)
+        if (isDebug) {
+            DebugFunc.getInstance().initContext(application)
+        }
         this.TAG = AppUtils.appName ?: "BaseKit"
         this.isDebug.observe(ProcessLifecycleOwner.get()) { t ->
             Tim.setLogAuto(t)

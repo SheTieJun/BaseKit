@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -65,11 +66,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.rememberModalBottomSheetState
 
 class LogViewerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             MaterialTheme {
                 LogViewerScreen()
@@ -224,7 +227,7 @@ fun LogViewerScreen() {
                                     )
                                 }
                                 LinearProgressIndicator(
-                                    progress = progress,
+                                    progress = {progress},
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(4.dp)
@@ -316,7 +319,7 @@ fun LogViewerScreen() {
         Column(modifier = Modifier.padding(padding)) {
             // File Tabs
             if (logFiles.isNotEmpty()) {
-                ScrollableTabRow(
+                PrimaryScrollableTabRow(
                     selectedTabIndex = logFiles.indexOf(selectedFile).takeIf { it >= 0 } ?: 0
                 ) {
                     logFiles.forEach { file ->
