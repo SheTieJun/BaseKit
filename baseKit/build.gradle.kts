@@ -99,6 +99,8 @@ fun DependencyHandler.addOther(){
     api(libs.third.brv)
     api(libs.third.timber)
     api(libs.shetj.qmui)
+    // Koog AI agents
+    api(libs.koog.agents)
 }
 
 fun DependencyHandler.addRetrofit2(){

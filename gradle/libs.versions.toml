@@ -48,6 +48,7 @@ koin-version = "4.2.0"
 koin-annotations = "4.2.0"
 retrofit = "3.0.0"
 ktor = "3.4.2"
+koog = "0.7.3"
 
 # Mozilla GeckoView https://maven.mozilla.org/?prefix=maven2/org/mozilla/geckoview/geckoview-nightly/
 geckoview = "147.0.20251110211328"
@@ -189,6 +190,9 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 # Kotlinx
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
+
+# Koog (AI agents)
+koog-agents = { module = "ai.koog:koog-agents", version.ref = "koog" }
 
 # ASM
 asm-commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }

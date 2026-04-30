@@ -1,28 +1,16 @@
 package shetj.me.base.func.main
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.health.SystemHealthManager
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnAttachStateChangeListener
 import android.view.Window
 import android.view.WindowManager
-import android.widget.LinearLayout
-import android.widget.PopupWindow
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.collection.lruCache
-import androidx.core.util.lruCache
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type
 import androidx.lifecycle.asLiveData
@@ -54,6 +42,9 @@ import me.shetj.base.mvvm.viewbind.BaseBindingActivity
 import me.shetj.base.netcoroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
+import me.shetj.base.tools.app.KoogAgentKit
+import me.shetj.base.tools.app.KoogAgentKit.Provider
+import shetj.me.base.func.koog.KoogActivity
 import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.app.MDThemeKit
 import me.shetj.base.tools.app.ScreenshotKit
@@ -66,16 +57,14 @@ import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
-import shetj.me.base.func.compose.ComposeTestActivity
 import shetj.me.base.func.browser.GeckoBrowserActivity
+import shetj.me.base.func.compose.ComposeTestActivity
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.preference.SettingActivity
-import shetj.me.base.func.slidingpane.SlidingPaneActivity
 import shetj.me.base.utils.KeyStoreKit
 import timber.log.Timber
 import java.util.Locale
 import java.util.function.Consumer
-import androidx.core.graphics.drawable.toDrawable
 
 
 class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
@@ -96,6 +85,34 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
                     it.toString().logI("APP-Exit")
                 }
         }
+        
+        // Koog AI Agent 测试示例
+        testKoogAgent()
+    }
+
+    /**
+     * 测试 Koog AI Agent
+     * 注意：需要设置对应的 API Key 环境变量
+     */
+    private fun testKoogAgent() {
+        // 示例：使用 Ollama 本地模型（不需要 API Key）
+        // 需要先在本地运行 Ollama: ollama run llama3.2
+        val result = KoogAgentKit.quickRun(
+            provider = Provider.OLLAMA,
+            prompt = "你好，请用一句话介绍自己"
+        )
+        result?.let {
+            "Koog Agent 回复: $it".logI("KoogTest")
+        }
+
+        // 示例：使用 OpenAI（需要设置 OPENAI_API_KEY 环境变量）
+        // val result = KoogAgentKit.quickRun(
+        //     provider = Provider.OPENAI,
+        //     prompt = "你好，请用一句话介绍自己"
+        // )
+    }
+
+    private fun initScreenshot() {
         ScreenshotKit.initActivity(this)
         ScreenshotKit.setScreenshotListener(object : ScreenshotKit.ScreenshotListener {
             override fun onScreenShot(path: String?) {
@@ -277,6 +294,10 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         mContent.btnDebugSettings.setOnClickListener {
             DebugFunc.getInstance().openDebugSettings(this)
+        }
+        
+        mContent.btnKoogAi.setOnClickListener {
+            start<KoogActivity>()
         }
     }
 

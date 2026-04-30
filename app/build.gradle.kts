@@ -66,6 +66,7 @@ androidApplication("shetj.me.base") {
             excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
             excludes += "META-INF/io.netty.versions.properties"
             excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/DEPENDENCIES"
         }
     }
 }
@@ -132,6 +133,8 @@ dependencies {
     implementation(libs.androidx.camera.mlkit.vision)
     // If you want to additionally use the CameraX Extensions library
     implementation(libs.androidx.camera.extensions)
+
+    implementation(libs.koog.agents)
 }
 
 androidComponents {

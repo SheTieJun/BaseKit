@@ -203,7 +203,11 @@
             android:name=".func.browser.GeckoBrowserActivity"
             android:exported="false"
             android:label="GeckoView Test" />
-
+        <activity
+            android:name=".func.koog.KoogActivity"
+            android:exported="false"
+            android:label="AI 助手"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 

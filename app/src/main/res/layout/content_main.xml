@@ -179,7 +179,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="调试设置" />
-    <com.google.android.material.chip.Chip
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/btn_koog_ai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="AI 助手" />
+
+        <com.google.android.material.chip.Chip
                 android:id="@+id/btn_test_gecko"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

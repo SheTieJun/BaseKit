@@ -33,3 +33,9 @@ My awesome project that provides a lot of useful features, like:
 
 ### Changed
 - 增强 `TimeCostKit`：新增 `timedAsyncCost` / `timedAsyncCostIO` 支持返回耗时（毫秒）。
+
+## [2026-04-30]
+
+### Added
+- 接入 Koog（JetBrains AI Agent Framework）：新增 `ai.koog:koog-agents` 依赖，供 app 模块使用。
+- 新增 `KoogAgentKit` 工具类，封装 AI Agent 的创建和执行，支持多种 LLM 提供商：OpenAI, Anthropic, Google, DeepSeek, OpenRouter, Bedrock, Mistral, Ollama。

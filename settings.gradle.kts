@@ -8,6 +8,7 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        maven("https://maven.aliyun.com/repository/central")
         mavenCentral()
         maven("https://jitpack.io"){
             content {
@@ -21,6 +22,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
+        maven("https://maven.aliyun.com/repository/central")
         mavenCentral()
         mavenLocal()
         maven("https://jitpack.io")
@@ -102,6 +104,5 @@ gradle.addBuildListener(object : BuildListener {
         }
     }
 })
-
 
 
