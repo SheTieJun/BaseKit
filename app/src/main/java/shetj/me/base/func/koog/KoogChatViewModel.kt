@@ -56,7 +56,7 @@ class KoogChatViewModel : ViewModel() {
                 if (activeAgent != null) {
                     val provider = KoogAgentKit.Provider.valueOf(activeAgent.provider)
                     val apiKey = if (provider == KoogAgentKit.Provider.OLLAMA) null else activeAgent.apiKey
-                    currentAgent = KoogAgentKit.createAgent(provider, apiKey)
+                    currentAgent = KoogAgentKit.createAgent(provider, apiKey, baseUrl = activeAgent.baseUrl)
                     _state.update {
                         it.copy(
                             currentAgentName = activeAgent.name,

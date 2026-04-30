@@ -44,10 +44,10 @@ private fun KoogApp(onFinish: () -> Unit) {
         targetState = currentScreen,
         transitionSpec = {
             if (targetState == KoogScreen.Settings) {
-                slideInHorizontally(animationSpec = tween(300)) { it } with
+                slideInHorizontally(animationSpec = tween(300)) { it } togetherWith
                         slideOutHorizontally(animationSpec = tween(300)) { -it / 2 }
             } else {
-                slideInHorizontally(animationSpec = tween(300)) { -it } with
+                slideInHorizontally(animationSpec = tween(300)) { -it } togetherWith
                         slideOutHorizontally(animationSpec = tween(300)) { it / 2 }
             }
         },

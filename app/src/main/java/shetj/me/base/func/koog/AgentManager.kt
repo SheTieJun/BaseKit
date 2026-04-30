@@ -27,9 +27,11 @@ data class AgentConfig(
     val apiKey: String = "",
     val model: String = "",
     val systemPrompt: String = "",
+    val baseUrl: String = "",
     val createdAt: Long = System.currentTimeMillis(),
     val isDefault: Boolean = false
 ) {
+    val hasCustomUrl: Boolean get() = baseUrl.isNotBlank() && baseUrl != getDefaultBaseUrl(provider)
     fun getDisplayName() = getProviderDisplayName(provider)
     fun getModelName() = model.ifEmpty { getDefaultModel(provider) }
 }
@@ -79,7 +81,7 @@ class AgentManager(private val context: Context) {
         val isEmpty: Boolean get() = agents.isEmpty()
     }
 
-    suspend fun addAgent(name: String, provider: KoogAgentKit.Provider, apiKey: String, model: String = "", systemPrompt: String = "") {
+    suspend fun addAgent(name: String, provider: KoogAgentKit.Provider, apiKey: String, model: String = "", systemPrompt: String = "", baseUrl: String = "") {
         val current = _stateFlow.value
         val newAgent = AgentConfig(
             name = name,
@@ -87,6 +89,7 @@ class AgentManager(private val context: Context) {
             apiKey = apiKey,
             model = model,
             systemPrompt = systemPrompt,
+            baseUrl = baseUrl.takeIf { it.isNotBlank() } ?: getDefaultBaseUrl(provider.name),
             isDefault = current.agents.isEmpty()
         )
         saveAgents(current.agents + newAgent, current.activeAgentId ?: newAgent.id)
@@ -153,6 +156,19 @@ internal fun getProviderDisplayName(provider: String): String {
     }
 }
 
+internal fun getDefaultBaseUrl(provider: String): String {
+    return when (provider) {
+        "OPENAI" -> "https://api.openai.com"
+        "ANTHROPIC" -> "https://api.anthropic.com"
+        "GOOGLE" -> "https://generativelanguage.googleapis.com"
+        "DEEPSEEK" -> "https://api.deepseek.com"
+        "OPENROUTER" -> "https://openrouter.ai"
+        "MISTRAL" -> "https://api.mistral.ai"
+        "OLLAMA" -> "http://localhost:11434"
+        else -> ""
+    }
+}
+
 private fun getDefaultModel(provider: String): String {
     return when (provider) {
         "OPENAI" -> "gpt-4o"
@@ -160,7 +176,6 @@ private fun getDefaultModel(provider: String): String {
         "GOOGLE" -> "gemini-2.5-pro"
         "DEEPSEEK" -> "deepseek-chat"
         "OLLAMA" -> "llama3.2"
-        "OPENROUTER" ->"qwen3.6-plus"
         else -> ""
     }
 }

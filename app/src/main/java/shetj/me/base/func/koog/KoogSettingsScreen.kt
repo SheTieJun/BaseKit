@@ -33,8 +33,8 @@ class KoogSettingsViewModel : androidx.lifecycle.ViewModel() {
     private val agentManager = AgentManager.getInstance(me.shetj.base.BaseKit.app)
     val stateFlow = agentManager.stateFlow
 
-    suspend fun addAgent(name: String, provider: KoogAgentKit.Provider, apiKey: String, model: String = "", systemPrompt: String = "") {
-        agentManager.addAgent(name, provider, apiKey, model, systemPrompt)
+    suspend fun addAgent(name: String, provider: KoogAgentKit.Provider, apiKey: String, model: String = "", systemPrompt: String = "", baseUrl: String = "") {
+        agentManager.addAgent(name, provider, apiKey, model, systemPrompt, baseUrl)
     }
 
     suspend fun updateAgent(agent: AgentConfig) = agentManager.updateAgent(agent)
@@ -120,12 +120,12 @@ fun KoogSettingsScreen(
         AgentEditorDialog(
             agent = editingAgent,
             onDismiss = { showAddDialog = false; editingAgent = null },
-            onSave = { name, provider, apiKey, model, systemPrompt ->
+            onSave = { name, provider, apiKey, model, systemPrompt, baseUrl ->
                 scope.launch {
                     if (editingAgent != null) {
-                        viewModel.updateAgent(editingAgent!!.copy(name = name, provider = provider.name, apiKey = apiKey, model = model, systemPrompt = systemPrompt))
+                        viewModel.updateAgent(editingAgent!!.copy(name = name, provider = provider.name, apiKey = apiKey, model = model, systemPrompt = systemPrompt, baseUrl = baseUrl))
                     } else {
-                        viewModel.addAgent(name, provider, apiKey, model, systemPrompt)
+                        viewModel.addAgent(name, provider, apiKey, model, systemPrompt, baseUrl)
                     }
                     showAddDialog = false
                     editingAgent = null
@@ -193,14 +193,16 @@ private fun AgentListItem(
 private fun AgentEditorDialog(
     agent: AgentConfig?,
     onDismiss: () -> Unit,
-    onSave: (String, KoogAgentKit.Provider, String, String, String) -> Unit
+    onSave: (String, KoogAgentKit.Provider, String, String, String, String) -> Unit
 ) {
     var name by remember { mutableStateOf(agent?.name ?: "") }
     var selectedProvider by remember { mutableStateOf(KoogAgentKit.Provider.valueOf(agent?.provider ?: "OPENAI")) }
     var apiKey by remember { mutableStateOf(agent?.apiKey ?: "") }
     var model by remember { mutableStateOf(agent?.model ?: "") }
     var systemPrompt by remember { mutableStateOf(agent?.systemPrompt ?: "") }
+    var baseUrl by remember { mutableStateOf(agent?.baseUrl ?: "") }
     var showProviderDialog by remember { mutableStateOf(false) }
+    var showAdvancedOptions by remember { mutableStateOf(!agent?.baseUrl.isNullOrBlank()) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -209,14 +211,15 @@ private fun AgentEditorDialog(
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("名称") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 
-                OutlinedTextField(
-                    value = selectedProvider.name,
-                    onValueChange = {},
-                    label = { Text("提供商") },
-                    modifier = Modifier.fillMaxWidth().clickable { showProviderDialog = true },
-                    readOnly = true,
-                    trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }
-                )
+                // 提供商选择按钮
+                OutlinedButton(
+                    onClick = { showProviderDialog = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(getProviderDisplayName(selectedProvider.name))
+                    Spacer(Modifier.width(8.dp))
+                    Icon(Icons.Default.ArrowDropDown, null)
+                }
                 
                 if (selectedProvider != KoogAgentKit.Provider.OLLAMA) {
                     OutlinedTextField(value = apiKey, onValueChange = { apiKey = it }, label = { Text("API Key") }, modifier = Modifier.fillMaxWidth(), singleLine = true, visualTransformation = PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
@@ -225,11 +228,42 @@ private fun AgentEditorDialog(
                 OutlinedTextField(value = model, onValueChange = { model = it }, label = { Text("模型 (可选)") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 
                 OutlinedTextField(value = systemPrompt, onValueChange = { systemPrompt = it }, label = { Text("系统提示词 (可选)") }, modifier = Modifier.fillMaxWidth(), maxLines = 3)
+                
+                // 高级选项折叠区域
+                Row(
+                    modifier = Modifier.fillMaxWidth().clickable { showAdvancedOptions = !showAdvancedOptions },
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("高级选项", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                    Icon(
+                        imageVector = if (showAdvancedOptions) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+                
+                AnimatedVisibility(visible = showAdvancedOptions) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        val defaultUrl = getDefaultBaseUrl(selectedProvider.name)
+                        OutlinedTextField(
+                            value = baseUrl,
+                            onValueChange = { baseUrl = it },
+                            label = { Text("API Base URL (可选)") },
+                            placeholder = { Text(defaultUrl) },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
+                        )
+                        if (baseUrl.isNotBlank() && baseUrl != defaultUrl) {
+                            Text("自定义", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                        }
+                    }
+                }
             }
         },
         confirmButton = {
             Button(
-                onClick = { onSave(name, selectedProvider, apiKey, model, systemPrompt) },
+                onClick = { onSave(name, selectedProvider, apiKey, model, systemPrompt, baseUrl) },
                 enabled = name.isNotBlank() && (selectedProvider == KoogAgentKit.Provider.OLLAMA || apiKey.isNotBlank())
             ) { Text("保存") }
         },
