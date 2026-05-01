@@ -54,7 +54,7 @@ koog = "0.8.0"
 geckoview = "147.0.20251110211328"
 
 activity-compose = "1.13.0"
-compose-bom = "2026.03.01"
+compose-bom = "2026.04.01"
 pagingVersion = "3.4.2"
 navigation3 = "1.1.1"
 lifecycleViewmodelNav3 = "2.11.0-alpha03"
