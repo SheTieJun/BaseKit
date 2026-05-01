@@ -160,7 +160,7 @@ koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-an
 # Third
 third-brv = { module = "io.github.cymchad:BaseRecyclerViewAdapterHelper4", version = "4.3.4" }
 third-gson = { module = "com.google.code.gson:gson", version = "2.13.2" }
-third-glide = { module = "com.github.bumptech.glide:glide", version = "5.0.5" }
+third-glide = { module = "com.github.bumptech.glide:glide", version = "5.0.7" }
 third-timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
 # Retrofit2
