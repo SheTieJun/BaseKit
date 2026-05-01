@@ -48,7 +48,7 @@ koin-version = "4.2.0"
 koin-annotations = "4.2.0"
 retrofit = "3.0.0"
 ktor = "3.4.2"
-koog = "0.7.3"
+koog = "0.8.0"
 
 # Mozilla GeckoView https://maven.mozilla.org/?prefix=maven2/org/mozilla/geckoview/geckoview-nightly/
 geckoview = "147.0.20251110211328"
