@@ -1,14 +1,12 @@
 package shetj.me.base.func.koog
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -22,7 +20,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import java.text.SimpleDateFormat
@@ -37,8 +38,9 @@ fun KoogChatScreen(
     val viewModel: KoogChatViewModel = viewModel()
     val state by viewModel.state.collectAsState()
     val listState = rememberLazyListState()
+    val focusManager = LocalFocusManager.current
 
-    // 滚动到底部
+    // 新消息自动滚动到底部
     LaunchedEffect(state.messages.size) {
         if (state.messages.isNotEmpty()) {
             listState.animateScrollToItem(state.messages.lastIndex)
@@ -50,7 +52,11 @@ fun KoogChatScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text(state.currentAgentName.ifEmpty { "AI 助手" })
+                        Text(
+                            text = state.currentAgentName.ifEmpty { "AI 助手" },
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
                         if (!state.isConfigured) {
                             Text(
                                 text = "未配置 Agent",
@@ -66,8 +72,10 @@ fun KoogChatScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { viewModel.clearChat() }) {
-                        Icon(Icons.Default.DeleteSweep, contentDescription = "清空聊天")
+                    if (state.messages.isNotEmpty()) {
+                        IconButton(onClick = { viewModel.clearChat() }) {
+                            Icon(Icons.Default.DeleteSweep, contentDescription = "清空聊天")
+                        }
                     }
                     IconButton(onClick = onSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "设置")
@@ -80,53 +88,56 @@ fun KoogChatScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .imePadding()
         ) {
-            // 聊天消息列表
-            if (state.messages.isEmpty()) {
-                // 空状态提示
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
+            // 消息列表区域（始终占满剩余空间）
+            Box(modifier = Modifier.weight(1f)) {
+                if (state.messages.isEmpty()) {
+                    // 空状态
                     Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.Center
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.SmartToy,
                             contentDescription = null,
-                            modifier = Modifier.size(64.dp),
-                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                            modifier = Modifier.size(72.dp),
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
                         )
+                        Spacer(Modifier.height(16.dp))
                         Text(
                             text = "开始对话",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = MaterialTheme.typography.headlineSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                        Spacer(Modifier.height(8.dp))
                         Text(
-                            text = if (state.isConfigured) "发送消息开始聊天" else "请先配置 API Key",
+                            text = if (state.isConfigured) "输入消息开始聊天" else "请先在设置中配置 API Key",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            textAlign = TextAlign.Center
                         )
                         if (!state.isConfigured) {
-                            Button(
-                                onClick = onSettings,
-                                modifier = Modifier.padding(top = 8.dp)
-                            ) {
+                            Spacer(Modifier.height(16.dp))
+                            FilledTonalButton(onClick = onSettings) {
                                 Text("去配置")
                             }
                         }
                     }
-                }
-            } else {
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(state.messages, key = { it.id }) { message ->
-                        ChatMessageItem(message)
+                } else {
+                    // 消息列表
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(state.messages, key = { it.id }) { message ->
+                            ChatMessageItem(message)
+                        }
                     }
                 }
             }
@@ -135,7 +146,10 @@ fun KoogChatScreen(
             ChatInputBox(
                 value = state.inputText,
                 onValueChange = { viewModel.onInputTextChanged(it) },
-                onSend = { viewModel.sendMessage() },
+                onSend = {
+                    focusManager.clearFocus()
+                    viewModel.sendMessage()
+                },
                 isSending = state.isGenerating,
                 isEnabled = state.isConfigured
             )
@@ -145,79 +159,82 @@ fun KoogChatScreen(
 
 @Composable
 private fun ChatMessageItem(message: ChatMessage) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (message.isUser) Arrangement.End else Arrangement.Start
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize(),
+        horizontalAlignment = if (message.isUser) Alignment.End else Alignment.Start
     ) {
-        if (!message.isUser) {
-            Icon(
-                imageVector = Icons.Outlined.SmartToy,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(32.dp)
-                    .padding(end = 8.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = if (message.isUser) Arrangement.End else Arrangement.Start,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            // AI 头像
+            if (!message.isUser) {
+                Icon(
+                    imageVector = Icons.Outlined.SmartToy,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .padding(end = 8.dp, bottom = 4.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
 
-        Column {
-            AnimatedVisibility(
-                visible = true,
-                enter = fadeIn(),
-                exit = fadeOut()
+            // 消息气泡
+            Surface(
+                shape = RoundedCornerShape(
+                    topStart = 16.dp,
+                    topEnd = 16.dp,
+                    bottomStart = if (message.isUser) 16.dp else 4.dp,
+                    bottomEnd = if (message.isUser) 4.dp else 16.dp
+                ),
+                color = if (message.isUser) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                },
+                tonalElevation = if (message.isUser) 0.dp else 1.dp
             ) {
-                Surface(
-                    shape = RoundedCornerShape(
-                        topStart = 16.dp,
-                        topEnd = 16.dp,
-                        bottomStart = if (message.isUser) 16.dp else 4.dp,
-                        bottomEnd = if (message.isUser) 4.dp else 16.dp
-                    ),
-                    color = if (message.isUser) {
-                        MaterialTheme.colorScheme.primary
+                Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)) {
+                    if (message.isLoading) {
+                        LoadingDots()
                     } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    },
-                    tonalElevation = 2.dp
-                ) {
-                    Column(modifier = Modifier.padding(12.dp)) {
-                        if (message.isLoading) {
-                            LoadingDots()
-                        } else {
-                            Text(
-                                text = message.content,
-                                color = if (message.isUser) {
-                                    MaterialTheme.colorScheme.onPrimary
-                                } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                },
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
                         Text(
-                            text = formatTime(message.timestamp),
-                            style = MaterialTheme.typography.labelSmall,
+                            text = message.content,
                             color = if (message.isUser) {
-                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+                                MaterialTheme.colorScheme.onPrimary
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                                MaterialTheme.colorScheme.onSurfaceVariant
                             },
-                            modifier = Modifier.padding(top = 4.dp)
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = formatTime(message.timestamp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (message.isUser) {
+                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f)
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                        }
+                    )
                 }
             }
-        }
 
-        if (message.isUser) {
-            Icon(
-                imageVector = Icons.Outlined.Person,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(32.dp)
-                    .padding(start = 8.dp),
-                tint = MaterialTheme.colorScheme.tertiary
-            )
+            // 用户头像
+            if (message.isUser) {
+                Icon(
+                    imageVector = Icons.Outlined.Person,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .padding(start = 8.dp, bottom = 4.dp),
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
+            }
         }
     }
 }
@@ -225,7 +242,7 @@ private fun ChatMessageItem(message: ChatMessage) {
 @Composable
 private fun LoadingDots() {
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        repeat(3) { index ->
+        repeat(3) {
             Text(
                 text = "●",
                 color = MaterialTheme.colorScheme.primary,
@@ -235,7 +252,6 @@ private fun LoadingDots() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ChatInputBox(
     value: String,
@@ -245,43 +261,73 @@ private fun ChatInputBox(
     isEnabled: Boolean
 ) {
     Surface(
-        tonalElevation = 4.dp
+        tonalElevation = 4.dp,
+        shadowElevation = 2.dp
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = value,
-                onValueChange = onValueChange,
-                modifier = Modifier.weight(1f),
-                placeholder = { 
-                    Text(if (isEnabled) "输入消息..." else "请先配置") 
-                },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-                keyboardActions = KeyboardActions(
-                    onSend = { if (isEnabled && !isSending) onSend() }
-                ),
-                enabled = isEnabled && !isSending,
-                maxLines = 4,
-                shape = RoundedCornerShape(24.dp)
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Button(
-                onClick = onSend,
-                enabled = isEnabled && !isSending && value.isNotBlank(),
-                modifier = Modifier.size(48.dp),
-                shape = RoundedCornerShape(24.dp)
+        Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Default.Send,
-                    contentDescription = "发送",
-                    modifier = Modifier.size(20.dp)
+                // 输入框
+                TextField(
+                    value = value,
+                    onValueChange = onValueChange,
+                    modifier = Modifier.weight(1f),
+                    placeholder = { Text(if (isEnabled) "输入消息..." else "请先配置 API") },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
+                    keyboardActions = KeyboardActions(
+                        onSend = { if (isEnabled && !isSending) onSend() }
+                    ),
+                    enabled = isEnabled && !isSending,
+                    maxLines = 4,
+                    shape = RoundedCornerShape(20.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+                        focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+                        unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+                        disabledIndicatorColor = androidx.compose.ui.graphics.Color.Transparent
+                    )
                 )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                // 发送按钮
+                IconButton(
+                    onClick = onSend,
+                    enabled = isEnabled && !isSending && value.isNotBlank(),
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(
+                            color = if (isEnabled && value.isNotBlank()) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+                            },
+                            shape = RoundedCornerShape(22.dp)
+                        )
+                ) {
+                    if (isSending) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            strokeWidth = 2.dp,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Send,
+                            contentDescription = "发送",
+                            tint = if (isEnabled && value.isNotBlank()) {
+                                MaterialTheme.colorScheme.onPrimary
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                            },
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
             }
         }
     }

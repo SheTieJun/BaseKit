@@ -1,6 +1,8 @@
 package me.shetj.base.ktx
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Outline
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -72,6 +74,15 @@ fun TextView.setDrawables(@DrawableRes resId: Int, @Constant.GravityType gravity
             Gravity.BOTTOM -> setCompoundDrawablesRelative(null, null, null, it)
         }
     }
+}
+
+/**
+ * 图片加载判断context
+ */
+fun canStartLoad(view: View): Boolean {
+    if (!view.isAttachedToWindow) return false
+    val activity = findActivity(view.context) ?: return true
+    return !activity.isFinishing && !activity.isDestroyed
 }
 
 fun TextView.clearDrawables() {

@@ -72,6 +72,15 @@ fun Context.asComponentActivity(): ComponentActivity {
     error("u should be called in the context of an Activity")
 }
 
+
+fun findActivity(context: Context?): Activity? {
+    return when (context) {
+        is Activity -> context
+        is ContextWrapper -> findActivity(context.baseContext)
+        else -> null
+    }
+}
+
 fun Context.getIdByName(className: String, resName: String): Int {
     return applicationContext.resources.getIdentifier(resName, className, packageName)
 }

@@ -202,7 +202,11 @@ private fun AgentEditorDialog(
     var systemPrompt by remember { mutableStateOf(agent?.systemPrompt ?: "") }
     var baseUrl by remember { mutableStateOf(agent?.baseUrl ?: "") }
     var showProviderDialog by remember { mutableStateOf(false) }
+    var showModelDialog by remember { mutableStateOf(false) }
     var showAdvancedOptions by remember { mutableStateOf(!agent?.baseUrl.isNullOrBlank()) }
+
+    // 获取当前提供商的模型列表
+    val availableModels = getModelsForProvider(selectedProvider)
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -225,7 +229,20 @@ private fun AgentEditorDialog(
                     OutlinedTextField(value = apiKey, onValueChange = { apiKey = it }, label = { Text("API Key") }, modifier = Modifier.fillMaxWidth(), singleLine = true, visualTransformation = PasswordVisualTransformation(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
                 }
                 
-                OutlinedTextField(value = model, onValueChange = { model = it }, label = { Text("模型 (可选)") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                // 模型选择按钮
+                OutlinedButton(
+                    onClick = { showModelDialog = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(horizontalAlignment = Alignment.Start) {
+                        Text(if (model.isEmpty()) "选择模型 (可选)" else model, style = MaterialTheme.typography.bodyMedium)
+                        if (model.isEmpty()) {
+                            Text("推荐: ${getDefaultModelForProvider(selectedProvider)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f))
+                        }
+                    }
+                    Spacer(Modifier.weight(1f))
+                    Icon(Icons.Default.ArrowDropDown, null)
+                }
                 
                 OutlinedTextField(value = systemPrompt, onValueChange = { systemPrompt = it }, label = { Text("系统提示词 (可选)") }, modifier = Modifier.fillMaxWidth(), maxLines = 3)
                 
@@ -270,6 +287,7 @@ private fun AgentEditorDialog(
         dismissButton = { TextButton(onClick = onDismiss) { Text("取消") } }
     )
 
+    // 提供商选择对话框
     if (showProviderDialog) {
         val providers = KoogAgentKit.Provider.entries
         AlertDialog(
@@ -295,6 +313,106 @@ private fun AgentEditorDialog(
             confirmButton = {}
         )
     }
+
+    // 模型选择对话框
+    if (showModelDialog) {
+        AlertDialog(
+            onDismissRequest = { showModelDialog = false },
+            title = { Text("选择模型") },
+            text = {
+                LazyColumn {
+                    if (availableModels.isNotEmpty()) {
+                        item {
+                            Text("推荐模型", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 8.dp))
+                        }
+                        items(availableModels) { m ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth().clickable { model = m; showModelDialog = false }.padding(vertical = 10.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(m, style = MaterialTheme.typography.bodyMedium)
+                                if (m == model) Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary)
+                            }
+                        }
+                    }
+                    item {
+                        Divider(modifier = Modifier.padding(vertical = 8.dp))
+                        Text("自定义模型", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 8.dp))
+                        OutlinedTextField(
+                            value = model,
+                            onValueChange = { model = it },
+                            label = { Text("输入模型名称") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Button(onClick = { showModelDialog = false }, modifier = Modifier.fillMaxWidth()) {
+                            Text("确认")
+                        }
+                    }
+                }
+            },
+            confirmButton = {}
+        )
+    }
+}
+
+/**
+ * 获取指定提供商的预设模型列表
+ */
+private fun getModelsForProvider(provider: KoogAgentKit.Provider): List<String> {
+    return when (provider) {
+        KoogAgentKit.Provider.OPENAI -> listOf(
+            "gpt-5", "gpt-5-mini", "gpt-5-nano",
+            "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano",
+            "gpt-4o", "gpt-4o-mini",
+            "o3", "o3-mini", "o4-mini"
+        )
+        KoogAgentKit.Provider.ANTHROPIC -> listOf(
+            "claude-sonnet-4-5", "claude-sonnet-4-20250514",
+            "claude-opus-4-20250414", "claude-haiku-4-20250307",
+            "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022"
+        )
+        KoogAgentKit.Provider.GOOGLE -> listOf(
+            "gemini-2.5-flash", "gemini-2.5-pro",
+            "gemini-2.0-flash", "gemini-2.0-flash-lite"
+        )
+        KoogAgentKit.Provider.DEEPSEEK -> listOf(
+            "deepseek-chat", "deepseek-reasoner"
+        )
+        KoogAgentKit.Provider.OPENROUTER -> listOf(
+            "openai/gpt-4o", "anthropic/claude-sonnet-4-5",
+            "google/gemini-2.5-flash", "qwen/qwen3.5-plus"
+        )
+        KoogAgentKit.Provider.MISTRAL -> listOf(
+            "mistral-medium-3.1", "mistral-small-latest", "mistral-large-latest"
+        )
+        KoogAgentKit.Provider.OLLAMA -> listOf(
+            "llama3.2", "llama3.1", "mistral", "gemma3", "qwen2.5"
+        )
+        KoogAgentKit.Provider.BEDROCK -> listOf(
+            "anthropic.claude-sonnet-4-5", "anthropic.claude-3-5-sonnet", "meta.llama3-2"
+        )
+        KoogAgentKit.Provider.CUSTOM -> emptyList()
+    }
+}
+
+/**
+ * 获取指定提供商的默认推荐模型
+ */
+private fun getDefaultModelForProvider(provider: KoogAgentKit.Provider): String {
+    return when (provider) {
+        KoogAgentKit.Provider.OPENAI -> "gpt-4o"
+        KoogAgentKit.Provider.ANTHROPIC -> "claude-sonnet-4-5"
+        KoogAgentKit.Provider.GOOGLE -> "gemini-2.5-flash"
+        KoogAgentKit.Provider.DEEPSEEK -> "deepseek-chat"
+        KoogAgentKit.Provider.OPENROUTER -> "openai/gpt-4o"
+        KoogAgentKit.Provider.MISTRAL -> "mistral-medium-3.1"
+        KoogAgentKit.Provider.OLLAMA -> "llama3.2"
+        KoogAgentKit.Provider.BEDROCK -> "anthropic.claude-sonnet-4-5"
+        KoogAgentKit.Provider.CUSTOM -> ""
+    }
 }
 
 private fun getProviderDescription(provider: String): String {
@@ -307,6 +425,7 @@ private fun getProviderDescription(provider: String): String {
         "BEDROCK" -> "AWS Bedrock 企业级"
         "MISTRAL" -> "Mistral Medium 3.1"
         "OLLAMA" -> "本地运行，无需 API Key"
+        "CUSTOM" -> "兼容 OpenAI 格式的第三方 API"
         else -> ""
     }
 }

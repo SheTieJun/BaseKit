@@ -165,6 +165,7 @@ internal fun getDefaultBaseUrl(provider: String): String {
         "OPENROUTER" -> "https://openrouter.ai"
         "MISTRAL" -> "https://api.mistral.ai"
         "OLLAMA" -> "http://localhost:11434"
+        "CUSTOM" -> "https://tenrouter.weike.fm/v1"
         else -> ""
     }
 }
