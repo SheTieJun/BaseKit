@@ -1,5 +1,14 @@
 package shetj.me.base.func.koog
 
+import ai.koog.prompt.executor.clients.anthropic.AnthropicModels
+import ai.koog.prompt.executor.clients.bedrock.BedrockModels
+import ai.koog.prompt.executor.clients.deepseek.DeepSeekModels
+import ai.koog.prompt.executor.clients.google.GoogleModels
+import ai.koog.prompt.executor.clients.mistralai.MistralAIModels
+import ai.koog.prompt.executor.clients.modelsById
+import ai.koog.prompt.executor.clients.openai.OpenAIModels
+import ai.koog.prompt.executor.clients.openrouter.OpenRouterModels
+import ai.koog.prompt.executor.ollama.client.OllamaModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -360,40 +369,18 @@ private fun AgentEditorDialog(
 
 /**
  * 获取指定提供商的预设模型列表
+ * 使用 Koog SDK 内置的 modelsById() 方法，升级 SDK 时自动获取新模型
  */
 private fun getModelsForProvider(provider: KoogAgentKit.Provider): List<String> {
     return when (provider) {
-        KoogAgentKit.Provider.OPENAI -> listOf(
-            "gpt-5", "gpt-5-mini", "gpt-5-nano",
-            "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano",
-            "gpt-4o", "gpt-4o-mini",
-            "o3", "o3-mini", "o4-mini"
-        )
-        KoogAgentKit.Provider.ANTHROPIC -> listOf(
-            "claude-sonnet-4-5", "claude-sonnet-4-20250514",
-            "claude-opus-4-20250414", "claude-haiku-4-20250307",
-            "claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022"
-        )
-        KoogAgentKit.Provider.GOOGLE -> listOf(
-            "gemini-2.5-flash", "gemini-2.5-pro",
-            "gemini-2.0-flash", "gemini-2.0-flash-lite"
-        )
-        KoogAgentKit.Provider.DEEPSEEK -> listOf(
-            "deepseek-chat", "deepseek-reasoner"
-        )
-        KoogAgentKit.Provider.OPENROUTER -> listOf(
-            "openai/gpt-4o", "anthropic/claude-sonnet-4-5",
-            "google/gemini-2.5-flash", "qwen/qwen3.5-plus"
-        )
-        KoogAgentKit.Provider.MISTRAL -> listOf(
-            "mistral-medium-3.1", "mistral-small-latest", "mistral-large-latest"
-        )
-        KoogAgentKit.Provider.OLLAMA -> listOf(
-            "llama3.2", "llama3.1", "mistral", "gemma3", "qwen2.5"
-        )
-        KoogAgentKit.Provider.BEDROCK -> listOf(
-            "anthropic.claude-sonnet-4-5", "anthropic.claude-3-5-sonnet", "meta.llama3-2"
-        )
+        KoogAgentKit.Provider.OPENAI -> OpenAIModels.modelsById().keys.toList()
+        KoogAgentKit.Provider.ANTHROPIC -> AnthropicModels.modelsById().keys.toList()
+        KoogAgentKit.Provider.GOOGLE -> GoogleModels.modelsById().keys.toList()
+        KoogAgentKit.Provider.DEEPSEEK -> DeepSeekModels.modelsById().keys.toList()
+        KoogAgentKit.Provider.OPENROUTER -> OpenRouterModels.modelsById().keys.toList()
+        KoogAgentKit.Provider.MISTRAL -> MistralAIModels.modelsById().keys.toList()
+        KoogAgentKit.Provider.OLLAMA -> OllamaModels.modelsById().keys.toList()
+        KoogAgentKit.Provider.BEDROCK -> BedrockModels.modelsById().keys.toList()
         KoogAgentKit.Provider.CUSTOM -> emptyList()
     }
 }
