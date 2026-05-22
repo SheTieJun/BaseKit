@@ -212,10 +212,12 @@ private fun AgentEditorDialog(
     var baseUrl by remember { mutableStateOf(agent?.baseUrl ?: "") }
     var showProviderDialog by remember { mutableStateOf(false) }
     var showModelDialog by remember { mutableStateOf(false) }
+    var showPromptPresetDialog by remember { mutableStateOf(false) }
     var showAdvancedOptions by remember { mutableStateOf(!agent?.baseUrl.isNullOrBlank()) }
 
     // 获取当前提供商的模型列表
     val availableModels = getModelsForProvider(selectedProvider)
+    val promptPresets = remember { getSystemPromptPresets() }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -254,6 +256,17 @@ private fun AgentEditorDialog(
                 }
                 
                 OutlinedTextField(value = systemPrompt, onValueChange = { systemPrompt = it }, label = { Text("系统提示词 (可选)") }, modifier = Modifier.fillMaxWidth(), maxLines = 3)
+
+                OutlinedButton(
+                    onClick = { showPromptPresetDialog = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(Icons.Default.AutoAwesome, null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text("写作助手预设")
+                    Spacer(Modifier.weight(1f))
+                    Icon(Icons.Default.ArrowDropDown, null)
+                }
                 
                 // 高级选项折叠区域
                 Row(
@@ -297,6 +310,44 @@ private fun AgentEditorDialog(
     )
 
     // 提供商选择对话框
+    if (showPromptPresetDialog) {
+        AlertDialog(
+            onDismissRequest = { showPromptPresetDialog = false },
+            title = { Text("选择写作助手预设") },
+            text = {
+                LazyColumn {
+                    items(promptPresets) { preset ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    if (name.isBlank() && preset.suggestedName.isNotBlank()) name = preset.suggestedName
+                                    systemPrompt = preset.prompt
+                                    showPromptPresetDialog = false
+                                }
+                                .padding(vertical = 12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(Modifier.weight(1f)) {
+                                Text(preset.title, style = MaterialTheme.typography.bodyLarge)
+                                if (preset.subtitle.isNotBlank()) {
+                                    Text(
+                                        preset.subtitle,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                            Icon(Icons.Default.Check, null, tint = Color.Transparent)
+                        }
+                    }
+                }
+            },
+            confirmButton = {}
+        )
+    }
+
     if (showProviderDialog) {
         val providers = KoogAgentKit.Provider.entries
         AlertDialog(
@@ -415,4 +466,64 @@ private fun getProviderDescription(provider: String): String {
         "CUSTOM" -> "兼容 OpenAI 格式的第三方 API"
         else -> ""
     }
+}
+
+private data class SystemPromptPreset(
+    val title: String,
+    val subtitle: String = "",
+    val suggestedName: String = "",
+    val prompt: String
+)
+
+private fun getSystemPromptPresets(): List<SystemPromptPreset> {
+    val base = """
+你是一个中文网文写作助手，目标是帮助我产出可连载的剧情与章节草稿。
+输出要求：
+1. 先问清楚关键信息（题材/主线目标/人物关系/世界观硬设定/爽点/禁忌）。
+2. 给方案要短，优先给可直接落地的：开篇三章、冲突升级链、章节结尾钩子。
+3. 如果信息不足，先给 2~3 个可选方向并让我选；不要自作主张补设定。
+4. 语言偏口语但不油腻，避免堆砌形容词，不要大量感叹号。
+5. 输出结构固定：要点清单 -> 关键冲突 -> 章节骨架 -> 可直接复制的 1 段示例正文（300~500字）。
+""".trim()
+
+    val opening = """
+$base
+
+当我说“开篇”，你按以下格式输出：
+- 黄金三章的核心矛盾（1 句话）
+- 第一章：起因/冲突/反转/结尾钩子（要点）
+- 第二章：升级/对抗/代价/结尾钩子（要点）
+- 第三章：爆点/选择/新目标/结尾钩子（要点）
+""".trim()
+
+    val outline = """
+$base
+
+当我提供“世界观/人物/主线目标”时，你输出：
+- 主线任务链（3~5 个阶段）
+- 角色弧光（主角/反派/关键配角各 1 条）
+- 爽点与代价（对应每阶段）
+- 章节大纲（10 章以内，每章一句话+结尾钩子）
+""".trim()
+
+    return listOf(
+        SystemPromptPreset(
+            title = "写作助手（通用）",
+            subtitle = "稳定输出：要点 -> 冲突 -> 骨架 -> 示例正文",
+            suggestedName = "写作助手",
+            prompt = base
+        ),
+        SystemPromptPreset(
+            title = "写作助手（开篇三章）",
+            subtitle = "专注黄金三章的冲突升级与章末钩子",
+            suggestedName = "写作助手·开篇",
+            prompt = opening
+        ),
+        SystemPromptPreset(
+            title = "写作助手（大纲规划）",
+            subtitle = "主线阶段/角色弧光/爽点代价/10章大纲",
+            suggestedName = "写作助手·大纲",
+            prompt = outline
+        )
+    )
 }

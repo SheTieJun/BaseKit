@@ -39,3 +39,19 @@ My awesome project that provides a lot of useful features, like:
 ### Added
 - 接入 Koog（JetBrains AI Agent Framework）：新增 `ai.koog:koog-agents` 依赖，供 app 模块使用。
 - 新增 `KoogAgentKit` 工具类，封装 AI Agent 的创建和执行，支持多种 LLM 提供商：OpenAI, Anthropic, Google, DeepSeek, OpenRouter, Bedrock, Mistral, Ollama。
+
+## [2026-05-22]
+
+### Added
+- 新增 Koog 智能体模块构建文档 `doc/koog/SKILL.md`，记录核心架构、依赖接入与快速复刻步骤。
+- 新增 `doc/koog/KOOG_AGENTS.md`：Koog-agents 的核心概念、Agent 类型与常见用法说明（结合 BaseKit 现状）。
+- 新增 `doc/koog/KOOG_PROMPTS.md`：Koog Prompt 的创建方式、消息类型、工具消息与参数说明。
+- 新增 `doc/koog/KOOG_TOOLS.md`：Koog Tools 的类型、ToolRegistry 注册与使用路线总结。
+- Koog 设置页新增“写作助手预设”，支持一键填充 systemPrompt。
+- Koog 聊天链路接入 InspirationTool，支持手动指令与自动触发的灵感生成。
+- Koog 灵感生成支持“工具先产出 -> 模型再扩写”的二段式输出（已配置 Agent 时生效）。
+
+### Changed
+- Koog 创建 Agent 时注入当前 Agent 的 systemPrompt（Koog systemPrompt 能力），避免每次发送拼接 systemPrompt 字符串。
+- Koog 聊天发送增加多轮对话上下文拼接（截断历史消息），提升写作助手对前文的连续性。
+- Koog 灵感工具调用轨迹改为通过 Prompt 的 toolCall/toolResult 消息写入，让模型更可控利用工具结果。

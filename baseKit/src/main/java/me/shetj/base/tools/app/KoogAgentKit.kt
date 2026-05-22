@@ -1,6 +1,7 @@
 package me.shetj.base.tools.app
 
 import ai.koog.agents.core.agent.AIAgent
+import ai.koog.prompt.dsl.Prompt
 import ai.koog.prompt.executor.clients.anthropic.AnthropicClientSettings
 import ai.koog.prompt.executor.clients.anthropic.AnthropicLLMClient
 import ai.koog.prompt.executor.clients.anthropic.AnthropicModels
@@ -97,9 +98,11 @@ object KoogAgentKit {
         apiKey: String? = null,
         model: LLModel? = null,
         modelName: String? = null,
-        baseUrl: String? = null
+        baseUrl: String? = null,
+        systemPrompt: String? = null
     ): AIAgent<String, String>? {
         val resolvedModel = modelName?.takeIf { it.isNotBlank() }?.let { createModel(provider, it) } ?: model
+        val sp = systemPrompt?.trim().orEmpty()
         return try {
             when (provider) {
                 Provider.OPENAI -> {
@@ -111,10 +114,11 @@ object KoogAgentKit {
                         val client = OpenAILLMClient(key, OpenAIClientSettings(baseUrl))
                         MultiLLMPromptExecutor(LLMProvider.OpenAI to client)
                     }
-                    AIAgent(
-                        promptExecutor = executor,
-                        llmModel = resolvedModel ?: OpenAIModels.Chat.GPT4o
-                    )
+                    AIAgent.builder()
+                        .promptExecutor(executor)
+                        .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
 
                 Provider.ANTHROPIC -> {
@@ -126,10 +130,11 @@ object KoogAgentKit {
                         val client = AnthropicLLMClient(key, AnthropicClientSettings(baseUrl = baseUrl))
                         MultiLLMPromptExecutor(LLMProvider.Anthropic to client)
                     }
-                    AIAgent(
-                        promptExecutor = executor,
-                        llmModel = resolvedModel ?: AnthropicModels.Sonnet_4_5
-                    )
+                    AIAgent.builder<Prompt, String>()
+                        .promptExecutor(executor)
+                        .llmModel(resolvedModel ?: AnthropicModels.Sonnet_4_5)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
 
                 Provider.GOOGLE -> {
@@ -141,10 +146,11 @@ object KoogAgentKit {
                         val client = GoogleLLMClient(key, GoogleClientSettings(baseUrl = baseUrl))
                         MultiLLMPromptExecutor(LLMProvider.Google to client)
                     }
-                    AIAgent(
-                        promptExecutor = executor,
-                        llmModel = resolvedModel ?: GoogleModels.Gemini2_5Pro
-                    )
+                    AIAgent.builder<Prompt, String>()
+                        .promptExecutor(executor)
+                        .llmModel(resolvedModel ?: GoogleModels.Gemini2_5Pro)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
 
                 Provider.DEEPSEEK -> {
@@ -155,38 +161,42 @@ object KoogAgentKit {
                     } else {
                         DeepSeekLLMClient(key, DeepSeekClientSettings(baseUrl = baseUrl))
                     }
-                    AIAgent(
-                        promptExecutor = MultiLLMPromptExecutor(mapOf(DeepSeekModels.DeepSeekChat.provider to client)),
-                        llmModel = resolvedModel ?: DeepSeekModels.DeepSeekChat
-                    )
+                    AIAgent.builder<Prompt, String>()
+                        .promptExecutor(MultiLLMPromptExecutor(mapOf(DeepSeekModels.DeepSeekChat.provider to client)))
+                        .llmModel(resolvedModel ?: DeepSeekModels.DeepSeekChat)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
 
                 Provider.OPENROUTER -> {
                     val key = apiKey ?: System.getenv("OPENROUTER_API_KEY")
                         ?: error("OPENROUTER_API_KEY 未设置")
-                    AIAgent(
-                        promptExecutor = simpleOpenRouterExecutor(key),
-                        llmModel = resolvedModel ?: OpenRouterModels.GPT4o
-                    )
+                    AIAgent.builder<Prompt, String>()
+                        .promptExecutor(simpleOpenRouterExecutor(key))
+                        .llmModel(resolvedModel ?: OpenRouterModels.GPT4o)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
 
                 Provider.CUSTOM -> {
                     val key = apiKey ?: baseUrl ?: error("CUSTOM 需要 API Key 或 baseUrl")
                     val url = baseUrl ?: "https://api.openai.com"
                     val client = OpenAILLMClient(key, OpenAIClientSettings(baseUrl = url))
-                    AIAgent(
-                        promptExecutor = MultiLLMPromptExecutor(LLMProvider.OpenAI to client),
-                        llmModel = resolvedModel ?: OpenAIModels.Chat.GPT4o
-                    )
+                    AIAgent.builder<Prompt, String>()
+                        .promptExecutor(MultiLLMPromptExecutor(LLMProvider.OpenAI to client))
+                        .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
 
                 Provider.BEDROCK -> {
                     val key = apiKey ?: System.getenv("BEDROCK_API_KEY")
                         ?: error("BEDROCK_API_KEY 未设置")
-                    AIAgent(
-                        promptExecutor = simpleBedrockExecutorWithBearerToken(key),
-                        llmModel = resolvedModel ?: BedrockModels.AnthropicClaude4_5Sonnet
-                    )
+                    AIAgent.builder<Prompt, String>()
+                        .promptExecutor(simpleBedrockExecutorWithBearerToken(key))
+                        .llmModel(resolvedModel ?: BedrockModels.AnthropicClaude4_5Sonnet)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
 
                 Provider.MISTRAL -> {
@@ -198,10 +208,11 @@ object KoogAgentKit {
                         val client = MistralAILLMClient(key, MistralAIClientSettings(baseUrl = baseUrl))
                         MultiLLMPromptExecutor(LLMProvider.OpenAI to client)
                     }
-                    AIAgent(
-                        promptExecutor = executor,
-                        llmModel = resolvedModel ?: MistralAIModels.Chat.MistralMedium31
-                    )
+                    AIAgent.builder<Prompt, String>()
+                        .promptExecutor(executor)
+                        .llmModel(resolvedModel ?: MistralAIModels.Chat.MistralMedium31)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
 
                 Provider.OLLAMA -> {
@@ -211,10 +222,11 @@ object KoogAgentKit {
                         val client = OllamaClient(baseUrl)
                         MultiLLMPromptExecutor(LLMProvider.Ollama to client)
                     }
-                    AIAgent(
-                        promptExecutor = executor,
-                        llmModel = resolvedModel ?: OllamaModels.Meta.LLAMA_3_2
-                    )
+                    AIAgent.builder<Prompt, String>()
+                        .promptExecutor(executor)
+                        .llmModel(resolvedModel ?: OllamaModels.Meta.LLAMA_3_2)
+                        .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .build()
                 }
             }
         } catch (e: Exception) {
@@ -231,16 +243,26 @@ object KoogAgentKit {
      */
     fun runAgent(
         agent: AIAgent<String, String>,
-        prompt: String
+        prompt: Prompt
     ): String? {
         return try {
             runBlocking {
-                agent.run(prompt)
+                agent.run(prompt.toString())
             }
         } catch (e: Exception) {
             Timber.tag("KoogAgentKit").e(e, "运行 Agent 失败: ${e.message}")
             null
         }
+    }
+
+    fun runAgent(
+        agent: AIAgent<String, String>,
+        userText: String
+    ): String? {
+        val prompt = Prompt.builder("text_prompt")
+            .user(userText)
+            .build()
+        return runAgent(agent, prompt)
     }
 
     /**

@@ -57,7 +57,6 @@ import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.WidgetProvider
 import shetj.me.base.databinding.ActivityMainBinding
 import shetj.me.base.databinding.ContentMainBinding
-import shetj.me.base.func.browser.GeckoBrowserActivity
 import shetj.me.base.func.compose.ComposeTestActivity
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.preference.SettingActivity
@@ -144,9 +143,6 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         mContent = mBinding.content
         val hierarchy = addJankStats()
         hierarchy.state?.putState("Activity", javaClass.simpleName)
-        mContent.btnTestGecko.setOnClickListener {
-            start<GeckoBrowserActivity>()
-        }
         mBinding.content.btnSelectImage.setOnClickListener {
             selectFile {
                 "url = $it".logI()
