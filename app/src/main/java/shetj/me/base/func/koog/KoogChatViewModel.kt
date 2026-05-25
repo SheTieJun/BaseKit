@@ -148,7 +148,7 @@ class KoogChatViewModel : ViewModel() {
             viewModelScope.launch {
                 try {
                     val topic = inspirationTopic.take(100).trim()
-                    val toolResult = inspirationTool.execute(topic)
+                    val toolResult = inspirationTool.execute(InspirationTool.Args(topic = topic))
                     val expanded = if (agent != null) {
                         KoogAgentKit.runAgent(
                             agent,

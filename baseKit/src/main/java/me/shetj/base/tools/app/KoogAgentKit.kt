@@ -130,7 +130,7 @@ object KoogAgentKit {
                         val client = AnthropicLLMClient(key, AnthropicClientSettings(baseUrl = baseUrl))
                         MultiLLMPromptExecutor(LLMProvider.Anthropic to client)
                     }
-                    AIAgent.builder<Prompt, String>()
+                    AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: AnthropicModels.Sonnet_4_5)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
@@ -146,7 +146,7 @@ object KoogAgentKit {
                         val client = GoogleLLMClient(key, GoogleClientSettings(baseUrl = baseUrl))
                         MultiLLMPromptExecutor(LLMProvider.Google to client)
                     }
-                    AIAgent.builder<Prompt, String>()
+                    AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: GoogleModels.Gemini2_5Pro)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
@@ -161,7 +161,7 @@ object KoogAgentKit {
                     } else {
                         DeepSeekLLMClient(key, DeepSeekClientSettings(baseUrl = baseUrl))
                     }
-                    AIAgent.builder<Prompt, String>()
+                    AIAgent.builder()
                         .promptExecutor(MultiLLMPromptExecutor(mapOf(DeepSeekModels.DeepSeekChat.provider to client)))
                         .llmModel(resolvedModel ?: DeepSeekModels.DeepSeekChat)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
@@ -171,7 +171,7 @@ object KoogAgentKit {
                 Provider.OPENROUTER -> {
                     val key = apiKey ?: System.getenv("OPENROUTER_API_KEY")
                         ?: error("OPENROUTER_API_KEY 未设置")
-                    AIAgent.builder<Prompt, String>()
+                    AIAgent.builder()
                         .promptExecutor(simpleOpenRouterExecutor(key))
                         .llmModel(resolvedModel ?: OpenRouterModels.GPT4o)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
@@ -182,7 +182,7 @@ object KoogAgentKit {
                     val key = apiKey ?: baseUrl ?: error("CUSTOM 需要 API Key 或 baseUrl")
                     val url = baseUrl ?: "https://api.openai.com"
                     val client = OpenAILLMClient(key, OpenAIClientSettings(baseUrl = url))
-                    AIAgent.builder<Prompt, String>()
+                    AIAgent.builder()
                         .promptExecutor(MultiLLMPromptExecutor(LLMProvider.OpenAI to client))
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
@@ -192,7 +192,7 @@ object KoogAgentKit {
                 Provider.BEDROCK -> {
                     val key = apiKey ?: System.getenv("BEDROCK_API_KEY")
                         ?: error("BEDROCK_API_KEY 未设置")
-                    AIAgent.builder<Prompt, String>()
+                    AIAgent.builder()
                         .promptExecutor(simpleBedrockExecutorWithBearerToken(key))
                         .llmModel(resolvedModel ?: BedrockModels.AnthropicClaude4_5Sonnet)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
@@ -208,7 +208,7 @@ object KoogAgentKit {
                         val client = MistralAILLMClient(key, MistralAIClientSettings(baseUrl = baseUrl))
                         MultiLLMPromptExecutor(LLMProvider.OpenAI to client)
                     }
-                    AIAgent.builder<Prompt, String>()
+                    AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: MistralAIModels.Chat.MistralMedium31)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
@@ -222,7 +222,7 @@ object KoogAgentKit {
                         val client = OllamaClient(baseUrl)
                         MultiLLMPromptExecutor(LLMProvider.Ollama to client)
                     }
-                    AIAgent.builder<Prompt, String>()
+                    AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: OllamaModels.Meta.LLAMA_3_2)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }

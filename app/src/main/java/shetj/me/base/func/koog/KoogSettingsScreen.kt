@@ -263,7 +263,7 @@ private fun AgentEditorDialog(
                 ) {
                     Icon(Icons.Default.AutoAwesome, null, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text("写作助手预设")
+                    Text("助手预设")
                     Spacer(Modifier.weight(1f))
                     Icon(Icons.Default.ArrowDropDown, null)
                 }
@@ -313,7 +313,7 @@ private fun AgentEditorDialog(
     if (showPromptPresetDialog) {
         AlertDialog(
             onDismissRequest = { showPromptPresetDialog = false },
-            title = { Text("选择写作助手预设") },
+            title = { Text("选择助手预设") },
             text = {
                 LazyColumn {
                     items(promptPresets) { preset ->

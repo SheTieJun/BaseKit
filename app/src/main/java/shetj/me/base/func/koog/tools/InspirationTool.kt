@@ -1,19 +1,27 @@
 package shetj.me.base.func.koog.tools
 
 import ai.koog.agents.core.tools.SimpleTool
+import ai.koog.agents.core.tools.annotations.LLMDescription
 import ai.koog.serialization.typeToken
+import kotlinx.serialization.Serializable
 
-class InspirationTool : SimpleTool<String>(
-    argsType = typeToken<String>(),
-    name = NAME,
+class InspirationTool : SimpleTool<InspirationTool.Args>(
+    argsType = typeToken<Args>(),
+    name =  NAME,
     description = "当用户需要创作灵感时调用。输入：小说关键词（如“赛博朋克+修仙”）；输出：一个具有冲突感的剧情切入点。"
 ) {
     companion object {
         const val NAME = "inspiration"
     }
 
-    override suspend fun execute(args: String): String {
-        val topic = args.trim()
+    @Serializable
+    data class Args(
+        @property:LLMDescription("小说关键词，例如“赛博朋克+修仙”")
+        val topic: String
+    )
+
+    override suspend fun execute(args: Args): String {
+        val topic = args.topic.trim()
         if (topic.isEmpty()) return "请输入小说关键词"
         return buildString {
             append("冲突切入点：")

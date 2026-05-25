@@ -14,6 +14,7 @@ import me.shetj.base.R
  * Base date binding adapter
  * 有dataBinding的时候，可以使用这个
  */
+@Suppress("UNCHECKED_CAST")
 @Keep
 abstract class BaseDateBindingAdapter<T : Any, BD : ViewDataBinding>
 @JvmOverloads constructor(
