@@ -47,6 +47,17 @@ My awesome project that provides a lot of useful features, like:
 - 新增 `doc/koog/KOOG_AGENTS.md`：Koog-agents 的核心概念、Agent 类型与常见用法说明（结合 BaseKit 现状）。
 - 新增 `doc/koog/KOOG_PROMPTS.md`：Koog Prompt 的创建方式、消息类型、工具消息与参数说明。
 - 新增 `doc/koog/KOOG_TOOLS.md`：Koog Tools 的类型、ToolRegistry 注册与使用路线总结。
+- 新增 `doc/koog/KOOG_FEATURES.md`：Koog Features 的用途、Tracing/OpenTelemetry 与自定义 Feature 骨架总结。
+- 新增 `doc/koog/KOOG_LLM_PARAMETERS.md`：Koog LLM 参数（temperature/toolChoice/maxTokens 等）总结与写作场景建议。
+- 新增 `doc/koog/KOOG_MODEL_CAPABILITIES.md`：Koog Model capabilities（LLMCapability/LLModel）总结与选型建议。
+- 新增 `doc/koog/KOOG_CONTENT_MODERATION.md`：Koog Content moderation（内容审核）用法与落地建议。
+- 新增 `doc/koog/KOOG_HISTORY_COMPRESSION.md`：Koog History compression（历史压缩）用法、策略与保留 memory 说明。
+- 新增 `doc/koog/KOOG_MCP.md`：Koog 集成 MCP（Model Context Protocol）用法总结。
+- 新增 `doc/koog/KOOG_A2A.md`：Koog A2A Protocol 用法总结（client/server/integration）。
+- 新增 `doc/koog/KOOG_ACP.md`：Koog ACP（Agent Client Protocol）对接 IDE/客户端用法总结。
+- 新增 `doc/koog/KOOG_BACKEND_INTEGRATIONS.md`：Koog 服务端框架集成（Spring Boot/Ktor）总结。
+- 新增 `doc/koog/KOOG_ADVANCED_USAGE.md`：Koog 进阶能力索引与写作助手落地建议。
+- 新增 `doc/koog/MODEL_LANDSCAPE.md`：主流大模型“知识图谱”式总结（按家族/能力维度）。
 - Koog 设置页新增“写作助手预设”，支持一键填充 systemPrompt。
 - Koog 聊天链路接入 InspirationTool，支持手动指令与自动触发的灵感生成。
 - Koog 灵感生成支持“工具先产出 -> 模型再扩写”的二段式输出（已配置 Agent 时生效）。
@@ -55,3 +66,5 @@ My awesome project that provides a lot of useful features, like:
 - Koog 创建 Agent 时注入当前 Agent 的 systemPrompt（Koog systemPrompt 能力），避免每次发送拼接 systemPrompt 字符串。
 - Koog 聊天发送增加多轮对话上下文拼接（截断历史消息），提升写作助手对前文的连续性。
 - Koog 灵感工具调用轨迹改为通过 Prompt 的 toolCall/toolResult 消息写入，让模型更可控利用工具结果。
+- 更新 `doc/koog/KOOG_FEATURES.md`：补充内置 Features 清单并增加写作助手案例。
+- 更新 `doc/koog/MODEL_LANDSCAPE.md`：补充能力矩阵、官方入口清单与任务选型配方。

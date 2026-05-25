@@ -1,10 +1,21 @@
-# Koog 智能体模块（BaseKit）构建文档
+# Koog 智能体模块构建文档
 
 本文档用于记录 BaseKit 内 `koog` 功能的核心架构、构建依赖路径与复刻步骤，便于以后快速重建同类能力。
 
-另见：`KOOG_AGENTS.md`（Koog-agents 的类型与用法总览）
-另见：`KOOG_PROMPTS.md`（Prompt DSL / Builder / tool messages / LLM params）
-另见：`KOOG_TOOLS.md`（Tools 类型、ToolRegistry 与使用路线）
+- 另见：[KOOG_AGENTS.md](KOOG_AGENTS.md)（Koog-agents 的类型与用法总览）
+- 另见：[KOOG_PROMPTS.md](KOOG_PROMPTS.md)（Prompt DSL / Builder / tool messages / LLM params）
+- 另见：[KOOG_TOOLS.md](KOOG_TOOLS.md)（Tools 类型、ToolRegistry 与使用路线）
+- 另见：[KOOG_FEATURES.md](KOOG_FEATURES.md)（Features：Tracing/OpenTelemetry/自定义 Feature）
+- 另见：[KOOG_LLM_PARAMETERS.md](KOOG_LLM_PARAMETERS.md)（LLM 参数：temperature/toolChoice/maxTokens 等）
+- 另见：[KOOG_MODEL_CAPABILITIES.md](KOOG_MODEL_CAPABILITIES.md)（Model capabilities：LLMCapability/LLModel）
+- 另见：[KOOG_CONTENT_MODERATION.md](KOOG_CONTENT_MODERATION.md)（Content moderation：输入/输出/工具内容审核）
+- 另见：[KOOG_HISTORY_COMPRESSION.md](KOOG_HISTORY_COMPRESSION.md)（History compression：TLDR 压缩与保留 memory 说明）
+- 另见：[KOOG_MCP.md](KOOG_MCP.md)（Model Context Protocol：接入 MCP tools）
+- 另见：[KOOG_A2A.md](KOOG_A2A.md)（A2A Protocol：agent-to-agent 互通）
+- 另见：[KOOG_ACP.md](KOOG_ACP.md)（Agent Client Protocol：IDE/客户端对接）
+- 另见：[KOOG_BACKEND_INTEGRATIONS.md](KOOG_BACKEND_INTEGRATIONS.md)（Backend integrations：Spring Boot/Ktor）
+- 另见：[KOOG_ADVANCED_USAGE.md](KOOG_ADVANCED_USAGE.md)（Advanced usage：进阶能力索引与落地建议）
+- 另见：[MODEL_LANDSCAPE.md](MODEL_LANDSCAPE.md)（主流模型知识图谱：按家族/能力维度理解模型）
 
 ## 目标与范围
 
@@ -18,7 +29,7 @@
 - `KoogChatViewModel.kt`：聊天状态与发送逻辑；按活跃 Agent 加载/保存聊天历史。
 - `KoogSettingsScreen.kt`：Agent 列表管理 UI（增/改/删/设默认/设活跃）。
 - `AgentManager.kt`：Agent 配置持久化与活跃 Agent 状态流。
-- `tools/InspirationTool.kt`：示例 Tool（当前未接入到对话链路，仅作为扩展示例）。
+- `tools/InspirationTool.kt`：写作灵感 Tool（已接入对话链路，支持 toolCall/toolResult 轨迹写入）。
 
 ## 核心架构设计
 

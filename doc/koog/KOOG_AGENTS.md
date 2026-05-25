@@ -6,6 +6,7 @@
 
 另见：`KOOG_PROMPTS.md`（Prompt DSL / Builder / tool messages / LLM params）
 另见：`KOOG_TOOLS.md`（Tools 类型、ToolRegistry 与使用路线）
+另见：`KOOG_FEATURES.md`（Features：Tracing/OpenTelemetry/自定义 Feature）
 
 ## 1. Koog 的核心概念（先把“积木”认全）
 

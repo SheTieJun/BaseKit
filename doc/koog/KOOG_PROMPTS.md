@@ -4,6 +4,8 @@
 
 > 参考：Koog 官方 prompts 文档（Prompt DSL / Builder / message types / params）。
 
+另见：`KOOG_LLM_PARAMETERS.md`（LLM 参数：temperature/toolChoice/maxTokens 等）
+
 ## 1. Prompt 是什么
 
 Prompt 可以理解为“发给 LLM 的消息集合”，它不是一段字符串，而是一组有类型的消息（system/user/assistant/tool...）+ 可选参数（温度、maxTokens、toolChoice 等）。
