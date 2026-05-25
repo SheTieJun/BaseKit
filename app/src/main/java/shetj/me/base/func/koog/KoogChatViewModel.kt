@@ -1,7 +1,6 @@
 package shetj.me.base.func.koog
 
 import ai.koog.agents.core.agent.AIAgent
-import ai.koog.prompt.dsl.Prompt
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -22,7 +21,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import shetj.me.base.func.koog.tools.InspirationTool
 import timber.log.Timber
-import kotlin.time.ExperimentalTime
 
 /**
  * 聊天消息数据类
@@ -77,7 +75,7 @@ class KoogChatViewModel : ViewModel() {
                         apiKey = apiKey,
                         baseUrl = activeAgent.baseUrl,
                         modelName = activeAgent.model,
-                        systemPrompt = activeAgent.systemPrompt
+                        systemPrompt = activeAgent.systemPrompt,
                     )
                     val newAgentId = activeAgent.id
                     
@@ -118,7 +116,6 @@ class KoogChatViewModel : ViewModel() {
         val input = snapshot.inputText.trim()
         if (input.isEmpty() || snapshot.isGenerating) return
         val storedHistory = snapshot.messages.filter { !it.isLoading }
-        val promptHistory = normalizeHistoryForPrompt(storedHistory)
 
         val manualInspirationTopic = parseManualInspirationTopic(input)
         val inspirationTopic = manualInspirationTopic ?: input.takeIf { shouldAutoInspiration(input) }
@@ -149,40 +146,46 @@ class KoogChatViewModel : ViewModel() {
                 try {
                     val topic = inspirationTopic.take(100).trim()
                     val toolResult = inspirationTool.execute(InspirationTool.Args(topic = topic))
-                    val expanded = if (agent != null) {
-                        KoogAgentKit.runAgent(
-                            agent,
-                            buildInspirationExpansionPrompt(
-                                toolTopic = topic,
-                                toolOutput = toolResult,
-                                originalUserText = input,
-                                isManualCommand = manualInspirationTopic != null,
-                                history = promptHistory
-                            )
-                        )
-                    } else null
-
-                    val response = buildString {
-                        append("灵感工具：")
-                        append('\n')
-                        append(toolResult.trim())
-                        if (!expanded.isNullOrBlank()) {
+                    val response = if (agent != null) {
+                        val userReq = input.trim().takeIf { manualInspirationTopic == null }.orEmpty()
+                        val expansionReq = buildString {
+                            append("请基于以下工具结果输出可直接用于网文创作的开篇方案。")
+                            append('\n')
+                            append("输出结构固定：要点清单 -> 关键冲突 -> 章节骨架（黄金三章） -> 可直接复制的示例正文（300~500字）。")
                             append('\n')
                             append('\n')
-                            append("扩写方案：")
+                            append("工具名称：")
+                            append(InspirationTool.NAME)
                             append('\n')
-                            append(expanded.trim())
-                        } else if (agent == null) {
+                            append("工具入参：")
+                            append(topic)
+                            append('\n')
+                            append("工具输出：")
+                            append('\n')
+                            append(toolResult.trim())
+                            if (userReq.isNotBlank()) {
+                                append('\n')
+                                append('\n')
+                                append("用户额外要求：")
+                                append(userReq)
+                            }
+                        }.trim()
+                        KoogAgentKit.runAgent(agent, expansionReq, sessionId = agentId) ?: "抱歉，获取回复失败"
+                    } else {
+                        buildString {
+                            append("灵感工具：")
+                            append('\n')
+                            append(toolResult.trim())
                             append('\n')
                             append('\n')
                             append("提示：如果你希望我把灵感扩写成开篇方案，请先在设置页配置一个可用的 Agent。")
-                        }
-                        if (manualInspirationTopic != null) {
-                            append('\n')
-                            append('\n')
-                            append("提示：你也可以直接输入你的题材关键词，例如：/inspiration 赛博朋克+修仙")
-                        }
-                    }.trim()
+                            if (manualInspirationTopic != null) {
+                                append('\n')
+                                append('\n')
+                                append("提示：你也可以直接输入你的题材关键词，例如：/inspiration 赛博朋克+修仙")
+                            }
+                        }.trim()
+                    }
                     _state.update { s ->
                         val updatedMessages = s.messages.toMutableList()
                         val lastIdx = updatedMessages.lastIndex
@@ -232,7 +235,8 @@ class KoogChatViewModel : ViewModel() {
             try {
                 val response = KoogAgentKit.runAgent(
                     agent,
-                    buildChatPrompt(userInput = input, history = promptHistory)
+                    input,
+                    sessionId = agentId
                 ) ?: "抱歉，获取回复失败"
                 _state.update { s ->
                     val updatedMessages = s.messages.toMutableList()
@@ -271,27 +275,6 @@ class KoogChatViewModel : ViewModel() {
         _state.update { it.copy(messages = emptyList()) }
     }
 
-    @OptIn(ExperimentalTime::class)
-    private fun buildChatPrompt(userInput: String, history: List<ChatMessage>): Prompt {
-        val builder = Prompt.builder("koog_chat_${System.nanoTime()}")
-        history.forEach { msg ->
-            if (msg.isUser) builder.user(msg.content) else builder.assistant(msg.content)
-        }
-        builder.user(userInput)
-        return builder.build()
-    }
-
-    private fun normalizeHistoryForPrompt(messages: List<ChatMessage>): List<ChatMessage> {
-        if (messages.isEmpty()) return emptyList()
-        val maxMessages = 12
-        val maxCharsPerMessage = 1200
-        val selected = if (messages.size <= maxMessages) messages else messages.takeLast(maxMessages)
-        return selected.map { msg ->
-            val trimmed = msg.content.take(maxCharsPerMessage).trim()
-            if (trimmed == msg.content) msg else msg.copy(content = trimmed)
-        }
-    }
-
     private fun parseManualInspirationTopic(input: String): String? {
         val raw = input.trim()
         val prefixes = listOf("/inspiration", "/inspire", "/灵感")
@@ -309,48 +292,6 @@ class KoogChatViewModel : ViewModel() {
         return intents.any { text.contains(it) } || text.endsWith("？") || text.endsWith("?")
     }
 
-    @OptIn(ExperimentalTime::class)
-    private fun buildInspirationExpansionPrompt(
-        toolTopic: String,
-        toolOutput: String,
-        originalUserText: String,
-        isManualCommand: Boolean,
-        history: List<ChatMessage>
-    ): Prompt {
-        val toolCallId = "inspiration_${System.nanoTime()}"
-        val argsJson = JSONObject()
-            .put("topic", toolTopic)
-            .toString()
-
-        val userReq = originalUserText.trim().takeIf { !isManualCommand }.orEmpty()
-        val expansionReq = buildString {
-            append("请基于上面的工具结果输出可直接用于网文创作的开篇方案。")
-            append('\n')
-            append("输出结构固定：要点清单 -> 关键冲突 -> 章节骨架（黄金三章） -> 可直接复制的示例正文（300~500字）。")
-            if (userReq.isNotBlank()) {
-                append('\n')
-                append('\n')
-                append("用户额外要求：")
-                append(userReq)
-            }
-        }.trim()
-
-        val builder = Prompt.builder("koog_inspiration_${System.nanoTime()}")
-        history.forEach { msg ->
-            if (msg.isUser) builder.user(msg.content) else builder.assistant(msg.content)
-        }
-
-        if (!isManualCommand) {
-            builder.user(originalUserText.trim())
-        }
-
-        builder
-            .toolCall(toolCallId, InspirationTool.NAME, argsJson)
-            .toolResult(toolCallId, InspirationTool.NAME, toolOutput.trim())
-            .user(expansionReq)
-
-        return builder.build()
-    }
 }
 
 /**

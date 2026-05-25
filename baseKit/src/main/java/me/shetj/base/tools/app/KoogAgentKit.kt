@@ -1,6 +1,9 @@
 package me.shetj.base.tools.app
 
 import ai.koog.agents.core.agent.AIAgent
+import ai.koog.agents.chatMemory.feature.ChatHistoryProvider
+import ai.koog.agents.chatMemory.feature.ChatMemory
+import ai.koog.agents.core.agent.AIAgentBuilder
 import ai.koog.prompt.dsl.Prompt
 import ai.koog.prompt.executor.clients.anthropic.AnthropicClientSettings
 import ai.koog.prompt.executor.clients.anthropic.AnthropicLLMClient
@@ -32,6 +35,7 @@ import ai.koog.prompt.executor.ollama.client.OllamaModels
 import ai.koog.prompt.llm.LLMCapability
 import ai.koog.prompt.llm.LLMProvider
 import ai.koog.prompt.llm.LLModel
+import ai.koog.prompt.message.Message
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
@@ -99,7 +103,9 @@ object KoogAgentKit {
         model: LLModel? = null,
         modelName: String? = null,
         baseUrl: String? = null,
-        systemPrompt: String? = null
+        systemPrompt: String? = null,
+        chatHistoryProvider: ChatHistoryProvider? = null,
+        chatWindowSize: Int = 50
     ): AIAgent<String, String>? {
         val resolvedModel = modelName?.takeIf { it.isNotBlank() }?.let { createModel(provider, it) } ?: model
         val sp = systemPrompt?.trim().orEmpty()
@@ -118,6 +124,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
 
@@ -134,6 +141,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: AnthropicModels.Sonnet_4_5)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
 
@@ -150,6 +158,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: GoogleModels.Gemini2_5Pro)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
 
@@ -165,6 +174,7 @@ object KoogAgentKit {
                         .promptExecutor(MultiLLMPromptExecutor(mapOf(DeepSeekModels.DeepSeekChat.provider to client)))
                         .llmModel(resolvedModel ?: DeepSeekModels.DeepSeekChat)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
 
@@ -175,6 +185,7 @@ object KoogAgentKit {
                         .promptExecutor(simpleOpenRouterExecutor(key))
                         .llmModel(resolvedModel ?: OpenRouterModels.GPT4o)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
 
@@ -186,6 +197,7 @@ object KoogAgentKit {
                         .promptExecutor(MultiLLMPromptExecutor(LLMProvider.OpenAI to client))
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
 
@@ -196,6 +208,7 @@ object KoogAgentKit {
                         .promptExecutor(simpleBedrockExecutorWithBearerToken(key))
                         .llmModel(resolvedModel ?: BedrockModels.AnthropicClaude4_5Sonnet)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
 
@@ -212,6 +225,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: MistralAIModels.Chat.MistralMedium31)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
 
@@ -226,6 +240,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: OllamaModels.Meta.LLAMA_3_2)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
+                        .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         .build()
                 }
             }
@@ -243,11 +258,13 @@ object KoogAgentKit {
      */
     fun runAgent(
         agent: AIAgent<String, String>,
-        prompt: Prompt
+        prompt: Prompt,
+        sessionId: String? = null
     ): String? {
         return try {
             runBlocking {
-                agent.run(prompt.toString())
+                val userText = prompt.toString()
+                if (sessionId.isNullOrBlank()) agent.run(userText) else agent.run(userText, sessionId)
             }
         } catch (e: Exception) {
             Timber.tag("KoogAgentKit").e(e, "运行 Agent 失败: ${e.message}")
@@ -257,12 +274,33 @@ object KoogAgentKit {
 
     fun runAgent(
         agent: AIAgent<String, String>,
-        userText: String
+        userText: String,
+        sessionId: String? = null
     ): String? {
-        val prompt = Prompt.builder("text_prompt")
-            .user(userText)
-            .build()
-        return runAgent(agent, prompt)
+        return try {
+            runBlocking {
+                if (sessionId.isNullOrBlank()) agent.run(userText) else agent.run(userText, sessionId)
+            }
+        } catch (e: Exception) {
+            Timber.tag("KoogAgentKit").e(e, "运行 Agent 失败: ${e.message}")
+            null
+        }
+    }
+
+    /**
+     * 历史记录
+     */
+    private fun AIAgentBuilder.installChatMemory(
+        provider: ChatHistoryProvider?,
+        windowSize: Int
+    ) {
+        install(ChatMemory) { config ->
+            if (provider != null){
+                config.chatHistoryProvider = provider
+            }
+            config.windowSize(windowSize)
+            config.filterMessages { it is Message.User || it is Message.Assistant }
+        }
     }
 
     /**
