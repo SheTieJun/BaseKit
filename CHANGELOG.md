@@ -68,3 +68,20 @@ My awesome project that provides a lot of useful features, like:
 - Koog 灵感工具调用轨迹改为通过 Prompt 的 toolCall/toolResult 消息写入，让模型更可控利用工具结果。
 - 更新 `doc/koog/KOOG_FEATURES.md`：补充内置 Features 清单并增加写作助手案例。
 - 更新 `doc/koog/MODEL_LANDSCAPE.md`：补充能力矩阵、官方入口清单与任务选型配方。
+
+## [2026-05-26]
+
+### Added
+- 新增 Koog Long-term memory 落地文档 `doc/koog/KOOG_LONG_TERM_MEMORY.md`（本地 Room、namespace=userId+agentId、支持自定义扩展）。
+- 新增 Koog ChatMemory Room 持久化文档 `doc/koog/KOOG_CHAT_MEMORY_ROOM.md`，并在 `doc/koog/SKILL.md` 增加索引入口。
+- 新增实现计划 `doc/koog/plans/2026-05-26-long-term-memory-room.md` 并在 `doc/koog/SKILL.md` 增加索引入口。
+- baseKit 新增长期记忆 Room 存储层：`LongTermMemoryDatabase` / `MemoryRecordEntity` / `MemoryRecordDao`。
+- baseKit 新增 `RoomTextDocumentStorage`（适配 Koog RAG 的 SearchStorage/WriteStorage）与 `LocalLongTermMemoryKit`（强类型写入 + 自定义扩展）。
+ - baseKit 新增 ChatMemory Room 存储层：`ChatMemoryDatabase` / `ChatMemoryDao` / `ChatMemoryMessageEntity`，并提供 `RoomChatHistoryProvider` 实现 `ChatHistoryProvider`。
+
+### Changed
+- baseKit 的 `KoogAgentKit.createAgent` 支持安装 `LongTermMemory`，按 userId+agentId 生成 namespace（默认不启用自动入库）。
+- app 的 `KoogChatViewModel` 创建 Agent 时自动注入本地 Room 长期记忆存储（Search/Write），使对话可直接检索历史偏好与画像。
+- app 的 `KoogSettingsScreen` 新增“记忆管理”入口：写入偏好、查看最近记录、支持删除。
+- app 的 `ChatHistoryManager` 由 DataStore 切换为复用 `ChatMemoryDatabase`（Room），用于 UI 聊天消息持久化并与 ChatMemory 共享同一份会话数据。
+- app 的 UI 不再主动写入聊天历史，避免与 Koog `ChatMemory` 的自动 store 重复写入同一会话数据。

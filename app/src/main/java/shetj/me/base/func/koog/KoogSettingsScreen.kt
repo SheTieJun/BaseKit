@@ -34,6 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import me.shetj.base.tools.app.KoogAgentKit
+import me.shetj.base.tools.app.memory.LocalLongTermMemoryKit
+import me.shetj.base.tools.app.memory.storage.LongTermMemoryDatabase
+import me.shetj.base.tools.app.memory.storage.MemoryRecordEntity
+import me.shetj.base.tools.app.memory.storage.RoomTextDocumentStorage
 
 /**
  * 配置界面 ViewModel
@@ -41,6 +45,8 @@ import me.shetj.base.tools.app.KoogAgentKit
 class KoogSettingsViewModel : androidx.lifecycle.ViewModel() {
     private val agentManager = AgentManager.getInstance(me.shetj.base.BaseKit.app)
     val stateFlow = agentManager.stateFlow
+    private val longTermMemoryDao = LongTermMemoryDatabase.getInstance(me.shetj.base.BaseKit.app).memoryRecordDao()
+    private val longTermMemoryStorage = RoomTextDocumentStorage(longTermMemoryDao)
 
     suspend fun addAgent(name: String, provider: KoogAgentKit.Provider, apiKey: String, model: String = "", systemPrompt: String = "", baseUrl: String = "") {
         agentManager.addAgent(name, provider, apiKey, model, systemPrompt, baseUrl)
@@ -50,6 +56,22 @@ class KoogSettingsViewModel : androidx.lifecycle.ViewModel() {
     suspend fun deleteAgent(id: String) = agentManager.deleteAgent(id)
     suspend fun setActiveAgent(id: String) = agentManager.setActiveAgent(id)
     suspend fun setDefaultAgent(id: String) = agentManager.setDefaultAgent(id)
+
+    suspend fun upsertPreference(agentId: String, key: String, value: String) {
+        val kit = LocalLongTermMemoryKit(
+            storage = longTermMemoryStorage,
+            namespaceProvider = { "local_$agentId" }
+        )
+        kit.upsertPreference(key = key, value = value)
+    }
+
+    suspend fun loadRecentMemory(agentId: String, limit: Int = 20): List<MemoryRecordEntity> {
+        return longTermMemoryDao.listRecent(namespace = "local_$agentId", limit = limit)
+    }
+
+    suspend fun deleteMemory(agentId: String, ids: List<String>) {
+        longTermMemoryDao.deleteByIds(namespace = "local_$agentId", ids = ids)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,6 +85,7 @@ fun KoogSettingsScreen(
     val scope = rememberCoroutineScope()
     var showAddDialog by remember { mutableStateOf(false) }
     var editingAgent by remember { mutableStateOf<AgentConfig?>(null) }
+    var showMemoryDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -107,6 +130,35 @@ fun KoogSettingsScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                item {
+                    val activeAgentId = state.activeAgentId
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f))
+                    ) {
+                        Column(Modifier.padding(12.dp)) {
+                            Text("记忆管理", style = MaterialTheme.typography.titleMedium)
+                            Spacer(Modifier.height(8.dp))
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Button(
+                                    enabled = !activeAgentId.isNullOrBlank(),
+                                    onClick = { showMemoryDialog = true }
+                                ) {
+                                    Text("写入偏好")
+                                }
+                            }
+                            if (activeAgentId.isNullOrBlank()) {
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    "请先选择一个活跃 Agent，再管理长期记忆",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(8.dp))
+                }
                 items(state.agents, key = { it.id }) { agent ->
                     val isActive = agent.id == state.activeAgentId
                     AgentListItem(
@@ -142,6 +194,131 @@ fun KoogSettingsScreen(
             }
         )
     }
+
+    if (showMemoryDialog) {
+        val activeAgentId = state.activeAgentId
+        if (!activeAgentId.isNullOrBlank()) {
+            MemoryManagerDialog(
+                agentId = activeAgentId,
+                onDismiss = { showMemoryDialog = false },
+                onSavePreference = { key, value ->
+                    scope.launch {
+                        viewModel.upsertPreference(activeAgentId, key, value)
+                    }
+                },
+                onLoadRecent = {
+                    viewModel.loadRecentMemory(activeAgentId)
+                },
+                onDelete = { ids ->
+                    scope.launch {
+                        viewModel.deleteMemory(activeAgentId, ids)
+                    }
+                }
+            )
+        } else {
+            showMemoryDialog = false
+        }
+    }
+}
+
+@Composable
+private fun MemoryManagerDialog(
+    agentId: String,
+    onDismiss: () -> Unit,
+    onSavePreference: suspend (String, String) -> Unit,
+    onLoadRecent: suspend () -> List<MemoryRecordEntity>,
+    onDelete: suspend (List<String>) -> Unit
+) {
+    val scope = rememberCoroutineScope()
+    var key by remember { mutableStateOf("") }
+    var value by remember { mutableStateOf("") }
+    var isBusy by remember { mutableStateOf(false) }
+    var records by remember { mutableStateOf<List<MemoryRecordEntity>>(emptyList()) }
+
+    LaunchedEffect(agentId) {
+        records = onLoadRecent()
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("长期记忆（偏好）") },
+        text = {
+            Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedTextField(
+                    value = key,
+                    onValueChange = { key = it },
+                    label = { Text("偏好 Key") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = value,
+                    onValueChange = { value = it },
+                    label = { Text("偏好内容") },
+                    modifier = Modifier.fillMaxWidth(),
+                    minLines = 2
+                )
+                OutlinedButton(
+                    enabled = !isBusy && key.isNotBlank() && value.isNotBlank(),
+                    onClick = {
+                        scope.launch {
+                            isBusy = true
+                            onSavePreference(key.trim(), value.trim())
+                            records = onLoadRecent()
+                            isBusy = false
+                            key = ""
+                            value = ""
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(if (isBusy) "写入中…" else "写入偏好")
+                }
+
+                Text(
+                    "最近记录（namespace=local_$agentId）",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                if (records.isEmpty()) {
+                    Text("暂无记录", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                } else {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        records.forEach { item ->
+                            Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column(Modifier.weight(1f)) {
+                                        Text("${item.type} · ${item.key}", style = MaterialTheme.typography.titleSmall)
+                                        Spacer(Modifier.height(4.dp))
+                                        Text(item.content, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    }
+                                    IconButton(
+                                        enabled = !isBusy,
+                                        onClick = {
+                                            scope.launch {
+                                                isBusy = true
+                                                onDelete(listOf(item.id))
+                                                records = onLoadRecent()
+                                                isBusy = false
+                                            }
+                                        }
+                                    ) {
+                                        Icon(Icons.Outlined.Delete, contentDescription = "删除")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text("关闭") }
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

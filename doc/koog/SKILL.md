@@ -6,6 +6,8 @@
 - 另见：[KOOG_PROMPTS.md](KOOG_PROMPTS.md)（Prompt DSL / Builder / tool messages / LLM params）
 - 另见：[KOOG_TOOLS.md](KOOG_TOOLS.md)（Tools 类型、ToolRegistry 与使用路线）
 - 另见：[KOOG_FEATURES.md](KOOG_FEATURES.md)（Features：Tracing/OpenTelemetry/自定义 Feature）
+- 另见：[KOOG_CHAT_MEMORY_ROOM.md](KOOG_CHAT_MEMORY_ROOM.md)（ChatMemory：Room 持久化 ChatHistoryProvider）
+- 另见：[KOOG_LONG_TERM_MEMORY.md](KOOG_LONG_TERM_MEMORY.md)（Long-term memory：本地 Room 落地与可扩展 schema）
 - 另见：[KOOG_LLM_PARAMETERS.md](KOOG_LLM_PARAMETERS.md)（LLM 参数：temperature/toolChoice/maxTokens 等）
 - 另见：[KOOG_MODEL_CAPABILITIES.md](KOOG_MODEL_CAPABILITIES.md)（Model capabilities：LLMCapability/LLModel）
 - 另见：[KOOG_CONTENT_MODERATION.md](KOOG_CONTENT_MODERATION.md)（Content moderation：输入/输出/工具内容审核）
@@ -16,6 +18,7 @@
 - 另见：[KOOG_BACKEND_INTEGRATIONS.md](KOOG_BACKEND_INTEGRATIONS.md)（Backend integrations：Spring Boot/Ktor）
 - 另见：[KOOG_ADVANCED_USAGE.md](KOOG_ADVANCED_USAGE.md)（Advanced usage：进阶能力索引与落地建议）
 - 另见：[MODEL_LANDSCAPE.md](MODEL_LANDSCAPE.md)（主流模型知识图谱：按家族/能力维度理解模型）
+- 另见：[plans/2026-05-26-long-term-memory-room.md](plans/2026-05-26-long-term-memory-room.md)（本地 Room 长期记忆实现计划）
 
 ## 目标与范围
 

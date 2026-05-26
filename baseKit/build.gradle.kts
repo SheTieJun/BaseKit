@@ -101,6 +101,7 @@ fun DependencyHandler.addOther(){
     api(libs.shetj.qmui)
     // Koog AI agents
     api(libs.koog.agents)
+    api(libs.koog.agents.features.longterm.memory)
 }
 
 fun DependencyHandler.addRetrofit2(){

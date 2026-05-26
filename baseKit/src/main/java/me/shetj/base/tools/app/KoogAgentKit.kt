@@ -4,6 +4,10 @@ import ai.koog.agents.core.agent.AIAgent
 import ai.koog.agents.chatMemory.feature.ChatHistoryProvider
 import ai.koog.agents.chatMemory.feature.ChatMemory
 import ai.koog.agents.core.agent.AIAgentBuilder
+import ai.koog.agents.core.annotation.ExperimentalAgentsApi
+import ai.koog.agents.longtermmemory.feature.LongTermMemory
+import ai.koog.agents.longtermmemory.retrieval.SimilaritySearchStrategy
+import ai.koog.agents.longtermmemory.retrieval.augmentation.SystemPromptAugmenter
 import ai.koog.prompt.dsl.Prompt
 import ai.koog.prompt.executor.clients.anthropic.AnthropicClientSettings
 import ai.koog.prompt.executor.clients.anthropic.AnthropicLLMClient
@@ -36,6 +40,10 @@ import ai.koog.prompt.llm.LLMCapability
 import ai.koog.prompt.llm.LLMProvider
 import ai.koog.prompt.llm.LLModel
 import ai.koog.prompt.message.Message
+import ai.koog.rag.base.TextDocument
+import ai.koog.rag.base.storage.SearchStorage
+import ai.koog.rag.base.storage.WriteStorage
+import ai.koog.rag.base.storage.search.SimilaritySearchRequest
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
@@ -96,6 +104,17 @@ object KoogAgentKit {
      * @param model LLM 模型对象（可选）
      * @param modelName 模型名称字符串（可选，会优先使用）
      * @param baseUrl 自定义 API Base URL（可选，不传则使用默认值）
+     * @param systemPrompt 系统提示词（建议用于定义助手身份、输出风格与边界）
+     * @param chatHistoryProvider ChatMemory 的历史存储实现（用于“短期对话上下文”）
+     * @param chatWindowSize ChatMemory 的窗口大小（限制对话历史长度）
+     * @param userId 长期记忆 namespace 的用户维度（默认 local；建议业务传入真实用户 ID）
+     * @param agentId 长期记忆 namespace 的智能体维度（建议传入当前 Agent 配置 ID）
+     * @param longTermSearchStorage LongTermMemory 检索存储（RAG：检索相关记忆注入 Prompt）
+     * @param longTermWriteStorage LongTermMemory 写入存储（用于“显式写入”或开启自动入库）
+     * @param longTermNamespace 长期记忆 namespace（优先使用；为空则使用 userId+agentId 组合）
+     * @param enableLongTermIngestion 是否启用“自动入库”（默认关闭，避免对话噪声污染长期记忆）
+     * @param longTermTopK 每次检索返回的记忆条数上限
+     * @param longTermSimilarityThreshold 相似度阈值（本地 Room MVP 可按 0/1 命中近似）
      */
     fun createAgent(
         provider: Provider,
@@ -105,10 +124,23 @@ object KoogAgentKit {
         baseUrl: String? = null,
         systemPrompt: String? = null,
         chatHistoryProvider: ChatHistoryProvider? = null,
-        chatWindowSize: Int = 50
+        chatWindowSize: Int = 50,
+        userId: String = "local",
+        agentId: String? = null,
+        longTermSearchStorage: SearchStorage<TextDocument, SimilaritySearchRequest>? = null,
+        longTermWriteStorage: WriteStorage<TextDocument>? = null,
+        longTermNamespace: String? = null,
+        enableLongTermIngestion: Boolean = false,
+        longTermTopK: Int = 5,
+        longTermSimilarityThreshold: Double = 0.0
     ): AIAgent<String, String>? {
         val resolvedModel = modelName?.takeIf { it.isNotBlank() }?.let { createModel(provider, it) } ?: model
         val sp = systemPrompt?.trim().orEmpty()
+        // 长期记忆 namespace 规则：
+        // 1) 业务显式传 longTermNamespace 时优先使用
+        // 2) 否则使用 userId + agentId 拼接，确保不同用户、不同 Agent 的长期记忆隔离
+        val ltmNamespace = longTermNamespace?.trim().takeIf { !it.isNullOrBlank() }
+            ?: agentId?.trim().takeIf { !it.isNullOrBlank() }?.let { "${userId}_${it}" }
         return try {
             when (provider) {
                 Provider.OPENAI -> {
@@ -125,6 +157,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
 
@@ -142,6 +176,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: AnthropicModels.Sonnet_4_5)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
 
@@ -159,6 +195,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: GoogleModels.Gemini2_5Pro)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
 
@@ -175,6 +213,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: DeepSeekModels.DeepSeekChat)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
 
@@ -186,6 +226,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: OpenRouterModels.GPT4o)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
 
@@ -198,6 +240,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
 
@@ -209,6 +253,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: BedrockModels.AnthropicClaude4_5Sonnet)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
 
@@ -226,6 +272,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: MistralAIModels.Chat.MistralMedium31)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
 
@@ -241,6 +289,8 @@ object KoogAgentKit {
                         .llmModel(resolvedModel ?: OllamaModels.Meta.LLAMA_3_2)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
+                        // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
+                        .apply { installLongTermMemory(longTermSearchStorage, longTermWriteStorage, ltmNamespace, enableLongTermIngestion, longTermTopK, longTermSimilarityThreshold) }
                         .build()
                 }
             }
@@ -256,31 +306,27 @@ object KoogAgentKit {
      * @param prompt 提示词
      * @return Agent 响应结果
      */
-    fun runAgent(
+    suspend fun runAgent(
         agent: AIAgent<String, String>,
         prompt: Prompt,
         sessionId: String? = null
     ): String? {
         return try {
-            runBlocking {
                 val userText = prompt.toString()
                 if (sessionId.isNullOrBlank()) agent.run(userText) else agent.run(userText, sessionId)
-            }
         } catch (e: Exception) {
             Timber.tag("KoogAgentKit").e(e, "运行 Agent 失败: ${e.message}")
             null
         }
     }
 
-    fun runAgent(
+    suspend fun runAgent(
         agent: AIAgent<String, String>,
         userText: String,
         sessionId: String? = null
     ): String? {
         return try {
-            runBlocking {
-                if (sessionId.isNullOrBlank()) agent.run(userText) else agent.run(userText, sessionId)
-            }
+            if (sessionId.isNullOrBlank()) agent.run(userText) else agent.run(userText, sessionId)
         } catch (e: Exception) {
             Timber.tag("KoogAgentKit").e(e, "运行 Agent 失败: ${e.message}")
             null
@@ -303,6 +349,34 @@ object KoogAgentKit {
         }
     }
 
+    @OptIn(ExperimentalAgentsApi::class)
+    private fun AIAgentBuilder.installLongTermMemory(
+        searchStorage: SearchStorage<TextDocument, SimilaritySearchRequest>?,
+        writeStorage: WriteStorage<TextDocument>?,
+        namespace: String?,
+        enableIngestion: Boolean,
+        topK: Int,
+        similarityThreshold: Double
+    ) {
+        if (searchStorage == null || namespace.isNullOrBlank()) return
+        install(LongTermMemory) { config ->
+            // retrieval（检索）：每次 LLM 调用前自动检索相关记忆并注入 Prompt（RAG）
+            config.retrieval {
+                storage = searchStorage
+                this.namespace = namespace
+                searchStrategy = SimilaritySearchStrategy(topK = topK, similarityThreshold = similarityThreshold)
+                promptAugmenter = SystemPromptAugmenter()
+            }
+            if (enableIngestion && writeStorage != null) {
+                // ingestion：自动从对话中抽取并写入长期记忆（默认关闭，避免噪声入库）
+                config.ingestion {
+                    storage = writeStorage
+                    this.namespace = namespace
+                }
+            }
+        }
+    }
+
     /**
      * 快速创建并运行 Agent
      * @param provider LLM 提供商
@@ -311,7 +385,7 @@ object KoogAgentKit {
      * @param model LLM 模型（可选）
      * @return Agent 响应结果
      */
-    fun quickRun(
+    suspend fun quickRun(
         provider: Provider,
         prompt: String,
         apiKey: String? = null,

@@ -19,6 +19,7 @@ import androidx.metrics.performance.PerformanceMetricsState
 import androidx.metrics.performance.PerformanceMetricsState.Holder
 import androidx.tracing.trace
 import com.google.android.material.sidesheet.SideSheetDialog
+import kotlinx.coroutines.runBlocking
 import me.shetj.base.BaseKit
 import me.shetj.base.fix.FixPermission
 import me.shetj.base.ktx.defDataStore
@@ -96,19 +97,16 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
     private fun testKoogAgent() {
         // 示例：使用 Ollama 本地模型（不需要 API Key）
         // 需要先在本地运行 Ollama: ollama run llama3.2
-        val result = KoogAgentKit.quickRun(
-            provider = Provider.OLLAMA,
-            prompt = "你好，请用一句话介绍自己"
-        )
-        result?.let {
-            "Koog Agent 回复: $it".logI("KoogTest")
-        }
 
-        // 示例：使用 OpenAI（需要设置 OPENAI_API_KEY 环境变量）
-        // val result = KoogAgentKit.quickRun(
-        //     provider = Provider.OPENAI,
-        //     prompt = "你好，请用一句话介绍自己"
-        // )
+        runBlocking {
+            val result = KoogAgentKit.quickRun(
+                provider = Provider.OLLAMA,
+                prompt = "你好，请用一句话介绍自己"
+            )
+            result?.let {
+                "Koog Agent 回复: $it".logI("KoogTest")
+            }
+        }
     }
 
     private fun initScreenshot() {

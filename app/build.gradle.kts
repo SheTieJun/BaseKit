@@ -102,6 +102,7 @@ dependencies {
     androidTestImplementation(libs.androidx.runner)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(project(":baseKit"))
+    ksp(libs.androidx.room.compiler)
 //    implementation(libs.geckoview.nightly)
     implementation(libs.lottie)
     implementation(libs.androidx.dragAndDrop) //拖动
