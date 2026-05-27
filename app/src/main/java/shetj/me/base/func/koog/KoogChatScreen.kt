@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import shetj.me.base.func.koog.askuser.AskUserRequest
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +40,18 @@ fun KoogChatScreen(
     val state by viewModel.state.collectAsState()
     val listState = rememberLazyListState()
     val focusManager = LocalFocusManager.current
+    val askQueue = remember { mutableStateListOf<AskUserRequest>() }
+    var currentAsk by remember { mutableStateOf<AskUserRequest?>(null) }
+
+    LaunchedEffect(Unit) {
+        viewModel.askUserRequests.collect { req ->
+            if (currentAsk == null) {
+                currentAsk = req
+            } else {
+                askQueue.add(req)
+            }
+        }
+    }
 
     // 新消息自动滚动到底部
     LaunchedEffect(state.messages.size) {
@@ -154,6 +167,20 @@ fun KoogChatScreen(
                 isEnabled = state.isConfigured
             )
         }
+    }
+
+    currentAsk?.let { ask ->
+        AskUserDialog(
+            request = ask,
+            onConfirm = { value ->
+                viewModel.answerAskUser(ask.id, value)
+                currentAsk = askQueue.firstOrNull()?.also { askQueue.removeAt(0) }
+            },
+            onDismiss = {
+                viewModel.cancelAskUser(ask.id)
+                currentAsk = askQueue.firstOrNull()?.also { askQueue.removeAt(0) }
+            }
+        )
     }
 }
 
@@ -336,4 +363,51 @@ private fun ChatInputBox(
 private fun formatTime(timestamp: Long): String {
     val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
     return sdf.format(Date(timestamp))
+}
+
+@Composable
+private fun AskUserDialog(
+    request: AskUserRequest,
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var input by remember(request.id) { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("需要补充信息") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(text = request.question)
+                if (request.options.isNotEmpty()) {
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        request.options.forEach { option ->
+                            TextButton(onClick = { input = option }) {
+                                Text(option)
+                            }
+                        }
+                    }
+                }
+                TextField(
+                    value = input,
+                    onValueChange = { input = it },
+                    placeholder = { Text("请输入你的答案") },
+                    maxLines = 4
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onConfirm(input.trim()) },
+                enabled = input.trim().isNotEmpty()
+            ) {
+                Text("确定")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("取消")
+            }
+        }
+    )
 }

@@ -99,11 +99,11 @@ Prompt p = Prompt.builder("dev-assistant")
 
 适用：单轮请求、或你愿意把 systemPrompt/history/toolResult 都拼进一段文本。
 
-本仓库 BaseKit 当前就是这种方式（为了快速闭环）：
+BaseKit 当前的推荐方式是：
 
 - systemPrompt：由设置页配置，并在创建 Agent 时通过 Koog 的 `systemPrompt` 注入
-- history：发送时截断后拼接
-- tool：先运行工具，再把结果交给模型扩写（也属于“外部编排”）
+- history：由 ChatMemory 自动加载/保存（不再需要手动拼接历史）
+- tool：优先交给模型通过 Tools 调用（ToolRegistry 统一注册）
 
 ### 6.2 在创建 Agent 时设置 systemPrompt（更标准）
 
@@ -116,10 +116,46 @@ AIAgent<String, String> agent = AIAgent.builder()
     .llmModel(OpenAIModels.Chat.GPT4o)
     .build();
 ```
+## 7. 基于 systemPrompt 的“意图判断 + 工具优先”写法
 
+很多“会议议程助手 / 客服助手 / 学习助手”的核心不是 Prompt DSL 的花活，而是：
+
+- 用 systemPrompt 把“意图判断规则”说清楚
+- 让模型在不同意图下**优先调用不同工具**
+- 用 `AskUser` 工具把多轮追问（澄清问题）做成可控流程
+
+下面是一个可直接复用的 systemPrompt 模板（繁体输出、强制走工具、强制 AskUser 追问）。你只需要实现并注册对应工具：`searchTitleByKeyword`、`searchTitleBySpeaker`、`AskUser`。
+
+```text
+你是 JCConf 的议程助手，可以协助用户查询议程，你有以下两种方式协助用户：
+* 当用户给你「议程主题关键词」时，请优先调用议程工具 (searchTitleByKeyword)，并以条列式的方式回复。
+* 当用户给你「讲师名字」时，请优先调用议程工具 (searchTitleBySpeaker)，并以条列式的方式回复。
+
+【行为规则】
+1) 请先询问用户想用哪种方式来查询
+2) 当用户回复后，再问他关键词或讲师名字
+3) 查询后把对应的议程以条列式的方式整理给用户
+
+【输出格式】
+- 使用简体中文，简洁明了。
+- 列表格式（逐场）：
+  - 标题：<title>
+  - 讲者：<speaker>
+  - Track：<track>
+
+规则：
+- 一律使用 AskUser 工具，不要自行结束对话
+- 查询一律通过工具，不要自行杜撰资料
+- 结果清楚、简短，使用简体中文
+```
+
+落地要点：
+
+- `AskUser` 必须作为 Tool 注册到 Agent，否则模型“想问”也没法走工具通道。
+- 工具入参建议保持 object schema（`data class Args(...)`），便于模型稳定生成 JSON。
+- 如果用户没给出明确意图，systemPrompt 里明确“先 AskUser 让用户选方式”，能显著降低误判与无效工具调用。
 这种方式的好处是：systemPrompt 不需要每次请求都拼接在 user 文本里，更清晰、更像“系统指令”。
+## 8. 在 BaseKit 里怎么用（推荐路径）
 
-## 7. 在 BaseKit 里怎么用（推荐路径）
-
-- 现阶段（已实现）：创建 Agent 时注入 systemPrompt（Koog `systemPrompt`），发送时只拼接 history + userInput。
-- 再下一阶段：把“工具调用轨迹”用 toolCall/toolResult 作为 Prompt 消息写进去，让模型更可控地利用工具结果。
+- 现阶段（已实现）：创建 Agent 时注入 systemPrompt（Koog `systemPrompt`），发送时直接 `run(userText, sessionId)`，历史由 ChatMemory 自动加载/保存（不再手动拼接）。
+- 工具调用（已实现）：在 `KoogAgentKit.createAgent` 统一注册 Tools（ToolRegistry），由模型按 systemPrompt 的意图规则优先调用工具（例如 `AskUser`、`searchTitleByKeyword`）。

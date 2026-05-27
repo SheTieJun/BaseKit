@@ -2,23 +2,32 @@
 
 本文档用于记录 BaseKit 内 `koog` 功能的核心架构、构建依赖路径与复刻步骤，便于以后快速重建同类能力。
 
-- 另见：[KOOG_AGENTS.md](KOOG_AGENTS.md)（Koog-agents 的类型与用法总览）
-- 另见：[KOOG_PROMPTS.md](KOOG_PROMPTS.md)（Prompt DSL / Builder / tool messages / LLM params）
-- 另见：[KOOG_TOOLS.md](KOOG_TOOLS.md)（Tools 类型、ToolRegistry 与使用路线）
-- 另见：[KOOG_FEATURES.md](KOOG_FEATURES.md)（Features：Tracing/OpenTelemetry/自定义 Feature）
-- 另见：[KOOG_CHAT_MEMORY_ROOM.md](KOOG_CHAT_MEMORY_ROOM.md)（ChatMemory：Room 持久化 ChatHistoryProvider）
-- 另见：[KOOG_LONG_TERM_MEMORY.md](KOOG_LONG_TERM_MEMORY.md)（Long-term memory：本地 Room 落地与可扩展 schema）
-- 另见：[KOOG_LLM_PARAMETERS.md](KOOG_LLM_PARAMETERS.md)（LLM 参数：temperature/toolChoice/maxTokens 等）
-- 另见：[KOOG_MODEL_CAPABILITIES.md](KOOG_MODEL_CAPABILITIES.md)（Model capabilities：LLMCapability/LLModel）
-- 另见：[KOOG_CONTENT_MODERATION.md](KOOG_CONTENT_MODERATION.md)（Content moderation：输入/输出/工具内容审核）
-- 另见：[KOOG_HISTORY_COMPRESSION.md](KOOG_HISTORY_COMPRESSION.md)（History compression：TLDR 压缩与保留 memory 说明）
-- 另见：[KOOG_MCP.md](KOOG_MCP.md)（Model Context Protocol：接入 MCP tools）
-- 另见：[KOOG_A2A.md](KOOG_A2A.md)（A2A Protocol：agent-to-agent 互通）
-- 另见：[KOOG_ACP.md](KOOG_ACP.md)（Agent Client Protocol：IDE/客户端对接）
-- 另见：[KOOG_BACKEND_INTEGRATIONS.md](KOOG_BACKEND_INTEGRATIONS.md)（Backend integrations：Spring Boot/Ktor）
-- 另见：[KOOG_ADVANCED_USAGE.md](KOOG_ADVANCED_USAGE.md)（Advanced usage：进阶能力索引与落地建议）
-- 另见：[MODEL_LANDSCAPE.md](MODEL_LANDSCAPE.md)（主流模型知识图谱：按家族/能力维度理解模型）
+- 另见：[KOOG\_AGENTS.md](KOOG_AGENTS.md)（Koog-agents 的类型与用法总览）
+- 另见：[KOOG\_PROMPTS.md](KOOG_PROMPTS.md)（Prompt DSL / Builder / tool messages / LLM params）
+- 另见：[KOOG\_TOOLS.md](KOOG_TOOLS.md)（Tools 类型、ToolRegistry 与使用路线）
+- 另见：[KOOG\_FEATURES.md](KOOG_FEATURES.md)（Features：Tracing/OpenTelemetry/自定义 Feature）
+- 另见：[KOOG\_FUNCTION\_CALL\_SKILL\_MCP.md](KOOG_FUNCTION_CALL_SKILL_MCP.md)（function call / SKILL / MCP：术语对齐与工程落地）
+- 另见：[KOOG\_FUNCTIONAL\_STRATEGY\_CASES.md](KOOG_FUNCTIONAL_STRATEGY_CASES.md)（Functional strategy：A(UI 多轮) / B(AskUser Tool) 案例）
+- 另见：[KOOG\_ASKUSER\_TOOL\_UI.md](KOOG_ASKUSER_TOOL_UI.md)（AskUser：Tool 与 Compose UI 交互桥接）
+- 另见：[KOOG\_CHAT\_MEMORY\_ROOM.md](KOOG_CHAT_MEMORY_ROOM.md)（ChatMemory：Room 持久化 ChatHistoryProvider）
+- 另见：[KOOG\_LONG\_TERM\_MEMORY.md](KOOG_LONG_TERM_MEMORY.md)（Long-term memory：本地 Room 落地与可扩展 schema）
+- 另见：[KOOG\_LLM\_PARAMETERS.md](KOOG_LLM_PARAMETERS.md)（LLM 参数：temperature/toolChoice/maxTokens 等）
+- 另见：[KOOG\_MODEL\_CAPABILITIES.md](KOOG_MODEL_CAPABILITIES.md)（Model capabilities：LLMCapability/LLModel）
+- 另见：[KOOG\_CONTENT\_MODERATION.md](KOOG_CONTENT_MODERATION.md)（Content moderation：输入/输出/工具内容审核）
+- 另见：[KOOG\_HISTORY\_COMPRESSION.md](KOOG_HISTORY_COMPRESSION.md)（History compression：TLDR 压缩与保留 memory 说明）
+- 另见：[KOOG\_MCP.md](KOOG_MCP.md)（Model Context Protocol：接入 MCP tools）
+- 另见：[KOOG\_A2A.md](KOOG_A2A.md)（A2A Protocol：agent-to-agent 互通）
+- 另见：[KOOG\_ACP.md](KOOG_ACP.md)（Agent Client Protocol：IDE/客户端对接）
+- 另见：[KOOG\_BACKEND\_INTEGRATIONS.md](KOOG_BACKEND_INTEGRATIONS.md)（Backend integrations：Spring Boot/Ktor）
+- 另见：[KOOG\_ADVANCED\_USAGE.md](KOOG_ADVANCED_USAGE.md)（Advanced usage：进阶能力索引与落地建议）
+- 另见：[MODEL\_LANDSCAPE.md](MODEL_LANDSCAPE.md)（主流模型知识图谱：按家族/能力维度理解模型）
 - 另见：[plans/2026-05-26-long-term-memory-room.md](plans/2026-05-26-long-term-memory-room.md)（本地 Room 长期记忆实现计划）
+
+<br />
+
+[Koog Demo](<https://github.com/shengyou/koog-demo/tree/main>)
+
+<br />
 
 ## 目标与范围
 
@@ -44,7 +53,7 @@
 - 状态与业务（ViewModel / Manager）
   - `KoogChatViewModel`：维护 `ChatState`；响应输入；发送消息；写入历史；接收 Agent 切换事件并加载对应历史。
   - `AgentManager`：负责 Agent 配置列表 + 活跃 AgentId 的持久化与 StateFlow 派发。
-  - `ChatHistoryManager`：按 AgentId 维度存取聊天消息列表（DataStore Preferences）。
+  - `ChatHistoryManager`：按会话 ID 存取聊天消息列表（复用 `ChatMemoryDatabase`，与 ChatMemory 共用同一份会话数据）。
 - SDK 封装（BaseKit）
   - `me.shetj.base.tools.app.KoogAgentKit`：统一封装 Koog SDK 的 Agent 创建与运行，屏蔽各家 Provider 的 executor/client 差异。
 
@@ -53,9 +62,8 @@
 1. 用户在 `KoogChatScreen` 输入文本并点击发送。
 2. `KoogChatViewModel.sendMessage()`：
    - 追加用户消息 + loading 占位消息到 `ChatState.messages`
-   - 异步保存当前消息列表到 `ChatHistoryManager`
-   - 通过 `KoogAgentKit.runAgent(agent, Prompt)` 获取回复（systemPrompt 在创建 Agent 时注入；工具轨迹用 toolCall/toolResult 写入 Prompt）
-   - 替换 loading 为真实回复，并再次写入历史
+   - 通过 `KoogAgentKit.runAgent(agent, userText, sessionId)` 获取回复（systemPrompt 在创建 Agent 时注入；历史由 ChatMemory 自动加载/保存）
+   - 替换 loading 为真实回复
 
 ### 数据流（Agent 切换）
 
@@ -86,10 +94,8 @@ graph TD
   M --> N{触发灵感工具}
   N -->|手动指令或自动触发| O[InspirationTool 生成冲突切入点]
   O --> P{当前有可用 Agent}
-  P -->|是| Q[把 灵感+用户要求 交给模型扩写]
-  P -->|否| R[仅返回灵感并提示去配置 Agent]
-  Q --> S[保存结果到聊天历史]
-  R --> S
+  P -->|是| Q[由模型通过工具调用执行 InspirationTool 并生成开篇方案]
+  P -->|否| R[提示去配置 Agent]
 
   N -->|否| T{当前有可用 Agent}
   T -->|否| U[提示去设置页配置 Agent]
@@ -196,7 +202,7 @@ graph TD
   - 要点清单
   - 关键冲突
   - 章节骨架（黄金三章）
-  - 示例正文（300~500字）
+  - 示例正文（300\~500字）
 
 建议的扩展策略（保持改动可控）：
 

@@ -74,6 +74,7 @@ My awesome project that provides a lot of useful features, like:
 ### Added
 - 新增 Koog Long-term memory 落地文档 `doc/koog/KOOG_LONG_TERM_MEMORY.md`（本地 Room、namespace=userId+agentId、支持自定义扩展）。
 - 新增 Koog ChatMemory Room 持久化文档 `doc/koog/KOOG_CHAT_MEMORY_ROOM.md`，并在 `doc/koog/SKILL.md` 增加索引入口。
+- 新增 Koog 术语对齐文档 `doc/koog/KOOG_FUNCTION_CALL_SKILL_MCP.md`（function call / SKILL / MCP 对应 Koog 能力与工程落地）。
 - 新增实现计划 `doc/koog/plans/2026-05-26-long-term-memory-room.md` 并在 `doc/koog/SKILL.md` 增加索引入口。
 - baseKit 新增长期记忆 Room 存储层：`LongTermMemoryDatabase` / `MemoryRecordEntity` / `MemoryRecordDao`。
 - baseKit 新增 `RoomTextDocumentStorage`（适配 Koog RAG 的 SearchStorage/WriteStorage）与 `LocalLongTermMemoryKit`（强类型写入 + 自定义扩展）。
@@ -85,3 +86,11 @@ My awesome project that provides a lot of useful features, like:
 - app 的 `KoogSettingsScreen` 新增“记忆管理”入口：写入偏好、查看最近记录、支持删除。
 - app 的 `ChatHistoryManager` 由 DataStore 切换为复用 `ChatMemoryDatabase`（Room），用于 UI 聊天消息持久化并与 ChatMemory 共享同一份会话数据。
 - app 的 UI 不再主动写入聊天历史，避免与 Koog `ChatMemory` 的自动 store 重复写入同一会话数据。
+- baseKit 的 `KoogAgentKit.createAgent` 新增 tools 参数并统一注册 ToolRegistry；写作灵感流程由模型通过工具调用完成（不再在 ViewModel 手动执行工具）。
+
+## [2026-05-27]
+
+### Added
+- 新增 `doc/koog/KOOG_FUNCTIONAL_STRATEGY_CASES.md`：Functional strategy 案例（A：UI 驱动多轮；B：AskUser Tool + UI 网关）。
+- 新增 `doc/koog/KOOG_ASKUSER_TOOL_UI.md`：AskUser Tool 与 Compose UI 交互桥接（选项选择 + 自由输入）。
+- app 新增 `AskUserTool` 与 `AskUserGateway`，支持模型通过工具触发 UI 追问并等待用户输入。

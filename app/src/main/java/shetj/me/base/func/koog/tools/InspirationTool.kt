@@ -5,14 +5,11 @@ import ai.koog.agents.core.tools.annotations.LLMDescription
 import ai.koog.serialization.typeToken
 import kotlinx.serialization.Serializable
 
-class InspirationTool : SimpleTool<InspirationTool.Args>(
+object InspirationTool : SimpleTool<InspirationTool.Args>(
     argsType = typeToken<Args>(),
-    name =  NAME,
+    name =  "inspiration",
     description = "当用户需要创作灵感时调用。输入：小说关键词（如“赛博朋克+修仙”）；输出：一个具有冲突感的剧情切入点。"
 ) {
-    companion object {
-        const val NAME = "inspiration"
-    }
 
     @Serializable
     data class Args(

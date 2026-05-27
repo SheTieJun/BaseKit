@@ -34,13 +34,13 @@ enum class KoogScreen {
     Settings
 }
 
-@OptIn(androidx.compose.animation.ExperimentalAnimationApi::class)
+@OptIn( ExperimentalAnimationApi::class)
 @Composable
 private fun KoogApp(onFinish: () -> Unit) {
     var currentScreen by remember { mutableStateOf(KoogScreen.Chat) }
     var targetScreen by remember { mutableStateOf<KoogScreen?>(null) }
 
-    androidx.compose.animation.AnimatedContent(
+   AnimatedContent(
         targetState = currentScreen,
         transitionSpec = {
             if (targetState == KoogScreen.Settings) {

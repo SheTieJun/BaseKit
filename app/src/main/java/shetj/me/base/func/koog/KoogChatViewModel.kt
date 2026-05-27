@@ -1,10 +1,10 @@
 package shetj.me.base.func.koog
 
 import ai.koog.agents.core.agent.AIAgent
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -12,10 +12,12 @@ import kotlinx.coroutines.launch
 import me.shetj.base.tools.app.KoogAgentKit
 import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.memory.chat.ChatMemoryDatabase
-import me.shetj.base.tools.app.memory.chat.ChatMemoryMessageEntity
 import me.shetj.base.tools.app.memory.chat.RoomChatHistoryProvider
 import me.shetj.base.tools.app.memory.storage.LongTermMemoryDatabase
 import me.shetj.base.tools.app.memory.storage.RoomTextDocumentStorage
+import shetj.me.base.func.koog.askuser.AskUserGatewayImpl
+import shetj.me.base.func.koog.askuser.AskUserRequest
+import shetj.me.base.func.koog.tools.AskUserTool
 import shetj.me.base.func.koog.tools.InspirationTool
 import timber.log.Timber
 
@@ -48,13 +50,15 @@ class KoogChatViewModel : ViewModel() {
 
     private val agentManager = AgentManager.getInstance(BaseKit.app)
     private val chatHistoryManager = ChatHistoryManager.getInstance(BaseKit.app)
-    private val inspirationTool = InspirationTool()
+    private val askUserGateway = AskUserGatewayImpl()
     private val longTermMemoryStorage = RoomTextDocumentStorage(
         LongTermMemoryDatabase.getInstance(BaseKit.app).memoryRecordDao()
     )
     private val chatHistoryProvider = RoomChatHistoryProvider(
         ChatMemoryDatabase.getInstance(BaseKit.app).chatMemoryDao()
     )
+
+    val askUserRequests: SharedFlow<AskUserRequest> = askUserGateway.requests
     
     private val _state = MutableStateFlow(ChatState())
     val state: StateFlow<ChatState> = _state.asStateFlow()
@@ -80,6 +84,7 @@ class KoogChatViewModel : ViewModel() {
                         modelName = activeAgent.model,
                         systemPrompt = activeAgent.systemPrompt,
                         chatHistoryProvider = chatHistoryProvider,
+                        tools = listOf(InspirationTool, AskUserTool(askUserGateway)),
                         userId = "local",
                         agentId = activeAgent.id,
                         longTermSearchStorage = longTermMemoryStorage,
@@ -124,10 +129,6 @@ class KoogChatViewModel : ViewModel() {
         val input = snapshot.inputText.trim()
         if (input.isEmpty() || snapshot.isGenerating) return
         val storedHistory = snapshot.messages.filter { !it.isLoading }
-
-        val manualInspirationTopic = parseManualInspirationTopic(input)
-        val inspirationTopic = manualInspirationTopic ?: input.takeIf { shouldAutoInspiration(input) }
-
         val userMessage = ChatMessage(content = input, isUser = true)
         val loadingMessage = ChatMessage(content = "", isUser = false, isLoading = true)
         val messagesWithUser = storedHistory + userMessage + loadingMessage
@@ -138,80 +139,6 @@ class KoogChatViewModel : ViewModel() {
                 inputText = "",
                 isGenerating = true
             )
-        }
-
-        if (inspirationTopic != null) {
-            val agentId = activeAgentId
-            val agent = currentAgent
-            viewModelScope.launch {
-                try {
-                    val topic = inspirationTopic.take(100).trim()
-                    val toolResult = inspirationTool.execute(InspirationTool.Args(topic = topic))
-                    val response = if (agent != null) {
-                        val userReq = input.trim().takeIf { manualInspirationTopic == null }.orEmpty()
-                        val expansionReq = buildString {
-                            append("请基于以下工具结果输出可直接用于网文创作的开篇方案。")
-                            append('\n')
-                            append("输出结构固定：要点清单 -> 关键冲突 -> 章节骨架（黄金三章） -> 可直接复制的示例正文（300~500字）。")
-                            append('\n')
-                            append('\n')
-                            append("工具名称：")
-                            append(InspirationTool.NAME)
-                            append('\n')
-                            append("工具入参：")
-                            append(topic)
-                            append('\n')
-                            append("工具输出：")
-                            append('\n')
-                            append(toolResult.trim())
-                            if (userReq.isNotBlank()) {
-                                append('\n')
-                                append('\n')
-                                append("用户额外要求：")
-                                append(userReq)
-                            }
-                        }.trim()
-                        KoogAgentKit.runAgent(agent, expansionReq, sessionId = agentId) ?: "抱歉，获取回复失败"
-                    } else {
-                        buildString {
-                            append("灵感工具：")
-                            append('\n')
-                            append(toolResult.trim())
-                            append('\n')
-                            append('\n')
-                            append("提示：如果你希望我把灵感扩写成开篇方案，请先在设置页配置一个可用的 Agent。")
-                            if (manualInspirationTopic != null) {
-                                append('\n')
-                                append('\n')
-                                append("提示：你也可以直接输入你的题材关键词，例如：/inspiration 赛博朋克+修仙")
-                            }
-                        }.trim()
-                    }
-                    _state.update { s ->
-                        val updatedMessages = s.messages.toMutableList()
-                        val lastIdx = updatedMessages.lastIndex
-                        if (lastIdx >= 0 && updatedMessages[lastIdx].isLoading) {
-                            updatedMessages[lastIdx] = updatedMessages[lastIdx].copy(content = response, isLoading = false)
-                        } else {
-                            updatedMessages.add(ChatMessage(content = response, isUser = false))
-                        }
-                        s.copy(messages = updatedMessages, isGenerating = false)
-                    }
-                } catch (e: Exception) {
-                    _state.update { s ->
-                        val updatedMessages = s.messages.toMutableList()
-                        val lastIdx = updatedMessages.lastIndex
-                        if (lastIdx >= 0 && updatedMessages[lastIdx].isLoading) {
-                            updatedMessages[lastIdx] = updatedMessages[lastIdx].copy(
-                                content = "出错了: ${e.message}",
-                                isLoading = false
-                            )
-                        }
-                        s.copy(messages = updatedMessages, isGenerating = false)
-                    }
-                }
-            }
-            return
         }
 
         if (currentAgent == null) {
@@ -273,6 +200,14 @@ class KoogChatViewModel : ViewModel() {
         _state.update { it.copy(messages = emptyList()) }
     }
 
+    fun answerAskUser(requestId: String, value: String) {
+        askUserGateway.answer(requestId, value)
+    }
+
+    fun cancelAskUser(requestId: String) {
+        askUserGateway.cancel(requestId)
+    }
+
     private fun parseManualInspirationTopic(input: String): String? {
         val raw = input.trim()
         val prefixes = listOf("/inspiration", "/inspire", "/灵感")
@@ -290,68 +225,4 @@ class KoogChatViewModel : ViewModel() {
         return intents.any { text.contains(it) } || text.endsWith("？") || text.endsWith("?")
     }
 
-}
-
-/**
- * 聊天记录持久化管理器
- */
-class ChatHistoryManager private constructor(context: Context) {
-    private val dao = ChatMemoryDatabase.getInstance(context.applicationContext).chatMemoryDao()
-
-    companion object {
-        @Volatile private var instance: ChatHistoryManager? = null
-        fun getInstance(context: Context) = instance ?: synchronized(this) {
-            instance ?: ChatHistoryManager(context).also { instance = it }
-        }
-    }
-
-    /**
-     * 加载指定 Agent 的聊天历史
-     */
-    suspend fun loadMessages(agentId: String): List<ChatMessage> {
-        return try {
-            dao.getByConversationId(agentId).map { entity ->
-                ChatMessage(
-                    id = entity.rowId.toString(),
-                    content = entity.content,
-                    isUser = entity.role == "user",
-                    timestamp = entity.createdAt
-                )
-            }
-        } catch (e: Exception) {
-            Timber.tag("ChatHistory").e(e, "加载聊天记录失败: ${e.message}")
-            emptyList()
-        }
-    }
-
-    /**
-     * 保存聊天消息列表
-     */
-    suspend fun saveMessages(agentId: String, messages: List<ChatMessage>) {
-        try {
-            val entities = messages.mapIndexed { index, msg ->
-                ChatMemoryMessageEntity(
-                    conversationId = agentId,
-                    seq = index.toLong(),
-                    role = if (msg.isUser) "user" else "assistant",
-                    content = msg.content,
-                    createdAt = msg.timestamp
-                )
-            }
-            dao.replaceConversation(agentId, entities)
-        } catch (e: Exception) {
-            Timber.tag("ChatHistory").e(e, "保存聊天记录失败: ${e.message}")
-        }
-    }
-
-    /**
-     * 清空指定 Agent 的聊天历史
-     */
-    suspend fun clearMessages(agentId: String) {
-        try {
-            dao.deleteByConversationId(agentId)
-        } catch (e: Exception) {
-            Timber.tag("ChatHistory").e(e, "清空聊天记录失败: ${e.message}")
-        }
-    }
 }

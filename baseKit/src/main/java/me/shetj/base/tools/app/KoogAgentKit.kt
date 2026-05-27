@@ -5,6 +5,11 @@ import ai.koog.agents.chatMemory.feature.ChatHistoryProvider
 import ai.koog.agents.chatMemory.feature.ChatMemory
 import ai.koog.agents.core.agent.AIAgentBuilder
 import ai.koog.agents.core.annotation.ExperimentalAgentsApi
+import ai.koog.agents.core.tools.Tool
+import ai.koog.agents.core.tools.ToolRegistry
+import ai.koog.agents.ext.tool.AskUser
+import ai.koog.agents.ext.tool.ExitTool
+import ai.koog.agents.ext.tool.SayToUser
 import ai.koog.agents.longtermmemory.feature.LongTermMemory
 import ai.koog.agents.longtermmemory.retrieval.SimilaritySearchStrategy
 import ai.koog.agents.longtermmemory.retrieval.augmentation.SystemPromptAugmenter
@@ -53,6 +58,8 @@ import timber.log.Timber
  */
 object KoogAgentKit {
 
+
+
     /**
      * LLM 提供商枚举
      */
@@ -84,12 +91,18 @@ object KoogAgentKit {
             Provider.OLLAMA -> LLMProvider.Ollama
             Provider.CUSTOM -> LLMProvider.OpenAI
         }
-        // CUSTOM 使用 OpenAI 兼容接口，需要 OpenAIEndpoint.Completions 能力
-        val caps = if (provider == Provider.CUSTOM) {
-            listOf(LLMCapability.OpenAIEndpoint.Completions)
-        } else {
-            listOf(LLMCapability.Completion)
-        }
+        val caps = listOf(LLMCapability.Temperature,
+                LLMCapability.Schema.JSON.Basic,
+                LLMCapability.Schema.JSON.Standard,
+                LLMCapability.Speculation,
+                LLMCapability.Tools,
+                LLMCapability.ToolChoice,
+                LLMCapability.Vision.Image,
+                LLMCapability.Document,
+                LLMCapability.Completion,
+                LLMCapability.MultipleChoices,
+                LLMCapability.OpenAIEndpoint.Completions,
+                LLMCapability.OpenAIEndpoint.Responses)
         return LLModel(
             provider = llmProvider,
             id = modelName,
@@ -107,6 +120,7 @@ object KoogAgentKit {
      * @param systemPrompt 系统提示词（建议用于定义助手身份、输出风格与边界）
      * @param chatHistoryProvider ChatMemory 的历史存储实现（用于“短期对话上下文”）
      * @param chatWindowSize ChatMemory 的窗口大小（限制对话历史长度）
+     * @param tools 注册到 Agent 的工具列表（Koog Tools / function call）
      * @param userId 长期记忆 namespace 的用户维度（默认 local；建议业务传入真实用户 ID）
      * @param agentId 长期记忆 namespace 的智能体维度（建议传入当前 Agent 配置 ID）
      * @param longTermSearchStorage LongTermMemory 检索存储（RAG：检索相关记忆注入 Prompt）
@@ -125,6 +139,7 @@ object KoogAgentKit {
         systemPrompt: String? = null,
         chatHistoryProvider: ChatHistoryProvider? = null,
         chatWindowSize: Int = 50,
+        tools: List<Tool<*, *>> = emptyList(),
         userId: String = "local",
         agentId: String? = null,
         longTermSearchStorage: SearchStorage<TextDocument, SimilaritySearchRequest>? = null,
@@ -136,6 +151,7 @@ object KoogAgentKit {
     ): AIAgent<String, String>? {
         val resolvedModel = modelName?.takeIf { it.isNotBlank() }?.let { createModel(provider, it) } ?: model
         val sp = systemPrompt?.trim().orEmpty()
+        val toolRegistry = buildToolRegistry(tools)
         // 长期记忆 namespace 规则：
         // 1) 业务显式传 longTermNamespace 时优先使用
         // 2) 否则使用 userId + agentId 拼接，确保不同用户、不同 Agent 的长期记忆隔离
@@ -155,6 +171,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -174,6 +191,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: AnthropicModels.Sonnet_4_5)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -193,6 +211,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: GoogleModels.Gemini2_5Pro)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -211,6 +230,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(MultiLLMPromptExecutor(mapOf(DeepSeekModels.DeepSeekChat.provider to client)))
                         .llmModel(resolvedModel ?: DeepSeekModels.DeepSeekChat)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -224,6 +244,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(simpleOpenRouterExecutor(key))
                         .llmModel(resolvedModel ?: OpenRouterModels.GPT4o)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -238,6 +259,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(MultiLLMPromptExecutor(LLMProvider.OpenAI to client))
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -251,6 +273,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(simpleBedrockExecutorWithBearerToken(key))
                         .llmModel(resolvedModel ?: BedrockModels.AnthropicClaude4_5Sonnet)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -270,6 +293,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: MistralAIModels.Chat.MistralMedium31)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -287,6 +311,7 @@ object KoogAgentKit {
                     AIAgent.builder()
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: OllamaModels.Meta.LLAMA_3_2)
+                        .toolRegistry(toolRegistry)
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -297,6 +322,13 @@ object KoogAgentKit {
         } catch (e: Exception) {
             Timber.tag("KoogAgentKit").e(e, "创建 Agent 失败: ${e.message}")
             null
+        }
+    }
+
+    private fun buildToolRegistry(tools: List<Tool<*, *>>): ToolRegistry {
+        if (tools.isEmpty()) return ToolRegistry.EMPTY
+        return ToolRegistry {
+            tools.forEach { tool(it) }
         }
     }
 
