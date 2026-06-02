@@ -55,7 +55,7 @@ geckoview = "152.0.20260501080418"
 
 activity-compose = "1.13.0"
 compose-bom = "2026.04.01"
-pagingVersion = "3.4.2"
+pagingVersion = "3.5.0"
 navigation3 = "1.1.1"
 lifecycleViewmodelNav3 = "2.11.0-alpha03"
 kotlinSerialization = "2.3.20"
