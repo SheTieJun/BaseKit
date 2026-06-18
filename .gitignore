@@ -57,3 +57,6 @@ base/lint.xml
 /.trae/documents/
 /buildSrc/.kotlin/
 /.kotlin/
+/.codegraph/
+/.claude/
+/.understand-anything/

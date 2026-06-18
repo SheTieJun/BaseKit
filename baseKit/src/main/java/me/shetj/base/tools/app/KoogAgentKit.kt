@@ -5,6 +5,7 @@ import ai.koog.agents.chatMemory.feature.ChatHistoryProvider
 import ai.koog.agents.chatMemory.feature.ChatMemory
 import ai.koog.agents.core.agent.AIAgentBuilder
 import ai.koog.agents.core.annotation.ExperimentalAgentsApi
+import ai.koog.agents.core.dsl.builder.strategy
 import ai.koog.agents.core.tools.Tool
 import ai.koog.agents.core.tools.ToolRegistry
 import ai.koog.agents.ext.tool.AskUser
@@ -51,6 +52,9 @@ import ai.koog.rag.base.storage.WriteStorage
 import ai.koog.rag.base.storage.search.SimilaritySearchRequest
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import ai.koog.agents.ext.agent.chatAgentStrategy
+import ai.koog.agents.features.eventHandler.feature.EventHandler
+import ai.koog.agents.longtermmemory.ingestion.extraction.FilteringExtractionStrategy
 
 /**
  * Koog AI Agent 工具类
@@ -172,6 +176,10 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
                         .toolRegistry(toolRegistry)
+                        .apply {
+                            graphStrategy("chat") { chatAgentStrategy() }
+                        }
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -192,6 +200,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: AnthropicModels.Sonnet_4_5)
                         .toolRegistry(toolRegistry)
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -212,6 +221,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: GoogleModels.Gemini2_5Pro)
                         .toolRegistry(toolRegistry)
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -231,6 +241,7 @@ object KoogAgentKit {
                         .promptExecutor(MultiLLMPromptExecutor(mapOf(DeepSeekModels.DeepSeekChat.provider to client)))
                         .llmModel(resolvedModel ?: DeepSeekModels.DeepSeekChat)
                         .toolRegistry(toolRegistry)
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -245,6 +256,7 @@ object KoogAgentKit {
                         .promptExecutor(simpleOpenRouterExecutor(key))
                         .llmModel(resolvedModel ?: OpenRouterModels.GPT4o)
                         .toolRegistry(toolRegistry)
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -260,6 +272,7 @@ object KoogAgentKit {
                         .promptExecutor(MultiLLMPromptExecutor(LLMProvider.OpenAI to client))
                         .llmModel(resolvedModel ?: OpenAIModels.Chat.GPT4o)
                         .toolRegistry(toolRegistry)
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -274,6 +287,7 @@ object KoogAgentKit {
                         .promptExecutor(simpleBedrockExecutorWithBearerToken(key))
                         .llmModel(resolvedModel ?: BedrockModels.AnthropicClaude4_5Sonnet)
                         .toolRegistry(toolRegistry)
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -294,6 +308,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: MistralAIModels.Chat.MistralMedium31)
                         .toolRegistry(toolRegistry)
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -312,6 +327,7 @@ object KoogAgentKit {
                         .promptExecutor(executor)
                         .llmModel(resolvedModel ?: OllamaModels.Meta.LLAMA_3_2)
                         .toolRegistry(toolRegistry)
+                        .apply { initEventHandler() }
                         .apply { if (sp.isNotEmpty()) systemPrompt(sp) }
                         .apply { installChatMemory(chatHistoryProvider, chatWindowSize) }
                         // LongTermMemory：长期记忆（RAG 检索注入 Prompt）
@@ -322,6 +338,43 @@ object KoogAgentKit {
         } catch (e: Exception) {
             Timber.tag("KoogAgentKit").e(e, "创建 Agent 失败: ${e.message}")
             null
+        }
+    }
+
+    private fun AIAgentBuilder.initEventHandler() {
+        install(EventHandler) { eventHandlerConfig ->
+            eventHandlerConfig.apply {
+                // Log LLM interactions
+                onLLMCallStarting { eventContext ->
+                    println("Sending prompt to LLM: ${eventContext.prompt}")
+                }
+
+                onLLMCallCompleted { eventContext ->
+                    println("Received ${eventContext.responses.size} response(s) from LLM")
+                }
+
+                // Monitor tool usage
+                onToolCallStarting { eventContext ->
+                    println("Tool called: ${eventContext.toolName} with args: ${eventContext.toolArgs}")
+                }
+
+                onToolCallCompleted { eventContext ->
+                    println("Tool result: ${eventContext.toolResult}")
+                }
+
+                onToolCallFailed { eventContext ->
+                    println("Tool failed: ${eventContext.error?.message ?: eventContext.message}")
+                }
+
+                // Track agent progress
+                onStrategyStarting { eventContext ->
+                    println("Strategy started: ${eventContext.strategy.name}")
+                }
+
+                onStrategyCompleted { eventContext ->
+                    println("Strategy finished with result: ${eventContext.result}")
+                }
+            }
         }
     }
 

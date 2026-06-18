@@ -1,6 +1,15 @@
 package shetj.me.base.func.koog
 
 import ai.koog.agents.core.agent.AIAgent
+import ai.koog.agents.ext.tool.AskUser
+import ai.koog.agents.ext.tool.ExitTool
+import ai.koog.agents.ext.tool.SayToUser
+import ai.koog.agents.ext.tool.file.EditFileTool
+import ai.koog.agents.ext.tool.file.ListDirectoryTool
+import ai.koog.agents.ext.tool.file.ReadFileTool
+import ai.koog.agents.ext.tool.file.WriteFileTool
+import ai.koog.agents.ext.tool.search.RegexSearchTool
+import ai.koog.rag.base.files.JVMFileSystemProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,14 +93,24 @@ class KoogChatViewModel : ViewModel() {
                         modelName = activeAgent.model,
                         systemPrompt = activeAgent.systemPrompt,
                         chatHistoryProvider = chatHistoryProvider,
-                        tools = listOf(InspirationTool, AskUserTool(askUserGateway)),
+                        tools = listOf(InspirationTool,
+                            AskUserTool(askUserGateway),
+                            AskUser,
+                            SayToUser,
+                            ExitTool,
+                            WriteFileTool(JVMFileSystemProvider.ReadWrite),
+                            EditFileTool(JVMFileSystemProvider.ReadWrite),
+                            ReadFileTool(JVMFileSystemProvider.ReadOnly),
+                            ListDirectoryTool(JVMFileSystemProvider.ReadOnly),
+                            RegexSearchTool(JVMFileSystemProvider.ReadOnly)
+                        ),
                         userId = "local",
                         agentId = activeAgent.id,
                         longTermSearchStorage = longTermMemoryStorage,
                         longTermWriteStorage = longTermMemoryStorage
                     )
                     val newAgentId = activeAgent.id
-                    
+
                     // Agent 切换时加载对应的历史记录
                     if (newAgentId != activeAgentId) {
                         activeAgentId = newAgentId
