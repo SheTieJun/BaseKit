@@ -28,6 +28,7 @@ import me.shetj.base.ktx.launch
 import me.shetj.base.ktx.logE
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.openSetting
+import me.shetj.base.ktx.renderType
 import me.shetj.base.ktx.selectFile
 import me.shetj.base.ktx.setAppearance
 import me.shetj.base.ktx.showToast
@@ -53,6 +54,7 @@ import me.shetj.base.tools.app.WindowKit
 import me.shetj.base.tools.app.WindowKit.posturesCollector
 import me.shetj.base.tools.debug.DebugFunc
 import me.shetj.base.tools.file.FileQUtils
+import me.shetj.player.PlayerListener
 import shetj.me.base.R
 import shetj.me.base.common.other.CommentPopup
 import shetj.me.base.contentprovider.WidgetProvider
@@ -88,6 +90,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         
         // Koog AI Agent 测试示例
         testKoogAgent()
+        renderType<PlayerListener>().logI("renderType")
     }
 
     /**

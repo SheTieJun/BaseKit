@@ -89,6 +89,7 @@ dependencies {
     implementation(fileTree("libs") {
         include("*.jar", "*.aar")
     })
+    implementation(libs.androidx.emoji2.emojipicker)
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.ui.tooling.preview)

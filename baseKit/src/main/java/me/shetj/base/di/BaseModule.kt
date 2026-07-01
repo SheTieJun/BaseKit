@@ -90,7 +90,7 @@ internal fun getHttpModule(): Module {
         }
 
         single {
-            LruDiskCache(BaseKit.app.getExternalFilesDir("cacheFile"), 1024 * 1024 * 100)
+            LruDiskCache(BaseKit.app.getExternalFilesDir("cacheFile"), 1024 * 1024 * 1024)
         }
 
         single {
