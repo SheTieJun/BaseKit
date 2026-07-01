@@ -14,7 +14,7 @@ jobs:
 
       # 缓存 Gradle 依赖，基于 gradle-wrapper.properties 和 build 文件生成 key
       - name: Cache Gradle dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             ~/.gradle/caches
