@@ -52,7 +52,7 @@ ktor = "3.5.0"
 koog = "0.8.0"
 
 # Mozilla GeckoView https://maven.mozilla.org/?prefix=maven2/org/mozilla/geckoview/geckoview-nightly/
-geckoview = "152.0.20260501080418"
+geckoview = "154.0.20260630215321"
 
 activity-compose = "1.13.0"
 compose-bom = "2026.04.01"
