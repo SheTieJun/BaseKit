@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # 缓存 Gradle 依赖，基于 gradle-wrapper.properties 和 build 文件生成 key
       - name: Cache Gradle dependencies
