@@ -574,7 +574,7 @@ private fun AgentEditorDialog(
                         }
                     }
                     item {
-                        Divider(modifier = Modifier.padding(vertical = 8.dp))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                         Text("自定义模型", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 8.dp))
                         OutlinedTextField(
                             value = model,

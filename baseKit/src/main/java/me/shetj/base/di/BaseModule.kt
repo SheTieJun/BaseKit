@@ -2,6 +2,7 @@ package me.shetj.base.di
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.BodyProgress
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
@@ -76,6 +77,7 @@ internal fun getHttpModule(): Module {
                 engine {
                     preconfigured = okHttpClient
                 }
+                install(BodyProgress)
                 install(ContentNegotiation) {
                     json(Json {
                         ignoreUnknownKeys = true

@@ -99,7 +99,7 @@ class HttpLoggingInterceptor : Interceptor {
                 val headers = request.headers
                 log(headers.toString())
                 if (logBody && hasRequestBody) {
-                    if (isPlaintext(requestBody?.contentType())) {
+                    if (isPlaintext(requestBody.contentType())) {
                         bodyToString(request)
                     } else {
                         log("\tbody: maybe [file part] , too large too print , ignored!")

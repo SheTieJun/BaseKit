@@ -38,7 +38,9 @@ androidLibrary("me.shetj.base",config = true){
         }
     }
     //    ./gradlew printProjectStructure
-    tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
+    tasks.register<tools.PrintProjectStructureTask>("printProjectStructure") {
+        description = "打印结构"
+    }
 }
 
 dependencies {

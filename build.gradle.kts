@@ -1,4 +1,3 @@
-import org.jetbrains.changelog.ChangelogSectionUrlBuilder
 import org.jetbrains.changelog.date
 import tools.versionName
 
@@ -31,7 +30,9 @@ plugins {
 
 //apply(from = "gradle/detekt.gradle")
 
-tasks.register<tools.PrintProjectStructureTask>("printProjectStructure")
+tasks.register<tools.PrintProjectStructureTask>("printProjectStructure") {
+    description = "printProjectStructure"
+}
 
 
 changelog {
@@ -58,11 +59,6 @@ changelog {
 }
 
 allprojects {
-    configurations.all {
-        resolutionStrategy {
-            exclude(group = "org.jetbrains.kotlin", module = "kotlin-android-extensions-runtime")
-        }
-    }
     configurations.all {
         resolutionStrategy {
             exclude(group = "org.jetbrains.kotlin", module = "kotlin-android-extensions-runtime")

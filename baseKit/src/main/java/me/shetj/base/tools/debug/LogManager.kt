@@ -126,8 +126,8 @@ object LogManager {
             val fileName = "Log_$dateStr.txt"
             val file = File(config.logDir, fileName)
 
-            if (!file.parentFile.exists()) {
-                file.parentFile.mkdirs()
+            if (file.parentFile?.exists() == false) {
+                file.parentFile?.mkdirs()
             }
 
             FileWriter(file, true).use { writer ->

@@ -10,7 +10,7 @@ import com.chad.library.adapter4.viewholder.QuickViewHolder
 abstract class BaseKTAdapter<T : Any>
 @JvmOverloads constructor(
     owner: Lifecycle,
-    @LayoutRes private val layoutResId: Int,
+    @param:LayoutRes private val layoutResId: Int,
     items: List<T> = emptyList()
 ) : BaseSAdapter<T, QuickViewHolder>(items) {
     protected val lifeKtScope by lazy { owner.coroutineScope }

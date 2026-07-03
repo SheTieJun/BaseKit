@@ -15,7 +15,7 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class BaseViewBindingAdapter<T : Any, BD : ViewBinding>
 @JvmOverloads constructor(
-    @LayoutRes private val layoutResId: Int,
+    @param:LayoutRes private val layoutResId: Int,
     items: List<T> = emptyList()
 ) : BaseQuickAdapter<T, QuickViewHolder>(items) {
 

@@ -5,23 +5,30 @@ import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.delete
+import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.setBody
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
+import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.http.Parameters
 import io.ktor.http.contentLength
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -87,6 +94,102 @@ object KCHttp {
         return runCatching<T> {
             doPostBodyCache(url, body, requestOption).convertToT()
         }
+    }
+
+    @JvmOverloads
+    suspend inline fun <reified T> upload(
+        url: String,
+        file: File,
+        fileKey: String = "file",
+        maps: Map<String, String> = HashMap(),
+        requestOption: RequestOption = url.getDefReqOption(),
+        contentType: ContentType = ContentType.Application.OctetStream,
+        crossinline onError: (Throwable) -> Unit = {},
+        crossinline onProcess: (uploadedSize: Long, length: Long, progress: Float) -> Unit = { _, _, _ -> },
+        crossinline onSuccess: (T) -> Unit = { }
+    ) {
+        val fileLength = file.length().coerceAtLeast(0L)
+        callbackFlow {
+            var emitProgress = 0f
+            try {
+                val responseText = doUploadRetry(
+                    url = url,
+                    fileKey = fileKey,
+                    file = file,
+                    maps = maps,
+                    requestOption = requestOption,
+                    contentType = contentType
+                ) { uploadedSize, length ->
+                    val totalLength = when {
+                        (length ?: 0L) > 0L -> length?:0L
+                        fileLength > 0L -> fileLength
+                        else -> 0L
+                    }
+                    val progress = if (totalLength > 0L) {
+                        (uploadedSize.toFloat() / totalLength.toFloat()).coerceIn(0f, 1f)
+                    } else {
+                        0f
+                    }
+                    if (progress - emitProgress >= 0.01f || progress == 1f) {
+                        emitProgress = progress
+                        trySend(HttpResult.progress<T>(uploadedSize, totalLength, emitProgress))
+                    }
+                }
+                trySend(HttpResult.success(responseText.convertToT<T>()))
+                close()
+            } catch (e: Exception) {
+                trySend(HttpResult.failure<T>(ApiException.handleException(e)))
+                close()
+            }
+            awaitClose { }
+        }.flowOn(DispatcherProvider.io())
+            .buffer()
+            .collect {
+                it.fold(onFailure = { e ->
+                    e?.let { it1 -> onError(it1) }
+                }, onSuccess = { body ->
+                    onSuccess(body)
+                }, onLoading = { progress ->
+                    onProcess(progress.currentLength, progress.length, progress.process)
+                })
+            }
+    }
+
+    suspend fun doUploadRetry(
+        url: String,
+        fileKey: String,
+        file: File,
+        maps: Map<String, String> = HashMap(),
+        requestOption: RequestOption,
+        contentType: ContentType = ContentType.Application.OctetStream,
+        onUploadProgress: (uploadedSize: Long, length: Long?) -> Unit = { _, _ -> }
+    ): String {
+        val requestBlock: suspend () -> String = {
+            httpClient.post(url) {
+                setBody(
+                    MultiPartFormDataContent(
+                        formData {
+                            maps.forEach { (k, v) -> append(k, v) }
+                            append(
+                                key = fileKey,
+                                value = file.readBytes(),
+                                headers = Headers.build {
+                                    append(HttpHeaders.ContentType, contentType.toString())
+                                    append(
+                                        HttpHeaders.ContentDisposition,
+                                        "form-data; name=\"$fileKey\"; filename=\"${file.name}\""
+                                    )
+                                }
+                            )
+                        }
+                    )
+                )
+                onUpload { uploadedSize, length ->
+                    onUploadProgress(uploadedSize, length)
+                }
+            }.bodyAsText()
+        }
+        return retryRequest(timeout = requestOption.timeout, repeatNum = requestOption.repeatNum, block = requestBlock)
     }
 
     suspend fun doGetCache(
@@ -262,12 +365,6 @@ object KCHttp {
                     apiInfo
                 } else {
                     throw CacheException(OK_CACHE_EXCEPTION, "the same data,so not update")
-                }
-            }
-
-            else -> {
-                fromNetworkValue().also {
-                    saveCache(requestOption, it)
                 }
             }
         }

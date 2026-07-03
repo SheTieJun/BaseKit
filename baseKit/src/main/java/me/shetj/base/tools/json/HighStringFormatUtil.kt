@@ -19,7 +19,7 @@ import me.shetj.base.R
 class HighStringFormatUtil(
     private val wholeStr: String,
     private val highlightStr: String,
-    @ColorInt private val color: Int
+    @param:ColorInt private val color: Int
 ) {
     private var start = 0
     private var end = 0

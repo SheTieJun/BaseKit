@@ -60,14 +60,14 @@ open class Month private constructor(rawCalendar: Calendar) : Comparable<Month> 
         return difference
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
             return true
         }
-        if (o !is Month) {
+        if (other !is Month) {
             return false
         }
-        return month == o.month && year == o.year
+        return month == other.month && year == other.year
     }
 
     override fun hashCode(): Int {

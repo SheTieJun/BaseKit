@@ -46,9 +46,9 @@ internal class BtDiscovery(
                 when (intent?.action) {
                     BluetoothDevice.ACTION_FOUND -> {
                         val device = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE,BluetoothDevice::class.java) ?: return
+                            intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE,BluetoothDevice::class.java) ?: return
                         } else {
-                            intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE) ?: return
+                            intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE) ?: return
                         }
                         val rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, 0.toShort()).toInt()
                         val d = toBtDevice(device, rssi) ?: return

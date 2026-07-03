@@ -38,9 +38,9 @@ object MDThemeKit {
 
     @Keep
     data class ThemeBean(
-        @StyleRes val style: Int,
+        @param:StyleRes val style: Int,
         val name: String,
-        @NightMode val nightMode: Int = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+        @param:NightMode val nightMode: Int = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
     )
 
     private val styleList = ArrayList<ThemeBean>()

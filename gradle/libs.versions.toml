@@ -29,12 +29,12 @@ material = "1.14.0"
 preferenceVersion = "1.2.1"
 recyclerview = "1.4.0"
 asm = "9.8"
-androidGradlePlugin = "9.0.0"
+androidGradlePlugin = "9.2.1"
 biometricKtx = "1.2.0-alpha05"
 androidx-splashscreen = "1.2.0"
 legacy = "1.0.0"
 junit = "4.13.2"
-kotlin = "2.3.20"
+kotlin = "2.4.0"
 logkitMessenger = "1.7"
 mailVersion = "1.4.7"
 metricsPerformance = "1.0.0"
@@ -42,11 +42,11 @@ lottie = "6.7.1"
 roundedProgressBar = "550a631d74"
 runner = "1.7.0"
 spotless = "8.8.0"
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 benchmark = "1.4.1"
 tracingKtx = "1.3.0"
-koin-version = "4.2.1"
-koin-annotations = "4.2.0"
+koin-version = "4.2.2"
+koin-annotations = "4.2.2"
 retrofit = "3.0.0"
 ktor = "3.5.1"
 koog = "0.8.0"
@@ -55,7 +55,7 @@ koog = "0.8.0"
 geckoview = "152.0.20260501080418"
 
 activity-compose = "1.13.0"
-compose-bom = "2026.04.01"
+compose-bom = "2026.06.00"
 pagingVersion = "3.5.0"
 navigation3 = "1.1.1"
 lifecycleViewmodelNav3 = "2.11.0-alpha03"
@@ -74,7 +74,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 android-benchmark = { id = "androidx.benchmark", version.ref = "benchmark" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-ksp = { id = "com.google.devtools.ksp", version = "2.3.6" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version = "2.3.9" }
 # ./gradlew generateChangelog 用于更新日志
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization"}

@@ -18,7 +18,7 @@ import me.shetj.base.R
 @Keep
 abstract class BaseDateBindingAdapter<T : Any, BD : ViewDataBinding>
 @JvmOverloads constructor(
-    @LayoutRes private val layoutResId: Int,
+    @param:LayoutRes private val layoutResId: Int,
     items: List<T> = emptyList()
 ) : BaseQuickAdapter<T, QuickViewHolder>(items) {
 

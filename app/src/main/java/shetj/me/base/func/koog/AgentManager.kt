@@ -12,6 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import me.shetj.base.BaseKit
 import me.shetj.base.tools.app.KoogAgentKit
 import java.util.UUID
 
@@ -59,7 +60,7 @@ class AgentManager(private val context: Context) {
     private val _stateFlow = MutableStateFlow(AgentState())
     
     init {
-        GlobalScope.launch {
+        BaseKit.applicationScope.launch {
             context.agentDataStore.data.collect { prefs ->
                 val agentsJson = prefs[KEY_AGENTS] ?: "[]"
                 val agents = gson.fromJson<List<AgentConfig>>(agentsJson, object : TypeToken<List<AgentConfig>>() {}.type)

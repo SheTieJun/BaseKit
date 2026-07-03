@@ -275,10 +275,10 @@ object FileQUtils {
             fileName = System.currentTimeMillis().toString() + fileName
         }
         // 如果文件名不包含后缀名，就加上后缀名
-        if (fileName?.contains(mimeType) != true) {
+        if (!fileName.contains(mimeType)) {
             fileName = "$fileName.$mimeType"
         }
-        return fileName ?: "${uri.toString().md5}.$mimeType"
+        return fileName
     }
 
     /**

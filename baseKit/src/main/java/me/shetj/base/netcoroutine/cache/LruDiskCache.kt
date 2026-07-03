@@ -61,8 +61,8 @@ class LruDiskCache constructor(private val diskDir: File?, private val diskMaxSi
     override fun doSave(key: String, value: String): Boolean {
         return try {
             val file = getCacheFile(key)
-            if (!file.parentFile.exists()) {
-                file.parentFile.mkdirs()
+            if (file.parentFile?.exists()==false) {
+                file.parentFile?.mkdirs()
             }
             
             val oldLength = if (file.exists()) file.length() else 0L
