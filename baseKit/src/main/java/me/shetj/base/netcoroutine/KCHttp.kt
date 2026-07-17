@@ -1,27 +1,23 @@
 package me.shetj.base.netcoroutine
 
 import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.client.request.post
-import io.ktor.client.request.put
-import io.ktor.client.request.delete
 import io.ktor.client.plugins.onUpload
-import io.ktor.client.request.setBody
-import io.ktor.client.request.parameter
-import io.ktor.client.request.url
+import io.ktor.client.request.forms.FormDataContent
 import io.ktor.client.request.forms.MultiPartFormDataContent
-import io.ktor.client.statement.bodyAsText
-import io.ktor.client.statement.bodyAsChannel
+import io.ktor.client.request.forms.formData
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsChannel
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
-import io.ktor.http.contentType
-import io.ktor.client.request.forms.submitForm
-import io.ktor.client.request.forms.FormDataContent
-import io.ktor.client.request.forms.formData
 import io.ktor.http.Parameters
 import io.ktor.http.contentLength
+import io.ktor.http.contentType
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.TimeoutCancellationException
@@ -42,7 +38,6 @@ import me.shetj.base.network.exception.ApiException.ERROR.OK_CACHE_EXCEPTION
 import me.shetj.base.network.exception.ApiException.ERROR.TIMEOUT_ERROR
 import me.shetj.base.network.exception.CacheException
 import org.koin.java.KoinJavaComponent.get
-import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
 
@@ -164,6 +159,10 @@ object KCHttp {
         contentType: ContentType = ContentType.Application.OctetStream,
         onUploadProgress: (uploadedSize: Long, length: Long?) -> Unit = { _, _ -> }
     ): String {
+        require(file.exists()) { "Upload file does not exist: ${file.absolutePath}" }
+        require(file.isFile) { "Upload target is not a file: ${file.absolutePath}" }
+        require(file.canRead()) { "Upload file can not be read: ${file.absolutePath}" }
+
         val requestBlock: suspend () -> String = {
             httpClient.post(url) {
                 setBody(

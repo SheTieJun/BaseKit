@@ -4,19 +4,18 @@ import android.app.Activity
 import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
+import android.content.res.Configuration
 import android.content.res.Resources.Theme
 import android.os.Bundle
 import androidx.annotation.Keep
+import androidx.annotation.MainThread
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.NightMode
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.launch
-import me.shetj.base.BaseKit
 import me.shetj.base.R
 import me.shetj.base.R.style
-import me.shetj.base.coroutine.DispatcherProvider
 import me.shetj.base.model.SingleLiveEvent
 import me.shetj.base.tools.file.SPUtils
 import java.util.concurrent.atomic.AtomicBoolean
@@ -60,6 +59,7 @@ object MDThemeKit {
      * @param styleList 主题style的资源id
      * @param context
      */
+    @MainThread
     fun startInit(context: Context, styleList: List<ThemeBean> = defThemeBean) {
         if (isInit.compareAndSet(false, true)) {
             styleList.forEach {
@@ -69,12 +69,10 @@ object MDThemeKit {
             val theme = getThemeByWhich(which)
             colorCallBacks.rStyle = theme.style
             (context.applicationContext as Application).registerActivityLifecycleCallbacks(colorCallBacks)
-            BaseKit.applicationScope.launch(DispatcherProvider.main()) {
-                themeLiveData.observeForever {
-                    updateThemeWithTheme(it)
-                }
-                themeLiveData.value = (theme)
+            themeLiveData.observeForever {
+                updateThemeWithTheme(it)
             }
+            themeLiveData.value = (theme)
         }
     }
     //endregion
@@ -105,15 +103,6 @@ object MDThemeKit {
     //endregion
 
     //region 其他公开方法
-
-    /**
-     * Get current theme
-     * 当前主题
-     * @return
-     */
-    fun getCurrentTheme(): SingleLiveEvent<ThemeBean> {
-        return themeLiveData
-    }
 
     fun clearTheme() {
         styleList.clear()
@@ -189,17 +178,13 @@ object MDThemeKit {
 
     private fun updateTheme(modeNightAutoBattery: Int) {
         val defaultNightMode = AppCompatDelegate.getDefaultNightMode()
-        if (defaultNightMode != AppCompatDelegate.MODE_NIGHT_YES) {
-            // ActivityCompat recreate
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            AppCompatDelegate.setDefaultNightMode(modeNightAutoBattery)
-            return
+        val intermediateMode = if (defaultNightMode != AppCompatDelegate.MODE_NIGHT_YES) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
         }
-        if (defaultNightMode != AppCompatDelegate.MODE_NIGHT_NO) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            AppCompatDelegate.setDefaultNightMode(modeNightAutoBattery)
-            return
-        }
+        AppCompatDelegate.setDefaultNightMode(intermediateMode)
+        AppCompatDelegate.setDefaultNightMode(modeNightAutoBattery)
     }
 
     class ColorsActivityLifecycleCallbacks(var rStyle: Int) :
@@ -263,5 +248,10 @@ object MDThemeKit {
             }
         }
         return null
+    }
+
+    private object BaseKitContextHolder {
+        val app: Application
+            get() = me.shetj.base.BaseKit.app
     }
 }

@@ -14,59 +14,33 @@ import me.shetj.base.R
  * Base date binding adapter
  * 有dataBinding的时候，可以使用这个
  */
-@Suppress("UNCHECKED_CAST")
 @Keep
 abstract class BaseDateBindingAdapter<T : Any, BD : ViewDataBinding>
 @JvmOverloads constructor(
     @param:LayoutRes private val layoutResId: Int,
     items: List<T> = emptyList()
-) : BaseQuickAdapter<T, QuickViewHolder>(items) {
+) : BaseQuickAdapter<T, BaseDataBindingHolder<BD>>(items) {
 
     override fun onCreateViewHolder(
         context: Context,
         parent: ViewGroup,
         viewType: Int
-    ): QuickViewHolder {
-        val binding: BD = DataBindingUtil.inflate(
-            android.view.LayoutInflater.from(context),
-            layoutResId,
-            parent,
-            false
-        )
-        return QuickViewHolder(binding.root).apply {
-            itemView.setTag(me.shetj.base.R.id.tag_view_binding, binding)
-        }
+    ): BaseDataBindingHolder<BD> {
+        return BaseDataBindingHolder(parent.getItemView(layoutResId))
     }
 
-    override fun onBindViewHolder(holder: QuickViewHolder, position: Int, item: T?) {
-        if (item != null) {
-            val binding = holder.itemView.getTag(R.id.tag_view_binding) as? BD
-            if (binding != null) {
-                convert(binding, item)
-                binding.executePendingBindings()
-            }
-        }
+
+    override fun onBindViewHolder(holder: BaseDataBindingHolder<BD>, position: Int, item: T?) {
+        holder.binding?.let { convert(it, position, item) }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override fun onBindViewHolder(
-        holder: QuickViewHolder,
-        position: Int,
-        item: T?,
-        payloads: List<Any>
-    ) {
-        if (payloads.isEmpty()) {
-            super.onBindViewHolder(holder, position, item, payloads)
-        } else if (item != null) {
-            val binding = holder.itemView.getTag(me.shetj.base.R.id.tag_view_binding) as? BD
-            if (binding != null) {
-                convert(binding, item, payloads)
-                binding.executePendingBindings()
-            }
-        }
+
+    override fun onBindViewHolder(holder: BaseDataBindingHolder<BD>, position: Int, item: T?, payloads: List<Any>) {
+        holder.binding?.let { convert(it, position, item, payloads) }
     }
 
-    abstract fun convert(holder: BD, item: T)
+    abstract fun convert(holder: BD, position: Int, item: T?)
 
-    open fun convert(holder: BD, item: T, payloads: List<Any>) {}
+
+    abstract fun convert(holder: BD, position: Int, item: T?, payloads: List<Any>)
 }

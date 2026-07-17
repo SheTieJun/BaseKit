@@ -27,6 +27,7 @@ open class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, Lifecyc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        restoreSaveState(savedInstanceState)
         lifecycle.addObserver(this)
         initBaseView()
         addObservers()
@@ -48,12 +49,18 @@ open class BaseActivity<T : BasePresenter<*>> : AbBaseActivity(), IView, Lifecyc
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        saveSate(outState)
+        saveState(outState)
         super.onSaveInstanceState(outState)
     }
 
-    private fun saveSate(outState: Bundle) {
+    private fun saveState(outState: Bundle) {
         ArmsUtils.saveStateToBundle(saveStateMap, outState)
+    }
+
+    protected fun restoreSaveState(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) return
+        // if (!savedInstanceState.containsKey(key))
+        // val value = savedInstanceState.get(key)
     }
 
     open fun onActivityDestroy() {
