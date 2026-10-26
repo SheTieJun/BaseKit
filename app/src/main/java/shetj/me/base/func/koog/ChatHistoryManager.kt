@@ -1,8 +1,8 @@
 package shetj.me.base.func.koog
 
 import android.content.Context
-import me.shetj.base.tools.app.memory.chat.ChatMemoryDatabase
-import me.shetj.base.tools.app.memory.chat.ChatMemoryMessageEntity
+import shetj.me.base.utils.memory.chat.ChatMemoryDatabase
+import shetj.me.base.utils.memory.chat.ChatMemoryMessageEntity
 import timber.log.Timber
 
 /**

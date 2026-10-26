@@ -44,8 +44,6 @@ import me.shetj.base.mvvm.viewbind.BaseBindingActivity
 import me.shetj.base.netcoroutine.observeChange
 import me.shetj.base.tip.TipKit
 import me.shetj.base.tools.app.KeyboardUtil
-import me.shetj.base.tools.app.KoogAgentKit
-import me.shetj.base.tools.app.KoogAgentKit.Provider
 import shetj.me.base.func.koog.KoogActivity
 import me.shetj.base.tools.app.LanguageKit
 import me.shetj.base.tools.app.MDThemeKit
@@ -64,6 +62,7 @@ import shetj.me.base.func.compose.ComposeTestActivity
 import shetj.me.base.func.md3.Main2Activity
 import shetj.me.base.func.preference.SettingActivity
 import shetj.me.base.utils.KeyStoreKit
+import shetj.me.base.utils.KoogAgentKit
 import timber.log.Timber
 import java.util.Locale
 import java.util.function.Consumer
@@ -103,7 +102,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
 
         runBlocking {
             val result = KoogAgentKit.quickRun(
-                provider = Provider.OLLAMA,
+                provider = KoogAgentKit.Provider.OLLAMA,
                 prompt = "你好，请用一句话介绍自己"
             )
             result?.let {
@@ -294,7 +293,7 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding, MainViewModel>() {
         }
         
         mContent.btnKoogAi.setOnClickListener {
-            start<KoogActivity>()
+            startWithTransition<KoogActivity>()
         }
     }
 

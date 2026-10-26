@@ -136,7 +136,9 @@ dependencies {
     // If you want to additionally use the CameraX Extensions library
     implementation(libs.androidx.camera.extensions)
 
+    //    // Koog AI agents
     implementation(libs.koog.agents)
+    implementation(libs.koog.agents.features.longterm.memory)
 }
 
 androidComponents {

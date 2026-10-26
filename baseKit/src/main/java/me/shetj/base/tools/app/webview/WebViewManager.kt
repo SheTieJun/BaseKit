@@ -2,6 +2,7 @@ package me.shetj.base.tools.app.webview
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
@@ -18,9 +19,16 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.fragment.app.FragmentActivity
 import androidx.webkit.CookieManagerCompat
+import androidx.webkit.Navigation
+import androidx.webkit.NavigationParameters
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
+import androidx.webkit.WebViewOutcomeReceiver
+import androidx.webkit.WebViewStartUpConfig
+import androidx.webkit.WebViewStartUpResult
+import androidx.webkit.WebViewStartupException
 import me.shetj.base.BaseKit
+import me.shetj.base.base.TaskExecutor
 import me.shetj.base.ktx.logI
 import me.shetj.base.ktx.searchFiles
 import me.shetj.base.ktx.startRequestPermission
@@ -55,6 +63,25 @@ class WebViewManager(private val webView: WebView) {
     }
 
     companion object {
+
+
+        fun init(context: Context){
+            //可让应用更早地触发 WebView 启动，确保部分启动在后台运行，从而提高响应速度。
+            val upConfig = WebViewStartUpConfig.Builder(TaskExecutor.getInstance().getExecutor())
+                .build()
+            WebViewCompat.startUpWebView(context, upConfig, WebViewOutcomeReceiver {
+
+            })
+        }
+
+        fun navigate(view: WebView, url: String): Navigation {
+            return WebViewCompat.navigate(
+                /* webview = */ view, /* url = */ url,
+                /* params = */ NavigationParameters.Builder()
+                    .setShouldReplaceCurrentEntry(true) //允许替换导航历史记录中的当前网页。
+                    .build()
+            )
+        }
 
         /**
          * Start safe browsing

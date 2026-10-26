@@ -18,17 +18,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.shetj.base.tools.app.KoogAgentKit
 import me.shetj.base.BaseKit
-import me.shetj.base.tools.app.memory.chat.ChatMemoryDatabase
-import me.shetj.base.tools.app.memory.chat.RoomChatHistoryProvider
-import me.shetj.base.tools.app.memory.storage.LongTermMemoryDatabase
-import me.shetj.base.tools.app.memory.storage.RoomTextDocumentStorage
+import shetj.me.base.utils.memory.chat.ChatMemoryDatabase
+import shetj.me.base.utils.memory.chat.RoomChatHistoryProvider
+import shetj.me.base.utils.memory.storage.LongTermMemoryDatabase
+import shetj.me.base.utils.memory.storage.RoomTextDocumentStorage
 import shetj.me.base.func.koog.askuser.AskUserGatewayImpl
 import shetj.me.base.func.koog.askuser.AskUserRequest
 import shetj.me.base.func.koog.tools.AskUserTool
 import shetj.me.base.func.koog.tools.InspirationTool
-import timber.log.Timber
+import shetj.me.base.utils.KoogAgentKit
 
 /**
  * 聊天消息数据类

@@ -19,6 +19,7 @@ import java.lang.reflect.ParameterizedType
  * 构造时通过反射调用 [VB].bind(view) 一次；必须写具体子类并声明 VB，例如：
  * `class XxxHolder(view: View) : BaseViewBindingHolder<ItemXxxBinding>(view)`
  */
+@Suppress("UNCHECKED_CAST")
 open class BaseViewBindingHolder<VB : ViewBinding>(view: View) : RecyclerView.ViewHolder(view) {
 
     private val clazzVB = (javaClass.genericSuperclass as ParameterizedType)

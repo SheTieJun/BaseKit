@@ -45,7 +45,7 @@ androidLibrary("me.shetj.base",config = true){
 
 dependencies {
     addAndroid()
-    addRetrofit2()
+    addKtor()
     addKoin()
     addCoroutines()
     addOther()
@@ -101,12 +101,10 @@ fun DependencyHandler.addOther(){
     api(libs.third.brv)
     api(libs.third.timber)
     api(libs.shetj.qmui)
-    // Koog AI agents
-    api(libs.koog.agents)
-    api(libs.koog.agents.features.longterm.memory)
+
 }
 
-fun DependencyHandler.addRetrofit2(){
+fun DependencyHandler.addKtor(){
     api(libs.ktor.client.core)
     api(libs.ktor.client.okhttp)
     api(libs.ktor.client.content.negotiation)

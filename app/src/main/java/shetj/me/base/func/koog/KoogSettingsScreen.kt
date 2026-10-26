@@ -29,15 +29,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
-import me.shetj.base.tools.app.KoogAgentKit
-import me.shetj.base.tools.app.memory.LocalLongTermMemoryKit
-import me.shetj.base.tools.app.memory.storage.LongTermMemoryDatabase
-import me.shetj.base.tools.app.memory.storage.MemoryRecordEntity
-import me.shetj.base.tools.app.memory.storage.RoomTextDocumentStorage
+import me.shetj.base.BaseKit
+import shetj.me.base.utils.KoogAgentKit
+import shetj.me.base.utils.memory.LocalLongTermMemoryKit
+import shetj.me.base.utils.memory.storage.LongTermMemoryDatabase
+import shetj.me.base.utils.memory.storage.MemoryRecordEntity
+import shetj.me.base.utils.memory.storage.RoomTextDocumentStorage
 
 /**
  * 配置界面 ViewModel
@@ -45,7 +45,7 @@ import me.shetj.base.tools.app.memory.storage.RoomTextDocumentStorage
 class KoogSettingsViewModel : androidx.lifecycle.ViewModel() {
     private val agentManager = AgentManager.getInstance(me.shetj.base.BaseKit.app)
     val stateFlow = agentManager.stateFlow
-    private val longTermMemoryDao = LongTermMemoryDatabase.getInstance(me.shetj.base.BaseKit.app).memoryRecordDao()
+    private val longTermMemoryDao = LongTermMemoryDatabase.getInstance(BaseKit.app).memoryRecordDao()
     private val longTermMemoryStorage = RoomTextDocumentStorage(longTermMemoryDao)
 
     suspend fun addAgent(name: String, provider: KoogAgentKit.Provider, apiKey: String, model: String = "", systemPrompt: String = "", baseUrl: String = "") {

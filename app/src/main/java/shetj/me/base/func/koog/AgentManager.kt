@@ -1,5 +1,6 @@
 package shetj.me.base.func.koog
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.shetj.base.BaseKit
-import me.shetj.base.tools.app.KoogAgentKit
+import shetj.me.base.utils.KoogAgentKit
 import java.util.UUID
 
 private val Context.agentDataStore: DataStore<Preferences> by preferencesDataStore("koog_agents_v2")
@@ -47,6 +48,7 @@ class AgentManager(private val context: Context) {
         private val KEY_ACTIVE_ID = stringPreferencesKey("koog_active_agent_id")
         private val gson = Gson()
 
+        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var INSTANCE: AgentManager? = null
 
